@@ -40,7 +40,7 @@ from users.views import HasArtistAssignedMixin, \
 from .forms import ToggleRecordingStateForm, EventAjaxEditForm,  \
     EventEditForm, ArtistInfoForm, \
     EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm, \
-    ArtistGigPlayedAddLazyInlineFormSet
+    ArtistGigPlayedEditLazyInlineFormSet
 from artist_dashboard.tasks import generate_payout_sheet_task,\
     update_current_period_metrics_task
 
@@ -58,7 +58,6 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
 
         paginator = context['paginator']
         current_page_number = context['page_obj'].number
-        events_with_media = event.sets.with_media()
         context.update({
             'total_results': paginator.count,
             'total_pages': paginator.num_pages,
@@ -108,21 +107,25 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
                 queryset = queryset.filter(is_leader=False)
 
         if start_date_filter:
-            artist = self.request.user.artist
             start_date_filter = parser.parse(start_date_filter, fuzzy=True)
             if not start_date_filter.tzinfo:
                 start_date_filter = timezone.make_aware(
                     start_date_filter, timezone.get_current_timezone())
+            # Exclude 1 am events which belong to the previous day.
+            start_date_filter = start_date_filter.replace(hour=5, minute=0, second=0)
             queryset = queryset.filter(
-            event__start__gte=start_date_filter
+                event__start__gte=start_date_filter
             )
 
         if end_date_filter:
-            artist = self.request.user.artist
             end_date_filter = parser.parse(end_date_filter, fuzzy=True)
             if not end_date_filter.tzinfo:
                 end_date_filter = timezone.make_aware(
                     end_date_filter, timezone.get_current_timezone())
+            # Events finish at 5:00 am the next day
+            end_date_filter = end_date_filter + timedelta(days=1)
+            end_date_filter = end_date_filter.replace(hour=5, minute=0, second=0)
+            print '*** END DATE ***** ', end_date_filter
             queryset = queryset.filter(
                 event__start__lte=end_date_filter
             )
@@ -498,7 +501,7 @@ class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
 
     form_class = EventEditForm
     success_url = reverse_lazy('artist_dashboard:my_past_events')
-    inlines = [ArtistGigPlayedAddLazyInlineFormSet]
+    inlines = [ArtistGigPlayedEditLazyInlineFormSet]
     inlines_names = ['artists']
 
     def get_template_names(self):
@@ -518,7 +521,7 @@ event_edit = EventEditView.as_view()
 class EventEditAjaxView(EventEditView):
 
     form_class = EventAjaxEditForm
-    inlines = [ArtistGigPlayedAddLazyInlineFormSet]
+    inlines = [ArtistGigPlayedEditLazyInlineFormSet]
     inlines_names = ['artists']
 
     def get_context_data(self, **kwargs):

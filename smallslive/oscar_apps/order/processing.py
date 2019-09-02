@@ -7,30 +7,31 @@ from oscar.apps.order.processing import EventHandler as CoreEventHandler
 
 class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
 
+    def __init__(self, *args, **kwargs):
+        self.tickets_type = None
+
+        return super(EventHandler, self).__init__(*args, **kwargs)
+
     def handle_order_status_change(self, order, new_status, note_msg):
 
+        self.tickets_type = order.get_tickets_type()
         if new_status == 'Cancelled':
             payment_source = order.sources.first()
             reference = payment_source.reference
             amount = payment_source.amount_allocated
             currency = payment_source.currency
-            print reference
-            print payment_source.source_type.name
             if payment_source.source_type.name == 'Mezzrow PayPal':
-                self.mezzrow = True
                 refund_reference = self.refund_paypal_payment(
                     reference,
                     amount,
                     currency)
             elif payment_source.source_type.name == 'Mezzrow Credit Card':
-                self.mezzrow = True
+                self.venue = None
                 refund_reference = payflow_facade.credit(order.number, amt=order.total_incl_tax)
             elif payment_source.source_type.name == 'Stripe Credit Card':
-                self.mezzrow = False
                 refund_reference = self.refund_stripe_payment(
                     reference)
             elif payment_source.source_type.name == 'PayPal':
-                self.mezzrow = False
                 refund_reference = self.refund_paypal_payment(
                     reference,
                     amount,
@@ -39,7 +40,6 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
             lines = order.lines.all()
             line_quantities = lines.values_list('quantity', flat=True)
             refund_event_type, _ = PaymentEventType.objects.get_or_create(name="Refunded")
-            print refund_reference
             self.handle_payment_event(order, refund_event_type,
                                       order.total_incl_tax, lines,
                                       line_quantities, reference=refund_reference)

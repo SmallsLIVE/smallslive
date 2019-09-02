@@ -9,7 +9,6 @@
 
 
 {% block store_content %}
-
   <section id="my-downloads-album__list">
     {% include 'multimedia/album-display.html' with album_product=album_product if_full=is_full bought_tracks=bought_tracks is_catalogue=is_catalogue mp3_available=mp3_available %}
   </section>

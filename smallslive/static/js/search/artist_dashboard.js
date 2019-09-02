@@ -3,6 +3,10 @@ $(document).ready(function () {
 
   var $datePickerFrom = $("#search-date-picker-from-dashboard input");
   var $datePickerTo = $("#search-date-picker-to-dashboard input");
+  var fromDateLimit
+  var firstEventDate;
+  var toDateLimit
+  var lastEventDate;
 
   initializeFilters();
   initializeDashboardDatePickers();
@@ -42,6 +46,7 @@ $(document).ready(function () {
     $datePickerFrom.on('changeDate', function (newDate) {
       $("#search-date-picker-to-dashboard input").click();
       $("#search-date-picker-to-dashboard input").focus();
+      $datePickerTo.datepicker("setStartDate", newDate.date);
     });
 
     $datePickerFrom.on('click', function () {
@@ -67,12 +72,13 @@ $(document).ready(function () {
       // For pagination use apply = false;
 
       sendEventRequest(
-        updateShows
+        [updateShows]
       );
-      $datePickerFrom.datepicker("setEndDate", dateTo);
 
       $datePickerFrom.click();
       $datePickerFrom.focus();
+
+      $datePickerFrom.datepicker("setEndDate", newDate.date);
 
     });
 
@@ -96,7 +102,6 @@ $(document).ready(function () {
 
     function display() {
         $("#dashboard-desktop-datepicker").css("display", "flex").hide().fadeIn(500, function() {
-            $(document).bind("click", hide);
             $("#dashboard-desktop-datepicker").data('shown', true);
         });
 
@@ -109,7 +114,6 @@ $(document).ready(function () {
         if (($target.closest('.noclick').length == 0) &&
         (!($target.hasClass('day') || $target.hasClass('year')))) {
             $('#dashboard-desktop-datepicker').fadeOut(500, function () {
-                $(document).unbind('click');
                 $('#dashboard-desktop-datepicker').data('shown', false);
             });
         }
@@ -117,7 +121,6 @@ $(document).ready(function () {
 
     $("#dashboard-apply-button").click(function () {
         $("#dashboard-desktop-datepicker").fadeOut(500, function () {
-            $(document).unbind("click");
             $("#dashboard-desktop-datepicker").data('shown', false);
         });
         currentPage = 0;
@@ -146,28 +149,142 @@ $(document).ready(function () {
         loadMore(false);
     });
 
+
+    $("#refine-btn").click(function () {
+      $(".refine-overlay").show();
+      $("body").addClass("hidden-body");
+    });
+
   }
 
   function bindEvents() {
 
     $(document).on('click', '.artist-event-row', function () {
 
-      if( viewPortLength("width") < 960){
-        $('.artist-dashboard-event-container').show("slide", { direction: "right" }, 300);
-        $('.artist-events-list').hide("slide", { direction: "left" }, 300);
-      }
+      var $container = $(this).closest(".artist-events-list");
+      $container.removeClass("active");
+
+      $(".artist-event").addClass("active");
+
+      $(".artist-event-row").removeClass("active");
+      $(this).addClass("active");
 
       var url = $(this).data('ajax-edit-url');
       showEventForm(url);
       url = $(this).data('ajax-info-url');
       showEventInfo(url);
+
     });
 
     $(document).on('click', '#form-edit-button', function () {
-      $("#submit-id-submit").removeAttr('disabled');
-      enableEditForm();
+      var $submit = $("#submit-id-submit");
+      if ($submit.attr("disabled") === "disabled") {
+        $("#submit-id-submit").removeAttr('disabled');
+        enableEditForm();
+        $(this).text('Cancel')
+      } else {
+        $("#submit-id-submit").attr("disabled", "disabled");
+        disableEditForm();
+        $(this).text('Edit');
+      }
     });
 
+    $(document).on("click", "#submit-id-submit", function () {
+      $("#event-edit-form").submit();
+    });
+
+    $(document).on("submit", "#event-edit-form", function (event) {
+      $('#edit-event-dashboard').html($('#event-edit-form-load-gif').clone().removeClass('hidden'));
+      var $form = $(this);
+      var url = $form.attr("action");
+      var infoUrl = $form.data("ajax-info-url");
+      event.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: $form.serialize(),
+        success: function(data) {
+          showEventForm(url);
+          showEventInfo(infoUrl);
+        },
+        error: function() {}
+      });
+    });
+
+    $(document).on("keyup", ".artist_field .selectize-input input", function () {
+      var artistSelectorContainer = $(this).closest(".artist-selector");
+      var selectElement = $(artistSelectorContainer).find("select")[0];
+      //var selectizeElement = $(artistSelectorContainer).find(".selectize-dropdown-content")[0];
+      if ($(this).val().length > 1) {
+        loadArtist($(this).val(), selectElement)
+      }
+    });
+
+    $(document).on("click", "#show-gig-info-btn", function (event) {
+      if (!$(this).hasClass("active")) {
+        $(this).addClass("active");
+        $("#show-video-metrics-btn").removeClass("active");
+        $("#edit-event-dashboard").addClass("active");
+        $("#event-info").removeClass("active");
+      }
+    });
+
+    $(document).on("click", "#show-video-metrics-btn", function (event) {
+      if (!$(this).hasClass("active")) {
+        $(this).addClass("active");
+        $("#show-gig-info-btn").removeClass("active");
+        $("#edit-event-dashboard").removeClass("active");
+        $("#event-info").addClass("active");
+      }
+    });
+
+    $(document).on("click", "#event-info-close-btn", function () {
+      var $container = $(this).closest(".artist-event");
+      $container.removeClass("active");
+      $container.prev(".artist-events-list").addClass("active");
+    })
+
+    $(document).on("click", ".set-changer", function (event) {
+      event.preventDefault();
+      $(".set-changer").removeClass("artist-active-set");
+      var setId = $(this).data("set-id");
+      if (!$(this).hasClass("artist-active-set")) {
+        $(this).addClass("artist-active-set");
+      }
+      var $toShow = $(".event-metrics-container.flex-row#set-metrics-" + setId);
+      var playListIndex = $toShow.data("set-number");
+      var $toHide = $(".event-metrics-container.flex-row");
+      $toHide.each(function () {
+        if (!$(this).hasClass("hidden")) {
+          $(this).addClass("hidden");
+        }
+      });
+      $toShow.removeClass("hidden");
+
+      currentListIndex = playListIndex;
+      if (videoPlaying) {
+        videoPlayer.playlistItem(playListIndex);
+      }
+
+    });
+
+
+    //// METRICS DATE PICKER
+    $(document).on("click", "#datepicker-dashboard-btn", function () {
+
+      if ($(".artist-events-list-info .datepicker-container").data('shown')) {
+        $(".event-metrics-container .datepicker-container").fadeOut(500, function () {
+          $(".event-metrics-container .datepicker-container").data('shown', false);
+        });
+      } else {
+        $(".artist-events-list-info  .datepicker-container").css("display", "flex").hide().fadeIn(500, function() {
+          $(".artist-events-list-info .datepicker-container").data('shown', true);
+        });
+
+        $("#dashboard-metrics-date-picker-from input").click();
+        $("#dashboard-metrics-date-picker-from input").focus();
+      }
+    });
   }
 
   function sendEventRequest(callbacks) {
@@ -194,6 +311,9 @@ $(document).ready(function () {
       data: params,
       dataType: 'json',
       success: function (data) {
+        $("#artistEventsList").removeClass("artist-loading-gif");
+        firstEventDate = data.first_event_date;
+        lastEventDate = data.last_event_date;
         var callback;
         while (callback = callbacks.pop()){
           if (typeof callback === 'function') {
@@ -207,6 +327,7 @@ $(document).ready(function () {
 
   function updateShows(data) {
     $("#event-load-gif").addClass("hidden");
+    $("#artistEventsList").removeClass("artist-loading-gif");
     $('.concerts-footer').show();
     if (data.template) {
       if (currentPage > 1) {
@@ -236,19 +357,24 @@ $(document).ready(function () {
   }
 
 
-  function showEventForm(url) {
+  function showEventForm(url, callback) {
+    // We need to clone the loading gif to show it inside the container.
+    // It will be removed when the container's html gets replaced.
     $('#edit-event-dashboard').html($('#event-edit-form-load-gif').clone().removeClass('hidden'));
     $.ajax({
       type: 'GET',
       url: url,
       success: function(data) {
         $('#event-edit-form-load-gif').addClass('hidden');
+        $(document).off("click", "#add_more_artists");
+        $('#edit-event-dashboard').empty();
         $('#edit-event-dashboard').html(data);
-        EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
-        EventForm.init(false);
+        EventForm.init(false, disableEditForm);
         image_cropping.init();
-        $("#event-edit-form input").prop("disabled", true);
-        $("#event-edit-form select").prop("disabled", true);
+        disableEditForm;
+        if (callback) {
+          callback();
+        }
       },
       error: function() {
 
@@ -256,9 +382,34 @@ $(document).ready(function () {
     });
   }
 
+  function disableEditForm() {
+    $("#event-edit-form input").prop("disabled", true);
+    $("#event-edit-form select").prop("disabled", true);
+    $(".event-edit-form-remove-artist").hide();
+    $(".artist_field_span").show();
+    $(".artist_field").addClass("hidden");
+    $(".role_field_span").show();
+    $(".role_field").addClass("hidden");
+    $(".fa-sort").hide();
+    $("#add_more_artists").hide();
+    $(".mobile-edit-title.remove").css({"visibility": "hidden"});
+    $(".artist-list-form .formset_table").find("tbody").sortable({disabled: true});
+
+  }
+
   function enableEditForm () {
     $("#event-edit-form input").prop("disabled", false);
     $("#event-edit-form select").prop("disabled", false);
+    $(".event-edit-form-remove-artist").show();
+    $(".artist_field_span").hide();
+    $(".artist_field").removeClass("hidden");
+    $(".role_field_span").hide();
+    $(".role_field").removeClass("hidden");
+    $(".artist-list-form .formset_table").sortable({disabled: false});
+    $(".fa-sort").show();
+    $("#add_more_artists").show();
+    $(".mobile-edit-title.remove").css({"visibility": "visible"});
+    $(".artist-list-form .formset_table").find("tbody").sortable({disabled: false});
   }
 
   function showEventInfo(url) {
@@ -269,7 +420,25 @@ $(document).ready(function () {
       success: function(data) {
         $('#event-info-load-gif').addClass('hidden');
         $('#event-info').html(data);
-
+        var $videoInfo = $(data).find(".player-video-info");
+        var playList = []
+        $videoInfo.each(function () {
+          var url = $(this).val();
+          var id = $(this).data("id");
+          var image = $(this).data("image");
+          var sources = [{
+            file: url,
+            type: "mp4",
+          }];
+          var playInfo = {
+            sources: sources,
+            mediaid: id,
+            image: image
+          };
+          playList.push(playInfo);
+        });
+        initializeMetricsDatePickers();
+        setupPlayer(playList);
       },
       error: function() {
 
@@ -277,22 +446,65 @@ $(document).ready(function () {
     });
   }
 
+  function activateFirstItem() {
+    $(".artist-event-row:first-of-type").addClass("active");
+  }
+
   function showFirstEventForm(data) {
-    $row = $(data.template).first("artist-event-row");
+    var $row = $(data.template).first("artist-event-row");
     var url = $row.data('ajax-edit-url');
-    showEventForm(url);
+    showEventForm(url, activateFirstItem);
   }
 
   function showFirstEventInfo(data) {
-    $row = $(data.template).first("artist-event-row");
+    var $row = $(data.template).first("artist-event-row");
     var url = $row.data('ajax-info-url');
     showEventInfo(url);
   }
 
   function showFirstEvent(data) {
 
+    fromDateLimit = firstEventDate;
+    toDateLimit = lastEventDate;
+    $datePickerFrom.datepicker("setStartDate", fromDateLimit);
+    $datePickerFrom.datepicker("setEndDate", toDateLimit);
+    $datePickerTo.datepicker("setStartDate", fromDateLimit);
+    $datePickerTo.datepicker("setEndDate", toDateLimit);
+
     showFirstEventForm(data);
     showFirstEventInfo(data);
+
+  }
+
+  function setupPlayer(playList) {
+
+    videoPlayer = jwplayer("player-video").setup({
+      primary: 'html5',
+      playlist: playList,
+      skin: jwPlayerSkin,
+      width: "100%",
+      aspectratio: "16:9",
+    });
+    videoPlayer.on('play', function () {
+
+      videoPlaying = true;
+      var videoListIndex = videoPlayer.getPlaylistIndex();
+
+      console.log(videoListIndex);
+      console.log(currentListIndex);
+
+      if (videoListIndex != currentListIndex) {
+        if (currentListIndex) {
+          videoPlayer.playlistItem(currentListIndex);
+        }
+      }
+
+    });
+
+    videoPlayer.on('pause', function() {
+
+
+    });
 
   }
 
@@ -437,3 +649,175 @@ function showSelectFormat(videoUrl, audioUrl) {
     $downloadFormat.modal('show');
 }
 
+var resizeTimer;
+
+
+function loadArtist(value, select) {
+  $.ajax({
+    type: 'GET',
+    url: '/search/artist_form_autoconplete/?artist-start=' + value,
+    success: function(data){
+        data.artist_list.forEach(function(artist) {
+            select.selectize.addOption({ value: artist.val, text: artist.full_name })
+            select.selectize.refreshOptions()
+        })
+
+    }
+  })
+}
+
+$(window).on('resize', function(e) {
+
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(function() {
+
+    $(".jcrop-holder").remove();
+    $("#id_cropping-image").remove();
+    $(".field-box.allow-fullsize").remove();
+    image_cropping.init();
+
+  }, 1000);
+
+});
+
+
+function initializeMetricsDatePickers () {
+
+  var $datePickerFrom = $('#dashboard-metrics-date-picker-from input');
+  $datePickerFrom.datepicker({
+    format: 'mm/dd/yyyy',
+    autoclose: true,
+    container: '#dashboard-metrics-date-picker-from',
+    showOnFocus: false
+  });
+
+  $datePickerFrom.on('changeDate', function (newDate) {
+    eventDateFrom = newDate.date;
+    $("#dashboard-metrics-date-picker-to input").click();
+    $("#dashboard-metrics-date-picker-to input").focus();
+  });
+
+  $datePickerFrom.on('click', function () {
+    var dropdown = $('#dashboard-metrics-date-picker-from .dropdown-menu');
+    if (dropdown[0] && dropdown[0].style.display === 'block') {
+       $datePickerFrom.datepicker('hide');
+    } else {
+       $datePickerFrom.datepicker('show');
+    }
+  });
+
+  //////////////////////
+
+  var $datePickerTo = $('#dashboard-metrics-date-picker-to input');
+  $datePickerTo.datepicker({
+    format: 'mm/dd/yyyy',
+    autoclose: false,
+    container: '#dashboard-metrics-date-picker-to',
+    showOnFocus: false
+  });
+
+  $datePickerTo.on('changeDate', function (newDate) {
+    eventDateTo = newDate.date;
+
+    from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
+    to = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
+
+    $("#datepicker-description").html(from + " - " + to);
+  });
+
+  $datePickerTo.on('click', function () {
+    var dropdown = $('#dashboard-metrics-date-picker-to .dropdown-menu');
+    if (dropdown[0] && dropdown[0].style.display === 'block') {
+        $datePickerTo.datepicker('hide');
+    } else {
+        $datePickerTo.datepicker('show');
+    }
+  });
+
+  $(document).on("click", "#metrics-datepicker-description", function () {
+     if ($(".artist-events-list-info .datepicker-container").data('shown')) {
+        $(".event-metrics-container .datepicker-container").fadeOut(500, function () {
+          $(".event-metrics-container .datepicker-container").data('shown', false);
+          $("#datepicker-dashboard-left-panel").show();
+        });
+     } else {
+       $("#datepicker-dashboard-left-panel").show();
+     }
+
+  });
+
+  ///////////
+
+  $("#metrics-datepicker-apply-button").click(function () {
+    $(".artist-events-list-info .datepicker-container").fadeOut(500, function () {
+        $(".artist-events-list-info .datepicker-container").data('shown', false);
+    });
+
+    loadData();
+  });
+
+ 
+  $(".datepicker-dashboard-left-panel > div").click(function () {
+
+    if ($(this).data('date') == "all") {
+      $("#dashboard-metrics-date-picker-from input").datepicker("update", new Date(2000, 0, 1));
+      $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date());
+    } else if ($(this).data('date') == "period") {
+      d = new Date();
+      d.setFullYear(d.getFullYear() - 1);
+      $("#dashboard-metrics-date-picker-from input").datepicker("update", d);
+      $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date());
+    } else {
+      $("#dashboard-metrics-date-picker-from input").datepicker("update", new Date($(this).data('start')));
+      $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date($(this).data('end')));
+    }
+
+    $("#metrics-datepicker-description").html($(this).text());
+
+    $("#dashboard-metrics-date-picker-to input").click();
+    $("#dashboard-metrics-date-picker-to input").focus();
+
+    $("#datepicker-dashboard-left-panel").hide();
+
+    loadData();
+
+  });
+}
+
+var loadData = function () {
+  var plays = document.getElementById("play-value");
+  var time = document.getElementById("time-value");
+  var mobilePlays = document.getElementById("mobile-play-value");
+  var mobileTime = document.getElementById("mobile-time-value");
+  var eventDateFrom = $("#dashboard-metrics-date-picker-from input").datepicker('getDate');
+  var eventDateTo = $("#dashboard-metrics-date-picker-to input").datepicker('getDate');
+
+  var data = {};
+
+  data.start = moment(eventDateFrom).format('YYYY-MM-DD');
+  data.end = moment(eventDateTo).format('YYYY-MM-DD');
+
+  $(".artist-set-actions").each(function () {
+    var setId = $(this).data("set-id");
+    var $container = $("#set-metrics-" + setId);
+    data.set_id = setId;
+    $.ajax(countsURL, {
+      data: data,
+      success: function (response) {
+          console.log('-----------------------------');
+          console.log(response);
+          $container.find(".play-value").html(response.playCount);
+          var playedSeconds = response.secondsPlayed;
+          var formattedSeconds = moment.utc((playedSeconds) * 1000).format('HH:mm:ss');
+          $container.find(".time-value").html(formattedSeconds);
+      },
+      type: 'GET',
+      xhrFields: {
+          withCredentials: true
+      }
+    });
+
+  });
+
+
+};

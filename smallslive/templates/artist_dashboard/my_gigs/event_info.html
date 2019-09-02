@@ -1,5 +1,5 @@
 {% for set in event_sets %}
-  <div class="artist-set-actions{% if not forloop.first %} hidden{% endif %}">
+  <div class="artist-set-actions{% if not forloop.first %} hidden{% endif %}" data-set-id="{{ set.pk }}">
     <div class="button-row button-row-margin">
       <div class="flex-row">
         {% if is_admin and set.has_media %}
@@ -12,7 +12,7 @@
                 Private
             </button>
           {% endif %}
-          <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')" style="margin-left: 20px; ">
+          <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')" style="margin-left: 5px; ">
               Download
           </button>
         {% else %}
@@ -27,15 +27,6 @@
     </div>
   </div>
   <div class="header-metrics-container{% if not forloop.first %} hidden{% endif %}" style="width: 80%;">
-    <div class="switch-video-metrics">
-      <button class="white-border-button" id="back-to-events-list">
-        <div class="artist-event-arrow">
-          <img src="/static/image/arrow-right-red.svg" alt="">
-        </div>
-      </button>
-      <button class="white-border-button video" id="video">Edit</button>
-      <button class="white-border-button metrics" id="metrics">Metrics</button>
-    </div>
     {% include 'artist_dashboard/artist-dashboard-events-metrics.html' %}
   </div>
 {% endfor %}

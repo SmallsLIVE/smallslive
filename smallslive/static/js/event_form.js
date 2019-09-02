@@ -313,9 +313,8 @@ EventForm = {
       return false;
     });
   },
-  initInlineArtistsFunctionality: function() {
+  initInlineArtistsFunctionality: function(callback) {
     var $artistTable = $(".artist-list-form .formset_table");
-    var addButtonSelector = "#add_more_artists";
     var tableType = "artists_gig_info";
     var buttonRemove = $artistTable.find(".artist_remove");
 
@@ -357,7 +356,7 @@ EventForm = {
 
     this.fixTableWidths($artistTable);
 
-    $(document).on("click", addButtonSelector, function() {
+    $(document).on("click", "#add_more_artists", function() {
       var $lastRow = $artistTable.find("tbody tr:last");
       EventForm.cloneMore($artist_row, $lastRow, tableType);
       EventForm.fixTableWidths($artistTable);
@@ -375,6 +374,10 @@ EventForm = {
       EventForm.fixTableWidths($artistTable);
       return false;
     });
+
+    if (callback) {
+      callback();
+    }
 
     //$("#id_title").focus(function() {
     //    if(! $(this).val()) {
@@ -405,7 +408,7 @@ EventForm = {
       }
     });
   },
-  init: function(datepicker) {
+  init: function(datepicker, callback) {
     if (datepicker) {
       this.initDateTimeFunctionality();
       this.initSetsTimePickers();
@@ -413,7 +416,7 @@ EventForm = {
       $("#id_end").datetimepicker("update");
     }
     this.initVenueSelectFunctionality();
-    this.initInlineArtistsFunctionality();
+    this.initInlineArtistsFunctionality(callback);
 
     $(document).on(
       "change",

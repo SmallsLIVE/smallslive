@@ -269,7 +269,7 @@ $(document).ready(function() {
 
     function checkout() {
       // TODO: fix hardcoded URL
-      $.get("/store/checkout/", function (data) {
+      $.get("/catalog/checkout/", function (data) {
         $.get(data.url, function(data) {
           if (data.url && data.url.indexOf("shipping-method") > -1) {
             $.get(data.url, function (data) {

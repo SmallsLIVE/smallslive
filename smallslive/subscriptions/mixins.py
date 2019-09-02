@@ -1,14 +1,17 @@
 from decimal import *
 import paypalrestsdk
 import stripe
+from djstripe.models import Customer, Charge, Plan
+from djstripe.settings import subscriber_request_callback
 from oscar_stripe.facade import Facade
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from oscar.apps.payment.exceptions import RedirectRequired, \
     UnableToTakePayment, PaymentError
-from oscar_apps.catalogue.models import Product
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.models import Donation
+from users.utils import charge, one_time_donation, \
+    subscribe_to_plan, update_active_card
 
 
 class PayPalMixin(object):
@@ -19,7 +22,7 @@ class PayPalMixin(object):
         subtotal = Decimal(self.amount) - Decimal(shipping_charge)
 
         if not execute_uri:
-            if self.mezzrow:
+            if self.tickets_type == 'mezzrow':
                 execute_uri = 'checkout:mezzrow_paypal_execute'
                 cancel_uri = 'checkout:payment-details'
             else:
@@ -54,7 +57,7 @@ class PayPalMixin(object):
                 'description': 'SmallsLIVE'}]}
 
     def configure_paypal(self):
-        if self.mezzrow:
+        if self.tickets_type == 'mezzrow':
             paypalrestsdk.configure({
                 'mode': settings.PAYPAL_MODE,  # sandbox or live
                 'client_id': settings.PAYPAL_MEZZROW_CLIENT_ID,
@@ -69,25 +72,16 @@ class PayPalMixin(object):
                               donation=False, deductable_total=0.00, shipping_charge=0.00,
                               execute_uri=None,
                               cancel_uri=None):
-        print '******************************'
-        print 'PayPal Mixin handle PayPal payment'
-        print shipping_charge
-        print self.amount
-        print currency
 
         self.configure_paypal()
 
-        print 'payment data'
         payment_data = self.get_payment_data(item_list, currency, shipping_charge,
                                              execute_uri=execute_uri, cancel_uri=cancel_uri)
 
         payment = paypalrestsdk.Payment(payment_data)
-        print 'payment_id'
         success = payment.create()
-        print deductable_total
         if success:
             payment_id = payment.id
-            print 'Donation: ', donation
             if donation and self.request.user.is_authenticated():
                 # Create Donation even though the payment is not yet authorized.
                 donation = {
@@ -117,6 +111,27 @@ class PayPalMixin(object):
             print payment
             print payment.error
             raise UnableToTakePayment(payment.error)
+
+        try:
+
+            payment_execute_url = self.request.build_absolute_uri(
+                reverse('supporter_paypal_execute'))
+            payment_cancel_url = self.request.build_absolute_uri(
+                reverse('become_supporter'))
+            item = {
+                'name': 'One Time Donation',
+                'price': self.amount,
+                "sku": "N/A",
+                'currency': 'USD',
+                'quantity': 1}
+            item_list = [item]
+
+        except RedirectRequired as e:
+            print 'Redirect required'
+            return redirect(e.url)
+        except RedirectRequiredAjax as e:
+            print 'JsonResponse ....'
+            return JsonResponse({'payment_url': e.url})
 
     def execute_payment(self):
         payment_id = self.request.GET.get('paymentId')
@@ -151,6 +166,30 @@ class PayPalMixin(object):
 
 
 class StripeMixin(object):
+
+    def execute_stripe_payment(self):
+        # As per Aslan's request
+        # Yearly donations will no longer exist. They are One Time Donations  now.
+        customer, created = Customer.get_or_create(
+            subscriber=subscriber_request_callback(self.request))
+        if self.plan_type == 'month':
+            subscribe_to_plan(customer, self.stripe_token,
+                              self.amount, self.plan_type, self.flow_type)
+        else:
+            stripe_ref = one_time_donation(
+                customer, self.stripe_token, self.amount)
+            if self.product_id:
+                # We need to record the product id if donation comes from the Catalog.
+                donation = {
+                    'user': self.request.user,
+                    'currency': 'USD',
+                    'amount': self.amount,
+                    'reference': stripe_ref,
+                    'confirmed': False,
+                    'product_id': self.product_id,
+                    'event_id': self.event_id,
+                }
+                Donation.objects.create(**donation)
 
     def handle_stripe_payment(self, order_number, basket_lines, **kwargs):
         customer = self.request.user.customer

@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from oscar.apps.catalogue import views as catalogue_views
 from oscar_apps.catalogue.models import Product, UserCatalogue, UserCatalogueProduct
 from oscar.apps.catalogue.views import ProductCategoryView
+from oscar_apps.partner.strategy import Selector
 from custom_stripe.models import CustomerDetail
 from artists.models import Artist
 from django.conf import settings
@@ -91,9 +92,12 @@ class PurchasedProductsInfoMixin(object):
                 self.physical_album_list = Product.objects.filter(product_class__slug='physical-album')
                 self.track_list = []
             else:
-                self.digital_album_list = Product.objects.filter(product_class__slug='digital-album', access__user=self.request.user)
-                self.physical_album_list = Product.objects.filter(product_class__slug='physical-album', access__user=self.request.user)
-                self.track_list = UserCatalogueProduct.objects.filter(product__product_class__slug='track', user=self.request.user)
+                self.digital_album_list = Product.objects.filter(
+                    product_class__slug='digital-album', access__user=self.request.user)
+                self.physical_album_list = Product.objects.filter(
+                    product_class__slug='physical-album', access__user=self.request.user)
+                self.track_list = UserCatalogueProduct.objects.filter(
+                    product__product_class__slug='track', user=self.request.user)
             self.album_list = []
             for album in list(self.digital_album_list) + list(self.physical_album_list):
                 album_info = {
@@ -195,6 +199,32 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         ctx['product_id'] = self.object.pk
 
         ctx['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+
+        ctx['gifts'] = []
+        ctx['costs'] = []
+        selector = Selector()
+        strategy = selector.strategy(
+            request=self.request, user=self.request.user)
+        album_product = Product.objects.filter(pk=self.object.pk).first()
+        products = Product.objects.filter(parent=album_product, product_class__slug__in=[
+            'physical-album',
+            'digital-album'
+        ])
+        for product in products:
+            print 'Product: ', product
+            ctx['gifts'].append(product)
+            if product.variants.count():
+                stock = product.variants.first().stockrecords.first()
+                ctx['costs'].append(
+                    stock.cost_price)
+            else:
+                stock = product.stockrecords.first()
+                if stock:
+                    ctx['costs'].append(
+                        stock.cost_price)
+
+        ctx['gifts'].sort(
+            key=lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
 
 
         return ctx

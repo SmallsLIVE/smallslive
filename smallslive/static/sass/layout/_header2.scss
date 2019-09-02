@@ -222,6 +222,10 @@
       &.active {
         color: $accent-color;
       }
+
+      @media(max-width: 620px) {
+        font-size: 2.5rem;
+      }
     }
   }
 

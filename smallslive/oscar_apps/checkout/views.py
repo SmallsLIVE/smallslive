@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import logging
 from paypal.payflow import facade
 from django import http
@@ -21,7 +22,7 @@ from oscar_apps.catalogue.models import UserCatalogue, UserCatalogueProduct
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.mixins import PayPalMixin, StripeMixin
 from subscriptions.models import Donation
-import utils as sl_utils
+from utils import utils as sl_utils
 from .forms import PaymentForm, BillingAddressForm
 
 BankcardForm = get_class('payment.forms', 'BankcardForm')
@@ -204,13 +205,10 @@ class AssignProductMixin(object):
 class SuccessfulOrderMixin(object):
 
     def handle(self):
-
         """
-                Handle the various steps required after an order has been successfully
-                placed.
-
-                Overridden from OrderPlacementMixin.
-                """
+        Handle the various steps required after an order has been successfully
+        placed.
+        """
 
         if not self.tickets_type:
             donation = Donation.objects.filter(reference=self.payment_id).first()
@@ -250,11 +248,6 @@ class SuccessfulOrderMixin(object):
         # Get flow type from session
         flow_type = self.request.session.get('flow_type')
 
-        print '************************************************'
-        print 'Flow type: ', flow_type
-        print self.get_success_url()
-        print '**********************************'
-
         if flow_type == 'catalog_selection':
             response = http.JsonResponse({'success_url': self.get_success_url()})
         elif self.request.is_ajax():
@@ -264,7 +257,7 @@ class SuccessfulOrderMixin(object):
                 # remove flow_type from session
                 del self.request.session['flow_type']
 
-                sl_utils.utils.clean_messages(self.request)
+                sl_utils.clean_messages(self.request)
 
             response = http.JsonResponse({'success_url': success_url})
         else:
@@ -276,9 +269,8 @@ class SuccessfulOrderMixin(object):
         return response
 
 
-class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
-                         StripeMixin, AssignProductMixin,
-                         SuccessfulOrderMixin):
+class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
+                         SuccessfulOrderMixin, checkout_views.PaymentDetailsView):
     """
     Extended from Oscar.
     Takes payment, renders order preview and takes order submission.
@@ -299,15 +291,15 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
         ticket_name: information about purchase
         """
         super(PaymentDetailsView, self).__init__(*args, **kwargs)
-        self.product_id = None
-        self.event_id = None
-        self.card_token = None
         self.amount = None
-        self.total = None
-        self.payment_id = None
+        self.card_token = None
+        self.event_id = None
         self.order = None
+        self.payment_id = None
+        self.product_id = None
         self.tickets_type = None
         self.ticket_name = {}
+        self.total = None
 
     def get_template_names(self):
         """
@@ -334,15 +326,16 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
         return [template_name]
 
     def get_context_data(self, **kwargs):
-        #is it possible for null values? the below does not account for it and there shouldn't be a way for the reservation name to be blank...
+
         reservation_name = self.checkout_session.get_reservation_name()
         if not self.request.user.is_authenticated():
             kwargs['guest'] = {
                 'first_name': reservation_name[0],
                 'last_name': reservation_name[1]
             }
-        if reservation_name:
+        if reservation_name[0]:
             kwargs["reservation_string"] = '{} {}'.format(reservation_name[0], reservation_name[1])
+
         basket = self.request.basket
 
         # If user is purchasing tickets, set the type (venue or smalls).
@@ -466,10 +459,12 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
                 return self.render_payment_details(self.request, bankcard_form=bankcard_form,
                                                    billing_address_form=billing_address_form)
             else:
+                if ticket_name:
+                    reservation_string = '{} {}'.format(ticket_name['first'], ticket_name['last'])
                 return self.render_preview(self.request,
                                            bankcard_form=bankcard_form,
                                            payment_method=payment_method,
-                                           ticket_name=ticket_name)
+                                           reservation_string=reservation_string)
 
     def handle_payment_details_submission_for_basket(
             self, shipping_address, billing_address_form, payment_method):
@@ -503,11 +498,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
                                                    billing_address_form=billing_address_form)
 
     def handle_place_order_submission(self, request, ticket_name=None):
-        print '****************************'
-        print 'handle_place_order_submission'
-        print 'Basket: ', request.basket
-        print request.basket.pk
-        print '****************************'
         basket = request.basket
         payment_method = request.POST.get('payment_method')
         flow_type = request.POST.get('flow_type')
@@ -525,15 +515,13 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
             # Set flow_type in session b/c there's no easy way
             # of passing it through the order.
             request.session['flow_type'] = flow_type
-        print 'Submission: '
-        print submission
+
         return self.submit(ticket_name=ticket_name, **submission)
 
     def submit(self, user, basket,
                shipping_address, shipping_method,  # noqa (too complex (10))
                shipping_charge, billing_address, order_total,
                payment_kwargs=None, order_kwargs=None, ticket_name=None):
-
         """
         Submit a basket for order placement.
 
@@ -555,12 +543,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
                          forms can be re-rendered correctly if payment fails.
         :order_kwargs: Additional kwargs to pass to the place_order method
         """
-
-        print '*******************************'
-        print 'Submit: '
-        print order_total
-        print payment_kwargs
-        print order_kwargs
 
         if payment_kwargs is None:
             payment_kwargs = {}
@@ -612,10 +594,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
         signals.pre_payment.send_robust(sender=self, view=self)
         basket_lines = basket.lines.all()
         try:
-            print 'try handle payment: '
-            print order_number
-            print order_total
-            print str(shipping_charge.incl_tax)
             self.handle_payment(order_number, order_total, basket_lines, shipping_charge=str(shipping_charge.incl_tax), **payment_kwargs)
         except RedirectRequired as e:
             # Redirect required (eg PayPal, 3DS)
@@ -700,16 +678,12 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
             return self.render_preview(
                 self.request, error=error_msg, **payment_kwargs)
 
-        print 'Send post payment signal'
         signals.post_payment.send_robust(sender=self, view=self)
 
         # If all is ok with payment, try and place order
         logger.info("Order #%s: payment successful, placing order",
                     order_number)
         try:
-            print user
-            print 'Handle order placement'
-
             order_kwargs.update({'order_type': basket.get_order_type()})
             response = self.handle_order_placement(
                 order_number, user, basket, shipping_address, shipping_method,
@@ -739,10 +713,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
                 'currency': 'USD',
                 'quantity': line.quantity}
             items.append(item)
-
-        print '***********************'
-        print 'Items: '
-        print items
 
         return items
 
@@ -788,21 +758,13 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
         basket = basket_lines.first().basket
         self.card_token = self.request.POST.get('card_token')
         payment_method = kwargs.get('payment_method')
-        self.mezzrow = False
 
-        print '*******************'
-        print 'handle_payment: '
-        print 'Card token: ', self.card_token
-        print 'Payment method: ', payment_method
-
-        if basket.has_tickets():
-            self.mezzrow = True
+        if self.tickets_type == 'mezzrow':
             self.request.session['flow_type'] = 'ticket_selection'
             self.handle_tickets_payment(
                 order_number,
                 total, basket_lines, **kwargs)
         else:
-            self.mezzrow = False
             currency = total.currency
             if self.card_token:
                 self.total = total
@@ -903,7 +865,7 @@ class ExecutePayPalPaymentView(PaymentDetailsView,
         flow_type = self.request.session.get('flow_type')
         if flow_type:
 
-            sl_utils.utils.clean_messages(self.request)
+            sl_utils.clean_messages(self.request)
 
             return http.HttpResponseRedirect(reverse(
                 'become_supporter_complete') + '?payment_id={}&flow_type={}'.format(

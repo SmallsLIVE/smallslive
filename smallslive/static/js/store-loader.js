@@ -71,11 +71,12 @@ $(document).scroll(function () {
 })
 
 $(document).on('click', ".load-more-btn", function () {
-    let loadBtn = $(this)
-    let artistId = loadBtn.data("artist")
-    let pageNumber = loadBtn.data("page")
+    var loadBtn = $(this);
+    var artistId = loadBtn.data("artist");
+    var pageNumber = loadBtn.data("page");
+    var url = loadBtn.data('url');
     $.ajax({
-        url: "/store/album-list/",
+        url: url,
         data: {
             artist: artistId,
             page: pageNumber
@@ -140,13 +141,14 @@ $(document).on('click', ".artist-result", function () {
 })
 
 function loadInfo(artistId) {
-    let loadBtn = $("#store-load-btn")
+    var loadBtn = $("#store-load-btn")
     loadBtn.data("page", 2)
     loadBtn.data("artist", artistId)
+    var url = loadBtn.data('url');
     $('#artist-store').html("");
     $('#artist-store').addClass("artist-loading-gif");
     $.ajax({
-        url: "/store/album-list/",
+        url: url,
         data: {
             artist: artistId,
             page: 1

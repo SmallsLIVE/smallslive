@@ -233,8 +233,7 @@ body.headers-1 {
 }
 
 .search-container {
-  #showsArchivedContent,
-  #showUpcomingContent {
+  #showsArchivedContent {
     @media (max-width: $screen-md-max) {
       margin-top: 0px;
     }
@@ -628,33 +627,6 @@ body.headers-1 {
 
   @media (max-width: $screen-md-max) {
     display: none;
-  }
-
-  .artist-arrow-search {
-    z-index: 3;
-    background-image: url(/static/image/arrow-right-black.svg);
-    background-repeat: no-repeat;
-    cursor: pointer;
-    font-size: 62px;
-    height: 69px;
-    margin: 0 2vw;
-    width: 35px;
-
-    &.artist-arrow-disabled {
-      color: $text-grey;
-      cursor: not-allowed;
-    }
-
-    &.left_arrow {
-      transform: scaleX(-1);
-    }
-
-    &.loading {
-      background-image: url(/static/image/loading.gif);
-      background-repeat: no-repeat;
-      background-size: 50px;
-      width: 100px;
-    }
   }
 }
 

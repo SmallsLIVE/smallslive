@@ -231,25 +231,6 @@ class MainSearchView(View, SearchMixin):
             'numPages': num_pages
         }
 
-        if entity == 'event':
-            context = {
-                'current_page': page,
-                'last_page': num_pages,
-                'range': range(1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2],
-                'has_last_page': (num_pages - page) >= 3
-            }
-
-            if date_from and date_from > timezone.now().replace(hour=0, minute=0):
-                context['show_venue_name'] = True
-
-            template = 'search/page_numbers_footer.html'
-            temp = render_to_string(
-                template,
-                context,
-                context_instance=RequestContext(request)
-            )
-            data['pageNumbersFooter'] = temp
-
         return JsonResponse(data)
 
 

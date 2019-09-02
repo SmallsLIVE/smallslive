@@ -11,9 +11,11 @@
   </div>
 </div>
 <form id="event-edit-form"
-  method="post" class="admin-interface__form"
-  enctype="multipart/form-data"
-  action="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}" style="margin-top: 30px;">
+      method="post" class="admin-interface__form"
+      enctype="multipart/form-data"
+      action="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}"
+      data-ajax-info-url="{% url 'artist_dashboard:my_past_events_info' pk=event.id %}"
+      style="margin-top: 30px;">
   {% csrf_token %}
   <div class="title-and-image-container">
     <div class="cropping-photo">
@@ -53,7 +55,7 @@
           <th for="id_artists_gig_info-0-is_leader" class="mobile-edit-title col-md-2 control-label ">
             Leader
           </th>
-          <th class="mobile-edit-title col-md-1">Remove</th>
+          <th class="mobile-edit-title col-md-1 remove">Remove</th>
         </tr>
       </thead>
       <tbody>
@@ -61,23 +63,25 @@
         <tr>
           <td><i class="fa fa-sort"></i></td>
           <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-artist" class="artist-selector">
+            <span class="artist_field_span text-grey text2">{{ gig.artist.full_name }} </span>
             <select class="artist_field select form-control"
               id="id_artists_gig_info-{{ forloop.counter0 }}-artist"
               name="artists_gig_info-{{ forloop.counter0 }}-artist">
               <option value="">Artist</option>
               <option value="{{ gig.artist.id }}" selected>{{ gig.artist.full_name }}</option>
             </select>
+            <span class="role_field_span text-grey text1">{{ gig.role.name }}</span>
             <select class="role_field select form-control"
               id="id_artists_gig_info-{{ forloop.counter0 }}-role"
               name="artists_gig_info-{{ forloop.counter0 }}-role">
               <option value="">Role</option>
-              {% for instrument in gig_instruments %}
-              <option value="{{ instrument.id }}" {% if gig.role.id == instrument.id %} selected {% endif %}>{{ instrument.name }}</option>
-              {% endfor %}
+                {% for instrument in gig_instruments %}
+                  <option value="{{ instrument.id }}" {% if gig.role.id == instrument.id %} selected {% endif %}>{{ instrument.name }}</option>
+                {% endfor %}
             </select>
           </td>
           <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-is_leader">
-            <input checked="checked"
+            <input {% if gig.is_leader %}checked="checked" {% endif %}
               class="checkboxinput"
               id="id_artists_gig_info-{{ forloop.counter0 }}-is_leader"
               name="artists_gig_info-{{ forloop.counter0 }}-is_leader"
@@ -87,7 +91,7 @@
             id="id_artists_gig_info-{{ forloop.counter0 }}-sort_order"
             name="artists_gig_info-{{ forloop.counter0 }}-sort_order"
             type="hidden"
-            value="0">
+            value="{{ gig.sort_order }}">
           <input id="id_artists_gig_info-{{ forloop.counter0 }}-id"
             name="artists_gig_info-{{ forloop.counter0 }}-id"
             type="hidden"
@@ -99,7 +103,7 @@
             name="artists_gig_info-{{ forloop.counter0 }}-event"
             type="hidden"
             value="{{ gig.event.pk }}">
-          <td id="event-edit-form-remove-artist"><span class="fa fa-trash artist_remove" data-remove="id_artists_gig_info-{{ forloop.counter0 }}-DELETE" style="cursor: pointer;"></span></td>
+          <td class="event-edit-form-remove-artist"><span class="fa fa-trash artist_remove" data-remove="id_artists_gig_info-{{ forloop.counter0 }}-DELETE" style="cursor: pointer;"></span></td>
         </tr>
         {% endfor %}
       </tbody>

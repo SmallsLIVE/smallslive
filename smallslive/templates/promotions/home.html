@@ -44,7 +44,7 @@
     {% include 'catalogue/album-list.html' with pagenumber=1 album_page=all_recordings %}
   </main>
   {% if above_limit %}
-    <div class="white-border-button load-more-btn" id="store-load-btn" data-page="2">Load More</div>
+    <div class="white-border-button load-more-btn" id="store-load-btn" data-page="2" data-url="{% url 'album_list' %}">Load More</div>
   {% endif %}
 
 {% endblock store_content %}

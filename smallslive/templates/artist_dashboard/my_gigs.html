@@ -30,61 +30,31 @@
 
     <div id="artistEventsContainer" class="flex-row items-flex-stretch artist-events-container" style="border-top: none;">
       {% include 'artist_dashboard/my_gigs/event_list.html' %}
-      <div id="artistEventsInfo" class="flex-row items-flex-stretch artist-events-list-info">
-        <div id="event-edit-form-load-gif" class="hidden events-gif text-center">
-          <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
-        </div>
-        <div id="edit-event-dashboard" class="edit-event-dashboard" style="width: 50%; margin-top: 69px; padding: 20px;">
+      <div class="flex-column artist-event">
 
-        </div>
-        <div id="event-info-load-gif" class="hidden events-gif text-center">
-          <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
-        </div>
-        <div id="event-info" class="artist-dashboard-event-container" style="padding-top: 90px; width: 50%;">
+        <a id="event-info-close-btn" href="#" class="close-button"></a>
 
+        <div class="button-row controls">
+          <button id="show-gig-info-btn" class="active">Gig Info</button>
+          <button id="show-video-metrics-btn" >Video & Metrics</button>
+        </div>
+        <div id="artistEventsInfo" class="flex-row items-flex-stretch artist-events-list-info">
+          <div id="event-edit-form-load-gif" class="hidden events-gif text-center">
+            <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
+          </div>
+          <div id="edit-event-dashboard" class="edit-event-dashboard active">
+
+          </div>
+          <div id="event-info-load-gif" class="hidden events-gif text-center">
+            <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
+          </div>
+          <div id="event-info" class="artist-dashboard-event-container">
+
+          </div>
         </div>
       </div>
     </div>
 
-  </div>
-  <div id="myNav" class="refine-overlay dashboard-refine">
-
-    <div class="refine-overlay-menu white-line-bottom">
-      <div><a href="javascript:void(0)" class="closebtn">&times;</a></div>
-      <div class="calendar-refine-menu-item text1">Refine</div>
-      <div class="refine-apply calendar-refine-menu-item text1">Apply</div>
-    </div>
-
-    <div class="refine-overlay-content">
-      <p class="calendar-refine-title title1">Date Range</p>
-      <div class="refine-datepicker-container">
-        <div class="custom-date-picker search-date-picker-from-refine" id="search-date-picker-from-refine">
-            <input class="date-picker-text" id="start-date" type="text" placeholder="Select date" readonly>
-        </div>
-
-        <div class="custom-date-picker search-date-picker-to-refine" id="search-date-picker-to-refine">
-            <input class="date-picker-text" id="until-date" type="text" placeholder="Select date" readonly>
-        </div>
-      </div>
-
-      <p class="calendar-refine-title title1">Status</p>
-
-      <span class="btngroup text2 refine-dashboard-buttons">
-        <button value="leader" class="btngroup--btn">Leader</button>
-        <button value="sidemusician" class="btngroup--btn">Side musician</button>
-        <button value="all" class="btngroup--btn">All</button>
-      </span>
-
-      <p class="calendar-refine-title title1">Sort By</p>
-      <div class="white-border-select event-filter-select calendar-duration">
-        <select id="refine-order-filter">
-          <option value="newest">Newest to oldest</option>
-          <option value="oldest">Oldest to newest</option>
-          <option value="popular">Most Popular</option>
-        </select>
-      </div>
-      <div class="reset-all text2 text-grey">Reset All</div>
-    </div>
   </div>
 {% endblock content %}
 
@@ -101,7 +71,11 @@
   <script src="{% static 'js/search/artist_dashboard.js' %}"></script>
 
   <script>
-        
+
+    var videoPlayer;
+    var videoPlaying = false;
+    var currentListIndex;
+
     {% if is_future %}
       var eventsUrl = "{% url 'artist_dashboard:my_future_events_ajax' %}";
     {% else %}
@@ -112,8 +86,13 @@
     var currentPage = 0;
     var totalPages = 1;
 
+    var jwPlayerSkin = "https:{% static "jwplayer-skin/smalls.xml" %}";
 
     //////////
+
+    EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
+
+    var countsURL = "{% url 'event_counts' %}";
 
   </script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/selectize.bootstrap3.css' %}">

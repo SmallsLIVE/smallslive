@@ -23,6 +23,6 @@ class ImageCropWidget(ImageThumbnailWidget, CropWidget):
                 # Hack to get rid of the signature which we don't need
                 # TODO: find a better way
                 url = value.url.split('?')[0]
-                new_attrs['data-thumbnail-url'] = generate_url(url, width=300)
+                new_attrs['data-thumbnail-url'] = generate_url(url, width=400)
             attrs.update(new_attrs)
         return super(ImageThumbnailWidget, self).render(name, value, attrs)
