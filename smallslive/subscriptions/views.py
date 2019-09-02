@@ -124,18 +124,19 @@ class ContributeFlowView(TemplateView):
 class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
     def __init__(self, *args, **kwargs):
+        self.amount = None
         self.bitcoin = False
         self.check = False
-        self.flow_type = ''
-        self.stripe_token = None
-        self.plan_type = None
-        self.amount = None
-        self.existing_cc = None
-        self.product_id = None
-        self.product_title = ''
         self.event_id = None
         self.event_slug = None
         self.event_title = ''
+        self.existing_cc = None
+        self.flow_type = ''
+        self.plan_type = None
+        self.product_id = None
+        self.product_title = ''
+        self.stripe_token = None
+        self.tickets_type = None
         super(BecomeSupporterView, self).__init__(*args, **kwargs)
 
     def get_product_context(self):
@@ -249,52 +250,6 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
         return context
 
-    def _handle_paypal_payment(self):
-
-        print '***************'
-        print 'Handle paypal payment:'
-        payment_execute_url = self.request.build_absolute_uri(
-            reverse('supporter_paypal_execute'))
-        payment_cancel_url = self.request.build_absolute_uri(
-            reverse('become_supporter'))
-        print 'Execute URL: ', payment_execute_url
-        item = {
-            'name': 'One Time Donation',
-            'price': self.amount,
-            "sku": "N/A",
-            'currency': 'USD',
-            'quantity': 1}
-        item_list = [item]
-        self.mezzrow = False
-        self.handle_paypal_payment('USD', item_list, donation=True,
-                                   execute_uri=payment_execute_url,
-                                   cancel_uri=payment_cancel_url)
-
-    def execute_stripe_payment(self):
-
-        # As per Aslan's request
-        # Yearly donations will no longer exist. They are One Time Donations  now.
-        customer, created = Customer.get_or_create(
-            subscriber=subscriber_request_callback(self.request))
-        if self.plan_type == 'month':
-            subscribe_to_plan(customer, self.stripe_token,
-                              self.amount, self.plan_type, self.flow_type)
-        else:
-            stripe_ref = one_time_donation(
-                customer, self.stripe_token, self.amount)
-            if self.product_id:
-                # We need to record the product id if donation comes from the Catalog.
-                donation = {
-                    'user': self.request.user,
-                    'currency': 'USD',
-                    'amount': self.amount,
-                    'reference': stripe_ref,
-                    'confirmed': False,
-                    'product_id': self.product_id,
-                    'event_id': self.event_id,
-                }
-                Donation.objects.create(**donation)
-
     def execute_bitcoin_payment(self):
 
         if self.product_id:
@@ -385,14 +340,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
                 self.request, redirect(url)
             )
         else:
-            try:
-                self._handle_paypal_payment()
-            except RedirectRequired as e:
-                print 'Redirect required'
-                return redirect(e.url)
-            except RedirectRequiredAjax as e:
-                print 'JsonResponse ....'
-                return JsonResponse({'payment_url': e.url})
+            return self.handle_paypal_payment()
 
 
 become_supporter = BecomeSupporterView.as_view()
@@ -420,8 +368,6 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
     """
 
     def get_context_data(self, **kwargs):
-        print '*******************'
-        print 'CompleteView: '
 
         user = self.request.user
         context = super(

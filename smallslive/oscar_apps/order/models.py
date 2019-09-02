@@ -36,6 +36,16 @@ class Order(AbstractOrder):
     def has_tickets(self):
         tickets_count = self.lines.filter(product__product_class__name='Ticket').count()
         return tickets_count > 0
+
+    def get_tickets_type(self):
+        qs = self.lines().filter(product__product_class__name='Ticket')
+        lines = list(qs)
+        venue = None
+        if lines:
+            line = lines[0]
+            venue = line.product.get_product_class().name.lower()
+
+        return venue
     
     def has_gift(self):
         gifts_count = self.lines.filter(product__product_class__slug='Gift').count()

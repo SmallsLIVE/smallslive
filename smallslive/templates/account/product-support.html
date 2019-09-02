@@ -48,6 +48,21 @@
       </div>
   //-->
 
+      <div id="select-type-row" class="row" style="margin-top: 20px;">
+        <div class="button-row button-row-margin supporter-type-select">
+          <div class="store__form__selection__option">
+            <button class="select-supporter-type-toggle {% if flow_type = 'one_time_donation' %}active{% endif %}" data-id="one-time">
+              One Time Donation
+            </button>
+          </div>
+          <div class="store__form__selection__option">
+            <button class="select-supporter-type-toggle" data-id="gift">
+              Select a gift
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div class="flex-column items-center  supporter-plan-input" id="one-time-input">
         <div class="section-title-centered section-title-no-padded">
           <div class="title1">Artist Sponsorship</div>
@@ -72,6 +87,9 @@
           </div>
         </div>
       </div>
+
+      {% include 'account/gift_selection.html' %}
+
     </div>
 
     <div id="supporterStepPaymentInfo" class="supporter-step" style="display: none"

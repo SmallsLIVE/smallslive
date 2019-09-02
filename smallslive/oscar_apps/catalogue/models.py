@@ -116,6 +116,16 @@ class Product(AbstractProduct):
                 title = u"{0} ({1})".format(self.parent.title, self.title)
         return unicode(title)
 
+    def get_primary_image(self):
+        print 'Get primary image ---> '
+        product_image = self.primary_image()
+        print product_image
+        print self.parent
+        if product_image.get('is_missing') and self.parent_id:
+            product_image = self.parent.primary_image()
+
+        return product_image
+
     def _clean_child(self):
         """
         Validates a child product
