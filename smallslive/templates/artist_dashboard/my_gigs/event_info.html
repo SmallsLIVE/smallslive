@@ -1,10 +1,24 @@
+<div class="button-row controls">
+  <div id="event-info-close-btn" class="go-back">
+    <img src="/static/image/arrow-right-red.svg" alt="">
+  </div>
+  <div class="artist-set-info-mobile">
+    <div class="text2"> {{ event.get_date|date:'m/d/Y' }} </div>
+    <div class="text2"> {{ event.title }} </div>
+    <div class="text2 accent-color"> Live at {{ event.venue }} </div>
+  </div>
+</div>
+<div class="button-row controls">
+  <button class="show-gig-info-btn">Info</button>
+  <button class="active show-video-metrics-btn">Video & Metrics</button>
+</div>
 {% for set in event_sets %}
   <div class="artist-set-actions{% if not forloop.first %} hidden{% endif %}" data-set-id="{{ set.pk }}">
     <div class="button-row button-row-margin">
       <div class="flex-row">
         {% if is_admin and set.has_media %}
           {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-            <button class="publish-button" onclick="askPublish({{ set.id }})" style="margin-left: 10px;">
+            <button class="publish-button" onclick="askPublish({{ set.id }})">
                 Publish
             </button>
           {% else %}
@@ -26,7 +40,8 @@
       </div>
     </div>
   </div>
-  <div class="header-metrics-container{% if not forloop.first %} hidden{% endif %}" style="width: 80%;">
+  <div class="header-metrics-container{% if not forloop.first %} hidden{% endif %}">
     {% include 'artist_dashboard/artist-dashboard-events-metrics.html' %}
   </div>
+
 {% endfor %}

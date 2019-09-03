@@ -27,6 +27,10 @@ $dashboard-desktop: 1199px;
     padding: 20px 0;
   }
 
+  @media (max-width: 960px) {
+    padding: 0;
+  }
+
   .section-title {
     .title1 {
 
@@ -348,8 +352,9 @@ $dashboard-desktop: 1199px;
       justify-content: center;
     }
     @media (max-width: 960px) {
-      justify-content: start;
       flex-direction: column;
+      justify-content: start;
+      margin-top: 20px;
     }
   }
 
@@ -400,10 +405,11 @@ $dashboard-desktop: 1199px;
     .button-row {
 
       &.controls {
-        margin-left: 20vw;
+        margin-bottom: 30px;
         visibility: hidden;
 
         @media (max-width: $dashboard-desktop) {
+          justify-content: center;
           visibility: visible;
         }
 
@@ -411,11 +417,27 @@ $dashboard-desktop: 1199px;
           cursor: pointer;
         }
 
+        @media (max-width: 960px) {
+          justify-content: center;
+        }
+
+      }
+
+      .artist-set-info-mobile {
+        margin: 0 auto;
+        text-align: center;
+
+        display: none;
+
+        @media (max-width: 960px) {
+          display: block;
+        }
       }
 
     }
 
     @media(max-width: 960px) {
+      padding-top: 0;
       width: 100%;
     }
 
@@ -443,15 +465,19 @@ $dashboard-desktop: 1199px;
 
         .title1 {
           @media(max-width: 960px) {
-            font-size: 1.5rem;
-            line-height: 1.5rem;
+            font-size: 1.8rem;
+            line-height: 1.8rem;
           }
+        }
+
+        @media(max-width: 960px) {
+          width: 100%;
         }
 
       }
 
-      @media (max-width: 1023px) {
-        top: -24px;
+      @media (max-width: $dashboard-desktop) {
+        margin-top: 20px;
       }
     }
 
@@ -461,7 +487,7 @@ $dashboard-desktop: 1199px;
 
     @media (max-width: 960px) {
       display: none;
-      padding-top: 80px;
+      padding-top: 70px;
       width: 100%;
 
       &.active {
@@ -492,12 +518,12 @@ $dashboard-desktop: 1199px;
 
   .artist-events-list-info,
   .event-mobile-info {
-    padding-left: 5px;
     padding-top: 20px;
     width: 100%;
 
-    @media (max-width: 1023px) {
-
+    @media (max-width: 1200px) {
+      padding-left: 0;
+      padding-top: 36px;
     }
 
     @media (max-width: 768px) {
@@ -517,9 +543,9 @@ $dashboard-desktop: 1199px;
 
     .edit-event-dashboard {
 
-      padding: 7px 2%;
+      padding: 0px 2%;
 
-      width: 44%;
+      width: 50%;
 
       @media (max-width: $dashboard-desktop) {
         display: none;
@@ -529,6 +555,14 @@ $dashboard-desktop: 1199px;
           display: block;
         }
 
+      }
+
+      .admin-interface__form {
+        .selectize-input {
+          @media (max-width: 960px) {
+            font-size: 11px;
+          }
+        }
       }
 
     }
@@ -602,11 +636,14 @@ $dashboard-desktop: 1199px;
     .header-metrics-container {
       display: flex;
       flex-direction: column;
-      padding-left: 12px;
 
-      padding-top: 0;
-      width: 50%;
-      @media (max-width: 1023px) {
+      padding: 0 2%;
+      width: 100%;
+
+
+      @media (max-width: 1200px) {
+        padding-left: 2%;
+        padding-right: 2%;
         width: 100%;
       }
       @media (max-width: 960px) {
@@ -620,7 +657,7 @@ $dashboard-desktop: 1199px;
         }
       }
 
-      @media (max-width: 1023px) {
+      @media (max-width: 1200px) {
         flex-direction: column;
 
         .artist-set-main {
@@ -632,11 +669,27 @@ $dashboard-desktop: 1199px;
     .artist-set-actions {
       display: flex;
       justify-content: space-between;
-      padding-bottom: 30px;
-      .button-row {
-        width: 100%;
 
+      @media(max-width: $dashboard-desktop) {
+        margin-bottom: 20px;
+      }
+
+      @media(max-width: 960px) {
+        margin-bottom: 0;
+      }
+
+      .button-row {
+
+        width: 100%;
         justify-content: space-between;
+
+        .flex-row {
+          padding-left: 2%;
+
+          @media(max-width: 1200px) {
+            padding-left: 2%;
+          }
+        }
 
         input {
           background: transparent;
@@ -1100,7 +1153,7 @@ $dashboard-desktop: 1199px;
 .artist-dashboard-event-container {
   display: flex;
   flex-direction: column;
-  padding-top: 7px;
+  padding: 0 2%;
   width: 50%;
 
   @media (max-width: $dashboard-desktop) {
@@ -1151,6 +1204,26 @@ $dashboard-desktop: 1199px;
 .artist-event {
   flex: 1;
 
+  .go-back {
+    cursor: pointer;
+    display: none;
+    height: auto;
+    margin-left: 3.5vw;
+    margin-right: 3.5vw;
+    padding-top: 2%;
+    transform: scaleX(-1);
+    width: 1.5vw;
+
+    @media(max-width: 959px) {
+      display: block;
+      left: 10px;
+      position: absolute;
+      width: 2.5vw;
+    }
+
+
+  }
+
   @media(max-width: 959px) {
     display: none;
 
@@ -1165,6 +1238,10 @@ $dashboard-desktop: 1199px;
   padding-left: 3.5vw;
   position: relative;
 
+  @media(max-width: 960px) {
+    padding: 0 5px;
+  }
+
   .select-items {
     top: 100%;
   }
@@ -1174,9 +1251,15 @@ $dashboard-desktop: 1199px;
     display: inline-block;
 
     @media(max-width: 960px) {
-      width: 80px;
+      width: 130px;
     }
 
+  }
+
+  .datepicker-dashboard-main-btn {
+    @media(max-width: 960px) {
+      width: 100px;
+    }
   }
 
   .datepicker-container.noclick {
@@ -1209,6 +1292,14 @@ $dashboard-desktop: 1199px;
         }
       }
 
+    }
+
+    .close-button {
+      @media (max-width: $dashboard-desktop) {
+        opacity: 1;
+        top: 45px;
+        z-index: 1010;
+      }
     }
   }
 
@@ -1383,7 +1474,6 @@ $dashboard-desktop: 1199px;
   }
 }
 .cropping-photo {
-  margin: 10px;
   width: 100%;
 }
 .white-border-select {
@@ -1710,12 +1800,6 @@ $dashboard-desktop: 1199px;
   }
 }
 
-
-#submit-id-submit {
-  @media (max-width: 425px) {
-    margin-top: 10px;
-  }
-}
 .legal-page__full-contract {
   @include reen-kufi-normal;
   font-size: 16px;
@@ -1782,4 +1866,13 @@ $dashboard-desktop: 1199px;
 
 .role_field_span {
   display: none;
+}
+
+.dashboard-publish  {
+  .modal-body {
+    .title1 {
+      font-size: 5.5vw;
+      line-height: 5.5vw;
+    }
+  }
 }
