@@ -1,0 +1,176 @@
+.album {
+  margin: auto;
+  max-width: 1300px;
+  width: 90%;
+
+  @media(max-width: 1023px){
+    margin-top: 30px;
+  }
+
+  &__header{
+    display: flex;
+    flex-direction: row;
+
+    @media(max-width: 600px){
+      display: block;
+    }
+
+    &__title{
+      display: flex;
+      align-self: flex-start;
+      flex-direction: column;
+      max-width: 65%;
+
+      @media(max-width: 600px){
+        max-width: 100%;
+      }
+
+
+      &--underline{
+        border-bottom: 5px solid white;
+        line-height: 29px;
+        width: 113%;
+        font-family: "Oswald", sans-serif;
+        font-weight: 400;
+        font-size: 30px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        transform: scaleY(1.3);
+
+        @media(max-width: 600px){
+          font-size: 24px;
+          line-height: 24px;
+          width: 100%;
+        }
+
+      }
+    }
+
+    &__cover {
+      position: relative;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+
+      &__artwork{
+
+        img{
+          width: 35vw;
+          max-width: 480px;
+
+          @media(max-width: 600px){
+            width: 100%;
+            margin: auto;
+            max-width: none;
+          }
+        }
+      }
+
+      &__player-controls{
+        position: absolute;
+        top: calc(17.4874vw - 43.9273875px);
+        left: calc(17.4874vw - 43.9273875px);
+
+        @media(min-width: 1372px){
+        top: 196px;
+        left: 196px;
+        }
+
+        @media(max-width: 600px){
+          top: calc(45vw - 44px);
+          left: calc(45vw - 44px);
+        }
+
+        &__play{
+
+        }
+
+      }
+    }
+  }
+
+  &__info__container {
+    flex-direction: row;
+    display: flex;
+    margin-top: 20px;
+  }
+
+  &__support-buttons__container{
+    margin-left: auto;
+
+
+    @media(max-width: 720px){
+      display: none;
+    }
+    &--mobile{
+      margin: auto;
+      display: none;
+      width: 100%;
+      @media(max-width: 720px){
+        display: block;
+      }
+      @media(max-width: 600px){
+        margin-top: 20px;
+      }
+    }
+  }
+
+
+
+  &__track-list{
+    background: white;
+    margin-left: 20px;
+    width: 100%;
+    padding: 0 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    min-height: 310px;
+    max-height: 480px;
+    height: 35vw;
+
+    @media(max-width: 600px){
+      margin-left: 0;
+      margin-top: 20px;
+    }
+
+    &__track{
+
+      &__title{
+
+      }
+      &__time{
+
+      }
+      &__composer{
+
+      }
+
+    }
+  }
+
+
+  &__musician-list{
+
+
+    ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+    }
+
+    &__musician{
+
+      &__name{
+
+      }
+      &__instrument{
+
+      }
+
+    }
+  }
+
+  &__more-details{
+
+  }
+}
