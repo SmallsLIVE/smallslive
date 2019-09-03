@@ -1,4 +1,19 @@
 {% load static from staticfiles %}
+
+<div class="button-row controls">
+  <div id="event-info-close-btn" class="go-back">
+    <img src="/static/image/arrow-right-red.svg" alt="">
+  </div>
+  <div class="artist-set-info-mobile">
+    <div class="text2"> {{ event.get_date|date:'m/d/Y' }} </div>
+    <div class="text2"> {{ event.title }} </div>
+    <div class="text2 accent-color"> Live at {{ event.venue }} </div>
+  </div>
+</div>
+<div class="button-row controls">
+  <button class="show-gig-info-btn active">Info</button>
+  <button class="show-video-metrics-btn">Video & Metrics</button>
+</div>
 <div class="button-row-margin">
   <div class="flex-row">
     <button id="form-edit-button" {% if not is_admin %}disabled {% endif %}class="white-border-button">Edit</button>
@@ -49,13 +64,13 @@
       <thead>
         <tr class="table_row">
           <th></th>
-          <th for="id_artists_gig_info-0-artist" class="mobile-edit-title col-md-8 control-label requiredField">
+          <th for="id_artists_gig_info-0-artist" class="mobile-edit-title col-md-8 control-label requiredField" style="font-size: 10px;">
             Artist
           </th>
-          <th for="id_artists_gig_info-0-is_leader" class="mobile-edit-title col-md-2 control-label ">
+          <th for="id_artists_gig_info-0-is_leader" class="mobile-edit-title col-md-2 control-label " style="font-size: 10px;">
             Leader
           </th>
-          <th class="mobile-edit-title col-md-1 remove">Remove</th>
+          <th class="mobile-edit-title col-md-1 remove" style="font-size: 10px;">Remove</th>
         </tr>
       </thead>
       <tbody>

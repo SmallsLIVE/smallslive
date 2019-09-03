@@ -155,6 +155,12 @@ $(document).ready(function () {
       $("body").addClass("hidden-body");
     });
 
+    $(document).on("click", "#dashboard-desktop-datepicker-close", function () {
+      $("#dashboard-desktop-datepicker").fadeOut(500, function () {
+        $("#dashboard-desktop-datepicker").data('shown', false);
+      });
+    });
+
   }
 
   function bindEvents() {
@@ -220,19 +226,20 @@ $(document).ready(function () {
       }
     });
 
-    $(document).on("click", "#show-gig-info-btn", function (event) {
+    $(document).on("click", ".show-gig-info-btn", function (event) {
       if (!$(this).hasClass("active")) {
-        $(this).addClass("active");
-        $("#show-video-metrics-btn").removeClass("active");
+        $(".show-gig-info-btn").addClass("active");
+        $(".show-video-metrics-btn").removeClass("active");
         $("#edit-event-dashboard").addClass("active");
         $("#event-info").removeClass("active");
+        resizeInfo();
       }
     });
 
-    $(document).on("click", "#show-video-metrics-btn", function (event) {
+    $(document).on("click", ".show-video-metrics-btn", function (event) {
       if (!$(this).hasClass("active")) {
-        $(this).addClass("active");
-        $("#show-gig-info-btn").removeClass("active");
+        $(".show-video-metrics-btn").addClass("active");
+        $(".show-gig-info-btn").removeClass("active");
         $("#edit-event-dashboard").removeClass("active");
         $("#event-info").addClass("active");
       }
@@ -666,17 +673,17 @@ function loadArtist(value, select) {
   })
 }
 
+function resizeInfo() {
+  $(".jcrop-holder").remove();
+  $("#id_cropping-image").remove();
+  $(".field-box.allow-fullsize").remove();
+  image_cropping.init();
+}
+
 $(window).on('resize', function(e) {
 
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(function() {
-
-    $(".jcrop-holder").remove();
-    $("#id_cropping-image").remove();
-    $(".field-box.allow-fullsize").remove();
-    image_cropping.init();
-
-  }, 1000);
+  resizeTimer = setTimeout(resizeInfo, 1000);
 
 });
 

@@ -32,23 +32,17 @@
       {% include 'artist_dashboard/my_gigs/event_list.html' %}
       <div class="flex-column artist-event">
 
-        <a id="event-info-close-btn" href="#" class="close-button"></a>
-
-        <div class="button-row controls">
-          <button id="show-gig-info-btn" class="active">Gig Info</button>
-          <button id="show-video-metrics-btn" >Video & Metrics</button>
-        </div>
         <div id="artistEventsInfo" class="flex-row items-flex-stretch artist-events-list-info">
           <div id="event-edit-form-load-gif" class="hidden events-gif text-center">
             <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
           </div>
-          <div id="edit-event-dashboard" class="edit-event-dashboard active">
+          <div id="edit-event-dashboard" class="edit-event-dashboard">
 
           </div>
           <div id="event-info-load-gif" class="hidden events-gif text-center">
             <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
           </div>
-          <div id="event-info" class="artist-dashboard-event-container">
+          <div id="event-info" class="artist-dashboard-event-container active">
 
           </div>
         </div>
