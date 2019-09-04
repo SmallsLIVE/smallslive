@@ -1,7 +1,113 @@
 
 $(document).ready(function () {
-  Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
+  Stripe.setPublishableKey(stripePublicKey);
   $(window).resize();
+
+  $(document).on('click', '.download', function (event) {
+    event.stopPropagation();
+    var mp3Url = $(this).data('mp3-href');
+    var mp3Name = $(this).data('mp3-name');
+    var hdUrl = $(this).data('hd-href');
+    var hdName = $(this).data('hd-name');
+    $('#downloadFormatMp3Url').attr('href', mp3Url);
+    $('#downloadFormatMp3Url').attr('download', mp3Name);
+    $('#downloadFormatHdUrl').attr('href', hdUrl);
+    $('#downloadFormatHdUrl').attr('download', hdName);
+    $('#downloadFormat').modal('show');
+  });
+
+  /* Product selection and purchase */
+
+  var $selectionConfirmationDialog = $("#catalogSelectionConfirmationDialog");
+
+  $(document).on('click', '.select-catalog-product', function (event) {
+
+    // Prevent submission
+    event.preventDefault();
+
+    // Show popup with selected product
+    $selectionConfirmationDialog.find(".title").text($(this).text());
+    $itemForm = $(this).closest("form");
+
+    // Clone html (image and product title) to  append to modal content.
+    var $item = $itemForm.find(".modal-content").clone();
+
+    // Price and tax info
+    var giftTier = $(this).attr("data-type");
+    $selectionConfirmationDialog
+      .find(".subtitle")
+      .text("Selected Item: " + giftTier);
+    var price = $(this).data('incltax');
+    var cost = $(this).data("cost");
+    var priceFloat = parseFloat(price);
+
+    if (cost && cost != "None" && cost != "0.00") {
+      tax_deductable = "$ " + (priceFloat - parseFloat(cost)).toFixed(2).toString();
+    } else if (cost == "None" || cost == "0.00") {
+      tax_deductable = "100%";
+    }
+
+    // Create text to display and append html
+    var content = 'You have selected an item of price <span class="smalls-color">' +
+      price +
+      '</span>  of which <span class="smalls-color"> ' +
+      tax_deductable +
+      "</span> is tax deductable.";
+
+    $selectionConfirmationDialog
+      .find(".text")
+      .html(content);
+
+    var $giftContent = $selectionConfirmationDialog.find(".gift-content");
+    $giftContent.html($item);
+    $item.removeClass("hidden");
+
+    $selectionConfirmationDialog.modal("show");
+
+  });
+
+  function showFlow(supporterType) {
+
+    if (supporterType == "support") {
+      $mainContainer = $("#my-downloads-product__" + supporterType);
+      setSelected("catalog", "support", 0);
+      showPanel("SelectType");
+      $donationConfirmationDialog.modal("hide");
+    } else {
+      setSelected("catalog", "store", 0);
+      $("#confirmButton").show();
+      $selectionConfirmationDialog.modal("hide");
+    }
+    $(".album.big-player").addClass("hidden");
+    $("#my-downloads-product__" + supporterType).removeClass('hidden');
+    $(".store-banner").addClass("hidden");
+    $(".white-line-bottom").addClass("hidden");
+    $(".newest-recordings-container.downloads").addClass("hidden");
+
+  }
+
+  $(document).on("click", "#confirmCatalogSelectionButton", function () {
+    showFlow("store");
+    $itemForm.submit();
+  });
+
+  $('#selectionConfirmationDialog').on('hidden.bs.modal', function () {
+    //$("#my-downloads-product__purchase").addClass("hidden");
+  });
+
+  var $donationConfirmationDialog = $("#supportConfirmationDialog");
+
+  $(document).on('click', '#projectDonationBtn', function (event) {
+
+    $donationConfirmationDialog.modal("show");
+
+  });
+
+  $(document).on("click", "#confirmDonationButton", function () {
+    // Initiate the flow if PO chooses  a pop up to start  the  flow
+    showFlow("support");
+  });
+
 });
 
 var $lastPlayer,

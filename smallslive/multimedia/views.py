@@ -2,6 +2,7 @@ import json
 import ast
 from braces.views import LoginRequiredMixin
 from cacheops import cached, cached_view
+from django.conf import settings
 from django.db.models import F, Q, Max
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
@@ -11,6 +12,7 @@ from oscar.apps.order.models import Line
 from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
 from oscar_apps.catalogue.views import PurchasedProductsInfoMixin
+from oscar_apps.partner.strategy import Selector
 from custom_stripe.models import CustomerDetail
 from events.models import Recording, Event
 from .forms import TrackFileForm
@@ -264,6 +266,7 @@ class NewMyDownloadsView(LoginRequiredMixin, ListView, PurchasedProductsInfoMixi
 
         context['album_list'] = self.album_list
         print context['album_list']
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         return context
 
 new_downloads = NewMyDownloadsView.as_view()
@@ -286,6 +289,31 @@ class AlbumView(TemplateView):
         context['bought_tracks'] = ast.literal_eval(bought_tracks)
         context['is_full'] = self.request.GET.get('album_type', '')
         album_product = Product.objects.filter(pk=self.request.GET.get('productId', '')).first()
+        products = Product.objects.filter(parent=album_product, product_class__slug__in=[
+            'physical-album',
+            'digital-album'
+        ])
+        context['gifts'] = []
+        context['costs'] = []
+        selector = Selector()
+        strategy = selector.strategy(
+            request=self.request, user=self.request.user)
+        for product in products:
+            print 'Product: ', product
+            context['gifts'].append(product)
+            if product.variants.count():
+                stock = product.variants.first().stockrecords.first()
+                context['costs'].append(
+                    stock.cost_price)
+            else:
+                stock = product.stockrecords.first()
+                if stock:
+                    context['costs'].append(
+                        stock.cost_price)
+
+                context['gifts'].sort(
+            key=lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
+
         context['album_product'] = album_product
         variant = Product.objects.filter(parent=album_product, product_class__slug__in=[
             'physical-album',
@@ -296,7 +324,6 @@ class AlbumView(TemplateView):
         customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
         if customer_detail:
             context['active_card'] = customer_detail.active_card
-        print context['bought_tracks']
 
         return context
 

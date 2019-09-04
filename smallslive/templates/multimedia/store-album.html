@@ -12,13 +12,6 @@
   <section id="my-downloads-album__list">
     {% include 'multimedia/album-display.html' with album_product=album_product if_full=is_full bought_tracks=bought_tracks is_catalogue=is_catalogue mp3_available=mp3_available %}
   </section>
-  <section id="my-downloads-product__store" class="hidden">
-    {% include 'account/become-supporter.html' with supporter_flow='catalog_flow' %}
-  </section>
-  <section id="my-downloads-product__support" class="hidden">
-    {% include 'account/product-support.html' %}
-  </section>
-  {% include 'account/catalog_selection_confirmation_dialog.html' %}
   {% include 'account/product_support_confirmation_dialog.html' %}
 {% endblock %}
 
@@ -29,6 +22,8 @@
   <script>
     var el, setTime;
     el = document.querySelector(".track-container");
+
+    var stripePublicKey = "{{ STRIPE_PUBLIC_KEY }}";
   </script>
 
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>

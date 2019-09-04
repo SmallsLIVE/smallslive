@@ -55,9 +55,7 @@
       &__artwork{
 
         img{
-          width: 35vw;
-          max-width: 480px;
-
+          
           @media(max-width: 600px){
             width: 100%;
             margin: auto;

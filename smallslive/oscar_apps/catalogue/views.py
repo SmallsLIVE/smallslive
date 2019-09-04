@@ -1,4 +1,5 @@
 from stripe.error import APIConnectionError, InvalidRequestError
+from django.conf import settings
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse
@@ -10,7 +11,6 @@ from oscar.apps.catalogue.views import ProductCategoryView
 from oscar_apps.partner.strategy import Selector
 from custom_stripe.models import CustomerDetail
 from artists.models import Artist
-from django.conf import settings
 
 
 class ProductCategoryView(catalogue_views.ProductCategoryView):
