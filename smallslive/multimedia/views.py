@@ -270,6 +270,9 @@ new_downloads = NewMyDownloadsView.as_view()
 
 
 class AlbumView(TemplateView):
+    """
+    To be called from AJAX (Library).
+    """
     model = Product
     pk_url_kwarg = 'pk'
     template_name = 'multimedia/album-display.html'

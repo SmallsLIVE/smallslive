@@ -226,7 +226,6 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         ctx['gifts'].sort(
             key=lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
 
-
         return ctx
 
     def get_template_names(self):

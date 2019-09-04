@@ -11,35 +11,37 @@
   <div class="title1 center">Library</div>
 </div>
 
+<!-- library.html -->
 <main class="newest-recordings-container downloads">
-    <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-    <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-    <div class="event-row">
-        {% if album_list %}
-            {% for album in album_list %}
-                {% with image=album.parent %}
-                    <article class="event-display"
-                            id='{{ album.parent.pk }}'
-                             data-parent-pk="{{ album.parent.pk }}"
-                             data-type="{{ album.album_type }}"
-                             data-bought="{{ album.bought_tracks }}">
-                        {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
-                        <div class="event-info">
-                            <div>
-                                <div class="event-info-title">{{ image.title }}</div>
-                            </div>
-                        </div>
-                    </article>
-                {% endwith %}
-            {% endfor %}
-        {% else %}
-            <div class="my-downloads__nothing-bought row">
-                <h3>You haven't bought any digital downloads yet. Check out the <a class="my-downloads__nothing-bought__store-link" href="{% url "promotions:home" %}">store</a> and buy some music!</h3>
+  <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+  <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+  <div class="event-row">
+    {% if album_list %}
+      {% for album in album_list %}
+        {% with image=album.parent %}
+          <article class="event-display"
+                   id='{{ album.parent.pk }}'
+                   data-parent-pk="{{ album.parent.pk }}"
+                   data-type="{{ album.album_type }}"
+                   data-bought="{{ album.bought_tracks }}">
+            {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
+            <div class="event-info">
+              <div>
+                  <div class="event-info-title">{{ image.title }}</div>
+                </div>
             </div>
-        {% endif %}
-    </div>
+          </article>
+        {% endwith %}
+      {% endfor %}
+    {% else %}
+        <div class="my-downloads__nothing-bought row">
+            <h3>You haven't bought any digital downloads yet. Check out the <a class="my-downloads__nothing-bought__store-link" href="{% url "promotions:home" %}">store</a> and buy some music!</h3>
+        </div>
+    {% endif %}
+  </div>
 </main>
 <section id="my-downloads-album__list"></section>
+<!-- end library.html -->
 
 {% endblock content %}
 
@@ -66,7 +68,8 @@ function loadAlbum(productId, bought_tracks, album_type){
     params.productId = productId;
     params.album_type = album_type;
     params.bought_tracks = JSON.stringify(bought_tracks);
-    
+
+    // TODO: fix hardcoded URL
     $.ajax({
         url: "/multimedia/library/" + productId,
         data: params,

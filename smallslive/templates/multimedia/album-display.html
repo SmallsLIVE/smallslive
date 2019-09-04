@@ -7,21 +7,23 @@
 {% load basket_tags %}
 
 {% block store_content %}
-<div class="album"> <!--flex column container for album-->
+<div class="album big-player"> <!--flex column container for album-->
   <div class="album__header"> <!--header container flex row-->
     <div class="album__header__cover"><!--album cover container-->
       {% with cover_art=album_product.images.first %}
-      {% thumbnail cover_art.original "x365" upscale=False as thumb %}
-      <div class="album__header__cover__artwork"><!--cover art container-->
-        <img src="{% thumbor_url cover_art.original.url|urlencode height=260 width=260 smart=True %}"
-             alt="{{ product.get_title }}"
-             class="album__header__cover__artwork {% if all_images.count == 1 %} one-image{% else %} more-images{% endif %}">
-      </div>
-      {% endthumbnail %}
+        {% thumbnail cover_art.original "x365" upscale=False as thumb %}
+        <div class="album__header__cover__artwork"><!--cover art container-->
+          <img src="{% thumbor_url cover_art.original.url|urlencode height=260 width=260 smart=True %}"
+               alt="{{ product.get_title }}"
+               class="album__header__cover__artwork {% if all_images.count == 1 %} one-image{% else %} more-images{% endif %}">
+        </div>
+        {% endthumbnail %}
       {% endwith %}
-      <div class="purchases-player-button myplay-btn album__header__cover__player-controls"><!--player control container-->
-        <div class="fa-thin-circle fa"><i class="fas fa-play" ></i></div><!--player control-->
-      </div>
+      {% if can_preview %}
+        <div class="purchases-player-button myplay-btn album__header__cover__player-controls"><!--player control container-->
+          <div class="fa-thin-circle fa"><i class="fas fa-play" ></i></div><!--player control-->
+        </div>
+      {% endif %}
       <div class="album__support-buttons__container--mobile">
         <!--<div class="sponsor-text text2">Sponsor this {{ text }} artist and project with a tax-deductable donation to the smallslive foundation</div>-->
         <div>
@@ -119,5 +121,99 @@
         $('#downloadFormatHdUrl').attr('download', hdName);
         $('#downloadFormat').modal('show');
       });
+
+      /* Product selection and purchase */
+
+      var $selectionConfirmationDialog = $("#catalogSelectionConfirmationDialog");
+
+      $(document).on('click', '.select-catalog-product', function (event) {
+
+        // Prevent submission
+        event.preventDefault();
+
+        // Show popup with selected product
+        $selectionConfirmationDialog.find(".title").text($(this).text());
+        $itemForm = $(this).closest("form");
+
+        // Clone html (image and product title) to  append to modal content.
+        var $item = $itemForm.find(".modal-content").clone();
+
+        // Price and tax info
+        var giftTier = $(this).attr("data-type");
+        $selectionConfirmationDialog
+          .find(".subtitle")
+          .text("Selected Item: " + giftTier);
+        var price = $(this).data('incltax');
+        var cost = $(this).data("cost");
+        var priceFloat = parseFloat(price);
+
+        if (cost && cost != "None" && cost != "0.00") {
+          tax_deductable = "$ " + (priceFloat - parseFloat(cost)).toFixed(2).toString();
+        } else if (cost == "None" || cost == "0.00") {
+          tax_deductable = "100%";
+        }
+
+        // Create text to display and append html
+        var content = 'You have selected an item of price <span class="smalls-color">' +
+          price +
+          '</span>  of which <span class="smalls-color"> ' +
+          tax_deductable +
+          "</span> is tax deductable.";
+
+        $selectionConfirmationDialog
+          .find(".text")
+          .html(content);
+
+        var $giftContent = $selectionConfirmationDialog.find(".gift-content");
+        $giftContent.html($item);
+        $item.removeClass("hidden");
+
+        $selectionConfirmationDialog.modal("show");
+
+      });
+
+      function showFlow(supporterType) {
+
+        if (supporterType == "support") {
+          $mainContainer = $("#my-downloads-product__" + supporterType);
+          setSelected("catalog", "support", 0);
+          showPanel("SelectType");
+          $donationConfirmationDialog.modal("hide");
+        } else {
+          setSelected("catalog", "store", 0);
+          $("#confirmButton").show();
+          $selectionConfirmationDialog.modal("hide");
+        }
+        $("#my-downloads-product__" + supporterType).removeClass('hidden');
+        $("#my-downloads-album__list").addClass('hidden');
+
+      }
+
+      $(document).on("click", "#confirmCatalogSelectionButton", function () {
+        showFlow("store");
+        $itemForm.submit();
+      });
+
+      $('#selectionConfirmationDialog').on('hidden.bs.modal', function () {
+        //$("#my-downloads-product__purchase").addClass("hidden");
+      });
+
+      var $donationConfirmationDialog = $("#supportConfirmationDialog");
+
+      $(document).on('click', '#projectDonationBtn', function (event) {
+
+        $donationConfirmationDialog.modal("show");
+
+      });
+
+      $(document).on("click", "#confirmDonationButton", function () {
+        // Initiate the flow if PO chooses  a pop up to start  the  flow
+        showFlow("support");
+      });
+
+
+    });
   </script>
+
 {% endblock %}
+
