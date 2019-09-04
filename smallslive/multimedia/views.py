@@ -282,7 +282,7 @@ class AlbumView(TemplateView):
         context = super(AlbumView, self).get_context_data(**kwargs)
 
         context['library'] = True
-        bought_tracks = self.request.GET.get('bought_tracks', '')
+        bought_tracks = self.request.GET.get('bought_tracks', '[]')
         context['bought_tracks'] = ast.literal_eval(bought_tracks)
         context['is_full'] = self.request.GET.get('album_type', '')
         album_product = Product.objects.filter(pk=self.request.GET.get('productId', '')).first()

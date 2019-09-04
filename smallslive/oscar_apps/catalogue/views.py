@@ -175,7 +175,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
             ctx['album_product'] = album_product
             ctx['comma_separated_leaders'] = album_product.get_leader_strings()
             track_album = next((item for item in self.album_list if item['parent'] == self.object), None)
-            ctx['bought_tracks'] = None
+            ctx['bought_tracks'] = []
             if track_album:
                 ctx['bought_tracks'] = track_album["bought_tracks"]
             ctx['mp3_available'] = album_product.tracks.filter(stockrecords__is_hd=False).count() > 0

@@ -24,6 +24,17 @@ function playTrack($element) {
     }
   }
 
+  if ($element.hasClass("play-on-library")) {
+    // Let's redirect to the library
+    var url = $element.data("url");
+    window.location.href = url;
+
+  }
+
+  if ($element.hasClass("no-play")) {
+    return;
+  }
+
   var progress = calculateProgress($element, event);
   //find audio player and track number and set the big player track number
   $audioPlayer = $element.find(".audio audio");

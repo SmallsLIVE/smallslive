@@ -35,19 +35,27 @@
       {% for track in album_product.tracks.all|dictsort:"ordering" %}
         <!-- tracks table row -->
         <div class="track-container" style="position:relative">
-          <div id='t{{ forloop.counter0 }}'class="my-downloads-album__tracks-table__row flex-row">
-            <div class="hidden my-downloads-album__tracks-table__column audio">
-              {% if track.get_track_preview_url != 'blank.mp3' %}
-              <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
-              {% if track.get_track_preview_url %}
-                <source src="{{ track.get_track_preview_url|safe }}" type="audio/mpeg">
-              {% endif %}
-              </audio>
-              {% endif %}
-            </div>
-            <div class="flex-column track-info {% if is_catalogue and track.get_track_preview_url == 'blank.mp3' and not track.pk in bought_tracks and not is_full == 'full_album' %} disabled{% endif %}" data-track="{{ forloop.counter0 }}">
-              <div class="my-downloads-album__tracks-table__column track title2">
-                {{ track.title }} {% if is_catalogue and track.get_track_preview_url != 'blank.mp3'  %}<span style="font-size: 10px;">(preview)</span> {% endif %}
+          <div id="t{{ forloop.counter0 }}"
+               class="my-downloads-album__tracks-table__row flex-row{% if is_catalogue and track.pk in bought_tracks %} play-on-library{% endif %}{% if track.get_track_preview_url == 'blank.mp3' and track.pk not in bought_tracks %} no-play{% endif %}"
+               {% if is_catalogue and track.pk in bought_tracks %} data-url="{% url 'my-downloads' %}?album={{ album_product.pk }}"{% endif %}>
+            <!-- attempts to play Library tracks on Catalog must redirect to the Library -->
+            {% if track.pk not in bought_tracks %}
+              <div class="hidden my-downloads-album__tracks-table__column audio">
+                {% if track.get_track_preview_url != 'blank.mp3' %}
+                  <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{ track.attr.duration }}">
+                    {% if track.get_track_preview_url %}
+                      <source src="{{ track.get_track_preview_url|safe }}" type="audio/mpeg">
+                    {% endif %}
+                  </audio>
+                {% endif %}
+              </div>
+            {% endif %}
+            <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
+              <div class="my-downloads-album__tracks-table__column track title2 ">
+                {{ track.title }}
+                {% if is_catalogue and track.get_track_preview_url != 'blank.mp3' and track.pk not in bought_tracks %}
+                  <span style="font-size: 10px;">(preview)</span>
+                {% endif %}
               </div>
               <div class="my-downloads-album__tracks-table__column composer text1">
                 {{ track.attr.composer }}
@@ -58,8 +66,8 @@
             </div>
           </div>
         </div>
-        {% endfor %}
-        <!-- end of tracks table row -->
+      {% endfor %}
+      <!-- end of tracks table row -->
     </div>
     <!-- end of tracks table -->
   </div>
@@ -101,13 +109,7 @@
 {% block extra_js %}
   <script>
     $(document).ready(function () {
-      {% if is_catalogue %}
-        $(document).on('click', '.track-container', function(e) {
-          if($(e.currentTarget).attr('href') != 'none') {
-            document.location = $(e.currentTarget).attr('href');
-          }
-        })
-      {% endif %}
+
 
       $(document).on('click', '.download', function (event) {
         event.stopPropagation();

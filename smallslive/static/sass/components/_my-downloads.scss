@@ -273,6 +273,14 @@
             color: $accent-color;
           }
         }
+
+        &.no-play {
+          .track-info {
+            .track, .composer {
+              cursor: auto;
+            }
+          }
+        }
       }
 
       &:before,

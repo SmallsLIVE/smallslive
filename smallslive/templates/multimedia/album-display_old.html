@@ -129,13 +129,13 @@
            href='{% url "my-downloads" %}?album={{ album_product.pk }}'
           {% endif %}>
         {% if not is_catalogue %}
-        {% if track.pk in bought_tracks or is_full = 'full_album' %}
-        <div class="progress-holder" id='{{ forloop.counter0 }}' data-progress="0">
-          <div class="progress-bar paused">
-            <span class="progress-btn"></span>
-          </div>
-        </div>
-        {% endif %}
+          {% if track.pk in bought_tracks or is_full = 'full_album' %}
+            <div class="progress-holder" id='{{ forloop.counter0 }}' data-progress="0">
+              <div class="progress-bar paused">
+                <span class="progress-btn"></span>
+              </div>
+            </div>
+          {% endif %}
         {% endif %}
 
         <div id='t{{ forloop.counter0 }}'
