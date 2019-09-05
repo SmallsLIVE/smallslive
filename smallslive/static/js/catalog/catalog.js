@@ -124,9 +124,9 @@ function playTrack($element) {
 
   if (!$element) {
     if (!$trackInfo) {
-      $element = $($(".my-downloads-album__tracks-table__row.flex-row:not(.disabled)")[0]);
+      $element = $($(".my-downloads-album__tracks-table__row.flex-row:not(.disabled):not(.no-play)")[0]);
     } else {
-      $element = $trackInfo.closest(".my-downloads-album__tracks-table__row.flex-row:not(.disabled)");
+      $element = $trackInfo.closest(".my-downloads-album__tracks-table__row.flex-row:not(.disabled):not(.no-play)");
     }
   }
 
@@ -134,6 +134,7 @@ function playTrack($element) {
     // Let's redirect to the library
     var url = $element.data("url");
     window.location.href = url;
+    return;
 
   }
 
