@@ -11,13 +11,13 @@
   <div class="section-title home calendar upcoming-shows" style="margin-top: 30px;">
     <div id="upcoming-shows" class="title1" data-last-event-date="{{ last_event.date }}">
       Upcoming Shows <span class="accent-color">\</span>
-      <span id="upcoming-shows-date-from">{{ first_event.date|date:"b j" }}</span>-
+      <span id="upcoming-shows-date-from">{{ first_event.date|date:"b j" }}</span><span style="margin-left: 5px">-</span>
       <span id="upcoming-shows-date-to">{{ last_event.date|date:"b j" }}</span>
     </div>
 
   </div>
       <div class="calendar-filters desktop">
-      <div class="white-border-select club-filter-select" style="display: inline-block; width: 150px;  vertical-align: top; border-width: 3px;">
+      <div class="white-border-select club-filter-select">
         <select id="calendar-club-filter">
           <option value="all">All</option>
           {% for venue in venues %}

@@ -27,12 +27,16 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
+    padding-left: 30px;
     position: relative;
     width: 400px;
     @media (max-width: 1023px) {
+      margin: 0 auto;
+      padding-left: 0;
       padding-top: 10px;
     }
     @media (max-width: 380px) {
+      margin: 0 auto;
       padding: 0 15%;
     }
   }
@@ -65,7 +69,7 @@
 
   @media (max-width: $screen-md-min) {
     .date-separator {
-      display: none;
+
     }
   }
 
@@ -89,11 +93,16 @@
 
     &.upcoming-shows {
       background-size: calc(520px + 3.5vw) 5px;
-      width: auto;
-      margin-right: 20px;
-      @media (max-width: $screen-md-max) {
-        width: 100%;
+      width: 40%;
+
+      @media (max-width: 1360px) {
+        width: 50%;
       }
+
+      @media (max-width: $screen-md-max) {
+        width: 80%;
+      }
+
     }
   }
 
@@ -119,7 +128,7 @@
     }
 
     @media (max-width: $screen-md-min) {
-      background-size: 100vw 5px;
+      background-size: 80vw 5px;
       margin-bottom: 20px;
       padding-bottom: 3px;
       width: 97vw;
@@ -138,14 +147,13 @@
     z-index: 99;
 
     @media (max-width: $screen-md-min) {
-      background-size: 50vw 5px;
+      background-size: 60vw 5px;
       margin-bottom: 20px;
       padding-bottom: 3px;
       width: 100vw;
     }
 
     span {
-      margin-right: 10px;
       padding-bottom: 4px;
     }
   }
@@ -256,16 +264,15 @@
 
   .date-separator {
     color: $accent-color;
-    margin-right: 0.3em;
   }
 
   @media (max-width: 720px) {
     .home {
       &.date-separator {
-        display: none;
+
       }
       &.date {
-        display: none;
+
       }
     }
   }
@@ -362,6 +369,6 @@
   flex-direction: row;
   @media (max-width: $screen-md-max) {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
   }
 }

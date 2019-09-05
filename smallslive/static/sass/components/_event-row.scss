@@ -241,6 +241,18 @@ $event-row-padding: 3.5vw;
   a {
     width: 100%;
     height: calc(100% - 6vw);
+
+    @media (max-width: 1023px) {
+      height: calc(100% - 6vw);
+    }
+
+    @media (max-width: 960px) {
+      height: calc(100% - 6vw);
+    }
+
+    @media (max-width: 550px) {
+      height: calc(100% - 11vw);
+    }
   }
 
   .event-card,
@@ -360,7 +372,7 @@ $event-row-padding: 3.5vw;
         font-size: 2.2vw;
       }
 
-      height: calc(100% - 11vw);
+      height: calc(100% - 9vw);
     }
 
     div {
@@ -440,6 +452,7 @@ $event-row-padding: 3.5vw;
     }
 
     .event-info {
+      height: calc(100% - 11vw);
       width: 100%;
 
       .event-info-title {
@@ -448,6 +461,10 @@ $event-row-padding: 3.5vw;
         font-size: 22px;
       }
     }
+  }
+
+  @media (max-width: 350px) {
+
   }
 }
 
