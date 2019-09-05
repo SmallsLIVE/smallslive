@@ -20,7 +20,7 @@ $(document).ready(function () {
       responsive:{
         0:{
           items: 1,
-          dots: true
+          dots: false
         },
         960:{
           items: 3
