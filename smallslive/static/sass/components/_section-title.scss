@@ -37,7 +37,8 @@
     }
     @media (max-width: 380px) {
       margin: 0 auto;
-      padding: 0 15%;
+      padding: 0 0%;
+      width: 300px;
     }
   }
 }
@@ -151,6 +152,10 @@
       margin-bottom: 20px;
       padding-bottom: 3px;
       width: 100vw;
+    }
+
+    @media (max-width: 350px) {
+      background-size: 75vw 5px;
     }
 
     span {

@@ -207,7 +207,8 @@ $event-row-padding: 3.5vw;
   }
 
   @media (max-width: $screen-sm-max) {
-    overflow: auto;
+    overflow-y: hidden;
+    overflow-x: auto;
   }
 }
 

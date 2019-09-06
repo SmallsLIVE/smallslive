@@ -69,7 +69,7 @@
             <div class="store-list-item-image">
               {% with image=product.get_primary_image %}
                 {% if not image.is_missing %}
-                  <img src="{% thumbor_url image.original.url|urlencode height=260 width=260 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio">
+                  <img src="{% thumbor_url image.original.url|urlencode height=260 %}" alt="{{ product.get_title }}" class="defineImageRatio">
                 {% else %}
                   <img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio">
                 {% endif %}
