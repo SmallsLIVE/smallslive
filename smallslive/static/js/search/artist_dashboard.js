@@ -195,6 +195,14 @@ $(document).ready(function () {
       }
     });
 
+    $(document).on("change", "#id_photo", function () {
+      var filePath = $(this).val();
+      var fileName = filePath.replace(/^.*[\\\/]/, '');
+
+      $("#file_name").text(fileName);
+
+    })
+
     $(document).on("click", "#submit-id-submit", function () {
       $("#event-edit-form").submit();
     });
@@ -401,6 +409,7 @@ $(document).ready(function () {
     $("#add_more_artists").hide();
     $(".mobile-edit-title.remove").css({"visibility": "hidden"});
     $(".artist-list-form .formset_table").find("tbody").sortable({disabled: true});
+    $("#div_id_photo").find("label.white-border-button").addClass("disabled");
 
   }
 
@@ -417,6 +426,7 @@ $(document).ready(function () {
     $("#add_more_artists").show();
     $(".mobile-edit-title.remove").css({"visibility": "visible"});
     $(".artist-list-form .formset_table").find("tbody").sortable({disabled: false});
+    $("#div_id_photo").find("label.white-border-button").removeClass("disabled");
   }
 
   function showEventInfo(url) {

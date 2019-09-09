@@ -971,31 +971,40 @@ class EventSet(models.Model):
 
     def get_user_video_metrics_dict(self):
 
-        audio_metrics = UserVideoMetric.objects.filter(recording_id=self.audio_recording.pk)
-        audio_seconds_played = audio_metrics.values('recording_id').annotate(seconds_played=Sum('seconds_played'))
-        if audio_seconds_played:
-            audio_seconds_played = audio_seconds_played[0]
-        else:
-            audio_seconds_played = {}
-        audio_play_count = audio_metrics.values('recording_id').annotate(play_count=Sum('play_count'))
-        if audio_play_count:
-            audio_play_count = audio_play_count[0]
-        else:
-            audio_play_count = {}
-        print 'Audio: ', audio_play_count
-        video_metrics = UserVideoMetric.objects.filter(recording_id=self.video_recording.pk)
-        video_seconds_played = video_metrics.values('recording_id').annotate(seconds_played=Sum('seconds_played'))
-        if video_seconds_played:
-            video_seconds_played = video_seconds_played[0]
-        else:
-            video_seconds_played = {}
-        video_play_count = video_metrics.values('recording_id').annotate(play_count=Sum('play_count'))
-        print 'Video play count: ', video_play_count
-        if video_play_count:
-            video_play_count = video_play_count[0]
-        else:
-            video_play_count = {}
-        print 'Video: ', video_play_count
+        audio_play_count = {}
+        video_play_count = {}
+        audio_seconds_played = {}
+        video_seconds_played = {}
+
+        if self.audio_recording:
+            audio_metrics = UserVideoMetric.objects.filter(recording_id=self.audio_recording.pk)
+            audio_seconds_played = audio_metrics.values('recording_id').annotate(seconds_played=Sum('seconds_played'))
+            if audio_seconds_played:
+                audio_seconds_played = audio_seconds_played[0]
+            else:
+                audio_seconds_played = {}
+            audio_play_count = audio_metrics.values('recording_id').annotate(play_count=Sum('play_count'))
+            if audio_play_count:
+                audio_play_count = audio_play_count[0]
+            else:
+                audio_play_count = {}
+            print 'Audio: ', audio_play_count
+
+        if self.video_recording:
+            video_metrics = UserVideoMetric.objects.filter(recording_id=self.video_recording.pk)
+            video_seconds_played = video_metrics.values('recording_id').annotate(seconds_played=Sum('seconds_played'))
+            if video_seconds_played:
+                video_seconds_played = video_seconds_played[0]
+            else:
+                video_seconds_played = {}
+            video_play_count = video_metrics.values('recording_id').annotate(play_count=Sum('play_count'))
+            print 'Video play count: ', video_play_count
+            if video_play_count:
+                video_play_count = video_play_count[0]
+            else:
+                video_play_count = {}
+            print 'Video: ', video_play_count
+
         audio_seconds_played = audio_seconds_played.get('seconds_played', 0)
         video_seconds_played = video_seconds_played.get('seconds_played', 0)
         total_seconds_played = audio_seconds_played + video_seconds_played

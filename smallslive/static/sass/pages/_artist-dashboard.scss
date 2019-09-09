@@ -1170,6 +1170,15 @@ $dashboard-desktop: 1199px;
 .artist-set-info .text2 {
   font-size: 1em;
 }
+
+label[for="photo-clear_id"] {
+  display: none;
+}
+
+#allow-fullsize-id_cropping-image {
+  display: none;
+}
+
 #back-to-events-list {
   border-radius: 10px;
   margin: 0 5px;
@@ -1475,6 +1484,26 @@ $dashboard-desktop: 1199px;
 }
 .cropping-photo {
   width: 100%;
+
+  input {
+    position: absolute;
+    top: -1000px; /* make sure input is rendered out of screen so only label is visible */
+  }
+  label {
+    display: inline-flex;
+    margin: 0;
+    margin-right: 20px;
+    width: auto;
+
+    &.disabled {
+      color: grey;
+    }
+
+    &[for="photo-clear_id"] {
+      display: none;
+    }
+  }
+
 }
 .white-border-select {
   &.engagement-event-select {
@@ -1681,7 +1710,6 @@ $dashboard-desktop: 1199px;
   @media (max-width: 768px) {
     width: 50%;
     padding-left: 20px;
-    height: 800px;
   }
   @media (max-width: 620px) {
     height: initial;
@@ -1788,7 +1816,7 @@ $dashboard-desktop: 1199px;
 
   .artist-list {
 
-    height: 60vw;
+    height: 55vh;
     padding-left: 3.5vw;
     overflow-y: scroll;
 
