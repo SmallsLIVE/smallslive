@@ -301,14 +301,16 @@ class MyPastEventsInfoView(DetailView):
             }
         ]
 
-        default_ranges = []
-        default_ranges.append({
+        default_ranges = [{
             'content': 'All Time',
-            'date': 'all'
-        })
-        context['datepicker_current_range'] = CurrentPayoutPeriod.objects.first()
-        context['datepicker_default_ranges'] = default_ranges
+            'date': 'all',
+        }]
         old_payout_ranges = PastPayoutPeriod.objects.order_by('-period_start')[:6]
+        current_payout = CurrentPayoutPeriod.objects.first()
+        current_payout.period_start = old_payout_ranges[0].period_end + timedelta(days=1)
+        current_payout.period_end = timezone.now().date()
+        context['datepicker_current_range'] = current_payout
+        context['datepicker_default_ranges'] = default_ranges
         context['datepicker_old_payout_ranges'] = old_payout_ranges
 
         form = EventEditForm()
@@ -651,8 +653,6 @@ class AdminMetricsView(SuperuserRequiredMixin, TemplateView):
         return events
 
 admin_metrics = AdminMetricsView.as_view()
-
-
 
 
 class ChangePayoutPeriodView(SuperuserRequiredMixin, UpdateView):

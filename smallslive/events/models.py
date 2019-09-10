@@ -848,6 +848,8 @@ class Event(TimeStampedModel):
         return tickets
 
     def is_public_event(self):
+        print "*** is public event"
+        print list(self.recordings.all())
         public_list = self.recordings.all().published().count()
         is_public = public_list > 0
 

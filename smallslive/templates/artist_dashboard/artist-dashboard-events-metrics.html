@@ -1,91 +1,56 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
-{% with sets_with_media=event.sets.with_media %}
-  <div class='artist-set-main'>
-    <div class="artist-event-info flex-column wrap">
-      <div class="artist-event-card">
-        {% if set.video_recording %}
-          <div class="set-picture-container flex-column">
-            <input type="hidden"
-                   class="player-video-info"
-                   name="video-url"
-                   value="{{ set.video_recording.media_file.get_sd_video_url|safe }}"
-                   data-id="{{ set.video_recording.id }}"
-                   data-image="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=width|default_if_none:600 %}">
-            <div id="player-video"></div>
-          </div>
-        {% else  %}
-          <a href="{{ event.get_absolute_url }}">
+
+<div class='artist-set-main'>
+  <div class="artist-event-info flex-column wrap">
+    {% for set in sets_with_media %}
+      <input type="hidden"
+             class="player-video-info"
+             name="video-url"
+             value="{{ set.video_recording.media_file.get_sd_video_url|safe }}"
+             data-id="{{ set.video_recording.id }}"
+             data-image="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=width|default_if_none:600 %}">
+    {% endfor %}
+
+    {% if sets_with_media %}
+      {% with first_set=sets_with_media.0 %}
+        <div class="artist-event-card">
+          {% if first_set.video_recording %}
             <div class="set-picture-container flex-column">
-              <div class="set-icon-overlay text2">
-                {% if not event.is_future %}
-                  <i class="fa fa-play fa-thin-circle"></i>
-                {% endif %}
-              </div>
-              <div class="picture-border">
-                <div class="set-picture">
-                  {% if event.photo %}
-                  {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
-                  {% else %}
-                  {% include 'partials/thumbored_picture.html' %}
+              <div id="player-video"></div>
+            </div>
+          {% else  %}
+            <a href="{{ event.get_absolute_url }}">
+              <div class="set-picture-container flex-column">
+                <div class="set-icon-overlay text2">
+                  {% if not event.is_future %}
+                    <i class="fa fa-play fa-thin-circle"></i>
                   {% endif %}
                 </div>
+                <div class="picture-border">
+                  <div class="set-picture">
+                    {% if event.photo %}
+                      {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                    {% else %}
+                      {% include 'partials/thumbored_picture.html' %}
+                    {% endif %}
+                  </div>
+                </div>
               </div>
-            </div>
-          </a>
-        {% endif %}
-      </div>
-      <div class="artist-set-list flex-row">
-        {% if not event.is_future and sets_with_media.count > 1 %}
-          {% for set in sets_with_media %}
-            <div class="{% if forloop.counter0 == 0 %}artist-active-set accent-color {% endif %}set-changer"
-                 data-set-id="{{ set.pk }}">
-              <div class="text2 flex-column flex-grow "> Set {{ forloop.counter0|add:"1" }} </div>
-            </div>
-          {% endfor %}
-        {% endif %}
-      </div>
+            </a>
+          {% endif %}
+        </div>
+      {% endwith %}
+    {% endif %}
+    <div class="artist-set-list flex-row">
+      {% if not event.is_future and sets_with_media.count > 1 %}
+        {% for set in sets_with_media %}
+          <div class="{% if forloop.counter0 == 0 %}artist-active-set accent-color {% endif %}set-changer"
+               data-set-id="{{ set.pk }}">
+            <div class="text2 flex-column flex-grow "> Set {{ forloop.counter0|add:"1" }} </div>
+          </div>
+        {% endfor %}
+      {% endif %}
     </div>
   </div>
-  {% if not event.is_future %}
-    <div class="event-metrics-container">
-      <div class="datepicker-container noclick datepicker-dashboard-container">
-        <div class="custom-date-picker" id="dashboard-metrics-date-picker-from">
-          <input class="date-picker-text" type="text" placeholder="Select date" readonly>
-        </div>
-        <div class="custom-date-picker" id="dashboard-metrics-date-picker-to">
-          <input class="date-picker-text" type="text" placeholder="Select date" readonly>
-        </div>
-        <div class="white-border-button" id="metrics-datepicker-apply-button">Apply</div>
-
-        </div>
-    </div>
-    <div class="artist-metrics-header white-line-bottom flex-row">
-      <div id="datepicker-dashboard-btn" class="title1 datepicker-dashboard-btn">Metrics</div>
-      <div class="text2 metrics-datepicker-description" id="metrics-datepicker-description">All Time</div>
-      <div id="datepicker-dashboard-left-panel" class="datepicker-dashboard-left-panel">
-        {% for range in datepicker_default_ranges %}
-            <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>
-        {% endfor %}
-        <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ datepicker_current_range.date }}" data-start="{{ datepicker_current_range.period_start }}" data-end="{% now "b, d, Y" %}">Current pay period</div>
-        {% for range in datepicker_old_payout_ranges %}
-            <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.period_start }}" data-end="{{ range.period_end }}">{{ range.period_start|date:"m/d/Y" }} - {{ range.period_end|date:"m/d/Y" }}  </div>
-        {% endfor %}
-      </div>
-    </div>
-    {% for set in sets_with_media %}
-      <div id="set-metrics-{{ set.pk }}" class="event-metrics-container flex-row {% if not forloop.first %}hidden{% endif %}" data-set-number="{{ forloop.counter0 }}">
-        {% with metrics=set.get_user_video_metrics_dict %}
-          <div class="event-metrics-container-plays event-metrics-container-data">
-            <div class="text3">Plays</div>
-            <div class="play-value title1">{{ metrics.play_count.total }}</div>
-          </div>
-          <div class="event-metrics-container-time event-metrics-container-data metrics-container">
-            <div class="text3">Time Listened</div>
-            <div class="time-value title1">{{ metrics.seconds_played.formatted }}</div>
-          </div>
-        {% endwith %}
-      </div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
+</div>

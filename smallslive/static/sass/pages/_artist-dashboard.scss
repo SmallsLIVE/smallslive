@@ -669,6 +669,7 @@ $dashboard-desktop: 1199px;
     .artist-set-actions {
       display: flex;
       justify-content: space-between;
+      margin-bottom: 20px;
 
       @media(max-width: $dashboard-desktop) {
         margin-bottom: 20px;
@@ -745,6 +746,7 @@ $dashboard-desktop: 1199px;
     }
 
     .event-metrics-container {
+      margin-bottom: 20px;
       position: relative;
       width: 100%;
 
@@ -754,6 +756,21 @@ $dashboard-desktop: 1199px;
         &::after {
           top: 50%;
           right: -1vw;
+        }
+      }
+
+      .set-number {
+        margin-right: 10px;
+        position: relative;
+        width: 90px;
+
+        span {
+          bottom: 0;
+          font-size: 25px;
+          left: 0;
+          line-height: 25px;
+          position: absolute;
+          text-transform: uppercase;
         }
       }
 
@@ -1614,7 +1631,7 @@ label[for="photo-clear_id"] {
 }
 
 .datepicker-dashboard-container {
-  top: 60px;
+  top: 80px;
 
   .custom-date-picker {
     &#search-date-picker-from .date-picker-text {
@@ -1635,7 +1652,8 @@ label[for="photo-clear_id"] {
   top: 40px;
   border-right: solid 2px white;
   height: auto;
-  width: 150px;
+  width: 40%;
+  z-index: 1010;
 
   > div:nth-child(-n + 2) {
     font-weight: bold;
@@ -1899,8 +1917,8 @@ label[for="photo-clear_id"] {
 .dashboard-publish  {
   .modal-body {
     .title1 {
-      font-size: 5.5vw;
-      line-height: 5.5vw;
+      font-size: 1.5vw;
+      line-height: 1.5vw;
     }
   }
 }

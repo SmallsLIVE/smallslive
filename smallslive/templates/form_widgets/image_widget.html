@@ -14,7 +14,7 @@
         {% endif %}
     {% endif %}
     <label class="white-border-button" for="id_photo">
-        <input type="{{ type }}" name="{{ name }}"{% if required %} required{% endif %}
+        <input type="{{ type }}" name="{{ name }}" accept="image/*" {% if required %} required{% endif %}
         {% for attr,val in attrs.items %}{{ attr }}={{ val }} {% endfor %} >
         <span id="file_name">Choose file</span>
     </label>

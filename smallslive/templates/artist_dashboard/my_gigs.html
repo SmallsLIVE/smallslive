@@ -88,6 +88,10 @@
 
     var countsURL = "{% url 'event_counts' %}";
 
+    var uploadImagePreviewUrl = "{% url 'upload_image_preview' %}";
+    var loadingGif = "{% static 'image/loading.gif' %}";
+    var csrfToken = "{{ csrf_token }}";
+
   </script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/selectize.bootstrap3.css' %}">
 

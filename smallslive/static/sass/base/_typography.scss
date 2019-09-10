@@ -436,6 +436,7 @@ $text-font-size-big: 2em;
   font-size: 13px;
   text-shadow: 0.001em 0.001em;
   cursor: pointer;
+  width: auto;
 
   @media (min-width: 1023px) and (max-width: 1366px) {
     font-size: 12px;

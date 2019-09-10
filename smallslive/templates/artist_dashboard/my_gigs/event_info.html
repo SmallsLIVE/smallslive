@@ -12,36 +12,82 @@
   <button class="show-gig-info-btn">Info</button>
   <button class="active show-video-metrics-btn">Video & Metrics</button>
 </div>
-{% for set in event_sets %}
-  <div class="artist-set-actions{% if not forloop.first %} hidden{% endif %}" data-set-id="{{ set.pk }}">
-    <div class="button-row button-row-margin">
-      <div class="flex-row">
-        {% if is_admin and set.has_media %}
-          {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-            <button class="publish-button" onclick="askPublish({{ set.id }})">
+{% with sets_with_media=event.sets.with_media %}
+  {% for set in sets_with_media %}
+    <div id="artist-set-action-{{ set.pk  }}" class="artist-set-actions{% if not forloop.first %} hidden{% endif %}" data-set-id="{{ set.pk }}">
+      <div class="button-row button-row-margin">
+        <div class="flex-row">
+          {% if is_admin and set.has_media %}
+            {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
+              <button class="publish-button" onclick="askPrivate({{ set.id }})">
+                Make Private
+              </button>
+            {% else %}
+              <button class="publish-button" onclick="askPublish({{ set.id }})">
                 Publish
+              </button>
+            {% endif %}
+            <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')" style="margin-left: 5px; ">
+                Download
             </button>
           {% else %}
-            <button class="publish-button" onclick="askPrivate({{ set.id }})">Make
-                Private
-            </button>
+            {% if set.video_recording and set.video_recording.is_published %}
+              <button disabled style="margin-left: 10px;">Make Private</button>
+            {% else %}
+              <button disabled style="margin-left: 10px;">Publish</button>
+            {% endif %}
+            <button disabled style="margin-left: 20px;">Download</button>
           {% endif %}
-          <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')" style="margin-left: 5px; ">
-              Download
-          </button>
-        {% else %}
-          {% if set.video_recording and set.video_recording.is_published %}
-            <button disabled style="margin-left: 10px;">Make Private</button>
-          {% else %}
-            <button disabled style="margin-left: 10px;">Publish</button>
-          {% endif %}
-          <button disabled style="margin-left: 20px;">Download</button>
-        {% endif %}
+        </div>
       </div>
     </div>
+  {% endfor %}
+  <div class="header-metrics-container">
+    {% include 'artist_dashboard/artist-dashboard-events-metrics.html' with sets_with_media=sets_with_media %}
   </div>
-  <div class="header-metrics-container{% if not forloop.first %} hidden{% endif %}">
-    {% include 'artist_dashboard/artist-dashboard-events-metrics.html' %}
-  </div>
+{% endwith %}
 
-{% endfor %}
+{% if not event.is_future %}
+  <div class="event-metrics-container">
+    <div class="datepicker-container noclick datepicker-dashboard-container">
+      <div class="custom-date-picker" id="dashboard-metrics-date-picker-from">
+        <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+      </div>
+      <div class="custom-date-picker" id="dashboard-metrics-date-picker-to">
+        <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+      </div>
+      <div class="white-border-button" id="metrics-datepicker-apply-button">Apply</div>
+
+      </div>
+  </div>
+  <div class="artist-metrics-header white-line-bottom flex-row">
+    <div id="datepicker-dashboard-btn" class="title1 datepicker-dashboard-btn">Metrics</div>
+    <div class="text2 metrics-datepicker-description" id="metrics-datepicker-description">All Time</div>
+    <div id="datepicker-dashboard-left-panel" class="datepicker-dashboard-left-panel">
+      {% for range in datepicker_default_ranges %}
+          <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>
+      {% endfor %}
+      <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ datepicker_current_range.date }}" data-start="{{ datepicker_current_range.period_start }}" data-end="{% now 'b, d, Y' %}">Current pay period</div>
+      {% for range in datepicker_old_payout_ranges %}
+          <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.period_start }}" data-end="{{ range.period_end }}">{{ range.period_start|date:"m/d/Y" }} - {{ range.period_end|date:"m/d/Y" }}  </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% for set in event.sets.with_media %}
+    <div id="set-metrics-{{ set.pk }}" class="event-metrics-container flex-row" data-set-number="{{ forloop.counter0 }}">
+      {% with metrics=set.get_user_video_metrics_dict %}
+        <div class="event-metrics-container-data set-number">
+          <span class="text3">Set {{ forloop.counter }}</span>
+        </div>
+        <div class="event-metrics-container-plays event-metrics-container-data">
+          <div class="text3">Plays</div>
+          <div class="play-value title1">{{ metrics.play_count.total }}</div>
+        </div>
+        <div class="event-metrics-container-time event-metrics-container-data metrics-container">
+          <div class="text3">Time Listened</div>
+          <div class="time-value title1">{{ metrics.seconds_played.formatted }}</div>
+        </div>
+      {% endwith %}
+    </div>
+  {% endfor %}
+{% endif %}

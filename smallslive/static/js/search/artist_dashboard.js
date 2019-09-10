@@ -195,11 +195,43 @@ $(document).ready(function () {
       }
     });
 
+
+    // Ajax upload image
     $(document).on("change", "#id_photo", function () {
       var filePath = $(this).val();
       var fileName = filePath.replace(/^.*[\\\/]/, '');
-
       $("#file_name").text(fileName);
+
+      var $that = $(this);
+
+      var $form = $(this).closest('form');
+      var data = new FormData($form.get(0));
+      $('#div_id_photo img').toggleClass('hidden');
+      $('#image-load-gif').toggleClass('hidden');
+      $('#event_edit_modal').find('.modal-body').html('');
+      $('#div_id_cropping img').attr('src', "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=");
+
+      $.ajax({
+          url: uploadImagePreviewUrl,
+          type: "POST",
+          data: data,
+          enctype: 'multipart/form-data',
+          processData: false,
+          contentType: false,
+          cache: false,
+          success: function (data) {
+            if (data.success) {
+              $('#div_id_photo img').attr('src', data.src);
+              $('#div_id_photo img').toggleClass('hidden');
+              $('#image-load-gif').toggleClass('hidden');
+              $('#id_image_id').val(data.id);
+              $('#div_id_cropping img').attr('src', data.src);
+              $that.data("thumbnail-url", data.src);
+              $that.attr("data-thumbnail-url", data.src);
+              //resizeInfo(data.src);
+            }
+          }
+      });
 
     })
 
@@ -220,6 +252,7 @@ $(document).ready(function () {
         success: function(data) {
           showEventForm(url);
           showEventInfo(infoUrl);
+          updateEventList(data.data.eventId, data.data.title, data.data.photoUrl);
         },
         error: function() {}
       });
@@ -268,13 +301,8 @@ $(document).ready(function () {
       }
       var $toShow = $(".event-metrics-container.flex-row#set-metrics-" + setId);
       var playListIndex = $toShow.data("set-number");
-      var $toHide = $(".event-metrics-container.flex-row");
-      $toHide.each(function () {
-        if (!$(this).hasClass("hidden")) {
-          $(this).addClass("hidden");
-        }
-      });
-      $toShow.removeClass("hidden");
+
+      $(".artist-set-actions").removeClass("hidden").not("#artist-set-action-" + setId).addClass("hidden");
 
       currentListIndex = playListIndex;
       if (videoPlaying) {
@@ -294,10 +322,9 @@ $(document).ready(function () {
       } else {
         $(".artist-events-list-info  .datepicker-container").css("display", "flex").hide().fadeIn(500, function() {
           $(".artist-events-list-info .datepicker-container").data('shown', true);
+          $("#dashboard-metrics-date-picker-from input").click();
+          $("#dashboard-metrics-date-picker-from input").focus();
         });
-
-        $("#dashboard-metrics-date-picker-from input").click();
-        $("#dashboard-metrics-date-picker-from input").focus();
       }
     });
   }
@@ -397,6 +424,12 @@ $(document).ready(function () {
     });
   }
 
+  function updateEventList(eventId, title, photoUrl) {
+    var $row = $("#artist-event-row-" + eventId);
+    $row.find("div.title").text(title);
+    $row.find(".artist-event-picture img").attr("src", photoUrl);
+  }
+
   function disableEditForm() {
     $("#event-edit-form input").prop("disabled", true);
     $("#event-edit-form select").prop("disabled", true);
@@ -410,6 +443,7 @@ $(document).ready(function () {
     $(".mobile-edit-title.remove").css({"visibility": "hidden"});
     $(".artist-list-form .formset_table").find("tbody").sortable({disabled: true});
     $("#div_id_photo").find("label.white-border-button").addClass("disabled");
+    $("#div_id_cropping").css("filter", "grayscale(1)");
 
   }
 
@@ -427,6 +461,7 @@ $(document).ready(function () {
     $(".mobile-edit-title.remove").css({"visibility": "visible"});
     $(".artist-list-form .formset_table").find("tbody").sortable({disabled: false});
     $("#div_id_photo").find("label.white-border-button").removeClass("disabled");
+    $("#div_id_cropping").css("filter", "none");
   }
 
   function showEventInfo(url) {
@@ -581,7 +616,7 @@ function askPublish(setId) {
 }
 function makeSetPrivate() {
     $.post('/events/sets/' + selectedSetId + '/private/', {
-      csrfmiddlewaretoken: '{{ csrf_token }}'
+      csrfmiddlewaretoken: csrfToken
     }, function (data, status) {
     });
     hideMakePrivate();
@@ -602,8 +637,8 @@ function showSuccess(state) {
 
 function publishSet() {
     $.post('/events/sets/' + selectedSetId + '/publish/', {
-      csrfmiddlewaretoken: '{{ csrf_token }}'
-    }, function(data, status) {
+      csrfmiddlewaretoken: csrfToken
+    }, function (data, status) {
     });
     hidePublish();
     $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
