@@ -16,7 +16,7 @@
   <div class="">
 
     <div class="store-banner">
-      {% if not product %}
+      {% if is_catalogue %}
         {% include 'home_banners_carousel.html' with active='catalog' %}
       {% endif %}
     </div>
