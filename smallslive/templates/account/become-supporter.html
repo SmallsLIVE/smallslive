@@ -147,7 +147,7 @@
         </div>
       {% endif %}
       {% if not flow_type = "update_pledge" %}
-        {% include 'account/gift_selection.html' %}
+        {% include 'account/gift_selection.html' with hidden=True %}
       {% endif %}
     </div>
 
