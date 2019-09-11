@@ -15,6 +15,7 @@
 
     <div class="flex-row content-flex-end">
       <div class="button-row">
+
         <a href="{% url 'artist_dashboard:my_past_events' %}">
             <button class="no-border {% if request.resolver_match.url_name == 'my_past_events' %}active{% endif %}">
                 Archived
@@ -56,9 +57,8 @@
                 {{ request.user.email }}
               {% endif %}
             </option>
-              {% if request.user.artist %}
-                  <option value="artist_dashboard">Dashboard</option>
-              {% endif %}
+              <option value="home">Home</option>
+              <option value="my_downloads">Library</option>
               <option value="account_info">Account</option>
             <option value="logout">Sign Out</option>
           </select>
