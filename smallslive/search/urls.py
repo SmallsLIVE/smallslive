@@ -4,7 +4,7 @@ import views
 
 urlpatterns = patterns('search.views',
     url(r'^autocomplete/$', 'search_autocomplete', name='search_autocomplete'),
-    url(r'^artist_form_autoconplete/$', 'artist_form_autoconplete', name='artist_form_autoconplete'),
+    url(r'^artist_form_autocomplete/$', 'artist_form_autocomplete', name='artist_form_autocomplete'),
     url(r'^archive/$', views.TemplateSearchView.as_view(), name='archive'),
     url(r'^$', views.TemplateSearchView.as_view(), name='search'),
     url(r'^ajax/search-bar/$', views.SearchBarView.as_view(), name='search-bar-ajax'),

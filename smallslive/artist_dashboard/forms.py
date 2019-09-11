@@ -51,6 +51,7 @@ class ArtistGigPlayedAddInlineFormSet(InlineFormSet):
             form.fields['sort_order'].initial = num
             form.fields['sort_order'].widget = forms.HiddenInput()
             form.fields['sort_order'].widget.attrs['class'] = "sort_order_field"
+
         return formset
 
 

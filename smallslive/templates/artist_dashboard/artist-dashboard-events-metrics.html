@@ -9,7 +9,7 @@
              name="video-url"
              value="{{ set.video_recording.media_file.get_sd_video_url|safe }}"
              data-id="{{ set.video_recording.id }}"
-             data-image="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=width|default_if_none:600 %}">
+             data-image="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=600 %}">
     {% endfor %}
 
     {% if sets_with_media %}

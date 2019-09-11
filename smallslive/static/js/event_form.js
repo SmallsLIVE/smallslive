@@ -7,7 +7,7 @@ EventForm = {
     });
   },
   cloneMore: function(source, destination, type) {
-    var newElement = source.clone();
+    var newElement = source.clone(false);
     var $total = $("#id_" + type + "-TOTAL_FORMS");
     var total = $total.val();
     newElement.find(":input").each(function() {
@@ -318,7 +318,9 @@ EventForm = {
     var tableType = "artists_gig_info";
     var buttonRemove = $artistTable.find(".artist_remove");
 
-    var $artist_row = $artistTable.find("tbody tr:first").clone(true);
+    var $artistRow = $artistTable.find("tbody tr:first").clone(true);
+    $artistRow.find(".artist_field option:not(:first)").remove();
+
     $artistTable.find("select").selectize({
       create: false
     });
@@ -358,7 +360,7 @@ EventForm = {
 
     $(document).on("click", "#add_more_artists", function() {
       var $lastRow = $artistTable.find("tbody tr:last");
-      EventForm.cloneMore($artist_row, $lastRow, tableType);
+      EventForm.cloneMore($artistRow, $lastRow, tableType);
       EventForm.fixTableWidths($artistTable);
     });
 

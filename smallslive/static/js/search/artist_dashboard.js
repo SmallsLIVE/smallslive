@@ -51,9 +51,7 @@ $(document).ready(function () {
 
     $datePickerFrom.on('click', function () {
       var dropdown = $('#search-date-picker .dropdown-menu');
-      if (dropdown[0] && dropdown[0].style.display === 'block') {
-        $datePickerFrom.datepicker('hide');
-      } else {
+      if (!(dropdown[0] && dropdown[0].style.display === 'block')) {
         $datePickerFrom.datepicker('show');
       }
     });
@@ -84,9 +82,7 @@ $(document).ready(function () {
 
     $datePickerTo.on('click', function () {
       var dropdown = $('#dashboard-desktop-datepicker #search-date-picker .dropdown-menu');
-      if (dropdown[0] && dropdown[0].style.display === 'block') {
-        $datePickerTo.datepicker('hide');
-      } else {
+      if (!(dropdown[0] && dropdown[0].style.display === 'block')) {
         $datePickerTo.datepicker('show');
       }
     });
@@ -327,6 +323,16 @@ $(document).ready(function () {
         });
       }
     });
+
+    $(document).on("mouseup", function (event) {
+      var container = $("#datepicker-dashboard-left-panel");
+
+      // if the target of the click isn't the container nor a descendant of the container
+      if (!container.is(event.target) && container.has(event.target).length === 0) {
+          container.hide();
+      }
+    });
+
   }
 
   function sendEventRequest(callbacks) {
@@ -707,11 +713,20 @@ var resizeTimer;
 function loadArtist(value, select) {
   $.ajax({
     type: 'GET',
-    url: '/search/artist_form_autoconplete/?artist-start=' + value,
+    url: '/search/artist_form_autocomplete/?artist-start=' + value,
     success: function(data){
         data.artist_list.forEach(function(artist) {
-            select.selectize.addOption({ value: artist.val, text: artist.full_name })
-            select.selectize.refreshOptions()
+
+            // Select already selected artists and  exclude them from the options.
+            var $artists = $(".artist_field option[selected='selected']");
+            var exclude = $(".artist_field option[selected='selected']").map(function () {
+              return $(this).val();
+            }).get();
+
+            if (exclude.indexOf(artist.val.toString()) < 0) {
+              select.selectize.addOption({ value: artist.val, text: artist.full_name });
+              select.selectize.refreshOptions();
+            }
         })
 
     }
@@ -751,10 +766,8 @@ function initializeMetricsDatePickers () {
 
   $datePickerFrom.on('click', function () {
     var dropdown = $('#dashboard-metrics-date-picker-from .dropdown-menu');
-    if (dropdown[0] && dropdown[0].style.display === 'block') {
-       $datePickerFrom.datepicker('hide');
-    } else {
-       $datePickerFrom.datepicker('show');
+    if (!(dropdown[0] && dropdown[0].style.display === 'block')) {
+      $datePickerFrom.datepicker('show');
     }
   });
 
@@ -779,10 +792,8 @@ function initializeMetricsDatePickers () {
 
   $datePickerTo.on('click', function () {
     var dropdown = $('#dashboard-metrics-date-picker-to .dropdown-menu');
-    if (dropdown[0] && dropdown[0].style.display === 'block') {
-        $datePickerTo.datepicker('hide');
-    } else {
-        $datePickerTo.datepicker('show');
+    if (!(dropdown[0] && dropdown[0].style.display === 'block')) {
+      $datePickerTo.datepicker('show');
     }
   });
 

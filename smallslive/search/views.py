@@ -41,7 +41,7 @@ def search_autocomplete(request):
     return resp
 
 
-def artist_form_autoconplete(request):
+def artist_form_autocomplete(request):
     artist_start = request.GET.get('artist-start', None)
     artist_qs = Artist.objects.filter(first_name__istartswith=artist_start)
     artist_list = []
@@ -51,8 +51,9 @@ def artist_form_autoconplete(request):
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
     data = {
-            'artist_list': artist_list
-        }
+        'artist_list': artist_list
+    }
+
     return JsonResponse(data)
 
 
