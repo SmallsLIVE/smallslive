@@ -1307,6 +1307,10 @@ label[for="photo-clear_id"] {
       width: 100%;
     }
 
+    .close-button {
+      top: 44px;
+    }
+
     .custom-date-picker {
       width: 110px;
 
@@ -1618,7 +1622,7 @@ label[for="photo-clear_id"] {
     border-top: 5px solid black;
     position: absolute;
     right: 0px;
-    top: 25%;
+    top: 40%;
     transition: all 0.3s linear;
     cursor: pointer;
     pointer-events: inherit;
@@ -1642,6 +1646,12 @@ label[for="photo-clear_id"] {
 .datepicker-dashboard-container {
   top: 80px;
 
+  .close-button {
+    &.metrics {
+      display: block;
+      top: 44px;
+    }
+  }
   .custom-date-picker {
     &#search-date-picker-from .date-picker-text {
       border-left: none;

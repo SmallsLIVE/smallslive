@@ -1,4 +1,7 @@
 
+var eventDateFrom = $("#dashboard-metrics-date-picker-from input").datepicker('getDate').date;
+var eventDateTo = $("#dashboard-metrics-date-picker-to input").datepicker('getDate').date;
+
 $(document).ready(function () {
 
   var $datePickerFrom = $("#search-date-picker-from-dashboard input");
@@ -324,12 +327,22 @@ $(document).ready(function () {
       }
     });
 
+    $(document).on("click", "#dashboard-metrics-datepicker-close", function (event) {
+      event.preventDefault();
+      $("#dashboard-metrics-date-picker-from input").val("").datepicker("update");
+      $("#dashboard-metrics-date-picker-to input").val("").datepicker("update");
+      $(".event-metrics-container .datepicker-container").fadeOut(500, function () {
+        $(".event-metrics-container .datepicker-container").data('shown', false);
+        $($(".datepicker-dashboard-left-panel-item")[0]).click();
+      });
+    })
+
     $(document).on("mouseup", function (event) {
       var container = $("#datepicker-dashboard-left-panel");
 
       // if the target of the click isn't the container nor a descendant of the container
       if (!container.is(event.target) && container.has(event.target).length === 0) {
-          container.hide();
+        container.hide();
       }
     });
 
@@ -816,6 +829,13 @@ function initializeMetricsDatePickers () {
         $(".artist-events-list-info .datepicker-container").data('shown', false);
     });
 
+    var dateFrom = $("#dashboard-metrics-date-picker-from input").datepicker('getDate');
+    var dateTo = $("#dashboard-metrics-date-picker-to input").datepicker('getDate');
+    dateFrom = moment(eventDateFrom).format('MM/DD/YYYY');
+    dateTo = moment(eventDateTo).format('MM/DD/YYYY');
+
+    var newDateRange = dateFrom + " - " + dateTo;
+    $("#metrics-datepicker-description").html(newDateRange);
     loadData();
   });
 
@@ -852,8 +872,6 @@ var loadData = function () {
   var time = document.getElementById("time-value");
   var mobilePlays = document.getElementById("mobile-play-value");
   var mobileTime = document.getElementById("mobile-time-value");
-  var eventDateFrom = $("#dashboard-metrics-date-picker-from input").datepicker('getDate');
-  var eventDateTo = $("#dashboard-metrics-date-picker-to input").datepicker('getDate');
 
   var data = {};
 
