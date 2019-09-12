@@ -121,7 +121,7 @@ class Product(AbstractProduct):
         product_image = self.primary_image()
         print product_image
         print self.parent
-        if product_image.get('is_missing') and self.parent_id:
+        if getattr(product_image, 'is_missing', True) and self.parent_id:
             product_image = self.parent.primary_image()
 
         return product_image
