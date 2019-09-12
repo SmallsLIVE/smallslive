@@ -18,6 +18,6 @@ class HomeView(promotions_views.HomeView):
         context['preview_track_id_counter'] = itertools.count()
         context['artist_with_media'] = Artist.objects.exclude(artistproduct=None) 
         context['above_limit'] = Product.objects.filter(product_class__slug='album').count() > 8
-        context['is_catalogue'] = True
+        context['is_catalogue_list'] = True
 
         return context

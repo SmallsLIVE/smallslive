@@ -97,7 +97,7 @@ $(document).ready(function () {
 
   var $donationConfirmationDialog = $("#supportConfirmationDialog");
 
-  $(document).on('click', '#projectDonationBtn', function (event) {
+  $(document).on('click', '#projectDonationBtn, #projectDonationBtnMobile', function (event) {
 
     $donationConfirmationDialog.modal("show");
 
