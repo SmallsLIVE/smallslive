@@ -141,7 +141,7 @@ var checkConfirmButton = function() {
     if (
       (selectedData.type === "month" && selectedData.amount >= 10) ||
       (selectedData.type === "year" && selectedData.amount >= 100) ||
-      (selectedData.flow !== "become_supporter" && selectedData.amount > 0)
+      (selectedData.flow !== "become_supporter" && selectedData.amount > 4)
     ) {
       $confirmButton.prop("disabled", false);
     } else {
@@ -223,6 +223,7 @@ var resetCustom = function() {
   $mainContainer.find("#monthly-less").text("");
   $mainContainer.find("#yearlyCustomConfirm").hide();
   $mainContainer.find("#monthlyCustomConfirm").hide();
+  $mainContainer.find("#set-your-own-lbl").show();
 };
 
 $(document).ready(function() {
@@ -553,6 +554,7 @@ $(document).ready(function() {
       var $selectionConfirmationDialog = $mainContainer.find(
         "#selectionConfirmationDialog"
       );
+      var value = $(this).data("value");
       $selectionConfirmationDialog.modal("show");
       $selectionConfirmationDialog.find(".title").text("become a supporter");
       $selectionConfirmationDialog.find(".subtitle").text("Monthly pledge");
@@ -560,7 +562,7 @@ $(document).ready(function() {
         .find(".text")
         .html(
           "Thank you for choosing to help jazz music and musicians all over the world. You have selected a monthly pledge of $" +
-            $value +
+            value +
             ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
         );
     } else {
@@ -599,9 +601,11 @@ $(document).ready(function() {
     if (value > 9) {
       $mainContainer.find("#monthlyCustomConfirm").data("value", value);
       $mainContainer.find("#monthlyCustomConfirm").show();
+      $mainContainer.find("#set-your-own-lbl").hide();
     } else {
       $mainContainer.find("#monthlyCustomConfirm").data("value", "");
       $mainContainer.find("#monthlyCustomConfirm").hide();
+      $mainContainer.find("#set-your-own-lbl").show();
     }
     if (value && isPositiveInteger(value)) {
       resetButtons();
@@ -652,7 +656,7 @@ $(document).ready(function() {
       setSelected(selectedData.flow, "year", value);
       $yearlyCustom.addClass("active");
       $monthlyCustom.removeClass("active");
-      if (value >= 100 || selectedData.flow !== "become_supporter") {
+      if (value >= 100 || value > 4 && selectedData.flow !== "become_supporter") {
         $mainContainer.find("#yearlyCustomConfirm").val(value);
         $mainContainer.find("#yearlyCustomConfirm").show();
       } else {
