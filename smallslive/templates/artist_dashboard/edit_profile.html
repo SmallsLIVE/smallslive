@@ -29,14 +29,11 @@
             </section>
         </div>
         <section class="artist-form">
-            <form class="custom-form" action="{% url "artist_dashboard:edit_profile" %}" method="post" enctype="multipart/form-data">
+            <form class="custom-form" action="{% url 'artist_dashboard:edit_profile' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="flex-column">
                     <div class="flex-row content-centered artist-info-container">
                         <div class="flex-column flex-grow artist-profile-picture">
-                            <div class="text2 text-grey">
-                                {{ form.photo.label_tag }}
-                            </div>
                             <div class="form-group {% if form.photo.errors %}has-error{% endif %}">
                                 {{ form.cropping }}
                                 <div {% if form.cropping.value %} class="hide-original"{% endif %}>
@@ -123,4 +120,14 @@
         }
     </script>
   {% endif %}
+  <script>
+    $(document).ready (function () {
+      $(".custom-form input[type='file']").change(function () {
+        var filePath = $(this).val();
+        var fileName = filePath.replace(/^.*[\\\/]/, '');
+        $("label[for='id_photo']").text(fileName);
+
+      });
+    });
+  </script>
 {% endblock extra_js %}
