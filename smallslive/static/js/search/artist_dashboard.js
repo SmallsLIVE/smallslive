@@ -357,11 +357,11 @@ $(document).ready(function () {
       'page': ++currentPage
     };
 
-    if (dateFrom.date) {
+    if (dateFrom) {
       params["start_date_filter"] = dateFrom;
     }
 
-    if (dateTo.date) {
+    if (dateTo) {
       params["end_date_filter"] = dateTo;
     }
 
