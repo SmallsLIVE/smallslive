@@ -91,6 +91,7 @@
     var uploadImagePreviewUrl = "{% url 'upload_image_preview' %}";
     var loadingGif = "{% static 'image/loading.gif' %}";
     var csrfToken = "{{ csrf_token }}";
+    var isFuture = {% if is_future %}true{% else %}false{% endif %};
 
   </script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/selectize.bootstrap3.css' %}">

@@ -1861,7 +1861,8 @@ label[for="photo-clear_id"] {
 
   .artist-list {
 
-    height: 55vh;
+    height: auto;
+    max-height: 55vh;
     padding-left: 3.5vw;
     overflow-y: scroll;
 

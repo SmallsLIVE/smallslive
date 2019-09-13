@@ -199,17 +199,6 @@ class MyEventsAJAXView(MyEventsView):
         return JsonResponse(data)
 
 
-class MyFutureEventsAJAXView(MyEventsAJAXView, MyFutureEventsView):
-
-    template_name = 'artist_dashboard/artist-dashboard-events.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(MyFutureEventsAJAXView, self).get_context_data(**kwargs)
-        return context
-
-my_future_events_ajax = MyFutureEventsAJAXView.as_view()
-
-
 class MyPastEventsView(MyEventsView):
 
     def get_queryset(self):
@@ -239,6 +228,27 @@ class MyPastEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
         return context
 
 my_past_events_ajax = MyPastEventsAJAXView.as_view()
+
+
+class MyFutureEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
+
+    template_name = 'artist_dashboard/my_gigs/event_list_page.html'
+
+    def get_queryset(self):
+        artist = self.request.user.artist
+        now = timezone.now()
+        queryset = artist.gigs_played.select_related('event').prefetch_related('event__sets').filter(
+            event__start__gte=now
+        )
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(MyPastEventsView, self).get_context_data(**kwargs)
+        context['is_future'] = False  # TODO: make dynamic.
+        return context
+
+my_future_events_ajax = MyFutureEventsAJAXView.as_view()
 
 
 class MyPastEventsInfoView(DetailView):

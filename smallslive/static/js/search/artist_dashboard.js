@@ -354,10 +354,16 @@ $(document).ready(function () {
     var dateTo = $datePickerTo.datepicker("getDate");
 
     params = {
-      'start_date_filter': dateFrom,
-      'end_date_filter': dateTo,
       'page': ++currentPage
     };
+
+    if (dateFrom.date) {
+      params["start_date_filter"] = dateFrom;
+    }
+
+    if (dateTo.date) {
+      params["end_date_filter"] = dateTo;
+    }
 
     var order = $('#artist_archive_order_filter').val();
     params.order = order;
@@ -491,25 +497,27 @@ $(document).ready(function () {
       success: function(data) {
         $('#event-info-load-gif').addClass('hidden');
         $('#event-info').html(data);
-        var $videoInfo = $(data).find(".player-video-info");
-        var playList = []
-        $videoInfo.each(function () {
-          var url = $(this).val();
-          var id = $(this).data("id");
-          var image = $(this).data("image");
-          var sources = [{
-            file: url,
-            type: "mp4",
-          }];
-          var playInfo = {
-            sources: sources,
-            mediaid: id,
-            image: image
-          };
-          playList.push(playInfo);
-        });
-        initializeMetricsDatePickers();
-        setupPlayer(playList);
+        if (!isFuture) {
+          var $videoInfo = $(data).find(".player-video-info");
+          var playList = []
+          $videoInfo.each(function () {
+            var url = $(this).val();
+            var id = $(this).data("id");
+            var image = $(this).data("image");
+            var sources = [{
+              file: url,
+              type: "mp4",
+            }];
+            var playInfo = {
+              sources: sources,
+              mediaid: id,
+              image: image
+            };
+            playList.push(playInfo);
+          });
+          initializeMetricsDatePickers();
+          setupPlayer(playList);
+        }
       },
       error: function() {
 
