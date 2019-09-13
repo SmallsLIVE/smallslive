@@ -108,7 +108,43 @@ $(document).ready(function () {
     showFlow("support");
   });
 
+  var $downloadConfirmationDialog = $("#downloadConfirmationDialog");
+
+  $(document).on("click", "#tracksDownloadBtn, #tracksDownloadBtnMobile", function (event) {
+
+    var $table = $("#track-list-tbl");
+    var $clonedTable = $table.clone(true).removeClass("hidden");
+    var $tableContainer = $downloadConfirmationDialog.find(".table-container");
+    if ($tableContainer.find("#track-list-tbl").length === 0) {
+      $tableContainer.append($clonedTable);
+    }
+    $downloadConfirmationDialog.modal("show");
+
+  });
+
+  $(document).on("click", "#downloadConfirmationDialog .cancel", function () {
+    $downloadConfirmationDialog.modal("hide");
+  });
+
+
+
 });
+
+function downloadAll(urls) {
+  var link = document.createElement('a');
+
+  link.setAttribute('download', null);
+  link.style.display = 'none';
+
+  document.body.appendChild(link);
+
+  for (var i = 0; i < urls.length; i++) {
+    link.setAttribute('href', urls[i]);
+    link.click();
+  }
+
+  document.body.removeChild(link);
+}
 
 var $lastPlayer,
   $audioPlayer,

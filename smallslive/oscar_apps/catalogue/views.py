@@ -200,11 +200,13 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
 
         ctx['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
 
+        # TODO: create mixin for gifts so it can be used in become a supporter too.
         ctx['gifts'] = []
         ctx['costs'] = []
         selector = Selector()
         strategy = selector.strategy(
             request=self.request, user=self.request.user)
+
         album_product = Product.objects.filter(pk=self.object.pk).first()
         products = Product.objects.filter(parent=album_product, product_class__slug__in=[
             'physical-album',

@@ -2959,3 +2959,38 @@ form .back-to-payment-btn {
     margin-top: 0;
   }
 }
+
+#downloadConfirmationDialog {
+
+  .table-container {
+    margin-top: 40px;
+    margin-bottom: 50px;
+  }
+
+  tr {
+    vertical-align: middle;
+    background-color: rgba(240, 240, 235, 0.9);
+    border-bottom: 1px solid #dddddd;
+  }
+
+  td, th {
+    padding: 8px;
+    line-height: 1.42857;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+  }
+
+  span {
+    &.separator {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+  }
+  .link {
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: 400;
+    font-size: 2em;
+    color: black;
+    letter-spacing: 0;
+  }
+}

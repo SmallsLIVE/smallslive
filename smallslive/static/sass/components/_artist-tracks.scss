@@ -114,6 +114,25 @@
     }
   }
 
+  &__download-buttons__container{
+    margin-left: auto;
+
+
+    @media(max-width: 720px){
+      display: none;
+    }
+    &--mobile{
+      margin: auto;
+      display: none;
+      width: 100%;
+      @media(max-width: 720px){
+        display: block;
+      }
+      @media(max-width: 600px){
+        margin-top: 20px;
+      }
+    }
+  }
 
 
   &__track-list{
