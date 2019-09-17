@@ -63,7 +63,7 @@ class MostPopularVideos(ListView):
                     pass
             return most_popular_video
         return _get_most_popular_videos()
-    
+
     def get_context_data(self, **kwargs):
         context = super(MostPopularVideos, self).get_context_data(**kwargs)
         context['most_popular_videos'] = True
