@@ -72,11 +72,15 @@
       </button>
     {% else %}
       {% if request.user.artist %}
-        <div class="text2"><a href="{% url 'artist_dashboard:my_past_events' %}">Dashboard</a></div>
+        {% if is_dashboard %}
+          <div class="text2"><a href="{% url 'home' %}">Home</a></div>
+        {% else %}
+          <div class="text2"><a href="{% url 'artist_dashboard:my_past_events' %}">Dashboard</a></div>
+        {% endif %}
       {% endif %}
-        <div class="text2"><a href="{% url 'my-downloads' %}">Library</a></div>
-        <div class="text2"><a href="{% url 'user_settings_new' %}">Account</a></div>
-        <div class="text2"><a href="{% url 'account_logout' %}">Sign Out</a></div>
+      <div class="text2"><a href="{% url 'my-downloads' %}">Library</a></div>
+      <div class="text2"><a href="{% url 'user_settings_new' %}">Account</a></div>
+      <div class="text2"><a href="{% url 'account_logout' %}">Sign Out</a></div>
     {% endif %}
   </div>
 </header>

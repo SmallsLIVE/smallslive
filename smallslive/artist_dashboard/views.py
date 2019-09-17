@@ -61,7 +61,8 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
         context.update({
             'total_results': paginator.count,
             'total_pages': paginator.num_pages,
-            'current_page': current_page_number,  
+            'current_page': current_page_number,
+            'is_dashboard': True,
         })
 
         return context
@@ -325,6 +326,7 @@ class MyPastEventsInfoView(DetailView):
 
         form = EventEditForm()
         context['form'] = form
+        context['is_dashboard'] = True
         
         return context
 
@@ -360,6 +362,7 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
         context['first_login'] = first_login
         context['current_payout_period'] = CurrentPayoutPeriod.objects.first()
         context['previous_payout_period'] = artist.earnings.first()
+        context['is_dashboard'] = True
         # don't show intro.js when user reloads the dashboard
         if first_login:
             self.request.user.last_login += timedelta(seconds=1)
