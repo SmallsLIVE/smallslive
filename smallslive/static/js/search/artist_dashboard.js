@@ -442,6 +442,10 @@
 
 
     function showEventForm(url, callback) {
+
+      if (!url) {
+        return;
+      }
       // We need to clone the loading gif to show it inside the container.
       // It will be removed when the container's html gets replaced.
       $('#edit-event-dashboard').html($('#event-edit-form-load-gif').clone().removeClass('hidden'));
@@ -514,6 +518,10 @@
     }
 
     function showEventInfo(url) {
+
+      if (!url) {
+        return;
+      }
       $('#event-info').html($('#event-info-load-gif').clone().removeClass('hidden'));
       $.ajax({
         type: 'GET',
