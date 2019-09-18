@@ -91,9 +91,9 @@
                         updateProgressTrack( $(player).data('track'), progress)
                         progressWidth = progress + "%"
                         $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progressWidth )
-                        $(timeTracker).html(readableTime(currentTime)) 
+                        $(timeTracker).html(readableTime(currentTime))
                     },100)
-                    
+
                 });
                 player.addEventListener("pause", function(){
                     clearInterval(setTime)
@@ -129,4 +129,3 @@
 </script>
 
 {% endblock %}
-

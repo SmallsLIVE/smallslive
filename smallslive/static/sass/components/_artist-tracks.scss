@@ -3,6 +3,11 @@
   max-width: 1300px;
   width: 90%;
 
+  &--library{
+    margin-left: 3.5vw;
+    margin-top: 30px;
+  }
+
   @media(max-width: 1023px){
     margin-top: 30px;
   }
