@@ -246,7 +246,7 @@ class MyFutureEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
 
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsView, self).get_context_data(**kwargs)
-        context['is_future'] = False  # TODO: make dynamic.
+        context['is_future'] = True  # TODO: make dynamic.
         return context
 
 my_future_events_ajax = MyFutureEventsAJAXView.as_view()
@@ -545,6 +545,9 @@ class EventEditAjaxView(EventEditView):
         context['is_admin'] = self.object.artists_gig_info.filter(
             artist_id=artist.id).first().is_leader
         context['gig_instruments'] = Instrument.objects.all()
+
+        if self.request.GET.get('future') == 'True':
+            context['is_future'] = True
 
         return context
 

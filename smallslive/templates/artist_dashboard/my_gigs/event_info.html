@@ -8,10 +8,12 @@
     <div class="text2 accent-color"> Live at {{ event.venue }} </div>
   </div>
 </div>
+{% if not is_future %}
 <div class="button-row controls">
   <button class="show-gig-info-btn">Info</button>
   <button class="active show-video-metrics-btn">Video & Metrics</button>
 </div>
+{% endif %}
 {% with sets_with_media=event.sets.with_media %}
   {% for set in sets_with_media %}
     <div id="artist-set-action-{{ set.pk  }}" class="artist-set-actions{% if not forloop.first %} hidden{% endif %}" data-set-id="{{ set.pk }}">

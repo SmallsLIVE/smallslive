@@ -556,6 +556,10 @@ $dashboard-desktop: 1199px;
           display: block;
         }
 
+        &.future {
+          display: block;
+        }
+
       }
 
       @media (max-width: 760px) {
@@ -574,6 +578,11 @@ $dashboard-desktop: 1199px;
       &.future {
         width: 50%;
         margin-left: 25%;
+
+        @media (max-width: 760px) {
+          width: 100%;
+          margin-left: 0;
+        }
       }
 
     }
@@ -1204,6 +1213,10 @@ $dashboard-desktop: 1199px;
     display: none;
 
     &.active {
+      display: flex;
+    }
+
+    &.future {
       display: flex;
     }
 

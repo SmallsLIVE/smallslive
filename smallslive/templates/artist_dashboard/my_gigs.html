@@ -51,7 +51,7 @@
           <div id="event-info-load-gif" class="hidden events-gif text-center">
             <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
           </div>
-          <div id="event-info" class="artist-dashboard-event-container active{% if is_future %} future{% endif %}">
+          <div id="event-info" class="artist-dashboard-event-container {% if is_future %} future{% else %} active{% endif %}">
 
           </div>
         </div>

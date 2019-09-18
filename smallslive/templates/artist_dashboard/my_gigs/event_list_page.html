@@ -4,7 +4,7 @@
     {% with event=gig_info.event %}
       <div id="artist-event-row-{{ event.pk }}"
            class="artist-event-row"
-           data-ajax-edit-url="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}"
+           data-ajax-edit-url="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}{% if is_future %}?future=True{% endif %}"
            data-ajax-info-url="{% url 'artist_dashboard:my_past_events_info' pk=event.id %}">
         <div class="artist-event-info flex-row wrap">
           <div class="artist-event-picture">

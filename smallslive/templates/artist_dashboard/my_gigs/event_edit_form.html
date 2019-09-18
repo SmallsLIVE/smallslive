@@ -10,10 +10,12 @@
     <div class="text2 accent-color"> Live at {{ event.venue }} </div>
   </div>
 </div>
+{% if not is_future %}
 <div class="button-row controls">
   <button class="show-gig-info-btn active">Info</button>
   <button class="show-video-metrics-btn">Video & Metrics</button>
 </div>
+{% endif %}
 <div class="button-row-margin">
   <div class="flex-row">
     <button id="form-edit-button" {% if not is_admin %}disabled {% endif %}class="white-border-button">Edit</button>
