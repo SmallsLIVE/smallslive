@@ -459,6 +459,12 @@ $dashboard-desktop: 1200px;
     padding-top: 90px;
     width: 35%;
 
+    &.future {
+      padding-left: 25%;
+      padding-top: 75px;
+      width: 50%;
+    }
+
     .summary-data {
       max-width: 620px;
       min-width: 460px;
@@ -598,7 +604,6 @@ $dashboard-desktop: 1200px;
 
       &.future {
         width: 50%;
-        margin-left: 25%;
 
         @media (max-width: 760px) {
           width: 100%;
@@ -1863,6 +1868,10 @@ label[for="photo-clear_id"] {
     .custom-date-picker {
       min-width: 140px;
       max-width: 350px;
+
+      @media (max-width: 380px) {
+        min-width: 110px;
+      }
 
       .datepicker.dropdown-menu {
         left: 0 !important;

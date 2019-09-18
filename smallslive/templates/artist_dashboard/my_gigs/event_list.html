@@ -1,5 +1,5 @@
 {% load static from staticfiles %}
-<div class="flex-column items-flex-stretch artist-events-list active{% if future %} future{% endif %}">
+<div class="flex-column items-flex-stretch artist-events-list active{% if is_future %} future{% endif %}">
   {% if not is_future %}
     <div class="refine-container flex-row" id="refine-container">
       <div id="refine-btn" class="refine text1 flex-grow">
