@@ -61,7 +61,7 @@
 
       </div>
   </div>
-  <div class="artist-metrics-header white-line-bottom flex-row">
+  <div class="artist-metrics-header white-underline flex-row">
     <div id="datepicker-dashboard-btn" class="title1 datepicker-dashboard-btn">Metrics</div>
     <div class="text2 metrics-datepicker-description" id="metrics-datepicker-description">All Time</div>
     <div id="datepicker-dashboard-left-panel" class="datepicker-dashboard-left-panel">
@@ -82,11 +82,11 @@
         </div>
         <div class="event-metrics-container-plays event-metrics-container-data">
           <div class="text3">Plays</div>
-          <div class="play-value title1">{{ metrics.play_count.total }}</div>
+          <div class="play-value title1" style="font-size: 28px; line-height: 28px;">{{ metrics.play_count.total }}</div>
         </div>
         <div class="event-metrics-container-time event-metrics-container-data metrics-container">
           <div class="text3">Time Listened</div>
-          <div class="time-value title1">{{ metrics.seconds_played.formatted }}</div>
+          <div class="time-value title1" style="font-size: 28px; line-height: 28px;">{{ metrics.seconds_played.formatted }}</div>
         </div>
       {% endwith %}
     </div>

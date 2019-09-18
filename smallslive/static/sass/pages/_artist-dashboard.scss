@@ -1,6 +1,6 @@
 
 $dashboard-mobile: 960px;
-$dashboard-desktop: 1199px;
+$dashboard-desktop: 1200px;
 
 .artist-event-card {
   width: 100%;
@@ -27,7 +27,7 @@ $dashboard-desktop: 1199px;
     padding: 20px 0;
   }
 
-  @media (max-width: 960px) {
+  @media (max-width: 769px) {
     padding: 0;
   }
 
@@ -351,7 +351,7 @@ $dashboard-desktop: 1199px;
     @media (max-width: 1023px) {
       justify-content: center;
     }
-    @media (max-width: 960px) {
+    @media (max-width: 769px) {
       flex-direction: column;
       justify-content: start;
       margin-top: 20px;
@@ -382,7 +382,7 @@ $dashboard-desktop: 1199px;
       width: 75%;
     }
 
-    @media (max-width: 340px) {
+    @media (max-width: 350px) {
       width: 60%;
     }
   }
@@ -408,7 +408,7 @@ $dashboard-desktop: 1199px;
         margin-bottom: 30px;
         visibility: hidden;
 
-        @media (max-width: $dashboard-desktop) {
+        @media (max-width: 1200px) {
           justify-content: center;
           visibility: visible;
         }
@@ -424,19 +424,23 @@ $dashboard-desktop: 1199px;
       }
 
       .artist-set-info-mobile {
-        margin: 0 auto;
+        //margin: 0 auto;
         text-align: center;
 
         display: none;
 
-        @media (max-width: 960px) {
-          display: block;
+        @media (max-width: 769px) {
+          display: flex;
+          flex-direction: column;
+          margin: auto;
+          padding-right: 26px;
+          max-width: 80%;
         }
       }
 
     }
 
-    @media(max-width: 960px) {
+    @media(max-width: 769px) {
       padding-top: 0;
       width: 100%;
     }
@@ -457,21 +461,38 @@ $dashboard-desktop: 1199px;
 
     .summary-data {
       max-width: 620px;
+      min-width: 460px;
       position: absolute;
       top: 0;
 
+      @media(max-width: 769px){
+        font-size: 26px;
+      }
+      @media(max-width: 450px){
+        font-size: 5.5vw;
+      }
+
       &.section-title {
         background-size: calc(550px + 3.5vw) 5px;
+        line-height: 30px;
+
+        @media(max-width: 960px){
+          line-height: 2.8vw;
+        }
+
+        @media(max-width: 450px){
+          line-height: 4vw;
+        }
 
         .title1 {
-          @media(max-width: 960px) {
+          @media(max-width: 769px) {
             font-size: 1.8rem;
             line-height: 1.8rem;
           }
         }
 
         @media(max-width: 960px) {
-          width: 100%;
+          //width: 100%;
         }
 
       }
@@ -485,7 +506,7 @@ $dashboard-desktop: 1199px;
       width: 45%;
     }
 
-    @media (max-width: 960px) {
+    @media (max-width: 769px) {
       display: none;
       padding-top: 70px;
       width: 100%;
@@ -533,7 +554,7 @@ $dashboard-desktop: 1199px;
       padding-right: 30px;
     }
 
-    @media (max-width: 960px) {
+    @media (max-width: 769px) {
       width: 100%;
       padding: 0;
     }
@@ -1271,17 +1292,26 @@ label[for="photo-clear_id"] {
     transform: scaleX(-1);
     width: 1.5vw;
 
-    @media(max-width: 959px) {
-      display: block;
-      left: 10px;
-      position: absolute;
-      width: 2.5vw;
+    @media(max-width: 769px) {
+      //display: block;
+      //left: 10px;
+      //position: absolute;
+      //width: 2.5vw;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      width: 26px;
+
+      img{
+        width: 26px;
+      }
+
     }
 
 
   }
 
-  @media(max-width: 959px) {
+  @media(max-width: 769px) {
     display: none;
 
     &.active {
@@ -1603,6 +1633,14 @@ label[for="photo-clear_id"] {
   justify-content: space-between;
   align-items: center;
   position: relative;
+  margin: 20px 0;
+  height: 43px;
+
+  &.white-underline{
+    border-bottom: 5px solid white;
+  }
+
+
 }
 
 .datepicker-dashboard-btn {
@@ -1612,6 +1650,13 @@ label[for="photo-clear_id"] {
   align-self: center;
   margin-bottom: 2px;
   cursor: pointer;
+
+  @media(max-width: 769px){
+    font-size: 30px;
+    line-height: 30px;
+
+  }
+
 }
 
 .datepicker-dashboard-btn:after {
@@ -1658,8 +1703,8 @@ label[for="photo-clear_id"] {
       font-size: 2vw;
     }
 
-    @media(max-width: 960px)  {
-      font-size: 3.5vw;
+    @media(max-width: 769px)  {
+      font-size: 20px;
     }
   }
 
@@ -1693,8 +1738,8 @@ label[for="photo-clear_id"] {
   top: 40px;
   border-right: solid 2px white;
   height: auto;
-  width: 40%;
   z-index: 1010;
+  background-color: #f0f0eb;
 
   > div:nth-child(-n + 2) {
     font-weight: bold;
@@ -1795,9 +1840,9 @@ label[for="photo-clear_id"] {
   }
 
   .datepicker-dashboard-left-panel {
-    min-width: 105px;
-    max-width: 150px;
-    width: 14.2vw;
+    //min-width: 105px;
+    //max-width: 150px;
+    //width: 14.2vw;
   }
 
   .datepicker-dashboard-container
@@ -1880,7 +1925,7 @@ label[for="photo-clear_id"] {
     padding-left: 3.5vw;
     overflow-y: scroll;
 
-    @media (max-width: 960px) {
+    @media (max-width: 769px) {
       height: auto;
       overflow-y: auto;
       padding-left: 0;
