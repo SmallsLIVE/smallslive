@@ -1390,6 +1390,7 @@ label[for="photo-clear_id"] {
       }
 
       input {
+
         @media (max-width: 960px) {
           height: 40px;
           width: 100%;
@@ -1730,6 +1731,7 @@ label[for="photo-clear_id"] {
     &.metrics {
       display: block;
       top: 44px;
+      z-index: 1011;
     }
   }
   .custom-date-picker {
@@ -1834,21 +1836,54 @@ label[for="photo-clear_id"] {
   }
 }
 
-@media (max-width: 960px) {
+.datepicker-dashboard-container {
+  #dashboard-metrics-date-picker-to input{
+    border-top: none;
+    border-right: none;
+  }
+}
+
+@media (max-width: 1023px) {
   #apply-button {
     height: 35px;
   }
 
   .datepicker-dashboard-container {
     top: 84px;
+     width: 100%;
+
+      .white-border-button {
+        padding: 0 20px;
+
+        @media (max-width: 960px) {
+          height: 35px;
+        }
+      }
 
     .custom-date-picker {
       min-width: 140px;
       max-width: 350px;
 
-      .datepicker.dropdown-menu td.day {
-        padding: 0;
+      .datepicker.dropdown-menu {
+        left: 0 !important;
+        min-width: auto !important;
+        max-width: initial !important;
+        width: 100%;
+
+        td.day {
+          padding: 0;
+        }
+
       }
+
+      input {
+        width: 100%;
+      }
+    }
+
+    #dashboard-metrics-date-picker-to input{
+      border-top: none;
+      border-right: none;
     }
   }
 
@@ -1856,15 +1891,6 @@ label[for="photo-clear_id"] {
     //min-width: 105px;
     //max-width: 150px;
     //width: 14.2vw;
-  }
-
-  .datepicker-dashboard-container
-    .custom-date-picker
-    .dropdown-menu.datepicker {
-    left: 14.9vw !important;
-    min-width: 200px !important;
-    max-width: 256px !important;
-    width: 25vw;
   }
 }
 

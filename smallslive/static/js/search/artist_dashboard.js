@@ -897,6 +897,15 @@
       loadData();
 
     });
+
+    $(document).mouseup(function (e) {
+      var container = $(".datepicker-dashboard-container");
+      if (!container.is(e.target) && container.has(e.target).length === 0) {
+        container.fadeOut(500, function () {
+          $(".event-metrics-container .datepicker-container").data('shown', false);
+        });
+      }
+    });
   }
 
   var loadData = function () {
