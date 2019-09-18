@@ -33,6 +33,9 @@
       style="margin-top: 30px;">
   {% csrf_token %}
   <div class="title-and-image-container">
+    <div id="image-upload-loading" class="loading hidden text-center">
+      <img width="60" src="{% static 'image/loading.gif' %}">
+    </div>
     <div class="cropping-photo">
       <div id="div_id_photo" class="form-group">
         <div class="controls ">

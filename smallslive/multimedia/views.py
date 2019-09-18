@@ -219,9 +219,7 @@ class UploadImagePreview(View):
         image_file = ImageMediaFile.objects.create(photo=image)
 
         filters = {
-            'height': 300,
             'width': 300,
-            'smart': True,
         }
         url = generate_url(image_url=image_file.photo.url, **filters)
 
@@ -232,8 +230,11 @@ class UploadImagePreview(View):
         }
         response = json.dumps(data)
 
-        return HttpResponse(response, content_type="application/json")
 
+
+
+
+        return HttpResponse(response, content_type="application/json")
 
 
 upload_image_preview = UploadImagePreview.as_view()

@@ -190,10 +190,10 @@ $(document).ready(function () {
       } else {
         $("#submit-id-submit").attr("disabled", "disabled");
         disableEditForm();
+        cancelUploadedImage();
         $(this).text('Edit');
       }
     });
-
 
     // Ajax upload image
     $(document).on("change", "#id_photo", function () {
@@ -208,7 +208,8 @@ $(document).ready(function () {
       $('#div_id_photo img').toggleClass('hidden');
       $('#image-load-gif').toggleClass('hidden');
       $('#event_edit_modal').find('.modal-body').html('');
-      $('#div_id_cropping img').attr('src', "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=");
+      $('#div_id_cropping .controls').hide();
+      $('#image-upload-loading').removeClass("hidden");
 
       $.ajax({
           url: uploadImagePreviewUrl,
@@ -220,14 +221,25 @@ $(document).ready(function () {
           cache: false,
           success: function (data) {
             if (data.success) {
-              $('#div_id_photo img').attr('src', data.src);
               $('#div_id_photo img').toggleClass('hidden');
               $('#image-load-gif').toggleClass('hidden');
+              $("#image-upload-loading").toggleClass("hidden");
+              $('#div_id_cropping .controls').show();
               $('#id_image_id').val(data.id);
-              $('#div_id_cropping img').attr('src', data.src);
-              $that.data("thumbnail-url", data.src);
-              $that.attr("data-thumbnail-url", data.src);
-              //resizeInfo(data.src);
+
+              $("#div_id_photo img").attr("src", data.src);
+
+              var $imageInput = $("#id_photo");
+              $imageInput.removeAttr("data-max-width");
+              $imageInput.removeAttr("data-min-width");
+              $imageInput.removeAttr("data-org-width");
+              $imageInput.removeAttr("data-org-height");
+
+              $imageInput.data("thumbnail-url", data.src);
+              $imageInput.removeAttr("data-thumbnail-url");
+              $imageInput.attr("data-thumbnail-url", data.src);
+
+              resizeInfo();
             }
           }
       });
@@ -470,6 +482,13 @@ $(document).ready(function () {
     $("#div_id_photo").find("label.white-border-button").addClass("disabled");
     $("#div_id_cropping").css("filter", "grayscale(1)");
 
+  }
+
+  function cancelUploadedImage() {
+    $('#div_id_photo img').attr('src', $('#div_id_photo img').data("original-src"));
+    //$('#id_image_id').val(data.id);
+    $('#div_id_cropping img').attr('src', $('#div_id_cropping img').data("original-src"));
+    $("#id_photo").data("thumbnail-url", $("#id_photo").data("thumbnail-original-url"));
   }
 
   function enableEditForm () {
