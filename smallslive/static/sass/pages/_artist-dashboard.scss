@@ -558,12 +558,22 @@ $dashboard-desktop: 1199px;
 
       }
 
+      @media (max-width: 760px) {
+        width: 50%;
+        margin-left: 25%;
+      }
+
       .admin-interface__form {
         .selectize-input {
           @media (max-width: 960px) {
             font-size: 11px;
           }
         }
+      }
+
+      &.future {
+        width: 50%;
+        margin-left: 25%;
       }
 
     }
@@ -1198,6 +1208,10 @@ $dashboard-desktop: 1199px;
     }
 
     width: 100%;
+  }
+
+  &.future {
+    display: none;
   }
 
 }
