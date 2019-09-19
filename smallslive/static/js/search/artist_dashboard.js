@@ -200,7 +200,10 @@
       $(document).on("change", "#id_photo", function () {
         var filePath = $(this).val();
         var fileName = filePath.replace(/^.*[\\\/]/, '');
-        $("#file_name").text(fileName);
+
+        var $fileNameSpan = $("#file_name");
+        $fileNameSpan.text(fileName);
+        $fileNameSpan.attr("original-text", "Choose File");
 
         var $that = $(this);
 
@@ -222,29 +225,9 @@
             cache: false,
             success: function (data) {
               if (data.success) {
-                $('#div_id_photo img').toggleClass('hidden');
                 $('#image-load-gif').toggleClass('hidden');
                 $("#image-upload-loading").toggleClass("hidden");
-                $('#div_id_cropping .controls').show();
-                $('#id_image_id').val(data.id);
-
-                $("#div_id_photo img").attr("src", data.src);
-
-                var $imageInput = $("#id_photo");
-                $imageInput.removeAttr("data-max-width");
-                $imageInput.removeAttr("data-min-width");
-                $imageInput.removeAttr("data-org-width");
-                $imageInput.removeAttr("data-org-height");
-                $imageInput.removeData("data-max-width");
-                $imageInput.removeData("data-min-width");
-                $imageInput.removeData("data-org-width");
-                $imageInput.removeData("data-org-height");
-
-                $imageInput.data("thumbnail-url", data.src);
-                $imageInput.removeAttr("data-thumbnail-url");
-                $imageInput.attr("data-thumbnail-url", data.src);
-
-                resizeInfo();
+                updateUploadedImage(data);
               }
             }
         });
@@ -493,11 +476,74 @@
 
     }
 
+    function saveAttributes($element, restore) {
+
+      var attrs = {};
+      $element.each(function () {
+        $.each(this.attributes, function () {
+          if (this.specified) {
+            if (restore) {
+              if (this.name.indexOf("original") === 0) {
+                attrs[this.name] = this.value;
+              }
+            } else {
+              var storeName = "original-" + this.name;
+              attrs[storeName] = this.value;
+            }
+          }
+        });
+      });
+
+      $.each(attrs, function (key, value) {
+        if (restore) {
+          var attrName = key.replace("original-", "");
+          $element.attr(attrName, value);
+          $element.removeAttr(key);
+        } else {
+          $element.attr(key, value);
+        }
+      });
+
+    }
+
+    function updateUploadedImage(data) {
+
+      var $imageId = $('#id_image_id');
+      $imageId.attr("original-value", $imageId.val());
+      $imageId.val(data.id);
+
+      var $image = $("#div_id_photo img");
+      $image.attr("original-src", $image.attr("src"));
+      $image.attr("src", data.src);
+      $('#div_id_cropping .controls').show();
+      $('#div_id_photo img').toggleClass('hidden');
+
+      var $imageInput = $("#id_photo");
+      saveAttributes($imageInput);
+
+      $imageInput.data("thumbnail-url", data.src);
+      $imageInput.attr("data-thumbnail-url", data.src);
+
+      resizeInfo();
+
+    }
+
     function cancelUploadedImage() {
-      $('#div_id_photo img').attr('src', $('#div_id_photo img').data("original-src"));
-      //$('#id_image_id').val(data.id);
-      $('#div_id_cropping img').attr('src', $('#div_id_cropping img').data("original-src"));
-      $("#id_photo").data("thumbnail-url", $("#id_photo").data("thumbnail-original-url"));
+
+      var $imageId = $('#id_image_id');
+      $imageId.val($imageId.attr("original-value"));
+
+      var $image = $("#div_id_photo img");
+      $image.attr("src", $image.attr("original-src"));
+
+      var $imageInput = $("#id_photo");
+      $imageInput.removeData();
+      saveAttributes($imageInput, true);
+
+      var $fileNameSpan = $("#file_name");
+      $fileNameSpan.text($fileNameSpan.attr("original-text"));
+
+      resizeInfo();
     }
 
     function enableEditForm () {
