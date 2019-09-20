@@ -13,7 +13,7 @@
 {% load basket_tags %}
 
 {% block confirmation_modals %}
-  {% include 'account/selection_confirmation_dialog.html' %}
+  {% include 'account/catalog_selection_confirmation_dialog.html' %}
 {% endblock %}
 
 {% block flow_title %}
@@ -88,7 +88,7 @@
         </div>
       </div>
 
-      {% include 'account/gift_selection.html' with hidden=False %}
+      {% include 'account/catalog_gift_selection.html' with hidden=False %}
 
     </div>
 

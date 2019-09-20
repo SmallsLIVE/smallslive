@@ -11,17 +11,24 @@
 {% load thumbor_tags %}
 {% load basket_tags %}
 
-<div class="modal fade" id="catalogSelectionConfirmationDialog" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="selectionConfirmationDialog" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content custom-modal">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
-        <p class="title2 accent-color title">Thank you for your support</p>
+        <p class="title2 accent-color title">Thank you for your support (CATALOG)</p>
           <p class="title-big subtitle"></p>
           <p class="text9 justified-text text">
+            You have selected a one time donation of
+            <span class="smalls-color price"></span> of which
+            <span class="smalls-color tax"></span> is tax deductible. You have chosen to receive a
+            <span class="gift-tier"> as gift for your contribution</span>
+            <br>
+            <span class="variants"></span>
+          </p>
+          <p class="gift-content">
 
           </p>
-          <p class="gift-content"></p>
         </p>
         <div class="text4 text-centered" style="display: flex; justify-content: center;">
           <button id="confirmCatalogSelectionButton" class="white-border-button confirm" style="margin-right: 5px;">Confirm</button>

@@ -89,6 +89,7 @@ $(document).ready(function () {
   $(document).on("click", "#confirmCatalogSelectionButton", function () {
     showFlow("store");
     $itemForm.submit();
+    $mainContainer.find("#selectionConfirmationDialog").modal("hide");
   });
 
   $('#selectionConfirmationDialog').on('hidden.bs.modal', function () {
@@ -126,7 +127,10 @@ $(document).ready(function () {
     $downloadConfirmationDialog.modal("hide");
   });
 
-
+  $(document).on("click", "#confirmCatalogSelectionButton", function () {
+    showFlow("store");
+    $itemForm.submit();
+  });
 
 });
 

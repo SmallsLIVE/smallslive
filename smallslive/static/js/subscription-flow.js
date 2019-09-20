@@ -735,19 +735,14 @@ $(document).ready(function() {
     } else if (cost == "None" || cost == "0.00") {
       tax = "100%";
     }
-    var content =
-      'You have selected a one time donation of <span class="smalls-color">' +
-      price +
-      '</span>  of which <span class="smalls-color"> ' +
-      tax +
-      "</span> is tax deductible. You will receive access to The SmallsLIVE Archive for the remainder of the tax year. You have also chosen to receive a " +
-      giftTier +
-      " as a gift for your contribution.";
-    if (hasVariants) {
-      content = content + "<br> Please select an option below.";
-    }
-    $selectionConfirmationDialog.find(".text").html(content);
 
+    var $content = $selectionConfirmationDialog.find(".text");
+    $content.find(".price").text(price);
+    $content.find(".tax").text(tax);
+    $content.find(".gift-tier").text(giftTier);
+    if (hasVariants) {
+      $content.find(".variants").text("Please select an option below.");
+    }
     var $giftContent = $selectionConfirmationDialog.find(".gift-content");
     $giftContent.html($item);
     $item.removeClass("hidden");

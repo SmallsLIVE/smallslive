@@ -11,6 +11,7 @@ from oscar.apps.catalogue.views import ProductCategoryView
 from oscar_apps.partner.strategy import Selector
 from custom_stripe.models import CustomerDetail
 from artists.models import Artist
+from users.models import SmallsUser
 
 
 class ProductCategoryView(catalogue_views.ProductCategoryView):
@@ -166,6 +167,10 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
             except APIConnectionError:
                 customer_detail = None
             except InvalidRequestError:
+                customer_detail = None
+            except CustomerDetail.DoesNotExist:
+                customer_detail = None
+            except SmallsUser.customer.RelatedObjectDoesNotExist:
                 customer_detail = None
             if customer_detail:
                 ctx['active_card'] = customer_detail.active_card
