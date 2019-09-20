@@ -31,8 +31,8 @@
         <section class="artist-form">
             <form class="custom-form" action="{% url 'artist_dashboard:edit_profile' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div class="flex-column">
-                    <div class="flex-row content-centered artist-info-container">
+                <div class="flex-column" style="margin-top: 20px;">
+                    <div class="flex-row content-centered artist-info-container" style="flex-wrap: wrap">
                         <div class="flex-column flex-grow artist-profile-picture">
                             <div class="form-group {% if form.photo.errors %}has-error{% endif %}">
                                 {{ form.cropping }}
