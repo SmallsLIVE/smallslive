@@ -130,8 +130,7 @@ function updateArtistsHtml(data, reset) {
     //If there are only enough artists for 1 AJAX request, hide the next arrow after navigating to last artist
     if (data["numPages"] == 1 && data.showingResults < 10) {
       $("#artists .slide-btn.next").css("visibility", "hidden");
-    }
-    else {
+    } else if (data.showingResults != "NO RESULTS") {
       $("#artists .slide-btn.next").css("visibility", "visible");
     }
 
@@ -160,9 +159,9 @@ function sendArtistRequest(callback, callbackParam) {
     dataType: "json",
     success: function (data) {
       //If no artists returned, hide the next arrow
-      if (data === null) {
+      if (data.showingResults === "NO RESULTS") {
         $("#artist-load-gif").css("display", "none");
-        $(".right_arrow").css("visibility", "hidden");
+        $("#artists  .slide-btn.next").css("visibility", "hidden");
       }
       callback(data, callbackParam);
     },
