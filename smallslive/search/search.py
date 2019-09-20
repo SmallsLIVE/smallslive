@@ -4,10 +4,10 @@ from django.utils import timezone
 from artists.models import Artist, Instrument
 from events.models import Event, Recording
 
+
 class SearchObject(object):
 
     def get_instrument(self, text_array):
-        print text_array[0]
         condition = Q(name__icontains=text_array[0])
         for text in text_array[1:]:
             condition |= Q(name__icontains=text)

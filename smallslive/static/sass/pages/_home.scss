@@ -97,8 +97,13 @@ div.event-strip {
     }
   }
   .white-border-button {
+    background-color: #f0f0eb;
     display: inline-block;
     line-height: 300%;
+
+    &.active {
+      background-color: #fff;
+    }
   }
 }
 .scroll-right,

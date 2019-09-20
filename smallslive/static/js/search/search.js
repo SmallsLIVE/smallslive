@@ -12,8 +12,6 @@ var formatDate = function(d) {
 };
 
 var searchTerm,
-  artistSearchTerm,
-  artistInstrument,
   artistPageNum,
   artistMaxPageNum,
   archivedEventPageNum,
@@ -147,6 +145,10 @@ function updateArtistsHtml(data, reset) {
 
 function sendArtistRequest(callback, callbackParam) {
   callback = callback || function() {};
+
+  var artistInstrument = $("#select-instrument-btn").data("instrument");
+  var artistSearchTerm = $("#artist-search").val();
+
   $.ajax({
     url: "/search/ajax/artist/",
     data: {
@@ -170,35 +172,6 @@ function sendArtistRequest(callback, callbackParam) {
     }
   });
 }
-
-$(window).resize(function() {
-  if (viewPortLength("width") < 1024 && is_mobile == false) {
-    $("div[data-toggle-tab-target='archived-shows'")[0].click();
-    is_mobile = true;
-  }
-  if (viewPortLength("width") >= 1024 && is_mobile == true) {
-    if ($(".artist-search-profile-container").css("display") != "block") {
-      $("#musicianContent").css("display", "block");
-      $(".search-tab-content").show();
-      $(
-        '[data-toggle-tab-group="search-results"][data-toggle-tab="upcoming-shows"]'
-      ).hide();
-      is_mobile = false;
-    }
-  }
-  let pages = rightValue / 6 / 4;
-  pages -= 1;
-  $("#artists").animate(
-    {
-      left: -88 * pages + "vw"
-    },
-    200,
-    "linear",
-    function() {
-      toggleArrows();
-    }
-  );
-});
 
 function sendEventRequest(mode, dateFrom, dateTo, callback) {
   var selector = "#shows" + mode + "Content";
@@ -264,13 +237,13 @@ var currentEventsScrollLeft = 0;
 
 $(document).ready(function () {
   var instrument = getUrlParameter("instrument");
+  var $instrumentBtn = $("#select-instrument-btn");
   if (instrument) {
-    $(".instrument-btn").text(instrument);
+    $instrumentBtn.text(instrument);
+    $instrumentBtn.data("instrument", instrument);
   }
-  artistInstrument = instrument ? instrument : "";
   searchTerm = getUrlParameter("q");
   searchTerm = searchTerm ? searchTerm.replace(/\+/g, " ") : "";
-  artistSearchTerm = "";
   artistPageNum = archivedEventPageNum = upcomingEventPageNum = 1;
   artistMaxPageNum = archivedEventMaxPageNum = upcomingEventMaxPageNum = 2;
   apply = false;
@@ -288,9 +261,6 @@ $(document).ready(function () {
       searchMoreArtists();
     }
   });
-
-  $("[name='q']").val(searchTerm);
-  $("#artist-search").val("");
 
   $("#next-page-btn").click(function() {
     if (eventPageNum !== eventMaxPageNum) {
@@ -393,7 +363,6 @@ $(document).ready(function () {
     delay(function() {
       currentEventsScrollLeft = 0;
       artistPageNum = 1;
-      artistSearchTerm = $("#artist-search").val();
       $("#artists .event-row").html("");
       $("#artist-subheader").data("left-number", 1);
       $("#artist-subheader").data("right-number", 24);
@@ -433,14 +402,12 @@ $(document).ready(function () {
     if (viewPortLength("width") < 1024) {
       $("body").removeClass("hidden-body");
     }
-    artistInstrument = $(this).data("instrument");
-    $(".instrument-btn").text(artistInstrument || "Instrument");
+    /* Store selected value in button data */
+    $("#select-instrument-btn").data("instrument", $(this).data("instrument"));
+    $(".instrument-btn").text($(this).data("instrument") || "Instrument");
     artistPageNum = 1;
     currentEventsScrollLeft = 0;
     $("#artists .event-row").html("");
-
-    // sove instrument to local storage
-    localStorage.setItem('instrument', artistInstrument);
 
     sendArtistRequest(updateArtistsHtml);
     $(".instruments-container").css("display", "none");
@@ -759,6 +726,35 @@ $(document).ready(function () {
       $datePickerCalendar.datepicker("show");
     }
   });
+
+  $(window).resize(function() {
+    if (viewPortLength("width") < 1024 && is_mobile == false) {
+      $("div[data-toggle-tab-target='archived-shows'")[0].click();
+      is_mobile = true;
+    }
+    if (viewPortLength("width") >= 1024 && is_mobile == true) {
+      if ($(".artist-search-profile-container").css("display") != "block") {
+        $("#musicianContent").css("display", "block");
+        $(".search-tab-content").show();
+        $(
+          '[data-toggle-tab-group="search-results"][data-toggle-tab="upcoming-shows"]'
+        ).hide();
+        is_mobile = false;
+      }
+    }
+    let pages = rightValue / 6 / 4;
+    pages -= 1;
+    $("#artists").animate(
+      {
+        left: -88 * pages + "vw"
+      },
+      200,
+      "linear",
+      function() {
+        toggleArrows();
+      }
+    );
+  });
 });
 
 $(document).on(
@@ -772,11 +768,6 @@ $(document).on(
       $(".search-tabs div[data-toggle-tab-target='musicians']").addClass(
         "active"
       );
-    }
-
-    if (!artistInstrument) {
-      searchTerm = "";
-      $(".instrument[data-instrument='']").click();
     }
   }
 );

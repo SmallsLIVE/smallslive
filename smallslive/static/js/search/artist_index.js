@@ -17,67 +17,30 @@ $(document).ready(function() {
     $filter.trigger("change");
   }
 
-  var saved_artist = localStorage.getItem('artist_letter');
-  var saved_instrument = localStorage.getItem('instrument');
-
   $(".scroll-left").css("visibility", "initial");
-  const alphabet = [
-    "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-    "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
-  ];
-  buttons = {};
-  alphabet.map(letter => {
-    buttons[letter] = document.createElement("div");
-    buttons[letter].setAttribute("tabindex", 0);
-    $(buttons[letter])
-      .addClass("white-border-button")
-      .html(letter)
-      .appendTo($("#a-z-search"))
-      .click(() => {
-        $("#a-z-search .white-border-button").css(
-          "background-color",
-          "#f0f0eb"
-        );
-        $(buttons[letter]).css("background-color", "#fff");
 
-        // save value for searched artist letter
-        localStorage.setItem('artist_letter', letter);
-
-        if (searchTerm.trim() != "") {
-          searchTerm = "";
-          sendArtistRequest(() => {
-            $("#artist-search").val($(buttons[letter]).text());
-            $("#artist-search").change();
-          });
-        } else {
-          $("#artist-search").val($(buttons[letter]).text());
-          $("#artist-search").change();
-        }
-      })
-      .keypress(e => {
-        if (e.keyCode == 13) {
-          $(buttons[letter]).click();
-        }
+  $("#a-z-search .white-border-button").click(function (event) {
+    event.preventDefault();
+    $("#a-z-search .white-border-button").removeClass("active");
+    $(this).addClass("active");
+    $("a-z-search").attr("selected-value", $(this).text());
+    if (searchTerm.trim() != "") {
+      searchTerm = "";
+      sendArtistRequest(() => {
+        $("#artist-search").val($(this).text());
+        $("#artist-search").change();
       });
+    } else {
+      $("#artist-search").val($(this).text());
+      $("#artist-search").change();
+    }
   });
 
-  // items in local storage
-  if (saved_artist && saved_instrument) {
-    // artist and instrument
-    artistInstrument = saved_instrument;
-    $(".instrument-btn").text(saved_instrument || "Instrument");
-
-    $(buttons[saved_artist]).click();
-  } else if (saved_artist) {
-    // artist only
-    $(buttons[saved_artist]).click();
-  } else if (saved_instrument) {
-    // instrument only
-    artistInstrument = saved_instrument;
-    $(".instrument-btn").text(saved_instrument || "Instrument");
-
-    $("div[data-instrument='" + saved_instrument +"']").click()
-  }
+  $("#a-z-search .white-border-button").keypress(function (e) {
+    if (e.which == 13) {
+      $(this).click();
+    }
+  });
 
   /* Handle nav scrolling */
   function handleScrolling(direction) {
@@ -160,9 +123,7 @@ $(document).ready(function() {
     $("#artist-search").change();
     $("#a-z-search .white-border-button").css("background-color", "#f0f0eb");
     $("#a-z-refresh").css("background-color", "#fff");
-
-    // reset letter when 'all' button is pressed
-    localStorage.removeItem('artist_letter');
+    $("a-z-search").removeAttr("selected-value");
   });
 });
 

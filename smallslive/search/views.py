@@ -1,4 +1,5 @@
 import json
+import string
 from collections import OrderedDict
 from itertools import chain, groupby
 import datetime
@@ -58,6 +59,7 @@ def artist_form_autocomplete(request):
 
 
 class SearchMixin(object):
+
     def search(self, entity, main_search, page=1, order=None,
                instrument=None, date_from=None, date_to=None,
                artist_search=None, artist_pk=None, venue=None, results_per_page=60):
@@ -76,8 +78,6 @@ class SearchMixin(object):
                 main_search, order, date_from, date_to,
                 artist_pk=artist_pk, venue=venue)
 
-            print (sqs.query)
-
             if not self.request.user.is_superuser:
                 sqs = sqs.filter(Q(state=Event.STATUS.Published) | Q(state=Event.STATUS.Cancelled))
 
@@ -88,9 +88,6 @@ class SearchMixin(object):
         block = []
 
         paginator = Paginator(sqs, results_per_page)
-
-        print ('Page: ', page)
-        print ('Page size: ', results_per_page)
 
         try:
             objects = paginator.page(page).object_list
@@ -158,6 +155,7 @@ class UpcomingEventMixin(object):
 class MainSearchView(View, SearchMixin):
 
     def get(self, request, *args, **kwargs):
+
         # TODO: Why
         main_search = request.GET.get('main_search', None)
         artist_search = request.GET.get('artist_search', None)
@@ -173,6 +171,7 @@ class MainSearchView(View, SearchMixin):
         show_venue = request.GET.get('show_event_venue', False)
         show_sets = request.GET.get('show_event_setTime', False)
         upcoming = request.GET.get('is_upcoming', False)
+        referer = request.META.get('HTTP_REFERER', '')
 
         if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
@@ -186,11 +185,30 @@ class MainSearchView(View, SearchMixin):
                     date_to, timezone.get_current_timezone())
  
         if entity == 'artist':
+
+            if instrument:
+                request.session['instrument_search_value'] = instrument
+            else:
+                if referer and ('artist_pk' in referer or 'events' in referer):
+                    instrument = request.session.get('instrument_search_value')
+                else:
+                    if 'instrument_search_value' in request.session:
+                        del request.session['instrument_search_value']
+
+            if artist_search:
+                request.session['artist_search_value'] = artist_search
+            else:
+                if referer and ('artist_pk' in referer or 'events' in referer):
+                    artist_search = request.session.get('artist_search_value')
+                else:
+                    if 'artist_search_value' in request.session:
+                        del request.session['artist_search_value']
+
             artists_blocks, showing_results, num_pages = self.search(
                 Artist, main_search, page, instrument=instrument, artist_search=artist_search)
 
             # If search returns no artists, send back 200 res with no other data
-            if (not artists_blocks):
+            if not artists_blocks:
                 return JsonResponse({})
 
             context = {
@@ -303,9 +321,10 @@ class SearchBarView(View):
 
 
 class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
+
     template_name = 'search/search.html'
 
-    def get_artist_context(self, q, instrument):
+    def get_artist_context(self, q, instrument, artist_search):
 
         artist_id = self.request.GET.get('artist_pk')
         artist = None
@@ -314,7 +333,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         num_pages = 0
         if not artist_id:
             artists_blocks, showing_artist_results, num_pages = self.search(
-                Artist, q, instrument=instrument)
+                Artist, q, instrument=instrument, artist_search=artist_search)
             if artists_blocks and len(artists_blocks[0]) == 1:
                 artist=artists_blocks[0][0]
 
@@ -334,14 +353,33 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         return artist_context
 
     def get_context_data(self, **kwargs):
+
+        referer = self.request.META.get('HTTP_REFERER', '')
+
         context = super(TemplateSearchView, self).get_context_data(**kwargs)
         context = self.get_upcoming_events_context_data(context)
+
         q = self.request.GET.get('q', '')
-        instrument = self.request.GET.get('instrument','')
         if q:
             context['musician_search'] = True
 
-        artist_context = self.get_artist_context(q, instrument)
+        instrument = self.request.GET.get('instrument','')
+        if not instrument and ('events' in referer or 'artist_pk' in referer):
+            instrument = self.request.session.get('instrument_search_value')
+            context['instrument'] = instrument
+        elif not self.request.GET.get('artist_pk'):
+            if 'instrument_search_value' in self.request.session:
+                del self.request.session['instrument_search_value']
+
+        artist_search = self.request.GET.get('artist_search', '')
+        if not artist_search and ('events' in referer or 'artist_pk' in referer):
+            artist_search = self.request.session.get('artist_search_value')
+            context['artist_search'] = artist_search
+        elif not self.request.GET.get('artist_pk'):
+            if 'artist_search_value' in self.request.session:
+                del self.request.session['artist_search_value']
+
+        artist_context = self.get_artist_context(q, instrument, artist_search)
         context.update(artist_context)
 
         context['query_term'] = q
@@ -363,9 +401,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         context['range'] = range(
             1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2]
         context['has_last_page'] = (num_pages - page) >= 3
-        default_to_date = 'now'
         if event_blocks and event_blocks[0] and event_blocks[0][0].date:
-            default_to_date = event_blocks[0][0].date.strftime('%m/%d/%Y')
             context['first_event_date'] = last.get_date().strftime('%m/%d/%Y')
             context['last_event_date'] = first.get_date().strftime('%m/%d/%Y')
             context['first'] = first
@@ -375,6 +411,8 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
             context['show_metrics'] = True
 
         context['user'] = self.request.user
+
+        context['alphabet'] = string.ascii_lowercase
 
         return context
 
