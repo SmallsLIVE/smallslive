@@ -1,13 +1,13 @@
 {% if is_event_user_not_confirmed or user.is_authenticated and show_email_confirmation_dialog %}
-  <div class="modal fade in" role="dialog" id="inactive-dialog" >
+  <div class="modal" role="dialog" id="inactive-dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content  custom-modal">
                 <a href="#" class="close-button"></a>
           <div class="modal-body">
               <p class="title1 send">Please confirm your email address</p>
-              <p class="text9 text-justified send">
+              <p class="text9 send">
                 {% if email_sent %}
-                  You will receive an e-mail to <span class="accent-color">{{ user.email }}</span> within 10 minutes.  Click the link in the e-mail to confirm your address.
+                  You will receive an e-mail to: <span class="accent-color">{{ user.email }}</span> within 10 minutes.  Click the link in the e-mail to confirm your address.
                 {% else %}
                   A confirmation e-mail was sent on {{ user.date_joined|date:"M j, Y"}} to <span class="accent-color">{{ user.email }}</span>.
                   <br>Click the link in the e-mail to confirm your address.
@@ -15,7 +15,7 @@
               </p>
               <p class="title1 sent hidden">Confirmation email re-sent</p>
               <p class="text9 text-justified sent hidden">
-                Your confirmation e-mail has been re-sent to <span class="accent-color">{{ user.email }}</span> and should appear in your inbox within 10 minutes. Click the link in your e-mail to confirm your address.
+                Your confirmation e-mail has been re-sent to: <span class="accent-color">{{ user.email }}</span> and should appear in your inbox within 10 minutes. Click the link in your e-mail to confirm your address.
               </p>
               <div class="text4 text-centered" style="margin-top: 40px">
                   <div>
@@ -74,21 +74,22 @@
         return false;
       });
 
-      var $inactiveModal = $('#inactive-dialog');
       {% if user.is_authenticated and show_email_confirmation_dialog %}
+        var $inactiveModal = $('#inactive-dialog');
         $inactiveModal.modal('show');
+        var $closeButton = $inactiveModal.find('.close-button');
+        $closeButton.click(function () {
+           $inactiveModal.modal('hide');
+        });
+        $inactiveModal.on('hidden.bs.modal', function () {
+          var $content = $('#inactive-dialog .modal-body');
+          $content.find('.send').removeClass('hidden');
+          if (!$content.find('.sent').hasClass('hidden')) {
+            $content.find('.sent').addClass('hidden');
+          }
+        });
       {% endif %}
-      var $closeButton = $inactiveModal.find('.close-button');
-      $closeButton.click(function () {
-         $inactiveModal.modal('hide');
-      });
-      $inactiveModal.on('hidden.bs.modal', function () {
-        var $content = $('#inactive-dialog .modal-body');
-        $content.find('.send').removeClass('hidden');
-        if (!$content.find('.sent').hasClass('hidden')) {
-          $content.find('.sent').addClass('hidden');
-        }
-      })
+
     });
   </script>
 {% endif %}
