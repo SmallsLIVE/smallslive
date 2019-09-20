@@ -7,9 +7,21 @@
   <script>
     var django = {jQuery: jQuery};
   </script>
-  {{ form.media }}
-  <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
   <link href="{% static 'css/selectize.bootstrap3.css' %}" rel="stylesheet">
+  <link href="/static/image_cropping/css/jquery.Jcrop.min.css" type="text/css" media="all" rel="stylesheet" />
+  <link href="/static/image_cropping/css/image_cropping.css" type="text/css" media="all" rel="stylesheet" />
+  <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+  <!-- Image Cropping is removing jQuery, let's remember it -->
+  <script>
+    window.__jQuery = window.jQuery;
+    window.__$ = window.$;
+  </script>
+  <script type="text/javascript" src="/static/image_cropping/js/jquery.Jcrop.min.js"></script>
+  <script type="text/javascript" src="/static/image_cropping/image_cropping.js"></script>
+  <script>
+    window.jQuery = window.__jQuery;
+    window.$ = window.__$;
+  </script>
 {% endblock extra_head %}
 
 {% block content %}
@@ -63,8 +75,30 @@
       EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
       EventForm.init(true);
 
+      function updateUploadedImage(data) {
+
+        var $imageId = $('#id_image_id');
+        $imageId.val(data.id);
+
+        var $image = $("#div_id_photo img");
+        $image.attr("src", data.src);
+        $('#div_id_cropping .controls').show();
+        $('#div_id_photo img').toggleClass('hidden');
+
+        var $imageInput = $("#id_photo");
+        $imageInput.data("thumbnail-url", data.src);
+        $imageInput.attr("data-thumbnail-url", data.src);
+
+        $(".jcrop-holder").remove();
+        $("#id_cropping-image").remove();
+        $(".field-box.allow-fullsize").remove();
+        image_cropping.init();
+
+      }
+
+
       // Ajax upload image
-      $(document).on('change', 'form.admin-interface__form input[type="file"]', function () {
+      $(document).on('change', '#id_photo', function () {
         var $form = $(this).closest('form');
         var data = new FormData($form.get(0));
         $('#div_id_photo img').toggleClass('hidden');
@@ -80,11 +114,9 @@
             cache: false,
             success: function (data) {
               if (data.success) {
-                $('#div_id_photo img').attr('src', data.src);
                 $('#div_id_photo img').toggleClass('hidden');
                 $('#image-load-gif').toggleClass('hidden');
-                $('#id_image_id').val(data.id);
-                $('#div_id_cropping img').attr('src', data.src);
+                updateUploadedImage(data);
               }
             }
         });

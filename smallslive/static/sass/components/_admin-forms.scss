@@ -29,6 +29,7 @@
   }
 
   &__form {
+
     #div_id_photo {
       a {
         display: none;
@@ -51,6 +52,20 @@
         @include lato-bold;
         font-size: 12px;
         color: $main-accent-color;
+      }
+
+      &.white-border-button {
+        width: 150px;
+        input {
+          position: absolute;
+          top: -1000px;
+        }
+      }
+
+      #div_id_cropping {
+        label {
+          display: none;
+        }
       }
     }
 
@@ -255,4 +270,8 @@
 
 .bootstrap-datetimepicker-widget {
   min-width: 300px;
+}
+
+#hint_id_cropping {
+  display: none;
 }
