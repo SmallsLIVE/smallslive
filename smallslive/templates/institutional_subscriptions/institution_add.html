@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends 'home_new.html' %}
 {% load crispy_forms_tags %}
 {% load static from staticfiles %}
 
@@ -35,12 +35,14 @@
                     <div class="col-xs-12 col-sm-6">
                         <label for="extend-subscription">Extend the Institutional subscription validity time for:</label>
                         <div class="inline-field-button-group">
-                            <select class="form-control selectpicker" id="extend-subscription">
-                               <option value="1">1 month</option>
-                               <option value="6">6 months</option>
-                               <option value="12">12 months</option>
-                            </select>
-                            <button class="in-form-button extend-subscription-button">Extend</button>
+                            <div class="white-border-select" style="width: 130px;">
+                                <select class="form-control selectpicker" id="extend-subscription">
+                                   <option value="1">1 month</option>
+                                   <option value="6">6 months</option>
+                                   <option value="12">12 months</option>
+                                </select>
+                            </div>
+                            <button class="extend-subscription-button white-border-button" style="margin-left: 10px;">Extend</button>
                         </div>
                     </div>
                 </div>
@@ -82,7 +84,8 @@
           var subscriptionEnd = $end.data("DateTimePicker").getDate();
           var newSubscriptionEnd = subscriptionEnd.add(extendMonths, 'M').format(date_format);
           $end.data("DateTimePicker").setDate(newSubscriptionEnd);
-        })
+        });
+
       })
 
     </script>

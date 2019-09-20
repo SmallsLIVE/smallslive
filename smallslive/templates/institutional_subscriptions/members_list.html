@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends 'home_new.html' %}
 {% load add_get_parameter %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
@@ -17,7 +17,7 @@
             <form method="get" action=".">
                 <span class="artists-list__search__heading">Search:</span>
                 <input class="form-control search" id="id_name" name="q" placeholder="Search by name" type="text" {% if request.GET.q %}value="{{ request.GET.q }}"{% endif %}>
-                <input type="submit" value="Search">
+                <button type="submit" class="white-border-button" style="display: inline">Search</button>
             </form>
         </section>
         <section class="institutions-list__breadcrumbs">
@@ -56,7 +56,7 @@
                             <div class="institutions-list__list__state"><i class="fa {% if member.has_activated_account %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
                         </div>
                         <div class="col-xs-4 col-sm-3 col-md-2 text-right">
-                            <button type="button" class="list-row-button" data-toggle="modal" data-target="#{{ member.id }}-modal">Remove user</button>
+                            <button type="button" class="white-border-button" data-toggle="modal" data-target="#{{ member.id }}-modal">Remove user</button>
                         </div>
                         <!-- specific user removal modal -->
                         <!-- Modal -->
@@ -122,7 +122,7 @@
                     <div class="controls "><textarea class="multiemailwidget form-control" cols="40"
                                                      id="id_member_emails" name="member_emails" rows="10"></textarea></div>
                   </div>
-                  <button type="submit" name="submit" class="admin-interface__form__button">Invite</button>
+                  <button type="submit" name="submit" class="white-border-button">Invite</button>
                 </form>
             </div>
 {#            <p class="quota-warning">#}
