@@ -206,6 +206,10 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
       eventDateTo.getDate();
   }
 
+  if (typeof searchTerm === "undefined") {
+    searchTerm = "";
+  }
+
   var searchFilters = {
     main_search: searchTerm,
     page: eventPageNum,

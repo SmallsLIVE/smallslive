@@ -137,6 +137,12 @@ class SearchObject(object):
     def search_event(self, main_search, order=None, start_date=None, end_date=None,
                      artist_pk=None, venue=None, instrument=None):
 
+        print '******************  search_event : ********************'
+        print 'main_search: ', main_search
+        print 'order: ', order
+        print 'start_date: ', start_date
+        print 'end_date', end_date
+
         def filter_quantity_of_performers(number_of_performers_searched, artist, just_by_qty):
 
             events_data = Event.objects.get_events_by_performers_and_artist(

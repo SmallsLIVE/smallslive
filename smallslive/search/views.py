@@ -173,11 +173,33 @@ class MainSearchView(View, SearchMixin):
         upcoming = request.GET.get('is_upcoming', False)
         referer = request.META.get('HTTP_REFERER', '')
 
+        print '**************** MainSearchView.get: *********************'
+        print 'date_from: ', date_from
+        print 'date_to: ', date_to
+        print 'referer: ', referer
+
+        if date_from:
+            request.session['search_date_from'] = date_from
+        else:
+            if referer and ('artist_pk' in referer or 'events' in referer):
+                date_from = request.session.get('search_date_from')
+            else:
+                if 'search_date_from' in request.session:
+                    del request.session['search_date_from']
         if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
             if not date_from.tzinfo:
                 date_from = timezone.make_aware(
                     date_from, timezone.get_current_timezone())
+
+        if date_to:
+            request.session['search_date_to'] = date_to
+        else:
+            if referer and ('artist_pk' in referer or 'events' in referer):
+                date_to = request.session.get('search_date_to')
+            else:
+                if 'search_date_to' in request.session:
+                    del request.session['search_date_to']
         if date_to:
             date_to = parser.parse(date_to, fuzzy=True)
             if not date_to.tzinfo:
@@ -351,6 +373,10 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
     def get_context_data(self, **kwargs):
 
         referer = self.request.META.get('HTTP_REFERER', '')
+        remember_date = self.request.GET.get('remember_date') == 'True'
+        print '************** referer *******************'
+        print 'referer: ', referer
+        print 'remember_date: ', remember_date
 
         context = super(TemplateSearchView, self).get_context_data(**kwargs)
         context = self.get_upcoming_events_context_data(context)
@@ -358,6 +384,31 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         q = self.request.GET.get('q', '')
         if q:
             context['musician_search'] = True
+
+        # TODO: remove duplicate code
+        date_from = None
+        if referer and ('artist_pk' in referer or 'events' in referer) or remember_date:
+            date_from = self.request.session.get('search_date_from')
+        else:
+            if 'search_date_from' in self.request.session:
+                del self.request.session['search_date_from']
+        if date_from:
+            date_from = parser.parse(date_from, fuzzy=True)
+            if not date_from.tzinfo:
+                date_from = timezone.make_aware(
+                    date_from, timezone.get_current_timezone())
+
+        date_to = None
+        if referer and ('artist_pk' in referer or 'events' in referer) or remember_date:
+            date_to = self.request.session.get('search_date_to')
+        else:
+            if 'search_date_to' in self.request.session:
+                del self.request.session['search_date_to']
+        if date_to:
+            date_to = parser.parse(date_to, fuzzy=True)
+            if not date_to.tzinfo:
+                date_to = timezone.make_aware(
+                    date_to, timezone.get_current_timezone())
 
         instrument = self.request.GET.get('instrument','')
         if not instrument and ('events' in referer or 'artist_pk' in referer):
@@ -386,7 +437,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
 
         artist_id = context['artist'].pk if context['artist'] else None
         event_blocks, showing_event_results, num_pages, first, last = self.search(
-            Event, q, results_per_page=60, artist_pk=artist_id)
+            Event, q, results_per_page=60, artist_pk=artist_id, date_from=date_from, date_to=date_to)
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []
