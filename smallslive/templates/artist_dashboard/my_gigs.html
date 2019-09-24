@@ -36,9 +36,9 @@
   <div class="artist-profile-container flex-column" style="padding-left: 0; padding-right: 0;">
     <div class="event-mobile-info" id="event-info-mobile-card" style="display:none;width:100%;padding:0"></div>
 
-    <div id="artistEventsContainer" class="flex-row items-flex-stretch artist-events-container" style="border-top: none;">
+    <div id="artistEventsContainer" class="flex-row items-flex-stretch artist-events-container{% if is_future %} future{% endif %}" style="border-top: none;">
       {% include 'artist_dashboard/my_gigs/event_list.html' %}
-      <div class="flex-column artist-event">
+      <div class="flex-column artist-event{% if is_future %} future{% endif %}">
 
         <div id="artistEventsInfo" class="flex-row items-flex-stretch artist-events-list-info">
           <div id="event-edit-form-load-gif" class="hidden events-gif text-center">
