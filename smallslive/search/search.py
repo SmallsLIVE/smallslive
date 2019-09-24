@@ -134,9 +134,8 @@ class SearchObject(object):
 
         return sqs
 
-
     def search_event(self, main_search, order=None, start_date=None, end_date=None,
-                     artist_pk=None, venue=None):
+                     artist_pk=None, venue=None, instrument=None):
 
         def filter_quantity_of_performers(number_of_performers_searched, artist, just_by_qty):
 
@@ -192,6 +191,8 @@ class SearchObject(object):
             all_instruments = self.get_instruments()
             if words:
                 instruments = [i for i in words if i.upper() in all_instruments]
+            if not instruments and instrument:
+                instruments = [instrument]
             if instruments:
                 condition = Q(artists_gig_info__role__name__icontains=instruments[0],
                             artists_gig_info__is_leader=True)

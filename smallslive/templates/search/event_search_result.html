@@ -1,7 +1,7 @@
 <div class="shows-container">
   {% if not placeholder %}
     {% if with_date_picker and not upcoming and events %}
-      <div class="archive-datepicker fixed"  style="position: relative;">
+      <div class="archive-datepicker fixed{% if showing_event_results <= 30 %} hidden{% endif %}"  style="position: relative;">
         <div class="datepicker-container noclick" style="display:block; top: 0 !important;">
           <div style="display: flex;">
             <div class="custom-date-picker from">
@@ -13,9 +13,7 @@
           </div>
           <div class="datepicker-reset text2 text-grey"><span id="reset-search-datepicker">Reset</span></div>
         </div>
-
       </div>
-
     {% endif %}
     <div id="search-result-articles" class="wrapped-events">
       {% include 'search/event_search_row.html' with show_extend_date=show_extend_date upcoming=upcoming events=events show_event_venue=show_event_venue secondary=secondary hide_play=hide_play with_date_picker=with_date_picker %}

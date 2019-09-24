@@ -76,7 +76,7 @@ class SearchMixin(object):
 
             sqs = search.search_event(
                 main_search, order, date_from, date_to,
-                artist_pk=artist_pk, venue=venue)
+                artist_pk=artist_pk, venue=venue, instrument=instrument)
 
             if not self.request.user.is_superuser:
                 sqs = sqs.filter(Q(state=Event.STATUS.Published) | Q(state=Event.STATUS.Cancelled))
@@ -183,17 +183,17 @@ class MainSearchView(View, SearchMixin):
             if not date_to.tzinfo:
                 date_to = timezone.make_aware(
                     date_to, timezone.get_current_timezone())
+
+        if instrument:
+            request.session['instrument_search_value'] = instrument
+        else:
+            if referer and ('artist_pk' in referer or 'events' in referer):
+                instrument = request.session.get('instrument_search_value')
+            else:
+                if 'instrument_search_value' in request.session:
+                    del request.session['instrument_search_value']
  
         if entity == 'artist':
-
-            if instrument:
-                request.session['instrument_search_value'] = instrument
-            else:
-                if referer and ('artist_pk' in referer or 'events' in referer):
-                    instrument = request.session.get('instrument_search_value')
-                else:
-                    if 'instrument_search_value' in request.session:
-                        del request.session['instrument_search_value']
 
             if artist_search:
                 request.session['artist_search_value'] = artist_search
@@ -216,7 +216,7 @@ class MainSearchView(View, SearchMixin):
         elif entity == 'event':
             events, showing_results, num_pages, first, last = self.search(
                 Event, main_search, page, order=order, date_from=date_from,
-                date_to=date_to, artist_pk=artist_pk, venue=venue)
+                date_to=date_to, artist_pk=artist_pk, venue=venue, instrument=instrument)
 
             context = {
                 'events': events[0] if events else [],

@@ -205,6 +205,7 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
       "/" +
       eventDateTo.getDate();
   }
+
   var searchFilters = {
     main_search: searchTerm,
     page: eventPageNum,
@@ -220,6 +221,11 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
   if (venueFilter) {
     searchFilters["venue"] = venueFilter;
   }
+  var artistInstrument = $("#select-instrument-btn").data("instrument");
+  if (artistInstrument) {
+    searchFilters["instrument"] = artistInstrument;
+  }
+
   $.ajax({
     url: "/search/ajax/event/",
     data: searchFilters,
@@ -409,6 +415,12 @@ $(document).ready(function () {
     $("#artists .event-row").html("");
 
     sendArtistRequest(updateArtistsHtml);
+    sendEventRequest(
+      "Archived",
+      datePickerFromDate,
+      datePickerToDate,
+      updateArchiveShows
+    );
     $(".instruments-container").css("display", "none");
   });
 
@@ -863,6 +875,7 @@ function loadMoreEvents(mode) {
 }
 
 function updateArchiveShows(data) {
+
   if (data.numPages < eventPageNum) {
     moreEvents = false;
     $("#event-load-gif").css("display", "none");
@@ -872,6 +885,7 @@ function updateArchiveShows(data) {
   moreEvents = true;
 
   if (data.template) {
+
     if (eventPageNum === 1) {
       var $eventSubheader = $("#archived-event-subheader");
       if (typeof data.showingResults !== "number") {
@@ -893,6 +907,7 @@ function updateArchiveShows(data) {
     var $eventSubHeaderFooter = "#archived-event-subheader-footer";
     var $totals = $("#archived-event-totals");
     $totals.html(data.showingResults);
+
     if (apply || eventFilter) {
       apply = false;
       eventFilter = false;

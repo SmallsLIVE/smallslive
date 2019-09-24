@@ -1,7 +1,4 @@
-
-
 {% for event in events %}
-
   <article class="event-display" onclick="window.location='{{ event.get_absolute_url }}';">
    {% include 'events/event_card.html' with event=event secondary=secondary hide_play=hide_play %}
     <div class="event-info new {% if upcoming %}{% endif %}">

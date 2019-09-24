@@ -464,6 +464,9 @@ body.headers-1 {
 }
 
 .instruments-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   flex-wrap: wrap;
   background-color: #f0f0eb;
   border: solid white;
