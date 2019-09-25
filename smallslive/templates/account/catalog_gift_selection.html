@@ -5,13 +5,13 @@
 {% load staticfiles %}
 
 <div class="flex-column items-center  supporter-plan-input{% if hidden %} hidden{% endif %}" id="gift-input">
-  <div class="section-title section-title-no-padded">
-    <div tabindex="0" class="title1">Choose a Catalog Gift Tier</div>
+  <div class="section-title__catalog section-title-no-padded">
+    <div tabindex="0" class="title1">{{ product.title }} ({{ album_product.upc }})</div>
   </div>
   <p tabindex="0" class="text9">
-    Your donation will be partially tax deductible and you will receive access to The SmallsLIVE Archive for the remainder of the tax year.
-    <br>
-    Choose a gift tier from the following selection.
+    Your donation will be partially tax deductible.
+    Streaming and digital downloads can be accessed from your Library.
+    Please make a selection from the choices below. 
   </p>
   <div id="gift" class="gifts-container">
 
@@ -48,7 +48,7 @@
                       data-type="{{ product.title }}"
                       data-variants="{{ product.variants.count }}">
                 <span class="price-tag">{{ session.price.incl_tax|currency:session.price.currency }} </span>
-                <span class="gift-title">{{ product.get_title }}</span>
+                <span class="gift-title">{{ product.get_child_product_title }}</span>
               </button>
             </div>
           {% else %}
@@ -59,7 +59,7 @@
                        data-type="{{ product.title }}"
                        data-variants="{{ product.variants.count }}">
                  <span class="price-tag">{{ session.price.excl_tax|currency:session.price.currency }} </span>
-                 <span class="gift-title">{{ product.get_title }}</span>
+                 <span class="gift-title">{{ product.get_child_product_title }}</span>
                </button>
             </div>
           {% endif %}

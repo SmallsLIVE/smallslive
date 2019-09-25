@@ -116,6 +116,16 @@ class Product(AbstractProduct):
                 title = u"{0} ({1})".format(self.parent.title, self.title)
         return unicode(title)
 
+    def get_child_product_title(self):
+        """
+        Return a product's title or it's parent's title if it has no title
+        """
+        title = self.title
+        if self.parent_id:
+            if not self.title:
+                title = self.parent.title
+        return unicode(title)
+
     def get_primary_image(self):
         print 'Get primary image ---> '
         product_image = self.primary_image()
