@@ -9,7 +9,12 @@
         </a>
       </div>
       <form class="search-input" action="{% url 'search' %}">
-        <input id="desktop-search-bar" name="q" type="text" placeholder="SEARCH" autocomplete="off">
+        <input id="desktop-search-bar"
+               name="q"
+               type="text"
+               placeholder="SEARCH"
+               autocomplete="off"
+               {% if query_term %} value="{{ query_term }}" {% endif %}>
       </form>
       <div class="search-bar-autocomplete-container"></div>
     </div>

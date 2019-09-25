@@ -64,6 +64,19 @@ class SearchMixin(object):
                instrument=None, date_from=None, date_to=None,
                artist_search=None, artist_pk=None, venue=None, results_per_page=60):
 
+        main_search = main_search.strip()
+
+        print '*************** SearchMixin.search ********************'
+        print 'main_search: ', main_search
+        print 'order: ', order
+        print 'page: ', page
+        print 'instrument: ', instrument
+        print 'date_from: ', date_from
+        print 'date_to: ', date_to
+        print 'venue: ', venue
+        print 'artist_search: ', artist_search
+        print '-------------------------------------------------------'
+
         search = SearchObject()
 
         first = None
@@ -206,25 +219,7 @@ class MainSearchView(View, SearchMixin):
                 date_to = timezone.make_aware(
                     date_to, timezone.get_current_timezone())
 
-        if instrument:
-            request.session['instrument_search_value'] = instrument
-        else:
-            if referer and ('artist_pk' in referer or 'events' in referer):
-                instrument = request.session.get('instrument_search_value')
-            else:
-                if 'instrument_search_value' in request.session:
-                    del request.session['instrument_search_value']
- 
         if entity == 'artist':
-
-            if artist_search:
-                request.session['artist_search_value'] = artist_search
-            else:
-                if referer and ('artist_pk' in referer or 'events' in referer):
-                    artist_search = request.session.get('artist_search_value')
-                else:
-                    if 'artist_search_value' in request.session:
-                        del request.session['artist_search_value']
 
             artists_blocks, showing_results, num_pages = self.search(
                 Artist, main_search, page, instrument=instrument, artist_search=artist_search)
@@ -342,7 +337,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
 
     template_name = 'search/search.html'
 
-    def get_artist_context(self, q, instrument, artist_search):
+    def get_artist_context(self, q, artist_search):
 
         artist_id = self.request.GET.get('artist_pk')
         artist = None
@@ -351,7 +346,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         num_pages = 0
         if not artist_id:
             artists_blocks, showing_artist_results, num_pages = self.search(
-                Artist, q, instrument=instrument, artist_search=artist_search)
+                Artist, q, artist_search=artist_search)
             if artists_blocks and len(artists_blocks[0]) == 1:
                 artist=artists_blocks[0][0]
 
@@ -410,14 +405,6 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
                 date_to = timezone.make_aware(
                     date_to, timezone.get_current_timezone())
 
-        instrument = self.request.GET.get('instrument','')
-        if not instrument and ('events' in referer or 'artist_pk' in referer):
-            instrument = self.request.session.get('instrument_search_value')
-            context['instrument'] = instrument
-        elif not self.request.GET.get('artist_pk'):
-            if 'instrument_search_value' in self.request.session:
-                del self.request.session['instrument_search_value']
-
         artist_search = self.request.GET.get('artist_search', '')
         if not artist_search and ('events' in referer or 'artist_pk' in referer):
             artist_search = self.request.session.get('artist_search_value')
@@ -426,7 +413,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
             if 'artist_search_value' in self.request.session:
                 del self.request.session['artist_search_value']
 
-        artist_context = self.get_artist_context(q, instrument, artist_search)
+        artist_context = self.get_artist_context(q, artist_search)
         context.update(artist_context)
 
         context['query_term'] = q

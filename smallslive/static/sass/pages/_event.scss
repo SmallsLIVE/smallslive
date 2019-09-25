@@ -252,6 +252,7 @@ $player-height: 25.3vw;
 
   .artist-link {
     @include text1();
+    cursor: pointer;
     text-transform: capitalize;
     font-size: 2em;
     color: black;

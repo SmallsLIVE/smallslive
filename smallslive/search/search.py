@@ -68,6 +68,10 @@ class SearchObject(object):
         return words, instruments, partial_instruments
 
     def search_artist(self, main_search=None, artist_search=None, instrument=None):
+        print '*********************************'
+        print 'search_artist: '
+        print 'main_search: ', main_search
+        print 'instrument: ', instrument
         # TODO: use settings to store values
         possible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
         if main_search != '':
@@ -75,6 +79,10 @@ class SearchObject(object):
                 main_search = ' '.join(main_search.split()[:-1])
 
         words, instruments, partial_instruments = self.process_input(main_search, artist_search, instrument)
+
+        print 'words: ', words
+        print 'instruments: ', instruments
+        print 'partial_instruments: ', partial_instruments
 
         sqs = Artist.objects.all()
         
@@ -140,8 +148,10 @@ class SearchObject(object):
         print '******************  search_event : ********************'
         print 'main_search: ', main_search
         print 'order: ', order
+        print 'instrument: ', instrument
         print 'start_date: ', start_date
         print 'end_date', end_date
+        print '------------------------------------------------------'
 
         def filter_quantity_of_performers(number_of_performers_searched, artist, just_by_qty):
 
@@ -206,7 +216,6 @@ class SearchObject(object):
                     condition |= Q(artists_gig_info__role__name__icontains=i,
                                 artists_gig_info__is_leader=True)
                 sqs = Event.objects.filter(condition)
-
             if words:
                 single_artist = False
                 if len(words) == 2 and not instruments:
@@ -265,5 +274,7 @@ class SearchObject(object):
             sqs = sqs.order_by('-seconds_played')
         else:
             sqs = sqs.order_by(order)
+
+        print sqs.query
 
         return sqs

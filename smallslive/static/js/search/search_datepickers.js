@@ -3,19 +3,6 @@ var datePickerToDateSet;
 
 function initializeArchiveDatePickers() {
 
-  var triggerSearch = false;
-
-  var datePickerFromVal = $datePickerFrom.val();
-  if (datePickerFromVal && datePickerFromVal != startDate) {
-    triggerSearch = true;
-    startDate = datePickerFromVal;
-  }
-  var datePickerToVal = $datePickerTo.val();
-  if (datePickerToVal && datePickerToVal != startDate) {
-    triggerSearch = true;
-    endDate = datePickerToVal;
-  }
-
   $datePickerFrom.datepicker({
     format: "mm/dd/yyyy",
     autoclose: false,
@@ -24,10 +11,6 @@ function initializeArchiveDatePickers() {
     startDate: startDate,
     endDate: endDate
   });
-
-  if (triggerSearch) {
-    $datePickerFrom.datepicker("setValue", startDate);
-  }
 
   $datePickerFrom.on("click", function() {
     var dropdown = $(
@@ -69,10 +52,6 @@ function initializeArchiveDatePickers() {
     startDate: startDate,
     endDate: endDate
   });
-
-  if (triggerSearch) {
-    $datePickerTo.datepicker("setValue", endDate);
-  }
 
   $datePickerTo.on("click", function() {
     var dropdown = $(
@@ -119,14 +98,6 @@ function initializeArchiveDatePickers() {
     );
   });
 
-  if (triggerSearch) {
-    sendEventRequest(
-      "Archived",
-      $datePickerFrom.datepicker("getDate"),
-      $datePickerTo.datepicker("getDate"),
-      updateArchiveShows
-    );
-  }
 }
 
 function resetDatePickers() {
