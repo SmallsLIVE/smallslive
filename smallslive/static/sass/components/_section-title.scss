@@ -139,6 +139,10 @@
     @media (min-width: 720px) and (max-width: 1024px) {
       margin-top: 45px;
     }
+    @media (max-width: $screen-xs) {
+      background-size: 90vw 5px;
+      width: 100vw;
+    }
 
     span {
       padding-bottom: 4px;

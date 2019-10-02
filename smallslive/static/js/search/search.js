@@ -132,7 +132,8 @@ function updateArtistsHtml(data, reset) {
     $(".mobile-artist-loading").hide();
     $("#artists .event-row").append(data.template);
     //If there are only enough artists for 1 AJAX request, hide the next arrow after navigating to last artist
-    if (data["numPages"] == 1 && data.showingResults < 10) {
+    var $articles = $("#artists .event-row article");
+    if ($articles.length == data.showingResults && $articles.last().visible()) {
       $("#artists .slide-btn.next").css("visibility", "hidden");
     } else if (data.showingResults != "NO RESULTS") {
       $("#artists .slide-btn.next").css("visibility", "visible");
@@ -414,9 +415,11 @@ $(document).ready(function () {
       $("body").removeClass("hidden-body");
     }
 
-    // Reload if there's a query for now. TODO: use javascript to replace params
-    if (location.search.indexOf("q") > -1) {
-      window.location.href = '?q=' + $(this).data("instrument");
+    // Reload if there's a query for now.
+    var searchParams = new URLSearchParams(window.location.search)
+    if (searchParams.has("q")) {
+
+      window.location.href = '?q=' + searchParams.get("q") + " "+ $(this).data("instrument");
       return;
     }
 

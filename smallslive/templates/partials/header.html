@@ -93,7 +93,10 @@
 <div id="search-bar" class="mobile-search-header visible-xs visible-sm visible-md">
   <div class="mobile-search-container flex-row items-center">
     <form id="headerSearchForm" action="{% url 'search' %}">
-      <input name="q" type="text" autocomplete="off">
+      <input name="q"
+             type="text"
+             autocomplete="off"
+             {% if query_term %} value="{{ query_term }}" {% endif %}>
     </form>
     <i id="searchArrow" class="fa fa-arrow-right"></i>
   </div>

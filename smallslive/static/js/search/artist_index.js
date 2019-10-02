@@ -24,16 +24,8 @@ $(document).ready(function() {
     $("#a-z-search .white-border-button").removeClass("active");
     $(this).addClass("active");
     $("a-z-search").attr("selected-value", $(this).text());
-    if (searchTerm.trim() != "") {
-      searchTerm = "";
-      sendArtistRequest(() => {
-        $("#artist-search").val($(this).text());
-        $("#artist-search").change();
-      });
-    } else {
-      $("#artist-search").val($(this).text());
-      $("#artist-search").change();
-    }
+    $("#artist-search").val($(this).text());
+    $("#artist-search").change();
   });
 
   $("#a-z-search .white-border-button").keypress(function (e) {
@@ -117,7 +109,6 @@ $(document).ready(function() {
   });
 
   $("#a-z-refresh").click(() => {
-    searchTerm = "";
     artistSearchTerm = "";
     $("#artist-search").val("");
     $("#artist-search").change();

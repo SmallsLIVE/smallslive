@@ -73,21 +73,30 @@ class EventQuerySet(models.QuerySet):
             staff_picked__isnull=False
         ).order_by('-staff_picked__date_picked')
 
-    def get_events_by_performers_and_artist(self, number_of_performers_searched, name, just_by_qty):
+    def get_events_by_performers_and_artist(
+            self, number_of_performers_searched, first_name=None, last_name=None, partial_name=None):
 
-        if just_by_qty:
+        if not first_name and not last_name and not partial_name:
             return self.annotate(num=Count('performers')).filter(Q(num=number_of_performers_searched))
 
-        if len(name.split()) > 1:
-            first_name = name.split()[0]
-            last_name = name.split()[1]
+        if first_name and last_name:
             return self.annotate(num=Count('performers')).filter(Q(num=number_of_performers_searched) & Q(
                         performers__first_name__iucontains=first_name) & Q(
                         performers__last_name__iucontains=last_name))
         else:
             return self.annotate(num=Count('performers')).filter(Q(num=number_of_performers_searched) & Q(
-                        performers__first_name__iucontains=name) | Q(
-                        performers__last_name__iucontains=name))
+                        performers__first_name__iucontains=partial_name) | Q(
+                        performers__last_name__iucontains=partial_name))
+
+    def get_events_by_performers_and_instrument(self, number_of_performers_searched, instruments):
+
+        if len(instruments) == 1:
+            instrument = instruments[0]
+            return self.annotate(num=Count('performers')).filter(
+                Q(num=number_of_performers_searched) & Q(artists_gig_info__role__name__iucontains=instrument))
+        else:
+            return self.annotate(num=Count('performers')).filter(
+                Q(num=number_of_performers_searched) & Q(artists_gig_info__role__name__in=instruments))
 
     # TODO Select properly
     def event_related_videos(self, event):

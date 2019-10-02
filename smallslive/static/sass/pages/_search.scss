@@ -52,7 +52,7 @@ body.headers-1 {
   &.admin-header {
     .search-container.pad-content {
       @media (max-width: $screen-sm-max) {
-        padding-top: 180px;
+        padding-top: 0;
       }
     }
   }
@@ -1018,6 +1018,7 @@ body.headers-1 {
     top: 0;
 
     @media (max-width: $screen-md-min) {
+      margin-right: 10px;
       top: 10px;
     }
   }
@@ -1032,6 +1033,7 @@ body.headers-1 {
 
 .artist-search-profile-resume {
   @media (max-width: $screen-md-max) {
+    margin-bottom: 20px;
     margin-left: 0;
 
     .mobile-padding {

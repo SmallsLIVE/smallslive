@@ -24,6 +24,7 @@ body {
     @media (max-width: $screen-sm-max) {
       width: calc(100vw);
       overflow-x: hidden;
+      overflow-y: scroll;
     }
   }
 

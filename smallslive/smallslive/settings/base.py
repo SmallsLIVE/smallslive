@@ -337,6 +337,7 @@ PIPELINE_JS = {
         'source_filenames': (
           'js/jquery.mobile.custom.min.js',
           'js/jquery-ui.js',
+          'js/jquery.visible.min.js',
           'js/bootstrap.min.js',
           'js/slick/slick.min.js',
           'js/raphael-min.js',

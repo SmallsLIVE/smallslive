@@ -23,7 +23,10 @@
     <div class="white-border-button scroll-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
   </div>
   <br>
-  <div id="select-instrument-btn" class="instrument-btn white-border-button caret" {% if instrument %} data-instrument="{{ instrument }}"{% endif %}>{% if instrument %}{{ instrument }}{% else %}Instrument{% endif %}</div>
+  <div id="select-instrument-btn"
+       class="instrument-btn white-border-button caret" {% if instrument %} data-instrument="{{ instrument }}"{% endif %}>
+      {% if instrument %}{{ instrument }}{% else %}Instrument{% endif %}
+  </div>
 
 </div>
 <div class="instruments-container">
