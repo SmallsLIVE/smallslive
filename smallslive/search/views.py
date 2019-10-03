@@ -67,9 +67,8 @@ class MainSearchView(View, SearchMixin):
         page = int(request.GET.get('page', 1))
         entity = self.kwargs.get('entity', None)
         order = request.GET.get('order', None)
+        leader = request.GET.get('leader', 'all')
         instrument = request.GET.get('instrument', None)
-        date_from = request.GET.get('date_from', None)
-        date_to = request.GET.get('date_to', None)
         artist_pk = request.GET.get('artist_pk', None)
         venue = request.GET.get('venue', None)
         partial = request.GET.get('partial', False)
@@ -80,9 +79,8 @@ class MainSearchView(View, SearchMixin):
 
         print '**************** MainSearchView.get: *********************'
         print 'main_search: ', main_search
+        print 'entity: ', entity
         print 'artist_search: ', artist_search
-        print 'date_from: ', date_from
-        print 'date_to: ', date_to
         print 'referer: ', referer
 
         date_from, date_to = self.get_filter_dates(referer)
@@ -99,9 +97,12 @@ class MainSearchView(View, SearchMixin):
             template = 'search/artist_results.html'
 
         elif entity == 'event':
+
             events, showing_results, num_pages, first, last = self.search(
-                Event, main_search, page, order=order, date_from=date_from,
-                date_to=date_to, artist_pk=artist_pk, venue=venue, instrument=instrument)
+                Event, main_search,
+                page=page, order=order, date_from=date_from,
+                date_to=date_to, artist_pk=artist_pk, venue=venue,
+                instrument=instrument, artist_search=artist_search, leader=leader)
 
             context = {
                 'events': events[0] if events else [],
@@ -211,12 +212,8 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
 
     def get_query_context(self):
         q = self.request.GET.get('q', '')
-        if q:
-            musician_search = True
-        else:
-            musician_search = False
 
-        return q, {'musician_search': musician_search}
+        return q, {}
 
     def get_artist_search_filter(self, referer):
 

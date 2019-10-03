@@ -98,13 +98,9 @@ class SearchObject(object):
         print 'instruments: ', instruments
         print 'first name: ', first_name
         print 'last name: ', last_name
-        print 'partial name: ', partial_name
-        print 'artist_search: ', artist_search
+        print 'partial name: ', partial_name, type(partial_name)
+        print 'artist_search: ', artist_search, type(artist_search)
         print '------------------------------------------------------'
-
-        if artist_search and not partial_name:
-            partial_name = artist_search
-            artist_search = None
 
         sqs = Artist.objects.all()
 
@@ -112,7 +108,11 @@ class SearchObject(object):
             condition = Q(instruments__name__istartswith=instruments[0])
             for i in instruments[1:]:
                 condition |= Q(instruments__name__istartswith=i)
-            sqs = sqs.filter(condition).distinct() 
+            sqs = sqs.filter(condition).distinct()
+
+        if artist_search and not partial_name:
+            partial_name = artist_search
+            artist_search = None
 
         if not terms and not first_name and not last_name and not partial_name:
             return sqs.prefetch_related('instruments')
@@ -183,7 +183,8 @@ class SearchObject(object):
         return sqs
 
     def get_queryset(self, terms, artist_pk=None, instruments=None, number_of_performers=None,
-                     first_name=None, last_name=None, partial_name=None):
+                     first_name=None, last_name=None, partial_name=None, artist_search=None,
+                     leader='all'):
 
         print '******************************'
         print 'get_queryset ---> '
@@ -191,18 +192,42 @@ class SearchObject(object):
         print 'first: ', first_name
         print 'last: ', last_name
         print 'partial: ', partial_name
+        print 'artist_search: ', artist_search
+        print 'leader: ', leader
 
         sqs = Event.objects.get_queryset()
 
+        if leader == 'all':
+            filter_by_leader = None
+        elif leader == 'leader':
+            filter_by_leader = True
+        else:
+            filter_by_leader = False
+
         if instruments:
-            instruments_condition = Q(artists_gig_info__role__name__icontains=instruments[0])
-            for i in instruments[1:]:
-                instruments_condition |= Q(artists_gig_info__role__name__icontains=i)
+            if filter_by_leader is None:
+                instruments_condition = Q(artists_gig_info__role__name__icontains=instruments[0])
+                for i in instruments[1:]:
+                    instruments_condition |= Q(artists_gig_info__role__name__icontains=i)
+            else:
+                instruments_condition = Q(artists_gig_info__role__name__icontains=instruments[0],
+                                          artists_gig_info__is_leader=filter_by_leader)
+                for i in instruments[1:]:
+                    instruments_condition |= Q(artists_gig_info__role__name__icontains=i,
+                                               artists_gig_info__is_leader=filter_by_leader)
+
+        elif filter_by_leader is not None:
+
+            instruments_condition = Q(artists_gig_info__is_leader=filter_by_leader)
         else:
             instruments_condition = None
 
         if artist_pk:
-            sqs = sqs.filter(performers__pk=artist_pk)
+            if instruments_condition:
+                instruments_condition &= Q(performers__pk=artist_pk)
+                sqs = sqs.filter(instruments_condition)
+            else:
+                sqs = sqs.filter(performers__pk=artist_pk)
         else:
             if number_of_performers:
                 sqs = self.filter_quantity_of_performers(
@@ -220,10 +245,14 @@ class SearchObject(object):
 
                 elif partial_name:
 
-                    performers_first_name_condition = Q(performers__first_name__iucontains=partial_name)
+                    performers_first_name_condition = Q(performers__first_name__istartswith=partial_name)
+                    if artist_search:
+                        performers_first_name_condition &= Q(performers__last_name__istartswith=artist_search)
                     if instruments_condition:
                         performers_first_name_condition &= instruments_condition
-                    performers_last_name_condition = Q(performers__last_name__iucontains=partial_name)
+                    performers_last_name_condition = Q(performers__last_name__istartswith=partial_name)
+                    if artist_search:
+                        performers_last_name_condition &= Q(performers__first_name__istartswith=artist_search)
                     if instruments_condition:
                         performers_last_name_condition &= instruments_condition
 
@@ -231,10 +260,21 @@ class SearchObject(object):
                         performers_first_name_condition) | Q(
                         performers_last_name_condition)
 
-                    if not instruments_condition:
+                    if not instruments_condition and not artist_search:
                         condition |= Q(
                             title__iucontains=partial_name) | Q(
                             description__iucontains=partial_name)
+                elif artist_search:
+                    performers_first_name_condition = Q(performers__last_name__istartswith=artist_search)
+                    if instruments_condition:
+                        performers_first_name_condition &= instruments_condition
+                    performers_last_name_condition = Q(performers__first_name__istartswith=artist_search)
+                    if instruments_condition:
+                        performers_last_name_condition &= instruments_condition
+
+                    condition = Q(
+                        performers_first_name_condition) | Q(
+                        performers_last_name_condition)
 
                 elif terms:
                     term = terms[0]
@@ -250,21 +290,21 @@ class SearchObject(object):
                             performers__first_name__iucontains=term) | Q(
                             performers__last_name__iucontains=term)
                 else:
-                    condition = None
-
-
+                    condition = instruments_condition
 
                 if condition:
                     sqs = sqs.filter(condition)
-                    print sqs.query
 
         sqs = sqs.distinct()
+
+        print sqs.query
 
         return sqs
 
     def search_event(self, terms, order=None, start_date=None, end_date=None,
                      artist_pk=None, venue=None, instruments=None, number_of_performers=None,
-                     first_name=None, last_name=None, partial_name=None):
+                     first_name=None, last_name=None, partial_name=None, artist_search=None,
+                     leader='all'):
 
         print '******************  search_event : ********************'
         print 'terms: ', terms
@@ -285,7 +325,8 @@ class SearchObject(object):
         }.get(order, '-start')
 
         sqs = self.get_queryset(
-            terms, artist_pk, instruments, number_of_performers, first_name, last_name, partial_name)
+            terms, artist_pk, instruments, number_of_performers,
+            first_name, last_name, partial_name, artist_search, leader)
 
         if venue:
             if venue != 'all':

@@ -12,11 +12,11 @@
 
 {% block extra_nav %}
   <div class="search-tabs tabs{% if artist_profile %} artist-profile {% endif %}">
-    <div class="{% if not musician_search %}active{% endif %}" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
-      <span class="title1">Shows</span>
-    </div>
-    <div class="{% if musician_search %}active{% endif %}" data-toggle-tab-target="musicians" data-toggle-tab-group="search-results">
+    <div class="active" data-toggle-tab-target="musicians" data-toggle-tab-group="search-results">
       <span class="title1">Musicians</span>
+    </div>
+    <div data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
+      <span class="title1">Shows</span>
     </div>
   </div>
 {% endblock %}
@@ -41,7 +41,7 @@
     {% if not artist_profile %}
       <section id="musicianContent"
                data-toggle-tab="musicians"
-               class="search-tab-content {% if musician_search %}active{% endif %} search-page"
+               class="search-tab-content active search-page"
                data-toggle-tab-group="search-results">
         <div class="musicians-results">
           <!-- removed pagination because of update to autoscroll
@@ -130,9 +130,6 @@
     var moreEvents = true;
 
     $(document).ready(function () {
-
-      // Make sure slide buttons show up.
-      $(window).resize();
 
       initializeArchiveDatePickers();
       initializeSearch();

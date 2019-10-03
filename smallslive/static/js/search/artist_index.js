@@ -25,6 +25,7 @@ $(document).ready(function() {
     $(this).addClass("active");
     $("a-z-search").attr("selected-value", $(this).text());
     $("#artist-search").val($(this).text());
+    localStorage.setItem('search_artist', $(this).text());
     $("#artist-search").change();
   });
 

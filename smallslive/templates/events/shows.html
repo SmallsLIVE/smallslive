@@ -3,7 +3,7 @@
 {% load i18n %}
 
 <section id="shows{% if archived %}Archived{% else %}Upcoming{% endif %}Content"
-         class="active archived-shows old-calendar search-tab-content {% if archived %}archived{% else %}upcoming{% endif %} {{ archived|yesno:',shows-calendar' }} "
+         class="archived-shows old-calendar search-tab-content {% if archived %}archived{% else %}upcoming{% endif %} {{ archived|yesno:',shows-calendar' }} "
          data-toggle-tab="{% if archived %}archived{% else %}upcoming{% endif %}-shows"
          data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
   {% if archived or upcoming %}
@@ -31,6 +31,15 @@
                 <option value="newest">Newest</option>
                 <option value="oldest">Oldest</option>
                 <option value="popular">Popular</option>
+              </select>
+            </div>
+          </span>
+          <span class="select-container">
+            <div class="white-border-select home-filter">
+              <select id="leader-filter">
+                <option value="all">Leader or Sideman</option>
+                <option value="leader">Leader</option>
+                <option value="sideman">Sideman</option>
               </select>
             </div>
           </span>

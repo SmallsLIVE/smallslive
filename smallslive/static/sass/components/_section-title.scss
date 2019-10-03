@@ -128,6 +128,10 @@
       @media (max-width: $screen-md-max) {
         display: none;
       }
+
+      .select-container {
+        margin-right: 30px;
+      }
     }
 
     @media (max-width: $screen-md-min) {
@@ -338,7 +342,7 @@
 }
 .tabs div .title1 {
   @media (min-width: 690px) and (max-width: 850px) {
-    line-height: 4vw;
+    line-height: 5vw;
   }
   @media (min-width: 851px) and (max-width: 960px) {
     line-height: 4.4vw;

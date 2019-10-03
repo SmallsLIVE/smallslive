@@ -16,9 +16,11 @@ class SearchMixin(object):
 
     def get_filter_dates(self, referer):
 
+        date_from = self.request.GET.get('date_from', None)
+        date_to = self.request.GET.get('date_to', None)
+
         remember_date = self.request.GET.get('remember_date') == 'True'
 
-        date_from = None
         if referer and ('artist_pk' in referer or 'events' in referer) or remember_date:
             date_from = self.request.session.get('search_date_from')
         else:
@@ -30,7 +32,6 @@ class SearchMixin(object):
                 date_from = timezone.make_aware(
                     date_from, timezone.get_current_timezone())
 
-        date_to = None
         if referer and ('artist_pk' in referer or 'events' in referer) or remember_date:
             date_to = self.request.session.get('search_date_to')
         else:
@@ -46,7 +47,8 @@ class SearchMixin(object):
 
     def search(self, entity, search_terms, page=1, order=None,
                instrument=None, date_from=None, date_to=None,
-               artist_search=None, artist_pk=None, venue=None, results_per_page=60):
+               artist_search=None, artist_pk=None, venue=None, results_per_page=60,
+               leader="all"):
 
         search_terms = search_terms.strip()
 
@@ -58,8 +60,11 @@ class SearchMixin(object):
         print 'date_from: ', date_from
         print 'date_to: ', date_to
         print 'venue: ', venue
-        print 'artist_search: ', artist_search
+        print 'artist_search: ', artist_search, type(artist_search)
         print '-------------------------------------------------------'
+
+        if artist_search:
+            self.request.session['artist_search_value'] = artist_search
 
         search = SearchObject()
 
@@ -73,7 +78,7 @@ class SearchMixin(object):
         print 'performers: ', number_of_performers
         print 'first: ', first_name
         print 'last: ', last_name
-        print 'partial name: ', partial_name
+        print 'partial name: ', partial_name, type(partial_name)
         print 'entity: ', entity
 
         first = None
@@ -89,7 +94,8 @@ class SearchMixin(object):
                 terms, order, date_from, date_to,
                 artist_pk=artist_pk, venue=venue,
                 instruments=instruments, number_of_performers=number_of_performers,
-                first_name=first_name, last_name=last_name, partial_name=partial_name)
+                first_name=first_name, last_name=last_name, partial_name=partial_name,
+                artist_search=artist_search, leader=leader)
 
             if not self.request.user.is_superuser:
                 sqs = sqs.filter(Q(state=Event.STATUS.Published) | Q(state=Event.STATUS.Cancelled))

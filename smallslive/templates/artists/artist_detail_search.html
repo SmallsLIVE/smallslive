@@ -58,7 +58,9 @@
           <p class="text4 text-uppercase">Website: <a href="{{ artist.website }}" rel="noreferrer noopener" target="_blank">{{ artist.website|schemaless_url }}</a></p>
         </div>
       {% endif %}
-      <div class="close-button-container visible-xs visible-sm visible-md"><a href="#" class="close-button" style="margin-right:10px"></a></div>
+      <div class="close-button-container visible-xs visible-sm visible-md">
+        <a href="#" class="close-button" onclick="window.history.back()"></a>
+      </div>
     </div>
   </div>
 
@@ -91,7 +93,7 @@
 </div>
 
 <div class="tabs artist-tabs">
-  {% if archived %}
+  {% if archived and upcoming %}
     <div class="active" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
       <span class="title1">Archived</span>
     </div>
@@ -100,13 +102,18 @@
       <span class="title1"></span>
     </div>
   {% endif %}
-  {% if upcoming %}
+  {% if upcoming and archived %}
     <div data-toggle-tab-target="upcoming-shows" data-toggle-tab-group="search-results">
       <span class="title1">Upcoming</span>
     </div>
   {% else %}
     <div>
       <span class="title1"></span>
+    </div>
+  {% endif %}
+  {% if artist.albums %}
+    <div data-toggle-tab-target="smallslive-tracks" data-toggle-tab-group="search-results">
+      <span class="title1">Tracks</span>
     </div>
   {% endif %}
 </div>
