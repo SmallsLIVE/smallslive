@@ -63,8 +63,8 @@ $(document).ready(function () {
     });
 });
 
-$(document).on('click','.search-bar-more', function(){
-    if($('#search-bar input:visible').length) {
+$(document).on('click', '.search-bar-more', function () {
+    if ($('#search-bar input:visible').length) {
         $("#headerSearchForm").submit();
     } else {
         $(".search-input").submit();

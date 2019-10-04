@@ -1,5 +1,5 @@
 from datetime import timedelta
-from django.db.models import Q, Sum
+from django.db.models import Count, Q, Sum
 from django.utils import timezone
 from artists.models import Artist, Instrument
 from events.models import Event, Recording
@@ -29,8 +29,10 @@ class SearchObject(object):
             if sax in search_term:
                 instruments.append(sax)
                 search_term = search_term.replace(sax, '')
-        
-        if 'SAX' in search_term or 'SAXOPHONE' in search_term:
+
+        words = search_term.split(' ')
+        words = [x for x in words if x]
+        if 'SAX' in words or 'SAXOPHONE' in words:
             instruments.extend(saxs)
             search_term = search_term.replace('SAXOPHONE', '')
             search_term = search_term.replace('SAX', '')
@@ -50,7 +52,6 @@ class SearchObject(object):
         if search_terms:
             search_terms, instruments = self.filter_sax(search_terms)
             words = search_terms.strip().split(' ')
-
         if words:
             words = [i.upper() for i in words]
 
@@ -58,6 +59,11 @@ class SearchObject(object):
             if not instruments:
                 partial_instruments = [i.upper() for i in words if any(item.startswith(i.upper()) for item in all_instruments)]
                 partial_instruments = [i for i in partial_instruments if i not in instruments]
+
+                partial_sax = [i for i in words if 'SAXOPHONE'.startswith(i)]
+                if partial_sax:
+                    partial_instruments += ['SAX']
+
             words = [i for i in words if i.upper() not in instruments]
 
         if artist_search:
@@ -98,6 +104,7 @@ class SearchObject(object):
         print 'instruments: ', instruments
         print 'first name: ', first_name
         print 'last name: ', last_name
+        print 'partial instruments: ', partial_instruments
         print 'partial name: ', partial_name, type(partial_name)
         print 'artist_search: ', artist_search, type(artist_search)
         print '------------------------------------------------------'
@@ -105,16 +112,25 @@ class SearchObject(object):
         sqs = Artist.objects.all()
 
         if instruments:
-            condition = Q(instruments__name__istartswith=instruments[0])
+            condition = Q(instruments__name__icontains=instruments[0])
             for i in instruments[1:]:
-                condition |= Q(instruments__name__istartswith=i)
-            sqs = sqs.filter(condition).distinct()
+                condition |= Q(instruments__name__icontains=i)
+
+            # instruments containing sax are a special case
+            no_sax_instruments = [x for x in instruments if 'SAX' not in x]
+            sax_instruments = [x for x in instruments if 'SAX' in x]
+            instruments_count = len(no_sax_instruments)
+            if sax_instruments:
+                instruments_count += 1
+
+            sqs = sqs.filter(condition).annotate(
+                num_instruments=Count('instruments')).filter(num_instruments=instruments_count)
 
         if artist_search and not partial_name:
             partial_name = artist_search
             artist_search = None
 
-        if not terms and not first_name and not last_name and not partial_name:
+        if not terms and not first_name and not last_name and not partial_name and not instruments:
             return sqs.prefetch_related('instruments')
 
         if first_name and last_name:
@@ -140,6 +156,7 @@ class SearchObject(object):
             if artist_search:
                 condition &= Q(first_name__istartswith=artist_search)
             good_matches = sqs.filter(condition).distinct()
+
             condition = ~Q(
                 last_name__istartswith=partial_name) & Q(
                 first_name__istartswith=partial_name) & ~Q(
@@ -151,9 +168,15 @@ class SearchObject(object):
             sqs = list(first_name_matches) + list(good_matches) + list(not_so_good_matches)
 
             if partial_instruments:
-                condition = Q(instruments__name__istartswith=partial_instruments[0])
+                if 'SAX' == partial_instruments[0]:
+                    condition = Q(instruments__name__icontains=partial_instruments[0])
+                else:
+                    condition = Q(instruments__name__istartswith=partial_instruments[0])
                 for i in partial_instruments[1:]:
-                    condition |= Q(instruments__name__istartswith=i)
+                    if i == 'SAX':
+                        condition |= Q(instruments__name__icontains=i)
+                    else:
+                        condition |= Q(instruments__name__istartswith=i)
                 sqs_instruments = Artist.objects.filter(condition).distinct()
 
                 sqs = list(sqs) + list(sqs_instruments)

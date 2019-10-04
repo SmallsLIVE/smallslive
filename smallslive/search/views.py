@@ -145,12 +145,20 @@ class SearchBarView(View):
         main_search = request.GET.get('main_search', None)
         search = SearchObject()
         search_input = search.process_input(main_search)
-        words, instruments, partial_instruments, number_of_performers, \
-        first_name, last_name, partial_name, artist_search = search_input
+        terms, instruments, partial_instruments, number_of_performers, \
+            first_name, last_name, partial_name, artist_search = search_input
+
+        print '**************************** Search Bar *****************************'
+        print 'terms: ', terms
+        print 'instruments: ', instruments
+        print 'partial_instruments: ', partial_instruments
+        print 'partial_name: ', partial_name
         
         artists = []
         artist_results_per_page = 6
-        sqs = search.search_artist(main_search)
+
+        sqs = search.search_artist(terms, instruments, partial_instruments,
+                                   first_name, last_name, partial_name, artist_search)
         
         paginator = Paginator(sqs, artist_results_per_page)
         artists_results = paginator.count
@@ -163,8 +171,9 @@ class SearchBarView(View):
         events = []
         event_results_per_page = 8
 
-        if main_search:
-            sqs = search.search_event(main_search)
+        sqs = search.search_event(terms, instruments=instruments,
+                                  first_name=first_name, last_name=last_name,
+                                  partial_name=partial_name, artist_search=artist_search)
 
         paginator = Paginator(sqs, event_results_per_page)
         events_results = paginator.count
@@ -174,15 +183,11 @@ class SearchBarView(View):
             events.append(item)
         events_results_left = events_results - len(events)
 
-        instruments = []
-        instrument_results_per_page = 6
-        sqs = search.get_instrument([main_search])
-        paginator = Paginator(sqs, instrument_results_per_page)
-        instruments_results = paginator.count
-
-        for item in paginator.page(1).object_list:
-            item = Instrument.objects.filter(pk=item.pk).first()
-            instruments.append(item)
+        if partial_instruments:
+            partial_instruments = search.get_instrument(partial_instruments)
+            partial_instruments = [x.name for x in partial_instruments]
+            instruments += partial_instruments
+        instruments_results = len(instruments)
 
         context = {'artists': artists,
                    'artists_results': artists_results,

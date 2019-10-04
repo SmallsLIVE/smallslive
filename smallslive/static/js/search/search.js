@@ -920,6 +920,7 @@ function triggerSearch() {
   if (triggerArtistSearch) {
     toggleDatePicker = true;
     $("#artists .event-row").html("");
+    artistPageNum = 1;
     sendArtistRequest(updateArtistsHtml, true);
   }
 
@@ -939,6 +940,9 @@ function triggerSearch() {
     datePickerFromDate = $datePickerFrom.datepicker("getDate");
     datePickerToDate = $datePickerTo.datepicker("getDate");
     eventFilter = true;
+    eventPageNum = 1;
+    archivedEventPageNum = 1;
+    upcomingEventPageNum = 1;
     sendEventRequest(
       "Archived",
       datePickerFromDate,
@@ -1012,16 +1016,12 @@ function updateArchiveShows(data) {
       $showsContainer.find("article").remove();
       // Date Picker must be hidden if less than 30 results.
       // Exception: not if the user is filtering with the date picker itself.
+      $(".archive-datepicker.fixed").show();
       if (toggleDatePicker) {
         if (defaultFromDate === datePickerFromDate && defaultToDate === datePickerToDate) {
           if (data.showingResults < 30 || data.showingResults === "NO RESULTS") {
             $(".archive-datepicker.fixed").hide();
-          } else {
-            $(".archive-datepicker.fixed").show();
           }
-          toggleDatePicker = false;
-        } else {
-          $(".archive-datepicker.fixed").show();
         }
       }
     }
