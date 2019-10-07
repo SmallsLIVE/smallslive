@@ -1,25 +1,31 @@
 <div class="event-section">
     <div class="shows-filter-container">
-       <div class="datepicker-container noclick">
-           <div class="custom-date-picker" id="search-date-picker-from">
-               <input class="date-picker-text" type="text" placeholder="Select date" readonly>
-           </div>
-           <div class="custom-date-picker" id="search-date-picker-to">
-               <input class="date-picker-text" type="text" placeholder="Select date" readonly>
-           </div>
-           <div class="white-border-button archived" id="apply-button"><span>Apply</span></div>
-           <div class="datepicker-reset text2 text-grey"><span>Reset</span></div>
-       </div>
-       <div class="white-border-select event-filter-select">
+      <div class="datepicker-container noclick">
+        <div class="custom-date-picker" id="search-date-picker-from">
+          <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+        </div>
+        <div class="custom-date-picker" id="search-date-picker-to">
+          <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+        </div>
+        <div class="white-border-button archived" id="apply-button"><span>Apply</span></div>
+        <div class="datepicker-reset text2 text-grey"><span>Reset</span></div>
+      </div>
+      <div class="datepicker-btn white-border-button caret hover-fade archived">Filter by date
+      </div>
+      <div class="white-border-select event-filter-select spaced">
         <select id="mobile-events-filter">
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
           <option value="popular">Popular</option>
         </select>
       </div>
-       <div class="datepicker-btn white-border-button caret hover-fade archived">Filter by date
-       </div>
-     
+      <div  class="white-border-select leader-filter-select">
+        <select id="mobile-leader-filter">
+          <option value="all">Leader or Sideman</option>
+          <option value="leader">Leader</option>
+          <option value="sideman">Sideman</option>
+        </select>
+      </div>
     </div>
  </div>
 

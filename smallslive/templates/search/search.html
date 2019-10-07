@@ -128,6 +128,7 @@
     var startDate = "{{ first_event_date }}";
     var endDate = "{{ last_event_date }}";
     var venue = "all";
+    var moreArtists = true;
     var moreEvents = true;
 
     $(document).ready(function () {
@@ -137,7 +138,15 @@
 
       $(window).scroll(function () {
         if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
-          if (moreEvents) {
+          /* if artists are visible and is mobile (flex-wrap is set) */
+          /* desktop loads more with slide buttons */
+          var $musiciansContent = $("#musicianContent");
+          if ($musiciansContent.is(":visible") && $musiciansContent.find(".event-row").css("flex-wrap") == "wrap") {
+            searchMoreArtists();
+          }
+
+          /* if events are visible always load */
+          if ($("#search-content").is(":visible") && moreEvents) {
             loadMoreEvents('Archived');
           }
         };

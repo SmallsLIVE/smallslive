@@ -1,9 +1,9 @@
 $mobile-event-card-width: $event-card-width / 1.5;
-$live-card-width-mobile: 46.1vw;
+$live-card-width-mobile: 44.1vw;
 $live-card-width-tablet: 22.85vw;
 $live-card-width-medium: 22.85vw;
 $live-card-width-large: 15.1vw;
-$regular-card-width-mobile: 46.1vw;
+$regular-card-width-mobile: 44.1vw;
 $regular-card-width-tablet: 15.1vw;
 $regular-card-width-medium: 15.1vw;
 $regular-card-width-large: 11.225vw;
@@ -837,6 +837,12 @@ $event-row-padding: 3.5vw;
     cursor: pointer;
     float: left;
     vertical-align: top;
+
+    @media (max-width: 1024px) {
+      margin-left: 1vw;
+      margin-right: 1vw;
+      margin-bottom: 1vw;
+    }
   }
 }
 

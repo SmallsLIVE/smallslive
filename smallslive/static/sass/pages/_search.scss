@@ -32,7 +32,7 @@ body.headers-1 {
   &.admin-header {
     .search-container.pad-content {
       @media (max-width: $screen-md-max) {
-        padding-top: 150px;
+        padding-top: 120px;
       }
     }
   }
@@ -245,7 +245,10 @@ body.headers-1 {
   .search-tab-content {
     position: relative;
     max-width: 100vw;
-    overflow-y: visible;
+
+    @media (max-width: $screen-md-max) {
+      overflow-y: hidden;
+    }
   }
 
   .artist-column-mobile {
@@ -552,7 +555,6 @@ body.headers-1 {
           font-size: 2.5vw;
           height: 8vw;
           line-height: 2.5vw;
-          margin-right: 5px;
           vertical-align: top;
         }
 
@@ -615,12 +617,6 @@ body.headers-1 {
 
   @media (minx-width: 720px) {
     margin-bottom: 20px;
-  }
-}
-
-@media (max-width: 1023px) {
-  #musicianContent {
-    height: 100vh;
   }
 }
 
@@ -756,6 +752,11 @@ body.headers-1 {
   .event-filter-select {
     @media (max-width: $screen-md-max) {
       width: $mobile-filter-button-width;
+
+      &.spaced {
+        margin-left: 5px;
+        margin-right: 5px;
+      }
     }
 
     .select-items {
@@ -1343,6 +1344,10 @@ body.headers-1 {
   position: relative;
   padding-left: $content-left-padding;
 
+  @media ($screen-md-max) {
+    padding-left: 0;
+  }
+
   .event-card-secondary {
     margin-bottom: 10px;
   }
@@ -1461,6 +1466,7 @@ body.headers-1 {
         margin-bottom: 0;
       }
       height: 13vw;
+      margin-left: 0;
       margin-top: 0;
       margin-bottom: 10px;
     }

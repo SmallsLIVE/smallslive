@@ -127,6 +127,8 @@ function updateArtistsHtml(data, reset) {
     $("#artists  .slide-btn.next").css("visibility", "hidden");
   }
 
+  moreArtists = true;
+
   if (data.template) {
     $(".mobile-artist-loading").hide();
     $("#artists .event-row").append(data.template);
@@ -254,8 +256,6 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
   });
 }
 
-var currentEventsScrollLeft = 0;
-
 $(document).ready(function () {
 
   var instrument = getUrlParameter("instrument");
@@ -268,19 +268,6 @@ $(document).ready(function () {
   artistMaxPageNum = archivedEventMaxPageNum = upcomingEventMaxPageNum = 2;
   apply = false;
   eventFilter = false;
-
-  /* On Mobile, artists row does  not  show slide  buttons
-  On scrolling,  load more artists only on scroll left after
-  4000 pixels which is a good number to avoid loading too many times */
-  $('#artists .event-row').scroll(function () {
-    var scrollLeft = $(this).scrollLeft();
-    console.log(scrollLeft + ' ' +  currentEventsScrollLeft);
-    if (scrollLeft > currentEventsScrollLeft + 4000) {
-      console.log(scrollLeft - currentEventsScrollLeft);
-      currentEventsScrollLeft = scrollLeft;
-      searchMoreArtists();
-    }
-  });
 
   $("#next-page-btn").click(function() {
     if (eventPageNum !== eventMaxPageNum) {
@@ -395,7 +382,6 @@ $(document).ready(function () {
 
   $("#artist-search").on("change", function() {
     delay(function() {
-      currentEventsScrollLeft = 0;
       artistPageNum = 1;
       eventPageNum = 1;
       archivedEventPageNum = 1;
@@ -461,7 +447,6 @@ $(document).ready(function () {
     archivedEventPageNum = 1;
     artistPageNum = 1;
     eventFilter = true;
-    currentEventsScrollLeft = 0;
 
     sendArtistRequest(updateArtistsHtml, true);
     toggleDatePicker = true;
