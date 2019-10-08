@@ -362,6 +362,8 @@ class UpcomingSearchView(SearchMixin):
         starting_date = datetime.datetime.strptime(starting_date, '%Y-%m-%d')
         venue = self.request.GET.get('venue', 'all')
         event_list = Event.objects.filter(start__gte=starting_date)
+        if not self.request.user.is_superuser:
+            event_list = event_list.exclude(state=Event.STATUS.Draft)
         if venue:
             if venue != 'all':
                 event_list = event_list.filter(venue__pk=venue)

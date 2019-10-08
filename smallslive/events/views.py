@@ -580,23 +580,8 @@ class GenericScheduleView(TemplateView, UpcomingSearchView):
 
     def get_context_data(self, **kwargs):
         context = super(GenericScheduleView, self).get_context_data(**kwargs)
-        today_events_qs = Event.objects.get_today_and_tomorrow_events()
-        context['events_today'] = today_events_qs
-        date_range_start = get_today_start()
-        event_blocks, showing_event_results, num_pages, first_event, last_event = self.search(
-            Event, '', date_from=date_range_start, order='oldest')
-
-        context['showing_event_results'] = showing_event_results
-        context['event_results'] = event_blocks[0] if event_blocks else []
         context['venues'] = Venue.objects.all()
-        context['current_page'] = 1
-        context['last_page'] = num_pages
         context['default_from_date'] = timezone.now().strftime('%m/%d/%Y')
-        context['upcoming_dates'] = {
-            'first': datetime.datetime.today(),
-            'last': (datetime.datetime.today() + timedelta(days=12))
-        }
-        context['last_event'] = last_event
         context.update(self.get_upcoming_context())
 
         return context
