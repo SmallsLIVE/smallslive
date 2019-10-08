@@ -4,11 +4,15 @@
       <div class="archive-datepicker fixed{% if showing_event_results <= 30 %} hidden{% endif %}"  style="position: relative;">
         <div class="datepicker-container noclick" style="display:block; top: 0 !important;">
           <div style="display: flex;">
+            <a id="archive-datepicker-close" href="#" class="close-button"></a>
             <div class="custom-date-picker from">
               <input class="date-picker-text" type="text" placeholder="Select from date" readonly>
             </div>
             <div class="custom-date-picker to">
               <input class="date-picker-text" type="text" placeholder="Select to date" readonly>
+            </div>
+            <div id="archive-datepicker-apply" class="custom-date-picker-apply white-border-button">
+              Apply
             </div>
           </div>
           <div class="datepicker-reset text2 text-grey"><span id="reset-search-datepicker">Reset</span></div>

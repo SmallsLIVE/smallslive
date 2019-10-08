@@ -111,6 +111,10 @@
     position: relative;
     z-index: 99;
     margin-top: 25px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    padding-right: 3.5vw;
+    width: auto;
 
     @media (max-width: 420px) {
       background-size: 100vw 5px;
@@ -136,7 +140,7 @@
 
     @media (max-width: $screen-md-min) {
       background-size: 80vw 5px;
-      margin-bottom: 20px;
+      margin-bottom: 45px;
       padding-bottom: 3px;
       width: 97vw;
     }

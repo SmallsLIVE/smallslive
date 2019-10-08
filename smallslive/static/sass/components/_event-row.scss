@@ -848,6 +848,7 @@ $event-row-padding: 3.5vw;
 
 .wrapped-events {
   @media (max-width: 1024px) {
+    clear: both;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

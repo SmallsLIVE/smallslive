@@ -846,7 +846,9 @@ class Event(TimeStampedModel):
             event_artists_info.append({
                 'name': gig.artist.full_name(),
                 'role': gig.role.name,
-                'absolute_url': gig.artist.get_absolute_url()})
+                'absolute_url': gig.artist.get_absolute_url(),
+                'leader': 'leader' if gig.is_leader else 'sideman'
+            })
         return event_artists_info
 
     def get_tickets(self):

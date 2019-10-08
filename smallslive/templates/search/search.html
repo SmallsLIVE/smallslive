@@ -12,10 +12,10 @@
 
 {% block extra_nav %}
   <div class="search-tabs tabs{% if artist_profile %} artist-profile {% endif %}">
-    <div class="active" data-toggle-tab-target="musicians" data-toggle-tab-group="search-results">
+    <div class="active" data-toggle-tab-target="musicians" data-toggle-tab-group="search-results" data-toggle-hide="no">
       <span class="title1">Musicians</span>
     </div>
-    <div data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
+    <div data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results" data-toggle-hide="no">
       <span class="title1">Shows</span>
     </div>
   </div>
@@ -114,7 +114,6 @@
     var defaultToDate = new Date("{{ last_event_date }}");
     var eventOrderFilter = 'newest';
 
-    var datePickerInputSelector = '#search-date-picker-from input';
     var datePickerFromDate = defaultFromDate;
     var datePickerToDate = defaultToDate;
 
@@ -123,8 +122,8 @@
     var datePickerLeft = 45;
     var datePickerTop = 38;
 
-    var $datePickerFrom = $(".archive-datepicker.fixed:visible .custom-date-picker.from input");
-    var $datePickerTo= $(".archive-datepicker.fixed:visible .custom-date-picker.to input");
+    var $datePickerFrom = $(".archive-datepicker.fixed .custom-date-picker.from input");
+    var $datePickerTo= $(".archive-datepicker.fixed .custom-date-picker.to input");
     var startDate = "{{ first_event_date }}";
     var endDate = "{{ last_event_date }}";
     var venue = "all";

@@ -8,15 +8,15 @@
          data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
   <div class="title-and-filters-container">
          
-  <div class="section-title home calendar upcoming-shows" style="margin-top: 30px;">
-    <div id="upcoming-shows" class="title1" data-last-event-date="{{ last_event.date }}">
-      Upcoming Shows <span class="accent-color">\</span>
-      <span id="upcoming-shows-date-from">{{ first_event.date|date:"b j" }}</span><span style="margin-left: 5px">-</span>
-      <span id="upcoming-shows-date-to">{{ last_event.date|date:"b j" }}</span>
-    </div>
+    <div class="section-title home calendar upcoming-shows" style="margin-top: 30px;">
+      <div id="upcoming-shows" class="title1" data-last-event-date="{{ last_event.date }}">
+        Upcoming Shows <span class="accent-color">\</span>
+        <span id="upcoming-shows-date-from">{{ first_event.date|date:"b j" }}</span><span style="margin-left: 5px">-</span>
+        <span id="upcoming-shows-date-to">{{ last_event.date|date:"b j" }}</span>
+      </div>
 
-  </div>
-      <div class="calendar-filters desktop">
+    </div>
+    <div class="calendar-filters desktop">
       <div class="white-border-select club-filter-select">
         <select id="calendar-club-filter">
           <option value="all">All</option>
@@ -32,7 +32,7 @@
       </div>
       <div class="datepicker-btn white-border-button caret hover-fade upcoming" style="width: 150px; border-width: 2px;">Date</div>
     </div>
-    </div>
+  </div>
 
   <div class="flex-row upcoming-schedule">
     {% include 'search/upcoming_calendar_dates.html' with day_list=day_list %}
@@ -69,15 +69,6 @@
       endDate: new Date("{{ last_event.date }}")
     });
 
-    $datePickerCalendar.on("click", function () {
-      var dropdown = $(".calendar-filters:visible .datepicker-container .dropdown-menu");
-      if (dropdown[0] && dropdown[0].style.display === "block") {
-        $datePickerCalendar.datepicker("hide");
-      } else {
-        $datePickerCalendar.datepicker("show");
-      }
-    });
-
     $datePickerCalendar.on("changeDate", function (event) {
       nextDate = event.date;
       startDate = nextDate;
@@ -107,11 +98,10 @@
         .fadeIn(500, function () {
           $(document).on("click", hide);
           $datePickerContainer.data("shown", true);
+          $datePickerCalendar.datepicker("show");
+          $datePickerCalendar.prop("disabled", true);
+          $datePickerCalendar.focus();
         });
-
-      $datePickerCalendar.click();
-      $datePickerCalendar.prop("disabled", true);
-      $datePickerCalendar.focus();
     }
 
     function hide(event) {

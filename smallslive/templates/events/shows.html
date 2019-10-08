@@ -23,29 +23,10 @@
         {% else %}
           <span class="accent-color title1">This artist has no archived shows</span>
         {% endif %}
-        {% if events %}
-        <div class="archive-filter">
-          <span class="select-container">
-            <div class="white-border-select home-filter">
-              <select id="events-filter">
-                <option value="newest">Newest</option>
-                <option value="oldest">Oldest</option>
-                <option value="popular">Popular</option>
-              </select>
-            </div>
-          </span>
-          <span class="select-container">
-            <div class="white-border-select home-filter">
-              <select id="leader-filter">
-                <option value="all">Leader or Sideman</option>
-                <option value="leader">Leader</option>
-                <option value="sideman">Sideman</option>
-              </select>
-            </div>
-          </span>
-        </div>
-        {% endif %}
       </div>
+      {% if events %}
+        {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
+      {% endif %}
     {% endif %}
     {% if upcoming and artist_profile %}
       <div class="section-title home calendar upcoming-shows">
@@ -54,9 +35,6 @@
         </div>
       </div>
     {% endif %}
-  {% endif %}
-  {% if archived %}
-    {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
   {% endif %}
   <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
     {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming show_event_venue=show_event_venue secondary=True hide_play=hide_play with_date_picker=True %}

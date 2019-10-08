@@ -304,8 +304,7 @@
     z-index: 2;
 
     @media (max-width: $screen-sm-max) {
-      height: 35px;
-      width: 80%;
+
     }
   }
 
@@ -428,6 +427,16 @@
         }
       }
     }
+  }
+}
+
+.custom-date-picker-apply {
+  display: none;
+  padding-left: 5vw;
+  padding-right: 5vw;
+
+  @media (max-width: $screen-md-max) {
+    display: flex;
   }
 }
 

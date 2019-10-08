@@ -148,6 +148,19 @@ function updateArtistsHtml(data, reset) {
   }
 }
 
+
+function toggleEventFilters(filters) {
+  var $filter = $(".leader-filter-select");
+
+  if (!filters.main_search && !filters.artist_search && !filters.instrument) {
+    if (!$filter.hasClass("hidden")) {
+      $filter.addClass("hidden");
+    }
+  } else {
+    $filter.removeClass("hidden");
+  }
+}
+
 function sendArtistRequest(callback, callbackParam) {
   callback = callback || function() {};
 
@@ -155,14 +168,18 @@ function sendArtistRequest(callback, callbackParam) {
   var artistSearchTerm = $("#artist-search").val();
   var searchTerm = $("#desktop-search-bar").val();
 
+  var filters = {
+    main_search: searchTerm,
+    artist_search: artistSearchTerm,
+    instrument: artistInstrument,
+    page: artistPageNum
+  };
+
+  toggleEventFilters(filters);
+
   $.ajax({
     url: "/search/ajax/artist/",
-    data: {
-      main_search: searchTerm,
-      artist_search: artistSearchTerm,
-      instrument: artistInstrument,
-      page: artistPageNum
-    },
+    data: filters,
     dataType: "json",
     success: function (data) {
       callback(data, callbackParam);
@@ -185,7 +202,6 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
   $("#event-load-gif").css("display", "block");
   if (eventFilter) {
     $("#search-result-articles").find("article").remove();
-    $(".archive-datepicker.fixed").hide();
   }
 
   if (mode == "Upcoming") {
@@ -276,7 +292,7 @@ $(document).ready(function () {
     }
   });
 
-  $("#events-filter, #mobile-events-filter").change(function() {
+  $("#events-filter").change(function() {
     eventFilter = true;
     venueFilter = "all";
     archivedEventPageNum = 1;
@@ -290,7 +306,7 @@ $(document).ready(function () {
     );
   });
 
-  $("#leader-filter, #mobile-leader-filter").change(function() {
+  $("#leader-filter").change(function() {
     eventPageNum = 1;
     archivedEventPageNum = 1;
     eventFilter = true;
@@ -337,9 +353,6 @@ $(document).ready(function () {
       eventDateTo = new Date(start.getTime() + 31 * 24 * 60 * 60 * 1000);
       eventDateFrom = start;
     }
-
-    $("#search-date-picker-from input").datepicker("update", eventDateFrom);
-    $("#search-date-picker-to input").datepicker("update", eventDateTo);
 
     if (eventDateTo) {
       $(".datepicker-btn").html(
@@ -461,122 +474,30 @@ $(document).ready(function () {
 
   ////////////////
 
-  $(".datepicker-btn").bind("click", toggleDisplay);
+  $(".shows-filter-container .datepicker-btn").bind("click", toggleArchiveDatePickerDisplay);
 
-  function toggleDisplay(event) {
-    if ($(".datepicker-container").data("shown")) hide(event);
-    else display();
-  }
+  $(document).on("click", "#archive-datepicker-close", function () {
+    toggleArchiveDatePickerDisplay();
+  });
 
-  function display() {
-    var $datePickerContainer = $(".datepicker-container");
-    $datePickerContainer.css({
-      left: datePickerLeft,
-      top: datePickerTop
-    });
-    $datePickerContainer
-      .css("display", "flex")
-      .hide()
-      .fadeIn(500, function() {
-        $(document).bind("click", hide);
-        $(".datepicker-container").data("shown", true);
-      });
+  $("#archive-datepicker-apply").click(function () {
+    applySearch();
+    toggleArchiveDatePickerDisplay();
+  });
 
-    var $datePickerInput = $(datePickerInputSelector);
-    $datePickerInput.click();
-    $datePickerInput.prop("disabled", true);
-    $datePickerInput.focus();
-  }
-
-  function hide(event) {
-    var $target = $(event.target);
-    if (
-      $target.closest(".noclick").length == 0 &&
-      !($target.hasClass("day") || $target.hasClass("year"))
-    ) {
-      $(".datepicker-container").fadeOut(500, function() {
-        $(document).unbind("click", hide);
-        $(".datepicker-container").data("shown", false);
-      });
+  function toggleArchiveDatePickerDisplay(event) {
+    var $container  = $(".archive-datepicker.fixed");
+    if (!$container.hasClass("active")) {
+      $container.addClass("active");
+      $datePickerFrom.click();
+      $datePickerFrom.focus();
+    } else {
+      $container.removeClass("active");
     }
   }
-  ///////
 
   /////////////////////
 
-  var $datePickerFrom = $("#search-date-picker-from input");
-  $datePickerFrom.datepicker({
-    format: "mm/dd/yyyy",
-    autoclose: true,
-    container: "#search-date-picker-from",
-    showOnFocus: false,
-    startDate: defaultFromDate,
-    endDate: defaultToDate
-  });
-
-  if (setFromDate) {
-    $datePickerFrom.datepicker("setDate", defaultFromDate);
-    datePickerFromDate = new Date(defaultFromDate);
-  }
-  var lastYearSelected =
-    "Thu Sep 30 1000 00:00:00 GMT-0300 (Uruguay Standard Time)";
-  lastYearSelected = new Date(lastYearSelected);
-
-  $datePickerFrom.on("changeDate", function(newDate) {
-    datePickerFromDate = newDate.date;
-
-    if (datePickerFromDate.getFullYear() != lastYearSelected.getFullYear()) {
-      lastYearSelected = datePickerFromDate;
-      lastYearSelected = new Date(lastYearSelected);
-    }
-    if (!datePickerToDate || datePickerFromDate > datePickerToDate) {
-      datePickerToDate = datePickerFromDate;
-      $datePickerTo.datepicker("setDate", datePickerToDate);
-    }
-    //$('#events-filter').val('oldest');
-    //$("[value='oldest']").click();
-    $("#search-date-picker-to input").click();
-    $("#search-date-picker-to input").focus();
-  });
-
-  $datePickerFrom.on("click", function() {
-    var dropdown = $("#search-date-picker .dropdown-menu");
-    if (dropdown[0] && dropdown[0].style.display === "block") {
-      $datePickerFrom.datepicker("hide");
-    } else {
-      $datePickerFrom.datepicker("show");
-    }
-  });
-
-  //////////////////////
-
-  var $datePickerTo = $("#search-date-picker-to input");
-  $datePickerTo.datepicker({
-    format: "mm/dd/yyyy",
-    autoclose: false,
-    container: "#search-date-picker-to",
-    showOnFocus: false,
-    startDate: defaultFromDate,
-    endDate: defaultToDate
-  });
-
-  if (setToDate) {
-    $datePickerTo.datepicker("setDate", defaultToDate);
-    datePickerToDate = new Date(defaultToDate);
-  }
-
-  $datePickerTo.on("changeDate", function(newDate) {
-    datePickerToDate = newDate.date;
-  });
-
-  $datePickerTo.on("click", function() {
-    var dropdown = $("#search-date-picker .dropdown-menu");
-    if (dropdown[0] && dropdown[0].style.display === "block") {
-      $datePickerTo.datepicker("hide");
-    } else {
-      $datePickerTo.datepicker("show");
-    }
-  });
 
   $("#apply-button").click(function() {
     var eventDateFrom = datePickerFromDate;
@@ -640,20 +561,6 @@ $(document).ready(function () {
     }
   });
 
-  $(".datepicker-reset").click(function() {
-    $("#search-date-picker-from input")
-      .val("")
-      .datepicker("update");
-    $("#search-date-picker-to input")
-      .val("")
-      .datepicker("update");
-    datePickerFromDate =
-      defaultFromDate !== undefined ? new Date(defaultFromDate) : null;
-    datePickerToDate =
-      defaultToDate !== undefined ? new Date(defaultToDate) : null;
-    $("#search-date-picker-from input").click();
-    $("#search-date-picker-from input").focus();
-  });
 
   var $datePickerCalendar = $("#search-date-picker-calendar input");
   $datePickerCalendar.datepicker({
@@ -902,13 +809,6 @@ function triggerSearch() {
     triggerEventSearch = true;
   }
 
-  if (triggerArtistSearch) {
-    toggleDatePicker = true;
-    $("#artists .event-row").html("");
-    artistPageNum = 1;
-    sendArtistRequest(updateArtistsHtml, true);
-  }
-
   var order = localStorage.getItem("search_order");
   if (order && document.location.search.indexOf("artist_pk=") === -1) {
     $('#artist_archive_order_filter').val(order);
@@ -919,6 +819,13 @@ function triggerSearch() {
   if (leader && document.location.search.indexOf("artist_pk=") === -1) {
     $('#artist_archive_status_filter').val(leader);
     triggerEventSearch = true;
+  }
+
+  if (triggerArtistSearch) {
+    toggleDatePicker = true;
+    $("#artists .event-row").html("");
+    artistPageNum = 1;
+    sendArtistRequest(updateArtistsHtml, true);
   }
 
   if (triggerEventSearch) {
@@ -1001,11 +908,11 @@ function updateArchiveShows(data) {
       $showsContainer.find("article").remove();
       // Date Picker must be hidden if less than 30 results.
       // Exception: not if the user is filtering with the date picker itself.
-      $(".archive-datepicker.fixed").show();
+      $(".archive-datepicker.fixed").removeClass("desktop-hidden");
       if (toggleDatePicker) {
         if (defaultFromDate === datePickerFromDate && defaultToDate === datePickerToDate) {
           if (data.showingResults < 30 || data.showingResults === "NO RESULTS") {
-            $(".archive-datepicker.fixed").hide();
+            $(".archive-datepicker.fixed").addClass("desktop-hidden");
           }
         }
       }

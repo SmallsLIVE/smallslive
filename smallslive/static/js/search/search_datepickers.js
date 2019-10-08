@@ -6,7 +6,7 @@ function initializeArchiveDatePickers() {
   $datePickerFrom.datepicker({
     format: "mm/dd/yyyy",
     autoclose: false,
-    container: ".archive-datepicker.fixed:visible .custom-date-picker.from",
+    container: ".archive-datepicker.fixed .custom-date-picker.from",
     showOnFocus: false,
     startDate: startDate,
     endDate: endDate
@@ -14,7 +14,7 @@ function initializeArchiveDatePickers() {
 
   $datePickerFrom.on("click", function() {
     var dropdown = $(
-      ".archive-datepicker.fixed:visible .custom-date-picker.from .dropdown-menu"
+      ".archive-datepicker.fixed .custom-date-picker.from .dropdown-menu"
     );
     if (dropdown[0] && dropdown[0].style.display === "block") {
     } else {
@@ -26,8 +26,20 @@ function initializeArchiveDatePickers() {
   });
 
   $datePickerFrom.on("changeDate", function(newDate) {
+
     datePickerFromDate = newDate.date;
     datePickerFromDateSet = true;
+
+    if (!datePickerToDateSet) {
+      $datePickerTo.click();
+      $datePickerTo.focus();
+    }
+
+    // ignore actions if the apply button is visible.
+    if  ($("#archive-datepicker-apply").visible()) {
+      return;
+    }
+
     // Means any ajax results will not append to existing items.
     // For pagination use apply = false;
     initializeSearch();
@@ -38,16 +50,13 @@ function initializeArchiveDatePickers() {
       datePickerToDate,
       updateArchiveShows
     );
-    if (!datePickerToDateSet) {
-      $datePickerTo.click();
-      $datePickerTo.focus();
-    }
+
   });
 
   $datePickerTo.datepicker({
     format: "mm/dd/yyyy",
     autoclose: false,
-    container: ".archive-datepicker.fixed:visible .custom-date-picker.to",
+    container: ".archive-datepicker.fixed .custom-date-picker.to",
     showOnFocus: false,
     startDate: startDate,
     endDate: endDate
@@ -55,7 +64,7 @@ function initializeArchiveDatePickers() {
 
   $datePickerTo.on("click", function() {
     var dropdown = $(
-      ".archive-datepicker.fixed:visible .custom-date-picker.to .dropdown-menu"
+      ".archive-datepicker.fixed .custom-date-picker.to .dropdown-menu"
     );
     if (dropdown[0] && dropdown[0].style.display === "block") {
     } else {
@@ -67,10 +76,22 @@ function initializeArchiveDatePickers() {
   });
 
   $datePickerTo.on("changeDate", function(newDate) {
-    // Means any ajax results will not append to existing items.
-    // For pagination use apply = false;
+
     datePickerToDate = newDate.date;
     datePickerToDateSet = true;
+    $datePickerFrom.datepicker("setEndDate", datePickerToDate);
+    if (!datePickerFromDateSet) {
+      $datePickerFrom.click();
+      $datePickerFrom.focus();
+    }
+
+    /* No action  if the user will click apply */
+    if  ($("#archive-datepicker-apply").visible()) {
+      return;
+    }
+
+    // Means any ajax results will not append to existing items.
+    // For pagination use apply = false;
     initializeSearch();
     sendEventRequest(
       "Archived",
@@ -78,26 +99,25 @@ function initializeArchiveDatePickers() {
       datePickerToDate,
       updateArchiveShows
     );
-    $datePickerFrom.datepicker("setEndDate", datePickerToDate);
-    if (!datePickerFromDateSet) {
-      $datePickerFrom.click();
-      $datePickerFrom.focus();
-    }
+  });
+
+  $("#archive-datepicker-apply").click(function () {
+
   });
 
   $datePickerFrom.click();
   $datePickerFrom.focus();
+}
 
-  $("#reset-search-datepicker").click(function() {
-    resetSearch();
-    sendEventRequest(
-      "Archived",
-      datePickerFromDate,
-      datePickerToDate,
-      updateArchiveShows
-    );
-  });
+function applySearch() {
 
+  initializeSearch();
+  sendEventRequest(
+    "Archived",
+    datePickerFromDate,
+    datePickerToDate,
+    updateArchiveShows
+  );
 }
 
 function resetDatePickers() {

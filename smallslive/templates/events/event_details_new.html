@@ -131,7 +131,7 @@
         {% for artist_dict in event_artists %}
           <div class="current_event">
             <a href="{{ artist_dict.absolute_url }}" class="artist-link">
-              {{ artist_dict.name }} / {{ artist_dict.role }}</a>
+              {{ artist_dict.name }} / {{ artist_dict.role }} ({{ artist_dict.leader }})</a>
           </div>
         {% endfor %}
         {% if next_event %}

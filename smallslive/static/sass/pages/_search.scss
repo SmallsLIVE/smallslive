@@ -257,159 +257,6 @@ body.headers-1 {
 
   //Mobile
   @media (max-width: $screen-md-max) {
-    .datepicker-container.noclick {
-      top: 9.5vw !important;
-      left: 0 !important;
-      width: 100vw;
-
-      .datepicker.datepicker-orient-right.datepicker-orient-top {
-        left: 5vw !important;
-
-        .table-condensed {
-          width: 87vw;
-        }
-      }
-
-      .date-picker-text {
-        color: black;
-        border: none;
-        border-radius: 5px;
-        box-shadow: 0 0 1px inset grey;
-
-        &:focus {
-          box-shadow: 0 0 1px inset red;
-        }
-
-        &.active {
-          box-shadow: 0 0 1px inset red;
-        }
-      }
-
-      background-color: white;
-
-      *,
-      .dropdown-menu td.day {
-        .years-dropdown {
-          border: solid 1px black;
-        }
-
-        background-color: white;
-
-        &:hover {
-          background-color: white;
-        }
-
-        .dropdown-menu
-          .table-condensed
-          > thead
-          > tr
-          > th.datepicker-switch
-          > .years-dropdown
-          .years-choices
-          > div {
-          background-color: white;
-        }
-      }
-
-      padding: 10px;
-
-      table {
-        width: 135%;
-      }
-
-      .datepicker-reset {
-        border: none;
-        height: 35px;
-        width: 10%;
-        padding-top: 8px;
-        position: initial;
-        text-decoration: none;
-
-        span {
-          display: none;
-        }
-
-        &:before,
-        &:after {
-          position: absolute;
-          content: " ";
-          height: 22px;
-          width: 3px;
-          background-color: grey;
-        }
-
-        &:before {
-          transform: rotate(45deg);
-        }
-
-        &:after {
-          transform: rotate(-45deg);
-        }
-      }
-
-      .checkmark {
-        display: inline-block;
-      }
-
-      #apply-button {
-        margin: 0px 10px;
-        margin-right: 30px;
-        color: grey;
-        width: 10%;
-        border: none;
-        height: 35px;
-
-        span {
-          display: none;
-        }
-
-        &::after {
-          margin-top: -5px;
-          /*Add another block-level blank space*/
-          content: "";
-          display: block;
-
-          /*Make it a small rectangle so the border will create an L-shape*/
-          width: 12px;
-          height: 20px;
-
-          /*Add a white border on the bottom and left, creating that 'L' */
-          border: solid grey;
-          border-width: 0 3px 3px 0;
-
-          /*Rotate the L 45 degrees to turn it into a checkmark*/
-          transform: rotate(45deg);
-        }
-      }
-
-      #search-date-picker-from {
-        &::before {
-          content: "";
-        }
-
-        &::after {
-          color: gray;
-          content: "to";
-          margin: 10px;
-        }
-      }
-
-      #search-date-picker-to {
-        &::before {
-          content: "";
-        }
-      }
-
-      .custom-date-picker
-        .datepicker.dropdown-menu
-        .table-condensed
-        > thead
-        > tr
-        > th.datepicker-switch
-        > div:first-child::after {
-        content: "";
-      }
-    }
 
     .search-tab-content {
       &:not(.active) {
@@ -546,11 +393,19 @@ body.headers-1 {
     }
   }
 
+  .datepicker-btn {
+    @media (min-width: $screen-md-max) {
+      display: none;
+    }
+  }
+
   .white-border-select {
     &:not(.no-arrow) {
       .select-selected {
         @media (max-width: $screen-md-max) {
           padding: 0.5em;
+          padding-left: 5vw;
+          padding-right: 6.5vw;
           border: 3px solid rgba(255, 255, 255, 0.9);
           font-size: 2.5vw;
           height: 8vw;
@@ -607,12 +462,9 @@ body.headers-1 {
   }
 
   @media (max-width: $screen-md-max) {
+    margin: 0 auto;
     width: 100%;
     text-align: center;
-  }
-
-  @media (min-width: 1024px) {
-    display: none;
   }
 
   @media (minx-width: 720px) {
@@ -725,10 +577,24 @@ body.headers-1 {
 }
 
 .event-section {
-  display: flex;
+  display: inline-flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-content: center;
-  margin: 0 auto;
+  margin-left: 100px;
+  margin-top: -20px;
+
+  @media(max-width: $screen-md-max) {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .datepicker-btn {
+    &.white-border-button {
+      width: auto;
+      white-space: nowrap;
+    }
+  }
 
   .select-selected {
     background-color: #f0f0eb;
@@ -750,18 +616,24 @@ body.headers-1 {
   }
 
   .event-filter-select {
-    @media (max-width: $screen-md-max) {
-      width: $mobile-filter-button-width;
 
-      &.spaced {
-        margin-left: 5px;
-        margin-right: 5px;
+    .select-selected {
+      @media (max-width: $screen-md-max) {
+        padding-left: 5vw;
+        padding-right: 5vw;
       }
     }
-
     .select-items {
       top: 98%;
     }
+  }
+}
+
+
+.white-border-button, .white-border-select {
+  &.spaced {
+    margin-left: 5px;
+    margin-right: 5px;
   }
 }
 
@@ -1362,6 +1234,10 @@ body.headers-1 {
       height: 330px;
       width: 46.5vw;
 
+      .close-button {
+        display: none;
+      }
+
       @media (min-width: 1366px) {
         height: 21.5vw;
         width: 23.25vw;
@@ -1444,6 +1320,7 @@ body.headers-1 {
       line-height: 23px;
       font-size: 2.5vw;
       margin-right: 1vw;
+      padding-right: 3vw;
       vertical-align: top;
 
       display: flex;
@@ -2138,11 +2015,40 @@ body.home.admin-header {
   }
 }
 
+.new-archive {
+  .archive-datepicker {
+    &.fixed {
+      &.desktop-hidden {
+        display: none;
+      }
+    }
+  }
+}
+
 @media (max-width: 1024px) {
   .new-archive {
     .archive-datepicker {
       &.fixed {
         display: none;
+        &.active {
+          display: block;
+          left: -3.5vw;
+          margin-top: -85px;
+          width: calc(100% + 3.5vw);
+
+          .close-button {
+            display: block;
+          }
+        }
+        .datepicker-container {
+          width: 100%;
+
+          .close-button  {
+            opacity: 1;
+            top: 45px;
+            z-index: 1010;
+          }
+        }
       }
     }
   }
