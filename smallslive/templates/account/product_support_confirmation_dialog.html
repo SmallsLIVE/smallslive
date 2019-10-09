@@ -17,18 +17,26 @@
       <a href="#" class="close-button"></a>
       <div class="modal-body">
         <p class="title2 accent-color title">Artist Sponsorship</p>
-        <!--
-          <p class="title-big subtitle"></p>
-        //-->
-          <p class="text9 justified-text text">
+          <p class="text9" style="align-self: normal;">
             Sponsorships are 100% tax-deductible donations that directly support this artist.
-            You may also choose to receive this album for a partially tax-deductible donation. 
+            You may also choose to receive this album for a partially tax-deductible donation.
             You are sponsoring {{ comma_separated_leaders }}.
           </p>
+          {% if bought_tracks %}
+          <p class="text9" style="align-self: normal;">
+            You have made a contribution of $xxxx to this project.
+          </p>
+          {% if is_catalogue %}
+          <p class="text9" style="align-self: normal;">
+            If you opted to recieve a digital recording,
+            it can be found in your <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="accent-color underline" style="">Library</a>
+          </p>
+          {% endif %}
+          {% endif %}
           <p class="gift-content"></p>
         <div class="text4 text-centered" style="display: flex; justify-content: center;">
-          <button id="confirmDonationButton" class="white-border-button confirm" style="margin-right: 5px;">Confirm</button>
-          <button class="white-border-button cancel" style="margin-left: 5px;">Cancel</button>
+          <button class="white-border-button cancel" style="margin-rightt: 5px;">Cancel</button>
+          <button id="confirmDonationButton" class="white-border-button confirm" style="margin-left: 5px;">Continue</button>
         </div>
       </div>
     </div>
