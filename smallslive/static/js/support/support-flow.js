@@ -7,6 +7,10 @@ var selectedData = {
 };
 
 var setSelected = function(flow, type, amount, step) {
+
+  /* flow: become a supporter or one time donation or event donation or product donation */
+  /* type: store item with shipping  or store item digital or one time donation */
+
   selectedData.flow = flow;
   selectedData.type = type;
   selectedData.amount = amount;
@@ -27,13 +31,22 @@ var setSelected = function(flow, type, amount, step) {
 var currentStep = 0;
 
 var getSteps = function() {
+  /* flow and type determine the number of steps */
+  /* Depending on the flow, there can be intro or not */
+  /* Basically: become a supporter (monthly, one time, gift)
+                one time donation (one time, gift)
+                event support (one time)
+                product support (catalog) (one time, gift)
+
+     each one has different steps */
+
   var steps;
 
   if (
     selectedData.flow == "become_supporter" ||
     selectedData.flow == "one_time_donation"
   ) {
-    if (selectedData.type == "store") {
+    if (selectedData.type == "store_physical") {
       steps = [
         "Intro",
         "SelectType",
@@ -46,16 +59,24 @@ var getSteps = function() {
       steps = ["Intro", "SelectType", "PaymentInfo", "ThankYou"];
     }
   } else if (selectedData.flow == "catalog") {
-    if (selectedData.type == "store") {
-      steps = ["Shipping", "Billing", "Preview", "ThankYou"];
+    if (selectedData.type == "store_physical") {
+      steps = ["SelectType", "Shipping", "Billing", "Preview", "ThankYou"];
+    } else if (selectedData.type == "store_digital") {
+      steps = ["SelectType", "Billing", "Preview", "ThankYou"];
     } else {
       steps = ["SelectType", "PaymentInfo", "ThankYou"];
     }
-  } else if (
-    selectedData.flow == "event_support" ||
-    selectedData.flow == "product_support"
-  ) {
+  } else if (selectedData.flow == "event_support") {
     steps = ["SelectType", "PaymentInfo", "ThankYou"];
+  }
+
+  var $stepsDotsContainer = $mainContainer.find("#supporterSteps");
+  if (steps.length != $stepsDotsContainer.find(".step-button").length) {
+    var html = "";
+    for (i = 0; i < steps.length; i++) {
+      html += "<div class='step-button'></div>";
+    }
+    $stepsDotsContainer.html(html);
   }
 
   return steps;
@@ -76,7 +97,6 @@ var getNextStep = function() {
   return steps[index + 1];
 };
 
-var buttons = $mainContainer.find("#supporterSteps > *");
 var monthlyButtons = $mainContainer.find("#monthlyPledge > button");
 var yearlyButtons = $mainContainer.find("#yearlyPledge > button");
 var giftsButtons = $mainContainer.find(".select-gift");
@@ -90,8 +110,14 @@ var resetButtons = function() {
 };
 
 var activeStep = function(step) {
-  $(buttons[step]).addClass("active");
-  $(buttons[currentStep]).removeClass("active");
+  var stepIndex = getSteps().indexOf(step);
+  // getSteps might actually change html.
+  var buttons = $mainContainer.find("#supporterSteps > *");
+  $(buttons[stepIndex]).addClass("active");
+  var currentStepIndex = getSteps().indexOf(currentStep);
+  if (currentStepIndex > -1) {
+    $(buttons[currentStep]).removeClass("active");
+  }
 };
 
 var showPanel = function(step) {
@@ -146,6 +172,7 @@ var checkConfirmButton = function() {
       $confirmButton.prop("disabled", false);
     } else {
       $confirmButton.prop("disabled", true);
+      $confirmButton.hide();
     }
   } else if (currentStep === 0) {
     $confirmButton.prop("disabled", false);
@@ -166,7 +193,7 @@ var checkConfirmButton = function() {
     $confirmButton.text("Continue");
   }
 
-  if (getSteps().indexOf(currentStep) < 1) {
+  if (currentStep == "Intro") {
     $mainContainer.find("#backButton").hide();
   } else {
     $mainContainer.find("#backButton").show();
@@ -231,22 +258,6 @@ $(document).ready(function() {
     window.completeSubpage = "";
   }
 
-  $(document).on("change", ".gift-content select", function() {
-    /* Add a border to the display selection on dropdown change.
-     */
-    var $that = $(this);
-    var val = $that.val();
-    var $confirmSelectionButton = $mainContainer.find(
-      "#confirmSelectionButton"
-    );
-    $confirmSelectionButton.prop("disabled", val == "none");
-
-    if (val == "none") {
-      setSelected(selectedData.flow, "", 0);
-      $itemForm = null;
-    }
-  });
-
   $(document).on("submit", ".add-to-basket", function(e) {
     e.preventDefault();
 
@@ -271,6 +282,8 @@ $(document).ready(function() {
     function checkout() {
       // TODO: fix hardcoded URL
       $.get("/catalog/checkout/", function (data) {
+        // data.url  = 'shipping-address' and then 'shipping-method' if item is physical
+        // otherwise go straight to billing.
         $.get(data.url, function(data) {
           if (data.url && data.url.indexOf("shipping-method") > -1) {
             $.get(data.url, function (data) {
@@ -498,26 +511,23 @@ $(document).ready(function() {
     $(this).addClass("active");
     setSelected(selectedData.flow, "month", amount);
     var $selectionConfirmationDialog = $mainContainer.find(
-      "#selectionConfirmationDialog"
+      "#supporterMonthlySelectionConfirmationDialog"
     );
-    $selectionConfirmationDialog.find(".title").text("become a supporter");
-    $selectionConfirmationDialog.find(".subtitle").text("Monthly pledge");
     $selectionConfirmationDialog
-      .find(".text")
-      .html(
-        "You have selected a monthly pledge of $" +
-          amount +
-          ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
-      );
-    $selectionConfirmationDialog.find(".gift-content");
+      .find(".price")
+      .text(amount);
     $selectionConfirmationDialog.modal("show");
   });
 
+  $(document).on("click", "#yearlyPledge > button", function() {
+    $mainContainer.find("#yearlyPledge > button").removeClass("active");
+    oneTimeSelected($(this));
+  });
+
   function oneTimeSelected($element) {
+    var dialogSelector = "#" + $element.parent().data("dialog-type") + "OneTimeSelectionConfirmationDialog";
     var amount = $element.val();
-    var $selectionConfirmationDialog = $mainContainer.find(
-      "#selectionConfirmationDialog"
-    );
+    var $selectionConfirmationDialog = $mainContainer.find(dialogSelector);
 
     $element.addClass("active");
     $mainContainer.find("#confirmSelectionButton").prop("disabled", false);
@@ -525,21 +535,17 @@ $(document).ready(function() {
     resetCustom();
     setSelected(selectedData.flow, "year", amount, "SelectType");
     $selectionConfirmationDialog.modal("show");
-    $selectionConfirmationDialog.find(".title").text("support artist");
-    $selectionConfirmationDialog.find(".subtitle").text("One time donation");
     $selectionConfirmationDialog
-      .find(".text")
-      .html(
-        "You have selected a One Time Donation of $" +
-          amount +
-          ". One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year."
-      );
+      .find(".price").text(amount);
   }
 
-  $(document).on("click", "#yearlyPledge > button", function() {
-    $mainContainer.find("#yearlyPledge > button").removeClass("active");
-    oneTimeSelected($(this));
-    $selectionConfirmationDialog.find(".gift-content");
+  $(document).on("click", "#confirmMonthlySelectionButton, #confirmOneTimeSelectionButton", function() {
+    var $selectionConfirmationDialog = $(this).closest(".selectionConfirmationDialog");
+    $selectionConfirmationDialog.modal("hide");
+    var $confirmButton = $mainContainer.find("#confirmButton");
+    $confirmButton.show();
+    $confirmButton.prop("disabled", false);
+    $confirmButton.click();
   });
 
   // Available when coming from Catalog/Support Artist
@@ -624,17 +630,7 @@ $(document).ready(function() {
           );
           $selectionConfirmationDialog.modal("show");
           $selectionConfirmationDialog
-            .find(".title")
-            .text("become a supporter");
-          $selectionConfirmationDialog.find(".subtitle").text("Monthly pledge");
-          $selectionConfirmationDialog
-            .find(".text")
-            .html(
-              "You have selected a monthly pledge of $" +
-                amount +
-                ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
-            );
-          $selectionConfirmationDialog.find(".gift-content");
+            .find(".price").text(amount);
         } else {
           $("#monthly-less").text("The minimun monthly pledge is $10 dolars");
         }
@@ -708,9 +704,9 @@ $(document).ready(function() {
       .parent()
       .find(".modal-content")
       .clone();
-    var $selectionConfirmationDialog = $mainContainer.find(
-      "#selectionConfirmationDialog"
-    );
+
+    var dialogSelector = "#" + $(this).closest("#gift").data("dialog-type")  + "GiftSelectionConfirmationDialog";
+    var $selectionConfirmationDialog = $mainContainer.find(dialogSelector);
     $selectionConfirmationDialog.find(".title").text($(this).text());
     var giftTier = $(this).attr("data-type");
     var hasVariants =
@@ -741,7 +737,9 @@ $(document).ready(function() {
     $content.find(".tax").text(tax);
     $content.find(".gift-tier").text(giftTier);
     if (hasVariants) {
-      $content.find(".variants").text("Please select an option below.");
+      $selectionConfirmationDialog.find(".variants").show();
+    }  else {
+      $selectionConfirmationDialog.find(".variants").hide();
     }
     var $giftContent = $selectionConfirmationDialog.find(".gift-content");
     $giftContent.html($item);
@@ -751,15 +749,56 @@ $(document).ready(function() {
       .addClass("white-border-select");
     replaceWhiteSelects($giftContent[0]);
     var $select = $selectionConfirmationDialog.find(".select-items");
-    var $confirmSelectionButton = $("#confirmSelectionButton");
+    var $confirmSelectionButton = $("#confirmGiftSelectionButton");
     $confirmSelectionButton.prop("disabled", $select.length == 1);
     $selectionConfirmationDialog.modal("show");
   });
 
-  function giftSelected(selection) {
+  $(document).on("change", ".gift-content select", function() {
+    /* Add a border to the display selection on dropdown change.
+     */
+    var $that = $(this);
+    var val = $that.val();
+    var $confirmSelectionButton = $mainContainer.find(
+      "#confirmGiftSelectionButton"
+    );
+    $confirmSelectionButton.prop("disabled", val == "none");
+
+    if (val == "none") {
+      setSelected(selectedData.flow, "", 0);
+      $itemForm = null;
+    }
+  });
+
+  $(document).on("click", "#confirmGiftSelectionButton", function() {
+
+    var $selectionConfirmationDialog = $(this).closest(".selectionConfirmationDialog");
+    $selectionConfirmationDialog.modal("hide");
+    $mainContainer.find("#confirmButton").show();
+
+    var $variantSelect = $selectionConfirmationDialog.find("select");
+
+    if ($itemForm) {
+      var requiresShipping = $itemForm.data("requires-shipping") == "True";
+      if ($variantSelect.length != 0) {
+        giftSelected($variantSelect.val(), requiresShipping);
+      } else {
+        giftSelected(null, requiresShipping);
+      }
+    }
+    $selectionConfirmationDialog.modal("hide");
+    $mainContainer.find("#confirmButton").prop("disabled", false);
+    $mainContainer.find("#confirmButton").click();
+  });
+
+  function giftSelected(selection, requiresShipping) {
     // Amount = passed to setSelected. It's irrelevant because
     // amount will be passed to the store backend through the form $itemForm
-    setSelected(selectedData.flow, "store", 0);
+    var store = "store_digital";
+    if (requiresShipping) {
+      store = "store_physical";
+    }
+    setSelected(selectedData.flow, store, 0);
     if (selection) {
       var $input = $itemForm.find('input[name="child_id"]');
       $input.val(selection);
@@ -771,21 +810,6 @@ $(document).ready(function() {
     ".close-button"
   );
 
-  $(document).on("click", "#confirmSelectionButton", function() {
-    $mainContainer.find("#confirmButton").show();
-    $mainContainer.find("#selectionConfirmationDialog").modal("hide");
-    var $variantSelect = $selectionConfirmationDialog.find("select");
-
-    if ($itemForm) {
-      if ($variantSelect.length != 0) {
-        giftSelected($variantSelect.val());
-      } else {
-        giftSelected();
-      }
-    }
-    $mainContainer.find("#confirmButton").prop("disabled", false);
-    $mainContainer.find("#confirmButton").click();
-  });
 
   $(document).on("click", "#cancelSelectionButton", function() {
     resetButtons();
@@ -943,10 +967,9 @@ $(document).ready(function() {
       $(this).hide();
     }
 
-    var storeItem = selectedData.type === "store";
+    var storeItem = selectedData.type.indexOf("store") === 0;
 
     if (currentStep === "SelectType" && storeItem) {
-      $(".step-button").removeClass("hidden");
       $itemForm.submit();
     } else if (currentStep === "PaymentInfo") {
       processPaymentInfoStep();
@@ -956,10 +979,9 @@ $(document).ready(function() {
       $mainContainer.find("#payment-form").submit();
     } else if (currentStep === "Preview" && storeItem) {
       $mainContainer.find("#place-order").submit();
-    } else if (currentStep === "SelectType" && selectedData.type != "store") {
+    } else if (currentStep === "SelectType" && selectedData.type.indexOf("store") != 0) {
       getPaymentInfoForm();
     } else {
-      $mainContainer.find(".step-button.gift").addClass("hidden");
       showPanel(getNextStep());
     }
 
@@ -984,6 +1006,11 @@ $(document).ready(function() {
 
     if (!getSteps().indexOf(currentStep) < 1) {
       showPanel(getPreviousStep());
+    } else {
+      var action = $(this).data("back-action");
+      if (action) {
+        eval(action)(selectedData.type);
+      }
     }
 
     $mainContainer.find("#confirmButton").text("Confirm");
@@ -994,4 +1021,13 @@ $(document).ready(function() {
     $currentButton.removeClass("active");
     $currentButton.prev().addClass("active");
   });
+
+  function hideFlow(flowType) {
+    $(".album.big-player").removeClass("hidden");
+    $("#my-downloads-product__" + flowType).addClass('hidden');
+    $(".store-banner").removeClass("hidden");
+    $(".white-line-bottom").removeClass("hidden");
+    $(".newest-recordings-container.downloads").removeClass("hidden");
+  }
+
 });

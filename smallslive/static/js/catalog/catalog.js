@@ -66,20 +66,20 @@ $(document).ready(function () {
 
   });
 
-  function showFlow(supporterType) {
+  function showFlow(flowType) {
 
-    if (supporterType == "support") {
-      $mainContainer = $("#my-downloads-product__" + supporterType);
+    if (flowType == "support") {
+      $mainContainer = $("#my-downloads-product__" + flowType);
       setSelected("catalog", "support", 0);
       showPanel("SelectType");
       $donationConfirmationDialog.modal("hide");
     } else {
-      setSelected("catalog", "store", 0);
+      setSelected("catalog", "store_physical", 0);
       $("#confirmButton").show();
       $selectionConfirmationDialog.modal("hide");
     }
     $(".album.big-player").addClass("hidden");
-    $("#my-downloads-product__" + supporterType).removeClass('hidden');
+    $("#my-downloads-product__" + flowType).removeClass('hidden');
     $(".store-banner").addClass("hidden");
     $(".white-line-bottom").addClass("hidden");
     $(".newest-recordings-container.downloads").addClass("hidden");
@@ -87,7 +87,7 @@ $(document).ready(function () {
   }
 
   $(document).on("click", "#confirmCatalogSelectionButton", function () {
-    showFlow("store");
+    showFlow("catalog");
     $itemForm.submit();
     $mainContainer.find("#selectionConfirmationDialog").modal("hide");
   });

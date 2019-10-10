@@ -13,7 +13,7 @@
 {% load basket_tags %}
 
 {% block confirmation_modals %}
-  {% include 'account/selection_confirmation_dialog.html' %}
+  {% include 'account/popups/event_support_one_time_selection_confirmation_dialog.html' %}
 
   <div class="modal fade" id="donateBitcoinDialog" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
@@ -55,8 +55,8 @@
     <div class="{% if not completed %}active{% endif %} step-button"></div>
     <div class="step-button"></div>
     <div class="step-button"></div>
-    <div class="step-button hidden gift"></div>
-    <div class="step-button hidden gift"></div>
+    <div class="step-button"></div>
+    <div class="step-button"></div>
     <div class="{% if completed %}active{% endif %} step-button"></div>
   </div>
   {% if not completed %}
@@ -79,7 +79,9 @@
           50% of your donation will be given directly to the following musicians:
           {{ comma_separated_artists }}.
         </p>
-        <div id="supportPledge" class="button-row button-row-big button-row-margin">
+        <div id="supportPledge"
+             class="button-row button-row-big button-row-margin"
+             data-dialog-type="event">
           <button value=5>$5</button>
           <button value=20>$20</button>
           <button value=100>$100</button>

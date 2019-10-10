@@ -13,7 +13,8 @@
 {% load basket_tags %}
 
 {% block confirmation_modals %}
-  {% include 'account/catalog_selection_confirmation_dialog.html' %}
+  {% include 'account/popups/product_support_gift_selection_confirmation_dialog.html' %}
+  {% include 'account/popups/product_support_one_time_selection_confirmation_dialog.html' %}
 {% endblock %}
 
 {% block flow_title %}
@@ -32,8 +33,8 @@
     <div class="{% if not completed %}active{% endif %} step-button"></div>
     <div class="step-button"></div>
     <div class="step-button"></div>
-    <div class="step-button hidden gift"></div>
-    <div class="step-button hidden gift"></div>
+    <div class="step-button"></div>
+    <div class="step-button"></div>
     <div class="{% if completed %}active{% endif %} step-button"></div>
   </div>
   {% if not completed %}
@@ -71,7 +72,9 @@
           50% of your donation will go directly to
           {{ album_product.get_leader_strings }}.
         </p>
-        <div id="supportPledge" class="button-row button-row-big button-row-margin">
+        <div id="supportPledge"
+             class="button-row button-row-big button-row-margin"
+             data-dialog-type="product">
           <button value=5 style="margin-bottom: 25px;">$5</button>
           <button value=20>$20</button>
           <button value=100>$100</button>
@@ -129,7 +132,7 @@
 {% endblock %}
 {% block flow_confirm %}
   {% if not completed %}
-    <button id="backButton" class="button-bordered">Back</button>
+    <button id="backButton" class="button-bordered" data-back-action="hideFlow">Back</button>
     <button id="confirmButton" data-hide='true' class="button-bordered">Confirm</button>
   {% else %}
     <a href="{% url 'promotions:home' %}">

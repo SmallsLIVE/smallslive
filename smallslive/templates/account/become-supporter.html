@@ -13,7 +13,9 @@
 {% block confirmation_modals %}
   {% if supporter_flow == 'catalog_flow' %}
   {% else %}
-    {% include 'account/selection_confirmation_dialog.html' %}
+    {% include 'account/popups/supporter_monthly_selection_confirmation_dialog.html' %}
+    {% include 'account/popups/supporter_one_time_selection_confirmation_dialog.html' %}
+    {% include 'account/popups/supporter_gift_selection_confirmation_dialog.html' %}
   {% endif %}
 {% endblock %}
 
@@ -42,8 +44,8 @@
     <div class="{% if not completed %}active{% endif %} step-button"></div>
     <div class="step-button"></div>
     <div class="step-button"></div>
-    <div class="step-button hidden gift"></div>
-    <div class="step-button hidden gift"></div>
+    <div class="step-button"></div>
+    <div class="step-button"></div>
     <div class="{% if completed %}active{% endif %} step-button"></div>
   </div>
   {% if not completed %}
@@ -126,7 +128,9 @@
           </div>
           <p tabindex="0" class="text9">This is a one time, 100% tax deductible donation to The SmallsLIVE Foundation. You will receive access to the SmallsLIVE Archive for the remainder of the tax year.<br>
             If would like to customize your donation please contact us at foundation@smallslive.com</p>
-          <div id="yearlyPledge" class="button-row button-row-big button-row-margin">
+          <div id="yearlyPledge"
+               class="button-row button-row-big button-row-margin"
+               data-dialog-type="supporter">
             <button value=100>$100</button>
             <button value=500>$500</button>
             <button value=1000>$1000</button>

@@ -15,7 +15,6 @@
   {{ block.super }}
   <script>
     {% if flow_type == 'event_support'%}
-
       $(document).ready(function () {
         setSelected("event_support", "one-time", 0, "SelectType");
         checkConfirmButton();

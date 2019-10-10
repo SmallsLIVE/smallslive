@@ -218,7 +218,6 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
             'digital-album'
         ])
         for product in products:
-            print 'Product: ', product
             ctx['gifts'].append(product)
             if product.variants.count():
                 stock = product.variants.first().stockrecords.first()

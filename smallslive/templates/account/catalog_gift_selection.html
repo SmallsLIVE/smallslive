@@ -13,14 +13,18 @@
     Streaming and digital downloads can be accessed from your Library.
     Please make a selection from the choices below. 
   </p>
-  <div id="gift" class="gifts-container">
+  <div id="gift" class="gifts-container" data-dialog-type="product">
 
     {% for product in gifts %}
 
       {% purchase_info_for_product request product as session %}
       {% if session.availability.is_available_to_buy %}
       <div>
-         <form action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket hidden" style="width: 100%">
+         <form action="{% url 'basket:add' pk=product.pk  %}"
+               method="post"
+               class="add-to-basket hidden"
+               data-requires-shipping="{{ product.get_product_class.requires_shipping }}"
+               style="width: 100%">
               {% basket_form request product 'single' as basket_form %}
               <div class="store-add-small">
                   {% csrf_token %}
@@ -48,7 +52,8 @@
                       data-type="{{ product.title }}"
                       data-variants="{{ product.variants.count }}">
                 <span class="price-tag">{{ session.price.incl_tax|currency:session.price.currency }} </span>
-                <span class="gift-title">{{ product.get_child_product_title }}</span>
+                <span class="gift-title">{{ product.get_child_product_title }}
+                </span>
               </button>
             </div>
           {% else %}
@@ -59,7 +64,8 @@
                        data-type="{{ product.title }}"
                        data-variants="{{ product.variants.count }}">
                  <span class="price-tag">{{ session.price.excl_tax|currency:session.price.currency }} </span>
-                 <span class="gift-title">{{ product.get_child_product_title }}</span>
+                 <span class="gift-title">{{ product.get_child_product_title }}
+                 </span>
                </button>
             </div>
           {% endif %}

@@ -4,7 +4,7 @@
 {% load djstripe_tags %}
 
 {% block confirmation_modals %}
-  {% include 'account/selection_confirmation_dialog.html' %}
+  {% include 'account/popups/selection_confirmation_dialog.html' %}
 {% endblock %}
 
 {% block flow_title %}
@@ -21,8 +21,8 @@
     <div class="{% if not completed %}active{% endif %} step-button"></div>
     <div class="step-button"></div>
     <div class="step-button"></div>
-    <div class="step-button hidden gift"></div>
-    <div class="step-button hidden gift"></div>
+    <div class="step-button"></div>
+    <div class="step-button"></div>
     <div class="{% if completed %}active{% endif %} step-button"></div>
   </div>
   {% if not completed %}
