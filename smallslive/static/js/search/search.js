@@ -417,9 +417,6 @@ $(document).ready(function () {
     if (!$(".instruments-container").is(":visible")) {
       $(".instruments-container").css("display", "flex");
     } else {
-      if (viewPortLength("width") < 1024) {
-        $("body").removeClass("hidden-body");
-      }
       $(".instruments-container").css("display", "none");
     }
   });
@@ -435,17 +432,7 @@ $(document).ready(function () {
     }
   });
 
-  $(".instruments-container .close-button").click(function() {
-    if (viewPortLength("width") < 1024) {
-      $("body").removeClass("hidden-body");
-    }
-  });
-
   $(".instrument").click(function() {
-
-    if (viewPortLength("width") < 1024) {
-      $("body").removeClass("hidden-body");
-    }
 
     /* Store selected value in button data and session*/
     var instrument = $(this).data("instrument");

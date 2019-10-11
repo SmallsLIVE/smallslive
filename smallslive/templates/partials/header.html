@@ -158,11 +158,9 @@
   $('.mobile-menu-icons .fa-search').click(function () {
       var headerCount = getHeaderCount();
       if ($('#search-bar').hasClass('mobile-search-header-shown')) {
-          $("body").removeClass("hidden-body");
           $('body').removeClass('headers-' + (headerCount))
           $('body').addClass('headers-' + (headerCount - 1))
       } else {
-          $("body").addClass("hidden-body");
           $('body').removeClass('headers-' + (headerCount))
           $('body').addClass('headers-' + (headerCount + 1))
       }

@@ -151,7 +151,6 @@ $(document).ready(function () {
 
     $("#refine-btn").click(function () {
       $(".refine-overlay").show();
-      $("body").addClass("hidden-body");
     });
 
     $(document).on("click", "#dashboard-desktop-datepicker-close", function () {
