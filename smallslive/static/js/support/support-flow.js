@@ -70,10 +70,12 @@ var getSteps = function() {
     steps = ["SelectType", "PaymentInfo", "ThankYou"];
   }
 
+  /* There needs to be one less dot than steps because the Thank You Page
+  should not be counted */
   var $stepsDotsContainer = $mainContainer.find("#supporterSteps");
-  if (steps.length != $stepsDotsContainer.find(".step-button").length) {
+  if (steps.length - $stepsDotsContainer.find(".step-button").length != 1) {
     var html = "";
-    for (i = 0; i < steps.length; i++) {
+    for (i = 0; i < steps.length - 1; i++) {
       html += "<div class='step-button'></div>";
     }
     $stepsDotsContainer.html(html);
@@ -525,7 +527,7 @@ $(document).ready(function() {
   });
 
   function oneTimeSelected($element) {
-    var dialogSelector = "#" + $element.parent().data("dialog-type") + "OneTimeSelectionConfirmationDialog";
+    var dialogSelector = "#" + $element.closest(".pledge").data("dialog-type") + "OneTimeSelectionConfirmationDialog";
     var amount = $element.val();
     var $selectionConfirmationDialog = $mainContainer.find(dialogSelector);
 
@@ -604,14 +606,20 @@ $(document).ready(function() {
     monthlyCustom = $("#monthlyCustom");
     yearlyCustom = $("#yearlyCustom");
     var value = $(monthlyCustom).val();
+    var $errorLabel = $(this).closest(".button-row").find("label.accent-color");
+
     if (value > 9) {
       $mainContainer.find("#monthlyCustomConfirm").data("value", value);
       $mainContainer.find("#monthlyCustomConfirm").show();
       $mainContainer.find("#set-your-own-lbl").hide();
+      if (!$errorLabel.hasClass("hidden")) {
+        $errorLabel.addClass("hidden");
+      }
     } else {
       $mainContainer.find("#monthlyCustomConfirm").data("value", "");
       $mainContainer.find("#monthlyCustomConfirm").hide();
       $mainContainer.find("#set-your-own-lbl").show();
+      $errorLabel.removeClass("hidden");
     }
     if (value && isPositiveInteger(value)) {
       resetButtons();
@@ -631,8 +639,6 @@ $(document).ready(function() {
           $selectionConfirmationDialog.modal("show");
           $selectionConfirmationDialog
             .find(".price").text(amount);
-        } else {
-          $("#monthly-less").text("The minimun monthly pledge is $10 dolars");
         }
       }
     } else {
@@ -645,6 +651,7 @@ $(document).ready(function() {
     $monthlyCustom = $mainContainer.find("#monthlyCustom");
     $yearlyCustom = $(this);
     var value = $yearlyCustom.val();
+    var $errorLabel = $(this).closest(".button-row").find("label.accent-color");
 
     if (value && isPositiveInteger(value)) {
       resetButtons();
@@ -655,9 +662,13 @@ $(document).ready(function() {
       if (value >= 100 || value > 4 && selectedData.flow !== "become_supporter") {
         $mainContainer.find("#yearlyCustomConfirm").val(value);
         $mainContainer.find("#yearlyCustomConfirm").show();
+        if (!$errorLabel.hasClass("hidden")) {
+          $errorLabel.addClass("hidden");
+        }
       } else {
         $mainContainer.find("#yearlyCustomConfirm").val("");
         $mainContainer.find("#yearlyCustomConfirm").hide();
+        $errorLabel.removeClass("hidden");
       }
       if (event.keyCode == 13) {
         if ($mainContainer.find("#yearlyCustomConfirm").val() != "") {
