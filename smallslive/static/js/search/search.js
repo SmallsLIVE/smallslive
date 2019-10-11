@@ -647,20 +647,7 @@ $(document).ready(function () {
   });
 
   $(window).resize(function() {
-    if (viewPortLength("width") < 1024 && is_mobile == false) {
-      $("div[data-toggle-tab-target='archived-shows'")[0].click();
-      is_mobile = true;
-    }
-    if (viewPortLength("width") >= 1024 && is_mobile == true) {
-      if ($(".artist-search-profile-container").css("display") != "block") {
-        $("#musicianContent").css("display", "block");
-        $(".search-tab-content").show();
-        $(
-          '[data-toggle-tab-group="search-results"][data-toggle-tab="upcoming-shows"]'
-        ).hide();
-        is_mobile = false;
-      }
-    }
+
     let pages = rightValue / 6 / 4;
     pages -= 1;
     $("#artists").animate(
