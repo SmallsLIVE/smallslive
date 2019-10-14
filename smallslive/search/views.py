@@ -256,7 +256,7 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
 
         if not artist_id and artist:
             artist_id = artist.pk
-            
+
         # Populate upcoming shows as well. That is the only case for now.
         upcoming_event_blocks, showing_event_results, upcoming_num_pages, first, last = self.search(
             Event, '', results_per_page=60,
@@ -388,7 +388,9 @@ class UpcomingSearchView(SearchMixin):
         context['new_date'] = (day_start + timedelta(days=1)).strftime('%Y-%m-%d')
 
         # Tonight events
-        context['events_today'] = Event.objects.get_today_and_tomorrow_events()
+        context['events_today'] = Event.objects.get_today_and_tomorrow_events(
+            is_staff=self.request.user.is_staff
+        )
 
         return context
 

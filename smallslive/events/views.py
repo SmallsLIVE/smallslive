@@ -119,7 +119,8 @@ class HomepageView(ListView, UpcomingEventMixin):
     template_name = 'home_new.html'
 
     def get_queryset(self):
-        return Event.objects.get_today_and_tomorrow_events(just_today=True)
+        return Event.objects.get_today_and_tomorrow_events(
+            just_today=True, is_staff=self.request.user.is_staff)
 
     def get_today_events(self):
         events = list(self.get_queryset())
@@ -298,7 +299,8 @@ class EventDetailView(DetailView):
                 context['count_metrics'] = True
 
         context['related_videos'] = Event.objects.event_related_videos(event)
-        events = Event.objects.get_today_and_tomorrow_events(just_today=True)
+        events = Event.objects.get_today_and_tomorrow_events(
+            just_today=True, is_staff=self.request.user.is_staff)
         events = [x for x in events if not x.is_past]
         context['streaming_tonight_videos'] = events
 
@@ -307,7 +309,7 @@ class EventDetailView(DetailView):
         # They will be swapped with current info at start time.
 
         if event.show_streaming:
-            next_event = event.get_next_event()
+            next_event = event.get_next_event(is_staff=self.request.user.is_staff)
             if next_event:
                 title = next_event.title
                 date = next_event.date
@@ -337,7 +339,9 @@ class EventDetailView(DetailView):
 
         # for modal in past events
         # need to find if there is currently a live event
-        today_and_tomorrow_events = Event.objects.get_today_and_tomorrow_events().filter(venue_id=event.venue.id)
+        today_and_tomorrow_events = Event.objects.get_today_and_tomorrow_events(
+            is_staff=self.request.user.is_staff
+        ).filter(venue_id=event.venue.id)
         live_now = [x for x in today_and_tomorrow_events if x.is_live == True]
 
         context['finished_next_event'] = live_now[0] if live_now else None

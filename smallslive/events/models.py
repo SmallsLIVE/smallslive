@@ -155,7 +155,7 @@ class EventQuerySet(models.QuerySet):
 
         return query.order_by('-start')[:total_results]
 
-    def get_today_and_tomorrow_events(self, just_today=False, venue_id=None):
+    def get_today_and_tomorrow_events(self, just_today=False, venue_id=None, is_staff=False):
         # All the complexity comes from the events after midnight being
         # considered to be the same before, but internally date is real.
 
@@ -174,13 +174,15 @@ class EventQuerySet(models.QuerySet):
             # 'end__gte': timezone.now()
         }
 
-        print '****************************'
-        print filter_data
-
         if venue_id:
             filter_data['venue_id'] = venue_id
 
-        qs = self.filter(**filter_data).order_by('start')
+        qs = self.filter(**filter_data)
+
+        if not is_staff:
+            qs = qs.exclude(state=Event.STATUS.Draft)
+
+        qs = qs.order_by('start')
 
         return qs
 
@@ -677,6 +679,10 @@ class Event(TimeStampedModel):
         return is_live
 
     @property
+    def is_draft(self):
+        return self.state == Event.STATUS.Draft
+
+    @property
     def show_streaming(self):
         return self.is_live_or_about_to_begin(about_to_begin=True) and self.streamable
 
@@ -717,9 +723,9 @@ class Event(TimeStampedModel):
 
         return url
 
-    def get_next_event(self):
+    def get_next_event(self, is_staff=False):
         next_events = list(Event.objects.get_today_and_tomorrow_events(
-            venue_id=self.venue_id))
+            venue_id=self.venue_id, is_staff=is_staff))
 
         # Find current event in the list and return the next one.
         next_event = None
