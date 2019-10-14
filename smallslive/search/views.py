@@ -383,6 +383,9 @@ class UpcomingSearchView(SearchMixin):
         context['last_event'] = last_event
         context['new_date'] = (day_start + timedelta(days=1)).strftime('%Y-%m-%d')
 
+        # Tonight events
+        context['events_today'] = Event.objects.get_today_and_tomorrow_events()
+
         return context
 
 
