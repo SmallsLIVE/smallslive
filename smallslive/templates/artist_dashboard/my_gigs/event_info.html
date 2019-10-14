@@ -14,36 +14,77 @@
   <button class="active show-video-metrics-btn">Video & Metrics</button>
 </div>
 {% endif %}
+
 {% with sets_with_media=event.sets.with_media %}
-  {% for set in sets_with_media %}
-    <div id="artist-set-action-{{ set.pk  }}" class="artist-set-actions{% if not forloop.first %} hidden{% endif %}" data-set-id="{{ set.pk }}">
-      <div class="button-row button-row-margin">
-        <div class="flex-row">
-          {% if is_admin and set.has_media %}
-            {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-              <button class="publish-button" onclick="askPrivate({{ set.id }})">
-                Make Private
-              </button>
-            {% else %}
-              <button class="publish-button" onclick="askPublish({{ set.id }})">
-                Publish
-              </button>
-            {% endif %}
-            <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')" style="margin-left: 5px; ">
-                Download
+  <div id="artist-event-action-{{ event.pk  }}"
+       class="artist-set-actions"
+       data-event-id="{{ event.pk }}">
+    <div class="button-row button-row-margin">
+      <div class="flex-row">
+        {% if is_admin and sets_with_media.count %}
+          {% if event.has_published_media %}
+            <button class="publish-button">
+              Make Private
             </button>
           {% else %}
-            {% if set.video_recording and set.video_recording.is_published %}
-              <button disabled style="margin-left: 10px;">Make Private</button>
-            {% else %}
-              <button disabled style="margin-left: 10px;">Publish</button>
-            {% endif %}
-            <button disabled style="margin-left: 20px;">Download</button>
+            <button class="publish-button">
+              Publish
+            </button>
           {% endif %}
-        </div>
+          <button class="download white-border-button separated">
+              Download
+          </button>
+        {% else %}
+          {% if event.has_published_media %}
+            <button disabled>Make Private</button>
+          {% else %}
+            <button disabled>Publish</button>
+          {% endif %}
+          <button disabled class="white-border-button separated">Download</button>
+        {% endif %}
       </div>
     </div>
-  {% endfor %}
+
+    <!-- This table is hidden and will be copied into the modal if the users selects to download media -->
+    <table id="track-list-tbl" class="download-table hidden">
+      <thead>
+        <tr class="table_row">
+          <th>
+            Media
+          </th>
+          <th>
+            Download
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for set in sets_with_media %}
+        <tr>
+          <td>
+            <span class="text3">{{ set.event.title }} - Set {{ forloop.counter }}</span>
+          </td>
+          <td>
+            {% if set.video_recording.media_file.get_downloadable_sd_video_url %}
+              <a class="link"
+                 href="{{ set.video_recording.media_file.get_downloadable_sd_video_url }}"
+                 download
+                 class="video">Video</a>
+              <span class="separator">/</span>
+            {% endif %}
+            {% if set.audio_recording.media_file.get_downloadable_file_url %}
+              <a class="link"
+                 href="{{ set.audio_recording.media_file.get_downloadable_file_url }}"
+                 download
+                 class="audio">Audio</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <!-- end table -->
+  </div>
+
   <div class="header-metrics-container">
     {% include 'artist_dashboard/artist-dashboard-events-metrics.html' with sets_with_media=sets_with_media %}
   </div>

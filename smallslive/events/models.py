@@ -821,6 +821,12 @@ class Event(TimeStampedModel):
     def published_audio(self):
         return self.recordings.all().audio().published()
 
+    def has_published_media(self):
+        status = Recording.STATUS.Published
+        condition = Q(video_recording__state=status) | Q(audio_recording__state=status)
+        qs = self.sets.filter(condition)
+        return qs.count() > 0
+
     @cached_property
     def photo_crop_box(self):
         if not self.cropping or '-' in self.cropping:
@@ -859,8 +865,6 @@ class Event(TimeStampedModel):
         return tickets
 
     def is_public_event(self):
-        print "*** is public event"
-        print list(self.recordings.all())
         public_list = self.recordings.all().published().count()
         is_public = public_list > 0
 

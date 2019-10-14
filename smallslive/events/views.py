@@ -827,49 +827,42 @@ class MonthlyArchiveView(ArchiveView):
 monthly_archive = MonthlyArchiveView.as_view()
 
 
-class PublishSet(GenericViewSet):
-    queryset = EventSet.objects.all()
+class PublishEvent(GenericViewSet):
+    queryset = Event.objects.all()
 
     def post(self, request, *args, **kwargs):
-        event_set = self.get_object()
+
+        event = self.get_object()
+        data = {'success': True}
 
         try:
-            recording = event_set.video_recording
-            recording.state = Recording.STATUS.Published
-            recording.save()
+            if event.has_published_media():
+                for event_set in event.sets.with_media():
+                    recording = event_set.video_recording
+                    recording.state = Recording.STATUS.Hidden
+                    recording.save()
+                    recording = event_set.audio_recording
+                    recording.state = Recording.STATUS.Hidden
+                    recording.save()
+                    data['is_published'] = False
+            else:
+                for event_set in event.sets.with_media():
+                    recording = event_set.video_recording
+                    recording.state = Recording.STATUS.Published
+                    recording.save()
 
-            recording = event_set.audio_recording
-            recording.state = Recording.STATUS.Published
-            recording.save()
+                    recording = event_set.audio_recording
+                    recording.state = Recording.STATUS.Published
+                    recording.save()
+                    data['is_published'] = True
 
         except Recording.DoesNotExist:
-            pass
+            data['success'] = False
+            data['message'] = 'Recording does not exist'
 
-        return Response()
+        return JsonResponse(data)
 
-
-publish_set = PublishSet.as_view({'post': 'post'})
-
-
-class MakePrivate(GenericViewSet):
-    queryset = EventSet.objects.all()
-
-    def post(self, request, *args, **kwargs):
-        event_set = self.get_object()
-        try:
-            recording = event_set.video_recording
-            recording.state = Recording.STATUS.Hidden
-            recording.save()
-            recording = event_set.audio_recording
-            recording.state = Recording.STATUS.Hidden
-            recording.save()
-        except Recording.DoesNotExist:
-            pass
-
-        return Response()
-
-
-make_private = MakePrivate.as_view({'post': 'post'})
+publish_event = PublishEvent.as_view({'post': 'post'})
 
 
 # TODO Maybe include this "serialization" in metrics package?

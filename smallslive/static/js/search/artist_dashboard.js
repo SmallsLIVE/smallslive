@@ -287,7 +287,17 @@ $(document).ready(function () {
       var $container = $(this).closest(".artist-event");
       $container.removeClass("active");
       $container.prev(".artist-events-list").addClass("active");
-    })
+    });
+
+    $(document).on("click", "#event-info .publish-button", function () {
+      selectedEventId = $(this).closest(".artist-set-actions").data("event-id");
+      askPublish(selectedEventId);
+    });
+
+    $(document).on("click", "#event-info .download", function () {
+      selectedEventId = $(this).closest(".artist-set-actions").data("event-id");
+      showSelectFormat(selectedEventId);
+    });
 
     $(document).on("click", ".set-changer", function (event) {
       event.preventDefault();
@@ -298,8 +308,6 @@ $(document).ready(function () {
       }
       var $toShow = $(".event-metrics-container.flex-row#set-metrics-" + setId);
       var playListIndex = $toShow.data("set-number");
-
-      $(".artist-set-actions").removeClass("hidden").not("#artist-set-action-" + setId).addClass("hidden");
 
       currentListIndex = playListIndex;
       if (videoPlaying) {
@@ -708,15 +716,16 @@ $(document).ready(function () {
 
 });
 
-function askPrivate(setId) {
-    $('#privateConfirm').modal('show');
-    selectedSetId=setId;
+function askPrivate(eventId) {
+  $('#privateConfirm').modal('show');
+  selectedEventId = eventId;
 }
 
-function askPublish(setId) {
-    $('#publishConfirm').modal('show');
-    selectedSetId=setId;
+function askPublish(eventId) {
+  $('#publishConfirm').modal('show');
+  selectedEventId = eventId;
 }
+
 function makeSetPrivate() {
     $.post('/events/sets/' + selectedSetId + '/private/', {
       csrfmiddlewaretoken: csrfToken
@@ -730,25 +739,19 @@ function makeSetPrivate() {
     showSuccess('private')
 }
 
-function showSuccess(state) {
-    //var $publishSuccess = $('#publishSuccess');
-    //$publishSuccess.find('.success-state').text(state);
-    //$publishSuccess.modal('show')
-    $("#hide-scss-btn").data("type", state)
-    hideSuccess()
-}
-
-function publishSet() {
-    $.post('/events/sets/' + selectedSetId + '/publish/', {
+function publishEvent() {
+    hideMakePrivate();
+    hidePublish();
+    $.post('/events/' + selectedEventId + '/publish/', {
       csrfmiddlewaretoken: csrfToken
     }, function (data, status) {
+      var $button = $("#artist-event-action-" + selectedEventId).find("button.publish-button");
+      var newText = "Make Private";
+      if (!data.is_published) {
+        newText = "Publish";
+      }
+      $button.text(newText);
     });
-    hidePublish();
-    $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
-        '<button class="publish-button" onclick="askPrivate(' + selectedSetId + ')">Make Private</button>'
-    )
-    $("#set-id-" + selectedSetId).find('.set-status').text('Published');
-    showSuccess('public')
 }
 
 function hideMakePrivate() {
@@ -759,49 +762,15 @@ function hidePublish() {
     $('#publishConfirm').modal('hide');
 }
 
-function hideSuccess(data) {
-    $('#publishSuccess').modal('hide');
-    var $currentSet = $(".artist-active-set.accent-color.set-changer")[0];
-    var successType = $("#hide-scss-btn").data("type");
-    if (successType === "public" || data ==="public"){
-        $("#private-button").removeClass("hidden")
-        $("#public-button").addClass("hidden")
-        $("#mobile-private-button").removeClass("hidden")
-        $("#mobile-public-button").addClass("hidden")
-        $("#mobile-private-button").click()
-    };
-    if (successType === "private" || data ==="private"){
-        $("#private-button").addClass("hidden")
-        $("#public-button").removeClass("hidden")
-        $("#mobile-private-button").addClass("hidden")
-        $("#mobile-public-button").removeClass("hidden")
-        $("#mobile-public-button").click()
-    };
-}
-
-function showSelectFormat(videoUrl, audioUrl) {
-    var $downloadFormat = $('#downloadFormat');
-    var audioButton = $downloadFormat.find('#downloadFormatAudioUrl');
-    var videoButton = $downloadFormat.find('#downloadFormatVideoUrl');
-
-    if (audioUrl !== '') {
-        audioButton.attr({href: audioUrl}).on('click', function () {
-            $downloadFormat.modal('hide');
-        });
-        audioButton.find('button').prop('disabled', false);
-    } else {
-        audioButton.find('button').prop('disabled', true);
+function showSelectFormat() {
+    var $downloadDialog = $('#downloadFormat');
+    var $table = $("#track-list-tbl");
+    var $clonedTable = $table.clone(true).removeClass("hidden");
+    var $tableContainer = $downloadDialog.find(".table-container");
+    if ($tableContainer.find("#track-list-tbl").length === 0) {
+      $tableContainer.append($clonedTable);
     }
-
-    if (videoUrl !== '') {
-        videoButton.attr({href: videoUrl}).on('click', function () {
-            $downloadFormat.modal('hide');
-        });
-        videoButton.find('button').prop('disabled', false);
-    } else {
-        videoButton.find('button').prop('disabled', true);
-    }
-    $downloadFormat.modal('show');
+    $downloadDialog.modal('show');
 }
 
 var resizeTimer;

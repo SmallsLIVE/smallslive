@@ -3,13 +3,13 @@
         <div class="modal-content custom-modal">
             <div class="modal-body">
                 <p class="title2 accent-color">Publish</p>
-                <p class="title1">This set is currently private</p>
+                <p class="title1">This event is currently private</p>
                 <p class="text4 text-justify">
-                    Making your performance public will add it from the archive making it avaliable to the SmallsLIVE supporting members. You will be able to generate residual money from your performance as is laid out in the Artist Agreement. Learn more about the <span class="accent-color">Revenue Share</span>
+                    Making your performance public will add it from the archive making it available to the SmallsLIVE supporting members. You will be able to generate residual money from your performance as is laid out in the Artist Agreement. Learn more about the <span class="accent-color">Revenue Share</span>
                 </p>
                 <div class="button-row button-row-margin">
                     <button onclick="hidePublish()">Cancel</button>
-                    <button onclick="publishSet()">Make Public</button>
+                    <button onclick="publishEvent()">Make Public</button>
                 </div>
             </div>
         </div>
@@ -21,14 +21,14 @@
         <div class="modal-content custom-modal">
             <div class="modal-body">
                 <p class="title2 accent-color">Publish</p>
-                <p class="title1">This set is currently published</p>
+                <p class="title1">This event is currently published</p>
                 <p class="text4 text-justify">
-                    Making your performance private will remove it from the archive making it unavaliable to the SmallsLIVE supporting members. You will not be able to generate any residual monies from your performance as is laid out in the Artist Agreement. Learn more about the <span class="accent-color">Revenue Share</span>
+                    Making your performance private will remove it from the archive making it unavailable to the SmallsLIVE supporting members. You will not be able to generate any residual monies from your performance as is laid out in the Artist Agreement. Learn more about the <span class="accent-color">Revenue Share</span>
                 </p>
 
                 <div class="button-row button-row-margin">
                     <button onclick="hideMakePrivate()">Cancel</button>
-                    <button onclick="makeSetPrivate()">Make Private</button>
+                    <button onclick="publishEvent()">Make Private</button>
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@
         <div class="modal-content custom-modal">
             <div class="modal-body">
                 <p class="title2 accent-color">Publish</p>
-                <p class="title1">Your set is now <span class="success-state">public</span></p>
+                <p class="title1">Your event is now <span class="success-state">public</span></p>
                 <div class="button-row button-row-margin">
                     <button id="hide-scss-btn" onclick="hideSuccess()">Got it</button>
                 </div>
@@ -53,17 +53,12 @@
 <div class="modal fade" id="downloadFormat" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content custom-modal">
+            <a href="#" class="close-button"></a>
             <div class="modal-body">
                 <p class="title2 accent-color">Download</p>
-                <p class="title1">Select a format</p>
-                <div class="button-row button-row-margin">
-                    <a id="downloadFormatAudioUrl" href="" download>
-                        <button>mp3 audio</button>
-                    </a>
-                    <a id="downloadFormatVideoUrl" href="" download>
-                        <button>mp4 video</button>
-                    </a>
-                </div>
+                <p class="title1">Select your choice</p>
+                <div class="table-container"></div>
+
             </div>
         </div>
     </div>
