@@ -52,17 +52,6 @@ class SearchMixin(object):
 
         search_terms = search_terms.strip()
 
-        print '*************** SearchMixin.search ********************'
-        print 'main_search: ', search_terms
-        print 'order: ', order
-        print 'page: ', page
-        print 'instrument: ', instrument
-        print 'date_from: ', date_from
-        print 'date_to: ', date_to
-        print 'venue: ', venue
-        print 'artist_search: ', artist_search, type(artist_search)
-        print '-------------------------------------------------------'
-
         if artist_search:
             self.request.session['artist_search_value'] = artist_search
 
@@ -137,8 +126,9 @@ class SearchMixin(object):
 class UpcomingEventMixin(object):
 
     def get_upcoming_events_context_data(self, context):
+
         date_range_start = timezone.localtime(timezone.now())
-        # if it's not night when events are still hapenning, show next day
+        # if it's not night when events are still happening, show next day
         if date_range_start.hour > 6:
             date_range_start += timedelta(days=1)
         # don't show last nights events that are technically today

@@ -256,7 +256,7 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
 
         # Populate upcoming shows as well. That is the only case for now.
         upcoming_event_blocks, showing_event_results, upcoming_num_pages, first, last = self.search(
-            Event, '', results_per_page=60, artist_pk=artist_id, date_from=datetime.datetime.today())
+            Event, '', results_per_page=60, artist_pk=artist_id or artist.pk, date_from=datetime.datetime.today())
 
         artist_context['upcoming_events'] = upcoming_event_blocks[0] if upcoming_event_blocks else []
         artist_context['showing_artist_results'] = showing_artist_results
@@ -265,7 +265,7 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
 
         return artist_context
 
-    def get_intrument_context(self):
+    def get_instrument_context(self):
 
         context = {}
         instruments = Instrument.objects.all()
@@ -290,7 +290,7 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
         artist_context = self.get_artist_context(query_term, artist_search)
         context.update(artist_context)
 
-        instrument_context = self.get_intrument_context()
+        instrument_context = self.get_instrument_context()
         context.update(instrument_context)
 
         artist_id = context['artist'].pk if context['artist'] else None
