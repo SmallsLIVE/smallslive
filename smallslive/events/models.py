@@ -640,6 +640,20 @@ class Event(TimeStampedModel):
         """
         return self.end < timezone.now()
 
+    def all_events_completed(self):
+        """
+        You may have an event with one or more sets at the same time as another venue.
+        Do not rotate the event strip until the latest
+        matching set between multiple venues is complete.
+        """
+
+        end_date = self.start + timedelta(days=1)
+
+        events = list(Event.objects.filter(start=self.start, end__lte=end_date))
+        not_finished = [x for x in events if x.end > timezone.now()]
+
+        return len(not_finished) == 0
+
     @property
     def is_future(self):
         """
