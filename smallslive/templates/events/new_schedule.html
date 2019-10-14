@@ -31,8 +31,9 @@
   var eventOrderFilter = 'oldest';
   var show_event_venue = true;
   var show_event_setTime = true;
-  var datePickerInputSelector = '#search-date-picker-calendar > input.desktop';
+  var $datePickerFrom = $("#search-date-picker-calendar > input");
   var datePickerFromDate = '{{ default_from_date }}';
+  var $datePickerTo = null;
   var datePickerToDate = null;
   var setFromDate = true;
   var setToDate = false;

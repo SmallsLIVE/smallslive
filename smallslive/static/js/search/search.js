@@ -738,16 +738,18 @@ function resetSearch() {
 function triggerSearch() {
   var triggerArtistSearch = false;
   var triggerEventSearch = false;
-
   var datePickerFromVal = $datePickerFrom.val();
+
   if (datePickerFromVal && datePickerFromVal != startDate) {
     triggerEventSearch = true;
     startDate = datePickerFromVal;
   }
-  var datePickerToVal = $datePickerTo.val();
-  if (datePickerToVal && datePickerToVal != startDate) {
-    triggerEventSearch = true;
-    endDate = datePickerToVal;
+  if ($datePickerTo) {
+    var datePickerToVal = $datePickerTo.val();
+    if (datePickerToVal && datePickerToVal != startDate) {
+      triggerEventSearch = true;
+      endDate = datePickerToVal;
+    }
   }
 
   // detect if user has navigated here using the back button
@@ -804,7 +806,9 @@ function triggerSearch() {
 
   if (triggerEventSearch) {
     datePickerFromDate = $datePickerFrom.datepicker("getDate");
-    datePickerToDate = $datePickerTo.datepicker("getDate");
+    if (datePicker) {
+      datePickerToDate = $datePickerTo.datepicker("getDate");
+    }
     eventFilter = true;
     eventPageNum = 1;
     archivedEventPageNum = 1;
