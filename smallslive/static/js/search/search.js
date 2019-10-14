@@ -472,6 +472,19 @@ $(document).ready(function () {
     toggleArchiveDatePickerDisplay();
   });
 
+  $("#reset-search-datepicker").click(function () {
+    resetSearch();
+    sendEventRequest(
+      "Archived",
+      datePickerFromDate,
+      datePickerToDate,
+      updateArchiveShows
+    );
+    if ($("#archive-datepicker-apply").visible()) {
+      toggleArchiveDatePickerDisplay();
+    }
+  });
+
   function toggleArchiveDatePickerDisplay(event) {
     var $container  = $(".archive-datepicker.fixed");
     if (!$container.hasClass("active")) {
@@ -484,7 +497,6 @@ $(document).ready(function () {
   }
 
   /////////////////////
-
 
   $("#apply-button").click(function() {
     var eventDateFrom = datePickerFromDate;
