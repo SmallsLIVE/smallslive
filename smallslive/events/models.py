@@ -155,7 +155,7 @@ class EventQuerySet(models.QuerySet):
 
         return query.order_by('-start')[:total_results]
 
-    def get_today_and_tomorrow_events(self, just_today=False, venue_id=None):
+    def get_today_and_tomorrow_events(self, just_today=False, venue_id=None, is_staff=False):
         # All the complexity comes from the events after midnight being
         # considered to be the same before, but internally date is real.
 
@@ -174,13 +174,15 @@ class EventQuerySet(models.QuerySet):
             # 'end__gte': timezone.now()
         }
 
-        print '****************************'
-        print filter_data
-
         if venue_id:
             filter_data['venue_id'] = venue_id
 
-        qs = self.filter(**filter_data).order_by('start')
+        qs = self.filter(**filter_data)
+
+        if not is_staff:
+            qs = qs.exclude(state=Event.STATUS.Draft)
+
+        qs = qs.order_by('start')
 
         return qs
 
@@ -640,6 +642,20 @@ class Event(TimeStampedModel):
         """
         return self.end < timezone.now()
 
+    def all_events_completed(self):
+        """
+        You may have an event with one or more sets at the same time as another venue.
+        Do not rotate the event strip until the latest
+        matching set between multiple venues is complete.
+        """
+
+        end_date = self.start + timedelta(days=1)
+
+        events = list(Event.objects.filter(start=self.start, end__lte=end_date))
+        not_finished = [x for x in events if x.end > timezone.now()]
+
+        return len(not_finished) == 0
+
     @property
     def is_future(self):
         """
@@ -661,6 +677,10 @@ class Event(TimeStampedModel):
         is_live = start <= timezone.now() <= self.end + timedelta(minutes=self.start_streaming_before_minutes)
 
         return is_live
+
+    @property
+    def is_draft(self):
+        return self.state == Event.STATUS.Draft
 
     @property
     def show_streaming(self):
@@ -703,9 +723,9 @@ class Event(TimeStampedModel):
 
         return url
 
-    def get_next_event(self):
+    def get_next_event(self, is_staff=False):
         next_events = list(Event.objects.get_today_and_tomorrow_events(
-            venue_id=self.venue_id))
+            venue_id=self.venue_id, is_staff=is_staff))
 
         # Find current event in the list and return the next one.
         next_event = None
@@ -821,6 +841,12 @@ class Event(TimeStampedModel):
     def published_audio(self):
         return self.recordings.all().audio().published()
 
+    def has_published_media(self):
+        status = Recording.STATUS.Published
+        condition = Q(video_recording__state=status) | Q(audio_recording__state=status)
+        qs = self.sets.filter(condition)
+        return qs.count() > 0
+
     @cached_property
     def photo_crop_box(self):
         if not self.cropping or '-' in self.cropping:
@@ -859,8 +885,6 @@ class Event(TimeStampedModel):
         return tickets
 
     def is_public_event(self):
-        print "*** is public event"
-        print list(self.recordings.all())
         public_list = self.recordings.all().published().count()
         is_public = public_list > 0
 

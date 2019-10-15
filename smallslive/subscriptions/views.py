@@ -16,9 +16,6 @@ from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView, \
     CancelSubscriptionView as BaseCancelSubscriptionView
 from oscar_apps.catalogue.models import Product
 from oscar_apps.checkout.forms import PaymentForm, BillingAddressForm
-from oscar.apps.payment.exceptions import RedirectRequired, \
-    UnableToTakePayment, PaymentError
-from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from oscar_apps.partner.strategy import Selector
 from oscar.apps.payment.models import SourceType, Source
 from events.models import Event
@@ -27,7 +24,7 @@ from users.utils import charge, one_time_donation, \
     subscribe_to_plan, update_active_card
 from subscriptions.models import Donation
 from .forms import PlanForm, ReactivateSubscriptionForm
-from .mixins import PayPalMixin
+from .mixins import PayPalMixin, StripeMixin
 
 
 class PaymentInfoView(TemplateView):
@@ -121,7 +118,7 @@ class ContributeFlowView(TemplateView):
         return context
 
 
-class BecomeSupporterView(ContributeFlowView, PayPalMixin):
+class BecomeSupporterView(PayPalMixin, StripeMixin, ContributeFlowView):
 
     def __init__(self, *args, **kwargs):
         self.amount = None

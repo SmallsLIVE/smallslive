@@ -151,7 +151,6 @@ $(document).ready(function () {
 
     $("#refine-btn").click(function () {
       $(".refine-overlay").show();
-      $("body").addClass("hidden-body");
     });
 
     $(document).on("click", "#dashboard-desktop-datepicker-close", function () {
@@ -288,7 +287,17 @@ $(document).ready(function () {
       var $container = $(this).closest(".artist-event");
       $container.removeClass("active");
       $container.prev(".artist-events-list").addClass("active");
-    })
+    });
+
+    $(document).on("click", "#event-info .publish-button", function () {
+      selectedEventId = $(this).closest(".artist-set-actions").data("event-id");
+      askPublish(selectedEventId);
+    });
+
+    $(document).on("click", "#event-info .download", function () {
+      selectedEventId = $(this).closest(".artist-set-actions").data("event-id");
+      showSelectFormat(selectedEventId);
+    });
 
     $(document).on("click", ".set-changer", function (event) {
       event.preventDefault();
@@ -299,8 +308,6 @@ $(document).ready(function () {
       }
       var $toShow = $(".event-metrics-container.flex-row#set-metrics-" + setId);
       var playListIndex = $toShow.data("set-number");
-
-      $(".artist-set-actions").removeClass("hidden").not("#artist-set-action-" + setId).addClass("hidden");
 
       currentListIndex = playListIndex;
       if (videoPlaying) {
@@ -352,16 +359,41 @@ $(document).ready(function () {
     var dateFrom = $datePickerFrom.datepicker("getDate");
     var dateTo = $datePickerTo.datepicker("getDate");
 
+    if ($datePickerFrom.length == 0) {
+      dateFrom = null;
+    }
+
+    if ($datePickerTo.length == 0) {
+      dateTo = null;
+    }
+
     params = {
       'page': ++currentPage
     };
 
-    if (dateFrom && dateFrom.date) {
-      params["start_date_filter"] = dateFrom;
+    if (dateFrom) {
+      utcDateFrom =
+        dateFrom.getFullYear() +
+        "/" +
+        (dateFrom.getMonth() + 1) +
+        "/" +
+        dateFrom.getDate();
+    }
+    if (dateTo) {
+      utcDateTo =
+        dateTo.getFullYear() +
+        "/" +
+        (dateTo.getMonth() + 1) +
+        "/" +
+        dateTo.getDate();
     }
 
-    if (dateTo && dateTo.date) {
-      params["end_date_filter"] = dateTo;
+    if (dateFrom) {
+      params["start_date_filter"] = utcDateFrom;
+    }
+
+    if (dateTo) {
+      params["end_date_filter"] = utcDateTo;
     }
 
     var order = $('#artist_archive_order_filter').val();
@@ -396,10 +428,22 @@ $(document).ready(function () {
     $("#artistEventsList").removeClass("artist-loading-gif");
     $('.concerts-footer').show();
     if (data.template) {
-      if (currentPage > 1) {
-        $("#artistEventsList").append(data.template);
+      if (data.total_results > 0) {
+        if (currentPage > 1) {
+          $("#artistEventsList").append(data.template);
+        } else {
+          $("#artistEventsList").html(data.template);
+          $("#summary-data").removeClass("hidden");
+          if (!$("#summary-no-results").hasClass("hidden")) {
+            $("#summary-no-results").addClass("hidden");
+          }
+        }
       } else {
         $("#artistEventsList").html(data.template);
+        if (!$("#summary-data").hasClass("hidden")) {
+          $("#summary-data").addClass("hidden");
+        }
+        $("#summary-no-results").removeClass("hidden");
       }
     }
     if (data.total_results) {
@@ -676,30 +720,6 @@ $(document).ready(function () {
       return;
     }
 
-    if (mobile === true) {
-
-      params.page = ++currentPage;
-      params.start_date_filter = $('#start-date').val();
-      params.end_date_filter =  $('#until-date').val();
-
-      todayDate=(new Date().getMonth() + 1)  + "/" + new Date().getDate() + "/" + new Date().getFullYear();
-      if ( params.end_date_filter === todayDate || params.end_date_filter !== "" && params.start_date_filter !== "" ) {
-        optNumber +=1;
-      }
-
-      if (statusFilter !== 'all') {
-        params.leader_filter = statusFilter === 'leader';
-        optNumber +=1;
-      }
-
-      var orderMobile = $('#refine-order-filter option:selected').val()
-      if (orderMobile !== 'newest') {
-        params.order = orderMobile;
-        optNumber +=1;
-      }
-      $('#filter-number').text("(" + optNumber + ")");
-    }
-
     var callbacks = [updateShows];
     if (loadFirstEvent) {
       callbacks.push(showFirstEvent);
@@ -709,15 +729,16 @@ $(document).ready(function () {
 
 });
 
-function askPrivate(setId) {
-    $('#privateConfirm').modal('show');
-    selectedSetId=setId;
+function askPrivate(eventId) {
+  $('#privateConfirm').modal('show');
+  selectedEventId = eventId;
 }
 
-function askPublish(setId) {
-    $('#publishConfirm').modal('show');
-    selectedSetId=setId;
+function askPublish(eventId) {
+  $('#publishConfirm').modal('show');
+  selectedEventId = eventId;
 }
+
 function makeSetPrivate() {
     $.post('/events/sets/' + selectedSetId + '/private/', {
       csrfmiddlewaretoken: csrfToken
@@ -731,25 +752,19 @@ function makeSetPrivate() {
     showSuccess('private')
 }
 
-function showSuccess(state) {
-    //var $publishSuccess = $('#publishSuccess');
-    //$publishSuccess.find('.success-state').text(state);
-    //$publishSuccess.modal('show')
-    $("#hide-scss-btn").data("type", state)
-    hideSuccess()
-}
-
-function publishSet() {
-    $.post('/events/sets/' + selectedSetId + '/publish/', {
+function publishEvent() {
+    hideMakePrivate();
+    hidePublish();
+    $.post('/events/' + selectedEventId + '/publish/', {
       csrfmiddlewaretoken: csrfToken
     }, function (data, status) {
+      var $button = $("#artist-event-action-" + selectedEventId).find("button.publish-button");
+      var newText = "Make Private";
+      if (!data.is_published) {
+        newText = "Publish";
+      }
+      $button.text(newText);
     });
-    hidePublish();
-    $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
-        '<button class="publish-button" onclick="askPrivate(' + selectedSetId + ')">Make Private</button>'
-    )
-    $("#set-id-" + selectedSetId).find('.set-status').text('Published');
-    showSuccess('public')
 }
 
 function hideMakePrivate() {
@@ -760,49 +775,15 @@ function hidePublish() {
     $('#publishConfirm').modal('hide');
 }
 
-function hideSuccess(data) {
-    $('#publishSuccess').modal('hide');
-    var $currentSet = $(".artist-active-set.accent-color.set-changer")[0];
-    var successType = $("#hide-scss-btn").data("type");
-    if (successType === "public" || data ==="public"){
-        $("#private-button").removeClass("hidden")
-        $("#public-button").addClass("hidden")
-        $("#mobile-private-button").removeClass("hidden")
-        $("#mobile-public-button").addClass("hidden")
-        $("#mobile-private-button").click()
-    };
-    if (successType === "private" || data ==="private"){
-        $("#private-button").addClass("hidden")
-        $("#public-button").removeClass("hidden")
-        $("#mobile-private-button").addClass("hidden")
-        $("#mobile-public-button").removeClass("hidden")
-        $("#mobile-public-button").click()
-    };
-}
-
-function showSelectFormat(videoUrl, audioUrl) {
-    var $downloadFormat = $('#downloadFormat');
-    var audioButton = $downloadFormat.find('#downloadFormatAudioUrl');
-    var videoButton = $downloadFormat.find('#downloadFormatVideoUrl');
-
-    if (audioUrl !== '') {
-        audioButton.attr({href: audioUrl}).on('click', function () {
-            $downloadFormat.modal('hide');
-        });
-        audioButton.find('button').prop('disabled', false);
-    } else {
-        audioButton.find('button').prop('disabled', true);
+function showSelectFormat() {
+    var $downloadDialog = $('#downloadFormat');
+    var $table = $("#track-list-tbl");
+    var $clonedTable = $table.clone(true).removeClass("hidden");
+    var $tableContainer = $downloadDialog.find(".table-container");
+    if ($tableContainer.find("#track-list-tbl").length === 0) {
+      $tableContainer.append($clonedTable);
     }
-
-    if (videoUrl !== '') {
-        videoButton.attr({href: videoUrl}).on('click', function () {
-            $downloadFormat.modal('hide');
-        });
-        videoButton.find('button').prop('disabled', false);
-    } else {
-        videoButton.find('button').prop('disabled', true);
-    }
-    $downloadFormat.modal('show');
+    $downloadDialog.modal('show');
 }
 
 var resizeTimer;

@@ -101,10 +101,6 @@ function initializeArchiveDatePickers() {
     );
   });
 
-  $("#archive-datepicker-apply").click(function () {
-
-  });
-
   $datePickerFrom.click();
   $datePickerFrom.focus();
 }

@@ -4,7 +4,7 @@
 {% load djstripe_tags %}
 
 {% block confirmation_modals %}
-  {% include 'account/selection_confirmation_dialog.html' %}
+  {% include 'account/popups/selection_confirmation_dialog.html' %}
 {% endblock %}
 
 {% block flow_title %}
@@ -18,12 +18,13 @@
 {% block flow_steps %}
 
   <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover" data-flow="donate">
-    <div class="{% if not completed %}active{% endif %} step-button"></div>
-    <div class="step-button"></div>
-    <div class="step-button"></div>
-    <div class="step-button hidden gift"></div>
-    <div class="step-button hidden gift"></div>
-    <div class="{% if completed %}active{% endif %} step-button"></div>
+    {% if not completed %}
+      <div class="step-button active"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+    {% endif %}
   </div>
   {% if not completed %}
 
@@ -52,14 +53,19 @@
         <button value=100>$100</button>
         <button value=500>$500</button>
         <button value=1000>$1000</button>
+        <div class="flex-column">
         <div class="flex-row custom-out">
-          <div class="custom-input text4">
-            <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
-          </div>
-          <button class="confirm-custom" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
+            <div class="custom-input text4">
+              <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
+            </div>
+            <button class="confirm-custom" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
               <span class="bar bar-1"></span>
-              <span class="bar bar-2"></span>				
+              <span class="bar bar-2"></span>
             </button>
+          </div>
+          <label class="hidden accent-color">
+            $100 is the minimum donation
+          </label>
         </div>
       </div>
     </div>

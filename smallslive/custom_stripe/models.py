@@ -45,4 +45,9 @@ class CustomerDetail(models.Model):
 
     @classmethod
     def get(cls, **kwargs):
-        return stripe.Customer.retrieve(kwargs.get('id'))
+        try:
+            customer = stripe.Customer.retrieve(kwargs.get('id'))
+        except:
+            customer = None
+
+        return customer

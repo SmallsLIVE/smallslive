@@ -252,16 +252,16 @@ def user_settings_view_new(request):
             artist_info_form = ArtistInfoForm(instance=request.user)
         customer_detail = CustomerDetail.get(
             id=request.user.customer.stripe_id)
-        if customer_detail.subscription:
+        if customer_detail and customer_detail.subscription:
             monthly_pledge_in_dollars = customer_detail.subscription.plan.amount / 100
 
-        if customer_detail.subscription:
+        if customer_detail and customer_detail.subscription:
             period_end["date"] = datetime.fromtimestamp(
                 customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
             period_end["due"] = datetime.fromtimestamp(
                 customer_detail.subscription.current_period_end) <= datetime.now()
 
-        if customer_detail.subscriptions.data:
+        if customer_detail and customer_detail.subscription and customer_detail.subscriptions.data:
             cancel_at = customer_detail.subscriptions.data[0]['cancel_at_period_end']
         else:
             cancel_at = False

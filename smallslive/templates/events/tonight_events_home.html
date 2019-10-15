@@ -2,31 +2,31 @@
 
 <div class="event-row tonight-events owl-carousel owl-theme">
   {% for event in events %}
-  <article class="event-display-today-and-tomorrow item {% if event.is_past %}past{% endif %}">
-    {% include 'events/tonight_event_card.html' with event=event secondary=secondary hide_play=True %}
-    <div class="event-info" style="position: absolute;">
-        <div class="sub-info">
-            <p class="event-info-title">{{ event.title }}</p>
-            <div class="{{ event.venue.name|lower}}-color title5 venue">Live at {{ event.venue.name }}{% if request.user.is_staff and event.state == "Draft" %} - Draft{% endif %}</div>
-            {% if show_date %}
-              <div class="title5 sets">{{ event.get_date|date:'D M d' }}</div>
-            {% endif %}
-            <div class="title5 sets">Sets at {{ event.get_set_hours_display}}</div>
-        </div>
-    </div>
-    <div class="artists">
-      {% with event.artists_gig_info.count as artist_count %}
-        {% for gig in event.artists_gig_info.all|slice:"5" %}
-          <a class="title5 {% if artist_count <= 3 %}full-width{% endif %}" href="/search/?artist_pk={{ gig.artist.pk }}">
-                {{ gig.artist }} / {{ gig.role }}</a>
-        {% endfor %}
-        {% if artist_count > 5 %}
-          <a class="title5" href="{{ event.get_absolute_url }}">
-                ... </a>
-        {% endif %}
-      {% endwith %}
-    </div>
-  </article>
+    <article class="event-display-today-and-tomorrow item {% if event.all_events_completed %}past{% endif %}">
+      {% include 'events/tonight_event_card.html' with event=event secondary=secondary hide_play=True %}
+      <div class="event-info" style="position: absolute;">
+          <div class="sub-info">
+              <p class="event-info-title">{{ event.title }}</p>
+              <div class="{{ event.venue.name|lower}}-color title5 venue">Live at {{ event.venue.name }}{% if request.user.is_staff and event.state == "Draft" %} - Draft{% endif %}</div>
+              {% if show_date %}
+                <div class="title5 sets">{{ event.get_date|date:'D M d' }}</div>
+              {% endif %}
+              <div class="title5 sets">Sets at {{ event.get_set_hours_display}}</div>
+          </div>
+      </div>
+      <div class="artists">
+        {% with event.artists_gig_info.count as artist_count %}
+          {% for gig in event.artists_gig_info.all|slice:"5" %}
+            <a class="title5 {% if artist_count <= 3 %}full-width{% endif %}" href="/search/?artist_pk={{ gig.artist.pk }}">
+                  {{ gig.artist }} / {{ gig.role }}</a>
+          {% endfor %}
+          {% if artist_count > 5 %}
+            <a class="title5" href="{{ event.get_absolute_url }}">
+                  ... </a>
+          {% endif %}
+        {% endwith %}
+      </div>
+    </article>
   {% endfor %}
   <!-- Placeholder empty articles so that the slider can be positioned anywhere -->
   <div class="placeholder item">

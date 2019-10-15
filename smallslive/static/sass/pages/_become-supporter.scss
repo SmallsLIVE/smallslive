@@ -1,4 +1,4 @@
-.supporter-main-container,
+  .supporter-main-container,
 .payment-main-container {
   .accent-color.minimum-error {
     position: absolute;
@@ -393,6 +393,14 @@
     &.button-row-big {
       margin-top: 5px;
     }
+
+    label {
+      &.accent-color {
+        margin-top: 10px;
+        font-size: 13px;
+      }
+    }
+
   }
 
   .store-list-item {
@@ -453,7 +461,7 @@
   }
 }
 
-#selectionConfirmationDialog {
+.selectionConfirmationDialog {
   .gift-content {
     .modal-content {
       background-color: inherit;

@@ -417,9 +417,6 @@ $(document).ready(function () {
     if (!$(".instruments-container").is(":visible")) {
       $(".instruments-container").css("display", "flex");
     } else {
-      if (viewPortLength("width") < 1024) {
-        $("body").removeClass("hidden-body");
-      }
       $(".instruments-container").css("display", "none");
     }
   });
@@ -435,17 +432,7 @@ $(document).ready(function () {
     }
   });
 
-  $(".instruments-container .close-button").click(function() {
-    if (viewPortLength("width") < 1024) {
-      $("body").removeClass("hidden-body");
-    }
-  });
-
   $(".instrument").click(function() {
-
-    if (viewPortLength("width") < 1024) {
-      $("body").removeClass("hidden-body");
-    }
 
     /* Store selected value in button data and session*/
     var instrument = $(this).data("instrument");
@@ -485,6 +472,19 @@ $(document).ready(function () {
     toggleArchiveDatePickerDisplay();
   });
 
+  $("#reset-search-datepicker").click(function () {
+    resetSearch();
+    sendEventRequest(
+      "Archived",
+      datePickerFromDate,
+      datePickerToDate,
+      updateArchiveShows
+    );
+    if ($("#archive-datepicker-apply").visible()) {
+      toggleArchiveDatePickerDisplay();
+    }
+  });
+
   function toggleArchiveDatePickerDisplay(event) {
     var $container  = $(".archive-datepicker.fixed");
     if (!$container.hasClass("active")) {
@@ -497,7 +497,6 @@ $(document).ready(function () {
   }
 
   /////////////////////
-
 
   $("#apply-button").click(function() {
     var eventDateFrom = datePickerFromDate;
@@ -647,20 +646,7 @@ $(document).ready(function () {
   });
 
   $(window).resize(function() {
-    if (viewPortLength("width") < 1024 && is_mobile == false) {
-      $("div[data-toggle-tab-target='archived-shows'")[0].click();
-      is_mobile = true;
-    }
-    if (viewPortLength("width") >= 1024 && is_mobile == true) {
-      if ($(".artist-search-profile-container").css("display") != "block") {
-        $("#musicianContent").css("display", "block");
-        $(".search-tab-content").show();
-        $(
-          '[data-toggle-tab-group="search-results"][data-toggle-tab="upcoming-shows"]'
-        ).hide();
-        is_mobile = false;
-      }
-    }
+
     let pages = rightValue / 6 / 4;
     pages -= 1;
     $("#artists").animate(
@@ -764,16 +750,18 @@ function resetSearch() {
 function triggerSearch() {
   var triggerArtistSearch = false;
   var triggerEventSearch = false;
-
   var datePickerFromVal = $datePickerFrom.val();
+
   if (datePickerFromVal && datePickerFromVal != startDate) {
     triggerEventSearch = true;
     startDate = datePickerFromVal;
   }
-  var datePickerToVal = $datePickerTo.val();
-  if (datePickerToVal && datePickerToVal != startDate) {
-    triggerEventSearch = true;
-    endDate = datePickerToVal;
+  if ($datePickerTo) {
+    var datePickerToVal = $datePickerTo.val();
+    if (datePickerToVal && datePickerToVal != startDate) {
+      triggerEventSearch = true;
+      endDate = datePickerToVal;
+    }
   }
 
   // detect if user has navigated here using the back button
@@ -830,7 +818,9 @@ function triggerSearch() {
 
   if (triggerEventSearch) {
     datePickerFromDate = $datePickerFrom.datepicker("getDate");
-    datePickerToDate = $datePickerTo.datepicker("getDate");
+    if (datePicker) {
+      datePickerToDate = $datePickerTo.datepicker("getDate");
+    }
     eventFilter = true;
     eventPageNum = 1;
     archivedEventPageNum = 1;

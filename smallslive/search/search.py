@@ -209,15 +209,6 @@ class SearchObject(object):
                      first_name=None, last_name=None, partial_name=None, artist_search=None,
                      leader='all'):
 
-        print '******************************'
-        print 'get_queryset ---> '
-        print 'instruments: ', instruments
-        print 'first: ', first_name
-        print 'last: ', last_name
-        print 'partial: ', partial_name
-        print 'artist_search: ', artist_search
-        print 'leader: ', leader
-
         sqs = Event.objects.get_queryset()
 
         if leader == 'all':
@@ -328,18 +319,6 @@ class SearchObject(object):
                      artist_pk=None, venue=None, instruments=None, number_of_performers=None,
                      first_name=None, last_name=None, partial_name=None, artist_search=None,
                      leader='all'):
-
-        print '******************  search_event : ********************'
-        print 'terms: ', terms
-        print 'order: ', order
-        print 'instruments: ', instruments
-        print 'start_date: ', start_date
-        print 'end_date', end_date
-        print 'performers: ', number_of_performers
-        print 'first name: ', first_name
-        print 'last name: ', last_name
-        print 'partial name: ', partial_name
-        print '------------------------------------------------------'
 
         order = {
             'newest': '-start',

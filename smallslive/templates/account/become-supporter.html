@@ -13,7 +13,9 @@
 {% block confirmation_modals %}
   {% if supporter_flow == 'catalog_flow' %}
   {% else %}
-    {% include 'account/selection_confirmation_dialog.html' %}
+    {% include 'account/popups/supporter_monthly_selection_confirmation_dialog.html' %}
+    {% include 'account/popups/supporter_one_time_selection_confirmation_dialog.html' %}
+    {% include 'account/popups/supporter_gift_selection_confirmation_dialog.html' %}
   {% endif %}
 {% endblock %}
 
@@ -39,12 +41,13 @@
        data-artist-id="{{ artist_id }}"
        data-flow="{{ flow_type }}"
        data-free-donate="{{ can_free_donate }}">
-    <div class="{% if not completed %}active{% endif %} step-button"></div>
-    <div class="step-button"></div>
-    <div class="step-button"></div>
-    <div class="step-button hidden gift"></div>
-    <div class="step-button hidden gift"></div>
-    <div class="{% if completed %}active{% endif %} step-button"></div>
+    {% if not completed %}
+      <div class="step-button active"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+    {% endif %}
   </div>
   {% if not completed %}
     <div id="supporterStep" class="supporter-step hidden"></div>
@@ -105,16 +108,21 @@
             <button value=10 style="margin-bottom: 25px;">$10</button>
             <button value=20>$20</button>
             <button value=50>$50</button>
-            <div class="flex-row custom-out">
-              <div class="custom-input text4">
-                <input type="number" pattern="\d*" class="no-spinners transparent" id="monthlyCustom" value="supporter-monthly-pledge">
-                <label id="set-your-own-lbl"><div>SET YOUR OWN <br> (MIN $10)</div></label>
-                <div id="monthly-less" class="text9 accent-color minimum-error"></div>
+            <div class="flex-column">
+              <div class="flex-row custom-out">
+                <div class="custom-input text4">
+                  <input type="number" pattern="\d*" class="no-spinners transparent" id="monthlyCustom" value="supporter-monthly-pledge">
+                  <label id="set-your-own-lbl"><div>SET YOUR OWN <br> (MIN $10)</div></label>
+                  <div id="monthly-less" class="text9 accent-color minimum-error"></div>
+                </div>
+                <button class="confirm-custom" id="monthlyCustomConfirm" data-type="month" data-value="" style="display: none;">
+                  <span class="bar bar-1"></span>
+                  <span class="bar bar-2"></span>
+                </button>
               </div>
-              <button class="confirm-custom" id="monthlyCustomConfirm" data-type="month" data-value="" style="display: none;">
-                <span class="bar bar-1"></span>
-                <span class="bar bar-2"></span>
-              </button>
+              <label class="hidden accent-color">
+                $10 is the minimum monthly pledge
+              </label>
             </div>
           </div>
         </div>
@@ -126,22 +134,33 @@
           </div>
           <p tabindex="0" class="text9">This is a one time, 100% tax deductible donation to The SmallsLIVE Foundation. You will receive access to the SmallsLIVE Archive for the remainder of the tax year.<br>
             If would like to customize your donation please contact us at foundation@smallslive.com</p>
-          <div id="yearlyPledge" class="button-row button-row-big button-row-margin">
+          <div id="yearlyPledge"
+               class="button-row button-row-big button-row-margin pledge"
+               data-dialog-type="supporter">
             <button value=100>$100</button>
             <button value=500>$500</button>
             <button value=1000>$1000</button>
-            <div class="flex-row custom-out">
-              <div class="custom-input text4">
-                <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
-                {% if flow_type = "become_supporter" or not can_free_donate %}
-                <label><div>ENTER  AMOUNT<br>(MIN  $100)</div></label>
-                <div id="yearly-less" class="text9 accent-color minimum-error"></div>
-                {% endif %}
+            <div class="flex-column">
+              <div class="flex-row custom-out">
+                <div class="custom-input text4">
+                  <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
+                  {% if flow_type == "become_supporter" or not can_free_donate %}
+                  <label><div>ENTER  AMOUNT<br>(MIN  $100)</div></label>
+                  <div id="yearly-less" class="text9 accent-color minimum-error"></div>
+                  {% endif %}
+                </div>
+                <button class="confirm-custom" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
+                  <span class="bar bar-1"></span>
+                  <span class="bar bar-2"></span>
+                </button>
               </div>
-              <button class="confirm-custom" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
-                <span class="bar bar-1"></span>
-                <span class="bar bar-2"></span>
-              </button>
+              <label class="hidden accent-color">
+                {% if flow_type == "become_supporter" or not can_free_donate %}
+                  $100 is the minimum donation
+                {% else %}
+                  $5 is the minimum donation
+                {% endif %}
+              </label>
             </div>
           </div>
         </div>

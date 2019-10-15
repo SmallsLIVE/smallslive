@@ -45,10 +45,12 @@ $(document).ready(function () {
       $target.closest(".noclick").length == 0 &&
       !($target.hasClass("day") || $target.hasClass("year"))
     ) {
-      $datePickerContainer.fadeOut(500, function () {
-        $(document).unbind("click", hide);
-        $datePickerContainer.data("shown", false);
-      });
+      if ($datePickerContainer) {
+        $datePickerContainer.fadeOut(500, function () {
+          $(document).unbind("click", hide);
+          $datePickerContainer.data("shown", false);
+        });
+      }
     }
   }
 });

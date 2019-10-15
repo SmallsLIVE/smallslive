@@ -13,7 +13,8 @@
 {% load basket_tags %}
 
 {% block confirmation_modals %}
-  {% include 'account/catalog_selection_confirmation_dialog.html' %}
+  {% include 'account/popups/product_support_gift_selection_confirmation_dialog.html' %}
+  {% include 'account/popups/product_support_one_time_selection_confirmation_dialog.html' %}
 {% endblock %}
 
 {% block flow_title %}
@@ -29,12 +30,12 @@
        class="button-row button-row-margin button-row-no-hover"
        data-flow="product_support"
        data-product-id="{{ product_id }}">
-    <div class="{% if not completed %}active{% endif %} step-button"></div>
-    <div class="step-button"></div>
-    <div class="step-button"></div>
-    <div class="step-button hidden gift"></div>
-    <div class="step-button hidden gift"></div>
-    <div class="{% if completed %}active{% endif %} step-button"></div>
+    {% if not completed %}
+      <div class="step-button active"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+    {% endif %}
   </div>
   {% if not completed %}
     <div id="supporterStep" class="supporter-step hidden"></div>
@@ -71,19 +72,26 @@
           50% of your donation will go directly to
           {{ album_product.get_leader_strings }}.
         </p>
-        <div id="supportPledge" class="button-row button-row-big button-row-margin">
+        <div id="supportPledge"
+             class="button-row button-row-big button-row-margin pledge"
+             data-dialog-type="product">
           <button value=5 style="margin-bottom: 25px;">$5</button>
           <button value=20>$20</button>
           <button value=100>$100</button>
-          <div class="flex-row custom-out">
-            <div class="custom-input text4">
-              <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
-              <label><div>ENTER  AMOUNT<br>($5 minimum)</div></label>
+          <div class="flex-column">
+            <div class="flex-row custom-out">
+              <div class="custom-input text4">
+                <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
+                <label><div>ENTER  AMOUNT<br>($5 minimum)</div></label>
+              </div>
+              <button class="confirm-custom" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
+                <span class="bar bar-1"></span>
+                <span class="bar bar-2"></span>
+              </button>
             </div>
-            <button class="confirm-custom" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
-              <span class="bar bar-1"></span>
-              <span class="bar bar-2"></span>
-            </button>
+            <label class="hidden accent-color">
+              $5 is the minimum donation
+            </label>
           </div>
         </div>
       </div>
@@ -129,7 +137,7 @@
 {% endblock %}
 {% block flow_confirm %}
   {% if not completed %}
-    <button id="backButton" class="button-bordered">Back</button>
+    <button id="backButton" class="button-bordered" data-back-action="hideFlow">Back</button>
     <button id="confirmButton" data-hide='true' class="button-bordered">Confirm</button>
   {% else %}
     <a href="{% url 'promotions:home' %}">
