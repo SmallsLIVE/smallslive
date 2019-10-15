@@ -359,16 +359,41 @@ $(document).ready(function () {
     var dateFrom = $datePickerFrom.datepicker("getDate");
     var dateTo = $datePickerTo.datepicker("getDate");
 
+    if ($datePickerFrom.length == 0) {
+      dateFrom = null;
+    }
+
+    if ($datePickerTo.length == 0) {
+      dateTo = null;
+    }
+
     params = {
       'page': ++currentPage
     };
 
-    if (dateFrom && dateFrom.date) {
-      params["start_date_filter"] = dateFrom;
+    if (dateFrom) {
+      utcDateFrom =
+        dateFrom.getFullYear() +
+        "/" +
+        (dateFrom.getMonth() + 1) +
+        "/" +
+        dateFrom.getDate();
+    }
+    if (dateTo) {
+      utcDateTo =
+        dateTo.getFullYear() +
+        "/" +
+        (dateTo.getMonth() + 1) +
+        "/" +
+        dateTo.getDate();
     }
 
-    if (dateTo && dateTo.date) {
-      params["end_date_filter"] = dateTo;
+    if (dateFrom) {
+      params["start_date_filter"] = utcDateFrom;
+    }
+
+    if (dateTo) {
+      params["end_date_filter"] = utcDateTo;
     }
 
     var order = $('#artist_archive_order_filter').val();
@@ -403,10 +428,22 @@ $(document).ready(function () {
     $("#artistEventsList").removeClass("artist-loading-gif");
     $('.concerts-footer').show();
     if (data.template) {
-      if (currentPage > 1) {
-        $("#artistEventsList").append(data.template);
+      if (data.total_results > 0) {
+        if (currentPage > 1) {
+          $("#artistEventsList").append(data.template);
+        } else {
+          $("#artistEventsList").html(data.template);
+          $("#summary-data").removeClass("hidden");
+          if (!$("#summary-no-results").hasClass("hidden")) {
+            $("#summary-no-results").addClass("hidden");
+          }
+        }
       } else {
         $("#artistEventsList").html(data.template);
+        if (!$("#summary-data").hasClass("hidden")) {
+          $("#summary-data").addClass("hidden");
+        }
+        $("#summary-no-results").removeClass("hidden");
       }
     }
     if (data.total_results) {
@@ -681,30 +718,6 @@ $(document).ready(function () {
 
     if (currentPage >= totalPages) {
       return;
-    }
-
-    if (mobile === true) {
-
-      params.page = ++currentPage;
-      params.start_date_filter = $('#start-date').val();
-      params.end_date_filter =  $('#until-date').val();
-
-      todayDate=(new Date().getMonth() + 1)  + "/" + new Date().getDate() + "/" + new Date().getFullYear();
-      if ( params.end_date_filter === todayDate || params.end_date_filter !== "" && params.start_date_filter !== "" ) {
-        optNumber +=1;
-      }
-
-      if (statusFilter !== 'all') {
-        params.leader_filter = statusFilter === 'leader';
-        optNumber +=1;
-      }
-
-      var orderMobile = $('#refine-order-filter option:selected').val()
-      if (orderMobile !== 'newest') {
-        params.order = orderMobile;
-        optNumber +=1;
-      }
-      $('#filter-number').text("(" + optNumber + ")");
     }
 
     var callbacks = [updateShows];

@@ -53,9 +53,6 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(MyEventsView, self).get_context_data(**kwargs)
-        gig_played = context['object_list'].first()
-        event = gig_played.event if gig_played else None
-
         paginator = context['paginator']
         current_page_number = context['page_obj'].number
         context.update({
@@ -776,8 +773,11 @@ def artist_settings(request):
         'change_password_form': change_password_form,
     })
 
+
 class DashboardLoginView(TemplateView):
+
     template_name = 'home_new.html'
+
     def get(self, request):
         url = '?' + self.request.get_full_path().split('?')[1]
         return redirect(reverse("home")+url)
