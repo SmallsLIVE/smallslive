@@ -49,7 +49,7 @@
               <button class="select-gift white-border-button"
                       data-cost="{{ session.stockrecord.cost_price }}"
                       data-inclTax="{{ session.price.incl_tax }}"
-                      data-type="{{ product.title }}"
+                      data-type="Gift Tier: {{ product.title }}"
                       data-variants="{{ product.variants.count }}">
                 <span class="price-tag">{{ session.price.incl_tax|currency:session.price.currency }} </span>
                 <span class="gift-title">{{ product.get_child_product_title }}

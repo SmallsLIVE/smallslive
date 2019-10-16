@@ -724,7 +724,7 @@ $(document).ready(function() {
       $(this).data("variants") && $(this).data("variants") != "0";
     $selectionConfirmationDialog
       .find(".subtitle")
-      .text("Gift Tier: " + giftTier);
+      .text(giftTier);
     var price = $(this)
       .children(".price-tag")
       .text();
