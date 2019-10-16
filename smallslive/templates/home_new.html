@@ -30,7 +30,9 @@
 {% block content %}
   {% include 'inactive_dialog.html' %}
   {% include 'become_a_supporter_dialog.html' %}
-
+  {% if activation_key %}
+    {% include 'artist_registration/set_password_dialog.html' %}
+  {% endif %}
 
   <div class="main-container pad-content {% if calendar %}calendar{% else %}home-new{% endif %}">
     {% block home_content %}
@@ -72,5 +74,41 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script type="javascript" src="{% static 'js/slider.js' %}"></script>
+  {% if activation_key %}
+    <script>
+      $(document).ready(function () {
+        // Show artist sign up form using the modal
+        var  $modal = $("#artist-set-password-dialog");
+        $modal.modal("show");
+        var url = "{% url "artist_registration_confirm_email_ajax" key=activation_key %}";
+        $.get(url, function (data) {
+          $modal.find(".modal-body").html(data);
+        });
+
+
+        $(document).on("submit", "#artist-registration-set-password-form", function (event) {
+          event.preventDefault();
+          var form = $(this);
+          var url = form.attr('action');
+
+          $.ajax({
+           type: "POST",
+           url: url,
+           data: form.serialize(),
+           success: function (data) {
+            if (data.location) {
+              window.location.href = data.location;
+            } else if (data.errors) {
+              for (var key in data.errors) {
+                $modal.find("#" + key + "-error").html(data.errors[key]).removeClass("hidden");
+              }
+            }
+           }
+         });
+
+        });
+
+      });
+    </script>
+  {% endif  %}
 {% endblock extra_js %}

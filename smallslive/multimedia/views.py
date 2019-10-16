@@ -226,13 +226,11 @@ class UploadImagePreview(View):
         data = {
             'success': True,
             'src': url,
-            'id': image_file.pk
+            'id': image_file.pk,
+            'width': image_file.photo.width,
+            'height': image_file.photo.height,
         }
         response = json.dumps(data)
-
-
-
-
 
         return HttpResponse(response, content_type="application/json")
 

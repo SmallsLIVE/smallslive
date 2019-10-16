@@ -567,6 +567,11 @@ $(document).ready(function () {
     $imageInput.data("thumbnail-url", data.src);
     $imageInput.attr("data-thumbnail-url", data.src);
 
+    $imageInput.data("min-width", data.width);
+    $imageInput.data("min-height", data.height);
+    $imageInput.data("org-width", data.width);
+    $imageInput.data("org-height", data.height);
+
     resizeInfo();
 
   }
