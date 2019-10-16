@@ -421,6 +421,10 @@ class Event(TimeStampedModel):
                 timezone=current_timezone
             )
 
+        # ensure start < finish
+        if ny_start > ny_end:
+            ny_end = ny_end + timedelta(days=1)
+
         return ny_start, ny_end
 
     def get_set_start(self, set_number):
