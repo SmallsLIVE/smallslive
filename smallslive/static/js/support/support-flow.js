@@ -56,7 +56,7 @@ var getSteps = function() {
         "ThankYou"
       ];
     } else {
-      steps = ["Intro", "SelectType", "PaymentInfo", "ThankYou"];
+      steps = ["Intro", "SelectType", "Billing", "Preview", "ThankYou"];
     }
   } else if (selectedData.flow == "catalog") {
     if (selectedData.type == "store_physical") {
@@ -64,10 +64,10 @@ var getSteps = function() {
     } else if (selectedData.type == "store_digital") {
       steps = ["SelectType", "Billing", "Preview", "ThankYou"];
     } else {
-      steps = ["SelectType", "PaymentInfo", "ThankYou"];
+      steps = ["SelectType", "Billing", "Preview", "ThankYou"];
     }
   } else if (selectedData.flow == "event_support") {
-    steps = ["SelectType", "PaymentInfo", "ThankYou"];
+    steps = ["SelectType", "Billing", "ThankYou"];
   }
 
   /* There needs to be one less dot than steps because the Thank You Page
@@ -118,7 +118,7 @@ var activeStep = function(step) {
   $(buttons[stepIndex]).addClass("active");
   var currentStepIndex = getSteps().indexOf(currentStep);
   if (currentStepIndex > -1) {
-    $(buttons[currentStep]).removeClass("active");
+    $(buttons[currentStepIndex]).removeClass("active");
   }
 };
 
@@ -135,6 +135,13 @@ var showPanel = function(step) {
 };
 
 var $itemForm;
+
+var checks = {
+  "#card-number": 19, //4444 4444 4444 4444
+  "#expiry-year": 2,
+  "#cvc": 3,
+  "#expiry-month": 2
+};
 
 function checkCreditCardForm() {
   var check = true;
@@ -182,7 +189,7 @@ var checkConfirmButton = function() {
     $confirmButton.prop("disabled", false);
   }
 
-  if (currentStep === "PaymentInfo") {
+  if (currentStep === "Billing") {
     var method = $mainContainer.find("#payment-method").val();
     if (method == "credit-card") {
       var confirm = checkCreditCardForm();
@@ -190,9 +197,12 @@ var checkConfirmButton = function() {
     } else {
       $confirmButton.prop("disabled", false);
     }
-    $confirmButton.text("Confirm Payment");
   } else {
     $confirmButton.text("Continue");
+  }
+
+  if (currentStep == "Preview" || currentStep == "Billing" && selectedData.flow == "event_support") {
+    $confirmButton.text("Confirm Payment");
   }
 
   if (currentStep == "Intro") {
@@ -838,12 +848,6 @@ $(document).ready(function() {
     $selectionConfirmationDialog.find(".gift-content").empty();
   });
 
-  var checks = {
-    "#card-number": 19, //4444 4444 4444 4444
-    "#expiry-year": 2,
-    "#cvc": 3,
-    "#expiry-month": 2
-  };
   var checksFlow = {
     "#card-number": 19, //4444 4444 4444 4444
     "#expiry-month": 2,
@@ -885,7 +889,7 @@ $(document).ready(function() {
   });
 
   function getPaymentInfoForm() {
-    var $step = $mainContainer.find("#supporterStepPaymentInfo");
+    var $step = $mainContainer.find("#supporterStepBilling");
     var url = $step.data("payment-info-url");
 
     $.ajax({
@@ -894,7 +898,7 @@ $(document).ready(function() {
       success: function(data) {
         $step.html(data);
         updatePaymentInfo();
-        replaceWhiteSelects($("#supporterStepPaymentInfo")[0]);
+        replaceWhiteSelects($("#supporterStepBilling")[0]);
         renderCardAnimation("#payment-form");
         showPanel(getNextStep());
       },
@@ -925,7 +929,7 @@ $(document).ready(function() {
         startStripePayment(
           $mainContainer.find("#payment-form"),
           $mainContainer
-            .find("#supporterStepPaymentInfo")
+            .find("#supporterStepBilling")
             .data("payment-info-complete-url"),
           completeSubpage
         );
@@ -934,7 +938,7 @@ $(document).ready(function() {
       startPayPalPayment(
         $mainContainer.find("#payment-form"),
         $mainContainer
-          .find("#supporterStepPaymentInfo")
+          .find("#supporterStepBilling")
           .data("payment-info-complete-url"),
         completeSubpage
       );
@@ -942,7 +946,7 @@ $(document).ready(function() {
       startBitCoinPayment(
         $mainContainer.find("#payment-form"),
         $mainContainer
-          .find("#supporterStepPaymentInfo")
+          .find("#supporterStepBilling")
           .data("payment-info-pending-url"),
         completeSubpage
       );
@@ -950,7 +954,7 @@ $(document).ready(function() {
       startCheckPayment(
         $mainContainer.find("#payment-form"),
         $mainContainer
-          .find("#supporterStepPaymentInfo")
+          .find("#supporterStepBilling")
           .data("payment-info-pending-url"),
         completeSubpage
       );
@@ -958,11 +962,34 @@ $(document).ready(function() {
       startStripePayment(
         $("#payment-form"),
         $mainContainer
-          .find("#supporterStepPaymentInfo")
+          .find("#supporterStepBilling")
           .data("payment-info-complete-url"),
         completeSubpage
       );
     }
+  }
+
+  function getDonationPreviewForm() {
+    var $step = $mainContainer.find("#supporterStepPreview");
+    var url = $step.data("donation-preview-url");
+    url = url + "?type=" + selectedData.type + "&amount=" + selectedData.amount;
+    url += "&payment_method=" + $("#payment-method").val();
+    var cardNumber = $("#card-number").val();
+    if (cardNumber) {
+      url += "&last=" + cardNumber.substr(cardNumber.length - 4);
+    }
+    $.ajax({
+      url: url,
+      type: "get",
+      success: function(data) {
+        $step.html(data);
+        replaceWhiteSelects($("#supporterStepPreview")[0]);
+        showPanel(getNextStep());
+      },
+      error: function(xhr, err) {
+        console.log(err);
+      }
+    });
   }
 
   $(document).on("click", "#confirmButton", function(event) {
@@ -978,41 +1005,45 @@ $(document).ready(function() {
       $(this).hide();
     }
 
-    var storeItem = selectedData.type.indexOf("store") === 0;
-
-    if (currentStep === "SelectType" && storeItem) {
-      $itemForm.submit();
-    } else if (currentStep === "PaymentInfo") {
-      processPaymentInfoStep();
-    } else if (currentStep === "Shipping" && storeItem) {
-      $mainContainer.find("#new_shipping_address").submit();
-    } else if (currentStep === "Billing" && storeItem) {
-      $mainContainer.find("#payment-form").submit();
-    } else if (currentStep === "Preview" && storeItem) {
-      $mainContainer.find("#place-order").submit();
-    } else if (currentStep === "SelectType" && selectedData.type.indexOf("store") != 0) {
-      getPaymentInfoForm();
-    } else {
-      showPanel(getNextStep());
+    var storeItem = null;
+    if (selectedData.type) {
+      storeItem = selectedData.type.indexOf("store") === 0;
     }
 
-    var $currentButton = $(".step-button.active");
-    $currentButton.removeClass("active");
-    $currentButton.next().addClass("active");
+    if (storeItem) {
+      if (currentStep === "SelectType") {
+        $itemForm.submit();
+      } else if (currentStep === "Shipping") {
+        $mainContainer.find("#new_shipping_address").submit();
+      } else if (currentStep === "Billing") {
+        $mainContainer.find("#payment-form").submit();
+      } else if (currentStep === "Preview") {
+        $mainContainer.find("#place-order").submit();
+      }
+    } else {
+      if (currentStep === "SelectType") {
+        getPaymentInfoForm();
+      } else if (currentStep === "Billing") {
+        if (selectedData.flow == "event_support") {
+          processPaymentInfoStep();
+        } else {
+          getDonationPreviewForm();
+        }
+      } else if (currentStep == "Preview") {
+        processPaymentInfoStep();
+      } else {
+        showPanel(getNextStep());
+      }
+    }
   });
 
   $(document).on("click", "#backButton", function() {
-    if (currentStep == "PaymentInfo") {
-      $mainContainer.find("#confirmButton").hide();
+
+    if (currentStep == "SelectType" && window.location.search.indexOf("flow_type=event_support") > -1) {
+      window.history.back();
+      return;
     }
 
-    if (currentStep == "Shipping") {
-      $mainContainer.find("#confirmButton").hide();
-    }
-
-    if (currentStep == "SelectType") {
-      $mainContainer.find("#confirmButton").show();
-    }
     if (currentStep === "Intro") return;
 
     if (!getSteps().indexOf(currentStep) < 1) {
@@ -1024,13 +1055,16 @@ $(document).ready(function() {
       }
     }
 
-    $mainContainer.find("#confirmButton").text("Confirm");
+    if (currentStep === "SelectType") {
+      setSelected(selectedData.flow, null, null)
+      $mainContainer.find("#confirmButton").hide();
+      $itemForm = null;
+    } else {
+      $mainContainer.find("#confirmButton").show();
+    }
 
-    setSelected(selectedData.flow, selectedData.type, 0);
-    $itemForm = null;
-    var $currentButton = $(".step-button.active");
-    $currentButton.removeClass("active");
-    $currentButton.prev().addClass("active");
+    $mainContainer.find("#confirmButton").text("Continue");
+
   });
 
   function hideFlow(flowType) {

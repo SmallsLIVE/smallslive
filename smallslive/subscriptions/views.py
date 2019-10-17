@@ -35,7 +35,7 @@ class PaymentInfoView(TemplateView):
 
     def get_template_names(self):
         if self.request.is_ajax():
-            template_name = 'partials/_payment_info.html'
+            template_name = 'subscriptions/supporter_step_donation_payment_info.html'
         else:
             pass
         return [template_name]
@@ -69,6 +69,44 @@ class PaymentInfoView(TemplateView):
 
 
 payment_info = PaymentInfoView.as_view()
+
+
+class DonationPreviewView(TemplateView):
+    """
+    Shows donation preview (monthly or  one time)
+    """
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            template_name = 'subscriptions/supporter_step_donation_preview.html'
+        else:
+            pass
+        return [template_name]
+
+    def get_context_data(self, **kwargs):
+        context = super(DonationPreviewView, self).get_context_data(**kwargs)
+        context['donation_type'] = self.request.GET.get('type')
+        context['donation_amount'] = self.request.GET.get('amount')
+
+        payment_method = self.request.GET.get('payment_method')
+        context['payment_method'] = payment_method
+        if payment_method == 'existing-credit-card':
+            last = self.request.user.customer.card_last_4
+            context['last_4'] = last
+        elif payment_method == 'credit-card':
+            last = self.request.GET.get('last')
+            context['last_4'] = last
+
+        try:
+            address = self.request.user.addresses.get(is_default_for_billing=True)
+            context['billing_address'] = address
+        except:
+            pass
+
+        return context
+
+
+donation_preview = DonationPreviewView.as_view()
 
 
 class ExecutePayPalPaymentView(PayPalMixin, View):
@@ -108,9 +146,9 @@ class ContributeFlowView(TemplateView):
 
     def get_template_names(self):
         if self.request.is_ajax():
-            template_name = 'account/supporter-flow-ajax.html'
+            template_name = 'subscriptions/supporter-flow-ajax.html'
         else:
-            template_name = 'account/supporter-flow.html'
+            template_name = 'subscriptions/supporter-flow.html'
         return [template_name]
 
     def get_context_data(self, **kwargs):
@@ -208,6 +246,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, ContributeFlowView):
         context = super(BecomeSupporterView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['payment_info_url'] = reverse('payment_info')
+        context['donation_preview_url'] = reverse('donation_preview')
         context['form_action'] = reverse('become_supporter')
         context['flow_type'] = self.request.GET.get(
             'flow_type', "become_supporter")
@@ -410,9 +449,9 @@ class BecomeSupporterPendingView(BecomeSupporterView):
 
         payment_type = self.request.GET.get('pending_payment_type')
         if payment_type == 'bitcoin':
-            template_name = 'account/supporter-bitcoin-pending.html'
+            template_name = 'subscriptions/supporter-bitcoin-pending.html'
         elif payment_type == 'check':
-            template_name = 'account/supporter-check-pending.html'
+            template_name = 'subscriptions/supporter-check-pending.html'
 
         return [template_name]
 

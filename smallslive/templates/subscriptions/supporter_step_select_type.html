@@ -1,0 +1,106 @@
+<div tabindex="0" class="text9">You are
+  {% if flow_type = 'update_pledge' %}
+  updating your pledge
+  {% elif flow_type = 'one_time_donation' %}
+  making a one time donation
+  {% else %}
+  making a tax deductible donation
+  {% endif %}
+  to the SmallsLIVE Foundation for Jazz Arts and Education.<br>
+  {% if not flow_type = 'update_pledge' %}All tax information is available from your account settings. {% endif %}Please choose one of the following:
+</div>
+
+{% if not flow_type = 'update_pledge' %}
+  <div id="select-type-row" class="row" style="margin-top: 20px;">
+    <div class="button-row button-row-margin supporter-type-select">
+      {% if not flow_type = 'one_time_donation' %}
+        <div class="store__form__selection__option">
+          <button class="select-supporter-type-toggle {% if not flow_type = 'one_time_donation' %}active{% endif %}" data-id="monthly">
+            Monthly Pledge
+          </button>
+        </div>
+      {% endif %}
+      <div class="store__form__selection__option">
+        <button class="select-supporter-type-toggle {% if flow_type = 'one_time_donation' %}active{% endif %}" data-id="one-time">
+          One Time Donation
+        </button>
+      </div>
+      <div class="store__form__selection__option">
+        <button class="select-supporter-type-toggle" data-id="gift">
+          Choose a Gift Tier
+        </button>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if not flow_type = 'one_time_donation' %}
+  <div class="flex-column items-center supporter-plan-input" id="monthly-input">
+    <div class="section-title section-title-no-padded">
+      <div tabindex="0" class="title1">Monthly Pledge</div>
+    </div>
+    <p tabindex="0" class="text9">Monthly pledges are billed automatically and can be cancelled at any time from your account settings. Monthly pledges are 100% tax deductible.<br>You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of the SmallsLIVE Foundation.</p>
+    <div id="monthlyPledge" class="button-row button-row-big button-row-margin">
+      <button value=10 style="margin-bottom: 25px;">$10</button>
+      <button value=20>$20</button>
+      <button value=50>$50</button>
+      <div class="flex-column">
+        <div class="flex-row custom-out">
+          <div class="custom-input text4">
+            <input type="number" pattern="\d*" class="no-spinners transparent" id="monthlyCustom" value="supporter-monthly-pledge">
+            <label id="set-your-own-lbl"><div>SET YOUR OWN <br> (MIN $10)</div></label>
+            <div id="monthly-less" class="text9 accent-color minimum-error"></div>
+          </div>
+          <button class="confirm-custom" id="monthlyCustomConfirm" data-type="month" data-value="" style="display: none;">
+            <span class="bar bar-1"></span>
+            <span class="bar bar-2"></span>
+          </button>
+        </div>
+        <label class="hidden accent-color">
+          $10 is the minimum monthly pledge
+        </label>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% if not flow_type = 'update_pledge' %}
+  <div class="flex-column items-center  supporter-plan-input {% if not flow_type = 'one_time_donation' %}hidden{% endif %}" id="one-time-input">
+    <div class="section-title section-title-no-padded">
+      <div tabindex="0" class="title1">One Time Donation</div>
+    </div>
+    <p tabindex="0" class="text9">This is a one time, 100% tax deductible donation to The SmallsLIVE Foundation. You will receive access to the SmallsLIVE Archive for the remainder of the tax year.<br>
+      If would like to customize your donation please contact us at foundation@smallslive.com</p>
+    <div id="yearlyPledge"
+         class="button-row button-row-big button-row-margin pledge"
+         data-dialog-type="supporter">
+      <button value=100>$100</button>
+      <button value=500>$500</button>
+      <button value=1000>$1000</button>
+      <div class="flex-column">
+        <div class="flex-row custom-out">
+          <div class="custom-input text4">
+            <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
+            {% if flow_type == "become_supporter" or not can_free_donate %}
+            <label><div>ENTER  AMOUNT<br>(MIN  $100)</div></label>
+            <div id="yearly-less" class="text9 accent-color minimum-error"></div>
+            {% endif %}
+          </div>
+          <button class="confirm-custom" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
+            <span class="bar bar-1"></span>
+            <span class="bar bar-2"></span>
+          </button>
+        </div>
+        <label class="hidden accent-color">
+          {% if flow_type == "become_supporter" or not can_free_donate %}
+            $100 is the minimum donation
+          {% else %}
+            $5 is the minimum donation
+          {% endif %}
+        </label>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% if not flow_type = "update_pledge" %}
+  {% include 'subscriptions/supporter_gift_selection.html' with hidden=True %}
+{% endif %}

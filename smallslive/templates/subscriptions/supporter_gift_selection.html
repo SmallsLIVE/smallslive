@@ -20,7 +20,11 @@
       {% purchase_info_for_product request product as session %}
       {% if session.availability.is_available_to_buy %}
       <div>
-         <form action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket hidden" style="width: 100%">
+         <form action="{% url 'basket:add' pk=product.pk  %}"
+               method="post"
+               class="add-to-basket hidden"
+               data-requires-shipping="{{ product.get_product_class.requires_shipping }}"
+               style="width: 100%">
               {% basket_form request product 'single' as basket_form %}
               <div class="store-add-small">
                   {% csrf_token %}

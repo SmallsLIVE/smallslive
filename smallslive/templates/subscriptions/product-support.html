@@ -1,4 +1,4 @@
-{% extends "account/contribute-flow.html" %}
+{% extends "subscriptions/contribute-flow.html" %}
 {% load static from staticfiles %}
 {% load full_static %}
 {% load djstripe_tags %}
@@ -13,47 +13,26 @@
 {% load basket_tags %}
 
 {% block confirmation_modals %}
-  {% include 'account/popups/event_support_one_time_selection_confirmation_dialog.html' %}
-
-  <div class="modal fade" id="donateBitcoinDialog" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content custom-modal">
-        <a href="#" class="close-button"></a>
-        <div class="modal-body">
-          <p class="title2 accent-color title">Thank you for your support</p>
-            <p class="title-big subtitle"></p>
-            <p class="text9 text">
-              The SmallsLIVE Foundation accepts donations in bitcoin. The SmallsLIVE Foundation bitcoin wallet is -> WALLET
-            </p>
-            <p class="text9 text">
-              Donation in bitcoin is tax deductible. Your tax deduction will be equal to the fair market value of the donated bitcoin at the time of donation.
-            </p>
-            <p class="text9 text">
-              To receive documentation of your donation, please contact us at <a href="foundation@smallslive.com">foundation@smallslive.com</a> with your intention to donate in bitcoin.
-              We will contact you directly with a confirmation of the transfer and a receipt for your tax purposes.
-            </p>
-          <div class="text4 text-centered" style="display: flex; justify-content: center;">
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  {% include 'subscriptions/popups/product_support_gift_selection_confirmation_dialog.html' %}
+  {% include 'subscriptions/popups/product_support_one_time_selection_confirmation_dialog.html' %}
 {% endblock %}
 
 {% block flow_title %}
-  <p class="text2 accent-color">You are Sponsoring "{{ event.title }}" {{ event.get_date|date:'m/d/Y' }}</p>
+  <p class="text2 accent-color">You are sponsoring
+
+    {{ comma_separated_leaders }} 
+
+  </p>
 {% endblock %}
 
 {% block flow_steps %}
   <div id="supporterSteps"
        class="button-row button-row-margin button-row-no-hover"
-       data-flow="event_support"
-       data-event-id="{{ event.id }}"
-       data-event-slug="{{ event.slug }}">
+       data-flow="product_support"
+       data-product-id="{{ product_id }}">
     {% if not completed %}
       <div class="step-button active"></div>
+      <div class="step-button"></div>
       <div class="step-button"></div>
       <div class="step-button"></div>
     {% endif %}
@@ -62,26 +41,41 @@
     <div id="supporterStep" class="supporter-step hidden"></div>
 
     <div id="supporterStepSelectType" class="supporter-step">
-<!--
+  <!--
       <div class="text9">You are
         making a tax deductable donation
         to the SmallsLIVE Foundation for Jazz Arts and Education.<br>
         All tax information is available from your account settings.
       </div>
-//-->
-      <div class="flex-column items-center  supporter-plan-input" id="one-time-input">
+  //-->
+
+      <div id="select-type-row" class="row" style="margin-top: 20px;">
+        <div class="button-row button-row-margin supporter-type-select">
+          <div class="store__form__selection__option">
+            <button class="select-supporter-type-toggle" data-id="one-time">
+              One Time Donation
+            </button>
+          </div>
+          <div class="store__form__selection__option">
+            <button class="select-supporter-type-toggle active" data-id="gift">
+              Select a gift
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-column items-center supporter-plan-input hidden" id="one-time-input">
         <div class="section-title-centered section-title-no-padded">
           <div class="title1">Artist Sponsorship</div>
         </div>
-
         <p class="text9">This is a 100% tax-deductable donation to the SmallsLIVE Foundation.
-          50% of your donation will be given directly to the following musicians:
-          {{ comma_separated_artists }}.
+          50% of your donation will go directly to
+          {{ album_product.get_leader_strings }}.
         </p>
         <div id="supportPledge"
              class="button-row button-row-big button-row-margin pledge"
-             data-dialog-type="event">
-          <button value=5>$5</button>
+             data-dialog-type="product">
+          <button value=5 style="margin-bottom: 25px;">$5</button>
           <button value=20>$20</button>
           <button value=100>$100</button>
           <div class="flex-column">
@@ -101,22 +95,23 @@
           </div>
         </div>
       </div>
+
+      {% include 'subscriptions/catalog_gift_selection.html' with hidden=False %}
+
     </div>
 
-    <div id="supporterStepPaymentInfo" class="supporter-step" style="display: none"
+    <div id="supporterStepBilling" class="supporter-step" style="display: none"
          data-payment-info-url="{{ payment_info_url }}"
-         data-payment-info-complete-url="{% url 'become_supporter' %}">
+         data-payment-info-complete-url="{% url 'become_supporter' %}"
+         data-payment-info-pending-url="{% url 'supporter_pending' %}">
     </div>
 
     <div id="supporterStepShipping" class="supporter-step" style="display: none">
 
     </div>
 
-    <div id="supporterStepBilling" class="supporter-step" style="display: none">
-
-    </div>
-
-    <div id="supporterStepPreview" class="supporter-step" style="display: none">
+    <div id="supporterStepPreview" class="supporter-step" style="display: none"
+         data-donation-preview-url="{{ donation_preview_url }}">
 
     </div>
 
@@ -132,23 +127,19 @@
   <div id="supporterStepThankYou" class="flex-column items-center supporter-text-container">
     <div class="supporter-text">
       <p class="title7"><span class="big-letter">T</span>
-        hank you for <span class='accent-color'>supporting</span> the smallslive foundation for jazz arts and education.
-        You tax deducatble donation is directly supporting the following musicians:
-        {% for artist_dict in event_artists %}
-              {{ artist_dict.name }}
-              {% if not forloop.last %}{% ifequal forloop.revcounter 2 %} and {% else %}, {% endifequal %}{% else %}{% endif %}
-        {% endfor %}
+        hank you for <span class='accent-color'>supporting</span> the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.
       </p>
     </div>
   </div>
 {% endblock %}
 {% block flow_confirm %}
   {% if not completed %}
-    <button id="backButton" class="button-bordered">Back</button>
+    <button id="backButton" class="button-bordered" data-back-action="hideFlow">Back</button>
     <button id="confirmButton" data-hide='true' class="button-bordered">Confirm</button>
   {% else %}
-    <a href="{% url 'event_detail' event.id event.slug %}">
-      <button>Return to Event</button>
+    <a href="{% url 'promotions:home' %}">
+      <button>Continue browsing the Catalog</button>
     </a>
   {% endif %}
+
 {% endblock %}

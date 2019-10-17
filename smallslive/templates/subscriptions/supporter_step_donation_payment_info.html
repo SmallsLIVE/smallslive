@@ -4,7 +4,6 @@
 {% load purchase_info_tags %}
 
 <div class="">
-
   <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
     <input type="text" id="hiddenTypeInput" name="type" hidden>
     <input type="number" id="hiddenAmountInput" name="amount" hidden>
