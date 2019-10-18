@@ -26,8 +26,12 @@
       flex-direction: column;
       max-width: 65%;
 
-      @media(max-width: 600px){
+      @media(max-width: 720px){
         max-width: 100%;
+      }
+
+      &--library{
+
       }
 
 
@@ -42,13 +46,29 @@
         text-transform: uppercase;
         transform: scaleY(1.3);
 
-        @media(max-width: 600px){
+        @media(max-width: 720px){
           font-size: 24px;
           line-height: 24px;
           width: 100%;
         }
 
       }
+
+      &--no-underline{
+        font-family: "Oswald", sans-serif;
+        font-weight: 400;
+        font-size: 30px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        transform: scaleY(1.3);
+
+        @media(max-width: 720px){
+          font-size: 24px;
+          width: 100%;
+        }
+
+      }
+
     }
 
     &__cover {
@@ -101,6 +121,7 @@
 
   &__support-buttons__container{
     margin-left: auto;
+    display: inline-flex;
 
 
     @media(max-width: 720px){
@@ -110,6 +131,9 @@
       margin: auto;
       display: none;
       width: 100%;
+      button{
+        margin: 5px 5px 0 5px;
+      }
       @media(max-width: 720px){
         display: block;
       }
@@ -117,27 +141,28 @@
         margin-top: 20px;
       }
     }
+
   }
 
-  &__download-buttons__container{
-    margin-left: auto;
-
-
-    @media(max-width: 720px){
-      display: none;
-    }
-    &--mobile{
-      margin: auto;
-      display: none;
-      width: 100%;
-      @media(max-width: 720px){
-        display: block;
-      }
-      @media(max-width: 600px){
-        margin-top: 20px;
-      }
-    }
-  }
+//  &__download-buttons__container{
+//    margin-left: auto;
+//
+//
+//    @media(max-width: 720px){
+//      display: none;
+//    }
+//    &--mobile{
+//      margin: auto;
+//      display: none;
+//      width: 100%;
+//      @media(max-width: 720px){
+//        display: block;
+//      }
+//      @media(max-width: 600px){
+//        margin-top: 20px;
+//      }
+//    }
+//  }
 
 
   &__track-list{
@@ -149,7 +174,7 @@
     overflow-x: hidden;
     min-height: 310px;
     max-height: 480px;
-    height: 35vw;
+    height: 48vw;
 
     @media(max-width: 600px){
       margin-left: 0;

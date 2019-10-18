@@ -32,6 +32,11 @@
         <div>
           <button id="projectDonationBtnMobile" class="white-border-button buttons-row" style="width: 100%; margin-left: 0; font-size: 12px;">Sponsor this Artist</button>
         </div>
+        {% if not is_catalogue %}
+        <div>
+          <button id="tracksDownloadBtnMobile" class="white-border-button buttons-row" style="width: 100%; margin-left: 0; font-size: 12px;">Download Tracks</button>
+        </div>
+        {% endif %}
       </div>
     </div>
     <div class="album__track-list">
@@ -74,12 +79,6 @@
     </div>
     <!-- end of tracks table -->
   </div>
-  <div class="album__download-buttons__container--mobile">
-    <!--<div class="sponsor-text text2">Sponsor this {{ text }} artist and project with a tax-deductable donation to the smallslive foundation</div>-->
-    <div>
-      <button id="tracksDownloadBtnMobile" class="white-border-button buttons-row" style="width: 100%; margin-left: 0; font-size: 12px;">Download Tracks</button>
-    </div>
-  </div>
   <!-- This table is hidden and will be copied into the modal if the users selects to download tracks -->
   <table id="track-list-tbl" class="hidden">
     <thead>
@@ -121,7 +120,7 @@
   <div>
     <div class="album__info__container">
       <div class="album__header__title"><!--album title container (maybe not necessary)-->
-        <div class="album__header__title--underline">{% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }} {{ album_product.upc }}</div><!--album title-->
+        <div class="album__header__title--no-underline">{% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }} {{ album_product.upc }}</div><!--album title-->
         <div class="album__musician-list">
           <ul>
           {% for artist_product in album_product.artistproduct_set.all %}
@@ -134,21 +133,13 @@
           </ul>
         </div>
       </div>
-      {% if not is_catalogue %}
-        <div class="album__download-buttons__container">
-          <div>
-            <button id="tracksDownloadBtn" class="white-border-button buttons-row" style="margin-left: 0;">Download Tracks</button>
-          </div>
-        </div>
-      {% elif bought_tracks %}
-        <div class="album__download-buttons__container">
-          <div>
-            <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="white-border-button buttons-row" style="margin-left: 0;">View in Library</a>
-          </div>
-        </div>
-      {% endif %}
       <div class="album__support-buttons__container">
         <!--<div class="sponsor-text text2">Sponsor this {{ text }} artist and project with a tax-deductable donation to the smallslive foundation</div>-->
+        {% if not is_catalogue %}
+        <div>
+          <button id="tracksDownloadBtn" class="white-border-button buttons-row" style="margin-left: 0;">Download Tracks</button>
+        </div>
+        {% endif %}
         <div>
           <button id="projectDonationBtn" class="white-border-button buttons-row" style="margin-left: 0;">Sponsor this Artist</button>
         </div>
