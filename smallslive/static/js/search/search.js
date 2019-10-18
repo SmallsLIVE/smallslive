@@ -233,6 +233,9 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
   var searchTerm = $("#desktop-search-bar").val();
   var eventOrderFilter = $("#events-filter").val();
   var leaderFilter = $("#leader-filter").val();
+  if ($("#artist-profile-artist-pk").length > 0) {
+    artistPk = $("#artist-profile-artist-pk").val()
+  }
 
   var searchFilters = {
     main_search: searchTerm,
@@ -680,18 +683,6 @@ $(document).on(
   }
 );
 
-$(document).ready(function() {
-  if (
-    viewPortLength("width") < 1024 &&
-    $("div[data-toggle-tab-target='archived-shows'").length != 0
-  ) {
-    //$("div[data-toggle-tab-target='archived-shows'")[0].click();
-    //is_mobile = true;
-  } else {
-    is_mobile = false;
-  }
-  //$("body").removeClass("hidden-body");
-});
 
 $(document).ready(function() {
   artistPk = getUrlParameter("artist_pk");

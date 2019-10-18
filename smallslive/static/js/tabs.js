@@ -12,8 +12,19 @@
       * Add 'active' class to the tab and remove it from its siblings (with the data atribute).
   **/
   $(document).on('click', '[data-toggle-tab-target]', function() {
-    $(this).siblings('[data-toggle-tab-target]').removeClass('active');
+
+    /* Currently mobile and desktop have different tabs. In order to
+    keep them synced, we need to modify both tabs active state */
+
+    var siblings = $(this).siblings('[data-toggle-tab-target]');
+    siblings.each(function () {
+      var value = $(this).attr('data-toggle-tab-target');
+      $('[data-toggle-tab-target="' + value + '"]').removeClass('active');
+    });
+
     $(this).addClass('active');
+    var value = $(this).attr('data-toggle-tab-target');
+    $('[data-toggle-tab-target="' + value + '"]').addClass('active');
 
     var tabName = $(this).data('toggle-tab-target');
     var tabGroup = $(this).data('toggle-tab-group');

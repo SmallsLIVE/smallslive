@@ -262,3 +262,9 @@
     }
   }
 }
+
+.footer-info {
+  @media(max-width: $screen-md-max) {
+    display: none;
+  }
+}
