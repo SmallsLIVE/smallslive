@@ -56,6 +56,7 @@ $(document).ready(function () {
       var dropdown = $('#search-date-picker .dropdown-menu');
       if (!(dropdown[0] && dropdown[0].style.display === 'block')) {
         $datePickerFrom.datepicker('show');
+        $datePickerTo.datepicker('hide');
       }
     });
 
@@ -68,15 +69,6 @@ $(document).ready(function () {
     });
 
     $datePickerTo.on("changeDate", function(newDate) {
-      // Means any ajax results will not append to existing items.
-      // For pagination use apply = false;
-
-      sendEventRequest(
-        [updateShows]
-      );
-
-      $datePickerFrom.click();
-      $datePickerFrom.focus();
 
       $datePickerFrom.datepicker("setEndDate", newDate.date);
 
@@ -86,34 +78,34 @@ $(document).ready(function () {
       var dropdown = $('#dashboard-desktop-datepicker #search-date-picker .dropdown-menu');
       if (!(dropdown[0] && dropdown[0].style.display === 'block')) {
         $datePickerTo.datepicker('show');
+        $datePickerFrom.datepicker('hide');
       }
     });
 
     $('.datepicker-dashboard-main-btn').bind("click", ToggleDisplay);
 
     function ToggleDisplay(event) {
-        if ($("#dashboard-desktop-datepicker").data('shown'))
-            hide(event);
-        else
-            display();
+      if ($("#dashboard-desktop-datepicker").data('shown'))
+        hide(event);
+      else
+        display();
     }
 
     function display() {
-        $("#dashboard-desktop-datepicker").css("display", "flex").hide().fadeIn(500, function() {
-            $("#dashboard-desktop-datepicker").data('shown', true);
-        });
-
+      $("#dashboard-desktop-datepicker").css("display", "flex").hide().fadeIn(500, function() {
+        $("#dashboard-desktop-datepicker").data('shown', true);
         $("#search-date-picker-from-dashboard input").click();
         $("#search-date-picker-from-dashboard input").focus();
+      });
     }
 
     function hide(event) {
         var $target = $(event.target);
         if (($target.closest('.noclick').length == 0) &&
-        (!($target.hasClass('day') || $target.hasClass('year')))) {
-            $('#dashboard-desktop-datepicker').fadeOut(500, function () {
-                $('#dashboard-desktop-datepicker').data('shown', false);
-            });
+            (!($target.hasClass('day') || $target.hasClass('year')))) {
+          $('#dashboard-desktop-datepicker').fadeOut(500, function () {
+            $('#dashboard-desktop-datepicker').data('shown', false);
+          });
         }
     }
 
@@ -436,6 +428,7 @@ $(document).ready(function () {
           if (!$("#summary-no-results").hasClass("hidden")) {
             $("#summary-no-results").addClass("hidden");
           }
+          showFirstEvent(data);
         }
       } else {
         $("#artistEventsList").html(data.template);
@@ -443,6 +436,8 @@ $(document).ready(function () {
           $("#summary-data").addClass("hidden");
         }
         $("#summary-no-results").removeClass("hidden");
+        $('#edit-event-dashboard').html('');
+        $('#event-info').html('');
       }
       $("#dashboard-filters").removeClass("hidden");
     }
