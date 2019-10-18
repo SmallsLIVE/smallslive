@@ -69,8 +69,22 @@
 
 .newsletter {
   margin-bottom: 40px !important;
+  margin-top: 30px;
   padding-bottom: 0 !important;
-  @include align-self(flex-end);
+  align-items: flex-end;
+
+  p {
+    padding-bottom: 5px;
+    margin-right: 10px;
+  }
+
+  input {
+    &.white-border-button {
+
+      height: 44px;
+
+    }
+  }
 
   &__title {
     @include lato-bold;

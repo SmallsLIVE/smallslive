@@ -11,7 +11,7 @@ def check_account_status(request):
     user = request.user
 
     if not user.is_authenticated():
-        return {}
+        return {'current_user': user}
 
     session = request.session
 
@@ -19,7 +19,10 @@ def check_account_status(request):
     show = not user.has_activated_account and flag
     session['show_email_confirmation_dialog'] = False
 
-    return {'show_email_confirmation_dialog': show}
+    return {
+        'current_user': user,
+        'show_email_confirmation_dialog': show
+    }
 
 
 def check_if_event_confirmed_user(request):
