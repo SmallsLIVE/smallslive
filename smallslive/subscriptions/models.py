@@ -31,6 +31,9 @@ class Donation(models.Model):
     event = models.ForeignKey(Event, blank=True, null=True,
                               related_name='donations')
 
+    def __unicode__(self):
+        return u'{}: {} - {}'.format(self.user.email, self.amount, self.date)
+
     def save(self, *args, **kwargs):
         if self.deductable_amount == 0:
             self.deductable_amount = self.amount

@@ -103,7 +103,7 @@ INSTALLED_APPS = [
     'newsletters',
     'old_site',
     'static_pages',
-    'subscriptions.apps.SubscriptionsConfig',
+    'subscriptions',
     'users',
     'utils',
     'custom_stripe',
