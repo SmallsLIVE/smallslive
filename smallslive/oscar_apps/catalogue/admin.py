@@ -17,6 +17,7 @@ class OverrideProductAdmin(oscar_admin.ProductAdmin):
     
     search_fields = ['title']
     list_filter = ['product_class']
+    raw_id_fields = ['event', 'event_set', 'artists']
 
 
 @admin.register(UserCatalogueProduct)
