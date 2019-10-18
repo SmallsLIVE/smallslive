@@ -1,10 +1,10 @@
-{% extends "account/become-supporter.html" %}
+{% extends "subscriptions/become-supporter.html" %}
 {% load static from staticfiles %}
 {% load full_static %}
 {% load djstripe_tags %}
 
 {% block confirmation_modals %}
-  {% include 'account/popups/selection_confirmation_dialog.html' %}
+  {% include 'subscriptions/popups/selection_confirmation_dialog.html' %}
 {% endblock %}
 
 {% block flow_title %}
@@ -71,17 +71,13 @@
     </div>
   </div>
 
-  <div id="supporterStepPaymentInfo" class="supporter-step" style="display: none"
+  <div id="supporterStepBilling" class="supporter-step" style="display: none"
        data-payment-info-url="{{ payment_info_url }}"
        data-payment-info-complete-url="{% url 'become_supporter' %}">
 
   </div>
 
   <div id="supporterStepShipping" class="supporter-step" style="display: none">
-
-  </div>
-
-  <div id="supporterStepBilling" class="supporter-step" style="display: none">
 
   </div>
 

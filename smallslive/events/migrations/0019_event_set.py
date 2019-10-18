@@ -25,8 +25,10 @@ def convert_to_event_set(apps, schema_editor):
 
         print 'Created Set: ', event_set.start, event_set.end
 
+    process_count = 0
     for event in Event.objects.order_by('-id'):
-        print 'Processing event: ', event.pk
+        process_count += 1
+        print 'Processing event: ', event.pk, process_count
         default_timezone = timezone.get_default_timezone()
         ny_start = timezone.make_naive(event.start, default_timezone)
         print 'Start: ', ny_start

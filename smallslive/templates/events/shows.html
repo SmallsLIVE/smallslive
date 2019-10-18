@@ -3,7 +3,7 @@
 {% load i18n %}
 
 <section id="shows{% if archived %}Archived{% else %}Upcoming{% endif %}Content"
-         class="archived-shows old-calendar search-tab-content {% if archived %}archived{% else %}upcoming{% endif %} {{ archived|yesno:',shows-calendar' }} "
+         class="archived-shows old-calendar search-tab-content {% if archived %}archived active{% else %}upcoming{% endif %} {{ archived|yesno:',shows-calendar' }} "
          data-toggle-tab="{% if archived %}archived{% else %}upcoming{% endif %}-shows"
          data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
   {% if archived or upcoming %}
@@ -40,11 +40,10 @@
     {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming show_event_venue=show_event_venue secondary=True hide_play=hide_play with_date_picker=True %}
   </main>
 
-  <div class="concerts-footer flex-column items-center">
-    <div id="event-load-gif" class="loading-image events-gif">
-        <img src="{% static 'image/loading.gif' %}" alt="">
-    </div>
+  <div id="event-load-gif" class="loading-image events-gif text-center">
+      <img src="{% static 'image/loading.gif' %}" alt="">
   </div>
+
 </section>
 
 <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>

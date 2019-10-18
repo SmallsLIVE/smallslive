@@ -5,6 +5,7 @@
 <div  class="content-centered clearfix" style="width: 100%;">
   <div class="artist-search-profile-resume">
     <div class="mobile-padding visible-xs visible-sm visible-md">
+        <input id="artist-profile-artist-pk" type="hidden" value="{{ artist.pk }}">
         <div class="text1">
             Total shows in archive: <span class='accent-color'>{{ artist.archive_shows }}</span>
         </div>
@@ -44,7 +45,7 @@
       <div class="flex-row">
         <div class="musician-instrument mobile-padding">{{ artist.get_main_instrument_name }}</div>
         <div class="text1 show-in-archive hidden-xs hidden-sm hidden-md">
-            Total shows in archive: <span class='accent-color'>{{artist.archive_shows}}</span>
+            Total shows in archive: <span class='accent-color'>{{ artist.archive_shows  }}</span>
         </div>
       </div>
       <div class="white-line-bottom medium hidden-xs hidden-xs hidden-sm hidden-md"></div>

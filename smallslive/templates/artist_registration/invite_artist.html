@@ -11,11 +11,11 @@
 
 
 {% block static-content %}
-    <h1>{% trans "Confirm E-mail Address" %}</h1>
+    <h1 class="text2">{% trans "Confirm E-mail Address" %}</h1>
 
     <form method="post" action="{% url 'invite_artist' artist.id %}">
-    {% csrf_token %}
+        {% csrf_token %}
         {% crispy form %}
-        <input type="submit" class="user-settings__form__button" value="{% trans 'Confirm' %}">
+        <button type="submit" class="white-border-button">{% trans 'Confirm' %}</button>
     </form>
 {% endblock %}

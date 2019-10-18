@@ -231,7 +231,10 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     def has_archive_access(self):
         # One Time Donations are new  "one year subscriptions"
         return self.get_donation_amount >= 100 or \
-                self.get_subscription_plan['type'] != 'free'
+                self.get_subscription_plan['type'] != 'free' or \
+                self.is_vip or \
+                self.has_active_institutional_subscription or \
+                self.is_artist
 
     @cached_property
     def get_subscription_plan(self):

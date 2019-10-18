@@ -236,10 +236,9 @@ body.headers-1 {
 .search-container {
   #showsArchivedContent {
     @media (max-width: $screen-md-max) {
-      margin-top: 0px;
+      margin-top: 0;
+      min-height: 500px;
     }
-
-    min-height: 500px;
   }
 
   .search-tab-content {
@@ -963,8 +962,8 @@ body.headers-1 {
 
       img {
         object-fit: cover;
-        object-position: center;
-        height: 240px;
+        object-position: top;
+        height: 30vh;
         border: none;
       }
     }

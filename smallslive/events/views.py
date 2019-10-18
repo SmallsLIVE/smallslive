@@ -139,6 +139,10 @@ class HomepageView(ListView, UpcomingEventMixin):
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
         context['events_today'] = list(self.get_queryset())
 
+        activation_key =  self.request.GET.get('activate_account')
+        if activation_key:
+            context['activation_key'] = activation_key
+
         return context
 
 

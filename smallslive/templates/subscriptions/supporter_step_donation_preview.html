@@ -1,0 +1,96 @@
+<div>
+  <section class="preview container">
+    <div class="col-xs-12 col-sm-8 store-overview__left-column text1">
+      <div class="store-overview__group">
+        <h4 class="store-overview__group__table__heading">Your Support Information:</h4>
+        <div class="store-overview__group__table">
+          <!-- table header start -->
+          <div class="store-overview__group__table__header clearfix">
+            <div class="col-xs-5">
+              Support type
+            </div>
+            <div class="col-xs-4 details">
+              Details
+            </div>
+            <div class="col-xs-3 total">
+              Amount
+            </div>
+          </div>
+          <!-- end of table header -->
+
+          <!-- table row start -->
+          <div class="store-overview__group__table__row clearfix text1">
+            <div class="col-xs-5">
+              {% if donation_type == 'year' %}
+                One Time Donation
+              {% else %}
+                Monthly Pledge
+              {% endif %}
+            </div>
+            <div class="col-xs-4 details">
+              <p class="store-overview__group__table__product-name">
+
+              </p>
+              <p class="store-overview__group__table__product-details">
+
+              </p>
+              <p class="store-overview__group__table__product-details">
+
+              </p>
+            </div>
+            <div class="col-xs-3 total">
+              ${{ donation_amount }}
+            </div>
+          </div>
+          <!-- end of table row -->
+
+          <!-- group total -->
+          <div class="store-overview__group__total clearfix">
+            <div class="col-xs-9 store-overview__group__total__label">
+                Sub-total:
+            </div>
+            <div class="col-xs-3 store-overview__group__total__value">
+                 ${{ donation_amount }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-4 store-overview__right-column text1">
+      <div class="store-overview__group">
+        <div class="section-title section-title-no-padded">
+          <div tabindex="0" class="title1">Shipping Information</div>
+        </div>
+        <div class="store-overview__group__textblock">
+            <p>No shipping required</p>
+        </div>
+      </div>
+      <div class="store-overview__group">
+        <div class="section-title section-title-no-padded">
+          <div class="title1">Billing Information</div>
+        </div>
+        {% if billing_address %}
+          <div class="store-overview__group__textblock">
+            <p>{{ billing_address.name }}</p>
+            <p>{{ billing_address.line1 }}</p>
+            <p>{{ billing_address.line2 }}</p>
+            <p>{{ billing_address.city }}{% if billing_address.state %},  {{ billing_address.state }}{% endif %}</p>
+            <p>{{ billing_address.country }}</p>
+          </div>
+        {% endif %}
+        <div class="store-overview__group__textblock">
+        {% if payment_method == 'paypal' %}
+          <p class="small-heading">PayPal</p>
+        {% elif last_4 %}
+          <p class="small-heading">Credit card:</p>
+          <p>xxxx xxxx xxxx {{ last_4 }}</p>
+        {% else %}
+          <p class="small-heading">{{ payment_method }}</p>
+        {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>

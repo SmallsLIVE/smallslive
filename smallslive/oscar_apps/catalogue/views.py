@@ -201,6 +201,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         # self.request.basket.flush()
 
         ctx['payment_info_url'] = reverse('payment_info')
+        ctx['donation_preview_url'] = reverse('donation_preview')
         ctx['product_id'] = self.object.pk
 
         ctx['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY

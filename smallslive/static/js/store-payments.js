@@ -164,7 +164,7 @@ $(document).ready(function () {
   
     function getPaymentInfoForm() {
   
-      var $step = $('#supporterStepPaymentInfo');
+      var $step = $('#supporterStepBilling');
       var url = $step.data('payment-info-url');
   
       $.ajax({
@@ -173,7 +173,7 @@ $(document).ready(function () {
         success: function( data ) {
           $step.html(data);
           updatePaymentInfo();
-          replaceWhiteSelects($('#supporterStepPaymentInfo')[0]);
+          replaceWhiteSelects($('#supporterStepBilling')[0]);
           renderCardAnimation('#payment-form');
           showPanel(getNextStep());
         },

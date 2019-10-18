@@ -30,7 +30,9 @@
 {% block content %}
   {% include 'inactive_dialog.html' %}
   {% include 'become_a_supporter_dialog.html' %}
-
+  {% if activation_key %}
+    {% include 'artist_registration/set_password_dialog.html' %}
+  {% endif %}
 
   <div class="main-container pad-content {% if calendar %}calendar{% else %}home-new{% endif %}">
     {% block home_content %}
@@ -57,7 +59,7 @@
 {% block footer %}
   <!-- Removed mobile footer as per Spike's request -->
   <div style="margin: 10px 50px;">
-    <div class="footer-info flex-column items-center" style="margin-bottom: 50px;">
+    <footer class="footer-info flex-column items-center" style="margin-bottom: 50px;">
       <img class="footer-logo" style="margin-bottom: 5px;" src="{% static 'new_logo_transparent_black.svg' %}" alt="SmallsLIVE Foundation logo" width="100">
       <div class="text-grey">Copyright ®{% now 'Y' %} SmallsLIVE All rights reserved.</div>
       <div>
@@ -65,12 +67,56 @@
         <a href="{% url 'terms-and-conditions' %}">Terms and Conditions</a> |
         <a href="{% url 'contact-and-info' %}">Contact + Info</a>
       </div>
-    </div>
+      {% if not current_user.newsletter %}
+        <div class="flex-row newsletter">
+          <p class="text4">Sign up for our weekly newsletter!</p>
+          <form class="admin-interface__form flex-row" action="{% url 'newsletters' %}" method="post">
+              {% csrf_token %}
+              <input class="form-control" type="email" required name="email" placeholder="Your email address" value="{% if current_user.is_authenticated %}{{ current_user.email }}{% endif %}"/>
+              <input class="white-border-button" type="submit" value="SUBSCRIBE" class="homepage-news__button"/>
+          </form>
+        </div>
+      {% endif %}
+    </footer>
   </div>
-
-
 {% endblock %}
 
 {% block extra_js %}
-  <script type="javascript" src="{% static 'js/slider.js' %}"></script>
+  {% if activation_key %}
+    <script>
+      $(document).ready(function () {
+        // Show artist sign up form using the modal
+        var  $modal = $("#artist-set-password-dialog");
+        $modal.modal("show");
+        var url = "{% url "artist_registration_confirm_email_ajax" key=activation_key %}";
+        $.get(url, function (data) {
+          $modal.find(".modal-body").html(data);
+        });
+
+
+        $(document).on("submit", "#artist-registration-set-password-form", function (event) {
+          event.preventDefault();
+          var form = $(this);
+          var url = form.attr('action');
+
+          $.ajax({
+           type: "POST",
+           url: url,
+           data: form.serialize(),
+           success: function (data) {
+            if (data.location) {
+              window.location.href = data.location;
+            } else if (data.errors) {
+              for (var key in data.errors) {
+                $modal.find("#" + key + "-error").html(data.errors[key]).removeClass("hidden");
+              }
+            }
+           }
+         });
+
+        });
+
+      });
+    </script>
+  {% endif  %}
 {% endblock extra_js %}

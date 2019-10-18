@@ -1,0 +1,26 @@
+{% extends "home_new.html" %}
+{% load static from staticfiles %}
+
+
+{% block schedule_nav_active %}active{% endblock %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+{% block home_content %}
+{% endblock home_content %}
+
+{% block extra_js %}
+  <script>
+    $(document).ready(function () {
+      var url = document.location.href;
+
+      $.get(url, function (data) {
+        console.log(data);
+      });
+    });
+  </script>
+{% endblock extra_js %}

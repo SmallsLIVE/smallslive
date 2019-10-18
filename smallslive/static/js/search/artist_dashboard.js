@@ -14,26 +14,26 @@ $(document).ready(function () {
   initializeFilters();
   initializeDashboardDatePickers();
   bindEvents();
-  loadMore(false, true);
+  loadMore(true);
 
   function initializeFilters() {
 
     $('#artist_archive_status_filter').on('change', function () {
       currentPage = 0;
       totalPages = 1;
-      loadMore(false, true);
+      loadMore(true);
       $('#artistEventsList').html("");
     });
 
     $('#artist_archive_order_filter').on('change', function () {
       currentPage = 0;
       totalPages = 1;
-      loadMore(false, true);
+      loadMore(true);
       $('#artistEventsList').html("");
     });
 
     $('#load-more-btn').on('click', function () {
-      loadMore(false);
+      loadMore();
     });
   }
 
@@ -58,7 +58,6 @@ $(document).ready(function () {
         $datePickerFrom.datepicker('show');
       }
     });
-
 
     //////////////////////
     $datePickerTo.datepicker({
@@ -126,7 +125,7 @@ $(document).ready(function () {
         totalPages = 1;
         $('#artistEventsList').html("")
         $('#artistEventsList').addClass("artist-loading-gif");
-        loadMore(false);
+        loadMore();
 
     });
 
@@ -145,7 +144,7 @@ $(document).ready(function () {
         totalPages = 1;
         $('#artistEventsList').html("")
         $('#artistEventsList').addClass("artist-loading-gif");
-        loadMore(false);
+        loadMore();
     });
 
 
@@ -445,6 +444,7 @@ $(document).ready(function () {
         }
         $("#summary-no-results").removeClass("hidden");
       }
+      $("#dashboard-filters").removeClass("hidden");
     }
     if (data.total_results) {
       $("#number-of-shows-label").html(data.total_results);
@@ -566,6 +566,11 @@ $(document).ready(function () {
 
     $imageInput.data("thumbnail-url", data.src);
     $imageInput.attr("data-thumbnail-url", data.src);
+
+    $imageInput.data("min-width", data.width);
+    $imageInput.data("min-height", data.height);
+    $imageInput.data("org-width", data.width);
+    $imageInput.data("org-height", data.height);
 
     resizeInfo();
 
@@ -708,7 +713,7 @@ $(document).ready(function () {
 
   }
 
-  function loadMore(mobile, loadFirstEvent) {
+  function loadMore(loadFirstEvent) {
 
     $("#event-load-gif").removeClass("hidden");
     $('.concerts-footer').hide();
