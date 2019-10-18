@@ -30,6 +30,10 @@
 
   &__form {
 
+    textarea {
+      width: 100%;
+    }
+
     #div_id_photo {
       a {
         display: none;
@@ -67,6 +71,7 @@
           display: none;
         }
       }
+
     }
 
     & .form-control,
