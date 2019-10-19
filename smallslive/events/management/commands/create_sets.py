@@ -16,19 +16,29 @@ class Command(BaseCommand):
             video = event.recordings.filter(set_number=set_number).filter(media_file__media_type='video').first()
             audio = event.recordings.filter(set_number=set_number).filter(media_file__media_type='audio').first()
 
-            event_set = EventSet.objects.create(
-                event=event, start=start, end=end,
-                video_recording=video, audio_recording=audio
-            )
+            event_set = EventSet.objects.filter(
+                event=event,
+                start=start,
+                end=end
+            ).first()
 
-            print 'Created Set: ', event_set.start, event_set.end
+            if not event_set:
+                event_set = EventSet.objects.create(
+                    event=event, start=start, end=end,
+                    video_recording=video, audio_recording=audio
+                )
+                print 'Created Set: ', event_set.start, event_set.end
+            else:
+                if video:
+                    event_set.video_recording=video
+                if audio:
+                    event_set.audio_recording=audio
+                if video or audio:
+                    event_set.save()
+                    print 'Updated Set: ', event_set.start, event_set.end, video, audio
 
         for event in Event.objects.filter(venue__name='Mezzrow').order_by('-id'):
             print 'Processing event: ', event.pk
-
-            if event.sets.all().count() > 0:
-                print 'Skipping'
-                continue
 
             default_timezone = timezone.get_default_timezone()
             ny_start = timezone.make_naive(event.start, default_timezone)
