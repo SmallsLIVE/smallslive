@@ -240,6 +240,10 @@ class SearchObject(object):
             if instruments_condition:
                 instruments_condition &= Q(performers__pk=artist_pk)
                 sqs = sqs.filter(instruments_condition)
+            elif number_of_performers:
+                sqs = sqs.filter(performers__pk=artist_pk)
+                sqs = self.filter_quantity_of_performers(
+                    number_of_performers, first_name, last_name, partial_name, instruments)
             else:
                 sqs = sqs.filter(performers__pk=artist_pk)
         else:
@@ -310,8 +314,6 @@ class SearchObject(object):
                     sqs = sqs.filter(condition)
 
         sqs = sqs.distinct()
-
-        print sqs.query
 
         return sqs
 
