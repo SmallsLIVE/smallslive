@@ -778,9 +778,12 @@ function hidePublish() {
 function showSelectFormat() {
     var $downloadDialog = $('#downloadFormat');
     var $table = $("#track-list-tbl");
-    var $clonedTable = $table.clone(true).removeClass("hidden");
+    var $clonedTable = $table.clone(true).removeClass("hidden").removeAttr("id");
     var $tableContainer = $downloadDialog.find(".table-container");
-    if ($tableContainer.find("#track-list-tbl").length === 0) {
+    if ($tableContainer.find("table").length === 0) {
+      $tableContainer.append($clonedTable);
+    } else {
+      $tableContainer.html('');
       $tableContainer.append($clonedTable);
     }
     $downloadDialog.modal('show');
