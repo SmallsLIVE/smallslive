@@ -214,8 +214,25 @@ upload_track = UploadTrackView.as_view()
 
 class UploadImagePreview(View):
 
+    def sanitize_file_name(self, name):
+        # Trim file name to avoid errors with database field.
+        if len(name) > 100:
+            parts = name.split('.')
+            # extension should be the last substring after .
+            extension = parts[-1]
+            # rebuild everything that is not the extension.
+            # Should work even if there's no extension
+            name = '.'.join(parts[:-1])
+            if name:
+                name = name[:50] + '.' + extension
+            else:
+                name = extension
+
+        return name
+
     def post(self, *args, **kwargs):
         image = self.request.FILES['photo']
+        image.name = self.sanitize_file_name(image.name)
         image_file = ImageMediaFile.objects.create(photo=image)
 
         filters = {

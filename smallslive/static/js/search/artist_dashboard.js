@@ -189,6 +189,7 @@ $(document).ready(function () {
     $(document).on("change", "#id_photo", function () {
       var filePath = $(this).val();
       var fileName = filePath.replace(/^.*[\\\/]/, '');
+      fileName = fileName.substr(0, 20);
 
       var $fileNameSpan = $("#file_name");
       $fileNameSpan.text(fileName);
