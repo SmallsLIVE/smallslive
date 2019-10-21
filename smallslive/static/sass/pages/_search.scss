@@ -53,6 +53,9 @@ body.headers-1 {
     .search-container.pad-content {
       @media (max-width: $screen-sm-max) {
         padding-top: 0;
+        &.mobile-search-header-shown {
+          padding-top: 150px;
+        }
       }
     }
   }
@@ -327,6 +330,8 @@ body.headers-1 {
   padding: 30px;
 
   @media (max-width: $screen-md-max) {
+    flex-direction: row;
+    flex-wrap: wrap;
     margin: 0;
     width: 100vw;
     position: absolute;
@@ -354,6 +359,10 @@ body.headers-1 {
       font-size: 2em;
       margin: 0 15px;
       width: 150px;
+    }
+
+    @media (max-width: $screen-md-min) {
+      width: 95px;
     }
 
     &:hover {

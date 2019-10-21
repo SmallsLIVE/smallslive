@@ -113,7 +113,7 @@ $(document).ready(function() {
     artistSearchTerm = "";
     $("#artist-search").val("");
     $("#artist-search").change();
-    $("#a-z-search .white-border-button").css("background-color", "#f0f0eb");
+    $("#a-z-search .white-border-button").removeClass("active");
     $("#a-z-refresh").css("background-color", "#fff");
     $("a-z-search").removeAttr("selected-value");
   });
