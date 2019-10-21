@@ -18,66 +18,13 @@ $(document).ready(function () {
 
   /* Product selection and purchase */
 
-  var $selectionConfirmationDialog = $("#catalogSelectionConfirmationDialog");
-
-  $(document).on('click', '.select-catalog-product', function (event) {
-
-    // Prevent submission
-    event.preventDefault();
-
-    // Show popup with selected product
-    $selectionConfirmationDialog.find(".title").text($(this).text());
-    $itemForm = $(this).closest("form");
-
-    // Clone html (image and product title) to  append to modal content.
-    var $item = $itemForm.find(".modal-content").clone();
-
-    // Price and tax info
-    var giftTier = $(this).attr("data-type");
-    $selectionConfirmationDialog
-      .find(".subtitle")
-      .text("Selected Item: " + giftTier);
-    var price = $(this).data('incltax');
-    var cost = $(this).data("cost");
-    var priceFloat = parseFloat(price);
-
-    if (cost && cost != "None" && cost != "0.00") {
-      tax_deductable = "$ " + (priceFloat - parseFloat(cost)).toFixed(2).toString();
-    } else if (cost == "None" || cost == "0.00") {
-      tax_deductable = "100%";
-    }
-
-    // Create text to display and append html
-    var content = 'You have selected an item of price <span class="smalls-color">' +
-      price +
-      '</span>  of which <span class="smalls-color"> ' +
-      tax_deductable +
-      "</span> is tax deductable.";
-
-    $selectionConfirmationDialog
-      .find(".text")
-      .html(content);
-
-    var $giftContent = $selectionConfirmationDialog.find(".gift-content");
-    $giftContent.html($item);
-    $item.removeClass("hidden");
-
-    $selectionConfirmationDialog.modal("show");
-
-  });
 
   function showFlow(flowType) {
 
-    if (flowType == "support") {
-      $mainContainer = $("#my-downloads-product__" + flowType);
-      setSelected("catalog", "support", 0);
-      showPanel("SelectType");
-      $donationConfirmationDialog.modal("hide");
-    } else {
-      setSelected("catalog", "store_physical", 0);
-      $("#confirmButton").show();
-      $selectionConfirmationDialog.modal("hide");
-    }
+    $mainContainer = $("#my-downloads-product__" + flowType);
+    setSelected('catalog', null, 0);
+    showPanel("SelectType");
+    $donationConfirmationDialog.modal("hide");
     $(".album.big-player").addClass("hidden");
     $("#my-downloads-product__" + flowType).removeClass('hidden');
     $(".store-banner").addClass("hidden");
@@ -85,12 +32,6 @@ $(document).ready(function () {
     $(".newest-recordings-container.downloads").addClass("hidden");
 
   }
-
-  $(document).on("click", "#confirmCatalogSelectionButton", function () {
-    showFlow("catalog");
-    $itemForm.submit();
-    $mainContainer.find("#selectionConfirmationDialog").modal("hide");
-  });
 
   $('#selectionConfirmationDialog').on('hidden.bs.modal', function () {
     //$("#my-downloads-product__purchase").addClass("hidden");
@@ -127,10 +68,6 @@ $(document).ready(function () {
     $downloadConfirmationDialog.modal("hide");
   });
 
-  $(document).on("click", "#confirmCatalogSelectionButton", function () {
-    showFlow("store");
-    $itemForm.submit();
-  });
 
 });
 

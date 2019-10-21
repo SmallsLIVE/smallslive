@@ -67,7 +67,7 @@ var getSteps = function() {
       steps = ["SelectType", "Billing", "Preview", "ThankYou"];
     }
   } else if (selectedData.flow == "event_support") {
-    steps = ["SelectType", "Billing", "ThankYou"];
+    steps = ["SelectType", "Billing", "Preview", "ThankYou"];
   }
 
   /* There needs to be one less dot than steps because the Thank You Page
@@ -201,7 +201,7 @@ var checkConfirmButton = function() {
     $confirmButton.text("Continue");
   }
 
-  if (currentStep == "Preview" || currentStep == "Billing" && selectedData.flow == "event_support") {
+  if (currentStep == "Preview") {
     $confirmButton.text("Confirm Payment");
   }
 
@@ -1024,11 +1024,7 @@ $(document).ready(function() {
       if (currentStep === "SelectType") {
         getPaymentInfoForm();
       } else if (currentStep === "Billing") {
-        if (selectedData.flow == "event_support") {
-          processPaymentInfoStep();
-        } else {
-          getDonationPreviewForm();
-        }
+        getDonationPreviewForm();
       } else if (currentStep == "Preview") {
         processPaymentInfoStep();
       } else {
@@ -1051,7 +1047,7 @@ $(document).ready(function() {
     } else {
       var action = $(this).data("back-action");
       if (action) {
-        eval(action)(selectedData.type);
+        eval(action)(selectedData.flow);
       }
     }
 
@@ -1069,7 +1065,7 @@ $(document).ready(function() {
 
   function hideFlow(flowType) {
     $(".album.big-player").removeClass("hidden");
-    $("#my-downloads-product__" + flowType).addClass('hidden');
+    $("#my-downloads-product__support").addClass('hidden');
     $(".store-banner").removeClass("hidden");
     $(".white-line-bottom").removeClass("hidden");
     $(".newest-recordings-container.downloads").removeClass("hidden");

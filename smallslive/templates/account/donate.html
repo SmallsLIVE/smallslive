@@ -73,6 +73,7 @@
 
   <div id="supporterStepBilling" class="supporter-step" style="display: none"
        data-payment-info-url="{{ payment_info_url }}"
+       data-payment-info-pending-url="{% url 'supporter_pending' %}"
        data-payment-info-complete-url="{% url 'become_supporter' %}">
 
   </div>
@@ -81,8 +82,8 @@
 
   </div>
 
-  <div id="supporterStepPreview" class="supporter-step" style="display: none">
-
+  <div id="supporterStepPreview" class="supporter-step" style="display: none"
+       data-donation-preview-url="{{ donation_preview_url }}">
   </div>
 
 
