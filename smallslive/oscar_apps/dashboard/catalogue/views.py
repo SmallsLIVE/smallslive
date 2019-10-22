@@ -24,7 +24,6 @@ class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
                          'stockrecord_formset': self.stockrecord_formset,
                          'artist_formset': self.artist_formset}
 
-
     def get_context_data(self, **kwargs):
         if self.product_class.slug == 'album':
             self.formsets['track_formset'] = TrackFormSet

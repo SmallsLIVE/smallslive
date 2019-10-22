@@ -28,13 +28,12 @@ class ProductForm(oscar_forms.ProductForm):
             'featured',
             'gift',
             'gift_price',
-            'event_set',
+            'event',
             'set',
             'ordering'
         ]
 
     def __init__(self, product_class, data=None, parent=None, *args, **kwargs):
-
 
         self.set_initial(product_class, parent, kwargs)
         super(oscar_forms.ProductForm, self).__init__(data, *args, **kwargs)
@@ -48,12 +47,11 @@ class ProductForm(oscar_forms.ProductForm):
             del self.fields['gift']
             del self.fields['gift_price']
             del self.fields['ordering']
+            self.fields['event'].widget = forms.TextInput()
             product = kwargs.get('instance')
-            if product:
-                event_set = product.event_set
-                self.fields['event_set'].queryset = EventSet.objects.filter(event=event_set.event)
+
         else:
-            del self.fields['event_set']
+            del self.fields['event']
             del self.fields['set']
 
         if parent:
@@ -78,14 +76,19 @@ class ProductForm(oscar_forms.ProductForm):
             self.fields['title'].widget = forms.TextInput(
                 attrs={'autocomplete': 'off'})
 
-    def clean_event(self):
-        event_id = self.cleaned_data['event_set']
-        if event_id:
-            try:
-                event = Event.objects.get(id=event_id)
-            except Event.DoesNotExist:
-                raise ValidationError('Event with that ID does not exist')
-            return event
+    def save(self, commit=True):
+        event = self.cleaned_data['event']
+        event_sets = EventSet.objects.filter(event=event)
+        event_sets = sorted(event_sets, Event.sets_order)
+        set_number = self.cleaned_data['set']
+        set_number = int(set_number)
+        event_set = event_sets[set_number - 1]
+        product = super(ProductForm, self).save(commit=False)
+        product.event_set = event_set
+        if commit:
+            product.save()
+
+        return product
 
 
 class TrackForm(forms.ModelForm):
