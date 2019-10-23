@@ -69,10 +69,10 @@
       </div>
       {% if not current_user.newsletter %}
         <div class="flex-row newsletter">
-          <p class="text4">Sign up for our weekly newsletter!</p>
+          <p class="text4">subscribe to our newsletter</p>
           <form class="admin-interface__form flex-row" action="{% url 'newsletters' %}" method="post">
               {% csrf_token %}
-              <input class="form-control" type="email" required name="email" placeholder="Your email address" value="{% if current_user.is_authenticated %}{{ current_user.email }}{% endif %}"/>
+              <input class="form-control" type="email" required name="email" placeholder="email address" value="{% if current_user.is_authenticated %}{{ current_user.email }}{% endif %}"/>
               <input class="white-border-button" type="submit" value="SUBSCRIBE" class="homepage-news__button"/>
           </form>
         </div>

@@ -11,7 +11,7 @@
   <p tabindex="0" class="text9">
     Your donation will be partially tax deductible.
     Streaming and digital downloads can be accessed from your Library.
-    Please make a selection from the choices below. 
+    Please make a selection from the choices below.
   </p>
   <div id="gift" class="gifts-container" data-dialog-type="product">
 
@@ -49,7 +49,7 @@
               <button class="select-gift white-border-button"
                       data-cost="{{ session.stockrecord.cost_price }}"
                       data-inclTax="{{ session.price.incl_tax }}"
-                      data-type="Gift Tier: {{ product.title }}"
+                      data-type="{{ product.title }}"
                       data-variants="{{ product.variants.count }}">
                 <span class="price-tag">{{ session.price.incl_tax|currency:session.price.currency }} </span>
                 <span class="gift-title">{{ product.get_child_product_title }}
