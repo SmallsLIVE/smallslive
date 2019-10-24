@@ -852,6 +852,7 @@ body.headers-1 {
       &.pad-content {
         transition: padding-top 0.5s;
         padding-top: 20px;
+
       }
     }
 
@@ -910,12 +911,38 @@ body.headers-1 {
     padding: 0 20px;
     width: 100%;
   }
+  @media (max-width: 600px) {
+    padding: unset;
+  }
+}
+
+.artist-search-profile{
+
+  &__header {
+    display: flex;
+    margin: 0px 20px 15px 0;
+
+    @media(max-width: 1024px){
+      margin-right: 0;
+    }
+
+    @media(max-width: 600px){
+      display: inline-block;
+    }
+
+  }
+
+  &__subtitle{
+      margin: 12px 0;
+  }
 }
 
 .artist-search-profile-resume {
+
   @media (max-width: $screen-md-max) {
-    margin-bottom: 20px;
+    //margin-bottom: 20px;
     margin-left: 0;
+    padding: 0 20px;
 
     .mobile-padding {
       .text1 {
@@ -931,7 +958,7 @@ body.headers-1 {
     }
 
     .flex-column.white-line-right {
-      width: 100vw;
+      width: 100%;
       padding: 10px 0;
       border-right: none;
     }
@@ -943,15 +970,34 @@ body.headers-1 {
   margin-left: 3.5vw;
   float: left;
   vertical-align: top;
-  width: 34.7vw;
+  //width: 34.7vw;
 
-  .artist-details-website {
-    a {
-      max-width: 75%;
-      text-overflow: ellipsis;
-      display: inline-block;
-      overflow: hidden;
-      vertical-align: top;
+  .artist-details{
+
+    &__container{
+
+      @media(max-width: 1024px){
+        font-size: 8px;
+      }
+    }
+
+    &-website{
+      a {
+        max-width: 90%;
+        text-overflow: ellipsis;
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: top;
+      }
+    }
+    &-email{
+      a {
+        max-width: 90%;
+        text-overflow: ellipsis;
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: top;
+      }
     }
   }
 
@@ -969,11 +1015,27 @@ body.headers-1 {
       height: auto;
       margin: 20px 0 0 0;
 
+      @media(max-width: 1024px){
+        margin: auto;
+        width: 90%;
+        max-width: none;
+      }
+
+      @media(max-width: 600px){
+        width: 100%;
+      }
+
+
       img {
         object-fit: cover;
         object-position: top;
         height: 30vh;
         border: none;
+
+        @media(max-width: 600px){
+
+        }
+
       }
     }
 
@@ -994,11 +1056,13 @@ body.headers-1 {
 .artist-search-profile-bio {
   line-height: 20px;
   margin-top: 15px;
-  max-height: 100vh;
-  overflow: auto;
+  //max-height: 100vh;
   padding-right: 4vw;
   transition: max-height 0.15s ease-out;
-  width: 45vw;
+
+  &-container {
+    margin-left: 3.5vw;
+  }
 
   p {
     color: inherit !important;
@@ -1015,14 +1079,14 @@ body.headers-1 {
 
   &.collapsed {
     overflow: hidden;
-    max-height: 172px;
+    max-height: 270px;
     transition: max-height 0.15s ease-in;
   }
 
   &.text4 {
     @media (max-width: $screen-md-max) {
-      font-size: 3.125vw;
-      line-height: 4.7vw;
+      font-size: 18px;
+      line-height: auto;
     }
   }
 
@@ -1037,7 +1101,13 @@ body.headers-1 {
 }
 
 .artist-search-profile-bio-buttons {
-  width: 11vw;
+
+  margin-left: auto;
+
+  &__container{
+    display: flex;
+    padding-right: 3.5vw;
+  }
 
   button {
     margin: 10px 0;
@@ -1067,6 +1137,7 @@ body.headers-1 {
   @include cross-browser-grayscale;
   display: flex;
   width: 27vw;
+  max-width: 300px;
 
   @media (max-width: $screen-sm-max) {
     display: block;
@@ -1127,7 +1198,7 @@ body.headers-1 {
 }
 
 .white-line-right {
-  width: 46vw;
+  width: 24vw;
   padding: 27px 1.5vw;
   border-right: 3px solid white;
 }
@@ -1137,6 +1208,10 @@ body.headers-1 {
   margin-right: 4vw;
   margin-top: 5px;
   text-transform: uppercase;
+
+  @media(max-width: 1024px){
+    margin-bottom: 20px;
+  }
 }
 
 .read-more:hover {
@@ -1483,22 +1558,42 @@ body.headers-1 {
 
   font-size: 1.5vw;
   line-height: 1.5vw;
-  margin-top: 10px;
+  margin-top: .5vw;
 
   @media (max-width: $screen-md-max) {
     transform: none;
     @include text1;
     margin-top: 15px;
   }
+
+  @media(max-width: 1024px){
+    display: flex;
+    margin: unset;
+    line-height: unset;
+    width: 40%;
+  }
+
 }
 
 .show-in-archive {
   align-self: flex-end;
-  margin-bottom: -7px;
+  //margin-bottom: -7px;
   margin-left: 3.8vw;
+  margin: auto 0 auto auto;
+  padding: 0 20px;
+  text-align: right;
+
+  @media(max-width: 1024px){
+    margin: auto 0 auto auto;
+    padding: 0 20px;
+    text-align: right;
+  }
 
   &.text1 {
-    font-size: 0.7vw;
+    //font-size: 0.7vw;
+    @media(max-width: 1024px){
+      font-size: unset;
+    }
   }
 }
 

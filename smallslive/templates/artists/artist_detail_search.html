@@ -3,7 +3,21 @@
 {% load thumbor_tags %}
 
 <div  class="content-centered clearfix" style="width: 100%;">
+  <div class="artist-search-profile-bio-buttons__container hidden-xs hidden-sm hidden-md">
+    <div class="artist-search-profile-bio-buttons flex-row">
+      {% if archived and upcoming or archived and artist.albums %}
+        <button data-toggle-tab-group="search-results" data-toggle-tab-target="archived-shows" id="archive-shows-button" class="white-border-button hover-fade active">Archived Shows</button>
+      {% endif %}
+      {% if upcoming and archived or upcoming and artist.albums %}
+        <button data-toggle-tab-group="search-results" data-toggle-tab-target="upcoming-shows" id="upcoming-shows-button" class="white-border-button hover-fade">Upcoming Shows</button>
+      {% endif %}
+      <button data-toggle-tab-group="search-results" data-toggle-tab-target="smallslive-tracks" id="smallslive-tracks-button" class="white-border-button hover-fade {% if not artist.albums %} hidden {% endif %}">Smallslive Tracks</button>
+    </div>
+    <!-- <a href="#" class="close-button" onclick="window.history.back()"></a> -->
+  </div>
   <div class="artist-search-profile-resume">
+
+    <!--
     <div class="mobile-padding visible-xs visible-sm visible-md">
         <input id="artist-profile-artist-pk" type="hidden" value="{{ artist.pk }}">
         <div class="text1">
@@ -28,44 +42,56 @@
         </div>
         {% if artist.biography %} <span class="read-more text4 text-grey">Read more</span> {% endif %}
     </div>
-    <div class="artist-search-profile-image">
-      {% if artist.photo %}
-          {% include 'partials/search_artist_profile_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
-      {% else %}
-          {% include 'partials/search_artist_profile_picture.html' with photo_url="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" crop_box=artist.photo_crop_box %}
-      {% endif %}
-    </div>
-    <div class="flex-column white-line-right">
-      <div>
-        <div class="musician-title mobile-padding">
-            {{ artist.full_name }}
-        </div>
+    //-->
+
+    <!-- beginning of artist header ( image, name, instrument, # shows, website, email) -->
+    <div class="artist-search-profile__header">
+      <div class="artist-search-profile-image">
+        {% if artist.photo %}
+            {% include 'partials/search_artist_profile_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
+        {% else %}
+            {% include 'partials/search_artist_profile_picture.html' with photo_url="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" crop_box=artist.photo_crop_box %}
+        {% endif %}
       </div>
-      <div class="white-line-bottom thicker visible-xs visible-sm visible-md"></div>
-      <div class="flex-row">
-        <div class="musician-instrument mobile-padding">{{ artist.get_main_instrument_name }}</div>
-        <div class="text1 show-in-archive hidden-xs hidden-sm hidden-md">
-            Total shows in archive: <span class='accent-color'>{{ artist.archive_shows  }}</span>
-        </div>
-      </div>
-      <div class="white-line-bottom medium hidden-xs hidden-xs hidden-sm hidden-md"></div>
-      {% if artist.public_email %}
+      <div class="flex-column white-line-right">
         <div>
-          <p class="text4 text-uppercase hidden-xs hidden-xs hidden-sm hidden-md">Email: <a href="mailto:{{ artist.public_email }}">{{ artist.public_email }}</a></p>
+          <div class="musician-title mobile-padding">
+              {{ artist.full_name }}
+          </div>
         </div>
-      {% endif %}
-      {% if artist.website %}
-        <div class="hidden-xs hidden-sm hidden-md artist-details-website">
-          <p class="text4 text-uppercase">Website: <a href="{{ artist.website }}" rel="noreferrer noopener" target="_blank">{{ artist.website|schemaless_url }}</a></p>
+        <div class="white-line-bottom thicker visible-xs visible-sm visible-md"></div>
+        <div class="flex-row artist-search-profile__subtitle">
+          <div class="musician-instrument mobile-padding">{{ artist.get_main_instrument_name }}</div>
+          <div class="text1 show-in-archive">
+              Total shows in archive: <span class='accent-color'>{{ artist.archive_shows  }}</span>
+          </div>
         </div>
-      {% endif %}
-      <div class="close-button-container visible-xs visible-sm visible-md">
-        <a href="#" class="close-button" onclick="window.history.back()"></a>
+        <div class="white-line-bottom medium hidden-xs hidden-md hidden-sm"></div>
+        <div class="artist-details__container mobile-padding">
+        {% if artist.public_email %}
+          <div class="artist-details-email">
+            <p class="text4 text-uppercase">Email: <a href="mailto:{{ artist.public_email }}">{{ artist.public_email }}</a></p>
+          </div>
+        {% endif %}
+        {% if artist.website %}
+          <div class="artist-details-website">
+            <p class="text4 text-uppercase">Website: <a href="{{ artist.website }}" rel="noreferrer noopener" target="_blank">{{ artist.website|schemaless_url }}</a></p>
+          </div>
+        {% endif %}
+        <!--
+        <div class="close-button-container visible-xs visible-sm visible-md">
+          <a href="#" class="close-button" onclick="window.history.back()"></a>
+        </div>
+        //-->
+      </div>
       </div>
     </div>
+    <!-- end of artist header -->
+
   </div>
 
-  <div class="artist-search-profile-bio-container hidden-xs hidden-xs hidden-sm hidden-md" style="display: inline-flex; vertical-align: top; float: right; margin-right: 3.5vw;">
+  <!-- artist bio -->
+  <div class="artist-search-profile-bio-container">
     <div>
       <div class="artist-search-profile-bio collapsed text4">
         {% if artist.biography %}
@@ -76,21 +102,8 @@
       </div>
       {% if artist.biography %} <span class="read-more text4 text-grey">Read more</span> {% endif %}
     </div>
-
-    <div class="artist-search-profile-bio-buttons flex-column">
-      {% if archived and upcoming or archived and artist.albums %}
-        <button data-toggle-tab-group="search-results" data-toggle-tab-target="archived-shows" id="archive-shows-button" class="white-border-button hover-fade active">Archived Shows</button>
-      {% endif %}
-      {% if upcoming and archived or upcoming and artist.albums %}
-        <button data-toggle-tab-group="search-results" data-toggle-tab-target="upcoming-shows" id="upcoming-shows-button" class="white-border-button hover-fade">Upcoming Shows</button>
-      {% endif %}
-      <button data-toggle-tab-group="search-results" data-toggle-tab-target="smallslive-tracks" id="smallslive-tracks-button" class="white-border-button hover-fade {% if not artist.albums %} hidden {% endif %}">Smallslive Tracks</button>
-    </div>
   </div>
-</div>
 
-<div class="close-button-container hidden-xs hidden-sm hidden-md">
-  <a href="#" class="close-button" onclick="window.history.back()"></a>
 </div>
 
 <div class="tabs artist-tabs">

@@ -106,7 +106,7 @@ class Product(AbstractProduct):
 
     def get_title(self):
         """
-        Return a product's title or it's parent's title if it has no title
+        Return a product's title and/or it's parent's title if it has no title
         """
         title = self.title
         if self.parent_id:
