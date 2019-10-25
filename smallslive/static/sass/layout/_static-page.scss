@@ -195,3 +195,48 @@
 //    margin-top: 0;
 //  }
 //}
+
+
+.static-content {
+
+  img {
+    margin-bottom: 10px;
+    width: 20%;
+
+    &.logo {
+      display: block;
+      margin: 0 auto;
+      margin-bottom: 40px;
+      width: 80%;
+    }
+  }
+
+  p {
+    margin-bottom: 40px;
+  }
+
+  @media(max-width: $screen-md-min) {
+    img {
+      width: 100%;
+
+      &.logo {
+        width: 100%
+      }
+    }
+  }
+}
+
+.big-letter {
+  position: relative;
+  left: -20px;
+  line-height: 0;
+  font-size: 3em;
+  font-weight: 600;
+  top: 20px;
+  transform: none;
+  margin-right: -15px;
+
+  &.closing {
+    left: 0;
+  }
+}

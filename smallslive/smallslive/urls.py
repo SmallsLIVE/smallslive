@@ -94,7 +94,8 @@ urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^institutions/$', 'flatpage', {'url': '/institutions/'}, name='institutions'),
     url(r'^mezzrow/$', 'flatpage', {'url': '/mezzrow/'}, name='mezzrow'),
     url(r'^contact-and-info/$', 'flatpage', {'url': '/contact-and-info/'}, name='contact-and-info'),
-     url(r'^venues-and-location/$', 'flatpage', {'url': '/venues-location/'}, name='venues-location'),
+    url(r'^education/$', 'flatpage', {'url': '/education/'}, name='education'),
+    url(r'^venues-and-location/$', 'flatpage', {'url': '/venues-location/'}, name='venues-location'),
 )
 
 urlpatterns += patterns('',

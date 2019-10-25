@@ -1,4 +1,4 @@
-{% extends "static-page.html" %}
+{% extends "home_new.html" %}
 {% load static from staticfiles %}
 
 {% block contact-us-active %}active{% endblock %}
@@ -6,17 +6,135 @@
 {% block title %}Contact and info{% endblock %}
 
 
-{% block static-content %}
-  <section class="static-content">
-    <h1 class="main-title">Contact <span class="white-text">us</span></h1>
+{% block content %}
+  <div class="main-container pad-content">
+    <div>
+      <div class="flex-row content-centered">
+        <ul class="static-nav-menu">
+          <li class="white-border-button no-border
+                  {% block venues-location-active %}{% endblock %}" id="venues-location">
+            <a tabindex="-1" href="#" style="color: rgb(255, 0, 0);">Venues/Location</a>
+          </li>
 
-    <div class="flex-row">
-      <div class="flatpage-content">{{ flatpage.content }}</div>
-      <div class="flex-column">
-        <iframe class="map-wrapper" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3023.25655190452!2d-74.002738!3d40.73438!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25994686b9ebb%3A0xa994b5b6ffd1279!2sSmalls+Jazz+Club!5e0!3m2!1shr!2shr!4v1422543210059" width="440" height="360" frameborder="0" style="border:0"></iframe>
-        <iframe class="map-wrapper" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1271.1183437095563!2d-74.00291879824935!3d40.734613164225046!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259943f298ccd%3A0x16481e6b05d4fc93!2sMezzrow+Jazz+Club!5e0!3m2!1sen!2shr!4v1445532920977" width="440" height="360" frameborder="0" style="border:0"></iframe>
+          <li tabindex="-1" class="white-border-button no-border
+                  {% block passes-tickets-statement-active %}{% endblock %}" id="passes-tickets">
+            <a tabindex="-1" href="#">Passes/Tickets</a>
+          </li>
+          <li class="white-border-button no-border
+                  {% block hours-polices-active %}{% endblock %}" id="hours-policies">
+            <a tabindex="-1" href="#">Hours/Policies</a>
+          </li>
+          <li class="white-border-button no-border
+                  {% block foundation-active %}{% endblock %}"  id="foundation"><a
+                  tabindex="-1" href="#">Foundation</a>
+          </li>
+          <li class="white-border-button no-border
+                  {% block archive-active %}{% endblock %}" id="archive"><a
+                  tabindex="-1" href="#">Archive</a>
+          </li>
+          <li class="white-border-button no-border
+                  {% block live-stream-active %}{% endblock %}" id="streaming"><a
+                  tabindex="-1" href="#">Live Stream</a>
+          </li>
+          <li class="white-border-button no-border
+                  {% block catalog-active %}{% endblock %}" id="catalog"><a
+                  tabindex="-1" href="#">Catalog</a>
+          </li>
+          <li class="white-border-button no-border
+                  {% block about-us-active %}{% endblock %}" id="about-us">
+            <a tabindex="-1" href="#">About us</a>
+          </li>
+        </ul>
+        <div class="flex-column info-page-container">
+           {% include "flatpages/venues-location.html" %}
+           {% include "flatpages/passes-tickets.html" %}
+           {% include "flatpages/hours-policies.html" %}
+           {% include "flatpages/foundation.html" %}
+           {% include "flatpages/archive.html" %}
+           {% include "flatpages/streaming.html" %}
+           {% include "flatpages/catalog.html" %}
+           {% include "flatpages/about-us.html" %}
+        </div>
       </div>
     </div>
+  </div>
+  <script>
 
-  </section>
-{% endblock static-content %}
+    $(document).ready(function () {
+      var pages = ["venues-location", "passes-tickets", "hours-policies", "foundation", "archive", "streaming", "catalog", "about-us"];
+
+      $(window).scroll(function(){
+
+        for(pageButton of pages){
+          $("#"+pageButton+" a").css('color', 'black')
+        }
+
+        for (page of pages) {
+          var element = document.querySelector('#' + page + '-tab');
+          var position = element.getBoundingClientRect();
+          // checking for partial visibility
+          if(position.top < window.innerHeight && position.bottom >= 0) {
+            $("#"+page+" a").css('color', 'red');
+            return;
+          }
+        }
+
+      });
+
+      $('.white-border-button').click(function(e) {
+        let id = $(this).attr('id');
+
+        $('html, body').animate(
+          {
+            scrollTop: $("#"+id+"-tab").offset().top + 10
+          },
+          500,
+          'linear'
+        );
+      });
+
+      $('.expand').click(e => {
+
+        $(e.target).parent().parent().parent().parent().toggleClass('closed')
+        $(e.target).parent().parent().parent().toggleClass('closed')
+
+        $(e.target).toggleClass('closed')
+      });
+
+      var hash = window.location.hash;
+      var ids = hash.split("#");
+      var filtered = ids.filter(function (el) {
+        return el != "";
+      });
+
+      if (filtered.length == 1) {
+        var id = filtered[0];
+        $("#" + id).click();
+        $("#mobile-" + id).click();
+      }
+
+      function selectMenu(_this) {
+
+        let id = $(_this).attr('id')
+
+        $('html, body').animate(
+            {
+              scrollTop: $("#"+id+"-tab").offset().top + 10
+            },
+            500,
+            'linear'
+        )
+      }
+
+      function switchTab (tabToSwith) {
+        tabs.forEach(tab => {
+
+         tab == tabToSwith ? $('#'+tab).addClass('active') : $('#'+tab).removeClass('active')
+
+        })
+      }
+
+    })
+
+   </script>
+{% endblock content %}

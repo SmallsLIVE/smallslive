@@ -1,0 +1,60 @@
+{% extends "home_new.html" %}
+{% load static from staticfiles %}
+
+{% block contact-us-active %}active{% endblock %}
+
+{% block title %}Education{% endblock %}
+
+
+{% block content %}
+  <div class="main-container pad-content">
+    <div>
+      <div class="flex-row content-centered">
+        <div class="flex-column info-page-container">
+          <article class="static-content">
+            <img class="logo" src="{% static 'image/education/workshop_logo.jpg' %}" alt="Workshop logo">
+            <h2 class="main-title expand" tabindex="0">Education</h2>
+            <p>
+             Education is a key component to the mission of the <span class="smalls-color">SmallsLIVE Foundation</span>.
+              Our audio/video archive is a unique resource for jazz music, documenting the work of nearly 4000 musicians over twelve consecutive years to date.
+              With currently more than 15,000 shows from both <span class="smalls-color">Smalls</span> and <span class="mezzrow-color">Mezzrow</span>,
+              the archive is growing at a rate of 35 new shows added weekly.
+            </p>
+            <p>
+              <span class="big-letter">“</span>The entire New School community is thrilled to be working with the <span class="smalls-color">SmallsLIVE Foundation</span> on this project.
+              The <span class="smalls-color">SmallsLIVE class</span> is an important part of the rethinking of musicology at the School of Jazz & Contemporary Music,
+              where students develop their skills in critical thinking, research, and placing art in an historical and social context
+              through the lens of living musical cultures.<span class="big-letter closing">”</span>
+            </p>
+            <img src="{% static 'image/education/keller_coker.jpg' %}" alt="Keller Colker, Dean of the Jazz & Contemporary Music Dept. at The New School.">
+            <p>
+              <i>Keller Colker, Dean of the Jazz & Contemporary Music Dept. at The New School.</i>
+            </p>
+            <h2 class="main-title expand" tabindex="0">School</h2>
+            <p>
+              The School of Jazz & Contemporary Music at The New School in New York City, under the direction of Keller Coker,
+              has given <span class="smalls-color">SmallsLIVE</span> the unique opportunity to create and teach a course with the
+              SmallsLIVE archive as the centerpiece. Our goal is to familiarize students with current
+              artists and their relation to <span class="smalls-color">Smalls Jazz Club</span> and the current scene.
+            </p>
+            <img src="{% static 'image/education/new_school_class.jpg' %}" alt="New School Class">
+            <h2 class="main-title expand" tabindex="0">Class</h2>
+            <p>
+              This class, titled “SmallsLIVE: Profiles From The Contemporary Jazz Scene”, is already in its second year. 
+              Students use the SmallsLIVE archive to research specific, currently performing; artists associated with Smalls,
+              and get an insight into their musical thought process. 
+              The students work in groups and then present their work to the class through transcriptions, interviews and concert reviews.
+              In many cases, the artists themselves are brought to the class to speak directly with the students and to engage in dialogue.
+              The <span class="smalls-color">SmallsLIVE Foundation</span> subsidizes the expense of creating and operating this class.
+            </p>
+            <img src="{% static 'image/education/new_school_class_2.jpg' %}" alt="New School Class">
+            <p>
+              The <span class="smalls-color">SmallsLIVE Foundation</span> is available to any school music program that is interested in our archive or educational initiative.
+              We are available for school tours and private presentations as well as workshops and lessons. Please email us at education@smallslive.com
+            </p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
