@@ -117,6 +117,32 @@
     </tbody>
   </table>
   <!-- end table -->
+  <!-- hidden donation popup contents. To be copied into the popup  on show-->
+    <div id="donation-confirmation-body" class="hidden">
+      <p class="title2 accent-color title">Artist Sponsorship</p>
+      <p class="text9" style="align-self: normal;">
+        Sponsorships are 100% tax-deductible donations that directly support this artist.
+        You may also choose to receive this album for a partially tax-deductible donation.
+        You are sponsoring <span id="leaders-list">{{ comma_separated_leaders }}</span>.
+      </p>
+      {% if bought_tracks %}
+        <p class="text9{% if not bought_tracks or not total_donation %} hidden{% endif %}" style="align-self: normal;">
+          You have made a contribution of <span id="project-total-donation">${{ total_donation }}</span> to this project.
+        </p>
+        {% if is_catalogue %}
+          <p class="text9" style="align-self: normal;">
+            If you opted to receive a digital recording,
+            it can be found in your <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="accent-color underline" style="">Library</a>
+          </p>
+        {% endif %}
+      {% endif %}
+      <p class="gift-content"></p>
+      <div class="text4 text-centered" style="display: flex; justify-content: center;">
+        <button class="white-border-button cancel-button" style="margin-rightt: 5px;">Cancel</button>
+        <button id="confirmDonationButton" class="white-border-button confirm" style="margin-left: 5px;">Continue</button>
+      </div>
+    </div>
+  <!-- end hidden donation popup contents-->
   <div>
     <div class="album__info__container">
       <div class="album__header__title"><!--album title container (maybe not necessary)-->

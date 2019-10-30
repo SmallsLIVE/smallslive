@@ -281,8 +281,8 @@ class NewMyDownloadsView(LoginRequiredMixin, ListView, PurchasedProductsInfoMixi
         self.get_purchased_products()
 
         context['album_list'] = self.album_list
-        print context['album_list']
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+
         return context
 
 new_downloads = NewMyDownloadsView.as_view()
@@ -298,6 +298,7 @@ class AlbumView(TemplateView):
     context_object_name = 'album_product'
 
     def get_context_data(self, **kwargs):
+
         context = super(AlbumView, self).get_context_data(**kwargs)
 
         context['library'] = True
@@ -305,6 +306,7 @@ class AlbumView(TemplateView):
         context['bought_tracks'] = ast.literal_eval(bought_tracks)
         context['is_full'] = self.request.GET.get('album_type', '')
         album_product = Product.objects.filter(pk=self.request.GET.get('productId', '')).first()
+        context['total_donation'] = self.request.user.get_project_donation_amount(album_product.pk)
         products = Product.objects.filter(parent=album_product, product_class__slug__in=[
             'physical-album',
             'digital-album'

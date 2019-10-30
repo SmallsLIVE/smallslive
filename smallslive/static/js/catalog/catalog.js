@@ -43,6 +43,9 @@ $(document).ready(function () {
 
     $donationConfirmationDialog.modal("show");
 
+    var contents = $("#donation-confirmation-body").html();
+    $donationConfirmationDialog.find('.modal-body').html(contents);
+
   });
 
   $(document).on("click", "#confirmDonationButton", function () {

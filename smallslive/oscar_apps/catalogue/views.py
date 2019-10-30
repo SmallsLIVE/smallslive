@@ -132,7 +132,7 @@ class PurchasedProductsInfoMixin(object):
                         'parent': track.product.album,
                         'bought_tracks': [track.product.pk],
                         'album_type': 'track_album',
-                        'total_donation': current_user.get_project_donation_amount(track.product.album)
+                        'total_donation': current_user.get_project_donation_amount(track.product.album.pk)
                     }
                     self.album_list.append(album_info)
 
@@ -148,6 +148,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         return False
 
     def get_context_data(self, **kwargs):
+
         ctx = super(ProductDetailView, self).get_context_data(**kwargs)
 
         # We need to clear the basket.
@@ -155,7 +156,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         self.request.basket.flush()
 
         # Set the flow type for checkout flow
-        ctx['flow_type'] = "catalog_selection"
+        ctx['flow_type'] = 'catalog_selection'
 
         self.get_purchased_products()
         ctx['reviews'] = self.get_reviews()
@@ -163,6 +164,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         ctx['artist_with_media'] = Artist.objects.exclude(artistproduct=None)
         ctx['has_active_alert'] = self.get_alert_status()
         ctx['is_catalogue'] = True
+        total_donation = 0
         if self.request.user.is_authenticated():
             try:
                 customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
@@ -178,13 +180,16 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
                 ctx['active_card'] = customer_detail.active_card
 
         if self.object.get_product_class().slug == 'album':
-            album_product = Product.objects.filter(pk=self.object.pk ).first()
+            album_product = Product.objects.filter(pk=self.object.pk).first()
             ctx['album_product'] = album_product
             ctx['comma_separated_leaders'] = album_product.get_leader_strings()
+            if self.request.user.is_authenticated():
+                total_donation = self.request.user.get_project_donation_amount(album_product.pk)
+            ctx['total_donation'] = total_donation
             track_album = next((item for item in self.album_list if item['parent'] == self.object), None)
             ctx['bought_tracks'] = []
             if track_album:
-                ctx['bought_tracks'] = track_album["bought_tracks"]
+                ctx['bought_tracks'] = track_album['bought_tracks']
             ctx['mp3_available'] = album_product.tracks.filter(stockrecords__is_hd=False).count() > 0
             variant = Product.objects.filter(parent=album_product, product_class__slug__in=[
                 'physical-album',
@@ -196,8 +201,8 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
                     if self.object.pk == album["parent"].pk:
                         ctx['is_full'] = "full_album"
             ctx['child_product'] = variant
+
         ctx['can_preview'] = self.can_preview(album_product.get_tracks())
-        print "The preview status is {}".format(ctx['can_preview'])
 
         # Clean basket
         # self.request.basket.flush()
@@ -205,7 +210,6 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         ctx['payment_info_url'] = reverse('payment_info')
         ctx['donation_preview_url'] = reverse('donation_preview')
         ctx['product_id'] = self.object.pk
-
         ctx['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
 
         # TODO: create mixin for gifts so it can be used in become a supporter too.

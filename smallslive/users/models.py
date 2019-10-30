@@ -216,7 +216,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     def get_project_donation_amount(self, product_id):
 
-        qs = self.get_donations().filter(product_id=product_id)
+        qs = self.get_donations(this_year=False).filter(product_id=product_id)
         amount_data = qs.values('user_id').annotate(total_donations=Sum('amount'))
         if amount_data:
             return amount_data[0]['total_donations']
