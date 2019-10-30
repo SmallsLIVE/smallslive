@@ -3,7 +3,7 @@ $mobile-filter-button-width: 40vw;
 .load-more-artist-button {
   display: none;
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     display: flex;
     margin-bottom: 30px;
     width: 33vw;
@@ -21,7 +21,7 @@ body.headers-1 {
 .musicians-results.white-line-bottom {
   ~ .artist-search-profile-container[style*="display: block"].pad-content {
     ~ .search-container.pad-content {
-      @media (max-width: $screen-md-max) {
+      @media (max-width: $screen-sm-max) {
         padding-top: 30px;
       }
     }
@@ -31,14 +31,14 @@ body.headers-1 {
 .home.headers-3 {
   &.admin-header {
     .search-container.pad-content {
-      @media (max-width: $screen-md-max) {
+      @media (max-width: $screen-sm-max) {
         padding-top: 120px;
       }
     }
   }
 
   .search-container.pad-content {
-    @media (max-width: $screen-md-max) {
+    @media (max-width: $screen-sm-max) {
       padding-top: 40px;
     }
 
@@ -113,7 +113,7 @@ body.headers-1 {
     height: auto;
   }
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     display: flex;
     flex-direction: column;
     visibility: visible;
@@ -185,7 +185,7 @@ body.headers-1 {
   display: none;
   background-color: $background-grey;
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     width: 100%;
     display: flex;
     flex: 1;
@@ -227,7 +227,7 @@ body.headers-1 {
 .search-tabs {
   display: none;
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     display: flex;
   }
 
@@ -238,7 +238,7 @@ body.headers-1 {
 
 .search-container {
   #showsArchivedContent {
-    @media (max-width: $screen-md-max) {
+    @media (max-width: $screen-sm-max) {
       margin-top: 0;
       min-height: 500px;
     }
@@ -248,7 +248,7 @@ body.headers-1 {
     position: relative;
     max-width: 100vw;
 
-    @media (max-width: $screen-md-max) {
+    @media (max-width: $screen-sm-max) {
       overflow-y: hidden;
     }
   }
@@ -258,7 +258,7 @@ body.headers-1 {
   }
 
   //Mobile
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
 
     .search-tab-content {
       &:not(.active) {
@@ -329,7 +329,7 @@ body.headers-1 {
   margin: 0 15%;
   padding: 30px;
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     flex-direction: row;
     flex-wrap: wrap;
     margin: 0;
@@ -355,7 +355,7 @@ body.headers-1 {
     width: 130px;
     margin: 5px;
 
-    @media (max-width: $screen-md-max) {
+    @media (max-width: $screen-sm-max) {
       font-size: 2em;
       margin: 0 15px;
       width: 150px;
@@ -396,13 +396,13 @@ body.headers-1 {
       left: 170px !important;
     }
 
-    @media (max-width: 1366px) and (min-width: 1024px) {
+    @media (max-width: 1366px) and (min-width: $screen-sm-max) {
       left: 11.5vw !important;
     }
   }
 
   .datepicker-btn {
-    @media (min-width: $screen-md-max) {
+    @media (min-width: $screen-sm-max) {
       display: none;
     }
   }
@@ -410,7 +410,7 @@ body.headers-1 {
   .white-border-select {
     &:not(.no-arrow) {
       .select-selected {
-        @media (max-width: $screen-md-max) {
+        @media (max-width: $screen-sm-max) {
           padding: 0.5em;
           padding-left: 5vw;
           padding-right: 6.5vw;
@@ -463,13 +463,13 @@ body.headers-1 {
     }
   }
 
-  @media (max-width: 1366px) and (min-width: 1024px) {
+  @media (max-width: 1366px) and (min-width: $screen-sm-max) {
     > .white-border-select {
       width: 14vw;
     }
   }
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     margin: 0 auto;
     width: 100%;
     text-align: center;
@@ -485,7 +485,7 @@ body.headers-1 {
   width: auto;
   top: 140px;
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     display: none;
   }
 }
@@ -511,7 +511,7 @@ body.headers-1 {
     }
   }
 
-  @media (max-width: 1023px) {
+  @media (max-width: $screen-sm-max) {
     padding-top: 23px;
   }
 }
@@ -592,7 +592,7 @@ body.headers-1 {
   margin-left: 100px;
   margin-top: -20px;
 
-  @media(max-width: $screen-md-max) {
+  @media(max-width: $screen-sm-max) {
     margin-left: 0;
     width: 100%;
   }
@@ -626,7 +626,7 @@ body.headers-1 {
   .event-filter-select {
 
     .select-selected {
-      @media (max-width: $screen-md-max) {
+      @media (max-width: $screen-sm-max) {
         padding-left: 5vw;
         padding-right: 5vw;
       }
@@ -652,7 +652,7 @@ body.headers-1 {
 }
 
 .search-artist-box-container {
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     flex-direction: column;
     justify-content: center;
     width: 95%;
@@ -700,7 +700,7 @@ body.headers-1 {
     }
   }
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     #a-z-search .scroll-right,
     #a-z-search .scroll-left {
       width: 10vw;
@@ -745,7 +745,7 @@ body.headers-1 {
   text-align: center;
   white-space: nowrap;
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     @include caret;
     margin: 0 auto;
   }
@@ -765,7 +765,7 @@ body.headers-1 {
   margin-bottom: 0px;
 
   &.archive {
-    @media (max-width: 1024px) {
+    @media (max-width: $screen-sm-max) {
       display: none;
     }
   }
@@ -801,7 +801,7 @@ body.headers-1 {
     padding: 6px 0;
   }
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     left: 0;
     top: 108px;
     border-radius: 0;
@@ -907,7 +907,7 @@ body.headers-1 {
 }
 
 .mobile-padding {
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     padding: 0 20px;
     width: 100%;
   }
@@ -922,7 +922,7 @@ body.headers-1 {
     display: flex;
     margin: 0px 20px 15px 0;
 
-    @media(max-width: 1024px){
+    @media(max-width: $screen-sm-max){
       margin-right: 0;
     }
 
@@ -939,7 +939,7 @@ body.headers-1 {
 
 .artist-search-profile-resume {
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     //margin-bottom: 20px;
     margin-left: 0;
     padding: 0 20px;
@@ -976,7 +976,7 @@ body.headers-1 {
 
     &__container{
 
-      @media(max-width: 1024px){
+      @media(max-width: $screen-sm-max){
         font-size: 8px;
       }
     }
@@ -1001,7 +1001,7 @@ body.headers-1 {
     }
   }
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     font-size: 1.2em;
     width: auto;
     flex-direction: column-reverse;
@@ -1015,7 +1015,7 @@ body.headers-1 {
       height: auto;
       margin: 20px 0 0 0;
 
-      @media(max-width: 1024px){
+      @media(max-width: $screen-sm-max){
         margin: auto;
         width: 90%;
         max-width: none;
@@ -1084,13 +1084,13 @@ body.headers-1 {
   }
 
   &.text4 {
-    @media (max-width: $screen-md-max) {
+    @media (max-width: $screen-sm-max) {
       font-size: 18px;
       line-height: auto;
     }
   }
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     width: 100%;
     height: auto;
 
@@ -1156,7 +1156,7 @@ body.headers-1 {
       text-align: center;
     }
 
-    @media (min-width: $screen-md-max) {
+    @media (min-width: $screen-sm-max) {
       .title1 {
         font-size: 5vw;
         position: relative;
@@ -1209,7 +1209,7 @@ body.headers-1 {
   margin-top: 5px;
   text-transform: uppercase;
 
-  @media(max-width: 1024px){
+  @media(max-width: $screen-sm-max){
     margin-bottom: 20px;
   }
 }
@@ -1237,7 +1237,7 @@ body.headers-1 {
     }
   }
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     display: none;
   }
 
@@ -1259,7 +1259,7 @@ body.headers-1 {
     top: 76px;
     width: 20vw;
 
-    @media (max-width: $screen-md-max) {
+    @media (max-width: $screen-sm-max) {
       display: none;
     }
   }
@@ -1269,7 +1269,7 @@ body.headers-1 {
   width: 100%;
   text-align: center;
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     display: none;
   }
 }
@@ -1299,7 +1299,7 @@ body.headers-1 {
   position: relative;
   padding-left: $content-left-padding;
 
-  @media ($screen-md-max) {
+  @media ($screen-sm-max) {
     padding-left: 0;
   }
 
@@ -1331,7 +1331,7 @@ body.headers-1 {
         }
       }
 
-      @media (min-width: 1024px) and (max-width: 1365px) {
+      @media (min-width: $screen-sm-max) and (max-width: 1365px) {
         height: 29vw;
         width: 31vw;
 
@@ -1348,7 +1348,7 @@ body.headers-1 {
   margin: 3px;
   flex: 0 1 calc(100% * (1 / 8) - 6px);
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     margin: 3px;
     flex: 0 1 calc(100% * (1 / 6) - 6px);
   }
@@ -1395,7 +1395,7 @@ body.headers-1 {
   }
 
   &.white-border-button {
-    @media (max-width: $screen-md-max) {
+    @media (max-width: $screen-sm-max) {
       width: $mobile-filter-button-width;
       margin-left: 5px;
       padding: 0.5em;
@@ -1505,10 +1505,17 @@ body.headers-1 {
 
   .datepicker-reset {
     bottom: 10px;
+
+    @media(min-width: $screen-sm-max) and (max-width: 1024px) {
+      bottom: 0;
+      font-size: 13px;
+    }
+
     position: absolute;
-    left: calc(50% - 20px);
+    text-align: center;
     text-decoration: underline;
     cursor: pointer;
+    width: 100%;
   }
 
   .white-border-button {
@@ -1548,7 +1555,7 @@ body.headers-1 {
   line-height: 2.7vw;
   padding-bottom: 3px;
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     @include title1;
   }
 }
@@ -1560,13 +1567,13 @@ body.headers-1 {
   line-height: 1.5vw;
   margin-top: .5vw;
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     transform: none;
     @include text1;
     margin-top: 15px;
   }
 
-  @media(max-width: 1024px){
+  @media(max-width: $screen-sm-max){
     display: flex;
     margin: unset;
     line-height: unset;
@@ -1583,7 +1590,7 @@ body.headers-1 {
   padding: 0 20px;
   text-align: right;
 
-  @media(max-width: 1024px){
+  @media(max-width: $screen-sm-max){
     margin: auto 0 auto auto;
     padding: 0 20px;
     text-align: right;
@@ -1591,7 +1598,7 @@ body.headers-1 {
 
   &.text1 {
     //font-size: 0.7vw;
-    @media(max-width: 1024px){
+    @media(max-width: $screen-sm-max){
       font-size: unset;
     }
   }
@@ -1607,11 +1614,11 @@ body.headers-1 {
     top: 20px !important;
     left: 0 !important;
 
-    @media (max-width: 1366px) and (min-width: 1024px) {
+    @media (max-width: 1366px) and (min-width: $screen-sm-max) {
       left: 20px !important;
     }
 
-    @media (max-width: 1023px) {
+    @media (max-width: $screen-sm-max) {
       top: 0 !important;
     }
 
@@ -1669,7 +1676,7 @@ body.headers-1 {
       left: 0px !important;
       width: 80% !important;
 
-      @media (max-width: 1366px) and (min-width: 1024px) {
+      @media (max-width: 1366px) and (min-width: $screen-sm-max) {
         left: 0 !important;
       }
 
@@ -1742,7 +1749,7 @@ body.headers-1 {
       width: 20%;
       margin-right: 5%;
     }
-    @media (max-width: 960px) {
+    @media (max-width: $screen-sm-max) {
       width: 28%;
       margin-right: 5%;
     }
@@ -1785,14 +1792,14 @@ body.headers-1 {
     }
   }
 }
-@media (max-width: $screen-md-max) {
+@media (max-width: $screen-sm-max) {
   .calendar-filters .select-selected {
     height: 8vw;
     font-size: 12px;
   }
 }
 
-@media (max-width: $screen-md-max) {
+@media (max-width: $screen-sm-max) {
   .refine {
     display: block;
     margin-right: 20px;
@@ -1824,7 +1831,7 @@ body.headers-1 {
         .datepicker-btn {
           width: 40vw;
 
-          @media (max-width: $screen-md-max) {
+          @media (max-width: $screen-sm-max) {
             margin-left: 10.8vw;
           }
         }
@@ -2022,7 +2029,7 @@ body.headers-1 {
 }
 
 body.home.admin-header {
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     .search-bar-autocomplete-container {
       top: 162px;
     }
@@ -2037,7 +2044,7 @@ body.home.admin-header {
 }
 
 #showsUpcomingContent {
-  @media (max-width: 1023px) {
+  @media (max-width: $screen-sm-max) {
     .event-info {
       font-size: 2.5vw;
       width: 71%;
@@ -2068,13 +2075,13 @@ body.home.admin-header {
   .extend-date {
     display: none;
 
-    @media (max-width: 1023px) {
+    @media (max-width: $screen-sm-max) {
       display: inline-block;
     }
   }
 
   .event-card-secondary .event-dates {
-    @media (max-width: 1023px) {
+    @media (max-width: $screen-sm-max) {
       display: none;
     }
   }
@@ -2108,7 +2115,7 @@ body.home.admin-header {
     margin: 25px 0;
   }
 
-  @media (max-width: 1023px) {
+  @media (max-width: $screen-sm-max) {
     .new-calendar {
     }
   }
@@ -2128,7 +2135,7 @@ body.home.admin-header {
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: $screen-sm-max) {
   .new-archive {
     .archive-datepicker {
       &.fixed {
@@ -2157,7 +2164,7 @@ body.home.admin-header {
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: $screen-sm-max) {
   .new-archive {
     border-bottom: 5px solid white;
     justify-content: space-evenly;

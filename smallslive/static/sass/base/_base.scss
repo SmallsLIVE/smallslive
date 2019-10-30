@@ -15,7 +15,7 @@ html::-webkit-scrollbar-thumb {
 
 body {
   &.admin-header {
-    @media (max-width: $screen-xs-max) {
+    @media (max-width: 960px) {
       .pad-content {
         padding-top: 40px;
       }

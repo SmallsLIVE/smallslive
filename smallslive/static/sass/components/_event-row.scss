@@ -164,15 +164,11 @@ $event-row-padding: 3.5vw;
         height: $regular-card-width-large;
       }
 
-      @media (max-width: 1365px) and (min-width: 1024px) {
+      @media (max-width: 1365px) and (min-width: 960px) {
         height: $regular-card-width-tablet;
       }
 
-      @media (max-width: 1023px) and (min-width: 961px) {
-        height: $regular-card-width-tablet;
-      }
-
-      @media (max-width: $screen-sm-max) {
+      @media (max-width: 960px) {
         display: none;
       }
     }
@@ -811,7 +807,7 @@ $event-row-padding: 3.5vw;
   }
 }
 
-@media (max-width: 960px) {
+@media (max-width: $screen-sm-max) {
   .event-display {
     position: relative;
   }
@@ -838,7 +834,7 @@ $event-row-padding: 3.5vw;
     float: left;
     vertical-align: top;
 
-    @media (max-width: 1024px) {
+    @media (max-width: $screen-sm-max) {
       margin-left: 1vw;
       margin-right: 1vw;
       margin-bottom: 1vw;
@@ -847,7 +843,7 @@ $event-row-padding: 3.5vw;
 }
 
 .wrapped-events {
-  @media (max-width: 1024px) {
+  @media (max-width: $screen-sm-max) {
     clear: both;
     display: flex;
     flex-direction: row;

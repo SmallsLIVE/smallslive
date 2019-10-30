@@ -7,6 +7,11 @@
     }
   }
 
+  display: block;
+  @media(max-width: $screen-sm-max) {
+    display: none;
+  }
+
   .section-title {
     margin-left: 10px;
     margin-bottom: 0;
@@ -45,7 +50,7 @@
   }
 }
 
-@media (max-width: $screen-md-max) {
+@media (max-width: $screen-sm-max) {
   .navigation-bars {
     width: 100%;
     position: fixed;
@@ -64,6 +69,10 @@
   height: $mobile-bar-height;
   &.mobile-artist-header{
     position: absolute;
+  }
+  display: none;
+  @media(max-width: $screen-sm-max) {
+    display: block;
   }
   @media(max-width: $screen-sm-max) {
     height: $mobile-bar-height;

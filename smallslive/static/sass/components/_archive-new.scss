@@ -390,7 +390,7 @@
           height: 1.2vw;
         }
 
-        @media(min-width: 1024px) and (max-width: 1270px)  {
+        @media(min-width: $screen-sm-max) and (max-width: 1270px)  {
           height: 19px;
         }
 
@@ -403,7 +403,7 @@
             padding-bottom: 0;
           }
 
-          @media(min-width: 1024px) and (max-width: 1270px)  {
+          @media(min-width: $screen-sm-max) and (max-width: 1270px)  {
             padding-top: 0;
             padding-bottom: 0;
           }
@@ -435,7 +435,7 @@
   padding-left: 5vw;
   padding-right: 5vw;
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-max) {
     display: flex;
   }
 }
