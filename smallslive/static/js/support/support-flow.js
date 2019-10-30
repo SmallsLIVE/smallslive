@@ -908,6 +908,36 @@ $(document).ready(function() {
     });
   }
 
+  function processPayPalCreditCardPayment() {
+    var $form = $mainContainer.find("#payment-form");
+
+    $form.append(
+      $('<input type="hidden" name="amount" />').val(selectedData.amount)
+    );
+
+    // Bankcard form has different input for year
+    var expiryYear = $('#expiry-year-placeholder').val();
+    expiryYear = "20" + expiryYear;
+    $('#expiry-year').val(expiryYear);
+
+    var $form = $('#payment-form');
+
+    // Fix single digit
+    if ($('#expiry-month').val() < 10 && !$('#expiry-month').val().startsWith('0')) {
+      $('#expiry-month').val('0' + $('#expiry-month').val());
+    }
+
+    $.ajax({
+      type: "POST",
+      url: $form.attr("action"),
+      data: $form.serialize(),
+      success: function(data) {
+        window.location = data.location;
+      },
+      error: function() {}
+    });
+  }
+
   function processPaymentInfoStep() {
     var method = $mainContainer.find("#payment-method").val();
     if (method == "credit-card") {
@@ -966,6 +996,8 @@ $(document).ready(function() {
           .data("payment-info-complete-url"),
         completeSubpage
       );
+    } else if (method == "paypal-credit-card") {
+      processPayPalCreditCardPayment();
     }
   }
 

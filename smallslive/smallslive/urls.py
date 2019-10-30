@@ -86,6 +86,7 @@ urlpatterns = patterns('',
     url(r'^$', 'events.views.homepage', name="home"),
     url(r'^old/$', 'events.views.old_home', name="old_home"),
     url(r'^styles/$', 'events.views.styleguide', name="styles"),
+    url(r'^donate/$', RedirectView.as_view(url=reverse_lazy('donate'), permanent=True)),
 )
 
 urlpatterns += patterns('django.contrib.flatpages.views',

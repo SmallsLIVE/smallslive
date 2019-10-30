@@ -23,15 +23,17 @@
             You are sponsoring {{ comma_separated_leaders }}.
           </p>
           {% if bought_tracks %}
-          <p class="text9" style="align-self: normal;">
-            You have made a contribution of $xxxx to this project.
-          </p>
-          {% if is_catalogue %}
-          <p class="text9" style="align-self: normal;">
-            If you opted to recieve a digital recording,
-            it can be found in your <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="accent-color underline" style="">Library</a>
-          </p>
-          {% endif %}
+            {% if total_donation %}
+              <p class="text9" style="align-self: normal;">
+                You have made a contribution of ${{ total_donation }} to this project.
+              </p>
+            {% endif %}
+            {% if is_catalogue %}
+              <p class="text9" style="align-self: normal;">
+                If you opted to receive a digital recording,
+                it can be found in your <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="accent-color underline" style="">Library</a>
+              </p>
+            {% endif %}
           {% endif %}
           <p class="gift-content"></p>
         <div class="text4 text-centered" style="display: flex; justify-content: center;">

@@ -214,6 +214,15 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         else:
             return 0
 
+    def get_project_donation_amount(self, product_id):
+
+        qs = self.get_donations().filter(product_id=product_id)
+        amount_data = qs.values('user_id').annotate(total_donations=Sum('amount'))
+        if amount_data:
+            return amount_data[0]['total_donations']
+        else:
+            return 0
+
     @cached_property
     def has_institutional_subscription(self):
         return self.institution is not None

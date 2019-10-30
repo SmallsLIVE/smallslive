@@ -1,0 +1,108 @@
+{% load static from staticfiles %}
+{% load currency_filters %}
+
+<div class="payment-main-container">
+  <form id="payment-form" method="post" action="{% url 'become_supporter' %}">
+    {% if error %}
+      <section class="store-error container">
+        <span class="store-error__message">{{ error|safe }}</span>
+      </section>
+    {% endif %}
+    <section class="container">
+      <div class="section-title section-title-no-padded">
+        <div tabindex="0" class="title1 center">Payment information</div>
+      </div>
+      <div id="select-payment-row" class="row" style="margin-bottom: 20px;">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+          <div class="button-row justify-content-center button-row-margin">
+            {% if bankcard_form.can_use_existing %}
+              <div class="store__form__selection__option">
+              <button class="payment-method-toggle active" data-id="existing-paypal-credit-card">Use existing credit card</button>
+              </div>
+            {% endif %}
+            <div class="store__form__selection__option">
+            <button class="payment-method-toggle active" data-id="paypal-credit-card">Pay with credit card</button>
+            </div>
+            <div class="store__form__selection__option">
+            <button class="payment-method-toggle" data-id="paypal" >Pay PayPal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" name="payment_method" id="payment-method" value="{% if bankcard_form.payment_method.value == 'credit-card' %}existing-paypal-credit-card{%  else %}paypal-credit-card{% endif %}">
+      <div class="store__form__group clearfix row payment-method-form hidden" id="existing-credit-card-form">
+        <p tabindex="0">Pay with existing {{ user.customer.card_kind }} credit card ending in {{ user.customer.card_last_4 }}</p>
+      </div>
+      <div class="store__form__group clearfix row payment-method-form hidden" id="paypal-form">
+        <p class="text9">You will be redirected to PayPal to complete your transaction</p>
+      </div>
+      <div class="row">
+        <div class="store__form__group clearfix payment-method-form" id="credit-card-form">
+          <div class="col-xs-12 col-md-4 col-md-offset-4">
+            <div class="signup__payment__card__info">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-xs-6">
+                  <input type="text" class="store__form__input"
+                        id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*"
+                        data-stripe="number"
+                        autocomplete="off"
+                        name="number" {% if form.number.value %}value="{{ bankcard_form.number.value }}"{% endif %}
+                        placeholder="Credit Card Number">
+                  {% for error in bankcard_form.number.errors %}
+                      <span class="store__form__field-error">{{ error }}</span>
+                  {% endfor %}
+                </div>
+
+                <div class="col-xs-3">
+                  <input type="text" class="store__form__input"
+                        data-stripe="exp-month"
+                        id="expiry-month" placeholder="MM" size="2" pattern="\d*"
+                        autocomplete="off" name="expiry_month_0" {% if form.exp_month.value %}value="{{ bankcard_form.expiry_month.value }}"{% endif %}
+                        placeholder="Valid thru">
+                  {% for error in bankcard_form.start_month.errors %}
+                  <span class="store__form__field-error">{{ error }}</span>
+                {% endfor %}
+                </div>
+                  <div class="col-xs-3">
+                      <input id="expiry-year-placeholder" type="text" class="store__form__input"
+                            placeholder="YY" size="2"
+                            pattern="\d*" autocomplete="off" {% if bankcard_form.exp_year.value %}value="{{ bankcard_form.expiry_year.value }}"{% endif %}>
+                      <input type="hidden" id="expiry-year" name="expiry_month_1" {% if bankcard_form.exp_year.value %}value="{{ bankcard_form.expiry_year.value }}"{% endif %}>
+                      {% for error in bankcard_form.expiry_month.errors %}
+                    <span class="store__form__field-error">{{ error }}</span>
+                {% endfor %}
+                  </div>
+
+              </div>
+              <div class="row">
+                <div class="col-xs-9">
+                  <input type="text" class="store__form__input"
+                        id="name-on-card"
+                        placeholder="Name on card"
+                        data-stripe="name"
+                        autocomplete="off"
+                        name="name" {% if form.name.value %}value="{{ bankcard_form.name.value }}"{% endif %}>
+                </div>
+                <div class="col-xs-3">
+                  <input type="text" class="store__form__input"
+                        id="cvc" placeholder="xxx" size="4"
+                        data-stripe="cvc"
+                        pattern="\d*" autocomplete="off"
+                        name="ccv" {% if form.cvc.value %}value="{{ bankcard_form.ccv.value }}"{% endif %}>
+                  {% for error in bankcard_form.ccv.errors %}
+                  <span class="store__form__field-error">{{ error }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="payment-errors"></div>
+            </div>
+            <div class="card-wrapper"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </form>
+</div>
+
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>

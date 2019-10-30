@@ -84,7 +84,8 @@ class PurchasedProductsInfoMixin(object):
             CD and HD gives access to all Tracks.
 
         """
-        if not self.request.user.is_authenticated():
+        current_user = self.request.user
+        if not current_user.is_authenticated():
             self.album_list = []
         else:
             catalogue_access = UserCatalogue.objects.filter(user=self.request.user).first()
@@ -131,6 +132,7 @@ class PurchasedProductsInfoMixin(object):
                         'parent': track.product.album,
                         'bought_tracks': [track.product.pk],
                         'album_type': 'track_album',
+                        'total_donation': current_user.get_project_donation_amount(track.product.album)
                     }
                     self.album_list.append(album_info)
 

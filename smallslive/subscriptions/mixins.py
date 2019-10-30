@@ -1,5 +1,6 @@
 from decimal import *
 import paypalrestsdk
+from paypal.payflow import facade
 import stripe
 from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
@@ -113,7 +114,6 @@ class PayPalMixin(object):
             raise UnableToTakePayment(payment.error)
 
         try:
-
             payment_execute_url = self.request.build_absolute_uri(
                 reverse('supporter_paypal_execute'))
             payment_cancel_url = self.request.build_absolute_uri(
@@ -132,6 +132,15 @@ class PayPalMixin(object):
         except RedirectRequiredAjax as e:
             print 'JsonResponse ....'
             return JsonResponse({'payment_url': e.url})
+
+    def handle_paypal_credit_card_payment(self):
+
+        try:
+            facade.sale(1, self.amount, self.bankcard)
+        except Exception, e:
+            ignore_error = getattr(settings, 'IGNORE_BANKCARD_PAYMENT_ERRORS', False)
+            if not ignore_error:
+                raise e
 
     def execute_payment(self):
         payment_id = self.request.GET.get('paymentId')

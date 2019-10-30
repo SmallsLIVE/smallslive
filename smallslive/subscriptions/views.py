@@ -18,13 +18,15 @@ from oscar_apps.catalogue.models import Product
 from oscar_apps.checkout.forms import PaymentForm, BillingAddressForm
 from oscar_apps.partner.strategy import Selector
 from oscar.apps.payment.models import SourceType, Source
+from oscar.core.loading import get_class
 from events.models import Event
 from users.models import SmallsUser
-from users.utils import charge, one_time_donation, \
-    subscribe_to_plan, update_active_card
 from subscriptions.models import Donation
 from .forms import PlanForm, ReactivateSubscriptionForm
 from .mixins import PayPalMixin, StripeMixin
+
+
+BankcardForm = get_class('payment.forms', 'BankcardForm')
 
 
 class PaymentInfoView(TemplateView):
@@ -35,19 +37,41 @@ class PaymentInfoView(TemplateView):
 
     def get_template_names(self):
         if self.request.is_ajax():
-            template_name = 'subscriptions/supporter_step_donation_payment_info.html'
+            if self.request.user.is_authenticated():
+                template_name = 'subscriptions/supporter_step_donation_payment_info.html'
+            else:
+                template_name = 'subscriptions/supporter_step_anonymous_donation_payment_info.html'
         else:
             pass
         return [template_name]
 
-    def get_context_data(self, **kwargs):
-        context = super(PaymentInfoView, self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+    def get_authenticated_context(self):
+        context = {
+            'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY
+        }
 
         billing_address_form = BillingAddressForm(None, self.request.user,
                                                   initial=self.get_billing_initial())
         context['billing_address_form'] = billing_address_form
         context['payment_form'] = PaymentForm(self.request.user)
+
+        return context
+
+    def get_anonymous_context(self):
+
+        context = {
+            'bankard_form': BankcardForm()
+        }
+
+        return context
+
+    def get_context_data(self, **kwargs):
+        context = super(PaymentInfoView, self).get_context_data(**kwargs)
+
+        if self.request.user.is_authenticated():
+            context.update(self.get_authenticated_context())
+        else:
+            context.update(self.get_anonymous_context())
 
         return context
 
@@ -172,6 +196,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, ContributeFlowView):
         self.product_title = ''
         self.stripe_token = None
         self.tickets_type = None
+        self.paypal_credit_card = None
         super(BecomeSupporterView, self).__init__(*args, **kwargs)
 
     def get_product_context(self):
@@ -240,6 +265,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, ContributeFlowView):
         self.existing_cc = payment_method == 'existing-credit-card'
         self.bitcoin = payment_method == 'bitcoin'
         self.check = payment_method == 'check'
+        self.paypal_credit_card = payment_method == 'paypal-credit-card'
 
     def get_context_data(self, **kwargs):
 
@@ -254,35 +280,39 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, ContributeFlowView):
         context.update(product_context)
         event_context = self.get_event_context()
         context.update(event_context)
+
         if not self.request.user.is_anonymous():
             context['can_free_donate'] = self.request.user.get_donation_amount >= 100
         else:
             context['can_free_donate'] = False
 
-        # Whatever the flow type is, it needs to be become a supporter if the user
-        # is not a supporter yet. They can't donate or get stuff from the Catalog.
-        if not self.request.user.can_watch_video:
-            context['flow_type'] = 'become_supporter'
+        if not self.request.user.is_authenticated():
+            context['flow_type'] = 'donate'
+        else:
+            # Whatever the flow type is, it needs to be become a supporter if the user
+            # is not a supporter yet. They can't donate or get stuff from the Catalog.
+            if not self.request.user.can_watch_video:
+                context['flow_type'] = 'become_supporter'
 
-        # We need to clear the basket in case the user has anything in there.
-        self.request.basket.flush()
+            # We need to clear the basket in case the user has anything in there.
+            self.request.basket.flush()
 
-        context['gifts'] = []
-        context['costs'] = []
-        selector = Selector()
-        strategy = selector.strategy(
-            request=self.request, user=self.request.user)
-        for product in Product.objects.filter(product_class__slug='gift'):
-            context['gifts'].append(product)
-            if product.variants.count():
-                context['costs'].append(
-                    product.variants.first().stockrecords.first().cost_price)
-            else:
-                context['costs'].append(
-                    product.stockrecords.first().cost_price)
+            context['gifts'] = []
+            context['costs'] = []
+            selector = Selector()
+            strategy = selector.strategy(
+                request=self.request, user=self.request.user)
+            for product in Product.objects.filter(product_class__slug='gift'):
+                context['gifts'].append(product)
+                if product.variants.count():
+                    context['costs'].append(
+                        product.variants.first().stockrecords.first().cost_price)
+                else:
+                    context['costs'].append(
+                        product.stockrecords.first().cost_price)
 
-        context['gifts'].sort(
-            key=lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
+            context['gifts'].sort(
+                key=lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
 
         return context
 
@@ -375,8 +405,25 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, ContributeFlowView):
             return _ajax_response(
                 self.request, redirect(url)
             )
+        elif self.paypal_credit_card:
+            bankcard_form = BankcardForm(self.request.POST)
+            if bankcard_form.is_valid():
+                self.bankcard = bankcard_form.bankcard
+                self.handle_paypal_credit_card_payment()
+
+                url = reverse('become_supporter_complete') + \
+                      "?flow_type=" + self.flow_type
+
+                return _ajax_response(
+                    self.request, redirect(url)
+                )
+            else:
+
+                return JsonResponse({'errors': bankcard_form.errors})
         else:
-            return self.handle_paypal_payment()
+            self.handle_paypal_payment(
+                'USD', [],
+                donation=True)
 
 
 become_supporter = BecomeSupporterView.as_view()
@@ -463,58 +510,16 @@ class DonateView(BecomeSupporterView):
 
     def get_context_data(self, **kwargs):
         context = super(DonateView, self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        context['form_action'] = reverse('donate')
-        context['redirect_url'] = self.request.META.get('HTTP_REFERER')
-        context['flow_type'] = "donate"
+
+        referer = self.request.META.get('HTTP_REFERER')
+        if referer and 'donate' in referer:
+            context['flow_type'] = 'direct_donation'
+        else:
+            context['flow_type'] = 'donate'
 
         return context
-
-    def post(self, request, *args, **kwargs):
-
-        redirect_url = self.request.POST.get('redirect_url')
-
-        paypal_payment_id = self.request.POST.get('paypal_payment_id')
-        if paypal_payment_id:
-            pass
-        else:
-            stripe_token = self.request.POST.get('stripe_token')
-            amount = int(self.request.POST.get('amount'))
-
-            try:
-                customer, created = Customer.get_or_create(
-                    subscriber=subscriber_request_callback(request))
-                one_time_donation(customer, stripe_token, amount)
-            except stripe.StripeError as e:
-                print 'Except -->'
-                print e
-                # add form error here
-                return _ajax_response(request, JsonResponse({
-                    'error': e.args[0]
-                }, status=500))
-
-        return _ajax_response(
-            request, redirect(reverse(
-                'donate_complete') + '?redirect_url={}'.format(redirect_url))
-        )
-
 
 donate = DonateView.as_view()
-
-
-class DonateCompleteView(DonateView):
-
-    def get_context_data(self, **kwargs):
-        context = super(
-            DonateCompleteView, self
-        ).get_context_data(**kwargs)
-        context['completed'] = True
-        context['redirect_url'] = self.request.GET.get('redirect_url')
-
-        return context
-
-
-donate_complete = DonateCompleteView.as_view()
 
 
 class SignupPaymentView(LoginRequiredMixin, FormValidMessageMixin, SubscriptionMixin, FormView):
