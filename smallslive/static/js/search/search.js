@@ -396,8 +396,14 @@ $(document).ready(function () {
     };
   })();
 
-  $("#artist-search").on("change", function() {
+  $("#artist-search").on("change", function () {
+    var $that = $(this);
+
     delay(function() {
+
+      // append selected value to the search bar
+      updateSearchBar();
+
       artistPageNum = 1;
       eventPageNum = 1;
       archivedEventPageNum = 1;
@@ -435,15 +441,37 @@ $(document).ready(function () {
     }
   });
 
+  function updateSearchBar() {
+    /* update search bar with current selection */
+    var searchTerm = new URLSearchParams(window.location.search).get("q") || "";
+    var $searchBar = $("#desktop-search-bar");
+    var $mobileSearchInput = $("#headerSearchForm input");
+
+    var instrument = $("#select-instrument-btn").data("instrument");
+    var artistSearch = $("#artist-search").val();
+
+    if (artistSearch) {
+      searchTerm = searchTerm + " " + artistSearch;
+    }
+
+    if (instrument) {
+      searchTerm = searchTerm + " " + instrument;
+    }
+
+    $searchBar.val(searchTerm);
+    $mobileSearchInput.val(searchTerm);
+
+  }
+
   $(".instrument").click(function() {
 
-    /* Store selected value in button data and session*/
     var instrument = $(this).data("instrument");
-
     $("#select-instrument-btn").data("instrument", instrument);
     $(".instrument-btn").text(instrument || "Instrument");
     $("#artists .event-row").html("");
-
+    updateSearchBar();
+    /* Store selected value in button data and session
+       so that it can be remembered when user clicks back */
     localStorage.setItem('search_instrument', instrument);
 
     eventPageNum = 1;
