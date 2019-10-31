@@ -12,8 +12,7 @@ from django.views.generic import TemplateView, FormView, ListView, View
 from django.utils import timezone
 from allauth.account.app_settings import EmailVerificationMethod
 from allauth.account.forms import ChangePasswordForm
-from allauth.account.models import EmailAddress
-from allauth.account.utils import complete_signup
+from users.models import SmallsEmailAddress
 from allauth.account.views import SignupView as AllauthSignupView, \
     LoginView as CoreLoginView, _ajax_response
 import braces.views
@@ -28,6 +27,7 @@ from users.utils import charge, \
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
 from oscar_apps.checkout.forms import BillingAddressForm
 from oscar.apps.address.models import UserAddress
+from .utils import complete_signup
 
 
 class SignupLandingView(TemplateView):
@@ -53,12 +53,13 @@ class SignupView(AllauthSignupView):
         else:
             context['facebook_next_url'] = reverse(
                 'accounts_signup_payment', kwargs={'plan_name': plan_name})
+
         return context
 
     def clean_email(self):
         return self.cleaned_data['email'].lower()
 
-    def form_valid(self, form):
+    def form_valid(self, form, **kwargs):
         user = form.save(self.request)
         # if self.kwargs['plan_name'] == 'free':
         #     verification_method = EmailVerificationMethod.MANDATORY
@@ -355,6 +356,13 @@ class EmailConfirmedView(TemplateView):
 email_confirmed = EmailConfirmedView.as_view()
 
 
+class EmailConfirmedDonateView(TemplateView):
+    template_name = 'account/email_confirmed_donate.html'
+
+
+email_confirmed_donate = EmailConfirmedDonateView.as_view()
+
+
 class LoginView(CoreLoginView):
 
     def get_template_names(self):
@@ -370,15 +378,16 @@ login_view = LoginView.as_view()
 class EmailConfirmResendAjaxView(View):
 
     def post(self, request, *args, **kwargs):
+
         email = request.POST['email']
         try:
-            email_address = EmailAddress.objects.get(
+            email_address = SmallsEmailAddress.objects.get(
                 user=request.user,
                 email=email,
             )
             email_address.send_confirmation(request)
             response = json.dumps({'success': True})
-        except EmailAddress.DoesNotExist:
+        except SmallsEmailAddress.DoesNotExist:
             response = json.dumps({'success': False,
                                    'message': "Email address not found"})
 
@@ -430,7 +439,7 @@ class HasArtistAssignedOrIsSuperuserMixin(HasArtistAssignedMixin):
 
 class ResendEmailConfirmationView(StaffuserRequiredMixin, ListView):
     template_name = 'account/admin_email.html'
-    queryset = EmailAddress.objects.order_by('email')
+    queryset = SmallsEmailAddress.objects.order_by('email')
 
     def get_context_data(self, **kwargs):
         context = super(ResendEmailConfirmationView,

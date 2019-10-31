@@ -307,6 +307,11 @@ class SmallsEmailConfirmation(EmailConfirmation):
             else Site.objects.get_current()
         activate_url = reverse(activate_view, args=[self.key])
         activate_url = request.build_absolute_uri(activate_url)
+
+        referer = request.META.get('HTTP_REFERER', '')
+        if 'donate' in referer:
+            activate_url += '?donate=True'
+
         ctx = {
             "user": self.email_address.user,
             "activate_url": activate_url,
@@ -314,10 +319,7 @@ class SmallsEmailConfirmation(EmailConfirmation):
             "key": self.key,
         }
         ctx.update(**kwargs)
-        if signup:
-            email_template = 'account/email/email_confirmation_signup'
-        else:
-            email_template = 'account/email/email_confirmation'
+        email_template = 'account/email/email_confirmation_signup'
         get_adapter().send_mail(email_template,
                                 self.email_address.email,
                                 ctx)
@@ -332,8 +334,10 @@ class SmallsEmailAddress(EmailAddress):
         proxy = True
 
     def send_confirmation(self, request, signup=False, **kwargs):
+
         confirmation = SmallsEmailConfirmation.create(self)
         confirmation.send(request, signup=signup, **kwargs)
+
         return confirmation
 
 

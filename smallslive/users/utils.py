@@ -1,21 +1,20 @@
 import decimal
 from datetime import date, timedelta
-from djstripe.models import Customer, Charge, Plan
+from allauth.account import signals
+from allauth.account.app_settings import EmailVerificationMethod
+from allauth.account.adapter import get_adapter
+from allauth.account.utils import get_login_redirect_url, user_email
+
 from custom_stripe.models import CustomPlan, CustomerDetail
-from djstripe.models import Charge, CurrentSubscription, convert_tstamp
+from djstripe.models import Customer, Charge, CurrentSubscription, convert_tstamp, Plan
+from djstripe.settings import PAYMENTS_PLANS, INVOICE_FROM_EMAIL, SEND_INVOICE_RECEIPT_EMAILS
+from django.core.urlresolvers import reverse
 from django.conf import settings
-from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.contrib.sites.models import Site
-from djstripe.settings import PAYMENTS_PLANS, INVOICE_FROM_EMAIL, SEND_INVOICE_RECEIPT_EMAILS
-try:
-    from django.utils.timezone import now
-except ImportError:
-    from datetime import datetime
-    now = datetime.now
-from allauth.account.adapter import get_adapter
-from allauth.account.utils import user_email
-from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.template.loader import render_to_string
+from django.utils import timezone
 
 
 def add_years(d, years):
@@ -29,6 +28,73 @@ def add_years(d, years):
         return d.replace(year=d.year + years)
     except ValueError:
         return d + (date(d.year + years, 1, 1) - date(d.year, 1, 1))
+
+
+def perform_login(request, user, email_verification,
+                  redirect_url=None, signal_kwargs=None,
+                  signup=False):
+    """
+    Overridden from allauth: we needed access to the EmailAddress object and it wasn't
+    possible to extend it otherwise. We need to append the 'donate=True' param to
+    the confirm email link so that the user can resume donation.
+
+    Keyword arguments:
+
+    signup -- Indicates whether or not sending the
+    email is essential (during signup), or if it can be skipped (e.g. in
+    case email verification is optional and we are only logging in).
+    """
+
+    from .models import SmallsEmailAddress
+    has_verified_email = SmallsEmailAddress.objects.filter(user=user,
+                                                     verified=True).exists()
+    if email_verification == EmailVerificationMethod.NONE:
+        pass
+    elif email_verification == EmailVerificationMethod.OPTIONAL:
+        # In case of OPTIONAL verification: send on signup.
+        if not has_verified_email and signup:
+            send_email_confirmation(request, user, signup=signup,
+                                    activate_view='account_confirm_email')
+    elif email_verification == EmailVerificationMethod.MANDATORY:
+        if not has_verified_email:
+            send_email_confirmation(request, user, signup=signup,
+                                    activate_view='account_confirm_email')
+            return HttpResponseRedirect(
+                reverse('account_email_verification_sent'))
+    # Local users are stopped due to form validation checking
+    # is_active, yet, adapter methods could toy with is_active in a
+    # `user_signed_up` signal. Furthermore, social users should be
+    # stopped anyway.
+    if not user.is_active:
+        return HttpResponseRedirect(reverse('account_inactive'))
+    get_adapter().login(request, user)
+    response = HttpResponseRedirect(
+        get_login_redirect_url(request, redirect_url))
+
+    if signal_kwargs is None:
+        signal_kwargs = {}
+    signals.user_logged_in.send(sender=user.__class__,
+                                request=request,
+                                response=response,
+                                user=user,
+                                **signal_kwargs)
+
+    return response
+
+
+def complete_signup(request, user, email_verification, success_url,
+                    signal_kwargs=None):
+    if signal_kwargs is None:
+        signal_kwargs = {}
+    signals.user_signed_up.send(sender=user.__class__,
+                                request=request,
+                                user=user,
+                                **signal_kwargs)
+    return perform_login(request, user,
+                         email_verification=email_verification,
+                         signup=True,
+                         redirect_url=success_url,
+                         signal_kwargs=signal_kwargs)
 
 
 def send_email_confirmation(request, user, signup=False, **kwargs):
@@ -52,7 +118,7 @@ def send_email_confirmation(request, user, signup=False, **kwargs):
                 user=user, email__iexact=email)
             if not email_address.verified:
                 send_email = not SmallsEmailConfirmation.objects \
-                    .filter(sent__gt=now() - COOLDOWN_PERIOD,
+                    .filter(sent__gt=timezone.now() - COOLDOWN_PERIOD,
                             email_address=email_address) \
                     .exists()
                 if send_email:
@@ -60,18 +126,12 @@ def send_email_confirmation(request, user, signup=False, **kwargs):
                         request,
                         signup=signup,
                         activate_view=kwargs.get('activate_view'))
-            else:
-                send_email = False
+
         except SmallsEmailAddress.DoesNotExist:
-            send_email = True
             email_address = SmallsEmailAddress.objects.add_email(
                 request, user, email, signup=signup, confirm=True)
             assert email_address
-        # At this point, if we were supposed to send an email we have sent it.
-        if send_email:
-            get_adapter().add_message(
-                request, messages.INFO, 'account/messages/'
-                'email_confirmation_sent.txt', {'email': email})
+
     if signup:
         request.session['account_user'] = user.pk
 
@@ -91,7 +151,7 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
                 user=user, email__iexact=email)
             if not email_address.verified:
                 send_email = not SmallsEmailConfirmation.objects \
-                    .filter(sent__gt=now() - COOLDOWN_PERIOD,
+                    .filter(sent__gt=timezone.now() - COOLDOWN_PERIOD,
                             email_address=email_address) \
                     .exists()
                 if send_email:
@@ -128,8 +188,6 @@ def update_active_card(customer, stripe_token):
 
 def subscribe_to_plan(customer, stripe_token, amount, plan_type,
                       flow="Charge"):
-    print flow
-    print flow
     plan_data = {
         'amount': amount,
         'currency': 'usd',
@@ -147,29 +205,23 @@ def subscribe_to_plan(customer, stripe_token, amount, plan_type,
     custom_receipt["customer"] = customer
     custom_receipt["plan"] = plan
     custom_receipt["type"] = "subscribe"
-    print "aa"
     custom_send_receipt(custom_receipt)
 
     # Donation will come through Stripe's webhook
 
 
 def subscribe(customer, plan, flow):
-    print 'subscribe: '
-    print customer
-    print plan
+
     cu = customer.stripe_customer
-    print cu
     cu.update_subscription(plan=plan.stripe_id, prorate=False)
     try:
         current_subscription = customer.current_subscription
-        print current_subscription
         current_subscription.plan = plan.stripe_id
         current_subscription.amount = plan.amount
         current_subscription.save()
-        print 'current_subscription saved'
     except CurrentSubscription.DoesNotExist:
         sub = cu.subscription
-        print 'Creating current subscription: '
+
         cs = CurrentSubscription.objects.create(
             customer=customer,
             plan=plan.stripe_id,
@@ -182,7 +234,6 @@ def subscribe(customer, plan, flow):
             start=convert_tstamp(sub.start),
             quantity=sub.quantity)
 
-        print cs
         return cs
 
 
@@ -191,13 +242,8 @@ def charge(customer, amount, currency='USD', description='',
     """Just charge the customer
     The web hook will take care of updating donations if necessary"""
 
-    print 'charge: ---->'
-    print amount
-    print type(amount)
-
     charge = customer.charge(
         decimal.Decimal(amount), currency, description, send_receipt)
-    print charge
 
     return charge
 

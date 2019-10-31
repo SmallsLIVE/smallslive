@@ -1,8 +1,10 @@
 from allauth.account.adapter import DefaultAccountAdapter
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, EmailMessage
+from django.core.urlresolvers import reverse
 from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
+
 from email_validator import validate_email, EmailNotValidError
 import floppyforms as forms
 
@@ -21,6 +23,14 @@ class SmallsLiveAdapter(DefaultAccountAdapter):
             raise forms.ValidationError("The email address is invalid. Perhaps there was a typo? Please try again.")
 
         return email
+
+    def get_email_confirmation_redirect_url(self, request):
+        redirect_url = super(SmallsLiveAdapter, self).get_email_confirmation_redirect_url(request)
+
+        if request.GET.get('donate') == 'True':
+            redirect_url = reverse('email_confirmed_donate')
+
+        return redirect_url
 
     def render_mail(self, template_prefix, email, context):
         """

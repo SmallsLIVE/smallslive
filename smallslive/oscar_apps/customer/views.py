@@ -2,7 +2,7 @@ from oscar.apps.customer.views import AccountRegistrationView as CoreAccountRegi
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from allauth.account.app_settings import EmailVerificationMethod
-from allauth.account.utils import complete_signup
+from users.utils import complete_signup
 
 
 class AccountRegistrationView(CoreAccountRegistrationView):
