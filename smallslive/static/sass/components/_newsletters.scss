@@ -1,5 +1,5 @@
 .newsletters {
-  
+
   &__subscribe {
     margin-top: 30px;
     margin-bottom: 50px;
@@ -34,7 +34,7 @@
       background-color: #555555;
       height: 40px;
       @include border-left-radius(0);
-      margin-left: -5px;
+      //margin-left: -5px;
       margin-right: 10px;
       float: left;
       width: 28%;
@@ -49,7 +49,7 @@
     }
     }
   }
-  
+
   &__year {
     margin-bottom: 20px;
     @include display(flex);
@@ -82,6 +82,7 @@
     &.white-border-button {
 
       height: 44px;
+      margin-left: 10px;
 
     }
   }
@@ -109,7 +110,7 @@
     height: 112px;
     text-overflow: ellipsis;
     overflow: hidden;
-    
+
     &.unavailable {
       font-style: italic;
       opacity: 0.5;

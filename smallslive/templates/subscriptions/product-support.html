@@ -20,7 +20,7 @@
 {% block flow_title %}
   <p class="text2 accent-color">You are sponsoring
 
-    {{ comma_separated_leaders }} 
+    {{ comma_separated_leaders }}
 
   </p>
 {% endblock %}
@@ -65,7 +65,7 @@
       </div>
 
       <div class="flex-column items-center supporter-plan-input hidden" id="one-time-input">
-        <div class="section-title-centered section-title-no-padded">
+        <div class="section-title-no-padded section-title__catalog">
           <div class="title1">Artist Sponsorship</div>
         </div>
         <p class="text9">This is a 100% tax-deductable donation to the SmallsLIVE Foundation.
@@ -73,11 +73,11 @@
           {{ album_product.get_leader_strings }}.
         </p>
         <div id="supportPledge"
-             class="button-row button-row-big button-row-margin pledge"
+             class="donation-container button-row button-row-big button-row-margin pledge"
              data-dialog-type="product">
-          <button value=5 style="margin-bottom: 25px;">$5</button>
-          <button value=20>$20</button>
-          <button value=100>$100</button>
+          <button class="donation-button" value=5 style="margin-bottom: 25px;">$5</button>
+          <button class="donation-button" value=20>$20</button>
+          <button class="donation-button" value=100>$100</button>
           <div class="flex-column">
             <div class="flex-row custom-out">
               <div class="custom-input text4">

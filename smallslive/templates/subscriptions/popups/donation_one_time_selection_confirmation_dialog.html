@@ -20,7 +20,9 @@
     <div class="modal-content custom-modal">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
+        {% if not user.has_archive_access %}
         <p class="title2 accent-color title">Become a Supporter</p>
+        {% endif %}
         <p tabindex="0" class="title-big subtitle">One Time Donation</p>
         <p tabindex="0" class="text9 justified-text text">
           You have selected a One Time Donation of $<span class="price"></span>.
@@ -30,7 +32,7 @@
         </p>
         <div class="text4 text-centered" style="display: flex; justify-content: center;">
           <button id="cancelSelectionButton" class="white-border-button cancel-button" style="margin-left: 5px;">Cancel</button>
-          <button id="confirmOneTimeSelectionButton" class="white-border-button confirm" style="margin-right: 5px;">Confirm</button>
+          <button id="confirmOneTimeSelectionButton" class="white-border-button confirm" style="margin-left: 5px;">Confirm</button>
         </div>
       </div>
     </div>
