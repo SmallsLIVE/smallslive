@@ -70,7 +70,7 @@
       </div>
 //-->
       <div class="flex-column items-center  supporter-plan-input" id="one-time-input">
-        <div class="section-title-centered section-title-no-padded">
+        <div class="section-title-centered section-title-no-padded section-title__event">
           <div class="title1">Artist Sponsorship</div>
         </div>
 
@@ -79,23 +79,23 @@
           {{ comma_separated_artists }}.
         </p>
         <div id="supportPledge"
-             class="button-row button-row-big button-row-margin pledge"
+             class="donation-container button-row button-row-big pledge"
              data-dialog-type="event">
-          <button value=5>$5</button>
-          <button value=20>$20</button>
-          <button value=100>$100</button>
+          <button class="donation-button" value=5>$5</button>
+          <button class="donation-button" value=20>$20</button>
+          <button class="donation-button" value=100>$100</button>
           <div class="flex-column">
             <div class="flex-row custom-out">
               <div class="custom-input text4">
                 <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
                 <label><div>ENTER  AMOUNT<br>($5 minimum)</div></label>
               </div>
-              <button class="confirm-custom" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
+              <button class="confirm-custom test1" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
                 <span class="bar bar-1"></span>
                 <span class="bar bar-2"></span>
               </button>
             </div>
-            <label class="hidden accent-color">
+            <label class="hidden accent-color" style="margin-top:20px;">
               $5 is the minimum donation
             </label>
           </div>

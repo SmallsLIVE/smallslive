@@ -57,6 +57,23 @@
     align-items: center;
   }
 
+  //didn't want to mess with the javascript that uses the identicle code above
+  .donation-container {
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin-top: 20px;
+
+    .donation-button{
+      margin:0px 10px 20px 10px;
+      width: 100%;
+    }
+  }
+
   .store-add-small {
     padding: 0;
   }
@@ -106,11 +123,46 @@
       width: 320px;
       &__catalog{
         width: 100%;
+        max-width: 75vw;
         margin: 25px auto;
         border-bottom: 4px solid white;
         display: flex;
 
+        @media(max-width: $screen-md-max){
+          max-width: none;
+        }
+
+        .title1{
+          font-size: 30px;
+          line-height: 35px;
+
+         }
+
+         .album-title{
+           white-space: nowrap;
+           overflow: hidden;
+           text-overflow: ellipsis;
+           text-align: center;
+           width: 90vw;
+         }
+
       }
+
+      &__event{
+        background-size: 100% 5px;
+        margin: 25px auto;
+        width: 320px;
+
+      .title1{
+        font-size: 30px;
+        line-height: 35px;
+
+       }
+      }
+    }
+
+    label{
+      margin-top: 20px;
     }
 
     padding: 20px 0;
@@ -124,18 +176,19 @@
       #monthlyPledge,
       #yearlyPledge {
         button {
-          margin: 0 10px 0 0;
-          font-size: 14px;
+          //margin: 0 10px 0 0;
+          //font-size: 14px;
         }
 
         .no-spinners {
-          font-size: 9px;
+          font-size: 3.35em;
         }
 
         .custom-input {
           label div {
             font-size: 0.8em;
           }
+
         }
       }
     }
@@ -214,6 +267,10 @@
   .title7 {
     @media (max-width: $screen-md-max) {
       font-size: 4vw;
+    }
+
+    @media(max-width: $screen-xs){
+      font-size: 20px;
     }
 
     margin: 0 auto;
@@ -340,9 +397,22 @@
   color: black;
 }
 
+.custom-out{
+  button{
+    padding: 20px;
+    margin: 0;
+  }
+  input{
+    min-width: 300px;
+  }
+  label{
+    margin-top: 20px;
+  }
+}
+
 .button-row {
   .custom-input {
-    font-size: 1em;
+    font-size: 1.2em;
     position: relative;
 
     input:focus+label {
@@ -352,7 +422,7 @@
     .no-spinners {
       &+label {
         z-index: 1;
-        top: 20%;
+        top: 10%;
         left: 50%;
         height: auto;
         margin: auto 0;
@@ -506,6 +576,8 @@
   cursor: pointer;
   transition: border 0.1s ease-in-out;
 
+
+
   &:hover {
     border: #333 3px solid;
 
@@ -549,17 +621,19 @@
 .supporter-main-container .supporter-plan-input #monthlyPledge button,
 .supporter-main-container .supporter-plan-input #yearlyPledge button {
   @media (max-width: 1023px) {
-    width: 106px;
+    //width: 106px;
   }
 
   @media (max-width: 520px) {
-    width: 75px;
+    //width: 75px;
   }
 
   @media (max-width: 425px) {
-    margin: 0 0 35px 0px;
-    width: 80%;
+    //margin: 0 0 35px 0px;
+    //width: 80%;
   }
+
+
 }
 
 #monthlyCustom,

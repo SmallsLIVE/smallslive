@@ -9,7 +9,7 @@
 
 {% block flow_title %}
   {% if not completed %}
-    <p class="text2 accent-color">Donate</p>
+    <p class="text2 accent-color">Make a Donation</p>
   {% else %}
     <p class="text2 accent-color">Thank you for your donation</p>
   {% endif %}
@@ -43,8 +43,9 @@
             <span class='accent-color'><span class="underline">TAX DEDUCTIBLE DONATIONS</span>.</span>
           </p>
           {% if not user.is_authenticated %}
-            <p>
-              If you choose to donate anonymously, please continue. Otherwise, sign up to receive a gift in return
+            <p class="text4">
+              If you choose to donate anonymously, please continue. Become a supporting member and you will recieve access to our extensive audio/video library
+              as well as the option of recieveing a gift with your donation.
             </p>
           {% endif %}
           <div class="button-row button-row-margin">
@@ -69,11 +70,11 @@
           <div class="title1">One Time Donation</div>
         </div>
         <div id="yearlyPledge"
-             class="button-row button-row-big button-row-margin pledge"
+             class="donation-container button-row button-row-big pledge"
              data-dialog-type="donation">
-          <button value=100>$5</button>
-          <button value=500>$20</button>
-          <button value=1000>$100</button>
+          <button class="donation-button" value=100>$5</button>
+          <button class="donation-button" value=500>$20</button>
+          <button class="donation-button" value=1000>$100</button>
           <div class="flex-column">
           <div class="flex-row custom-out">
               <div class="custom-input text4">

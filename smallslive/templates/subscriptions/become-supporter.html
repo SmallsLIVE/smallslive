@@ -18,10 +18,12 @@
 
 {% block flow_title %}
   {% if not completed %}
-    {% if flow_type == 'become_supporter' %}
+    {% if flow_type == 'become_supporter' and not user.has_archive_access %}
       <p tabindex="0" class="text2 accent-color">Become a supporting member</p>
     {% elif flow_type == 'product_support' %}
       <p tabindex="0" class="text2 accent-color">Support Artist</p>
+    {% else %}
+      <p tabindex="0" class="text2 accent-color">Make a Donation</p>
     {% endif %}
   {% else %}
       <p class="text2 accent-color"></p>
@@ -48,7 +50,10 @@
     {% if not skip_intro %}
       <div id="supporterStepIntro" class="supporter-step">
         <div class="supporter-text flex-column">
-          <p  tabindex="0" class="title7"><span class="big-letter">T</span>HE <span class='accent-color'>SMALLSLIVE FOUNDATION</span> IS A <span class='accent-color'>NOT-FOR-PROFIT</span> ORGANIZED FOR THE PURPOSE OF THE <span class='accent-color'>DISSEMINATION OF JAZZ MUSIC</span> THROUGH OUR ARCHIVE, LIVE STREAMS, SPONSORSHIP OF INDIVIDUAL JAZZ PROJECTS & TOURS, EDUCATION, AND LIVE PERFORMANCES AT SMALLS & MEZZROW. WE ARE SUPPORTED BY OUR MEMBERS THROUGH <span class='accent-color'><span class="underline">TAX DEDUCTIBLE DONATIONS</span>.</span></p>
+          <p  tabindex="0" class="title7"><span class="big-letter">T</span>HE <span class='accent-color'>SMALLSLIVE FOUNDATION</span> IS A
+          <span class='accent-color'>NOT-FOR-PROFIT</span> ORGANIZED FOR THE PURPOSE OF THE <span class='accent-color'>DISSEMINATION OF JAZZ MUSIC</span>
+          THROUGH OUR ARCHIVE, LIVE STREAMS, SPONSORSHIP OF INDIVIDUAL JAZZ PROJECTS & TOURS, EDUCATION, AND LIVE PERFORMANCES AT SMALLS & MEZZROW.
+          WE ARE SUPPORTED BY OUR MEMBERS THROUGH <span class='accent-color'><span class="underline">TAX DEDUCTIBLE DONATIONS</span>.</span></p>
         </div>
       </div>
     {% endif %}
@@ -83,15 +88,19 @@
     <div class="supporter-text">
     {% if flow_type = "become_supporter" %}
       <p tabindex="0" class="title7"><span class="big-letter">T</span>
-        hank you for becoming a <span class='accent-color'>supporting member</span> of the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.  <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span> please enjoy our livestreams and extensive audio/video archive.
+        hank you for becoming a <span class='accent-color'>supporting member</span> of the smallslive foundation for jazz arts and education.
+        we greatly appreciate your support of our mission.  <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+        please enjoy our livestreams and extensive audio/video archive.
       </p>
     {% elif flow_type = "update_pledge" %}
     <p tabindex="0" class="title7"><span class="big-letter">T</span>
-        hank you for updating your <span class='accent-color'>membership</span> of the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.  <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+        hank you for updating your <span class='accent-color'>membership</span> of the smallslive foundation for jazz arts and education.
+        we greatly appreciate your support of our mission.  <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
       </p>
     {% elif flow_type = "one_time_donation" %}
     <p tabindex="0" class="title7"><span class="big-letter">T</span>
-        hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.  <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+        hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.
+        <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
       </p>
     {% endif %}
     </div>
@@ -113,5 +122,5 @@
     </a>
     {% endif  %}
   {% endif %}
-  
+
 {% endblock %}
