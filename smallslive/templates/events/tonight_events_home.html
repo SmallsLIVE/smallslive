@@ -8,10 +8,12 @@
           <div class="sub-info">
               <p class="event-info-title">{{ event.title }}</p>
               <div class="{{ event.venue.name|lower}}-color title5 venue">Live at {{ event.venue.name }}{% if request.user.is_staff and event.state == "Draft" %} - Draft{% endif %}</div>
-              {% if show_date %}
+              <div class="sub-info__date-time">
+                {% if show_date %}
                 <div class="title5 sets">{{ event.get_date|date:'D M d' }}</div>
-              {% endif %}
-              <div class="title5 sets">Sets at {{ event.get_set_hours_display}}</div>
+                {% endif %}
+                <div class="title5 sets">Sets at {{ event.get_set_hours_display}}</div>
+              </div>
           </div>
       </div>
       <div class="artists">
