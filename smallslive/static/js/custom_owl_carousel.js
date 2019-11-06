@@ -22,7 +22,11 @@ $(document).ready(function () {
           items: 1,
           dots: false
         },
-        960:{
+        769:{
+          items: 2,
+          stagePadding: 60
+        },
+        961:{
           items: 3
         }
       },
@@ -72,4 +76,3 @@ $(document).ready(function () {
     owl.trigger('prev.owl.carousel', [300]);
   })
 });
-
