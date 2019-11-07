@@ -1482,6 +1482,11 @@ label[for="photo-clear_id"] {
 
   .white-border-select {
     float: none;
+
+    &.status-filter {
+      width: 180px;
+    }
+
   }
 
   .datepicker-dashboard-main-btn {
