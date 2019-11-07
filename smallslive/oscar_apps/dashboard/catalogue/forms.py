@@ -1,17 +1,15 @@
+from dateutil import parser
 import urllib
 import urlparse
+from oscar.apps.dashboard.catalogue import forms as oscar_forms
+from django import forms
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
-from django import forms
-from django.core.exceptions import ValidationError
-from django.forms import inlineformset_factory
 from django.utils.translation import ugettext_lazy as _
-from oscar.apps.dashboard.catalogue import forms as oscar_forms
 from events.models import Event, EventSet
 from multimedia.models import MediaFile
-from oscar_apps.partner.models import StockRecord, Partner
 from oscar_apps.catalogue.models import Product, ProductClass, ArtistProduct
-from artists.models import Artist
+from oscar_apps.partner.models import StockRecord, Partner
 
 
 class ProductForm(oscar_forms.ProductForm):
@@ -76,15 +74,37 @@ class ProductForm(oscar_forms.ProductForm):
             self.fields['title'].widget = forms.TextInput(
                 attrs={'autocomplete': 'off'})
 
+        # Link event set label to a real event set object when cleaning the 'set' field.
+        self.event_set = None
+
+    def clean(self):
+        """Link set number or set time with an EventSet instance"""
+        cleaned_data = super(ProductForm, self).clean()
+        set_number = cleaned_data['set']
+        event = cleaned_data['event']
+        if set_number.isdigit():
+            set_number = int(set_number)
+            event_sets = EventSet.objects.filter(event=event)
+            event_sets = sorted(event_sets, Event.sets_order)
+            try:
+                self.event_set = event_sets[set_number - 1]
+            except IndexError:
+                raise ValidationError("Set number does not exist")
+        else:
+            try:
+                set_time = parser.parse("9:00 pm").time()
+                self.event_set = EventSet.objects.filter(event=event, start=set_time).first()
+                if not self.event_set:
+                    raise ValidationError("Could not find {} for {}".format(set_time, event))
+            except ValueError:
+                raise ValidationError("Unrecognized set time")
+
     def save(self, commit=True):
-        event = self.cleaned_data['event']
-        event_sets = EventSet.objects.filter(event=event)
-        event_sets = sorted(event_sets, Event.sets_order)
-        set_number = self.cleaned_data['set']
-        set_number = int(set_number)
-        event_set = event_sets[set_number - 1]
         product = super(ProductForm, self).save(commit=False)
-        product.event_set = event_set
+        # Linked to real object on form clean
+        product.event_set = self.event_set
+        # Make sure it is displayed as time. The user could have entered only the number.
+        product.set = self.event_set.start.strftime('%-I:%M %p')
         if commit:
             product.save()
 
@@ -260,7 +280,7 @@ class TrackForm(forms.ModelForm):
         return track
 
 
-BaseTrackFormSet = inlineformset_factory(
+BaseTrackFormSet = forms.inlineformset_factory(
     Product, Product, form=TrackForm, extra=15, max_num=25, fk_name='album', can_order=True)
 
 
@@ -295,7 +315,7 @@ class ProductArtistClassSelectForm(forms.ModelForm):
         fields = ('artist', 'is_leader')
         
 
-BaseArtistFormSet = inlineformset_factory(
+BaseArtistFormSet = forms.inlineformset_factory(
     Product, ArtistProduct, form=ProductArtistClassSelectForm, extra=15, max_num=25, can_order=True)
 
 

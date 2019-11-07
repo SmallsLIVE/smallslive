@@ -97,7 +97,13 @@ $player-height: 25.3vw;
     padding: 5px 15px;
     display: inline;
     margin-right: 2px;
+
+    &.buy-tickets {
+      white-space: nowrap;
+    }
   }
+
+
 
   @media (min-width: $screen-sm-min) and (max-width: $screen-md-max) {
     justify-content: space-around;
