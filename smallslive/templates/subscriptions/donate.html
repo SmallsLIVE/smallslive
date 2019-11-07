@@ -48,13 +48,6 @@
               as well as the option of recieveing a gift with your donation.
             </p>
           {% endif %}
-          <div class="button-row button-row-margin">
-            {% if not user.is_authenticated %}
-              <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
-            {% elif not user.has_activated_account %}
-              <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
-            {% endif %}
-          </div>
         </div>
       </div>
     {% endif %}
@@ -72,9 +65,9 @@
         <div id="yearlyPledge"
              class="donation-container button-row button-row-big pledge"
              data-dialog-type="donation">
-          <button class="donation-button" value=100>$5</button>
-          <button class="donation-button" value=500>$20</button>
-          <button class="donation-button" value=1000>$100</button>
+          <button class="donation-button" value=5>$5</button>
+          <button class="donation-button" value=20>$20</button>
+          <button class="donation-button" value=100>$100</button>
           <div class="flex-column">
           <div class="flex-row custom-out">
               <div class="custom-input text4">
@@ -128,10 +121,19 @@
 {% block flow_confirm %}
   {% if not completed %}
     <button id="backButton" class="button-bordered">Back</button>
-    {% if not user.is_authenticated or user.is_authenticated and user.has_activated_account %}
-    <button id="confirmButton" class="button-bordered">Confirm</button>
+    {% if not user.is_authenticated %}
+      <button id="supportBecomeMemberButton" class="banner-button-info"
+              onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+    {% elif not user.has_activated_account %}
+      <button id="supportConfirmEmailButton"
+              onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
     {% endif %}
+    {% if not user.is_authenticated or user.is_authenticated and user.has_activated_account %}
+      <button id="confirmButton" class="button-bordered">Confirm</button>
+    {% endif %}
+
   {% else %}
     <button onclick="endDonation()">Continue</button>
+
   {% endif %}
 {% endblock %}

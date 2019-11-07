@@ -1,4 +1,8 @@
-  .supporter-main-container,
+.supporter-main-container {
+  min-height: 680px;
+}
+
+.supporter-main-container,
 .payment-main-container {
   .accent-color.minimum-error {
     position: absolute;
@@ -217,7 +221,6 @@
 
   overflow: visible;
   margin: 30px 10vw;
-  min-height: 680px;
 
   #supporterSteps {
     padding-bottom: 30px;

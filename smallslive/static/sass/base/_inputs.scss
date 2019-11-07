@@ -232,6 +232,15 @@ a {
       }
     }
   }
+
+  &.button-row-margin-all {
+
+    &>button,
+    &>a,
+    &>p {
+      margin: 0 10px;
+    }
+  }
 }
 
 .buttons-row {

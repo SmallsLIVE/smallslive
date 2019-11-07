@@ -143,6 +143,11 @@ var checks = {
   "#expiry-month": 2
 };
 
+function checkInput(selector,  value) {
+  $input = $(selector);
+  return $input.val().length === value;
+}
+
 function checkCreditCardForm() {
   var check = true;
   $.each(checks, function(selector, value) {
@@ -171,6 +176,8 @@ function checkCreditCardForm() {
 
 var checkConfirmButton = function() {
   var $confirmButton = $mainContainer.find("#confirmButton");
+  var $becomeMemberButton = $mainContainer.find("#supportBecomeMemberButton");
+  var $confirmEmailButton = $mainContainer.find("#supportConfirmEmailButton");
 
   if (currentStep === "SelectType") {
     if (
@@ -207,8 +214,12 @@ var checkConfirmButton = function() {
 
   if (currentStep == "Intro") {
     $mainContainer.find("#backButton").hide();
+    $becomeMemberButton.show();
+    $confirmEmailButton.show();
   } else {
     $mainContainer.find("#backButton").show();
+    $becomeMemberButton.hide();
+    $confirmEmailButton.hide();
   }
 };
 
@@ -874,12 +885,6 @@ $(document).ready(function() {
       }
     }
   });
-
-  function checkInput(selector, value) {
-    $input = $(selector);
-    return $input.val().length === value;
-  }
-
   $(".supporter-card-data .form-control").on("keyup", function() {
     $(this).removeClass("error");
 
