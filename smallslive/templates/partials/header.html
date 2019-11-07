@@ -171,23 +171,37 @@
   });
 
   $(document).ready(function () {
-     $('#searchArrow').on('click', function () {
-         $('#headerSearchForm').submit();
-     });
-  });
+    $('#searchArrow').on('click', function () {
+      $('#headerSearchForm').submit();
+    });
 
-  $(document).ready(function () {
-      var searchTerm = getUrlParameter("q");
+    $("#headerSearchForm").on("submit", function (e) {
+      e.preventDefault();
+      var currentTab = $(".search-tabs [data-toggle-tab-group='search-results'].active").data("toggle-tab-target");
+      localStorage.setItem("activeSearchTab", currentTab);
+      $(this).off("submit").submit();
+    });
+
+    var searchTerm = getUrlParameter("q");
+    if (searchTerm) {
+      searchTerm = searchTerm.replace(/\+/g, ' ');
+    } else {
+      searchTerm = '';
+    }
+    if ($('.mobile-menu-icons .fa-search').visible()) {
       if (searchTerm) {
-          searchTerm = searchTerm.replace(/\+/g, ' ');
-      } else {
-          searchTerm = '';
+        $('.mobile-menu-icons .fa-search').click();
       }
-      if (viewPortLength("width") < 1024) {
-        if (searchTerm) {
-            $('.mobile-menu-icons .fa-search').click();
-        }
-      }
+    }
+
+    if (!searchTerm) {
+      localStorage.removeItem("activeSearchTab");
+    }
+
+    var previousSelectedTab = localStorage.getItem("activeSearchTab");
+    if (previousSelectedTab == "archived-shows") {
+      $(".search-tabs [data-toggle-tab-target='archived-shows']").click();
+    }
   })
 
 </script>
