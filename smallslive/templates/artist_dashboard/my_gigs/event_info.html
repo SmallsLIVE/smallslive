@@ -118,7 +118,10 @@
     </div>
   </div>
   {% for set in event.sets.with_media %}
-    <div id="set-metrics-{{ set.pk }}" class="event-metrics-container flex-row" data-set-number="{{ forloop.counter0 }}">
+    <div id="set-metrics-{{ set.pk }}"
+         class="event-metrics-container metrics flex-row"
+         data-set-id="{{ set.pk }}"
+         data-set-number="{{ forloop.counter0 }}">
       {% with metrics=set.get_user_video_metrics_dict %}
         <div class="event-metrics-container-data set-number">
           <span class="text3">Set {{ forloop.counter }}</span>

@@ -1,7 +1,4 @@
 
-var eventDateFrom = $("#dashboard-metrics-date-picker-from input").datepicker('getDate').date;
-var eventDateTo = $("#dashboard-metrics-date-picker-to input").datepicker('getDate').date;
-
 $(document).ready(function () {
 
   var $datePickerFrom = $("#search-date-picker-from-dashboard input");
@@ -338,12 +335,83 @@ $(document).ready(function () {
     })
 
     $(document).on("mouseup", function (event) {
-      var container = $("#datepicker-dashboard-left-panel");
+      var $container = $("#datepicker-dashboard-left-panel");
+      var $button = $("#metrics-datepicker-description");
 
       // if the target of the click isn't the container nor a descendant of the container
-      if (!container.is(event.target) && container.has(event.target).length === 0) {
-        container.hide();
+      if (!$container.is(event.target) && $container.has(event.target).length === 0) {
+        if (!$button.is(event.target)) {
+          $container.hide();
+        }
       }
+    });
+
+    $(document).mouseup(function (e) {
+      var container = $(".datepicker-dashboard-container");
+      if (!container.is(e.target) && container.has(e.target).length === 0) {
+        container.fadeOut(500, function () {
+          $(".event-metrics-container .datepicker-container").data('shown', false);
+        });
+      }
+    });
+
+    $(document).on("click", "#metrics-datepicker-description", function () {
+
+      var $panel = $("#datepicker-dashboard-left-panel");
+
+      if (!$panel.visible()) {
+        $panel.show();
+      } else if ($(".artist-events-list-info .datepicker-container").data('shown')) {
+        $(".event-metrics-container .datepicker-container").fadeOut(500, function () {
+          $(".event-metrics-container .datepicker-container").data('shown', false);
+          $panel.show();
+        });
+      } else {
+        $panel.hide();
+      }
+    });
+
+    $(document).on("click", "#metrics-datepicker-apply-button", function () {
+      $(".artist-events-list-info .datepicker-container").fadeOut(500, function () {
+          $(".artist-events-list-info .datepicker-container").data('shown', false);
+      });
+      var eventDateFrom = $("#dashboard-metrics-date-picker-from input").datepicker('getDate');
+      var eventDateTo = $("#dashboard-metrics-date-picker-to input").datepicker('getDate');
+
+      dateFrom = moment(eventDateFrom).format('MM/DD/YYYY');
+      dateTo = moment(eventDateTo).format('MM/DD/YYYY');
+
+      var newDateRange = dateFrom + " - " + dateTo;
+      $("#metrics-datepicker-description").html(newDateRange);
+
+      loadMetricsData();
+
+    });
+
+    $(document).on("click", ".datepicker-dashboard-left-panel > div", function () {
+
+      if ($(this).data('date') == "all") {
+        $("#dashboard-metrics-date-picker-from input").datepicker("update", new Date(2000, 0, 1));
+        $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date());
+      } else if ($(this).data('date') == "period") {
+        d = new Date();
+        d.setFullYear(d.getFullYear() - 1);
+        $("#dashboard-metrics-date-picker-from input").datepicker("update", d);
+        $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date());
+      } else {
+        $("#dashboard-metrics-date-picker-from input").datepicker("update", new Date($(this).data('start')));
+        $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date($(this).data('end')));
+      }
+
+      $("#metrics-datepicker-description").html($(this).text());
+
+      $("#dashboard-metrics-date-picker-to input").click();
+      $("#dashboard-metrics-date-picker-to input").focus();
+
+      $("#datepicker-dashboard-left-panel").hide();
+
+      loadMetricsData();
+
     });
 
   }
@@ -724,9 +792,6 @@ $(document).ready(function () {
     }
 
     var callbacks = [updateShows];
-    if (loadFirstEvent) {
-      callbacks.push(showFirstEvent);
-    }
     sendEventRequest(callbacks);
   }
 
@@ -881,85 +946,22 @@ function initializeMetricsDatePickers () {
       $datePickerTo.datepicker('show');
     }
   });
-
-  $(document).on("click", "#metrics-datepicker-description", function () {
-     if ($(".artist-events-list-info .datepicker-container").data('shown')) {
-        $(".event-metrics-container .datepicker-container").fadeOut(500, function () {
-          $(".event-metrics-container .datepicker-container").data('shown', false);
-          $("#datepicker-dashboard-left-panel").show();
-        });
-     } else {
-       $("#datepicker-dashboard-left-panel").show();
-     }
-
-  });
-
-  ///////////
-
-  $("#metrics-datepicker-apply-button").click(function () {
-    $(".artist-events-list-info .datepicker-container").fadeOut(500, function () {
-        $(".artist-events-list-info .datepicker-container").data('shown', false);
-    });
-
-    var dateFrom = $("#dashboard-metrics-date-picker-from input").datepicker('getDate');
-    var dateTo = $("#dashboard-metrics-date-picker-to input").datepicker('getDate');
-    dateFrom = moment(eventDateFrom).format('MM/DD/YYYY');
-    dateTo = moment(eventDateTo).format('MM/DD/YYYY');
-
-    var newDateRange = dateFrom + " - " + dateTo;
-    $("#metrics-datepicker-description").html(newDateRange);
-    loadData();
-  });
-
-
-  $(".datepicker-dashboard-left-panel > div").click(function () {
-
-    if ($(this).data('date') == "all") {
-      $("#dashboard-metrics-date-picker-from input").datepicker("update", new Date(2000, 0, 1));
-      $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date());
-    } else if ($(this).data('date') == "period") {
-      d = new Date();
-      d.setFullYear(d.getFullYear() - 1);
-      $("#dashboard-metrics-date-picker-from input").datepicker("update", d);
-      $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date());
-    } else {
-      $("#dashboard-metrics-date-picker-from input").datepicker("update", new Date($(this).data('start')));
-      $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date($(this).data('end')));
-    }
-
-    $("#metrics-datepicker-description").html($(this).text());
-
-    $("#dashboard-metrics-date-picker-to input").click();
-    $("#dashboard-metrics-date-picker-to input").focus();
-
-    $("#datepicker-dashboard-left-panel").hide();
-
-    loadData();
-
-  });
-
-  $(document).mouseup(function (e) {
-    var container = $(".datepicker-dashboard-container");
-    if (!container.is(e.target) && container.has(e.target).length === 0) {
-      container.fadeOut(500, function () {
-        $(".event-metrics-container .datepicker-container").data('shown', false);
-      });
-    }
-  });
 }
 
-var loadData = function () {
+var loadMetricsData = function () {
+
   var plays = document.getElementById("play-value");
   var time = document.getElementById("time-value");
   var mobilePlays = document.getElementById("mobile-play-value");
   var mobileTime = document.getElementById("mobile-time-value");
+  var eventDateFrom = $("#dashboard-metrics-date-picker-from input").datepicker('getDate');
+  var eventDateTo = $("#dashboard-metrics-date-picker-to input").datepicker('getDate');
 
   var data = {};
-
   data.start = moment(eventDateFrom).format('YYYY-MM-DD');
   data.end = moment(eventDateTo).format('YYYY-MM-DD');
 
-  $(".artist-set-actions").each(function () {
+  $(".event-metrics-container.metrics").each(function () {
     var setId = $(this).data("set-id");
     var $container = $("#set-metrics-" + setId);
     data.set_id = setId;
