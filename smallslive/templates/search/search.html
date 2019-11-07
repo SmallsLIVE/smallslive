@@ -136,9 +136,12 @@
       initializeSearch();
 
       $(window).scroll(function () {
-        if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
+        if ($(window).scrollTop() >= $(document).height() - $(window).height() - 200) {
           /* if artists are visible and is mobile (flex-wrap is set) */
           /* desktop loads more with slide buttons */
+
+          $("footer.footer-info").hide();
+
           var $musiciansContent = $("#musicianContent");
           if ($musiciansContent.is(":visible") && $musiciansContent.find(".event-row").css("flex-wrap") == "wrap") {
             searchMoreArtists();
@@ -147,6 +150,8 @@
           /* if events are visible always load */
           if ($("#search-content").is(":visible") && moreEvents) {
             loadMoreEvents('Archived');
+          } else {
+            $("footer.footer-info").show();
           }
         };
       });
