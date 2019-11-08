@@ -3,7 +3,7 @@
 {% load thumbor_tags %}
 
 <div  class="content-centered clearfix" style="width: 100%;">
-  <div class="artist-search-profile-bio-buttons__container hidden-xs hidden-sm hidden-md">
+  <div class="artist-search-profile-bio-buttons__container hidden-xs hidden-sm">
     <div class="artist-search-profile-bio-buttons flex-row">
       {% if archived and upcoming or archived and artist.albums %}
         <button data-toggle-tab-group="search-results" data-toggle-tab-target="archived-shows" id="archive-shows-button" class="white-border-button hover-fade active">Archived Shows</button>
@@ -107,7 +107,7 @@
 </div>
 
 <div class="tabs artist-tabs">
-  {% if archived and upcoming %}
+  {% if archived and upcoming or archived and artist.albums %}
     <div class="active" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
       <span class="title1">Archived</span>
     </div>
@@ -116,7 +116,7 @@
       <span class="title1"></span>
     </div>
   {% endif %}
-  {% if upcoming and archived %}
+  {% if upcoming and archived or upcoming and artist.albums %}
     <div data-toggle-tab-target="upcoming-shows" data-toggle-tab-group="search-results">
       <span class="title1">Upcoming</span>
     </div>
@@ -133,7 +133,7 @@
 </div>
 
 <div id="smallslive-tracks" data-toggle-tab="smallslive-tracks" style="display: none;"  data-toggle-tab-group="search-results">
-  <div class="musicians-results white-line-bottom">
+  <div class="section-title musicians-results">
     <div class="title1 shows-results-title">Smallslive Tracks</div>
   </div>
   <div class="all-artist-tracks flex-row">

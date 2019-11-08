@@ -859,8 +859,11 @@ body.headers-1 {
     &.admin-header {
       div.artist-search-profile-container {
         &.pad-content {
-          transition: padding-top 0.5s;
-          padding-top: 54px;
+          padding: 0;
+          @media(max-width: $screen-md){
+            transition: padding-top 0.5s;
+            padding-top: 54px;
+          }
         }
       }
     }
@@ -870,7 +873,7 @@ body.headers-1 {
     div.artist-search-profile-container {
       &.pad-content {
         transition: padding-top 0.2s;
-        padding-top: 60px;
+        padding-top: 30px;
       }
     }
   }
@@ -1107,6 +1110,9 @@ body.headers-1 {
   &__container{
     display: flex;
     padding-right: 3.5vw;
+    @media(max-width: $screen-md){
+      display: none;
+    }
   }
 
   button {
@@ -1266,8 +1272,8 @@ body.headers-1 {
 }
 
 .shows-results-title {
-  width: 100%;
-  text-align: center;
+  //width: 100%;
+  //text-align: center;
 
   @media (max-width: $screen-sm-max) {
     display: none;
