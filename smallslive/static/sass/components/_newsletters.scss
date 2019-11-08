@@ -68,10 +68,16 @@
 }
 
 .newsletter {
+  display: flex;
+  flex-direction: row;
   margin-bottom: 40px !important;
   margin-top: 30px;
   padding-bottom: 0 !important;
   align-items: flex-end;
+
+  @media(max-width: 960px){
+    display: block;
+  }
 
   p {
     padding-bottom: 5px;

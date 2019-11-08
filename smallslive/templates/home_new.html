@@ -68,7 +68,7 @@
         <a href="{% url 'contact-and-info' %}">Contact + Info</a>
       </div>
       {% if not current_user.newsletter %}
-        <div class="flex-row newsletter">
+        <div class="newsletter">
           <p class="text4">subscribe to our newsletter</p>
           <form class="admin-interface__form flex-row" action="{% url 'newsletters' %}" method="post">
               {% csrf_token %}
