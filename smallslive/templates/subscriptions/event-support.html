@@ -126,27 +126,24 @@
 {% block flow_payment %}
 {% endblock %}
 
-{% block flow_completed %}
-  <div id="supporterStepThankYou" class="flex-column items-center supporter-text-container">
-    <div class="supporter-text">
-      <p class="title7"><span class="big-letter">T</span>
-        hank you for <span class='accent-color'>supporting</span> the smallslive foundation for jazz arts and education.
-        You tax deducatble donation is directly supporting the following musicians:
-        {% for artist_dict in event_artists %}
-              {{ artist_dict.name }}
-              {% if not forloop.last %}{% ifequal forloop.revcounter 2 %} and {% else %}, {% endifequal %}{% else %}{% endif %}
-        {% endfor %}
-      </p>
-    </div>
-  </div>
-{% endblock %}
+
 {% block flow_confirm %}
-  {% if not completed %}
-    <button id="backButton" class="button-bordered">Back</button>
-    <button id="confirmButton" data-hide='true' class="button-bordered">Confirm</button>
-  {% else %}
-    <a href="{% url 'event_detail' event.id event.slug %}">
-      <button>Return to Event</button>
-    </a>
-  {% endif %}
+  <button id="backButton" class="button-bordered">Back</button>
+  <button id="confirmButton" data-hide='true' class="button-bordered">Confirm</button>
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  <script>
+
+    var flow = "event_support";
+    var type = "one-time";
+    var step = "SelectType";
+
+    $(document).ready(function () {
+      setSelected(flow, type, 0, step);
+      checkConfirmButton();
+    });
+
+  </script>
 {% endblock %}

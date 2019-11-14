@@ -9,9 +9,11 @@ from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
 from django.shortcuts import redirect
 from django.utils import six
+from django.views.generic import View
 from oscar.apps.address.models import Country
 from oscar.apps.checkout import views as checkout_views, signals
 from oscar.apps.checkout.exceptions import FailedPreCondition, PassedSkipCondition
+from oscar.apps.checkout.mixins import OrderPlacementMixin
 from oscar.apps.checkout.utils import CheckoutSessionData
 from oscar.apps.order.exceptions import UnableToPlaceOrder
 from oscar.apps.payment.exceptions import RedirectRequired, UnableToTakePayment, PaymentError
@@ -427,15 +429,16 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         if user.is_authenticated():
             billing_address_form = BillingAddressForm(shipping_address, user, self.request.POST)
             if billing_address_form.is_valid():
-                print billing_address_form.errors
-                if billing_address_form.cleaned_data.get('billing_option') == "same-address":
+                if billing_address_form.cleaned_data.get('billing_option') == 'same-address':
                     self.checkout_session.bill_to_shipping_address()
                 else:
                     if user:
                         address = billing_address_form.save()
                         self.checkout_session.bill_to_user_address(address)
             else:
-                print '** billing address form not valid **'
+                print '** billing address form invalid **'
+                print billing_address_form.errors
+                billing_address_form = None
         else:
             billing_address_form = None
 
@@ -519,7 +522,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         return self.submit(ticket_name=ticket_name, **submission)
 
     def submit(self, user, basket,
-               shipping_address, shipping_method,  # noqa (too complex (10))
+               shipping_address, shipping_method,
                shipping_charge, billing_address, order_total,
                payment_kwargs=None, order_kwargs=None, ticket_name=None):
         """
@@ -593,8 +596,10 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         signals.pre_payment.send_robust(sender=self, view=self)
         basket_lines = basket.lines.all()
+
         try:
-            self.handle_payment(order_number, order_total, basket_lines, shipping_charge=str(shipping_charge.incl_tax), **payment_kwargs)
+            self.handle_payment(order_number, order_total, basket_lines,
+                                shipping_charge=str(shipping_charge.incl_tax), **payment_kwargs)
         except RedirectRequired as e:
             # Redirect required (eg PayPal, 3DS)
             logger.info("Order #%s: redirecting to %s", order_number, e.url)
@@ -670,13 +675,16 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 "Order #%s: unhandled exception while taking payment (%s)",
                 order_number, e, exc_info=True)
             self.restore_frozen_basket()
-            error_msg = error_msg.format("")
+            error_msg = str(e).format("")
             print '******************'
             print 'Unhandled Exception: '
             print error_msg
 
-            return self.render_preview(
-                self.request, error=error_msg, **payment_kwargs)
+            if self.request.is_ajax():
+                return http.JsonResponse({'error': error_msg})
+            else:
+                return self.render_preview(
+                    self.request, error=error_msg, **payment_kwargs)
 
         signals.post_payment.send_robust(sender=self, view=self)
 
@@ -755,7 +763,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
     def handle_payment(self, order_number, total, basket_lines, shipping_charge=0.00, **kwargs):
 
-        basket = basket_lines.first().basket
+        basket_line = basket_lines.first()
+        basket = basket_line.basket
         self.card_token = self.request.POST.get('card_token')
         payment_method = kwargs.get('payment_method')
 
@@ -765,6 +774,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 order_number,
                 total, basket_lines, **kwargs)
         else:
+            self.product_id = basket_line.product_id
             currency = total.currency
             if self.card_token:
                 self.total = total
@@ -788,7 +798,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                     'amount': total.incl_tax,
                     'reference': self.payment_id,
                     'confirmed': False,
-                    'deductable_amount': str(total_deductable)
+                    'deductable_amount': str(total_deductable),
+                    'product_id': self.product_id
                 }
                 Donation.objects.create(**donation)
 
@@ -825,9 +836,11 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         return self.handle()
 
 
-class ExecutePayPalPaymentView(PaymentDetailsView,
-                               AssignProductMixin,
-                               SuccessfulOrderMixin):
+class ExecutePayPalPaymentView(AssignProductMixin,
+                               OrderPlacementMixin,
+                               PayPalMixin,
+                               SuccessfulOrderMixin,
+                               View):
     """
     """
 
@@ -836,6 +849,7 @@ class ExecutePayPalPaymentView(PaymentDetailsView,
         self.order = None
         self.payment_id = None
         self.tickets = None
+        self.tickets_type = None
 
     def get(self, request, *args, **kwargs):
 
@@ -899,9 +913,8 @@ class ExecutePayPalPaymentView(PaymentDetailsView,
         total_incl_tax = basket.total_incl_tax
 
         # Record payment source
-        self.order = Order.objects.get(number=order_number)
         order_kwargs = {}
-        if self.order.has_tickets():
+        if basket.has_tickets():
             # TODO: check for smalls tickets
             # TODO: check for paypal smalls
             self.tickets = 'mezzrow'
@@ -922,6 +935,8 @@ class ExecutePayPalPaymentView(PaymentDetailsView,
         self.add_payment_source(source)
         self.add_payment_event(
             payment_event, total_incl_tax, reference=self.payment_id)
+
+        Donation.confirm_by_reference(self.payment_id)
 
         user = self.request.user
         if not user.is_anonymous():

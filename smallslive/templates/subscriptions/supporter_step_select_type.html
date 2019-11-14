@@ -80,10 +80,8 @@
         <div class="flex-row custom-out">
           <div class="custom-input text4">
             <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
-            {% if flow_type == "become_supporter" or not can_free_donate %}
             <label><div>ENTER  AMOUNT<br>(MIN  $100)</div></label>
             <div id="yearly-less" class="text9 accent-color minimum-error"></div>
-            {% endif %}
           </div>
           <button class="confirm-custom" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
             <span class="bar bar-1"></span>
@@ -91,11 +89,7 @@
           </button>
         </div>
         <label class="hidden accent-color">
-          {% if flow_type == "become_supporter" or not can_free_donate %}
-            $100 is the minimum donation
-          {% else %}
-            $5 is the minimum donation
-          {% endif %}
+          $100 is the minimum donation
         </label>
       </div>
     </div>

@@ -1,0 +1,87 @@
+{% extends "subscriptions/contribute-flow.html" %}
+{% load static from staticfiles %}
+{% load full_static %}
+{% load djstripe_tags %}
+{% load reviews_tags %}
+{% load thumbnail %}
+{% load i18n %}
+{% load display_tags %}
+{% load staticfiles %}
+{% load thumbor_tags %}
+
+{% block flow_title %}
+  {% if comma_separated_leaders %}
+    <p class="text2 accent-color">You are sponsoring
+      {{ comma_separated_leaders }}
+    </p>
+  {% else %}
+    <p class="text2 accent-color">Thank you for your support
+    </p>
+  {% endif %}
+{% endblock %}
+
+{% block flow_completed %}
+  <div id="supporterStepThankYou" class="flex-column items-center supporter-text-container">
+    <div class="supporter-text">
+      {% if flow_type == 'become_supporter' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for becoming a <span class='accent-color'>supporting member</span> of the smallslive foundation for jazz arts and education.
+          we greatly appreciate your support of our mission.  <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+          please enjoy our livestreams and extensive audio/video archive.
+        </p>
+      {% elif flow_type == 'update_pledge' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for updating your <span class='accent-color'>membership</span> of the smallslive foundation for jazz arts and education.
+          we greatly appreciate your support of our mission.  <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+        </p>
+      {% elif flow_type == 'one_time_donation' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.
+          <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+        </p>
+      {% elif flow_type == 'donate' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.
+          <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+        </p>
+      {% elif flow_type == 'product_support' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.
+          <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+        </p>
+      {% elif flow_type == 'event_support' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.
+          <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+{% block flow_confirm %}
+
+  {% if flow_type == 'become_supporter' %}
+    <a href="{% url 'archive' %}">
+      <button>Access the archive</button>
+    </a>
+  {% elif flow_type == 'update_pledge' %}
+    <a href="{% url 'user_settings_new' %}">
+      <button>Continue</button>
+    </a>
+  {% elif flow_type == 'one_time_donation' %}
+    <a href="{% url 'user_settings_new' %}">
+      <button>Continue</button>
+    </a>
+  {% elif flow_type == 'donate' %}
+    <button onclick="endDonation()">Continue</button>
+  {% elif flow_type == 'product_support' %}
+    <a href="{% url 'promotions:home' %}">
+      <button>Continue browsing the Catalog</button>
+    </a>
+  {% elif flow_type == 'event_support' %}
+    <a href="{% url 'event_detail' event.id event.slug %}">
+      <button>Return to Event</button>
+    </a>
+  {% endif %}
+
+{% endblock %}

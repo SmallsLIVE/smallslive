@@ -1,23 +1,23 @@
+from stripe.error import APIConnectionError, InvalidRequestError
 from allauth.account import signals
 from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress, EmailConfirmation
+from djstripe.models import Customer
+from djstripe.utils import subscriber_has_active_subscription
+from rest_framework.authtoken.models import Token
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import Sum
+from django.db.models import Q, Sum
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.functional import cached_property
-from djstripe.utils import subscriber_has_active_subscription
+from custom_stripe.models import CustomerDetail
 from model_utils import Choices
-from rest_framework.authtoken.models import Token
-from djstripe.models import Customer
-from stripe.error import InvalidRequestError
-
 from newsletters.utils import subscribe_to_newsletter, unsubscribe_from_newsletter
 
 
@@ -215,8 +215,8 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
             return 0
 
     def get_project_donation_amount(self, product_id):
-
-        qs = self.get_donations(this_year=False).filter(product_id=product_id)
+        condition = Q(product__parent_id=product_id) | Q(product_id=product_id)
+        qs = self.get_donations(this_year=False).filter(condition)
         amount_data = qs.values('user_id').annotate(total_donations=Sum('amount'))
         if amount_data:
             return amount_data[0]['total_donations']
@@ -292,6 +292,21 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     def can_listen_to_audio(self):
         return self.has_activated_account and \
                self.has_archive_access
+
+    def get_active_card(self):
+
+        try:
+            customer_detail = CustomerDetail.get(id=self.customer.stripe_id)
+        except APIConnectionError:
+            customer_detail = None
+        except InvalidRequestError:
+            customer_detail = None
+        except CustomerDetail.DoesNotExist:
+            customer_detail = None
+        except SmallsUser.customer.RelatedObjectDoesNotExist:
+            customer_detail = None
+        if customer_detail:
+            return customer_detail.active_card
 
 
 class SmallsEmailConfirmation(EmailConfirmation):

@@ -11,7 +11,7 @@ from django_thumbor import generate_url
 from oscar.apps.order.models import Line
 from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
-from oscar_apps.catalogue.views import PurchasedProductsInfoMixin
+from oscar_apps.catalogue.mixins import ProductMixin
 from oscar_apps.partner.strategy import Selector
 from custom_stripe.models import CustomerDetail
 from events.models import Recording, Event
@@ -267,7 +267,7 @@ class MyDownloadsView(LoginRequiredMixin, ListView):
 my_downloads = MyDownloadsView.as_view()
 
 
-class NewMyDownloadsView(LoginRequiredMixin, ListView, PurchasedProductsInfoMixin):
+class NewMyDownloadsView(LoginRequiredMixin, ListView, ProductMixin):
     context_object_name = 'lines'
     template_name = 'multimedia/library.html'
 

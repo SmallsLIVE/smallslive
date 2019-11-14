@@ -20,8 +20,10 @@ class PayPalMixin(object):
     def get_payment_data(self, item_list, currency, shipping_charge=0.00,
                          execute_uri=None, cancel_uri=None):
 
-        subtotal = Decimal(self.amount) - Decimal(shipping_charge)
-
+        subtotal = Decimal(self.amount)
+        if shipping_charge:
+            subtotal -= Decimal(shipping_charge)
+        
         if not execute_uri:
             if self.tickets_type == 'mezzrow':
                 execute_uri = 'checkout:mezzrow_paypal_execute'
@@ -38,7 +40,7 @@ class PayPalMixin(object):
             payment_execute_url = execute_uri
             payment_cancel_url = cancel_uri
 
-        return {
+        data = {
             'intent': 'sale',
             'payer': {'payment_method': 'paypal'},
 
@@ -55,7 +57,10 @@ class PayPalMixin(object):
                         'subtotal': str(subtotal)
                     }
                 },
-                'description': 'SmallsLIVE'}]}
+                'description': 'SmallsLIVE'}]
+        }
+
+        return data
 
     def configure_paypal(self):
         if self.tickets_type == 'mezzrow':
@@ -70,7 +75,8 @@ class PayPalMixin(object):
                 'client_secret': settings.PAYPAL_CLIENT_SECRET})
 
     def handle_paypal_payment(self, currency, item_list,
-                              donation=False, deductable_total=0.00, shipping_charge=0.00,
+                              donation=False,
+                              deductable_total=0.00, shipping_charge=0.00,
                               execute_uri=None,
                               cancel_uri=None):
 
@@ -83,10 +89,13 @@ class PayPalMixin(object):
         success = payment.create()
         if success:
             payment_id = payment.id
-            if donation and self.request.user.is_authenticated():
+            if donation:
+                user = self.request.user
+                if not user.is_authenticated():
+                    user = None
                 # Create Donation even though the payment is not yet authorized.
                 donation = {
-                    'user': self.request.user,
+                    'user': user,
                     'currency': 'USD',
                     'amount': self.amount,
                     'reference': payment_id,
@@ -95,7 +104,6 @@ class PayPalMixin(object):
                     'product_id': self.product_id,
                     'event_id': self.event_id,
                 }
-                print 'Donation data: ', donation
                 Donation.objects.create(**donation)
 
             for link in payment.links:
@@ -104,34 +112,13 @@ class PayPalMixin(object):
                     # https://github.com/paypal/rest-api-sdk-python/pull/58
                     approval_url = str(link.href)
                     print("Redirect for approval: %s" % approval_url)
+
             if self.request.is_ajax():
                 raise RedirectRequiredAjax(approval_url)
             else:
                 raise RedirectRequired(approval_url)
         else:
-            print payment
-            print payment.error
             raise UnableToTakePayment(payment.error)
-
-        try:
-            payment_execute_url = self.request.build_absolute_uri(
-                reverse('supporter_paypal_execute'))
-            payment_cancel_url = self.request.build_absolute_uri(
-                reverse('become_supporter'))
-            item = {
-                'name': 'One Time Donation',
-                'price': self.amount,
-                "sku": "N/A",
-                'currency': 'USD',
-                'quantity': 1}
-            item_list = [item]
-
-        except RedirectRequired as e:
-            print 'Redirect required'
-            return redirect(e.url)
-        except RedirectRequiredAjax as e:
-            print 'JsonResponse ....'
-            return JsonResponse({'payment_url': e.url})
 
     def handle_paypal_credit_card_payment(self):
 
@@ -143,6 +130,7 @@ class PayPalMixin(object):
                 raise e
 
     def execute_payment(self):
+        self.configure_paypal()
         payment_id = self.request.GET.get('paymentId')
         payer_id = self.request.GET.get('PayerID')
         payment = paypalrestsdk.Payment.find(payment_id)

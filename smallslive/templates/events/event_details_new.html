@@ -253,9 +253,8 @@
       })
 
       $(document).on("click", "#confirmDonationButton", function () {
-        var flowType = "event_support";
         var eventId = {{ event.pk }};
-        window.location = "{% url 'become_supporter' %}?flow_type=" + flowType + "&event_id=" + eventId;
+        window.location = "{% url 'event_support' %}?event_id=" + eventId;
       });
 
       var $donationConfirmationDialog = $("#supportConfirmationDialog");

@@ -50,7 +50,7 @@ $(document).ready(function () {
 
   $(document).on("click", "#confirmDonationButton", function () {
     // Initiate the flow if PO chooses  a pop up to start  the  flow
-    showFlow("support");
+    window.location = $(this).data("support-url");
   });
 
   var $downloadConfirmationDialog = $("#downloadConfirmationDialog");

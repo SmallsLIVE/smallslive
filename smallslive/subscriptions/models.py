@@ -10,7 +10,9 @@ class Donation(models.Model):
     Previously, Stripe was the only source of subscriptions.
     Now we need other model to keep track of payments.
     """
-    user = models.ForeignKey(SmallsUser, related_name='donations')
+
+    # Initially donations would be not anonymous but now they can be
+    user = models.ForeignKey(SmallsUser, related_name='donations', blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     currency = models.CharField(max_length=12, default='USD')
     amount = models.DecimalField(
@@ -32,12 +34,23 @@ class Donation(models.Model):
                               related_name='donations')
 
     def __unicode__(self):
-        return u'{}: {} - {}'.format(self.user.email, self.amount, self.date)
+        if self.user:
+            return u'{}: {} - {}'.format(self.user.email, self.amount, self.date)
+        else:
+            return u'anonymous: {} - {}'.format(self.amount, self.date)
 
     def save(self, *args, **kwargs):
         if self.deductable_amount == 0:
             self.deductable_amount = self.amount
         super(Donation, self).save(*args, **kwargs)
+
+
+    @staticmethod
+    def confirm_by_reference(reference):
+        donation = Donation.objects.filter(reference=reference).first()
+        if donation:
+            donation.confirmed = True
+            donation.save()
 
 
 

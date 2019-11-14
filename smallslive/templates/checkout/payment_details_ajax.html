@@ -173,7 +173,13 @@
                           </div>
                           <div class="row">
                             <div class="col-xs-9">
-                              <input type="text" class="store__form__input" placeholder="Name on card" autocomplete="off" name="name" {% if form.name.value %}value="{{ form.name.value }}"{% endif %}>
+                              <input id="name-on-card"
+                                     type="text"
+                                     class="store__form__input"
+                                     placeholder="Name on card"
+                                     autocomplete="off"
+                                     name="name"
+                                     {% if form.name.value %}value="{{ form.name.value }}"{% endif %}>
                             </div>
                             <div class="col-xs-3">
                               <input type="text" class="store__form__input" id="cvc" placeholder="xxx" size="4" pattern="\d*" autocomplete="off" name="cvc" {% if form.cvc.value %}value="{{ form.cvc.value }}"{% endif %}>
@@ -182,7 +188,7 @@
                               {% endfor %}
                             </div>
                           </div>
-                          <div class="payment-errors"></div>
+                          <div class="payment-errors text1 accent-color"></div>
                       </div>
                       <div class="card-wrapper"></div>
                   </div>

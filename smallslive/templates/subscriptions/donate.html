@@ -1,4 +1,4 @@
-{% extends "subscriptions/become-supporter.html" %}
+{% extends "subscriptions/contribute-flow.html" %}
 {% load static from staticfiles %}
 {% load full_static %}
 {% load djstripe_tags %}
@@ -28,11 +28,6 @@
   </div>
 
   {% if not completed %}
-
-    <div id="supporterStep" class="supporter-step hidden">
-
-    </div>
-
     {% if not skip_intro %}
       <div id="supporterStepIntro" class="supporter-step">
         <div class="supporter-text flex-column">
@@ -44,8 +39,9 @@
           </p>
           {% if not user.is_authenticated %}
             <p class="text4">
-              If you choose to donate anonymously, please continue. Become a supporting member and you will recieve access to our extensive audio/video library
-              as well as the option of recieveing a gift with your donation.
+              If you choose to donate anonymously, please continue.
+              Become a supporting member and you will receive access to our extensive audio/video library
+              as well as the option of receiving a gift with your donation.
             </p>
           {% endif %}
         </div>
@@ -81,7 +77,7 @@
               </button>
             </div>
             <label class="hidden accent-color">
-              $100 is the minimum donation
+              $5 is the minimum donation
             </label>
           </div>
         </div>
@@ -89,16 +85,18 @@
 
     </div>
 
-    <div id="supporterStepBilling" class="supporter-step" style="display: none"
-         data-payment-info-url="{{ payment_info_url }}"
-         data-payment-info-pending-url="{% url 'supporter_pending' %}"
-         data-payment-info-complete-url="{% url 'become_supporter' %}">
-
-    </div>
-
     <div id="supporterStepShipping" class="supporter-step" style="display: none">
 
     </div>
+
+    {% block flow_payment %}
+      <div id="supporterStepBilling" class="supporter-step" style="display: none"
+           data-payment-info-url="{{ payment_info_url }}"
+           data-payment-info-pending-url="{% url 'supporter_pending' %}"
+           data-payment-info-complete-url="{% url 'become_supporter' %}">
+
+      </div>
+    {% endblock %}
 
     <div id="supporterStepPreview" class="supporter-step" style="display: none"
          data-donation-preview-url="{{ donation_preview_url }}">
@@ -134,6 +132,14 @@
 
   {% else %}
     <button onclick="endDonation()">Continue</button>
-
   {% endif %}
+{% endblock %}
+{% block extra_js %}
+  {{ block.super }}
+  <script>
+    $(document).ready(function () {
+      setSelected("donate", "one-time", 0, "Intro");
+      checkConfirmButton();
+    });
+  </script>
 {% endblock %}

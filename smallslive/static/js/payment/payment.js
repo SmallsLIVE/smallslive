@@ -67,6 +67,9 @@ function startStripePayment($form, action_url, completeSubpage) {
               .prop("disabled", false)
               .removeClass("disabled");
             $('#confirmButton').prop("disabled", false);
+            $mainContainer.find("#backButton").click();
+            $mainContainer.find(".payment-errors").html(data.error);
+            $mainContainer.find("#sentHint").hide();
           } else if (typeof completeSubpage !== "undefined" && completeSubpage) {
             window.notCompleteContainer.html("");
             var flowCompleteSubpage = window.subpages.get(completeSubpage);
@@ -142,7 +145,9 @@ function startPayPalPayment($form, action_url, completeSubpage) {
         window.location = data.payment_url;
       }
     },
-    error: function() {}
+    error: function(data) {
+      console.log(data);
+    }
   });
 }
 

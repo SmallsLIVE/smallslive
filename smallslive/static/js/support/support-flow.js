@@ -44,7 +44,8 @@ var getSteps = function() {
 
   if (
     selectedData.flow == "become_supporter" ||
-    selectedData.flow == "one_time_donation"
+    selectedData.flow == "one_time_donation" ||
+    selectedData.flow == "donate"
   ) {
     if (selectedData.type == "store_physical") {
       steps = [
@@ -167,7 +168,13 @@ function checkCreditCardForm() {
     return false;
   }
 
-  if ($("#name-on-card").val().length === 0) {
+  var $cardName = $("#name-on-card");
+  if ($cardName.val().length === 0) {
+    return false;
+  }
+
+  var $cardNumber = $("#card-number");
+  if ($cardNumber.hasClass("jp-card-invalid")) {
     return false;
   }
 
@@ -479,6 +486,7 @@ $(document).ready(function() {
         } else if (data && data.error) {
           // go back to previous step
           $mainContainer.find("#backButton").click();
+          $mainContainer.find(".payment-errors").html(data.error);
         } else {
           submitComplete();
         }
@@ -960,6 +968,7 @@ $(document).ready(function() {
         $mainContainer
           .find("#form-general-error")
           .text("Please correct errors above");
+        $("#backButton").click();
       } else {
         startStripePayment(
           $mainContainer.find("#payment-form"),

@@ -124,3 +124,18 @@
   {% endif %}
 
 {% endblock %}
+{% block extra_js %}
+  {{ block.super }}
+  <script>
+
+    var flow = "become_supporter";
+    var type;
+    var step = "Intro";
+
+    $(document).ready(function () {
+      setSelected(flow, type, 0, step);
+      checkConfirmButton();
+    });
+
+  </script>
+{% endblock %}

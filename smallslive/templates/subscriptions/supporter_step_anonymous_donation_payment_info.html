@@ -3,6 +3,8 @@
 
 <div class="payment-main-container">
   <form id="payment-form" method="post" action="{% url 'become_supporter' %}">
+    <input type="text" id="hiddenTypeInput" name="type" hidden>
+    <input type="number" id="hiddenAmountInput" name="amount" hidden>
     {% if error %}
       <section class="store-error container">
         <span class="store-error__message">{{ error|safe }}</span>
@@ -95,7 +97,7 @@
                   {% endfor %}
                 </div>
               </div>
-              <div class="payment-errors"></div>
+              <div class="payment-errors text1 accent-color"></div>
             </div>
             <div class="card-wrapper"></div>
           </div>
@@ -105,4 +107,3 @@
   </form>
 </div>
 
-<script src="https://www.paypalobjects.com/api/checkout.js"></script>

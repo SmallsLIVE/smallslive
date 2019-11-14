@@ -7,9 +7,6 @@
 {% load basket_tags %}
 
 {% block store_content %}
-<section id="my-downloads-product__support" class="hidden">
-  {% include 'subscriptions/product-support.html' %}
-</section>
 <div class="album big-player {% if library %}album--library{% endif %}"> <!--flex column container for album-->
   <div class="album__header"> <!--header container flex row-->
     <div class="album__header__cover"><!--album cover container-->
@@ -118,28 +115,32 @@
   </table>
   <!-- end table -->
   <!-- hidden donation popup contents. To be copied into the popup  on show-->
-    <div id="donation-confirmation-body" class="hidden">
+    <div id="donation-confirmation-body"
+         class="hidden">
       <p class="title2 accent-color title">Artist Sponsorship</p>
       <p class="text9" style="align-self: normal;">
         Sponsorships are 100% tax-deductible donations that directly support this artist.
         You may also choose to receive this album for a partially tax-deductible donation.
         You are sponsoring <span id="leaders-list">{{ comma_separated_leaders }}</span>.
       </p>
-      {% if bought_tracks %}
-        <p class="text9{% if not bought_tracks or not total_donation %} hidden{% endif %}" style="align-self: normal;">
+      {% if total_donation %}
+        <p class="text9{% if not total_donation %} hidden{% endif %}" style="align-self: normal;">
           You have made a contribution of <span id="project-total-donation">${{ total_donation }}</span> to this project.
         </p>
-        {% if is_catalogue %}
-          <p class="text9" style="align-self: normal;">
-            If you recieved access to a digital recording,
-            it can be found in your <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="accent-color underline" style="">Library</a>
-          </p>
-        {% endif %}
+      {% endif %}
+      {% if bought_tracks and is_catalogue %}
+        <p class="text9" style="align-self: normal;">
+          If you received access to a digital recording,
+          it can be found in your <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="accent-color underline" style="">Library</a>
+        </p>
       {% endif %}
       <p class="gift-content"></p>
       <div class="text4 text-centered" style="display: flex; justify-content: center;">
         <button class="white-border-button cancel-button" style="margin-rightt: 5px;">Cancel</button>
-        <button id="confirmDonationButton" class="white-border-button confirm" style="margin-left: 5px;">Continue</button>
+        <button id="confirmDonationButton"
+                class="white-border-button confirm"
+                data-support-url="{% url 'product_support' %}?product_id={{ album_product.pk }}"
+                style="margin-left: 5px;">Continue</button>
       </div>
     </div>
   <!-- end hidden donation popup contents-->
@@ -179,6 +180,5 @@
   </div>
 
 </div>
-
 
 {% endblock store_content %}
