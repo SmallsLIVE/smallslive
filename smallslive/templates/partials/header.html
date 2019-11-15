@@ -115,7 +115,7 @@
       <a href="{% url 'schedule' %}" class="{% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">Calendar</a>
       <a href="{% url 'search' %}" class="{% if request.resolver_match.url_name == 'search' %}active{% endif %}">Archive</a>
       <a href="{% url 'promotions:home' %}">Catalog</a>
-      <a href="">Education</a>
+      <a href="{% url 'education' %}">Education</a>
       <a href="{% url 'contact-and-info' %}" class="{% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</a>
 
 
