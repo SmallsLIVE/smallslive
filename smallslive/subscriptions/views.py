@@ -533,11 +533,6 @@ class DonateView(BecomeSupporterView):
 
         context = super(DonateView, self).get_context_data(**kwargs)
 
-        referer = self.request.META.get('HTTP_REFERER')
-        context['flow_type'] = 'donate'
-        if referer and 'donate' in referer:
-            context['skip_intro'] = True
-
         if self.request.GET.get('skip_intro'):
             context['skip_intro'] = True
 

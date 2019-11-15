@@ -115,20 +115,12 @@
       // Make sure next url is preserved
       var signUpAction = becomeMemberModal.find('form').attr('action');
       parts = signUpAction.split("next=");
-      var signUpNext = "";
       if (parts.length > 1) {
-        signUpNext = parts[1];
-      }
-
-      if (signInNext) {
-        if (parts.length > 1) {
-          parts[1] = signInNext;
-        } else {
-          parts.push(signInNext);
+        if (signInNext) {
+          signUpAction += "&next_after_confirm=" + signInNext;
+          becomeMemberModal.find('form').attr("action", signUpAction);
         }
-        becomeMemberModal.find('form').attr("action", parts.join("next="));
       }
-
     });
 
     var showSignIn = $('#showSignIn');

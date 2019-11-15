@@ -327,7 +327,7 @@ class SmallsEmailConfirmation(EmailConfirmation):
         if 'donate' in referer:
             activate_url += '?donate=True'
         elif 'catalog' in referer:
-            activate_url += '?catalog=True&next=' + request.GET.get('next', '')
+            activate_url += '?catalog=True&next=' + request.GET.get('next_after_confirm', '')
 
         ctx = {
             'user': self.email_address.user,
