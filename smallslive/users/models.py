@@ -326,12 +326,14 @@ class SmallsEmailConfirmation(EmailConfirmation):
         referer = request.META.get('HTTP_REFERER', '')
         if 'donate' in referer:
             activate_url += '?donate=True'
+        elif 'catalog' in referer:
+            activate_url += '?catalog=True&next=' + request.GET.get('next', '')
 
         ctx = {
-            "user": self.email_address.user,
-            "activate_url": activate_url,
-            "current_site": current_site,
-            "key": self.key,
+            'user': self.email_address.user,
+            'activate_url': activate_url,
+            'current_site': current_site,
+            'key': self.key,
         }
         ctx.update(**kwargs)
         email_template = 'account/email/email_confirmation_signup'

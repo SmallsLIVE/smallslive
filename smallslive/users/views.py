@@ -363,6 +363,26 @@ class EmailConfirmedDonateView(TemplateView):
 email_confirmed_donate = EmailConfirmedDonateView.as_view()
 
 
+class EmailConfirmedCatalogView(TemplateView):
+
+    template_name = 'account/email_confirmed_catalog.html'
+
+    def get_context_data(self, **kwargs):
+        """Set next url so that the button can lead the user to the original location"""
+        context = super(EmailConfirmedCatalogView, self).get_context_data(**kwargs)
+
+        next_url = self.request.GET.get('next')
+        if next:
+            product_id = self.request.GET.get('product_id')
+            if product_id:
+                next_url += 'product_id=' + product_id
+            context['next_url'] = next_url
+
+        return context
+
+email_confirmed_catalog = EmailConfirmedCatalogView.as_view()
+
+
 class LoginView(CoreLoginView):
 
     def get_template_names(self):

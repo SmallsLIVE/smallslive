@@ -27,8 +27,16 @@ class SmallsLiveAdapter(DefaultAccountAdapter):
     def get_email_confirmation_redirect_url(self, request):
         redirect_url = super(SmallsLiveAdapter, self).get_email_confirmation_redirect_url(request)
 
+        # Confirmation was sent from donate
         if request.GET.get('donate') == 'True':
             redirect_url = reverse('email_confirmed_donate')
+
+        # Confirmation was sent from support on catalog
+        if request.GET.get('catalog') == 'True':
+            next = request.GET.get('next', '')
+            if next:
+                next = '?next=' + next
+            redirect_url = reverse('email_confirmed_catalog') + next
 
         return redirect_url
 

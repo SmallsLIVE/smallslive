@@ -67,7 +67,7 @@ var getSteps = function() {
     } else {
       steps = ["SelectType", "Billing", "Preview", "ThankYou"];
     }
-  } else if (selectedData.flow == "event_support") {
+  } else if (selectedData.flow == "event_support" || selectedData.flow == "donate_direct") {
     steps = ["SelectType", "Billing", "Preview", "ThankYou"];
   }
 

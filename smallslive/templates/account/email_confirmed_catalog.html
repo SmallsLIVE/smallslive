@@ -46,13 +46,13 @@
           Sign in
         </button>
         {% endif %}
-        <button id="email-confirmed-donate-btn"
+        <button id="email-confirmed-catalog-btn"
                 class="white-border-button sign-in-button separated"
                 {% if not user.is_authenticated %}
                   href="#logIn"
                 {% endif %}
                 data-toggle="modal">
-          Donate now
+          Support Artist Now
         </button>
       </div>
     </div>
@@ -61,23 +61,23 @@
 
 {% block extra_js %}
   {% if not user.is_authenticated %}
-  <script>
-    $(document).ready(function(){
-      $('#email-confirmed-donate-btn').click(function () {
-        var $form = $('#form-login');
-        var action = $form.attr('action');
-        // TODO: Use URL from backend
-        action = action + '?next='  + {% url 'donate' %} ;
-        $form.attr('action', action);
+    <script>
+      $(document).ready(function(){
+        $('#email-confirmed-catalog-btn').click(function () {
+          var $form = $('#form-login');
+          var action = $form.attr('action');
+          // TODO: Use URL from backend
+          action = action + '?next='  + {% url 'donate' %} ;
+          $form.attr('action', action);
+        });
       });
-    });
-  </script>
+    </script>
   {% else %}
-  <script>
-    $(document).on('click', '#email-confirmed-donate-btn', function () {
-      window.location = "{% url 'donate' %}?skip_intro=True";
-    })
-  </script>
+    <script>
+      $(document).on('click', '#email-confirmed-catalog-btn', function(){
+        window.location = "{{ next_url }}";
+      })
+    </script>
   {% endif %}
 
 {% endblock extra_js %}

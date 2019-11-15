@@ -538,6 +538,9 @@ class DonateView(BecomeSupporterView):
         if referer and 'donate' in referer:
             context['skip_intro'] = True
 
+        if self.request.GET.get('skip_intro'):
+            context['skip_intro'] = True
+
         return context
 
 donate = DonateView.as_view()
@@ -572,7 +575,7 @@ class ProductSupportView(ProductMixin, BecomeSupporterView):
         context = super(ProductSupportView, self).get_context_data(**kwargs)
         context['flow_type'] = 'product_support'
 
-        self.object = Product.objects.get(pk=self.request.GET.get('product_id'))
+        self.object = Product.objects.get(pk=kwargs.get('product_id'))
         self.get_products()
 
         # ctx['flow_type'] = 'catalog_selection'
@@ -584,7 +587,7 @@ class ProductSupportView(ProductMixin, BecomeSupporterView):
 
         context['payment_info_url'] = reverse('payment_info')
         context['donation_preview_url'] = reverse('donation_preview')
-        context['product_id'] = self.product_id
+        context['product_id'] = self.object.pk
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
 
         context['child_product'] = self.child_product

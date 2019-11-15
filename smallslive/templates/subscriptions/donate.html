@@ -48,7 +48,7 @@
       </div>
     {% endif %}
 
-    <div id="supporterStepSelectType" class="supporter-step" style="display: none">
+    <div id="supporterStepSelectType" class="supporter-step" {% if not skip_intro %}style="display: none"{% endif %}>
 
       <div class="text9">You are making a tax deductible donation to the SmallsLIVE Foundation.<br>
         You may download your tax receipt letter in your account settings. Please choose one of the following:
@@ -138,7 +138,11 @@
   {{ block.super }}
   <script>
     $(document).ready(function () {
-      setSelected("donate", "one-time", 0, "Intro");
+      {% if skip_intro %}
+        setSelected("donate_direct", "one-time", 0, "SelectType");
+      {% else %}
+        setSelected("donate", "one-time", 0, "Intro");
+      {% endif %}
       checkConfirmButton();
     });
   </script>

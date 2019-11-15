@@ -48,6 +48,26 @@ $(document).ready(function () {
 
   });
 
+  $(document).on('click', '#supportLogIn', function (event) {
+
+    /* Before logging in, make sure the next url is set correctly
+    on the form's action so that the confirmation email con lead the user
+     to continue donating */
+
+    var $modal = $("#logIn");
+    var next = $(this).attr("data-redirect-url");
+    var action = $modal.find("form").attr("action");
+    var parts = action.split("next=");
+
+    parts[1] = next;
+    action = parts.join("next=");
+
+    $modal.modal("show");
+    $modal.find("form").attr("action", action);
+
+  });
+
+
   $(document).on("click", "#confirmDonationButton", function () {
     // Initiate the flow if PO chooses  a pop up to start  the  flow
     window.location = $(this).data("support-url");

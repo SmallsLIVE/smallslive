@@ -148,7 +148,7 @@
         <button class="white-border-button cancel-button" style="margin-rightt: 5px;">Cancel</button>
         <button id="confirmDonationButton"
                 class="white-border-button confirm"
-                data-support-url="{% url 'product_support' %}?product_id={{ album_product.pk }}"
+                data-support-url="{% url 'product_support' product_id=album_product.pk %}"
                 style="margin-left: 5px;">Continue</button>
       </div>
     </div>
@@ -177,7 +177,22 @@
         </div>
         {% endif %}
         <div>
-          <button id="projectDonationBtn" class="white-border-button buttons-row" style="margin-left: 0;">Sponsor this Artist</button>
+          {% if user.is_authenticated %}
+            {% if user.has_activated_account %}
+              <button id="projectDonationBtn"
+                      class="white-border-button buttons-row" style="margin-left: 0;">Sponsor this Artist</button>
+            {% else %}
+              <button id="supportConfirmEmailButton"
+                      class="white-border-button buttons-row"
+                      onclick="$('#inactive-dialog').modal('show');">Sponsor this Artist</button>
+            {% endif %}
+          {% else %}
+            <button id="supportLogIn"
+                    class="white-border-button sign-in-button"
+                    data-redirect-url="{% url 'product_support' product_id=album_product.pk %}">
+              Sponsor this Artist
+            </button>
+          {% endif %}
         </div>
       </div>
     </div>

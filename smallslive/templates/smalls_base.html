@@ -103,8 +103,32 @@
 
     var becomeMember = $('#becomeMemberButton');
     becomeMember.on('click', function () {
-      signInModal.modal('hide');
-      becomeMemberModal.modal('show');
+      var signInAction = signInModal.find("form").attr("action");
+      var parts = signInAction.split("next=");
+      var signInNext = "";
+      if (parts.length > 1) {
+        signInNext = parts[1];
+      }
+      signInModal.modal("hide");
+
+      becomeMemberModal.modal("show");
+      // Make sure next url is preserved
+      var signUpAction = becomeMemberModal.find('form').attr('action');
+      parts = signUpAction.split("next=");
+      var signUpNext = "";
+      if (parts.length > 1) {
+        signUpNext = parts[1];
+      }
+
+      if (signInNext) {
+        if (parts.length > 1) {
+          parts[1] = signInNext;
+        } else {
+          parts.push(signInNext);
+        }
+        becomeMemberModal.find('form').attr("action", parts.join("next="));
+      }
+
     });
 
     var showSignIn = $('#showSignIn');
