@@ -2757,12 +2757,16 @@ img.defineImageRatio {
       height: 46.1vw;
     }
 
-    @media (min-width: $screen-md) {
+    @media (min-width: $screen-md-min) {
       height: 22.85vw;
     }
 
     @media (min-width: 1366px) {
       height: 15.1vw;
+    }
+
+    @media (max-width: 960px) {
+      display: none;
     }
   }
 
