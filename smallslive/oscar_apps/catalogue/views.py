@@ -1,17 +1,11 @@
-from stripe.error import APIConnectionError, InvalidRequestError
-from django.conf import settings
 from django.core.paginator import Paginator
-from django.core.urlresolvers import reverse
 from django.http import JsonResponse
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from oscar.apps.catalogue import views as catalogue_views
 from oscar_apps.catalogue.models import Product, UserCatalogue, UserCatalogueProduct
 from oscar.apps.catalogue.views import ProductCategoryView
-from oscar_apps.partner.strategy import Selector
-from custom_stripe.models import CustomerDetail
 from artists.models import Artist
-from users.models import SmallsUser
 from .mixins import ProductMixin
 
 
@@ -99,11 +93,10 @@ class ProductDetailView(catalogue_views.ProductDetailView, ProductMixin):
                 total_donation = self.request.user.get_project_donation_amount(self.album_product.pk)
             ctx['total_donation'] = total_donation
             track_album = next((item for item in self.album_list if item['parent'] == self.object), None)
-            ctx['bought_tracks'] = []
+            ctx['is_bought'] = False
             if track_album:
-                ctx['bought_tracks'] = track_album['bought_tracks']
+                ctx['is_bought'] = True
             ctx['mp3_available'] = self.album_product.tracks.filter(stockrecords__is_hd=False).count() > 0
-            ctx['is_full'] = self.is_full
             ctx['child_product'] = self.child_product
 
         ctx['can_preview'] = self.can_preview(self.album_product.get_tracks())

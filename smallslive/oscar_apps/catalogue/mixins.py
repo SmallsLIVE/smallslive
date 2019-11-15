@@ -56,11 +56,6 @@ class ProductMixin(object):
             'digital-album'
         ]).first()
 
-        self.is_full = None
-        if variant and variant.product_class.slug == 'digital-album':
-            for album in self.album_list:
-                if self.object.pk == album['parent'].pk:
-                    self.is_full = 'full_album'
         self.child_product = variant
 
         self.gifts.sort(
@@ -95,8 +90,7 @@ class ProductMixin(object):
             for album in list(self.digital_album_list) + list(self.physical_album_list):
                 album_info = {
                     'parent': album.parent,
-                    'bought_tracks': [track.pk for track in album.parent.tracks.all()],
-                    'album_type': 'full_album',
+                    'is_bought': True,
                 }
                 # Avoid duplicates
                 album = [a for a in self.album_list if a['parent'] == album.parent]
@@ -109,21 +103,16 @@ class ProductMixin(object):
                 # Find the position of the album in the list, if it exists
                 albums_matched = [a for a in enumerate(self.album_list)
                                   if a[1]['parent'] == track.product.album]
+                total_donation = current_user.get_project_donation_amount(track.product.album.pk)
                 if albums_matched:
                     index = albums_matched[0][0]
-                    # Add the track to purchased tracks it's not there already.
-                    album = albums_matched[0][1]
-                    bought_tracks = album['bought_tracks']
-                    if track.product.pk not in bought_tracks:
-                        bought_tracks.append(track.product.pk)
-                        # Update the bought track.
-                        self.album_list[index]['bought_tracks'] = bought_tracks
+                    # Add the total donation
+                    self.album_list[index]['total_donation'] = total_donation
                 else:
                     album_info = {
                         'parent': track.product.album,
-                        'bought_tracks': [track.product.pk],
-                        'album_type': 'track_album',
-                        'total_donation': current_user.get_project_donation_amount(track.product.album.pk)
+                        'is_bought': True,
+                        'total_donation': total_donation,
                     }
                     self.album_list.append(album_info)
 

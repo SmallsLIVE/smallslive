@@ -302,9 +302,8 @@ class AlbumView(TemplateView):
         context = super(AlbumView, self).get_context_data(**kwargs)
 
         context['library'] = True
-        bought_tracks = self.request.GET.get('bought_tracks', '[]')
-        context['bought_tracks'] = ast.literal_eval(bought_tracks)
-        context['is_full'] = self.request.GET.get('album_type', '')
+        # It's not possible to buy individual tracks anymore.
+        context['is_bought'] = True
         album_product = Product.objects.filter(pk=self.request.GET.get('productId', '')).first()
         context['total_donation'] = self.request.user.get_project_donation_amount(album_product.pk)
         products = Product.objects.filter(parent=album_product, product_class__slug__in=[

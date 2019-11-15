@@ -41,8 +41,8 @@
         <!-- tracks table row -->
         <div class="track-container" style="position:relative">
           <div id="t{{ forloop.counter0 }}"
-               class="my-downloads-album__tracks-table__row flex-row{% if is_catalogue and track.pk in bought_tracks %} play-on-library{% endif %}{% if track.get_track_preview_url == 'blank.mp3' and track.pk not in bought_tracks %} no-play{% endif %}"
-               {% if is_catalogue and track.pk in bought_tracks %} data-url="{% url 'my-downloads' %}?album={{ album_product.pk }}"{% endif %}>
+               class="my-downloads-album__tracks-table__row flex-row{% if is_catalogue and is_bought %} play-on-library{% endif %}{% if track.get_track_preview_url == 'blank.mp3' and not is_bought %} no-play{% endif %}"
+               {% if is_catalogue and is_bought %} data-url="{% url 'my-downloads' %}?album={{ album_product.pk }}"{% endif %}>
             <!-- attempts to play Library tracks on Catalog must redirect to the Library -->
             <div class="hidden my-downloads-album__tracks-table__column audio">
               {% if is_catalogue %}
@@ -67,7 +67,7 @@
             <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
               <div class="my-downloads-album__tracks-table__column track title2 ">
                 {{ track.title }}
-                {% if is_catalogue and track.get_track_preview_url != 'blank.mp3' and track.pk not in bought_tracks %}
+                {% if is_catalogue and track.get_track_preview_url != 'blank.mp3' and not is_bought %}
                   <span style="font-size: 10px;">(preview)</span>
                 {% endif %}
               </div>
@@ -75,7 +75,7 @@
                 {{ track.attr.composer }}
               </div>
             </div>
-            <div class="store-buy my-downloads-album__tracks-table__column duration text1 {% if not is_catalogue %} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}{% endif %}">
+            <div class="store-buy my-downloads-album__tracks-table__column duration text1 {% if not is_catalogue %} {% if not is_bought %} disabled {% endif %}{% endif %}">
               {{ track.attr.duration }}
             </div>
           </div>
@@ -137,7 +137,7 @@
           You have made a contribution of <span id="project-total-donation">${{ total_donation }}</span> to this project.
         </p>
       {% endif %}
-      {% if bought_tracks and is_catalogue %}
+      {% if is_bought and is_catalogue %}
         <p class="text9" style="align-self: normal;">
           If you received access to a digital recording,
           it can be found in your <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="accent-color underline" style="">Library</a>
