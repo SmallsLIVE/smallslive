@@ -51,7 +51,7 @@
         {% endif%}
 
         <div id="player-audio" class="{% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}"></div>
-        <div class="player-info" id="playerAudioTextOverlay">
+        <div class="player-info audio" id="playerAudioTextOverlay">
           {% include 'events/_event_player_overlay.html' with info_label='Audio Only' %}
         </div>
       </div>
@@ -266,12 +266,13 @@
           }
         });
 
-        {% if count_metrics %}
         audioPlayer.on('pause', function () {
+          $("#playerAudioTextOverlay .event-overlay").addClass("audio");
+          {% if count_metrics %}
             window.clearInterval(activeTracker);
             activeTracker = null;
+          {% endif %}
         });
-        {% endif %}
 
         audioPlayer.on('ready', function () {
           var playlist = audioPlayer.getPlaylist();

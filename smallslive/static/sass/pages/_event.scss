@@ -385,6 +385,16 @@ $player-height: 25.3vw;
     padding-bottom: 15%;
   }
 }
+.jw-state-playing + .player-info.audio {
+  .event-overlay {
+    padding-bottom: 8%;
+  }
+}
+.jw-state-paused + .player-info.audio {
+  .event-overlay {
+    padding-bottom: 8%;
+  }
+}
 .player-info {
   @include animated;
   height: 100%;
