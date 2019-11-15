@@ -46,7 +46,9 @@ class ProductForm(oscar_forms.ProductForm):
             del self.fields['gift_price']
             del self.fields['ordering']
             self.fields['event'].widget = forms.TextInput()
-            product = kwargs.get('instance')
+            self.fields['set'].widget.attrs['placeholder'] = 'Set number (i.e. 2) or set time (i.e. 7:30 pm)'
+            self.fields['set_name'] = forms.CharField(required=False)
+            self.fields['set_name'].widget.attrs['placeholder'] = 'Optional: special name for set'
 
         else:
             del self.fields['event']
@@ -105,6 +107,11 @@ class ProductForm(oscar_forms.ProductForm):
         product.event_set = self.event_set
         # Make sure it is displayed as time. The user could have entered only the number.
         product.set = self.event_set.start.strftime('%-I:%M %p')
+        # If the user provided a set name, use that instead of the set time
+        set_name = self.cleaned_data['set_name']
+        if set_name:
+            product.set = set_name
+
         if commit:
             product.save()
 

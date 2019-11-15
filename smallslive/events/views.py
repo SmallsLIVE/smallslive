@@ -435,6 +435,9 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
         event_sets = sorted(event_sets, Event.sets_order)
         count = 0
         for event_set in event_sets:
+            # Ignore creating a ticket for the set if there's one already
+            if event_set.tickets.count():
+                continue
             ticket_form = ticket_forms[count]
             count += 1
             if ticket_form.is_valid():
@@ -445,12 +448,17 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
 
     # TODO: remove duplicate code
     def construct_ticket_forms(self, data=None):
-        count = len(self.object.get_tickets())
         ticket_forms = []
         event_sets = self.object.sets.all()
         for i, event_set in enumerate(event_sets):
-
-            ticket_form = TicketAddForm(data, prefix="set{0}".format(i + 1), number=i + 1, initial={'set_name': event_set.start.strftime('%-I:%M %p')})
+            # Do not show a form if the set is already linked to a ticket.
+            # Tickets can be created also from the store dashboard.
+            if self.object.sets.filter(tickets__event_set=event_set):
+                continue
+            ticket_form = TicketAddForm(data,
+                                        prefix='set{0}'.format(i + 1),
+                                        number=i + 1,
+                                        initial={'set_name': event_set.start.strftime('%-I:%M %p')})
             ticket_forms.append(ticket_form)
 
         return ticket_forms
