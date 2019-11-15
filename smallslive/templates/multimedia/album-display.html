@@ -44,12 +44,21 @@
                class="my-downloads-album__tracks-table__row flex-row{% if is_catalogue and track.pk in bought_tracks %} play-on-library{% endif %}{% if track.get_track_preview_url == 'blank.mp3' and track.pk not in bought_tracks %} no-play{% endif %}"
                {% if is_catalogue and track.pk in bought_tracks %} data-url="{% url 'my-downloads' %}?album={{ album_product.pk }}"{% endif %}>
             <!-- attempts to play Library tracks on Catalog must redirect to the Library -->
-
             <div class="hidden my-downloads-album__tracks-table__column audio">
-              {% if track.get_track_preview_url != 'blank.mp3' %}
-                <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{ track.attr.duration }}">
-                  {% if track.get_track_preview_url %}
-                    <source src="{{ track.get_track_preview_url|safe }}" type="audio/mpeg">
+              {% if is_catalogue %}
+                {% if track.get_track_preview_url != 'blank.mp3' %}
+                  <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{ track.attr.duration }}">
+                    {% if track.get_track_preview_url %}
+                      <source src="{{ track.get_track_preview_url|safe }}" type="audio/mpeg">
+                    {% endif %}
+                  </audio>
+                {% endif %}
+              {% else %}
+                <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
+                  {% if track.get_hd_track_stockrecord %}
+                    <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                  {% else %}
+                    <source src="{{ track.get_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
                   {% endif %}
                 </audio>
               {% endif %}
