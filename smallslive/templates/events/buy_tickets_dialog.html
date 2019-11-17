@@ -2,7 +2,7 @@
   <div class="modal-dialog">
     <div class="modal-content custom-modal">
       <div class="modal-body">
-        <p class="title2 accent-color" tabindex="0">Buy tickets for {{ event.venue.name }} jazz club </p>
+        <p class="title2 accent-color" tabindex="0">Buy tickets for {{ event.get_venue_name }} jazz club </p>
         <p class="title3" tabindex="0">{{ event.title }}</p>
         <p class="title2" tabindex="0">{{ event.date | date:"D, M d" }}</p>
         <p id="ticket-name" class="title2" tabindex="0"></p>

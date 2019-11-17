@@ -36,7 +36,7 @@
 
     <div class="flex-column flex event-container">
       {% if request.user.is_staff and event.state == "Draft" %}
-        <div id="title" class="{{ event.venue.name|lower}}-color event-venue title5"></div>
+        <div id="title" class="{{ event.get_venue_name|lower}}-color event-venue title5"></div>
       {% endif %}
       {% block event_content %}
       {% endblock %}
@@ -46,10 +46,10 @@
           <div class="event-set-info">
             <div class="current-event event-title title1">{{ event.title }}</div>
             {% if event.is_past %}
-              <div class="{{ event.venue.name|lower}}-color title2 venue-subtitle">{{ event.venue.name }}</div>
+              <div class="{{ event.get_venue_name|lower}}-color title2 venue-subtitle">{{ event.get_venue_name }}</div>
             {% endif %}
             {% if event.is_future %}
-              <div class="{{ event.venue.name|lower}}-color title2 venue-subtitle">Live at {{ event.venue.name }}</div>
+              <div class="{{ event.get_venue_name|lower}}-color title2 venue-subtitle">Live at {{ event.get_venue_name }}</div>
             {% endif %}
 
             {% if next_event %}
@@ -176,7 +176,7 @@
                       {{ related.get_date|date:'m/d/Y' }}
                     </div>
                     <div class="accent-color text-uppercase">
-                        <strong class="{{ related.venue.name|lower }}-color">{{ related.venue.name }} {% if request.user.is_staff and related.state == "Draft"%} - Draft {% endif %}</strong>
+                        <strong class="{{ related.get_venue_name|lower }}-color">{{ related.get_venue_name }} {% if request.user.is_staff and related.state == "Draft"%} - Draft {% endif %}</strong>
                     </div>
                   </div>
                 </div>

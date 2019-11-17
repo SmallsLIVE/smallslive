@@ -48,7 +48,7 @@ class SearchMixin(object):
     def search(self, entity, search_terms, page=1, order=None,
                instrument=None, date_from=None, date_to=None,
                artist_search=None, artist_pk=None, venue=None, results_per_page=60,
-               leader="all"):
+               leader="all", search_input=None):
 
         search_terms = search_terms.strip()
 
@@ -57,7 +57,8 @@ class SearchMixin(object):
 
         search = SearchObject()
 
-        search_input = search.process_input(search_terms, artist_search, instrument)
+        if not search_input:
+            search_input = search.process_input(search_terms, artist_search, instrument)
         terms, instruments, partial_instruments, number_of_performers, \
             first_name, last_name, partial_name, artist_search = search_input
 
@@ -118,38 +119,15 @@ class SearchMixin(object):
             showing_results = 'NO RESULTS'
 
         if entity == Event:
-            return blocks, showing_results, paginator.num_pages, first, last
+            return blocks, showing_results, paginator.num_pages, first, last, search_input
         else:
-            return blocks, showing_results, paginator.num_pages
+            return blocks, showing_results, paginator.num_pages, search_input
 
 
 class UpcomingEventMixin(object):
 
     def get_upcoming_events_context_data(self, context):
 
-        date_range_start = timezone.localtime(timezone.now())
-        # if it's not night when events are still happening, show next day
-        if date_range_start.hour > 6:
-            date_range_start += timedelta(days=1)
-        # don't show last nights events that are technically today
-        date_range_start = date_range_start.replace(hour=10)
-        events = Event.objects.filter(start__gte=date_range_start).order_by('start')
-        if not self.request.user.is_staff:
-            events = events.exclude(state=Event.STATUS.Draft)
-
-        venue = self.request.GET.get('venue')
-        if venue is not None:
-            venue_id = int(venue)
-            events = events.filter(venue__id=venue_id)
-            context['venue_selected'] = venue_id
-
-        # 30 events should be enough to show next 7 days with events
-        events = events[:30]
-        dates = {}
-        for k, g in groupby(events, lambda e: e.listing_date()):
-            dates[k] = list(g)
-        sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0])).items()[:7]
-        context['next_7_days'] = sorted_dates
         most_recent = Event.objects.most_recent()[:20]
         if len(most_recent):
             context['new_in_archive'] = most_recent

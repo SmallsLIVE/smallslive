@@ -6,7 +6,7 @@
     {% with order_number=order.number %}
         {% for line in order.lines.all %}
             <p>
-                Thank you for your purchase of {{ line.quantity }} ticket(s) to {{ line.title }}  at {{ line.product.event_set.event.venue.name }} on {{ line.product.event_set.event.date }}.
+                Thank you for your purchase of {{ line.quantity }} ticket(s) to {{ line.title }}  at {{ line.product.event_set.event.get_venue_name }} on {{ line.product.event_set.event.date }}.
                 Your order number is {{order_number}}. Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
             </p>
             <p>

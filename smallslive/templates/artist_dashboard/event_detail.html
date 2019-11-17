@@ -11,7 +11,7 @@
     <div class="flex-column items-center">
         <h1 class="title2 accent-color">Archived Event</h1>
         <div class="text-grey title2">
-            {% if event.venue.name %}{{ event.venue.name }} | {% endif %} {{ event.start|date:"F j, Y" }} | {{ event.start|date:"g:i A" }} & {{ event.end|date:"g:i A" }}
+            {% if event.get_venue_name %}{{ event.get_venue_name }} | {% endif %} {{ event.start|date:"F j, Y" }} | {{ event.start|date:"g:i A" }} & {{ event.end|date:"g:i A" }}
         </div>
     </div>
 

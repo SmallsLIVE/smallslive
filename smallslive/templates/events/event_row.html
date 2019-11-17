@@ -5,7 +5,7 @@
         <div>
           <div class="">{{ event.get_date|date:'m/d/Y' }}</div>
             {% if show_event_venue %}
-              <div class="{{ event.venue.name|lower}}-color">{{ event.venue.name }}</div>
+              <div class="{{ event.get_venue_name|lower}}-color">{{ event.get_venue_name }}</div>
             {% else %}
               <br>
             {% endif %}

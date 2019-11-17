@@ -749,6 +749,7 @@ body.headers-1 {
     @include caret;
     margin: 0 auto;
   }
+
 }
 
 .event-sub-w {
@@ -773,7 +774,7 @@ body.headers-1 {
 
 .search-bar-autocomplete-container {
   &.mobile-search-container {
-    @media (min-width: $screen-lg-min) {
+    @media (min-width: 960px) {
       display: none !important;
     }
   }
@@ -799,6 +800,10 @@ body.headers-1 {
   .search-bar-event {
     display: inline-block;
     padding: 6px 0;
+  }
+
+  @media(max-width: 1200px) {
+    left: 75px;
   }
 
   @media (max-width: $screen-sm-max) {

@@ -57,7 +57,7 @@
                     <div>
                       <span class="event-time">{{ event.start|date:"g:i A" }} to {{ event.end|date:"g:i A" }}</span>
                       <h3 class="event-name">{{ event.title }}</h3>
-                      <h4 class="event-venue">{{ event.venue.name }}</h4>
+                      <h4 class="event-venue">{{ event.get_venue_name }}</h4>
                     </div>
                   </div>
                 </a>

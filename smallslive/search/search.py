@@ -99,17 +99,7 @@ class SearchObject(object):
                       instruments=None, partial_instruments=None,
                       first_name=None, last_name=None, partial_name=None, artist_search=None):
 
-        print '******************  search_artist : ********************'
-        print 'terms: ', terms
-        print 'instruments: ', instruments
-        print 'first name: ', first_name
-        print 'last name: ', last_name
-        print 'partial instruments: ', partial_instruments
-        print 'partial name: ', partial_name, type(partial_name)
-        print 'artist_search: ', artist_search, type(artist_search)
-        print '------------------------------------------------------'
-
-        sqs = Artist.objects.all()
+        sqs = Artist.objects.all().prefetch_related('instruments')
 
         if instruments:
             condition = Q(instruments__name__icontains=instruments[0])

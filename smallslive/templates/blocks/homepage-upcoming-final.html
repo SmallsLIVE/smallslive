@@ -24,7 +24,7 @@
       <div class="homepage-upcoming__event__info">
         <div>
           <h1 class="event-title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1>
-          <h4 class="event-venue">{{ event.venue.name }}</h4>
+          <h4 class="event-venue">{{ event.get_venue_name }}</h4>
         </div>
         <h3 class="event-timeslot">Today | {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</h3>
         <p class="event-artists">

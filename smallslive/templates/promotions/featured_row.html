@@ -6,7 +6,7 @@
           <div class="text-grey">{{ event.get_date|date:'m/d/Y' }}</div>
           <div class="event-info-title">{{ event.title }}</div>
           {% if show_event_venue %}
-            <div class="{{ event.venue.name|lower}}-color">{{ event.venue.name }}</div>
+            <div class="{{ event.get_venue_name|lower}}-color">{{ event.get_venue_name }}</div>
           {% endif %}
         </div>
       </div>
@@ -20,7 +20,7 @@
         <div class="text-grey">{{ event.get_date|date:'m/d/Y' }}</div>
         <div class="event-info-title">{{ event.title }}</div>
         {% if show_event_venue %}
-          <div class="{{ event.venue.name|lower}}-color">{{ event.venue.name }}</div>
+          <div class="{{ event.get_venue_name|lower}}-color">{{ event.get_venue_name }}</div>
         {% endif %}
       </div>
     </div>

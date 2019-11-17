@@ -219,13 +219,10 @@ class EventQuerySet(models.QuerySet):
                 date__lte=range_end
             )
 
-        event_values = qs.values('id').annotate(
-            count=Sum('seconds_played')
-        ).order_by('-count')[:10]
+        qs = qs.order_by('-seconds_played')
 
         items = []
-        for item in event_values:
-            event = Event.objects.get(pk=item['id'])
+        for event in qs[:10]:
             items.append(event)
 
         return items
@@ -297,12 +294,15 @@ def get_event_media_storage(instance):
         params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
 
     # if venue object has credentials, use them
-    if instance.venue.get_aws_access_key_id and \
-            instance.venue.get_aws_secret_access_key and \
-            instance.venue.get_aws_storage_bucket_name:
-        params['access_key'] = instance.venue.get_aws_access_key_id
-        params['secret_key'] = instance.venue.get_aws_secret_access_key
-        params['bucket'] = instance.venue.get_aws_storage_bucket_name
+    aws_access_key_id = instance.get_aws_access_key_id()
+    aws_secret_access_key = instance.get_aws_secret_access_key()
+    aws_storage_bucket_name = instance.get_aws_storage_bucket_name()
+    if aws_access_key_id and \
+            aws_secret_access_key and \
+            aws_storage_bucket_name:
+        params['access_key'] = aws_access_key_id
+        params['secret_key'] = aws_secret_access_key
+        params['bucket'] = aws_storage_bucket_name
 
     return ImageS3Storage(**params)
 
@@ -368,6 +368,9 @@ class Event(TimeStampedModel):
             cache.set(cache_key, venue_info)
 
         return venue_name
+
+    def get_venue(self):
+        return self.venue
 
     def get_date(self):
 
@@ -894,6 +897,39 @@ class Event(TimeStampedModel):
 
         return is_public
 
+    def get_aws_access_key_id(self):
+        cache_key = 'venue_{}_aws_access_key_id'.format(self.venue_id)
+        cached_venue_aws_access_key_id = cache.get(cache_key)
+        if cached_venue_aws_access_key_id:
+            aws_access_key_id = cached_venue_aws_access_key_id
+        else:
+            aws_access_key_id = self.venue.get_aws_access_key_id
+            cache.set(cache_key, aws_access_key_id)
+
+        return aws_access_key_id
+
+    def get_aws_secret_access_key(self):
+        cache_key = 'venue_{}_aws_secret_access_key'.format(self.venue_id)
+        cached_venue_aws_secret_access_key = cache.get(cache_key)
+        if cached_venue_aws_secret_access_key:
+            aws_secret_access_key = cached_venue_aws_secret_access_key
+        else:
+            aws_secret_access_key = self.venue.get_aws_secret_access_key
+            cache.set(cache_key, aws_secret_access_key)
+
+        return aws_secret_access_key
+
+    def get_aws_storage_bucket_name(self):
+        cache_key = 'venue_{}_aws_storage_bucket_name'.format(self.venue_id)
+        cached_venue_aws_storage_bucket_name = cache.get(cache_key)
+        if cached_venue_aws_storage_bucket_name:
+            aws_storage_bucket_name = cached_venue_aws_storage_bucket_name
+        else:
+            aws_storage_bucket_name = self.venue.get_aws_storage_bucket_name
+            cache.set(cache_key, aws_storage_bucket_name)
+
+        return aws_storage_bucket_name
+
 
 class RecordingQuerySet(models.QuerySet):
     def video(self):
@@ -1185,6 +1221,7 @@ class ShowDefaultTime(models.Model):
             return self.first_set.strftime('%I:%M %p') + " - " + first_set_end.strftime('%I:%M %p')
 
     def get_venue_name(self):
+
         return self.venue.get_name
 
     def __unicode__(self):

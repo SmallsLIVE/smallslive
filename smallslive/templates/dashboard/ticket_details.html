@@ -19,7 +19,7 @@
 <div class="container">
   <div class="row">
     <h1>{{ event_set.event.title }}
-    at {{ event_set.event.venue.name }}
+    at {{ event_set.event.get_venue_name }}
       <small>{{ event_set.event.date }} </small>
     </h1>
   </div>

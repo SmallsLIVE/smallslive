@@ -87,7 +87,7 @@ class MainSearchView(View, SearchMixin):
 
         if entity == 'artist':
 
-            artists_blocks, showing_results, num_pages = self.search(
+            artists_blocks, showing_results, num_pages, search_input = self.search(
                 Artist, main_search, page, instrument=instrument, artist_search=artist_search)
 
             context = {
@@ -98,7 +98,7 @@ class MainSearchView(View, SearchMixin):
 
         elif entity == 'event':
 
-            events, showing_results, num_pages, first, last = self.search(
+            events, showing_results, num_pages, first, last, search_input = self.search(
                 Event, main_search,
                 page=page, order=order, date_from=date_from,
                 date_to=date_to, artist_pk=artist_pk, venue=venue,
@@ -241,7 +241,7 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
         num_pages = 0
 
         if not artist_id:
-            artists_blocks, showing_artist_results, num_pages = self.search(
+            artists_blocks, showing_artist_results, num_pages, search_input = self.search(
                 Artist, q, artist_search=artist_search)
             if artists_blocks and len(artists_blocks[0]) == 1:
                 artist=artists_blocks[0][0]
@@ -258,16 +258,16 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
             artist_id = artist.pk
 
         # Populate upcoming shows as well. That is the only case for now.
-        upcoming_event_blocks, showing_event_results, upcoming_num_pages, first, last = self.search(
+        upcoming_event_blocks, showing_event_results, upcoming_num_pages, first, last, search_input = self.search(
             Event, '', results_per_page=60,
-            artist_pk=artist_id, date_from=datetime.datetime.today())
+            artist_pk=artist_id, date_from=datetime.datetime.today(), search_input=search_input)
 
         artist_context['upcoming_events'] = upcoming_event_blocks[0] if upcoming_event_blocks else []
         artist_context['showing_artist_results'] = showing_artist_results
         artist_context['artists_blocks'] = artists_blocks
         artist_context['artist_num_pages'] = num_pages
 
-        return artist_context
+        return artist_context, search_input
 
     def get_instrument_context(self):
 
@@ -291,20 +291,18 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
         query_term, query_context = self.get_query_context()
         context.update(query_context)
 
-        artist_context = self.get_artist_context(query_term, artist_search)
+        artist_context, search_input = self.get_artist_context(query_term, artist_search)
         context.update(artist_context)
 
         instrument_context = self.get_instrument_context()
         context.update(instrument_context)
 
         artist_id = context['artist'].pk if context['artist'] else None
-        event_blocks, showing_event_results, num_pages, first, last = self.search(
-            Event, query_term, results_per_page=60, artist_pk=artist_id, date_from=date_from, date_to=date_to)
+        event_blocks, showing_event_results, num_pages, first, last, search_input = self.search(
+            Event, query_term, results_per_page=60, artist_pk=artist_id, date_from=date_from, date_to=date_to, search_input=search_input)
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []
-        context['popular_in_archive'] = Event.objects.get_most_popular_uploaded(RANGE_MONTH)
-        context['popular_select'] = 'alltime'
         context['current_page'] = page = 1
         context['last_page'] = num_pages
         context['range'] = range(

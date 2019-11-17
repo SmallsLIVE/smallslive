@@ -23,7 +23,7 @@
                     <td>{{ event.subtitle }}</td>
                     <td>{{ event.date }}</pre></td>
                     <td>{{ event.get_range.0 }}</td>
-                    <td>{{ event.venue.name }}</td>
+                    <td>{{ event.get_venue_name }}</td>
                     <td>
                         <a class="btn btn-info" href="{% url 'dashboard:ticket_details' pk=event.sets.first.id %}">Report</a>
                     </td>

@@ -14,7 +14,7 @@
                   <p class="accent-color">Draft</p>
                 {% endif %}
               </div>
-              <div class="accent-color">{{ event.venue.name }}</div>
+              <div class="accent-color">{{ event.get_venue_name }}</div>
               <div class="text-grey">{{ event.start|date:"g:i A" }} &
                 {{ event.end|date:"g:i A" }}</div>
             </div>

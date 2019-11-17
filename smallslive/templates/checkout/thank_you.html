@@ -14,8 +14,8 @@
              <div class="store-header__title__container">
                   {% if order.has_tickets %}
                   <div class="title1 title1--thankyou center"> Reservation Confirmed for
-                    <span class="{{ order.lines.first.product.event_set.event.venue.name|lower }}-color {{ order.lines.first.product.event_set.event.venue.name|lower }}-color--thankyou">
-                      {{ order.lines.first.product.event_set.event.venue.name }} Jazz Club
+                    <span class="{{ order.lines.first.product.event_set.event.get_venue_name|lower }}-color {{ order.lines.first.product.event_set.event.get_venue_name|lower }}-color--thankyou">
+                      {{ order.lines.first.product.event_set.event.get_venue_name }} Jazz Club
                     </span>
                   </div>
                   {% else %}
@@ -41,7 +41,7 @@
                           <span class="store-done__info-list__title">Date:</span> {{ order.lines.first.product.event_set.event.date }}
                         </li>
                         <li>
-                          <span class="store-done__info-list__title">Venue:</span> {{ order.lines.first.product.event_set.event.venue.name }} Jazz Club
+                          <span class="store-done__info-list__title">Venue:</span> {{ order.lines.first.product.event_set.event.get_venue_name }} Jazz Club
                         </li>
                         <li>
                           <span class="store-done__info-list__title">Order Number:</span> {{order.lines.first.order.number}}

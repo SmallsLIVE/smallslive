@@ -73,7 +73,7 @@
                 {% endif %}
                 <span class="event-date">{{ event.start|date:"n/j/Y" }}</span>
                 <h4 class="event-name">{{ event.title }}</h4>
-                <h4 class="event-venue">{{ event.venue.name }}</h4>
+                <h4 class="event-venue">{{ event.get_venue_name }}</h4>
               </a>
             </div>
           {% endfor %}
@@ -92,7 +92,7 @@
                 {% endif %}
                 <span class="event-date">{{ event.start|date:"n/j/Y" }}</span>
                 <h4 class="event-name">{{ event.title }}</h4>
-                <h4 class="event-venue">{{ event.venue.name }}</h4>
+                <h4 class="event-venue">{{ event.get_venue_name }}</h4>
               </a>
             </div>
           {% endfor %}
@@ -137,7 +137,7 @@
                     <div>
                       <span class="event-time">{{ event.start|date:"g:i A" }} to {{ event.end|date:"g:i A" }}</span>
                       <h3 class="event-name">{{ event.title }}</h3>
-                      <h3 class="event-venue">{{ event.venue.name }}</h3>
+                      <h3 class="event-venue">{{ event.get_venue_name }}</h3>
                     </div>
                   </div>
                   <div class="no-bg-calendar__event__media-indicators-container">
