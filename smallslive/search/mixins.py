@@ -62,15 +62,6 @@ class SearchMixin(object):
         terms, instruments, partial_instruments, number_of_performers, \
             first_name, last_name, partial_name, artist_search = search_input
 
-        print 'terms: ', terms
-        print 'instruments: ', instruments
-        print 'partial instruments: ', partial_instruments
-        print 'performers: ', number_of_performers
-        print 'first: ', first_name
-        print 'last: ', last_name
-        print 'partial name: ', partial_name, type(partial_name)
-        print 'entity: ', entity
-
         first = None
         last = None
         if entity == Artist:

@@ -303,6 +303,10 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []
+        # Display most popular only if nothing was searched.
+        if not [x for x in search_input if x]:
+            context['popular_in_archive'] = Event.objects.get_most_popular_uploaded(RANGE_MONTH)
+            context['popular_select'] = 'alltime'
         context['current_page'] = page = 1
         context['last_page'] = num_pages
         context['range'] = range(
