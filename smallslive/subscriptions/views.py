@@ -265,6 +265,8 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
 
+        current_user = self.request.user
+
         context = super(BecomeSupporterView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['payment_info_url'] = reverse('payment_info')
@@ -277,8 +279,8 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         event_context = self.get_event_context()
         context.update(event_context)
 
-        if not self.request.user.is_anonymous():
-            context['can_free_donate'] = self.request.user.get_donation_amount >= 100
+        if not current_user.is_anonymous():
+            context['can_free_donate'] = current_user.get_donation_amount >= 100
         else:
             context['can_free_donate'] = False
 
@@ -287,7 +289,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         else:
             # Whatever the flow type is, it needs to be become a supporter if the user
             # is not a supporter yet. They can't donate or get stuff from the Catalog.
-            if not self.request.user.can_watch_video:
+            if not current_user.can_watch_video:
                 context['flow_type'] = 'become_supporter'
 
             # We need to clear the basket in case the user has anything in there.
@@ -297,7 +299,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
             context['costs'] = []
             selector = Selector()
             strategy = selector.strategy(
-                request=self.request, user=self.request.user)
+                request=self.request, user=current_user)
             for product in Product.objects.filter(product_class__slug='gift'):
                 context['gifts'].append(product)
                 if product.variants.count():
@@ -309,6 +311,11 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
 
             context['gifts'].sort(
                 key=lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
+
+        # Don't skip intro if user is not active. We need to force them to stay
+        # on the Intro page with the "Confirm Email" button.
+        if not (current_user.is_authenticated() and not current_user.has_activated_account):
+            context['skip_intro'] = self.request.GET.get('skip_intro')
 
         return context
 

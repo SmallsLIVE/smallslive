@@ -58,7 +58,7 @@
       </div>
     {% endif %}
 
-    <div id="supporterStepSelectType" class="supporter-step" style="display: none">
+    <div id="supporterStepSelectType" class="supporter-step" {% if not skip_intro %}style="display: none"{% endif %}>
       {% include 'subscriptions/supporter_step_select_type.html' %}
     </div>
 
@@ -110,7 +110,15 @@
 
   {% if not completed %}
     <button id="backButton" class="button-bordered">Back</button>
-    <button id="confirmButton" data-hide='true' class="button-bordered">Confirm</button>
+
+    {% if not user.has_activated_account %}
+      <button id="supportConfirmEmailButton"
+              onclick="$('#inactive-dialog').modal('show');">Confirm email
+      </button>
+    {% else %}
+      <button id="confirmButton" data-hide='true' class="button-bordered">Confirm</button>
+    {% endif %}
+
   {% else %}
     {% if flow_type = "become_supporter" %}
     <a href="{% url 'archive' %}">
@@ -131,6 +139,9 @@
     var flow = "become_supporter";
     var type;
     var step = "Intro";
+    {% if skip_intro %}
+      step = "SelectType";
+    {% endif %}
 
     $(document).ready(function () {
       setSelected(flow, type, 0, step);

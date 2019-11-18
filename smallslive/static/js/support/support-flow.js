@@ -945,9 +945,27 @@ $(document).ready(function() {
       url: $form.attr("action"),
       data: $form.serialize(),
       success: function(data) {
-        window.location = data.location;
+        if (data.errors) {
+          var errors = '';
+          for (var key in data.errors) {
+            errors += ' '  + data.errors[key];
+          }
+          $mainContainer.find("#sentHint").hide();
+          $mainContainer
+            .find("#form-general-error")
+            .text("Please correct errors: " + errors);
+          $("#backButton").click();
+        } else {
+          window.location = data.location;
+        }
       },
-      error: function() {}
+      error: function() {
+        $mainContainer.find("#sentHint").hide();
+        $mainContainer
+          .find("#form-general-error")
+          .text("Unknown error please contact support");
+        $("#backButton").click();
+      }
     });
   }
 
