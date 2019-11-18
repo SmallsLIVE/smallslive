@@ -240,6 +240,7 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
         showing_artist_results = ''
         num_pages = 0
 
+        search_input = None
         if not artist_id:
             artists_blocks, showing_artist_results, num_pages, search_input = self.search(
                 Artist, q, artist_search=artist_search)
