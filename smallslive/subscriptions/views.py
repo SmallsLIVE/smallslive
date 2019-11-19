@@ -480,6 +480,7 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
             BecomeSupporterCompleteView, self
         ).get_context_data(**kwargs)
         context['completed'] = True
+        context['flow_type'] = self.request.GET.get('flow_type') or context.get('flow_type')
 
         payment_id = self.request.GET.get('payment_id')
         if payment_id:
