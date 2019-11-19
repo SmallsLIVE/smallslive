@@ -94,7 +94,7 @@ class ProductForm(oscar_forms.ProductForm):
                 raise ValidationError("Set number does not exist")
         else:
             try:
-                set_time = parser.parse("9:00 pm").time()
+                set_time = parser.parse(set_number).time()
                 self.event_set = EventSet.objects.filter(event=event, start=set_time).first()
                 if not self.event_set:
                     raise ValidationError("Could not find {} for {}".format(set_time, event))
