@@ -45,7 +45,7 @@ function initializeButtons() {
   $next.each(function () {
       $(this).css('visibility', 'hidden');
       var $last = $(this).next().find('article').last();
-      if (!$last.visible()) {
+      if (!$last.visible(false, false, 'horizontal')) {
           $(this).css('visibility', 'visible');
       }
   });
