@@ -53,6 +53,7 @@ $(document).ready(function () {
     /* Before logging in, make sure the next url is set correctly
     on the form's action so that the confirmation email con lead the user
      to continue donating */
+    $("#supportConfirmationDialog").modal("hide");
 
     var $modal = $("#logIn");
     var next = $(this).attr("data-redirect-url");

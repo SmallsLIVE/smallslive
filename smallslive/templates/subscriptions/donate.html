@@ -50,11 +50,37 @@
 
     <div id="supporterStepSelectType" class="supporter-step" {% if not skip_intro %}style="display: none"{% endif %}>
 
+      {% if user.is_authenticated %}
+      <div class="button-row button-row-margin supporter-type-select">
+        <div class="store__form__selection__option">
+          <button class="select-supporter-type-toggle active" data-id="one-time">
+            One Time Donation
+          </button>
+        </div>
+        <div class="store__form__selection__option">
+          <button class="select-supporter-type-toggle" data-id="gift">
+            Choose a Gift Tier
+          </button>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if not user.has_access_archived %}
+        <p class="text9" style="margin-top: 30px;">Please consider becoming a supporter to access the SmallsLIVE Archive.
+        </p>
+        <div class="text4 text-centered">
+          <a class="white-border-button"
+             href="{% url 'become_supporter' %}" style="margin: 30px 0;">
+            Become a Supporting Member
+          </a>
+        </div>
+      {% endif %}
+
       <div class="text9">You are making a tax deductible donation to the SmallsLIVE Foundation.<br>
         You may download your tax receipt letter in your account settings. Please choose one of the following:
       </div>
 
-      <div class="flex-column items-center  supporter-plan-input">
+      <div id="one-time-input" class="flex-column items-center supporter-plan-input">
         <div class="section-title section-title-no-padded">
           <div class="title1">One Time Donation</div>
         </div>
@@ -82,6 +108,10 @@
           </div>
         </div>
       </div>
+
+      {% if user.is_authenticated %}
+        {% include 'subscriptions/supporter_gift_selection.html' with hidden=True %}
+      {% endif %}
 
     </div>
 
@@ -145,7 +175,7 @@
 
         // Set a different "next url". After logging in, they will go
         // through the supporter flow skipping the intro.
-        var next  = "{% url "become_supporter" %}?skip_intro=True";
+        var next  = "{% url 'donate' %}";
 
         var action = $("#becomeMemberDialog").find("form").attr("action");
         var parts = action.split("next=");
@@ -155,7 +185,7 @@
 
         action = $("#login-modal").find("form").attr("action");
         var parts = action.split("next=");
-        parts[1] = next;
+        parts[1] = next + "?skip_intro=True";
         action = parts.join("next=");
         $("#login-modal").find("form").attr("action", action);
 

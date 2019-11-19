@@ -224,7 +224,11 @@ var checkConfirmButton = function() {
     $becomeMemberButton.show();
     $confirmEmailButton.show();
   } else {
-    $mainContainer.find("#backButton").show();
+    if (selectedData.flow == "donate_direct") {
+      $mainContainer.find("#backButton").hide();
+    } else {
+      $mainContainer.find("#backButton").show();
+    }
     $becomeMemberButton.hide();
     $confirmEmailButton.hide();
   }
