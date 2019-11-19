@@ -164,8 +164,8 @@ function toggleEventFilters(filters) {
 function sendArtistRequest(callback, callbackParam) {
   callback = callback || function() {};
 
-  var artistInstrument = $("#select-instrument-btn").data("instrument");
-  var artistSearchTerm = $("#artist-search").val();
+  var artistInstrument = ""; //$("#select-instrument-btn").data("instrument");
+  var artistSearchTerm = ""; //$("#artist-search").val();
   var searchTerm = $("#desktop-search-bar").val();
 
   var filters = {
