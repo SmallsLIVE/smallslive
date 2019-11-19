@@ -82,8 +82,14 @@ class ProductForm(oscar_forms.ProductForm):
     def clean(self):
         """Link set number or set time with an EventSet instance"""
         cleaned_data = super(ProductForm, self).clean()
-        set_number = cleaned_data['set']
-        event = cleaned_data['event']
+
+        set_number = cleaned_data.get('set')
+        event = cleaned_data.get('event')
+
+        if not event and not set_number:
+            # It is not a ticket
+            return
+
         if set_number.isdigit():
             set_number = int(set_number)
             event_sets = EventSet.objects.filter(event=event)
@@ -103,14 +109,16 @@ class ProductForm(oscar_forms.ProductForm):
 
     def save(self, commit=True):
         product = super(ProductForm, self).save(commit=False)
-        # Linked to real object on form clean
-        product.event_set = self.event_set
-        # Make sure it is displayed as time. The user could have entered only the number.
-        product.set = self.event_set.start.strftime('%-I:%M %p')
-        # If the user provided a set name, use that instead of the set time
-        set_name = self.cleaned_data['set_name']
-        if set_name:
-            product.set = set_name
+
+        if product.get_product_class().slug == 'ticket':
+            # Linked to real object on form clean
+            product.event_set = self.event_set
+            # Make sure it is displayed as time. The user could have entered only the number.
+            product.set = self.event_set.start.strftime('%-I:%M %p')
+            # If the user provided a set name, use that instead of the set time
+            set_name = self.cleaned_data['set_name']
+            if set_name:
+                product.set = set_name
 
         if commit:
             product.save()
