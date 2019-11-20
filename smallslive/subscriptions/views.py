@@ -494,6 +494,8 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
                     if album_product.is_child:
                         album_product = album_product.parent
                     context['comma_separated_leaders'] = album_product.get_leader_strings()
+                    context['album_product'] = album_product
+
             else:
                 source = Source.objects.filter(reference=payment_id).first()
                 if source and user.is_authenticated():
