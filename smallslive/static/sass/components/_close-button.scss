@@ -1,3 +1,4 @@
+
 .close-button, .remove-comment, .reset-search {
   cursor: pointer;
   position: absolute;
@@ -27,4 +28,13 @@
   &:after {
     transform: rotate(-45deg);
   }
+}
+
+/* Hide close on modals with cancel as per Spike's request */
+/* TODO: remove html if this is confirmed */
+.modal-content:not(.no-cancel) {
+  .close-button {
+    display: none;
+  }
+
 }

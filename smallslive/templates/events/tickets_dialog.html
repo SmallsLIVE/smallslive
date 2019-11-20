@@ -1,25 +1,26 @@
 <div class="modal fade" id="ticketsDialog" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content custom-modal">
+    <div class="modal-content custom-modal no-cancel">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
         <p class="title2 accent-color">Tickets</p>
-            {% if event.tickets_url %}
-                <p class="title3">Available from {{ event.get_venue_name|capfirst }}</p>
-                <a href="{{ event.tickets_url }}" target="_blank" rel="noreferrer">
-                  <button class="white-border-button">Buy from {{ event.get_venue_name|capfirst }}</button>
-                </a>
-            {% else %}
-                <p class="title3">Advance Tickets are not available for this show.</p>
-                <p class="text4 text-grey">
-                    {# {{ event.get_venue_name|default:'smalls'|capfirst }} #}
-                    You may purchase a ticket on the evening of the event for your desired set.
-                    Tickets for this event are only sold at the door, first come/first served.
-                    Please arrive 30 minutes in advance of the set.
-                    Tickets are also good for entry at Mezzrow at no additional charge depending on availability.
-                </p>
-            {% endif %}
+          {% if event.tickets_url %}
+            <p class="title3">Available from {{ event.get_venue_name|capfirst }}</p>
+            <a href="{{ event.tickets_url }}" target="_blank" rel="noreferrer">
+              <button class="white-border-button">Buy from {{ event.get_venue_name|capfirst }}</button>
+            </a>
+          {% else %}
+            <p class="title3">Advance Tickets are not available for this show.</p>
+            <p class="text4 text-grey">
+                {# {{ event.get_venue_name|default:'smalls'|capfirst }} #}
+                You may purchase a ticket on the evening of the event for your desired set.
+                Tickets for this event are only sold at the door, first come/first served.
+                Please arrive 30 minutes in advance of the set.
+                Tickets are also good for entry at Mezzrow at no additional charge depending on availability.
+            </p>
+          {% endif %}
         </p>
+
       </div>
     </div>
   </div>

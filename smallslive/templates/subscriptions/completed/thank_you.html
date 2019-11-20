@@ -51,7 +51,7 @@
         </p>
         {% if album_product %}
           <p class="text5 text-center" style="margin-top: 60px;">
-            Your digitals recordings can be found in your <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="accent-color underline" style="">Library</a>
+            Your digital recordings can be found in your <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="accent-color underline" style="">Library</a>
           </p>
         {%  endif %}
       {% elif flow_type == 'event_support' %}
@@ -78,7 +78,9 @@
       <button>Continue</button>
     </a>
   {% elif flow_type == 'donate' %}
-    <button onclick="endDonation()">Continue</button>
+    <a href="{% url 'home' %}">
+      <button>Home</button>
+    </a>
   {% elif flow_type == 'product_support' %}
     <a href="{% url 'promotions:home' %}">
       <button>Continue browsing the Catalog</button>

@@ -51,6 +51,10 @@ body.mobile-search-header-shown {
   @include animated();
   display: flex;
   flex-direction: column;
+
+  .set-password {
+    min-height: 60vh;
+  }
 }
 
 .event-container {

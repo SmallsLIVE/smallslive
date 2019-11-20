@@ -2,7 +2,7 @@
      tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
   <div class="modal-dialog medium">
-    <div class="modal-content custom-modal">
+    <div class="modal-content custom-modal no-cancel">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
         {% if not event.streamable %}
@@ -12,6 +12,7 @@
         {% else %}
           <p class="title2 accent-color nowrap">Streaming for this event will be available 15 minutes before it begins</p>
         {% endif %}
+
       </div>
     </div>
   </div>

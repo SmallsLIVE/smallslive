@@ -1,46 +1,43 @@
 {% if is_event_user_not_confirmed or user.is_authenticated and show_email_confirmation_dialog %}
   <div class="modal" role="dialog" id="inactive-dialog" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content  custom-modal">
-                <a href="#" class="close-button"></a>
-          <div class="modal-body">
-              <p class="title1 send">Please confirm your email address</p>
-              <p class="text9 send">
-                {% if email_sent %}
-                  You will receive an e-mail to: <span class="accent-color">{{ user.email }}</span> within 10 minutes.  Click the link in the e-mail to confirm your address.
-                {% else %}
-                  A confirmation e-mail was sent on {{ user.date_joined|date:"M j, Y"}} to <span class="accent-color">{{ user.email }}</span>.
-                  <br>Click the link in the e-mail to confirm your address.
-                {% endif %}
-              </p>
-              <p class="title1 sent hidden">Confirmation email re-sent</p>
-              <p class="text9 text-justified sent hidden">
-                Your confirmation e-mail has been re-sent to: <span class="accent-color">{{ user.email }}</span> and should appear in your inbox within 10 minutes. Click the link in your e-mail to confirm your address.
-              </p>
-              <div class="text4 text-centered" style="margin-top: 40px">
-                  <div>
-                      <form id="resendConfirmationForm"
-                            action="{% url 'account_email' %}"
-                            method="post" style="display: inline">
-                          {% csrf_token %}
-                          <input id="user_email_hidden" type="hidden" name="email" value="{{ user.email }}">
-                          <input id="action_send" type="hidden" name="action_send" value="">
-                          <input id="submitConfirmationButton" type="submit" class="white-border-button" value="Resend confirmation email">
-                      </form>
-                  </div>
-                  <p>
-
-                  </p>
-                  <p>
-                      <a class="accent-color hover-underline" href="mailto:accountsupport@smallslive.com">
-                          accountsupport@smallslive.com
-                      </a>
-                  </p>
-              </div>
-          </div>
-          <div>
+      <div class="modal-content custom-modal no-cancel">
+        <a href="#" class="close-button"></a>
+        <div class="modal-body">
+          <p class="title1 send">Please confirm your email address</p>
+          <p class="text9 send">
+            {% if email_sent %}
+              You will receive an e-mail to: <span class="accent-color">{{ user.email }}</span> within 10 minutes.  Click the link in the e-mail to confirm your address.
+            {% else %}
+              A confirmation e-mail was sent on {{ user.date_joined|date:"M j, Y"}} to <span class="accent-color">{{ user.email }}</span>.
+              <br>Click the link in the e-mail to confirm your address.
+            {% endif %}
+          </p>
+          <p class="title1 sent hidden">Confirmation email re-sent</p>
+          <p class="text9 text-justified sent hidden">
+            Your confirmation e-mail has been re-sent to: <span class="accent-color">{{ user.email }}</span> and should appear in your inbox within 10 minutes. Click the link in your e-mail to confirm your address.
+          </p>
+          <div class="text4 text-centered" style="margin-top: 40px">
+            <div>
+              <form id="resendConfirmationForm"
+                    action="{% url 'account_email' %}"
+                    method="post" style="display: inline">
+                {% csrf_token %}
+                <input id="user_email_hidden" type="hidden" name="email" value="{{ user.email }}">
+                <input id="action_send" type="hidden" name="action_send" value="">
+                <input id="submitConfirmationButton" type="submit" class="white-border-button" value="Resend confirmation email">
+              </form>
+            </div>
+            <p>
+            </p>
+            <p>
+              <a class="accent-color hover-underline" href="mailto:accountsupport@smallslive.com">
+                  accountsupport@smallslive.com
+              </a>
+            </p>
           </div>
         </div>
+      </div>
     </div>
   </div>
   <script>
