@@ -131,21 +131,28 @@
     }
 
     $(document).ready(function () {
-    $('.banner-button-info').on('click', function() {
-      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');        
-    });
-    $('#becomeMemberDialog').on('mouseenter', function() {
-      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');        
-    });
-    $('#becomeMemberDialog').on('mouseleave', function() {
-      $('.carousel').slick('slickSetOption', 'autoplay', true).slick('slickPlay');        
-    });
-    $('.slick-track').on('click', function(){
-      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');  
-    })
-      $('.carousel').slick({ infinite: true, dots: true, arrows: false, autoplay: true, autoplaySpeed: 7000, pauseOnHover: false })
-    $('.slick-initialized').on('swipe', function(event, slick, direction){
-      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause'); 
-    });
+      $('.banner-button-info').on('click', function() {
+        $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');
+      });
+      $('.banner-button-info').on('mouseenter', function() {
+        $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');
+      });
+      $('.banner-button-info').on('mouseleave', function() {
+        $('.carousel').slick('slickSetOption', 'autoplay', true).slick('slickPlay');
+      });
+      $('#becomeMemberDialog').on('mouseenter', function() {
+        $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');
+      });
+      $('#becomeMemberDialog').on('mouseleave', function() {
+        $('.carousel').slick('slickSetOption', 'autoplay', true).slick('slickPlay');
+      });
+
+      $('.slick-track').on('click', function(){
+        $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');
+      })
+        $('.carousel').slick({ infinite: true, dots: true, arrows: false, autoplay: true, autoplaySpeed: 7000, pauseOnHover: false })
+      $('.slick-initialized').on('swipe', function(event, slick, direction){
+        $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');
+      });
     });
 </script> {% endblock %}

@@ -31,6 +31,18 @@
     color: grey;
     cursor: pointer;
   }
+
+  &:hover {
+    background-color: $white-transparent;
+
+    &:disabled {
+      background-color: transparent;
+    }
+
+    &.disabled {
+      background-color: transparent;
+    }
+  }
 }
 
 .pp-btn {
