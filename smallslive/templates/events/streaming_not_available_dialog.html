@@ -13,6 +13,14 @@
           <p class="title2 accent-color nowrap">Streaming for this event will be available 15 minutes before it begins</p>
         {% endif %}
 
+        {% if not user.is_authenticated %}
+          <button class="white-border-button" onclick="$('#streamingNotAvailableDialog').modal('hide'); $('#becomeMemberDialog').modal('show');">Become a member</button>
+        {% elif not user.has_activated_account %}
+          <button class="white-border-button" onclick="$('#streamingNotAvailableDialog').modal('hide'); $('#inactive-dialog').modal('show');">Confirm email</button>
+        {% elif not user.can_watch_video %}
+          <a class="white-border-button" href="{% url 'become_supporter' %}">Become a supporter</a>
+        {% endif %}
+
       </div>
     </div>
   </div>
