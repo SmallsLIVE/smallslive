@@ -130,7 +130,7 @@
   }
 
   .main-title {
-    @include title4;
+    @include event-overlay-title;
     margin-bottom: 70px;
 
     .white-text {
