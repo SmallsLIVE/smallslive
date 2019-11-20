@@ -7,9 +7,9 @@
         {% for event in day.day_events %}
             <div class="flex-column day-event">
                 <a href="{{ event.get_absolute_url }}">
-                    <div class="{{ event.get_venue_name|lower}}-color text2"> {{event.venue}} </div>
-                    <div class="text-grey text2"> {{event.get_actual_start_end.0|date:'g:i A'}} - {{event.get_actual_start_end.1|date:'g:i A' }}</div>
-                    <div class="text2 day_event_title"> {{event.title}} {% if event.is_draft %}- <span class="accent-color">DRAFT</span>{% endif %}</div>
+                    <div class="{{ event.get_venue_name|lower}}-color text2"> {{ event.venue }} </div>
+                    <div class="text-grey text2"> {{ event.get_set_hours_display }}</div>
+                    <div class="text2 day_event_title"> {{ event.title }} {% if event.is_draft %}- <span class="accent-color">DRAFT</span>{% endif %}</div>
                 </a>
             </div>
         {% empty %}
