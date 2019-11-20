@@ -251,11 +251,15 @@ class Artist(models.Model):
         return self.current_period_ratio * 100
     
     @property
-    def archive_shows(self):
-        return Event.objects.filter(
+    def archived_shows(self):
+        sqs = Event.objects.filter(
             performers=self,
             recordings__media_file__isnull=False,
-            recordings__state=Recording.STATUS.Published).distinct().count()
+            recordings__state=Recording.STATUS.Published).distinct()
+
+        print sqs.query
+        print sqs.count()
+        return sqs.count()
 
 
 class Instrument(models.Model):

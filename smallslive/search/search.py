@@ -231,7 +231,6 @@ class SearchObject(object):
                 instruments_condition &= Q(performers__pk=artist_pk)
                 sqs = sqs.filter(instruments_condition)
             elif number_of_performers:
-                sqs = sqs.filter(performers__pk=artist_pk)
                 sqs = self.filter_quantity_of_performers(
                     number_of_performers, first_name, last_name, partial_name, instruments)
             else:
@@ -298,7 +297,8 @@ class SearchObject(object):
                             performers__first_name__iucontains=term) | Q(
                             performers__last_name__iucontains=term)
                 else:
-                    condition = instruments_condition
+                    # TODO: refactor for group by queries.
+                    condition = None
 
                 if condition:
                     sqs = sqs.filter(condition)
@@ -343,6 +343,36 @@ class SearchObject(object):
             end_date = end_date + timedelta(days=1)
             date_to = end_date.replace(hour=10, minute=0, second=0, microsecond=0)
             sqs = sqs.filter(start__lte=date_to)
+
+        # TODO: refactor. For now we need to validate this is the right behavior.
+        if instruments:
+            if leader == 'all':
+                filter_by_leader = None
+            elif leader == 'leader':
+                filter_by_leader = True
+            else:
+                filter_by_leader = False
+            if filter_by_leader is None:
+                instruments_condition = Q(artists_gig_info__role__name__icontains=instruments[0])
+                for i in instruments[1:]:
+                    instruments_condition |= Q(artists_gig_info__role__name__icontains=i)
+            else:
+                instruments_condition = Q(artists_gig_info__role__name__icontains=instruments[0],
+                                          artists_gig_info__is_leader=filter_by_leader)
+                for i in instruments[1:]:
+                    instruments_condition |= Q(artists_gig_info__role__name__icontains=i,
+                                               artists_gig_info__is_leader=filter_by_leader)
+
+            # instruments containing sax are a special case
+            no_sax_instruments = [x for x in instruments if 'SAX' not in x]
+            sax_instruments = [x for x in instruments if 'SAX' in x]
+            instruments_count = len(no_sax_instruments)
+            if sax_instruments:
+                instruments_count += 1
+
+            sqs = sqs.filter(instruments_condition).annotate(
+                num_instruments=Count('artists_gig_info__role', distinct=True)).filter(
+                num_instruments=instruments_count)
 
         if order == 'popular':
             sqs = sqs.order_by('-seconds_played')

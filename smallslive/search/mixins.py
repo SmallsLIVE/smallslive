@@ -78,9 +78,6 @@ class SearchMixin(object):
                 first_name=first_name, last_name=last_name, partial_name=partial_name,
                 artist_search=artist_search, leader=leader)
 
-            if not self.request.user.is_superuser:
-                sqs = sqs.filter(Q(state=Event.STATUS.Published) | Q(state=Event.STATUS.Cancelled))
-
             first = sqs.first()
             last = sqs.last()
 
