@@ -316,6 +316,7 @@
         @include display(flex);
         @include align-items(center);
         @include justify-content(flex-end);
+        border: 3px solid rgba(0, 0, 0, 0.9);
 
         @media (max-width: 580px) {
           &:not(.store-buy) {
@@ -568,7 +569,7 @@
 .progress-holder {
   cursor: pointer;
   background: #f3f3f3;
-  margin: 0px 0;
+  margin: 5px 0;
 
   .progress-bar {
     height: 5px;

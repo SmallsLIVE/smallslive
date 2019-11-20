@@ -1,5 +1,7 @@
+
 function updateProgress(progress, e) {
   if (progress < 100) {
+    //console.log('Progress: ' + progress.toString());
     if (e.target.className == "progress-bar") {
       $(e.target).css("width", progress + "%");
       $(e.target).data("percentage", progress);
@@ -47,6 +49,9 @@ function getPercentage(e) {
 
   let percentage = ((x - rect.left) / $(".progress-holder").width()) * 100;
   $(".progress-holder").trigger("testeo");
+
+  //console.log('Percentage: ' + percentage.toString());
+
   return Math.floor(percentage);
 }
 
@@ -128,6 +133,7 @@ $(document).on("touchend", ".progress-holder", function(e) {
 });
 
 function updateProgressTrack(id, progress) {
+  //console.log('updateProgressTrack: ' + progress.toString());
   $("#" + id)
     .children(".progress-bar")
     .css("width", progress + "%");

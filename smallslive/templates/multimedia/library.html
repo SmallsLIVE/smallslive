@@ -88,6 +88,7 @@
                         $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
                         timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0]
                         progress = player.currentTime / player.duration * 100
+                        //console.log('library.html play listener updateProgressTrack: ' + progress.toString());
                         updateProgressTrack( $(player).data('track'), progress)
                         progressWidth = progress + "%"
                         $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progressWidth )
@@ -103,7 +104,7 @@
                     $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").removeClass("active-bar");
                     $(player).closest(".big-player").find(".purchases-player-button").removeClass("mypause-btn");
                     $(player).closest(".big-player").find(".purchases-player-button").addClass("myplay-btn");
-                    $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
+                    $playerContainerButton.find('div').html('<i class="fas fa-play"></i>')
                     $(".active-track").removeClass("active-track");
                     player.currentTime = 0;
                     clearInterval(setTime)

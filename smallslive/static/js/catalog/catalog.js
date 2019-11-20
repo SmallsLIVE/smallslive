@@ -111,8 +111,8 @@ function downloadAll(urls) {
   document.body.removeChild(link);
 }
 
-var $lastPlayer,
-  $audioPlayer,
+var lastPlayer,
+  audioPlayer,
   audioPlayerTrack,
   $trackInfo,
   $mainContainer,
@@ -145,8 +145,8 @@ function playTrack($element) {
 
   var progress = calculateProgress($element, event);
   //find audio player and track number and set the big player track number
-  $audioPlayer = $element.find(".audio audio");
-  audioPlayerTrack = $audioPlayer.data("track");
+  audioPlayer = $element.find(".audio audio")[0];
+  audioPlayerTrack = $(audioPlayer).data("track");
 
   $mainContainer = $element.closest(".big-player");
   $playerContainer = $mainContainer.find(".album__header__cover");
@@ -163,7 +163,7 @@ function playTrack($element) {
 
   $playerContainerButton = $playerContainer.find(".purchases-player-button");
 
-  var audioProgress = $audioPlayer.currentTime / $audioPlayer.duration * 100;
+  var audioProgress = audioPlayer.currentTime / audioPlayer.duration * 100;
 
   if ($trackInfo.hasClass("active-track")) {
     $(".active-track").removeClass("active-track");
@@ -172,7 +172,7 @@ function playTrack($element) {
     $playerContainerButton.addClass("myplay-btn");
     $playerContainerButton.find('div').html('<i class="fas fa-play"></i>');
   } else {
-    $audioPlayer.closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar");
+    $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar");
     $(".active-track").removeClass("active-track");
     $element.find(".track-info").addClass("active-track");
     play = true;
@@ -186,16 +186,16 @@ function playTrack($element) {
   }
 
   //toggles player
-  if ($lastPlayer) {
-      $lastPlayer[0].pause();
-      $("#" + $lastPlayer.data("track"))
+  if (lastPlayer) {
+      lastPlayer.pause();
+      $("#" + $(lastPlayer).data("track"))
       .children(".progress-bar")
       .addClass("paused");
   }
   togglePlayer(play);
 
   $lastPlayerContainer = $playerContainer;
-  $lastPlayer = $audioPlayer;
+  lastPlayer = audioPlayer;
 
 }
 
@@ -204,17 +204,17 @@ $(document).on('click', ".my-downloads-album__tracks-table__row.flex-row:not(.di
 });
 
 function togglePlayer(play){
-  if (!$audioPlayer) {
-      $audioPlayer = $bigContainer.find(".audio audio[data-track='0']");
+  if (!audioPlayer) {
+      audioPlayer = $bigContainer.find(".audio audio[data-track='0']")[0];
       $(trackInfo).first().addClass("active-track");
   }
   if (play) {
-    $audioPlayer[0].play();
+    audioPlayer.play();
     $("#" + $playerContainer.data("track"))
       .children(".progress-bar")
       .removeClass("paused");
   } else {
-    $audioPlayer[0].pause();
+    audioPlayer.pause();
     $("#" + $playerContainer.data("track"))
     .children(".progress-bar")
     .addClass("paused");
@@ -256,6 +256,7 @@ function calculateProgress(element, position) {
 function changeProgress(progress, player) {
   newProgress = Math.floor(player.duration) * progress / 100
   player.currentTime = newProgress;
+  console.log('changeProgress: ' + newProgress.toString());
   updateProgressTrack('player', newProgress)
 }
 
@@ -326,31 +327,4 @@ endProgressHold =  function(ev){
 
 $(document).on( "touchend",  ".length-bar", endProgressHold);
 $(document).on( "mouseup",  ".length-bar", endProgressHold);
-Array.prototype.forEach.call(audioPlayers, function(player) {
-    player.addEventListener("play", function(){
-            setTime = setInterval( t=> {
-            currentTime = Math.floor(player.currentTime)
-            $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
-            timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0]
-            progress = player.currentTime / player.duration * 100
-            progressWidth = progress + "%"
-            updateProgressTrack( $(player).data('track'), progress)
-            $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progressWidth )
-            $(timeTracker).html(readableTime(currentTime))
-        },100)
 
-    });
-    player.addEventListener("pause", function(){
-        clearInterval(setTime)
-        $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").removeClass("active-bar")
-    });
-    player.addEventListener("ended", function(){
-        $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").removeClass("active-bar");
-        $(player).closest(".big-player").find(".purchases-player-button").removeClass("mypause-btn");
-        $(player).closest(".big-player").find(".purchases-player-button").addClass("myplay-btn");
-        $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
-        $(".active-track").removeClass("active-track");
-        player.currentTime = 0;
-        clearInterval(setTime)
-    });
-});

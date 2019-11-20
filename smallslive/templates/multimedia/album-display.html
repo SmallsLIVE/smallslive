@@ -40,6 +40,13 @@
       {% for track in album_product.tracks.all|dictsort:"ordering" %}
         <!-- tracks table row -->
         <div class="track-container" style="position:relative">
+          {% if not is_catalogue %}
+            <div class="progress-holder" id='{{ forloop.counter0 }}' data-progress="0">
+              <div class="progress-bar paused">
+                <span class="progress-btn"></span>
+              </div>
+            </div>
+          {% endif %}
           <div id="t{{ forloop.counter0 }}"
                class="my-downloads-album__tracks-table__row flex-row{% if is_catalogue and is_bought %} play-on-library{% endif %}{% if track.get_track_preview_url == 'blank.mp3' and not is_bought %} no-play{% endif %}"
                {% if is_catalogue and is_bought %} data-url="{% url 'my-downloads' %}?album={{ album_product.pk }}"{% endif %}>
