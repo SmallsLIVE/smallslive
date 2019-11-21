@@ -200,7 +200,6 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
   var eventDateTo;
 
   $("#event-load-gif").css("display", "block");
-  $("footer.footer-info").hide();
   if (eventFilter) {
     $("#search-result-articles").find("article").remove();
   }
@@ -880,9 +879,9 @@ function loadMoreEvents(mode) {
 function updateArchiveShows(data) {
 
   $("#event-load-gif").css("display", "none");
-  $("footer.footer-info").show();
 
   if (data.numPages < eventPageNum) {
+    $("footer.footer-info").show();
     moreEvents = false;
     return;
   }
