@@ -1103,7 +1103,9 @@ $(document).ready(function() {
 
   $(document).on("click", "#backButton", function() {
 
-    if (currentStep == "SelectType" && window.location.search.indexOf("flow_type=event_support") > -1) {
+    if (currentStep == "SelectType" &&
+        window.location.search.indexOf("flow_type=event_support") > -1 ||
+          window.location.href.indexOf("product-support") > -1) {
       window.history.back();
       return;
     }
