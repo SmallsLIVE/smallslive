@@ -33,6 +33,10 @@ body.headers-1 {
     .search-container.pad-content {
       @media (max-width: $screen-sm-max) {
         padding-top: 120px;
+
+        &.new-archive {
+          padding-top:  90px;
+        }
       }
     }
   }
@@ -1246,10 +1250,6 @@ body.headers-1 {
     .select-items {
       top: 58%;
     }
-  }
-
-  @media (max-width: $screen-sm-max) {
-    display: none;
   }
 
   &.white-line-bottom {

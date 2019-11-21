@@ -66,6 +66,14 @@
     width: 500px;
     margin-top: 15px;
     margin-bottom: 0;
+
+    &.musicians-results-title {
+      background-size: 40vw 3px;
+      padding-bottom: 3px;
+      width: auto;
+      margin-top: 5px;
+      margin-bottom: 25px;
+    }
   }
 
   @media (max-width: $screen-md-min) {
