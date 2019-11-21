@@ -95,7 +95,7 @@
       $datePickerContainer
         .css("display", "flex")
         .hide()
-        .fadeIn(500, function () {
+        .fadeIn(100, function () {
           $(document).on("click", hide);
           $datePickerContainer.data("shown", true);
           $datePickerCalendar.datepicker("show");
@@ -110,7 +110,7 @@
         $target.closest(".noclick").length == 0 &&
         !($target.hasClass("day") || $target.hasClass("year"))
       ) {
-        $datePickerContainer.fadeOut(500, function () {
+        $datePickerContainer.fadeOut(100, function () {
           $(document).unbind("click", hide);
           $datePickerContainer.data("shown", false);
         });
