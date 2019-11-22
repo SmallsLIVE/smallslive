@@ -46,6 +46,13 @@
   &.club-filter-select {
     width: 120px;
   }
+
+  &.leader-filter-select {
+    @media(min-width: $screen-sm){
+      min-width: 180px;
+    }
+  }
+
 }
 
 .select-selected {

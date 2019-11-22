@@ -20,6 +20,11 @@
   -moz-box-shadow: 0px 0px 113px -16px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 113px -16px rgba(0, 0, 0, 0.75);
 
+  &__tickets{
+    box-shadow: none;
+    margin-bottom: 20px;
+  }
+
 
   & p {
     margin: 0;

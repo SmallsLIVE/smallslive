@@ -751,13 +751,13 @@ $(document).ready(function() {
 
     var dialogSelector = "#" + $(this).closest("#gift").data("dialog-type")  + "GiftSelectionConfirmationDialog";
     var $selectionConfirmationDialog = $mainContainer.find(dialogSelector);
-    $selectionConfirmationDialog.find(".title").text($(this).text());
+    $selectionConfirmationDialog.find(".title").text($(this).find(".gift-title").text());
     var giftTier = $(this).attr("data-type");
     var hasVariants =
       $(this).data("variants") && $(this).data("variants") != "0";
     $selectionConfirmationDialog
       .find(".subtitle")
-      .text(giftTier);
+      .text("One Time Donation of " + $(this).find(".price-tag").text());
     var price = $(this)
       .children(".price-tag")
       .text();
