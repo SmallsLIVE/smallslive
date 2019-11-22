@@ -19,24 +19,12 @@ class SearchMixin(object):
         date_from = self.request.GET.get('date_from', None)
         date_to = self.request.GET.get('date_to', None)
 
-        remember_date = self.request.GET.get('remember_date') == 'True'
-
-        if referer and ('artist_pk' in referer or 'events' in referer) or remember_date:
-            date_from = self.request.session.get('search_date_from')
-        else:
-            if 'search_date_from' in self.request.session:
-                del self.request.session['search_date_from']
         if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
             if not date_from.tzinfo:
                 date_from = timezone.make_aware(
                     date_from, timezone.get_current_timezone())
 
-        if referer and ('artist_pk' in referer or 'events' in referer) or remember_date:
-            date_to = self.request.session.get('search_date_to')
-        else:
-            if 'search_date_to' in self.request.session:
-                del self.request.session['search_date_to']
         if date_to:
             date_to = parser.parse(date_to, fuzzy=True)
             if not date_to.tzinfo:
