@@ -590,10 +590,10 @@ $(document).ready(function() {
   });
 
   /* Can't be click because button disappears on focus out from input */
-  $(document).on("mousedown", ".confirm-custom", function() {
+  $(document).on("mousedown", ".confirm-custom", function () {
     if (selectedData.type == "month") {
       var $selectionConfirmationDialog = $mainContainer.find(
-        "#selectionConfirmationDialog"
+        "#supporterMonthlySelectionConfirmationDialog"
       );
       var value = $(this).data("value");
       $selectionConfirmationDialog.modal("show");
