@@ -344,7 +344,7 @@ body.headers-1 {
     top: 38px;
   }
 
-  @media (min-width: $screen-lg-min) {
+  @media (min-width: $screen-sm-max) {
     width: 70%;
     left: 50px;
 
@@ -593,7 +593,7 @@ body.headers-1 {
   flex-wrap: wrap;
   justify-content: space-between;
   align-content: center;
-  margin-left: 100px;
+  margin-left: 90px;
   margin-top: -20px;
 
   @media(max-width: $screen-sm-max) {
