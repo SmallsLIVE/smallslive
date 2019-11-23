@@ -665,7 +665,7 @@ $(document).ready(function() {
         if (amount > 9) {
           resetButtons();
           resetCustom();
-          setSelected(selectedData.flow, "year", amount);
+          setSelected(selectedData.flow, "month", amount);
           var $selectionConfirmationDialog = $mainContainer.find(
             "#supporterMonthlySelectionConfirmationDialog"
           );
