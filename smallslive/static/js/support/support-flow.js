@@ -667,7 +667,7 @@ $(document).ready(function() {
           resetCustom();
           setSelected(selectedData.flow, "year", amount);
           var $selectionConfirmationDialog = $mainContainer.find(
-            "#selectionConfirmationDialog"
+            "#supporterMonthlySelectionConfirmationDialog"
           );
           $selectionConfirmationDialog.modal("show");
           $selectionConfirmationDialog
