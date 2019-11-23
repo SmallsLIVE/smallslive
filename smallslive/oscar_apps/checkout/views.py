@@ -261,6 +261,9 @@ class SuccessfulOrderMixin(object):
 
                 sl_utils.clean_messages(self.request)
 
+                if self.payment_id:
+                    success_url += '&payment_id=' + self.payment_id
+
             response = http.JsonResponse({'success_url': success_url})
         else:
             response = http.HttpResponseRedirect(self.get_success_url())
