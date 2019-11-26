@@ -741,6 +741,14 @@ $event-row-padding: 3.5vw;
   }
 }
 
+.artists {
+  .event-info.new {
+    left: 12px;
+    top: 12px;
+    height: 65%;
+  }
+}
+
 .event-info.new {
   color: white;
   font-size: 12px;

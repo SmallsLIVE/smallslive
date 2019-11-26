@@ -145,19 +145,13 @@ class SearchBarView(View):
         main_search = request.GET.get('main_search', None)
         search = SearchObject()
         search_input = search.process_input(main_search)
-        terms, instruments, partial_instruments, number_of_performers, \
+        terms, instruments, all_sax_instruments, partial_instruments, number_of_performers, \
             first_name, last_name, partial_name, artist_search = search_input
 
-        print '**************************** Search Bar *****************************'
-        print 'terms: ', terms
-        print 'instruments: ', instruments
-        print 'partial_instruments: ', partial_instruments
-        print 'partial_name: ', partial_name
-        
         artists = []
         artist_results_per_page = 6
 
-        sqs = search.search_artist(terms, instruments, partial_instruments,
+        sqs = search.search_artist(terms, instruments, all_sax_instruments, partial_instruments,
                                    first_name, last_name, partial_name, artist_search)
         
         paginator = Paginator(sqs, artist_results_per_page)
@@ -172,6 +166,7 @@ class SearchBarView(View):
         event_results_per_page = 8
 
         sqs = search.search_event(terms, instruments=instruments,
+                                  all_sax_instruments=all_sax_instruments,
                                   first_name=first_name, last_name=last_name,
                                   partial_name=partial_name, artist_search=artist_search)
 

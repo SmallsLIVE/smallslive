@@ -88,15 +88,24 @@ class EventQuerySet(models.QuerySet):
                         Q(num=number_of_performers_searched) & Q(performers__first_name__iucontains=partial_name) |
                         Q(num=number_of_performers_searched) & Q(performers__last_name__iucontains=partial_name))
 
-    def get_events_by_performers_and_instrument(self, number_of_performers_searched, instruments):
+    def get_events_by_performers_and_instrument(self, number_of_performers_searched,
+                                                instruments=[], all_sax_instruments=[]):
 
-        if len(instruments) == 1:
+        if instruments:
             instrument = instruments[0]
-            return self.annotate(num=Count('performers')).filter(
-                Q(num=number_of_performers_searched) & Q(artists_gig_info__role__name__iucontains=instrument))
+            condition = Q(artists_gig_info__role__name__iexact=instrument)
+            for instrument in instruments[1:]:
+                condition |= Q(artists_gig_info__role__name__iexact=instrument)
+            sqs = self.annotate(num=Count('performers')).filter(Q(num=number_of_performers_searched) & condition)
         else:
-            return self.annotate(num=Count('performers')).filter(
-                Q(num=number_of_performers_searched) & Q(artists_gig_info__role__name__in=instruments))
+
+            instrument = all_sax_instruments[0]
+            condition = Q(artists_gig_info__role__name__iexact=instrument)
+            for instrument in all_sax_instruments[1:]:
+                condition |= Q(artists_gig_info__role__name__iexact=instrument)
+            sqs = self.annotate(num=Count('performers', distinct=True)).filter(Q(num=number_of_performers_searched) & condition)
+
+        return sqs
 
     # TODO Select properly
     def event_related_videos(self, event):

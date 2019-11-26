@@ -47,7 +47,7 @@ class SearchMixin(object):
 
         if not search_input:
             search_input = search.process_input(search_terms, artist_search, instrument)
-        terms, instruments, partial_instruments, number_of_performers, \
+        terms, instruments, all_sax_instruments, partial_instruments, number_of_performers, \
             first_name, last_name, partial_name, artist_search = search_input
 
         first = None
@@ -55,14 +55,16 @@ class SearchMixin(object):
         if entity == Artist:
             results_per_page = 24
             sqs = search.search_artist(
-                terms, instruments, partial_instruments, first_name, last_name, partial_name, artist_search)
+                terms, instruments, all_sax_instruments, partial_instruments,
+                first_name, last_name, partial_name, artist_search)
 
         elif entity == Event:
 
             sqs = search.search_event(
                 terms, order, date_from, date_to,
                 artist_pk=artist_pk, venue=venue,
-                instruments=instruments, number_of_performers=number_of_performers,
+                instruments=instruments, all_sax_instruments=all_sax_instruments,
+                number_of_performers=number_of_performers,
                 first_name=first_name, last_name=last_name, partial_name=partial_name,
                 artist_search=artist_search, leader=leader)
 

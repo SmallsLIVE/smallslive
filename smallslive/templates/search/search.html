@@ -128,7 +128,12 @@
     var endDate = "{{ last_event_date }}";
     var venue = "all";
     var moreArtists = true;
-    var moreEvents = true;
+
+    {% if showing_event_results == 'NO RESULTS' %}
+      var moreEvents = false;
+    {% else %}
+      var moreEvents = true;
+    {% endif %}
 
     $(document).ready(function () {
 
