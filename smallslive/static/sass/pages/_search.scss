@@ -37,6 +37,10 @@ body.headers-1 {
         &.new-archive {
           padding-top:  90px;
         }
+
+        &.artist-profile {
+          padding-top: 0;
+        }
       }
     }
   }
@@ -59,6 +63,9 @@ body.headers-1 {
         padding-top: 0;
         &.mobile-search-header-shown {
           padding-top: 150px;
+        }
+        &.artist-profile {
+          padding-top: 0;
         }
       }
     }
