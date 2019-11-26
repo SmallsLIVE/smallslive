@@ -840,7 +840,7 @@ function triggerSearch() {
 
   if (triggerEventSearch) {
     datePickerFromDate = $datePickerFrom.datepicker("getDate");
-    if (datePicker) {
+    if ($datePickerTo) {
       datePickerToDate = $datePickerTo.datepicker("getDate");
     }
     eventFilter = true;
