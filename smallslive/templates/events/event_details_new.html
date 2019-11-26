@@ -95,10 +95,8 @@
                   <button class="white-border-button">Edit</button>
               </a>
             {% endif %}
-            {% if not event.is_live and event.is_past %}
-              {% if user.has_archive_access %}
-                <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">Sponsor This Artist</button>
-              {% endif %}
+            {% if event.is_live or event.is_past %}
+              <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">Sponsor This Artist</button>
             {% endif %}
             {% if not event.is_live and event.is_future %}
             {% if products %}
