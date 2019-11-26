@@ -140,6 +140,11 @@ class SearchObject(object):
             partial_name = words[0]
             words = None
 
+        # In some cases we might have a duplicate in search_terms and artist_search
+        if partial_name and artist_search:
+            if partial_name.lower() == artist_search.lower():
+                partial_name = ''
+
         return words, instruments, all_sax_instruments, partial_instruments, \
                number_of_performers, first_name, last_name, partial_name, artist_search
 
