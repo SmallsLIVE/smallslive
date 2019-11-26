@@ -174,8 +174,6 @@ class Artist(models.Model):
         email_model.send_confirmation(request, signup=True, invite_text=invite_text)
 
     def save(self, **kwargs):
-        if not self.id and not self.public_email and hasattr(self, 'user_id'):
-            self.public_email = self.user.email
         if not self.slug:
             self.slug = slugify(self.full_name())
         super(Artist, self).save(**kwargs)
