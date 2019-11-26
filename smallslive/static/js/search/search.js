@@ -460,6 +460,9 @@ $(document).ready(function () {
 
     $searchBar.val(searchTerm);
     $mobileSearchInput.val(searchTerm);
+    if (!$(".search-container").hasClass("mobile-search-header-shown")) {
+      $('.mobile-menu-icons .fa-search').click();
+    }
 
   }
 
