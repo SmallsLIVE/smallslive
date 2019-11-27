@@ -164,8 +164,8 @@ function toggleEventFilters(filters) {
 function sendArtistRequest(callback, callbackParam) {
   callback = callback || function() {};
 
-  var artistInstrument = ""; //$("#select-instrument-btn").data("instrument");
-  var artistSearchTerm = ""; //$("#artist-search").val();
+  var artistInstrument = "";
+  var artistSearchTerm = "";
   var searchTerm = $("#desktop-search-bar").val();
 
   var filters = {
@@ -174,6 +174,12 @@ function sendArtistRequest(callback, callbackParam) {
     instrument: artistInstrument,
     page: artistPageNum
   };
+
+  if (searchTerm || artistSearchTerm || artistInstrument) {
+    // Hide Most Popular / Recently added since the user is searching
+    $("#recently-added-section").hide();
+    $("#most-popular-section").hide();
+  }
 
   toggleEventFilters(filters);
 
@@ -454,7 +460,7 @@ $(document).ready(function () {
       searchTerm = searchTerm + " " + artistSearch;
     }
 
-    if (instrument != searchTerm) {
+    if (instrument && instrument != searchTerm) {
       searchTerm = searchTerm + " " + instrument;
     }
 
