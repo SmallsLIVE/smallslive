@@ -324,7 +324,6 @@ class SearchObject(object):
                         condition &= instruments_condition
 
                 elif partial_name:
-
                     performers_first_name_condition = Q(performers__first_name__istartswith=partial_name)
                     if artist_search:
                         performers_first_name_condition &= Q(performers__last_name__istartswith=artist_search)

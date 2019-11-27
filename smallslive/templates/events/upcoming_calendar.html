@@ -77,6 +77,7 @@
     });
 
     $datePickerBtn.on("click", toggleDisplay);
+    $(document).on("click", hide);
 
     function toggleDisplay(event) {
       if ($datePickerContainer.data("shown")) {
@@ -93,15 +94,13 @@
         top: datePickerTop
       });
       $datePickerContainer
-        .css("display", "flex")
-        .hide()
-        .fadeIn(100, function () {
-          $(document).on("click", hide);
-          $datePickerContainer.data("shown", true);
-          $datePickerCalendar.datepicker("show");
-          $datePickerCalendar.prop("disabled", true);
-          $datePickerCalendar.focus();
-        });
+        .css("display", "flex");
+
+      $datePickerContainer.data("shown", true);
+      $datePickerCalendar.datepicker("show");
+      $datePickerCalendar.prop("disabled", true);
+      $datePickerCalendar.focus();
+
     }
 
     function hide(event) {
@@ -110,10 +109,9 @@
         $target.closest(".noclick").length == 0 &&
         !($target.hasClass("day") || $target.hasClass("year"))
       ) {
-        $datePickerContainer.fadeOut(100, function () {
-          $(document).unbind("click", hide);
-          $datePickerContainer.data("shown", false);
-        });
+        if (!$target.hasClass("datepicker-btn")) {
+          $datePickerContainer.hide().data("shown", false);
+        }
       }
     }
   });

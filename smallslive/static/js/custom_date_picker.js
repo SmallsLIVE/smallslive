@@ -16,15 +16,10 @@ $(document).ready(function () {
   function display($datePickerContainer) {
     $datePickerContainer.css({
       left: datePickerLeft,
-      top: datePickerTop
+      top: datePickerTop,
     });
-    $datePickerContainer
-      .css("display", "flex")
-      .hide()
-      .fadeIn(500, function () {
-        $(document).bind("click", hide);
-        $datePickerContainer.data("shown", true);
-      });
+    $datePickerContainer.css("display", "flex");
+    $datePickerContainer.data("shown", true);
 
     var $datePickerInput = $datePickerContainer.find('input');
     $datePickerInput.click();
@@ -46,10 +41,8 @@ $(document).ready(function () {
       !($target.hasClass("day") || $target.hasClass("year"))
     ) {
       if ($datePickerContainer) {
-        $datePickerContainer.fadeOut(500, function () {
-          $(document).unbind("click", hide);
-          $datePickerContainer.data("shown", false);
-        });
+       $(document).unbind("click", hide);
+       $datePickerContainer.hide().data("shown", false);
       }
     }
   }

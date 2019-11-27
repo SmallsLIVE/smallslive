@@ -255,8 +255,6 @@ class Artist(models.Model):
             recordings__media_file__isnull=False,
             recordings__state=Recording.STATUS.Published).distinct()
 
-        print sqs.query
-        print sqs.count()
         return sqs.count()
 
 

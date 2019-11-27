@@ -77,12 +77,6 @@ class MainSearchView(View, SearchMixin):
         upcoming = request.GET.get('is_upcoming', False)
         referer = request.META.get('HTTP_REFERER', '')
 
-        print '**************** MainSearchView.get: *********************'
-        print 'main_search: ', main_search
-        print 'entity: ', entity
-        print 'artist_search: ', artist_search
-        print 'referer: ', referer
-
         date_from, date_to = self.get_filter_dates(referer)
 
         if entity == 'artist':
@@ -219,8 +213,7 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
 
         artist_search = self.request.GET.get('artist_search', '')
         if not artist_search and ('events' in referer or 'artist_pk' in referer):
-            artist_search = self.request.session.get('artist_search_value')
-
+            artist_search = self.request.session.get('artist_search_value', '')
         elif not self.request.GET.get('artist_pk'):
             if 'artist_search_value' in self.request.session:
                 del self.request.session['artist_search_value']
