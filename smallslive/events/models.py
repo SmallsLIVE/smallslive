@@ -544,7 +544,7 @@ class Event(TimeStampedModel):
 
             comma_separated_artists = ', '.join(artists_names[:-1])  # That will join all elements except the last
 
-            return '{} and {}'.format(comma_separated_artists, artists_names[-1])
+            return u'{} and {}'.format(comma_separated_artists, artists_names[-1])
         else:
             return artists_names[0] if artists_names else ''
 
