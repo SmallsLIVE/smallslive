@@ -61,7 +61,8 @@
     $('#confirm-buy-tickets').click(function(){
       $form.submit();
     })
-    $('#cancel-buy-tickets').click(function(){
+    $('#cancel-buy-tickets').click(function (event) {
+      event.preventDefault();
       $form = null;
       $('#buy-tickets-dialog').modal('toggle');
     })

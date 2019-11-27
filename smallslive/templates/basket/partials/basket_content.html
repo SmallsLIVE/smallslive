@@ -53,7 +53,7 @@
                     </div>
                   {% endif %}
                     <div class="col-xs-12 store-cart__footer__buttons">
-                        <a href="{% url 'checkout:index' %}" class="white-border-button checkout-white">Cancel</a>
+                        <button class="white-border-button checkout-white" onclick="window.history.back()">Cancel</button>
                         <a href="{% url 'checkout:index' %}" class="white-border-button checkout-white">Continue</a>
                     </div>
                 </section>

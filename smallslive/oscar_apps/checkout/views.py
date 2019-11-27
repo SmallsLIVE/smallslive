@@ -19,7 +19,6 @@ from oscar.apps.order.exceptions import UnableToPlaceOrder
 from oscar.apps.payment.exceptions import RedirectRequired, UnableToTakePayment, PaymentError
 from oscar.apps.payment.models import SourceType, Source
 from oscar.core.loading import get_class
-from oscar_apps.order.models import Order
 from oscar_apps.catalogue.models import UserCatalogue, UserCatalogueProduct
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.mixins import PayPalMixin, StripeMixin
