@@ -454,7 +454,7 @@ $(document).ready(function () {
       searchTerm = searchTerm + " " + artistSearch;
     }
 
-    if (instrument) {
+    if (instrument != searchTerm) {
       searchTerm = searchTerm + " " + instrument;
     }
 

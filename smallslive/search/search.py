@@ -58,12 +58,9 @@ class SearchObject(object):
 
         # USER ENTERED '<type> SAX'
         for sax in SAX_INSTRUMENTS:
-            print 'sax: ', sax
             if sax in search_term:
                 # Make sure sax is not an alias before removing from search_terms
-                print '[x for x in SAX_INSTRUMENTS_ALIASES if sax == x]: ', [x for x in SAX_INSTRUMENTS_ALIASES if sax == x]
                 if not [x for x in SAX_INSTRUMENTS_ALIASES if x in search_term and sax in x]:
-
                     searched_sax_instruments.append(sax)
                     # Remove from search terms
                     search_term = search_term.replace(sax, '')
@@ -98,6 +95,7 @@ class SearchObject(object):
             search_terms, all_sax_instruments, instruments = self.filter_sax(search_terms)
             words = search_terms.strip().split(' ')
             words = [x for x in words if x]
+
         if words:
             words = [i.upper() for i in words]
 
@@ -117,8 +115,10 @@ class SearchObject(object):
             partial_instruments = []
         
         if instrument:
-            instruments = [instrument]
-            partial_instruments = []
+            instruments.append(instrument)
+            instruments = [x.upper() for x in instruments]
+
+        instruments = list(set(instruments))
 
         number_of_performers = None
         for word in words:
@@ -170,11 +170,11 @@ class SearchObject(object):
                 for instrument in all_sax_instruments[1:]:
                     sax_sqs |= Artist.objects.filter(instruments__name__iexact=instrument)
 
-            if instruments_sqs and sax_sqs:
+            if instruments_sqs is not None and sax_sqs is not None:
                 sqs = instruments_sqs & sax_sqs
-            elif instruments_sqs:
+            elif instruments_sqs is not None:
                 sqs = instruments_sqs
-            elif sax_sqs:
+            elif sax_sqs is not None:
                 sqs = sax_sqs
 
         if artist_search and not partial_name:
@@ -267,21 +267,25 @@ class SearchObject(object):
 
             instruments_sqs = None
             if instruments:
-                instruments_sqs = Event.objects.filter(artists_gig_info__role__name__iexact=instruments[0])
+                instruments_sqs = Event.objects.filter(
+                    artists_gig_info__role__name__iexact=instruments[0])
                 for instrument in instruments[1:]:
-                    instruments_sqs &= Event.objects.filter(artists_gig_info__role__name__iexact=instrument)
+                    instruments_sqs |= Event.objects.filter(
+                        artists_gig_info__role__name__iexact=instrument)
 
             sax_sqs = None
             if all_sax_instruments:
-                sax_sqs = Event.objects.filter(artists_gig_info__role__name__iexact=all_sax_instruments[0])
+                sax_sqs = Event.objects.filter(
+                    artists_gig_info__role__name__iexact=all_sax_instruments[0])
                 for instrument in all_sax_instruments[1:]:
-                    sax_sqs |= Event.objects.filter(artists_gig_info__role__name__iexact=instrument)
+                    sax_sqs |= Event.objects.filter(
+                        artists_gig_info__role__name__iexact=instrument)
 
-            if instruments_sqs and sax_sqs:
+            if instruments_sqs is not None and sax_sqs is not None:
                 sqs = instruments_sqs & sax_sqs
-            elif instruments_sqs:
+            elif instruments_sqs is not None:
                 sqs = instruments_sqs
-            elif sax_sqs:
+            elif sax_sqs is not None:
                 sqs = sax_sqs
 
         if leader == 'all':
@@ -292,7 +296,6 @@ class SearchObject(object):
             filter_by_leader = False
 
         if filter_by_leader is not None:
-
             instruments_condition = Q(artists_gig_info__is_leader=filter_by_leader)
         else:
             instruments_condition = None

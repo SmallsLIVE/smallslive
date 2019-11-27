@@ -288,7 +288,8 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
 
         artist_id = context['artist'].pk if context['artist'] else None
         event_blocks, showing_event_results, num_pages, first, last, search_input = self.search(
-            Event, query_term, results_per_page=60, artist_pk=artist_id, date_from=date_from, date_to=date_to, search_input=search_input)
+            Event, query_term, results_per_page=60, artist_pk=artist_id,
+            date_from=date_from, date_to=date_to, search_input=search_input)
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []
@@ -315,6 +316,11 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
 
         context['alphabet'] = string.ascii_lowercase
         context['query_term'] = query_term
+
+        # check searched instruments
+        instruments = search_input[1]
+        if instruments:
+            context['instrument'] = instruments[0]
 
         return context
 

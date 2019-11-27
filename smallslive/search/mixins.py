@@ -59,7 +59,6 @@ class SearchMixin(object):
                 first_name, last_name, partial_name, artist_search)
 
         elif entity == Event:
-
             sqs = search.search_event(
                 terms, order, date_from, date_to,
                 artist_pk=artist_pk, venue=venue,
@@ -70,6 +69,7 @@ class SearchMixin(object):
 
             first = sqs.first()
             last = sqs.last()
+
 
         blocks = []
         block = []
