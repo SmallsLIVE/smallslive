@@ -3,7 +3,7 @@
 {% load i18n %}
 
 <section id="shows{% if archived %}Archived{% else %}Upcoming{% endif %}Content"
-         class="archived-shows old-calendar search-tab-content {% if archived %}archived active{% else %}upcoming{% endif %} {{ archived|yesno:',shows-calendar' }} "
+         class="archived-shows old-calendar search-tab-content{% if archived %} archived{% else %} upcoming{% endif %} {{ archived|yesno:',shows-calendar' }} "
          data-toggle-tab="{% if archived %}archived{% else %}upcoming{% endif %}-shows"
          data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
   {% if archived or upcoming %}

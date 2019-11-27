@@ -884,7 +884,10 @@ function updateArchiveShows(data) {
   $("#event-load-gif").css("display", "none");
 
   if (data.numPages < eventPageNum) {
-    $("footer.footer-info").show();
+    var $footer = $("footer.footer-info");
+    if (!$footer.hasClass("active")) {
+      $footer.addClass('active');
+    }
     moreEvents = false;
     return;
   }

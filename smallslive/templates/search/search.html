@@ -139,7 +139,7 @@
 
       initializeArchiveDatePickers();
       initializeSearch();
-      $("footer.footer-info").hide();
+      $("footer.footer-info").removeClass("active");
 
       $(window).scroll(function () {
         if ($(window).scrollTop() >= $(document).height() - $(window).height() - 200) {
