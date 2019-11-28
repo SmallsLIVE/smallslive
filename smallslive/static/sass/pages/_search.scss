@@ -277,9 +277,9 @@ body.headers-1 {
       }
 
       display: flex;
-      margin-top: 5%;
-
       flex-direction: column;
+      margin-top: 5%;
+      min-height: 100vh;
     }
 
     .section-title {

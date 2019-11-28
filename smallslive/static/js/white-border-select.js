@@ -168,7 +168,6 @@ function makeButtonsTabbables() {
 
   for (i = 0; i < x.length; i++) {
     var currentSelect = x[i];
-    console.log(currentSelect);
     currentSelect.setAttribute("tabindex", 0);
     $(currentSelect).keypress(function(e) {
       if (e.keyCode == 13) {

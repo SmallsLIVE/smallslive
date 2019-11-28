@@ -102,7 +102,6 @@ function initializeArchiveDatePickers() {
   });
 
   $datePickerFrom.click();
-  $datePickerFrom.focus();
 }
 
 function applySearch() {

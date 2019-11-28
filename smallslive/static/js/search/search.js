@@ -164,9 +164,12 @@ function toggleEventFilters(filters) {
 function sendArtistRequest(callback, callbackParam) {
   callback = callback || function() {};
 
-  var artistInstrument = "";
-  var artistSearchTerm = "";
+  var artistInstrument = $("#select-instrument-btn").data("instrument");
+  var artistSearchTerm = $("#artist-search").val();
   var searchTerm = $("#desktop-search-bar").val();
+
+  // Remember search input value;
+  localStorage.setItem("search_input", searchTerm);
 
   var filters = {
     main_search: searchTerm,
@@ -198,6 +201,7 @@ function sendArtistRequest(callback, callbackParam) {
 }
 
 function sendEventRequest(mode, dateFrom, dateTo, callback) {
+
   var selector = "#shows" + mode + "Content";
   var utcDateFrom = null;
   var utcDateTo = null;
@@ -277,6 +281,10 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
       if (callback) {
         callback(data);
       }
+    },
+    error: function (data) {
+      console.log('error');
+      console.log(data);
     }
   });
 }
@@ -776,6 +784,7 @@ function resetSearch() {
 }
 
 function triggerSearch() {
+
   var triggerArtistSearch = false;
   var triggerEventSearch = false;
   var datePickerFromVal = $datePickerFrom.val();
@@ -806,6 +815,7 @@ function triggerSearch() {
     clearStorage = localStorage.removeItem("search_artist");
     clearStorage = localStorage.removeItem("search_order");
     clearStorage = localStorage.removeItem("search_leader");
+    clearStorage = localStorage.removeItem("search_input");
   }
 
   var instrument = localStorage.getItem("search_instrument");
@@ -835,6 +845,11 @@ function triggerSearch() {
   if (leader && document.location.search.indexOf("artist_pk=") === -1) {
     $('#artist_archive_status_filter').val(leader);
     triggerEventSearch = true;
+  }
+
+  var searchInput = localStorage.getItem("search_input");
+  if (searchInput && document.location.search.indexOf("artist_pk=") === -1) {
+    $("#desktop-search-bar").val(searchInput);
   }
 
   if (triggerArtistSearch) {
@@ -953,8 +968,12 @@ function updateArchiveShows(data) {
     $(selector).toggle(data.numPages != eventPageNum);
     $("#number-of-shows-label").text(data.showingResults);
 
-    $("#date-from-label").text(formatDate(datePickerFromDate));
-    $("#date-to-label").text(formatDate(datePickerToDate));
+    if (datePickerFromDate) {
+      $("#date-from-label").text(formatDate(datePickerFromDate));
+    }
+    if (datePickerToDate) {
+      $("#date-to-label").text(formatDate(datePickerToDate));
+    }
   }
 }
 
