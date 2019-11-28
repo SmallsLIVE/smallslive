@@ -9,7 +9,7 @@
         <option value="popular">Popular</option>
       </select>
     </div>
-    <div class="white-border-select leader-filter-select{% if not artist_profile %} hidden{% endif %}">
+    <div class="white-border-select leader-filter-select{% if not artist_profile and not instrument %} hidden{% endif %}">
       <select id="leader-filter">
         <option value="all">Leader or Sideman</option>
         <option value="leader">Leader</option>
