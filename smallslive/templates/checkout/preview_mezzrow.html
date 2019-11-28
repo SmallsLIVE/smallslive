@@ -128,10 +128,12 @@
 
                     {% endif%}
                   {% csrf_token %}
-                  <a href="{% url 'basket:summary' %}" class="white-border-button left back-to-payment-btn"> Back</a>
-                  <button class="white-border-button checkout-white">Confirm</button>
-                  <input type="hidden" name="action" value="place_order"/>
-                  <input type="hidden" name="payment_method" value="{{ payment_method }}">
+                  <div class="col-xs-12 store-cart__footer__buttons center">
+                    <a href="#" class="white-border-button checkout-white" onclick="window.history.back()"> Back</a>
+                    <button class="white-border-button checkout-white">Confirm</button>
+                    <input type="hidden" name="action" value="place_order"/>
+                    <input type="hidden" name="payment_method" value="{{ payment_method }}">
+                  </div>
                   <div class="hidden">
                     {{ bankcard_form.as_p }}
                   </div>
