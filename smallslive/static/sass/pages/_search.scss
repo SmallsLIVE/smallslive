@@ -803,6 +803,16 @@ body.headers-1 {
   display: none;
   padding: 10px;
 
+  &.searching {
+    min-height: 574px;
+    display: block;
+    background-image: url(/static/image/loading.gif);
+    background-size: 25px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-position-y: 50px;
+  }
+
   .search-bar-artist {
     display: inline-block;
     padding-bottom: 6px;

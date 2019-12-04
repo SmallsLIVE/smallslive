@@ -251,6 +251,9 @@ class SearchObject(object):
             events_data = Event.objects.get_events_by_performers_and_instrument(
                 number_of_performers, instruments, all_sax_instruments
             )
+        else:
+            events_data = Event.objects.get_events_by_performers(
+                number_of_performers)
 
         event_ids = [x.id for x in events_data]
         sqs = Event.objects.filter(pk__in=event_ids)

@@ -129,9 +129,6 @@ class MainSearchView(View, SearchMixin):
         return JsonResponse(data)
 
 
-#
-#   this is a proof of concept, once it is approved it will be refactored
-#
 class SearchBarView(View):
 
     def get(self, request, *args, **kwargs):
@@ -162,7 +159,8 @@ class SearchBarView(View):
         sqs = search.search_event(terms, instruments=instruments,
                                   all_sax_instruments=all_sax_instruments,
                                   first_name=first_name, last_name=last_name,
-                                  partial_name=partial_name, artist_search=artist_search)
+                                  partial_name=partial_name, artist_search=artist_search,
+                                  number_of_performers=number_of_performers)
 
         paginator = Paginator(sqs, event_results_per_page)
         events_results = paginator.count

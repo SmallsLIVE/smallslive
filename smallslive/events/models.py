@@ -88,6 +88,9 @@ class EventQuerySet(models.QuerySet):
                         Q(num=number_of_performers_searched) & Q(performers__first_name__iucontains=partial_name) |
                         Q(num=number_of_performers_searched) & Q(performers__last_name__iucontains=partial_name))
 
+    def get_events_by_performers(self, number_of_performers_searched):
+        return self.annotate(num=Count('performers')).filter(Q(num=number_of_performers_searched))
+
     def get_events_by_performers_and_instrument(self, number_of_performers_searched,
                                                 instruments=[], all_sax_instruments=[]):
 

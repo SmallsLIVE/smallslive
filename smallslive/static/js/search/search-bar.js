@@ -1,22 +1,21 @@
 searchBarTerm = "";
 
 function sendSearchBarRequest() {
-    $.ajax({
-        url: '/search/ajax/search-bar/',
-        data: {
-            'main_search': searchBarTerm
-        },
-        dataType: 'json',
-        success: function (data) {
-            if (data.template) {
-                $(".search-bar-autocomplete-container").html(data.template)
-
-                if (!$(".search-bar-autocomplete-container").is(":visible")) {
-                    $(".search-bar-autocomplete-container").css("display", "block");
-                }
-            }
-        }
-    });
+  $searchBar = $(".search-bar-autocomplete-container");
+  $searchBar.css("display", "block");
+  $.ajax({
+    url: '/search/ajax/search-bar/',
+    data: {
+      'main_search': searchBarTerm
+    },
+    dataType: 'json',
+    success: function (data) {
+      $searchBar.removeClass("searching");
+      if (data.template) {
+        $searchBar.html(data.template);
+      }
+    }
+  });
 }
 
 $(document).ready(function () {
@@ -33,15 +32,20 @@ $(document).ready(function () {
     })();
 
     $("#desktop-search-bar, #search-bar").keyup(function (e) {
+      $searchBar = $(".search-bar-autocomplete-container");
+      $searchBar.html('');
+      if (!$searchBar.hasClass("searching")) {
+        $searchBar.addClass("searching");
+      }
       delay(function () {
         searchBarTerm = $('#desktop-search-bar:visible, #search-bar input:visible').val();
         if (searchBarTerm.length > 1) {
-            sendSearchBarRequest();
+          sendSearchBarRequest();
         }
         else {
-            $(".search-bar-autocomplete-container").css("display", "none");
+          $searchBar.css("display", "none");
         }
-      }, 400, e);
+      }, 800, e);
     });
 
     $(".search-bar-autocomplete-container").on('focusout', function (e) {
