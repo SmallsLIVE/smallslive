@@ -94,6 +94,7 @@ div.event-strip {
   overflow: hidden;
   display: flex;
   @media (max-width: $screen-sm-max) {
+    overflow-x: scroll;
     width: 100%;
 
     .white-border-button {
