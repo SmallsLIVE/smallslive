@@ -45,7 +45,7 @@
         </div>
         <div data-toggle-tab="user-account-form" data-toggle-tab-group="user-account" style="display:none">
             {% include 'account/account-change-form.html' %}
-        </div>    
+        </div>
       </div>
       {% if request.user.artist %}
       <div id="user-payout" class="account-settings-view">
@@ -61,9 +61,9 @@
                 <div class="text9 text-grey">There is no address assigned</div>
               {% endif %}
           </div>
-            <button class="white-border-button" data-toggle-tab-target="user-payout-form" data-toggle-tab-group="user-payout">Edit info</button>  
+            <button class="white-border-button" data-toggle-tab-target="user-payout-form" data-toggle-tab-group="user-payout">Edit info</button>
         </div>
-      
+
         <div data-toggle-tab="user-payout-form" data-toggle-tab-group="user-payout" style="display:none">
           {% include 'account/payout_info.html' %}
         </div>
@@ -80,17 +80,17 @@
           {% endif %}
 
           {% if not user.has_archive_access %}
-            <button onclick="becomeSupporter()" {% if show_email_confirmation_dialog %} disabled {% endif %} class="white-border-button">Become a Supporting Member</button>  
+            <button onclick="becomeSupporter()" {% if show_email_confirmation_dialog %} disabled {% endif %} class="white-border-button">Become a Supporting Member</button>
           {% elif customer_detail.subscription.plan and not cancelled %}
-            <div class="flex-row supporter-options">  
-            <button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>    
-            <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Update Pledge</a>  
-            </div>  
+            <div class="flex-row supporter-options">
+            <button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>
+            <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Update Pledge</a>
+            </div>
           {% else  %}
-            <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Make a Recurring Monthly Pledge</a>    
+            <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Make a Recurring Monthly Pledge</a>
           {% endif %}
         </div>
-      
+
         <div class="account-settings-info ">
           <a href="/subscriptions/donate" class="white-border-button">Make a One Time Donation</a>
         </div>
@@ -117,7 +117,7 @@
                 <a href="{% url 'user_tax_letter' %}"  class="white-border-button">Download tax document</a>
               {% endif %}
           {% endwith %}
-        
+
         <div class="account-settings-info ">
             <div class="text5">Expiration of archive access</div>
             {% if customer_detail.subscription.plan and not cancelled %}
@@ -125,13 +125,13 @@
             {% elif user_archive_access_until %}
             <div class="text9 text-grey"> {{ user_archive_access_until|date:"m/d/Y" }}</div>
             {% elif not customer_detail.subscription.plan and not period_end.due  %}
-            <div class="text9 text-grey">{{ period_end.date }}</div>      
+            <div class="text9 text-grey">{{ period_end.date }}</div>
             {% else %}
             <div class="text9 text-grey">There is no access to the archive</div>
             {% endif %}
         </div>
       </div>
-      
+
       <div id="user-billing" class="account-settings-view">
         <div class="title5 account-settings-title text-bottom-lineFin">Billing</div>
           <div class="account-settings-info">
@@ -142,7 +142,7 @@
             <div id="credit-card-info">
               <div class="text9 text-grey">xxxx-xxxx-xxxx-{{customer_detail.active_card.last4}}</div>
               <div class="text9 text-grey">exp: {{customer_detail.active_card.exp_month}}/{{customer_detail.active_card.exp_year}}</div>
-              <button id='update-credit-card' class="white-border-button">Update</button> 
+              <button id='update-credit-card' class="white-border-button">Update</button>
             </div>
             <div id="credit-card-update">
               {% include 'account/credit-card-update-form.html' %}
@@ -163,10 +163,10 @@
                 <div class="text9 text-grey">There is no address assigned</div>
               {% endif %}
 
-              <button {% if show_email_confirmation_dialog %} disabled {% endif %} id='update-billing' class="white-border-button">Update</button> 
+              <button {% if show_email_confirmation_dialog %} disabled {% endif %} id='update-billing' class="white-border-button">Update</button>
             <div>
           </div>
-        </div>    
+        </div>
       </div>
     </div>
   <div class="modal fade" id="cancel-subscription" aria-hidden="true">
@@ -189,7 +189,7 @@
                       {% csrf_token %}
                       <button class="white-border-button" style="margin: 0 auto ; width: 100%;" >Cancel monthly pledge</button>
                     </form>
-                  </div> 
+                  </div>
               </div>
             </section>
           {% endif %}
@@ -240,12 +240,12 @@
     $('#update-billing').click(function(){
       $('#billing-change').css('display', 'inherit');
       $('#billing-address').hide();
-      
+
     })
     $('#update-credit-card').click(function(){
       $('#credit-card-update').css('display', 'inherit');
       $('#credit-card-info').hide();
-      
+
     })
 
     $('.close-button').bind("click", ToggleDisplay);

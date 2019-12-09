@@ -35,8 +35,12 @@
           {% endwith %}
         {% endfor %}
       {% else %}
-          <div class="my-downloads__nothing-bought row">
-              <h3>You haven't bought any digital downloads yet. Check out the <a class="my-downloads__nothing-bought__store-link" href="{% url 'promotions:home' %}">store</a> and buy some music!</h3>
+          <div class="row">
+            <p style="width: 90%;" class="text9">The <a class="accent-color underline" href="/catalog/">SmallsLIVE Catalog</a> is a collection of individually produced artist projects.
+              SmallsLIVE Members may sponsor artists of their choice and receive their music as downloads or CDs.
+              All digital media will be available here.
+              Sponsorships directly support the artist.
+            </p>
           </div>
       {% endif %}
     </div>

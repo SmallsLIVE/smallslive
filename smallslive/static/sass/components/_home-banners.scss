@@ -230,8 +230,11 @@ $banners-height: 38vh;
 
     .box {
       .banner-learnmore {
+        display: flex;
+        margin: auto;
         /* temp :likely this should be recalculated using css locks
         margin-top: 1.5vw;*/
+        /*
         @media (min-width: 960px) {
           margin-top: 5px;
         }
@@ -243,6 +246,7 @@ $banners-height: 38vh;
         @media (max-width: 960px) {
           margin-top: calc(-8.998vw + 145.295px);
         }
+        */
       }
 
       .banner-text-container {
@@ -395,8 +399,19 @@ $banners-height: 38vh;
 
 .home-new .banners.carousel {
   display: block;
+  .banner__inside-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
 
   .banner-text-container {
+    display: flex;
+    //margin: auto;
+    margin-right: 3vw;
+    flex-direction: column;
+    align-self: center;
+    /*
     margin-top: 2.3vw;
 
     @media (max-width: 960px) {
@@ -410,24 +425,28 @@ $banners-height: 38vh;
       margin-top: 1.6rem;
       height: 27rem;
     }
+    */
   }
 
   .banner-logo {
-    position: absolute;
-    right: 3px;
-    top: 3px;
+    display: flex;
+    align-items: center;
+    //position: absolute;
+    //right: 3px;
+    //top: 3px;
 
     img {
-      width: 8vw;
-      height: 100%;
-      min-width: 30px;
-      max-width: 120px;
+      //width: 8vw;
+      height: 20vw;
+      //min-width: 30px;
+      max-width: 265px;
+      max-height: 265px;
     }
   }
 
   .box {
     &.flex-column {
-      height: 27.5vw;
+      height: 30.5vw;
       position: relative;
 
       @media (min-width: 960px) {
@@ -435,7 +454,7 @@ $banners-height: 38vh;
       }
 
       @media (max-width: 960px) {
-        height: calc(17.34vw + 168.53px);
+        //height: calc(17.34vw + 168.53px);
 
         .content {
           color: white;
@@ -455,15 +474,14 @@ $banners-height: 38vh;
 
     p {
       &.title {
-        border-bottom: 4px solid #d21535;
+        //border-bottom: 4px solid #d21535;
+        display: flex;
         color: white;
-        /*font-size: 4.2rem;
-        line-height: 4.7rem;*/
         margin: 0 auto;
-        /*margin-bottom: 2vw;*/
-        width: 60%;
-        max-width: 720px;
-
+        width: 100%;
+        //max-width: 720px;
+        font-size: 14.3vw;
+        /*
         @media (max-width: 960px) {
           font-size: 6vw;
           line-height: 5.5vw;
@@ -474,10 +492,20 @@ $banners-height: 38vh;
           line-height: calc(4.3vw - 3px);
           margin-bottom: calc(2.083vw - 8.9px);
         }
+        */
         @media (min-width: 1200px) {
-          font-size: 5.4rem;
-          line-height: 4.9rem;
-          margin-bottom: 1.6rem;
+          font-size: 17rem;
+          //line-height: 4.9rem;
+          //margin-bottom: 1.6rem;
+        }
+        &__foundation {
+          &--top{
+            //font-size: 10.5rem;
+          }
+          &--bottom{
+            //font-size: 10rem;
+            //line-height: 8rem;
+          }
         }
       }
 

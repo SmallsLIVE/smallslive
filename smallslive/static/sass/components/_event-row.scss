@@ -237,7 +237,10 @@ $event-row-padding: 3.5vw;
     height: calc(100% - 6vw);
 
     @media (max-width: $screen-md){
-      height: calc(100% - 9vw);
+      height: calc(100% - 11vw);
+    }
+    @media (max-width: 768px){
+      height: calc(100% - 14vw);
     }
   }
 
@@ -278,13 +281,17 @@ $event-row-padding: 3.5vw;
     z-index: 999;
 
     @media (max-width: $screen-md) {
-      height: 9vw;
+      height: 11vw;
 
       .title5 {
         font-size: 2vw;
-        height: 2.2vw;
-        line-height: 1.8vw;
+        height: 2.3vw;
+        line-height: 2.8vw;
       }
+    }
+
+    @media (max-width: 768px){
+      height: 14vw;
     }
 
     a {
@@ -308,7 +315,7 @@ $event-row-padding: 3.5vw;
         &.title5 {
           padding-right: 10px;
           font-size: 2.5vw;
-          height: 3vw;
+          height: 4vw;
           line-height: 4vw;
         }
 
@@ -614,13 +621,13 @@ $event-row-padding: 3.5vw;
   }
 }
 .event-row .event-display-today-and-tomorrow {
-  height: calc(36.7vw * 0.6 - 60px);
+  height: calc(36.7vw * 0.64 - 60px);
   @media (max-width: 1300px) {
-    height: calc(36.7vw * 0.6 - 30px);
+    height: calc(36.7vw * 0.64 - 30px);
   }
 
   @media (min-width: $screen-sm) and (max-width: $screen-md) {
-    height: calc(67vw * 0.6 - 100px);
+    height: calc(67vw * 0.64 - 100px);
 
     //a .event-card .event-picture-container .picture-border .event-picture {
       //height: calc(67vw * 0.6 - 60px);
@@ -635,8 +642,8 @@ $event-row-padding: 3.5vw;
   //}
 
   @media (max-width: $screen-sm) {
-    height: calc(90vw * 0.6 - 60px);
-    min-height: 180px;
+    height: calc(90vw * 0.64 - 60px);
+    min-height: 200px;
 //    a .event-card .event-picture-container .picture-border .event-picture {
 //      height: calc(90vw * 0.6 - 25px);
 //    }
