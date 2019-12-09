@@ -11,5 +11,5 @@
     src="{% thumbor_url photo_url|urlencode height=height|default_if_none:360 width=width|default_if_none:600 smart=True %}"
   {% endif %}
 {% else %}
-    src="{% static 'image/no-event-image-placeholder.jpg' %}" style="height: 100%; width: auto;"
+    src="{% static 'image/no-event-image-placeholder.jpg' %}" <!--style="height: 100%; width: auto;"-->
 {% endif %} alt="">

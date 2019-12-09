@@ -41,6 +41,7 @@
       {% block event_content %}
       {% endblock %}
 
+      <div class="event-container__sub">
       <div class="event-video-info content-space-between">
         <div class=" flex-column info-container">
           <div class="event-set-info">
@@ -96,7 +97,7 @@
               </a>
             {% endif %}
             {% if event.is_live or event.is_past %}
-              <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">Sponsor This Artist</button>
+              <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">sponsor</button>
             {% endif %}
             {% if not event.is_live and event.is_future %}
             {% if products %}
@@ -141,6 +142,7 @@
             </div>
           {% endfor %}
         {% endif %}
+      </div>
       </div>
 
       <div class="flex-row event-set-selector"></div>

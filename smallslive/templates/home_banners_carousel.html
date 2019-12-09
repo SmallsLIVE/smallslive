@@ -4,20 +4,13 @@
 <div class="banners carousel">
   {% if not active %}
     <div id="banner-live-box" class="box flex-column live">
-      <div class="banner-logo" >
-        <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
-      </div>
-      <div class="banner-text-container">
-        <p class="title">The SmallsLIVE Foundation</p>
-        <p class="content">
-          <span class="accent-color">The</span> SmallsLIVE Foundation for Jazz Art & Education is a not-for-profit organization.
-        <!--</p>-->
-        <!--<p class="content">-->
-          <span class="accent-color">Our</span> mission is the dissemination of the music and to support the musicians.
-        <!--</p>-->
-        <!--<p class="content">-->
-          <span class="accent-color">SmallsLIVE</span> is supported by tax deductible donations from our members.
-        </p>
+      <div class="banner__inside-container">
+        <div class="banner-logo" >
+          <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
+        </div>
+        <div class="banner-text-container">
+          <p class="title__foundation--bottom title">Foundation</p>
+        </div>
       </div>
       <div class="banner-learnmore">
         <a class="banner-button-info" href="{% url 'contact-and-info' %}#foundation ">More Info</a>
@@ -27,66 +20,78 @@
           <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
           <a href="{% url 'become_supporter' %}">Become a supporter</a>
+        {% else %}
+          <a class="banner-button-info"
+          {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
+          {% else %} onclick="nextoBecomeSupporter();" {% endif %}>
+            Make a Donation
+          </a>
         {% endif %}
       </div>
     </div>
     <div id="banner-archive-box" class="box flex-column archive">
-     <div class="banner-logo" >
-        <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
-      </div>
-      <div class="banner-text-container">
-        <p class="title" style="width: 25%">Archive</p>
-        <p class="content">
-          <span class="accent-color">The</span> SmallsLIVE Archive is an audio/video library of all the shows at <span class="accent-color">Smalls</span> & Mezzrow.
-        <!--</p>-->
-        <!--<p class="content">-->
-          <span class="accent-color">Royalties</span> are paid directly to the musicians by The SmallsLIVE Foundation.
-        <!--</p>-->
-        <!--<p class="content">-->
-          <span class="accent-color">Members</span> sponsor their favorite musicians by listening to their music.
-        </p>
+      <div class="banner__inside-container">
+          <div class="banner-logo" >
+              <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
+          </div>
+          <div class="banner-text-container">
+            <p class="title">Archive</p>
+          </div>
       </div>
       <div class="banner-learnmore">
-        <a class="banner-button-info" href="{% url 'contact-and-info' %}#archive">More Info</a>
+        <a class="banner-button-info" href="{% url 'contact-and-info' %}#foundation ">More Info</a>
+        {% if not user.is_authenticated %}
+        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        {% elif not user.has_activated_account %}
+          <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
+        {% elif not user.can_watch_video %}
+          <a href="{% url 'become_supporter' %}">Become a supporter</a>
+        {% else %}
+          <a class="banner-button-info"
+          {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
+          {% else %} onclick="nextoBecomeSupporter();" {% endif %}>
+            Make a Donation
+          </a>
+        {% endif %}
       </div>
     </div>
     <div id="banner-mission-box" class="box flex-column mission">
-      <div class="banner-logo" >
-        <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
-      </div>
-      <div class="banner-text-container">
-        <p class="title" style="width: 20%;">Mission</p>
-        <p class="content">
-          <span class="accent-color">The</span> SmallsLIVE Foundation subsidizes the operation of the venues.
-          <!--</p>-->
-          <!--<p class="content">-->
-          <span class="accent-color">We</span> support recording projects, tours, and educational initiatives.
-          <!--</p>-->
-          <!--<p class="content">-->
-          <span class="accent-color">We</span> offer emergency aid for jazz musicians in need.
-        </p>
+      <div class="banner__inside-container">
+        <div class="banner-logo" >
+          <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
+        </div>
+        <div class="banner-text-container">
+          <p class="title">Live Stream</p>
+        </div>
       </div>
       <div class="banner-learnmore">
-        <a class="banner-button-info" {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation" {% else %} onclick="nextoBecomeSupporter();" {% endif %}>Make a Donation</a>
+        <a class="banner-button-info" href="{% url 'contact-and-info' %}#foundation ">More Info</a>
+        {% if not user.is_authenticated %}
+        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        {% elif not user.has_activated_account %}
+          <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
+        {% elif not user.can_watch_video %}
+          <a href="{% url 'become_supporter' %}">Become a supporter</a>
+        {% else %}
+          <a class="banner-button-info"
+          {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
+          {% else %} onclick="nextoBecomeSupporter();" {% endif %}>
+            Make a Donation
+          </a>
+        {% endif %}
       </div>
     </div>
 
 
   {% elif active = 'catalog' %}
-      <div id="banner-supporting-box" class="box flex-column mission">
-      <div class="banner-text-container">
-        <p class="title">Smallslive catalog</p>
-        <p class="content wide">
-          <span class="accent-color">The</span> SmallsLIVE Catalog is a collection of individually produced artist projects.
-        <!--</p>
-        <p class="content wide">//-->
-          <span class="accent-color">SmallsLIVE</span> Members may sponsor artists of their choice and receive their music as downloads or CDs.
-        <!--</p>
-        <p class="content wide">//-->
-          <!--<span class="accent-color">By</span> sponsoring an individual artist project you are directly benefitting that specific artist.-->
-          <!--Sponsorships are partially tax deductible.-->
-          <span class="accent-color">Sponsorships</span> directly support the artist.
-        </p>
+    <div id="banner-supporting-box" class="box flex-column mission">
+      <div class="banner__inside-container">
+        <div class="banner-logo" >
+          <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
+        </div>
+        <div class="banner-text-container">
+          <p class="title">catalog</p>
+        </div>
       </div>
       <div class="banner-learnmore">
         <a class="banner-button-info" href="{% url 'contact-and-info' %}#catalog ">More Info</a>
@@ -124,7 +129,7 @@
   function nextoBecomeSupporter(){
     $('#becomeMemberDialog').modal('show')
     $('#form-login').attr('action', $('#form-login').attr('action') + "{% url 'become_supporter' %}?flow_type=one_time_donation".substring(1))
-  }  
+  }
   function becomeMember() {
 
       window.location = '{% url 'become_supporter' %}';

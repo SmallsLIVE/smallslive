@@ -27,7 +27,7 @@
       <div class="album__support-buttons__container--mobile">
         <!--<div class="sponsor-text text2">Sponsor this {{ text }} artist and project with a tax-deductable donation to the smallslive foundation</div>-->
         <div>
-          <button id="projectDonationBtnMobile" class="white-border-button buttons-row" style="width: 100%; margin-left: 0; font-size: 12px;">Sponsor this Artist</button>
+          <button id="projectDonationBtnMobile" class="white-border-button buttons-row" style="width: 100%; margin-left: 0; font-size: 12px;">sponsor</button>
         </div>
         {% if not is_catalogue %}
         <div>
@@ -204,7 +204,7 @@
           <button id="projectDonationBtn"
                       class="white-border-button buttons-row"
                       style="margin-left: 0;"
-                      data-redirect-url="{% url 'product_support' product_id=album_product.pk %}">Sponsor this Artist</button>
+                      data-redirect-url="{% url 'product_support' product_id=album_product.pk %}">sponsor</button>
         </div>
       </div>
     </div>
