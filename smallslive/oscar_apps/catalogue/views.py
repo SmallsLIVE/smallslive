@@ -22,8 +22,7 @@ class ArtistCatalogue(ProductCategoryView):
         id = request.GET.get('id', None)
 
         artist = Artist.objects.filter(pk=id).first()
-        above_limit = artist.albums().count() > 8
-        context = {'artist': artist, 'above_limit': above_limit}
+        context = {'artist': artist}
         template = 'catalogue/artist-category.html'
 
         temp = render_to_string(template,

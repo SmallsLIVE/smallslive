@@ -70,34 +70,42 @@ $(document).scroll(function () {
     }
 })
 
-$(document).on('click', ".load-more-btn", function () {
-    var loadBtn = $(this);
-    var artistId = loadBtn.data("artist");
-    var pageNumber = loadBtn.data("page");
-    var url = loadBtn.data('url');
-    $.ajax({
-        url: url,
-        data: {
-            artist: artistId,
-            page: pageNumber
-        },
-        success: function (data) {
-            if (data.last_page) {
-                loadBtn.hide()
-            } else {
-                loadBtn.data("page", pageNumber + 1)
-            }
-            var $target;
-            if (artistId) {
-                //$target = $('#artist-albums');
-                $target = $('#all-recordings-container');
-            } else {
-                $target = $('#all-recordings-container');
-            }
-            $target.append(data.template);
-        }
-    });
-})
+function loadMoreCatalog() {
+  var loadBtn = $("#all-recordings-container");
+  var stopQuerying = loadBtn.data("stop-querying");
+  if (stopQuerying === true) {
+    return;
+  }
+  var artistId = loadBtn.data("artist");
+  var pageNumber = loadBtn.data("page");
+  var url = loadBtn.data('url');
+  $("#event-load-gif").show();
+  loadBtn.data("stop-querying", true);
+  $.ajax({
+    url: url,
+    data: {
+      artist: artistId,
+      page: pageNumber
+    },
+    success: function (data) {
+      loadBtn.data("page", pageNumber + 1)
+      var $target;
+      if (artistId) {
+        $target = $('#all-recordings-container');
+      } else {
+        $target = $('#all-recordings-container');
+      }
+      $target.append(data.template);
+      $("#event-load-gif").hide();
+
+      if (data.last_page) {
+        loadBtn.data("stop-querying", true);
+      } else {
+        loadBtn.data("stop-querying", false);
+      }
+    }
+  });
+}
 
 $.expr[":"].contains = $.expr.createPseudo(function (arg) {
     return function (elem) {
@@ -141,9 +149,9 @@ $(document).on('click', ".artist-result", function () {
 })
 
 function loadInfo(artistId) {
-    var loadBtn = $("#store-load-btn")
-    loadBtn.data("page", 2)
-    loadBtn.data("artist", artistId)
+    var loadBtn = $("#store-load-btn");
+    loadBtn.data("page", 2);
+    loadBtn.data("artist", artistId);
     var url = loadBtn.data('url');
     $('#artist-store').html("");
     $('#artist-store').addClass("artist-loading-gif");
@@ -154,9 +162,6 @@ function loadInfo(artistId) {
             page: 1
         },
         success: function (data) {
-            if (data.last_page) {
-                loadBtn.hide()
-            }
             $("#artist-list").hide()
             var $target;
             $('#artist-store').removeClass("artist-loading-gif");

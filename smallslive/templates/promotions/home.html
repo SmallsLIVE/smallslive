@@ -39,32 +39,45 @@
     </div>
     {% include "promotions/artist-bar.html" with artist_list=artist_with_media %}
   </div>
-  <main class="all-recordings-container" id="all-recordings-container">
+  <main class="all-recordings-container" id="all-recordings-container" data-page="2" data-url="{% url 'album_list' %}">
     {% include 'catalogue/album-list.html' with pagenumber=1 album_page=all_recordings %}
   </main>
-  {% if above_limit %}
-    <div class="white-border-button load-more-btn" id="store-load-btn" data-page="2" data-url="{% url 'album_list' %}">Load More</div>
-  {% endif %}
+  <div id="event-load-gif" class="loading-image events-gif text-center">
+    <img src="{% static 'image/loading.gif' %}" alt="">
+  </div>
 
 {% endblock store_content %}
 
 {% block extra_js %}
-    <script src="{% static 'js/store-base.js' %}"></script>
-    <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".playback-control").on('click', function (e) {
-                e.preventDefault();
-                if (audioPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {
-                    audioPlayer.pause();
-                } else {
-                    audioPlayer.playlistItem($(this).data('playlist-id'));
-                    $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
-                }
-                $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
-            })
-                
-        });
-    </script>
+  <script src="{% static 'js/store-base.js' %}"></script>
+  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+  <script type="text/javascript">
+    var lastScrollTop = 0;
+
+    $(document).ready(function () {
+
+      $(".playback-control").on('click', function (e) {
+        e.preventDefault();
+        if (audioPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {
+            audioPlayer.pause();
+        } else {
+            audioPlayer.playlistItem($(this).data('playlist-id'));
+            $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
+        }
+        $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
+      })
+    });
+
+    $(window).scroll(function () {
+      var st = $(this).scrollTop();
+      if ($(window).scrollTop() >= $(document).height() - $(window).height() - 200) {
+        if (st > lastScrollTop) {
+          loadMoreCatalog();
+        }
+        lastScrollTop = st;
+      };
+    });
+
+  </script>
 {% endblock %}
 
