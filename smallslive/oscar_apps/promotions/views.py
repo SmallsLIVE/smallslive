@@ -12,7 +12,7 @@ class HomeView(promotions_views.HomeView):
             product_class__slug="full-access")) + list(Product.objects.filter(
             product_class__slug="album").order_by('-id')[:12])
         context['all_recordings'] = Product.objects.filter(
-            product_class__slug="album")[:12]
+            product_class__slug="album").order_by('upc')[:12]
         context['featured_recordings'] = Product.objects.filter(
             product_class__slug="album", featured=True)[:4]
         context['preview_track_id_counter'] = itertools.count()
