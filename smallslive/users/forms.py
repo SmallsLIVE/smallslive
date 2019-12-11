@@ -23,7 +23,7 @@ class UserSignupForm(SignupForm):
                                     'placeholder': 'Your last name',
                                     'class': 'form-control'
                                 }))
-    terms_of_service = forms.BooleanField(required=True)
+    terms_of_service = forms.BooleanField(required=False)
     newsletter = forms.BooleanField(required=False)
 
     def signup(self, request, user):
