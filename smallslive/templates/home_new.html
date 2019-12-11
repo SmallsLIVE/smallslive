@@ -40,6 +40,41 @@
       {% include 'home_banners_carousel.html' %}
       <div class="event-stripe">
         {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
+
+        {% if not query_term and not artist_profile %}
+          <section id="recently-added-section" class="event-stripe archive">
+            <div class="section-title home archive">
+              <div class="title1"><a href="#" id="ra-recently-added-toggle"  class="accent-color"> Recently Added</a>  \ <a href="#" id="ra-most-popular-toggle">Most Popular</a></div>
+            </div>
+            <main>
+              <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+              <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+              {% include 'events/event_row.html' with events=new_in_archive secondary=True %}
+            </main>
+          </section>
+
+          <section id="most-popular-section" class="event-stripe archive hidden">
+            <div class="section-title home archive">
+              <div class="title1"><a href="#" id="mp-recently-added-toggle"> Recently Added</a>  \ <a href="#" id="mp-most-popular-toggle" class="accent-color">Most Popular</a></div>
+              <span class="select-container" style="left: 690px; bottom: -4px;">
+                <div class="white-border-select home-filter">
+                  <select id="most-popular-filter">
+                    <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
+                    <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
+                    <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
+                  </select>
+                </div>
+              </span>
+            </div>
+            <main id="most-popular-container">
+              <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+              <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+              {% include 'events/event_row.html' with events=popular_in_archive secondary=True %}
+            </main>
+          </section>
+
+        {% endif %}
+
         <section class="event-stripe">
           <div class="section-title home highlights">
             <div class="title1">Highlights from the Archive</div>
@@ -119,4 +154,26 @@
       });
     </script>
   {% endif  %}
+
+  <script>
+    $(document).ready(function () {
+      $('#ra-most-popular-toggle, #mp-most-popular-toggle').click(function (event) {
+        event.preventDefault();
+        $('#recently-added-section').addClass('hidden');
+        $('#most-popular-section').removeClass('hidden');
+        // Trigger resize to get carousel working  TODO: refactor code.
+        $(window).resize();
+
+      });
+
+      $('#ra-recently-added-toggle, #mp-recently-added-toggle').click(function (event) {
+        event.preventDefault();
+        $('#recently-added-section').removeClass('hidden');
+        $('#most-popular-section').addClass('hidden');
+        // Trigger resize to get carousel working  TODO: refactor code.
+        $(window).resize();
+      });
+    });
+  </script>
+
 {% endblock extra_js %}

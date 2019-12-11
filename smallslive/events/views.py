@@ -137,11 +137,20 @@ class HomepageView(ListView, UpcomingEventMixin):
 
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
+        context['popular_in_archive'] = Event.objects.get_most_popular_uploaded(RANGE_MONTH)
         context['events_today'] = list(self.get_queryset())
 
         activation_key =  self.request.GET.get('activate_account')
         if activation_key:
             context['activation_key'] = activation_key
+
+        most_recent = Event.objects.most_recent()[:20]
+        if len(most_recent):
+            context['new_in_archive'] = most_recent
+        else:
+            context['new_in_archive'] = Event.objects.exclude(
+                state=Event.STATUS.Draft
+            ).order_by('-start')[:20]
 
         return context
 
@@ -765,7 +774,6 @@ class ArchiveView(ListView):
 
         context['month'] = self.date_start.month - 1
         context['year'] = self.date_start.year
-        context['popular_in_archive'] = Event.objects.get_most_popular_uploaded(RANGE_MONTH)
         context.update(self.get_pagination())
 
         venue = self.request.GET.get('venue')

@@ -105,13 +105,6 @@ class SearchMixin(object):
 class UpcomingEventMixin(object):
 
     def get_upcoming_events_context_data(self, context):
-
-        most_recent = Event.objects.most_recent()[:20]
-        if len(most_recent):
-            context['new_in_archive'] = most_recent
-        else:
-            context['new_in_archive'] = Event.objects.exclude(
-                state=Event.STATUS.Draft
-            ).order_by('-start')[:20]
         context['venues'] = Venue.objects.all()
+
         return context
