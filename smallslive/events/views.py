@@ -137,7 +137,8 @@ class HomepageView(ListView, UpcomingEventMixin):
 
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
-        context['popular_in_archive'] = Event.objects.get_most_popular_uploaded(RANGE_MONTH)
+        context['popular_in_archive'] = Event.objects.get_most_popular_uploaded()
+        context['popular_select'] = 'alltime'
         context['events_today'] = list(self.get_queryset())
 
         activation_key =  self.request.GET.get('activate_account')

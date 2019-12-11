@@ -1,21 +1,4 @@
 $(document).ready(function() {
-  var $filter = $("#most-popular-filter");
-
-  var setMostPopular = function(value) {
-    var mostPopularFilter = $("#most-popular-container").find(".event-row");
-    $.get(popularQueryUrl + "?range=" + value, function(data) {
-      mostPopularFilter.replaceWith(data.content);
-    });
-  };
-
-  $filter.on("change", function() {
-    setMostPopular($filter.val());
-  });
-
-  if (typeof popularFilterDefaultValue != "undefined") {
-    $filter.val(popularFilterDefaultValue);
-    $filter.trigger("change");
-  }
 
   $(".scroll-left").css("visibility", "initial");
 

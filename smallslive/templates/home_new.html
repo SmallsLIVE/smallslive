@@ -157,6 +157,11 @@
 
   <script>
     $(document).ready(function () {
+
+      /* Functionality for switching between recently added and most popular
+         This has been changed many times. Leaving the code here for convenience
+         until there is a final decision */
+
       $('#ra-most-popular-toggle, #mp-most-popular-toggle').click(function (event) {
         event.preventDefault();
         $('#recently-added-section').addClass('hidden');
@@ -173,6 +178,28 @@
         // Trigger resize to get carousel working  TODO: refactor code.
         $(window).resize();
       });
+
+      var popularFilterDefaultValue = "{{ popular_select }}";
+      var popularQueryUrl = "{% url 'event_popular_ajax' %}";
+
+      var $filter = $("#most-popular-filter");
+
+      var setMostPopular = function(value) {
+        var mostPopularFilter = $("#most-popular-container").find(".event-row");
+        $.get(popularQueryUrl + "?range=" + value, function(data) {
+          mostPopularFilter.replaceWith(data.content);
+        });
+      };
+
+      $filter.on("change", function() {
+        setMostPopular($filter.val());
+      });
+
+      if (typeof popularFilterDefaultValue != "undefined") {
+        $filter.val(popularFilterDefaultValue);
+        $filter.trigger("change");
+      }
+
     });
   </script>
 

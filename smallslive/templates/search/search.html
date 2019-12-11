@@ -142,11 +142,5 @@
   <script src="{% static 'js/tabs.js' %}"></script>
   <script src="{% static 'js/search/search.js' %}"></script>
   <script src="{% static 'js/search/search_datepickers.js' %}"></script>
-  <script>
-    {% if popular_select %}
-      var popularFilterDefaultValue = "{{ popular_select }}";
-      var popularQueryUrl = "{% url 'event_popular_ajax' %}";
-    {% endif %}
-  </script>
   <script src="{% static 'js/search/artist_index.js' %}"></script>
 {% endblock %}
