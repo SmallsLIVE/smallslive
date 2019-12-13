@@ -940,7 +940,7 @@ body.headers-1 {
     padding: 0 20px;
     width: 100%;
   }
-  @media (max-width: 600px) {
+  @media (max-width: 415px) {
     padding: unset;
   }
 }
@@ -955,7 +955,7 @@ body.headers-1 {
       margin-right: 0;
     }
 
-    @media(max-width: 600px){
+    @media(max-width: 415px){
       display: inline-block;
     }
 
@@ -1045,7 +1045,7 @@ body.headers-1 {
       margin: 20px 0 0 0;
 
       @media(max-width: $screen-sm-max){
-        margin: auto;
+        margin:13px 0 auto 0;
         width: 90%;
         max-width: none;
       }
@@ -1060,9 +1060,10 @@ body.headers-1 {
         object-position: top;
         height: 30vh;
         border: none;
+        max-height: 292px;
 
         @media(max-width: 600px){
-
+          height: 80%;
         }
 
       }

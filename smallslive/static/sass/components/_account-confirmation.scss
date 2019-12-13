@@ -5,7 +5,7 @@
 
     font-size: calc(5vw - 6px);
     line-height: calc(4.3vw - 3px);
-    border-bottom: 4px solid #d21535;
+    border-bottom: 4px solid white;
     /*will need to calulate margin-top by hand to complete*/
     margin: calc(3.083vw - 8.9px) auto;
     letter-spacing: 0px;
@@ -37,7 +37,7 @@
 
     max-width: 800px;
     width: calc(41.666vw + 300px);
-    text-align: center;
+    text-align: left;
 
     p {
 

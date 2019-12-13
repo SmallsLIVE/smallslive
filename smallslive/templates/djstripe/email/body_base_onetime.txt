@@ -3,9 +3,8 @@ Dear {% block customer_name %}{{ charge.customer.subscriber.get_full_name }}{% e
 Thank you for contributing to the SmallsLIVE Foundation for Jazz Arts and Education.
 
 You have made a One Time Donation of ${{ charge.amount|floatformat:2 }}. One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings.
-You will receive access to The SmallsLIVE Archive for the remainder of the tax year.
+You will receive access to The SmallsLIVE Archive.
 
 Thank you for your support,
 
 The SmallsLIVE Team
-

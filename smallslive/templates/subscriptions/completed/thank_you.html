@@ -46,8 +46,12 @@
         </p>
       {% elif flow_type == 'product_support' %}
         <p tabindex="0" class="title7"><span class="big-letter">T</span>
-          hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.
-          <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+          hank you for your support of the smallslive foundation for jazz arts and education as well as {{ comma_separated_leaders }}.
+          {% if product.get_leaders > 1 %}
+          <span class='accent-color'>Your support benefits these artists and our mission.</span>
+          {% else %}
+          <span class='accent-color'>Your support benefits this artist and our mission.</span>
+          {% endif %}
         </p>
         {% if album_product %}
           <p class="text5 text-center" style="margin-top: 60px;">
@@ -56,8 +60,12 @@
         {%  endif %}
       {% elif flow_type == 'event_support' %}
         <p tabindex="0" class="title7"><span class="big-letter">T</span>
-          hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.
-          <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+          hank you for your support of the smallslive foundation for jazz arts and education as well as {{ comma_separated_artists }}.
+          {% if event.performers.count > 1 %}
+          <span class='accent-color'>Your support benefits these artists and our mission.</span>
+          {% else %}
+          <span class='accent-color'>Your support benefits this artist and our mission.</span>
+          {% endif %}
         </p>
       {% endif %}
     </div>
