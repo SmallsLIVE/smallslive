@@ -77,11 +77,15 @@ $event-row-padding: 3.5vw;
     @media (max-width: 1023px) and (min-width: 961px) {
       height: $live-card-width-tablet * 0.6;
     }
+
+    &.highlights, &.recently, &.popular {
+      border-radius: 0;
+    }
   }
 
   &.prev {
     transform: scaleX(-1);
-    width: 3.1vw;
+    width: calc(3.5vw - 10px);
     left: 0;
 
     b:before {
@@ -96,19 +100,23 @@ $event-row-padding: 3.5vw;
       z-index: 10;
 
       @media (max-width: 960px) {
-        width: 10vw;
+        width: 3.5vw;
         visibility: hidden;
       }
 
       @media (max-width: 550px) {
-        width: 6vw;
+        width: 3.5vw;
         visibility: hidden;
       }
+    }
+
+    &.highlights, &.recently, &.popular {
+      border-radius: 0;
     }
   }
 
   &.next {
-    width: $content-left-padding;
+    width: calc(3.5vw - 10px);
     right: 0;
 
     b:before {
@@ -125,12 +133,12 @@ $event-row-padding: 3.5vw;
       display: none;
 
       @media (max-width: 960px) {
-        width: 10vw;
+        width: 3.5vw;
         visibility: hidden;
       }
 
       @media (max-width: 550px) {
-        width: 6vw;
+        width: 3.5vw;
         visibility: hidden;
       }
     }
@@ -217,9 +225,34 @@ $event-row-padding: 3.5vw;
   }
 }
 
+
+.tonight-events {
+  @extend .event-row;
+  padding: 0;
+
+  @media (min-width: $screen-sm-max) {
+    padding: 0;
+  }
+}
+
+.recently-carousel, .popular-carousel {
+  @extend .event-row;
+  padding: 0;
+
+  @media (min-width: $screen-sm-max) {
+    padding: 0;
+  }
+}
+
 .event-display {
   margin-right: $event-card-margin;
   position: relative;
+}
+
+.owl-carousel {
+  .event-display {
+    margin-right: 0;
+  }
 }
 
 .event-row .event-display-today-and-tomorrow {
@@ -326,8 +359,10 @@ $event-row-padding: 3.5vw;
     }
   }
 
-  .event-card .event-picture-container {
-    border-radius: 0;
+  .event-card  {
+    .event-picture-container {
+      border-radius: 0;
+    }
   }
 
   .event-info {
@@ -620,6 +655,20 @@ $event-row-padding: 3.5vw;
     }
   }
 }
+
+.owl-carousel {
+
+  &.highlights-carousel, &.recently-carousel, &.popular-carousel {
+    .event-card, .event-card-secondary {
+      .event-picture-container {
+        border-radius: 0;
+      }
+    }
+  }
+
+}
+
+
 .event-row .event-display-today-and-tomorrow {
   height: calc(36.7vw * 0.64 - 60px);
   @media (max-width: 1300px) {

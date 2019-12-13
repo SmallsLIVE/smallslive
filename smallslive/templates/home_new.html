@@ -41,48 +41,50 @@
       <div class="event-stripe">
         {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
 
-        {% if not query_term and not artist_profile %}
-          <section id="recently-added-section" class="event-stripe archive">
-            <div class="section-title home archive">
-              <div class="title1"><a href="#" id="ra-recently-added-toggle"  class="accent-color"> Recently Added</a>  \ <a href="#" id="ra-most-popular-toggle">Most Popular</a></div>
+        <section id="recently-added-section" class="event-stripe">
+          <div class="section-title home recently">
+            <div class="title1">
+              <a href="#" id="ra-recently-added-toggle" class="accent-color no-link"> Recently Added</a>  \
+              <a href="#" id="ra-most-popular-toggle" class="no-link">Most Popular</a>
             </div>
-            <main>
-              <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-              <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-              {% include 'events/event_row.html' with events=new_in_archive secondary=True %}
-            </main>
-          </section>
+            <span id="most-popular-filter-container" class="select-container hidden">
+              <div class="white-border-select home-filter">
+                <select id="most-popular-filter">
+                  <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
+                  <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
+                  <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
+                </select>
+              </div>
+            </span>
+          </div>
+          <main id="recently-added-container">
+            <div class="slide-btn recently prev"><b class="indicator-icon icon-left-caret"></b></div>
+            <div class="slide-btn recently next"><b class="indicator-icon icon-right-caret"></b></div>
+            {% include 'events/event_row.html' with events=new_in_archive secondary=True carousel='recently-carousel' %}
+          </main>
+          <main id="most-popular-container" class="hidden">
+            <div class="slide-btn popular prev"><b class="indicator-icon icon-left-caret"></b></div>
+            <div class="slide-btn popular next"><b class="indicator-icon icon-right-caret"></b></div>
+            {% include 'events/event_row.html' with events=popular_in_archive secondary=True carousel='popular-carousel' %}
+          </main>
+        </section>
 
-          <section id="most-popular-section" class="event-stripe archive hidden">
-            <div class="section-title home archive">
-              <div class="title1"><a href="#" id="mp-recently-added-toggle"> Recently Added</a>  \ <a href="#" id="mp-most-popular-toggle" class="accent-color">Most Popular</a></div>
-              <span class="select-container" style="left: 690px; bottom: -4px;">
-                <div class="white-border-select home-filter">
-                  <select id="most-popular-filter">
-                    <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
-                    <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
-                    <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
-                  </select>
-                </div>
-              </span>
-            </div>
-            <main id="most-popular-container">
-              <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-              <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-              {% include 'events/event_row.html' with events=popular_in_archive secondary=True %}
-            </main>
-          </section>
+        <section id="most-popular-section" class="event-stripe hidden">
+          <div class="section-title home archive">
+            <div class="title1"><a href="#" id="mp-recently-added-toggle"> Recently Added</a>  \ <a href="#" id="mp-most-popular-toggle" class="accent-color">Most Popular</a></div>
 
-        {% endif %}
+          </div>
+
+        </section>
 
         <section class="event-stripe">
           <div class="section-title home highlights">
             <div class="title1">Highlights from the Archive</div>
           </div>
           <main>
-            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'events/event_row.html' with events=staff_picks %}
+            <div class="highlights slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+            <div class="highlights slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+            {% include 'events/event_row.html' with events=staff_picks carousel='tonight-events highlights-carousel' %}
           </main>
         </section>
       </div>
@@ -94,7 +96,7 @@
 {% block footer %}
   <!-- Removed mobile footer as per Spike's request -->
   <div style="margin: 10px 50px;">
-    <footer class="footer-info flex-column items-center" style="margin-bottom: 50px;">
+    <footer class="footer-info flex-column items-center active" style="margin-bottom: 50px;">
       <img class="footer-logo" style="margin-bottom: 5px;" src="{% static 'new_logo_transparent_black.svg' %}" alt="SmallsLIVE Foundation logo" width="100">
       <div class="text-grey">Copyright ®{% now 'Y' %} SmallsLIVE All rights reserved.</div>
       <div>
@@ -162,21 +164,39 @@
          This has been changed many times. Leaving the code here for convenience
          until there is a final decision */
 
-      $('#ra-most-popular-toggle, #mp-most-popular-toggle').click(function (event) {
-        event.preventDefault();
-        $('#recently-added-section').addClass('hidden');
-        $('#most-popular-section').removeClass('hidden');
-        // Trigger resize to get carousel working  TODO: refactor code.
-        $(window).resize();
+      initializeRecentlyCarousel();
 
+      function setTextEllipsisClass(tabName) {
+        /* The unselected tab text will be trimmed on mobile */
+
+        var $recentlyAdded = $("#ra-recently-added-toggle");
+        var $mostPopular = $("#ra-most-popular-toggle");
+        if (tabName == "popular") {
+          if (!$recentlyAdded.hasClass("trim")) {
+            $recentlyAdded.addClass("trim");
+          }
+        } else {
+          $recentlyAdded.removeClass("trim");
+        }
+
+      }
+
+      $('#ra-most-popular-toggle').click(function (event) {
+        event.preventDefault();
+        $('#recently-added-container').addClass('hidden');
+        $('#most-popular-container').removeClass('hidden');
+        $('#most-popular-filter-container').removeClass('hidden');
+        initializePopularCarousel();
+        setTextEllipsisClass("popular");
       });
 
-      $('#ra-recently-added-toggle, #mp-recently-added-toggle').click(function (event) {
+      $('#ra-recently-added-toggle').click(function (event) {
         event.preventDefault();
-        $('#recently-added-section').removeClass('hidden');
-        $('#most-popular-section').addClass('hidden');
-        // Trigger resize to get carousel working  TODO: refactor code.
-        $(window).resize();
+        $('#recently-added-container').removeClass('hidden');
+        $('#most-popular-container').addClass('hidden');
+        $('#most-popular-filter-container').addClass('hidden');
+        initializeRecentlyCarousel();
+        setTextEllipsisClass("recently");
       });
 
       var popularFilterDefaultValue = "{{ popular_select }}";
@@ -187,18 +207,16 @@
       var setMostPopular = function(value) {
         var mostPopularFilter = $("#most-popular-container").find(".event-row");
         $.get(popularQueryUrl + "?range=" + value, function(data) {
+          mostPopularFilter.hide()
           mostPopularFilter.replaceWith(data.content);
+          initializePopularCarousel();
+          mostPopularFilter.show();
         });
       };
 
       $filter.on("change", function() {
         setMostPopular($filter.val());
       });
-
-      if (typeof popularFilterDefaultValue != "undefined") {
-        $filter.val(popularFilterDefaultValue);
-        $filter.trigger("change");
-      }
 
     });
   </script>

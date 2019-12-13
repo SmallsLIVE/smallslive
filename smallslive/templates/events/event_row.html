@@ -1,4 +1,4 @@
-<div class="event-row">
+<div class="event-row{% if carousel %} {{ carousel }} owl-carousel owl-theme{% endif %}">
   {% for event in events %}
     <article class="event-display"> {% include 'events/event_card.html' with event=event secondary=secondary hide_play=True %}
       <div class="event-info new">

@@ -77,9 +77,11 @@ div.event-strip {
   }
 
   .select-container {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    margin-left: 200px;
+
+    @media (max-width: $screen-md-min) {
+      margin-left: 20px;
+    }
   }
 
   main {

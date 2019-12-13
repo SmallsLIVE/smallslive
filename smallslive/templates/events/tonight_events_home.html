@@ -1,6 +1,6 @@
 {% load static from staticfiles %}
 
-<div class="event-row tonight-events owl-carousel owl-theme">
+<div class="event-row tonight-events upcoming-carousel owl-carousel owl-theme">
   {% for event in events %}
     <article class="event-display-today-and-tomorrow item {% if event.all_events_completed %}past{% endif %}">
       {% include 'events/tonight_event_card.html' with event=event secondary=secondary hide_play=True %}
@@ -35,5 +35,6 @@
   </div>
   <div class="placeholder item">
   </div>
-
+  <div class="placeholder item">
+  </div>
 </div>

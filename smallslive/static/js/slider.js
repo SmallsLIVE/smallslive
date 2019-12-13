@@ -9,11 +9,14 @@ var scrollWidth = 0;
 var isSlideAnimating = false;
 
 $(document).ready(function(){
+
+  return;
     initializeSlides();
 });
 
 var resizeTimeout;
 $( window ).resize(function() {
+  return
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(function () {
       resetSlideScroll();
@@ -34,6 +37,8 @@ function resetSlideScroll() {
 }
 
 function initializeButtons() {
+
+  return;
   var $win = $(window);
   var $prev = $('div.slide-btn.prev');
   var $next = $('div.slide-btn.next');

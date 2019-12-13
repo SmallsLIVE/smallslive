@@ -170,7 +170,7 @@
     z-index: 99;
 
     @media (max-width: $screen-md-min) {
-      background-size: 60vw 5px;
+      background-size: 75vw 5px;
       margin-bottom: 20px;
       padding-bottom: 3px;
       width: 100vw;
@@ -209,6 +209,17 @@
       .at-the-clubs {
         display: none;
       }
+
+      a {
+        &.trim {
+          width: 60px;
+          text-overflow: ellipsis;
+          display: inline-block;
+          white-space: nowrap;
+          overflow: hidden;
+          vertical-align: bottom;
+        }
+      }
     }
 
     @media (max-width: $screen-md-min) {
@@ -230,7 +241,7 @@
       }
 
       .white-border-select.home-filter {
-        width: 37vw;
+        width: 120px;
         height: 100%;
 
         .select-items {
@@ -239,9 +250,6 @@
 
         .select-selected {
           height: 100%;
-          padding: 0;
-          font-size: 3vw;
-          border: 0;
           justify-content: center;
 
           /*flex-end;*/
@@ -260,6 +268,7 @@
           }
         }
       }
+
     }
 
     @media (max-width: 451px) {
@@ -267,6 +276,12 @@
 
       &.highlights {
         background-size: 80vw 5px;
+      }
+    }
+
+    &.recently {
+      @media (max-width: $screen-md-min) {
+        height: 40px;
       }
     }
   }
