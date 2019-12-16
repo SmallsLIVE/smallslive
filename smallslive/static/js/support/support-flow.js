@@ -226,6 +226,7 @@ var checkConfirmButton = function() {
   } else {
     if (selectedData.flow == "donate_direct") {
       $mainContainer.find("#backButton").hide();
+      $confirmEmailButton.show();
     } else {
       $mainContainer.find("#backButton").show();
     }
