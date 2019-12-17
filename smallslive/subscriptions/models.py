@@ -46,25 +46,21 @@ class Donation(models.Model):
             return u'anonymous: {} - {}'.format(self.amount, self.date)
 
     def get_new_expiry_date(self):
-        # Calculate expiry date: $10 / month. $100 / year. Remainder: $1 / day.
-        # amount >= 10
+        # Calculate expiry date: $10 / month. Remainder: $1 / 3 days.
         # Assuming amount is integer
+        # Amount should be >= 10 but we're not restricting that here.
 
         amount = int(self.amount)
-        years = 0
+
         months = 0
         days = 0
-
-        if amount >= 100:
-            years = amount / 100
-            amount = amount % 100
 
         if amount > 10:
             months = amount / 10
             amount = amount % 10
 
         if amount:
-            days = amount % 10
+            days = amount % 10 * 3
 
         # Get last donation
         last_donation = Donation.objects.filter(
@@ -79,8 +75,6 @@ class Donation(models.Model):
         else:
             new_expiry_date = timezone.now().date()
 
-        if years:
-            new_expiry_date = new_expiry_date + relativedelta(years=months)
         if months:
             new_expiry_date = new_expiry_date + relativedelta(months=months)
         if days:
@@ -88,7 +82,6 @@ class Donation(models.Model):
 
         print 'User: ', self.user
         print 'Last expiry date: ', last_expiry_date
-        print 'Years: ', years
         print 'Months: ', months
         print 'Days: ', days
         print 'New expiry date: ', new_expiry_date
