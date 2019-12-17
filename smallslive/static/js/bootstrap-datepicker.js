@@ -1085,20 +1085,20 @@
 							this._setDate(UTCDate(year, month, day));
 						}
 						break;
-                    case 'div':
-                        if (target.hasClass('year')) {
-                            day = this.viewDate.getUTCDay();
-                            year = parseInt(target.text(), 10);
-                            month = this.viewDate.getUTCMonth();
-                            var newDate = UTCDate(year, month, day);
-                            $(target).parents('.years-dropdown').toggleClass('hidden');
-                            this._trigger('changeYear', newDate);
-                            this._setDate(newDate, 'view');
-							break;
-                        } else {
-							$(target).siblings('.years-dropdown').toggleClass('hidden');
-							break;
-						}
+          case 'div':
+            if (target.hasClass('year')) {
+              day = this.viewDate.getUTCDay();
+              year = parseInt(target.text(), 10);
+              month = this.viewDate.getUTCMonth();
+              var newDate = UTCDate(year, month, day);
+              $(target).parents('.years-dropdown').toggleClass('hidden');
+              this._trigger('changeYear', newDate);
+              this._setDate(newDate, 'view');
+              break;
+            } else {
+              $(target).siblings('.years-dropdown').toggleClass('hidden');
+              break;
+            }
 
 				}
 			}
