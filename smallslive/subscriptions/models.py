@@ -48,8 +48,9 @@ class Donation(models.Model):
     def get_new_expiry_date(self):
         # Calculate expiry date: $10 / month. $100 / year. Remainder: $1 / day.
         # amount >= 10
+        # Assuming amount is integer
 
-        amount = self.amount
+        amount = int(self.amount)
         years = 0
         months = 0
         days = 0
@@ -84,6 +85,13 @@ class Donation(models.Model):
             new_expiry_date = new_expiry_date + relativedelta(months=months)
         if days:
             new_expiry_date = new_expiry_date + relativedelta(days=days)
+
+        print 'User: ', self.user
+        print 'Last expiry date: ', last_expiry_date
+        print 'Years: ', years
+        print 'Months: ', months
+        print 'Days: ', days
+        print 'New expiry date: ', new_expiry_date
 
         return new_expiry_date
 
