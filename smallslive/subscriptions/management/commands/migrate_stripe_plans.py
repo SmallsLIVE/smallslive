@@ -24,6 +24,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         user_email = options.get('user_email')
+        print 'User email: ', user_email
         source_plan = options.get('source_plan')
 
         if user_email == 'all':
@@ -31,7 +32,7 @@ class Command(BaseCommand):
         else:
             users = SmallsUser.objects.filter(email=user_email)
 
-        for user in users.order_by('-pk')[:1]:
+        for user in users.order_by('-pk'):
             customer = Customer.objects.get(subscriber=user)
             if customer.has_active_subscription():
                 try:

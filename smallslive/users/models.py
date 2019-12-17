@@ -214,6 +214,15 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         else:
             return 0
 
+    @property
+    def get_donation_expiry_date(self):
+        """ Get access expiry date """
+        last_donation = self.get_donations().order_by('-date').first()
+        if last_donation:
+            return last_donation.archive_access_expiry_date
+        else:
+            return None
+
     def get_project_donation_amount(self, product_id):
         condition = Q(product__parent_id=product_id) | Q(product_id=product_id)
         qs = self.get_donations(this_year=False).filter(condition)
@@ -236,14 +245,40 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         """Checks if a user has an active subscription."""
         return subscriber_has_active_subscription(self)
 
+    def get_archive_access_expiry_date(self):
+        """Returns date of archive access expiry for a user.
+        Date is set by donations ($10 / month).
+        If there is no donation yet, the user might be on a subscription.
+        The new system after Jan  1st. 2020 will start accruing donations.
+        """
+        donation = self.donations.order_by('-date').first()
+        if donation:
+            return donation.archive_access_expiry_date
+        else:
+            try:
+                subscription = self.customer.current_subscription
+            except:
+                return None
+
+            return subscription.current_period_end
+
     @cached_property
     def has_archive_access(self):
-        # One Time Donations are new  "one year subscriptions"
-        return self.get_donation_amount >= 100 or \
-                self.get_subscription_plan['type'] != 'free' or \
-                self.is_vip or \
-                self.has_active_institutional_subscription or \
-                self.is_artist
+        """
+            Monthly Pledge: existing  ($10) or new (free amount, min $10)
+            Donations: min $10. $100 /year, $10/month, $1/day
+            VIPs
+            Institutional Subscriptions
+            Artists
+        """
+        today = timezone.localtime(
+            timezone.now().replace(hour=0, minute=0, second=0)).date()
+        date = self.get_donation_expiry_date
+        return date and date >= today or \
+               self.get_subscription_plan['type'] != 'free' or \
+               self.is_vip or \
+               self.has_active_institutional_subscription or \
+               self.is_artist
 
     @cached_property
     def get_subscription_plan(self):

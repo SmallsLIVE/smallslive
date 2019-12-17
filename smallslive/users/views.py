@@ -235,12 +235,15 @@ def user_settings_view_new(request):
     if not request.user.has_activated_account:
         show_email_confirmation = True
     else:
-        customer = request.user.customer
+        try:
+            customer = request.user.customer
+        except:
+            customer = None
         user_archive_access_until = None
         if request.user.has_archive_access:
-            user_archive_access_until = date(date.today().year, 12, 31)
+            user_archive_access_until = request.user.get_archive_access_expiry_date()
 
-        if customer.has_active_subscription():
+        if customer and customer.has_active_subscription():
             plan_id = request.user.customer.current_subscription.plan
             try:
                 plan = stripe.Plan.retrieve(id=plan_id)
@@ -288,7 +291,7 @@ def user_settings_view_new(request):
         'customer_charges': customer_charges or '',
         'charges_value': request.user.get_donation_amount or '0',
         'period_end': period_end,
-        'user_archive_access_until': user_archive_access_until or 'unverifyed account',
+        'user_archive_access_until': user_archive_access_until or 'unverified account',
         'monthly_pledge_in_dollars': monthly_pledge_in_dollars or 'no',
         'cancelled': cancel_at or '',
         'donate_url': reverse('donate'),
