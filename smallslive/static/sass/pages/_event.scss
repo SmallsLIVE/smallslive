@@ -360,7 +360,8 @@ $player-height: 25.3vw;
     display: block;
 
     @media (max-width: $screen-sm-max) {
-      width: 90vw;
+      //Why was this implemented??? causes issues in the UstreamIframe
+      //width: 90vw;
     }
   }
 }

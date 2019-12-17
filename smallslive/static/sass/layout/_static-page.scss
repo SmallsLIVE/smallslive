@@ -108,7 +108,7 @@
   &.closed {
     @media (max-width: $screen-sm-max) {
       transition: all 0.6s;
-      max-height: 70px;
+      max-height: calc(100vw * .0390625 + 37.5px);
     }
   }
   .flex-row {
