@@ -187,11 +187,7 @@ var checkConfirmButton = function() {
   var $confirmEmailButton = $mainContainer.find("#supportConfirmEmailButton");
 
   if (currentStep === "SelectType") {
-    if (
-      (selectedData.type === "month" && selectedData.amount >= 10) ||
-      (selectedData.type === "year" && selectedData.amount >= 100) ||
-      (selectedData.flow !== "become_supporter" && selectedData.amount > 4)
-    ) {
+    if (selectedData.amount >= 10) {
       $confirmButton.prop("disabled", false);
     } else {
       $confirmButton.prop("disabled", true);
@@ -642,7 +638,7 @@ $(document).ready(function() {
     var value = $(monthlyCustom).val();
     var $errorLabel = $(this).closest(".button-row").find("label.accent-color");
 
-    if (value > 9) {
+    if (value >= 10) {
       $mainContainer.find("#monthlyCustomConfirm").data("value", value);
       $mainContainer.find("#monthlyCustomConfirm").show();
       $mainContainer.find("#set-your-own-lbl").hide();
@@ -663,7 +659,7 @@ $(document).ready(function() {
       $(yearlyCustom).removeClass("active");
       if (event.keyCode == 13) {
         var amount = $(this).val();
-        if (amount > 9) {
+        if (amount >= 10) {
           resetButtons();
           resetCustom();
           setSelected(selectedData.flow, "month", amount);
@@ -693,7 +689,7 @@ $(document).ready(function() {
       setSelected(selectedData.flow, "year", value);
       $yearlyCustom.addClass("active");
       $monthlyCustom.removeClass("active");
-      if (value >= 100 || value > 4 && selectedData.flow !== "become_supporter") {
+      if (value >= 10) {
         $mainContainer.find("#yearlyCustomConfirm").val(value);
         $mainContainer.find("#yearlyCustomConfirm").show();
         if (!$errorLabel.hasClass("hidden")) {
