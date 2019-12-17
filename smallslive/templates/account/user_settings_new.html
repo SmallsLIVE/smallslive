@@ -180,7 +180,7 @@
               <div class="account-settings-info cancel-info">
                   <div class="text9">
                     Your actual monthly pledge is ${{monthly_pledge_in_dollars}} giving you access to the archive until
-                    {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}.<br>
+                    {{ user.get_archive_access_expiry_date|date:"n/j/Y" }}.<br>
                     Canceling it will make the access to the archive videos unavailable until the renovation of the pledge or the
                     making of a one time donation.
                   </div>
