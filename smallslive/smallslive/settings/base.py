@@ -352,6 +352,7 @@ PIPELINE_JS = {
           'js/custom_recently_added_carousel.js',
           'js/custom_popular_carousel.js',
           'js/custom_highlights_carousel.js',
+          'js/custom_catalog_carousel.js',
         ),
         'output_filename': 'js/main.js',
     },

@@ -2754,7 +2754,7 @@ img.defineImageRatio {
   &.slide-btn.prev,
   .slide-btn.next {
     @media (min-width: 0px) {
-      height: 46.1vw;
+      height: 0;
     }
 
     @media (min-width: $screen-md-min) {
@@ -2773,7 +2773,7 @@ img.defineImageRatio {
   &.slide-btn.next,
   .slide-btn.prev {
     @media (min-width: 0px) {
-      height: 46.1vw;
+      height: 0;
     }
 
     @media (min-width: $screen-md) {

@@ -235,7 +235,7 @@ $event-row-padding: 3.5vw;
   }
 }
 
-.recently-carousel, .popular-carousel {
+.recently-carousel, .popular-carousel, .catalog-carousel {
   @extend .event-row;
   padding: 0;
 

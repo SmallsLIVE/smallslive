@@ -15,9 +15,9 @@
   <!-- library.html -->
   <main class="newest-recordings-container downloads">
     {% if album_list %}
-      <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-      <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-      <div class="event-row">
+      <div class="slide-btn catalog prev"><b class="indicator-icon icon-left-caret"></b></div>
+      <div class="slide-btn catalog next"><b class="indicator-icon icon-right-caret"></b></div>
+      <div class="event-row catalog-carousel owl-carousel owl-theme">
       {% for album in album_list %}
         {% with image=album.parent %}
           <article class="event-display"
