@@ -113,6 +113,10 @@ $event-row-padding: 3.5vw;
     &.highlights, &.recently, &.popular {
       border-radius: 0;
     }
+
+    &.slider {
+      width: 3.1vw;
+    }
   }
 
   &.next {
@@ -141,6 +145,10 @@ $event-row-padding: 3.5vw;
         width: 3.5vw;
         visibility: hidden;
       }
+    }
+
+    &.slider {
+      width: $content-left-padding;
     }
   }
 

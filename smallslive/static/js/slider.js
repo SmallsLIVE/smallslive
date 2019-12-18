@@ -8,10 +8,10 @@ var controlsWidth = 40;
 var scrollWidth = 0;
 var isSlideAnimating = false;
 
-$(document).ready(function(){
-
-  return;
-    initializeSlides();
+$(document).ready(function() {
+  /* This functionality applied to all sliders before we implemented owl carousel
+  It applies now only to the artist strip since it can't be implemented with owl */
+  initializeSlides();
 });
 
 var resizeTimeout;
@@ -38,10 +38,9 @@ function resetSlideScroll() {
 
 function initializeButtons() {
 
-  return;
   var $win = $(window);
-  var $prev = $('div.slide-btn.prev');
-  var $next = $('div.slide-btn.next');
+  var $prev = $('div.slide-btn.slider.prev');
+  var $next = $('div.slide-btn.slider.next');
 
   $prev.each(function () {
       $(this).css('visibility', 'hidden');
@@ -63,7 +62,7 @@ function initializeSlides() {
 }
 
 function bindNextClick() {
-  $(document).on('click', 'div.slide-btn.next', function (event) {
+  $(document).on('click', 'div.slide-btn.slider.next', function (event) {
     $(this).css('visibility', 'hidden');
     if (isSlideAnimating) {
       return false;
@@ -101,7 +100,7 @@ function bindNextClick() {
 }
 
 function bindPrevClick() {
-  $(document).on('click', 'div.slide-btn.prev', function() {
+  $(document).on('click', 'div.slide-btn.slider.prev', function() {
     $(this).css('visibility', 'hidden');
     if (isSlideAnimating) {
       return false;
@@ -117,7 +116,7 @@ function bindPrevClick() {
     var left = vw + currentLeft;
     $row.animate({
         marginLeft: left - 2 * padding
-    }, 300, function() {
+    }, 300, function () {
       $prev.css('visibility', 'hidden');
       $next.css('visibility', 'visible');
       isSlideAnimating = false;
@@ -132,8 +131,8 @@ function bindPrevClick() {
 function bindSlideEvents() {
 
   var $win = $(window);
-  var $prev = $('div.slide-btn.prev');
-  var $next = $('div.slide-btn.next');
+  var $prev = $('div.slide-btn.slider.prev');
+  var $next = $('div.slide-btn.slider.next');
 
   bindNextClick();
   bindPrevClick();
