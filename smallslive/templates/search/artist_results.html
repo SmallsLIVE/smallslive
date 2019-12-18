@@ -1,7 +1,7 @@
 {% if artists_blocks %}
   {% for artist_block in artists_blocks %}
     {% for artist in artist_block %}
-      <article class="event-display" onclick="window.location='{{ event.get_absolute_url }}';">
+      <article class="event-display">
 
         {% include 'artists/artist_card.html' with artist=artist secondary=secondary hide_play=True %}
         <div class="event-info new">

@@ -59,6 +59,7 @@ function initializeSlides() {
   resetSlideScroll();
   initializeButtons();
   bindSlideEvents();
+  bindScroll();
 }
 
 function bindNextClick() {
@@ -137,3 +138,92 @@ function bindSlideEvents() {
   bindNextClick();
   bindPrevClick();
 };
+
+function bindScroll() {
+
+  var initialX, x, left,down, newX, currentLeft, dragging, diff, loadMore;
+
+  $("#artists .event-row").mousedown(function (e) {
+    //e.preventDefault();
+    //e.stopPropagation();
+    down = true;
+    x = e.pageX;
+    initialX = x;
+    currentLeft = parseFloat($(this).css("marginLeft"));
+    console.log('currentLeft: ' + currentLeft);
+
+    //return false;
+  });
+
+  $(document).on("click", "#artists .event-row a", function (e) {
+    if (dragging) {
+      e.preventDefault();
+      dragging = false;
+    }
+  });
+
+  $("body").mousemove(function (e) {
+    if (down) {
+      dragging = true;
+      newX = e.pageX;
+      diff = x - newX;
+      console.log('diff: ' + diff);
+      var $row = $("#artists .event-row");
+      currentLeft = parseFloat($row.css("marginLeft"));
+      paddingLeft = parseFloat($row.css("paddingLeft"));
+      currentLeft -= diff;
+      if (currentLeft < 0) {
+        var $articles = $row.find('article');
+        var maxMargin = $articles.length * $articles.outerWidth(true) + paddingLeft - $(window).width();
+        maxMargin *= -1;
+        if (currentLeft < maxMargin) {
+          currentLeft = maxMargin;
+          loadMore = true;
+        } else {
+          loadMore = false;
+        }
+
+        $row.css("marginLeft", currentLeft);
+      }
+      x = newX;
+    }
+  });
+
+  $(window).mouseup(function (e) {
+
+    if (down) {
+
+      // Adjust slide to the edge
+      var $row = $("#artists .event-row");
+      var currentLeft = parseFloat($row.css("marginLeft"));
+      var article = $("article.event-display")[0];
+      var articleWidth = parseFloat(getComputedStyle(article).width);
+      articleWidth += parseFloat(getComputedStyle(article).marginRight);
+      var factor = Math.abs(currentLeft / articleWidth);
+      if (factor > 0.1) {
+        if (initialX - x > 0) {
+          offset = 1;
+        } else {
+          offset = 0;
+        }
+        var items = Math.floor(factor) + offset;
+        currentLeft = items * articleWidth * -1;
+        $row.animate({marginLeft: currentLeft}, 300, function () {
+          if (offset === 1) {
+            $("div.slide-btn.slider.prev").css("visibility", "visible");
+          }
+        });
+      }
+      // Check for more artists the same way as if the next button had been clicked.
+      if (loadMore) {
+        var $next = $("div.slide-btn.slider.next");
+        var callback = $next.data('callback-name');
+        if (callback && typeof window[callback] === "function") {
+          window[callback]();
+        }
+      }
+    }
+    down = false;
+
+  });
+}
