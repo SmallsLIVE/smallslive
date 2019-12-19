@@ -930,8 +930,16 @@
 
 			html = '';
 			year = parseInt(year/10, 10) * 10;
+			if (year < startYear) {
+			  year = startYear;
+			}
+
 			var yearCont = this.picker.find('.datepicker-switch .years-choices');
-			year -= 3;
+			if (year - startYear >= 3) {
+			  year -= 3;
+			} else {
+			  year -= year - startYear;
+			}
 			var years = $.map(this.dates, function(d){
 					return d.getUTCFullYear();
 				}),
