@@ -66,6 +66,9 @@ def get_album_catalog(request):
 class ProductDetailView(catalogue_views.ProductDetailView, ProductMixin):
 
     def can_preview(self, track_list):
+        if not track_list:
+            return False
+
         for track in track_list:
             if track.get_track_preview_url() != "blank.mp3":
                 return True

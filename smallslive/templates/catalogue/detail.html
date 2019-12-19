@@ -66,7 +66,7 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
-                        
+
                     {% endwith %}
                 </div>
                 <div class="store-single__item__content">
@@ -102,31 +102,10 @@
                           class="add-to-basket">
                         <div class="store-add-large">
                             {% if session.availability.is_available_to_buy %}
-                                {% basket_form request product 'single' as basket_form %}
                                 <div class="store-add-large">
-                                    {% csrf_token %}
-                                    {{ basket_form.quantity }}
-                                    {% if basket_form.fields.child_id.choices %}
-                                    <div class='white-border-select'>
-                                      <select class="store-add-large__options" name="child_id">
-                                          {% for item_value, item_name in basket_form.fields.child_id.choices %}
-                                            <option value="{{ item_value }}">{{ item_name }}</option>
-                                          {% endfor %}
-                                      </select>
-                                      </div>
-                                      {% if user.is_authenticated %}
-                                        <div class="arrow-button-container"><button type="submit" class="white-border-button">Add to cart</button></div>
-                                      {% else %}
-                                        <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="white-border-button">Add to cart</a></div>
-                                      {% endif %}
-                                    {% else %}
-                                      {{ basket_form.child_id }}
-                                      {% if user.is_authenticated %}
-                                        <div class="arrow-button-container"><button type="submit" class="white-border-button">Add to cart</button></div>
-                                      {% else %}
-                                        <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="white-border-button">Add to cart</a></div>
-                                      {% endif %}
-                                    {% endif %}
+                                  <div class="arrow-button-container">
+                                      <a href="{% url 'donate' %}" class="white-border-button">Make a One Time Donation to receive this gift</a>
+                                  </div>
                                 </div>
                             {% endif %}
                         </div>
