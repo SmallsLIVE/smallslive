@@ -145,8 +145,18 @@ class SearchObject(object):
             if partial_name.lower() == artist_search.lower():
                 partial_name = ''
 
+        # Make sure artist search and names do not overlap
+        if artist_search and artist_search.upper() == first_name.upper():
+            partial_name = last_name
+            first_name = ''
+            last_name = ''
+        elif artist_search and artist_search.upper() == last_name.upper():
+            partial_name = first_name
+            first_name = ''
+            last_name = ''
+
         return words, instruments, all_sax_instruments, partial_instruments, \
-               number_of_performers, first_name, last_name, partial_name, artist_search
+            number_of_performers, first_name, last_name, partial_name, artist_search
 
     def search_artist(self, terms=None,
                       instruments=None, all_sax_instruments=None, partial_instruments=None,

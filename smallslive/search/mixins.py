@@ -70,7 +70,6 @@ class SearchMixin(object):
             first = sqs.first()
             last = sqs.last()
 
-
         blocks = []
         block = []
 
