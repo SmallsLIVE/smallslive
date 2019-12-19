@@ -68,14 +68,26 @@ $event-row-padding: 3.5vw;
 
     @media (min-width: 1366px) {
       height: $live-card-width-large * 0.6;
+
+      &.recently, &.popular {
+        height: $regular-card-width-large * 0.6;
+      }
+
     }
 
     @media (max-width: 1365px) and (min-width: 1024px) {
       height: $live-card-width-tablet * 0.6;
+      &.recently, &.popular {
+        height: $regular-card-width-medium * 0.6;
+      }
     }
 
     @media (max-width: 1023px) and (min-width: 961px) {
       height: $live-card-width-tablet * 0.6;
+      &.recently, &.popular {
+        height: $regular-card-width-medium * 0.6;
+      }
+
     }
 
     &.highlights, &.recently, &.popular {

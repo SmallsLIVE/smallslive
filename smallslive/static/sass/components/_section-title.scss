@@ -205,12 +205,16 @@
       }
     }
 
+    span {
+      cursor: pointer;
+    }
+
     @media (max-width: 451px) {
       .at-the-clubs {
         display: none;
       }
 
-      a {
+      span {
         &.trim {
           width: 60px;
           text-overflow: ellipsis;
@@ -227,6 +231,10 @@
       margin-bottom: 20px;
       padding-bottom: 3px;
       width: 100vw;
+
+      &.recently {
+        background-size: 62vw 5px;
+      }
 
       .date-separator {
         display: none;
@@ -276,6 +284,15 @@
 
       &.highlights {
         background-size: 80vw 5px;
+      }
+
+      &.recently {
+        background-size: 80vw 5px;
+
+        &.trim {
+          background-size: 58vw 5px;
+        }
+
       }
     }
 

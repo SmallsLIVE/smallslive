@@ -44,8 +44,8 @@
         <section id="recently-added-section" class="event-stripe">
           <div class="section-title home recently">
             <div class="title1">
-              <a href="#" id="ra-recently-added-toggle" class="accent-color no-link"> Recently Added</a>  \
-              <a href="#" id="ra-most-popular-toggle" class="no-link">Most Popular</a>
+              <span id="ra-recently-added-toggle" class="accent-color no-link"> Recently Added</span>  \
+              <span id="ra-most-popular-toggle" class="no-link">Most Popular</span>
             </div>
             <span id="most-popular-filter-container" class="select-container hidden">
               <div class="white-border-select home-filter">
@@ -170,19 +170,27 @@
         /* The unselected tab text will be trimmed on mobile */
 
         var $recentlyAdded = $("#ra-recently-added-toggle");
+        var $section = $recentlyAdded.closest(".section-title");
         var $mostPopular = $("#ra-most-popular-toggle");
         if (tabName == "popular") {
           if (!$recentlyAdded.hasClass("trim")) {
             $recentlyAdded.addClass("trim");
+            if (!$section.hasClass("trim")) {
+              $section.addClass("trim");
+            }
           }
         } else {
           $recentlyAdded.removeClass("trim");
+          $section.removeClass("trim");
         }
 
       }
 
       $('#ra-most-popular-toggle').click(function (event) {
-        event.preventDefault();
+        if (!$(this).hasClass("accent-color")) {
+          $(this).addClass("accent-color");
+        }
+        $('#ra-recently-added-toggle').removeClass("accent-color");
         $('#recently-added-container').addClass('hidden');
         $('#most-popular-container').removeClass('hidden');
         $('#most-popular-filter-container').removeClass('hidden');
@@ -192,6 +200,10 @@
 
       $('#ra-recently-added-toggle').click(function (event) {
         event.preventDefault();
+        if (!$(this).hasClass("accent-color")) {
+          $(this).addClass("accent-color");
+        }
+        $('#ra-most-popular-toggle').removeClass("accent-color");
         $('#recently-added-container').removeClass('hidden');
         $('#most-popular-container').addClass('hidden');
         $('#most-popular-filter-container').addClass('hidden');
