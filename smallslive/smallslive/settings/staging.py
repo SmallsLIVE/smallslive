@@ -23,6 +23,12 @@ DATABASES['default'] = dj_database_url.config()
 DATABASES['default']['CONN_MAX_AGE'] = 60
 DATABASES['metrics'] = dj_database_url.config('METRICS_DB_URL')
 
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+MIDDLEWARE_CLASSES = ('sslify.middleware.SSLifyMiddleware',) + MIDDLEWARE_CLASSES
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 REDIS_URL = urlparse.urlparse(get_env_variable('REDISCLOUD_URL'))
 
 CACHEOPS_REDIS = {
