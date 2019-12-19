@@ -146,6 +146,11 @@ function bindScroll() {
   $("#artists .event-row").mousedown(function (e) {
     //e.preventDefault();
     //e.stopPropagation();
+
+    if (e.which !== 1) {
+      return;
+    }
+
     down = true;
     x = e.pageX;
     initialX = x;
@@ -161,6 +166,7 @@ function bindScroll() {
       dragging = false;
     }
   });
+
 
   $("body").mousemove(function (e) {
     if (down) {
@@ -189,31 +195,35 @@ function bindScroll() {
     }
   });
 
+  function adjust() {
+    // Adjust slide to the edge
+    var $row = $("#artists .event-row");
+    var currentLeft = parseFloat($row.css("marginLeft"));
+    var article = $("article.event-display")[0];
+    var articleWidth = parseFloat(getComputedStyle(article).width);
+    articleWidth += parseFloat(getComputedStyle(article).marginRight);
+    var factor = Math.abs(currentLeft / articleWidth);
+    if (factor > 0.1) {
+      if (initialX - x > 0) {
+        offset = 1;
+      } else {
+        offset = 0;
+      }
+      var items = Math.floor(factor) + offset;
+      currentLeft = items * articleWidth * -1;
+      $row.animate({marginLeft: currentLeft}, 300, function () {
+        if (offset === 1) {
+          $("div.slide-btn.slider.prev").css("visibility", "visible");
+        }
+      });
+    }
+  }
+
   $(window).mouseup(function (e) {
 
     if (down) {
 
-      // Adjust slide to the edge
-      var $row = $("#artists .event-row");
-      var currentLeft = parseFloat($row.css("marginLeft"));
-      var article = $("article.event-display")[0];
-      var articleWidth = parseFloat(getComputedStyle(article).width);
-      articleWidth += parseFloat(getComputedStyle(article).marginRight);
-      var factor = Math.abs(currentLeft / articleWidth);
-      if (factor > 0.1) {
-        if (initialX - x > 0) {
-          offset = 1;
-        } else {
-          offset = 0;
-        }
-        var items = Math.floor(factor) + offset;
-        currentLeft = items * articleWidth * -1;
-        $row.animate({marginLeft: currentLeft}, 300, function () {
-          if (offset === 1) {
-            $("div.slide-btn.slider.prev").css("visibility", "visible");
-          }
-        });
-      }
+      adjust();
       // Check for more artists the same way as if the next button had been clicked.
       if (loadMore) {
         var $next = $("div.slide-btn.slider.next");
@@ -225,5 +235,9 @@ function bindScroll() {
     }
     down = false;
 
+  });
+
+  $(window).resize(function () {
+    adjust();
   });
 }
