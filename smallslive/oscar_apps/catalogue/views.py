@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.shortcuts import redirect
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from oscar.apps.catalogue import views as catalogue_views
@@ -61,6 +62,12 @@ def get_album_catalog(request):
     }
 
     return JsonResponse(data)
+
+
+class CatalogueView(catalogue_views.CatalogueView):
+
+    def get(self, request, *args, **kwargs):
+        return redirect('promotions:home')
 
 
 class ProductDetailView(catalogue_views.ProductDetailView, ProductMixin):
