@@ -73,10 +73,10 @@
         <div class="title5 account-settings-title text-bottom-line">Supporter settings</div>
         <div class="account-settings-info">
           <div class="text5">Current Monthly Pledge</div>
-          {% if customer_detail.subscription.plan %}
-          <div class="text9 accent-color">${{monthly_pledge_in_dollars}}/{{customer_detail.subscription.plan.interval}}</div>
+          {% if customer_detail.subscription.plan and not cancelled %}
+            <div class="text9 accent-color">${{ monthly_pledge_in_dollars }}/{{ customer_detail.subscription.plan.interval }}</div>
           {% else %}
-          <div class="text9 accent-color">None{% if cancelled %} (cancelled) {% endif %}</div>
+            <div class="text9 accent-color">None{% if cancelled %} Subscription canceled {% endif %}</div>
           {% endif %}
 
           {% if not user.has_archive_access %}
