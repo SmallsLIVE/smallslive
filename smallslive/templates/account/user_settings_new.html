@@ -76,7 +76,7 @@
           {% if customer_detail.subscription.plan and not cancelled %}
             <div class="text9 accent-color">${{ monthly_pledge_in_dollars }}/{{ customer_detail.subscription.plan.interval }}</div>
           {% else %}
-            <div class="text9 accent-color">None{% if cancelled %} Subscription canceled {% endif %}</div>
+            <div class="text9 accent-color">{% if cancelled %}Subscription canceled{% else %}None{% endif %}</div>
           {% endif %}
 
           {% if not user.has_archive_access %}
