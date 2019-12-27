@@ -54,8 +54,13 @@
               {% else %}
                 Musician
               {% endif %}
-            {% else %} No musicians matching "<span class="accent-color">{{ query_term }}</span>" found
+            {% else %} No musicians matching <span class="accent-color">{{ query_term }}</span> found
             {% endif%}
+            <span class="quotation" style="display: {% if not query_term %}none;{% else %}inline{% endif %}">&nbsp;"</span>
+            <span class="accent-color" id="musician-search-title">
+              {{ query_term }}
+            </span>
+            <span class="quotation" style="display: {% if not query_term %}none;{% else %}inline{% endif %}">"</span>
           </div>
         </div>
         {% if artists_blocks %}
@@ -95,7 +100,7 @@
     var venue = "all";
     var moreArtists = true;
 
-    {% if showing_event_results == 'NO RESULTS' %}
+    {% if showing_event_results == '0' %}
       var moreEvents = false;
     {% else %}
       var moreEvents = true;

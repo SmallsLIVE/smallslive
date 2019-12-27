@@ -68,11 +68,39 @@
     margin-bottom: 0;
 
     &.musicians-results-title {
-      background-size: 40vw 3px;
-      padding-bottom: 3px;
-      width: auto;
+      //background-size: 40vw 3px;
+      //padding-bottom: 3px;
+      //width: auto;
       margin-top: 5px;
       margin-bottom: 25px;
+
+      border-bottom: 4px solid white;
+      line-height: 3vw;
+      width: fit-content;
+      margin-left: 0;
+      padding-left: 2vw;
+      padding-right: 20px;
+      padding-bottom: 0;
+      background: unset;
+      overflow-y: visible;
+    }
+  }
+
+
+  .label{
+    &__related{
+      &--more{
+        display: inline-block;
+        @media(max-width: $screen-xs){
+          display: none;
+        }
+      }
+      &--less{
+        display: none;
+        @media(max-width: $screen-xs){
+          display: inline-block;
+        }
+      }
     }
   }
 
@@ -86,15 +114,23 @@
     &.featured {
       background-size: 49vw 5px;
       margin-bottom: 20px;
-      padding-bottom: 3px;
+      padding-bottom: 0px;
       width: 100vw;
+
+      @media(max-width: $screen-md) {
+        padding-bottom: 3px;
+      }
     }
 
     &.list {
       background-size: 52vw 5px;
       margin-bottom: 20px;
-      padding-bottom: 3px;
+      padding-bottom: 0px;
       width: 100vw;
+
+      @media(max-width: $screen-md) {
+        padding-bottom: 3px;
+      }
     }
   }
   &.calendar {
@@ -123,12 +159,13 @@
     flex-wrap: wrap;
     padding-right: 3.5vw;
     width: auto;
+    background-size: calc(600px + 8.5vw) 5px;
 
     @media (max-width: 420px) {
-      background-size: 100vw 5px;
+      //background-size: 100vw 5px;
       margin-bottom: 20px;
       padding-bottom: 3px;
-      width: 100vw;
+      //width: 100vw;
     }
 
     .archive-filter {
@@ -147,17 +184,24 @@
     }
 
     @media (max-width: $screen-sm-max) {
-      background-size: 80vw 5px;
+      //background-size: 80vw 5px;
       margin-bottom: 45px;
-      padding-bottom: 3px;
-      width: 97vw;
+      //padding-bottom: 3px;
+      //width: 97vw;
+      width: fit-content;
+      line-height: 2vw;
+      border-bottom: 5px solid white;
+      background: unset;
+      padding-bottom: 0;
+      padding-left: 2vw;
+
     }
     @media (min-width: 720px) and (max-width: $screen-sm-max) {
       margin-top: 45px;
     }
     @media (max-width: $screen-xs) {
-      background-size: 90vw 5px;
-      width: 100vw;
+      //background-size: 90vw 5px;
+      //width: 100vw;
     }
 
     span {

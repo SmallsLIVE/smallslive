@@ -122,7 +122,7 @@ function searchMoreArtists() {
 function updateArtistsHtml(data, reset) {
 
   //If no artists returned, hide the next arrow
-  if (data.showingResults === "NO RESULTS") {
+  if (data.showingResults === "0") {
     $("#artist-load-gif").css("display", "none");
     $("#artists  .slide-btn.next").css("visibility", "hidden");
   }
@@ -136,7 +136,7 @@ function updateArtistsHtml(data, reset) {
     var $articles = $("#artists .event-row article");
     if ($articles.length == data.showingResults && $articles.last().visible()) {
       $("#artists .slide-btn.next").css("visibility", "hidden");
-    } else if (data.showingResults != "NO RESULTS") {
+    } else if (data.showingResults != "0") {
       $("#artists .slide-btn.next").css("visibility", "visible");
     }
 
@@ -474,10 +474,24 @@ $(document).ready(function () {
 
     $searchBar.val(searchTerm);
     $mobileSearchInput.val(searchTerm);
+    updateMusicianSearchTitle(searchTerm)
     if (!$(".search-container").hasClass("mobile-search-header-shown")) {
       $('.mobile-menu-icons .fa-search').click();
     }
 
+  }
+
+  function updateMusicianSearchTitle(searchTerm) {
+    var quotation = $(".quotation")
+    var $musicianSearchTitle =  $("#musician-search-title");
+    $musicianSearchTitle.html(searchTerm);
+    quotation.each(function(i){
+      if (this.style.display == "none" && searchTerm != ""){
+        this.style.display = "inline";
+      } else if ( searchTerm == "") {
+        this.style.display = "none"
+      }
+    });
   }
 
   $(".instrument").click(function() {
@@ -850,6 +864,14 @@ function triggerSearch() {
   var searchInput = localStorage.getItem("search_input");
   if (searchInput && document.location.search.indexOf("artist_pk=") === -1) {
     $("#desktop-search-bar").val(searchInput);
+    $("#musician-search-title").html(searchInput);
+    $(".quotation").each(function(i){
+      if (this.style.display == "none" && searchInput != ""){
+        this.style.display = "inline";
+      } else if ( searchInput == "") {
+        this.style.display = "none"
+      }
+    });
   }
 
   if (triggerArtistSearch) {
@@ -948,7 +970,7 @@ function updateArchiveShows(data) {
       $(".archive-datepicker.fixed").removeClass("desktop-hidden");
       if (toggleDatePicker) {
         if (defaultFromDate === datePickerFromDate && defaultToDate === datePickerToDate) {
-          if (data.showingResults < 30 || data.showingResults === "NO RESULTS") {
+          if (data.showingResults < 30 || data.showingResults === "0") {
             $(".archive-datepicker.fixed").addClass("desktop-hidden");
           }
         }
@@ -976,4 +998,3 @@ function updateArchiveShows(data) {
     }
   }
 }
-

@@ -90,7 +90,7 @@
   </div>
 </header>
 
-<div id="search-bar" class="mobile-search-header visible-xs visible-sm visible-md">
+<div id="search-bar" class="mobile-search-header">
   <div class="mobile-search-container flex-row items-center">
     <form id="headerSearchForm" action="{% url 'search' %}">
       <input name="q"
@@ -154,7 +154,7 @@
       $(".search-bar-autocomplete-container").css("display", "none");
     }
   }
-  
+
   $('.mobile-menu-icons .fa-search').click(function () {
       var headerCount = getHeaderCount();
       if ($('#search-bar').hasClass('mobile-search-header-shown')) {
