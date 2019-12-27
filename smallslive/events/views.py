@@ -145,7 +145,7 @@ class HomepageView(ListView, UpcomingEventMixin):
         if activation_key:
             context['activation_key'] = activation_key
 
-        most_recent = Event.objects.most_recent()[:20]
+        most_recent = Event.objects.recently_added()[:20]
         if len(most_recent):
             context['new_in_archive'] = most_recent
         else:

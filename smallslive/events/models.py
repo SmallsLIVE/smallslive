@@ -68,6 +68,13 @@ class EventQuerySet(models.QuerySet):
             recordings__media_file__media_type='video').annotate(
             r_play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-added')
 
+    def recently_added(self):
+        return self.public().media_public().distinct().order_by('-date')
+
+    def media_public(self):
+        return self.filter(recordings__media_file__isnull=False,
+                         recordings__state=Recording.STATUS.Published)
+
     def last_staff_picks(self):
         return self.filter(
             staff_picked__isnull=False
