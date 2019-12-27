@@ -146,11 +146,11 @@ class SearchObject(object):
                 partial_name = ''
 
         # Make sure artist search and names do not overlap
-        if artist_search and artist_search.upper() == first_name.upper():
+        if artist_search and first_name and artist_search.upper() == first_name.upper():
             partial_name = last_name
             first_name = ''
             last_name = ''
-        elif artist_search and artist_search.upper() == last_name.upper():
+        elif artist_search and last_name and artist_search.upper() == last_name.upper():
             partial_name = first_name
             first_name = ''
             last_name = ''
