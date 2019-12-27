@@ -345,7 +345,6 @@ PIPELINE_JS = {
           'js/base.js',
           'js/utils.js',
           'js/signup_form.js',
-          'js/slider.js',
           'js/white-border-select.js',
           'js/owl.carousel.min.js',
           'js/custom_owl_carousel.js',
