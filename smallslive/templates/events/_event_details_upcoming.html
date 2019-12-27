@@ -26,7 +26,7 @@
     <div class="live-now text2{% if not event.is_live %} hidden{% endif %}">Live now</div>
     <div class="event-overlay upcoming">
       <div class="nested-row">
-        <p class="event-title-ajax event-info-title">{{ event.title }}</p>
+        <p class="event-title-ajax event-info-title">{{ event.title }}{% if request.user.is_staff and event.state == "Draft"%} - Draft {% endif %}</p>
         <img class="upcoming-logo" src="{% static 'new_logo_transparent.png' %}" alt="Smalls"
                         class="img-circle"/>
       </div>
