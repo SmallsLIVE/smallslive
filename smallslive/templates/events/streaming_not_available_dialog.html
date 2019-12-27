@@ -27,12 +27,9 @@
           <div class="flex-row live-streaming">
             <a class="white-border-button" href="{% url 'become_supporter' %}">Become a supporter</a>
           </div>
-          {% if currently_live_event_url %}
-            <div class="flex-row live-streaming">
-              <a class="white-border-button" href="{{ currently_live_event_url }}">Watch live streaming now</a>
-            </div>
-          {% endif %}
         {% endif %}
+
+        {{ currently_live_event_url }}
 
       </div>
     </div>
