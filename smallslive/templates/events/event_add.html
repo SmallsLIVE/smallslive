@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="buttonHolder">
-            <input type="submit" name="submit" value="Save event" class="admin-interface__form__button" id="submit-id-submit">
+        <input type="submit" name="submit" value="Save event" class="admin-interface__form__button" id="submit-id-submit">
       </div>
     </form>
     </section>
@@ -120,6 +120,38 @@
               }
             }
         });
+      });
+
+      // TODO: remove duplicate code in artist_dashboard.js
+      function loadArtist(value, select) {
+        $.ajax({
+          type: 'GET',
+          url: '/search/artist_form_autocomplete/?artist-start=' + value,
+          success: function(data){
+            data.artist_list.forEach(function(artist) {
+
+              // Select already selected artists and  exclude them from the options.
+              var $artists = $(".artist_field option[selected='selected']");
+              var exclude = $(".artist_field option[selected='selected']").map(function () {
+                return $(this).val();
+              }).get();
+
+              if (exclude.indexOf(artist.val.toString()) < 0) {
+                select.selectize.addOption({ value: artist.val, text: artist.full_name });
+                select.selectize.refreshOptions();
+              }
+            })
+          }
+        })
+      }
+
+      $(document).on("keyup", ".artist_field .selectize-input input", function () {
+        var artistSelectorContainer = $(this).closest("td");
+        var selectElement = $(artistSelectorContainer).find("select")[0];
+        //var selectizeElement = $(artistSelectorContainer).find(".selectize-dropdown-content")[0];
+        if ($(this).val().length > 1) {
+          loadArtist($(this).val(), selectElement)
+        }
       });
 
     });

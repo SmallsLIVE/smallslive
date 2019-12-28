@@ -331,17 +331,12 @@ EventForm = {
         .parent()
         .next()
         .find("select");
-      var $ajax_role_field = $(e.currentTarget.parentElement).find(
-        "select.role_field"
-      );
       var value = $(e.currentTarget).val();
       $.get(
         "//" + EventForm.SITE_URL + "/artists/" + value + "/instrument_ajax/",
         function(data) {
-          if ($role_field.length > 1) {
+          if ($role_field.length > 0) {
             $role_field[0].selectize.setValue(data);
-          } else {
-            $ajax_role_field[0].selectize.setValue(data);
           }
         }
       );
