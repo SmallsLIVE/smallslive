@@ -239,6 +239,29 @@ class EventQuerySet(models.QuerySet):
 
         return items
 
+    def get_live(self, venue_id=None):
+
+        filter_data = {
+            'start__lte': timezone.now(),
+            'end__gte': timezone.now()
+        }
+
+        if venue_id:
+            filter_data['venue_id'] = venue_id
+
+        qs = self.filter(**filter_data)
+        qs = qs.exclude(state=Event.STATUS.Draft)
+        qs = qs.order_by('start')
+
+        if qs.count() == 0:
+            if 'venue_id' in filter_data:
+                del filter_data['venue_id']
+            qs = self.filter(**filter_data)
+            qs = qs.exclude(state=Event.STATUS.Draft)
+            qs = qs.order_by('start')
+
+        return list(qs)
+
 
 class CustomImageFieldFile(models.fields.files.ImageFieldFile):
 

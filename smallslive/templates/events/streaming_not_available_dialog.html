@@ -24,7 +24,14 @@
         {% elif not user.has_activated_account %}
           <button class="white-border-button" onclick="$('#streamingNotAvailableDialog').modal('hide'); $('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
-          <a class="white-border-button" href="{% url 'become_supporter' %}">Become a supporter</a>
+          <div class="flex-row live-streaming">
+            <a class="white-border-button" href="{% url 'become_supporter' %}">Become a supporter</a>
+          </div>
+          {% if currently_live_event_url %}
+            <div class="flex-row live-streaming">
+              <a class="white-border-button" href="{{ currently_live_event_url }}">Watch live streaming now</a>
+            </div>
+          {% endif %}
         {% endif %}
 
       </div>

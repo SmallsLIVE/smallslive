@@ -92,6 +92,12 @@ $player-height: 25.3vw;
   flex-wrap: wrap;
   justify-content: center;
 
+  .live-streaming {
+    .white-border-button {
+      padding-top: 0;
+    }
+  }
+
   .white-border-button {
     margin-bottom: 5px;
     padding: 5px 15px;

@@ -352,6 +352,9 @@ class EventDetailView(DetailView):
                 'start': start
             }
             context['products'] = self.object.get_tickets()
+            live_events = Event.objects.get_live(event.venue_id)
+            if live_events:
+                context['currently_live_event_url'] = live_events[0].get_absolute_url()
 
         # for modal in past events
         # need to find if there is currently a live event
