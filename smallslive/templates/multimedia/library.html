@@ -8,8 +8,8 @@
 {% block store_content %}
   {% include 'subscriptions/download_confirmation_dialog.html' %}
   {% include 'subscriptions/popups/product_support_confirmation_dialog.html' %}
-  <div class="white-line-bottom">
-    <div class="title1 center">Library</div>
+  <div class="section-title catalog featured">
+    <div class="title1">Library</div>
   </div>
 
   <!-- library.html -->
@@ -35,10 +35,13 @@
         {% endwith %}
       {% endfor %}
     {% else %}
-      <p class="text9 text-center">
+    <div class="education__article">
+      <p class="" style="padding: 0 3.5vw;">
         <!-- No items in library text here -->
-        Your library is empty. 
+        The SmallsLIVE Catalog is a collection of individually produced artist projects. SmallsLIVE Members may sponsor
+        artists of their choice and receive their music as downloads or CDs. Sponsorships directly support the artist.
       </p>
+    </div>
     {% endif %}
     </div>
   </main>

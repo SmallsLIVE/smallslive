@@ -93,7 +93,7 @@ class SearchMixin(object):
         if paginator.count:
             showing_results = paginator.count
         else:
-            showing_results = 'NO RESULTS'
+            showing_results = '0'
 
         if entity == Event:
             return blocks, showing_results, paginator.num_pages, first, last, search_input

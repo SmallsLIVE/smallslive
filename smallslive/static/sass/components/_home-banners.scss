@@ -282,7 +282,7 @@ $banners-height: 38vh;
       filter: none;
 
       &.live {
-        background-image: url("/static/image/banners/roy.jpg");
+        background-image: url("/static/image/banners/roy_reduced.jpg");
         background-size: cover;
         @media (max-width: 960px) {
           background-size: cover;
@@ -290,7 +290,7 @@ $banners-height: 38vh;
       }
 
       &.archive {
-        background-image: url("/static/image/banners/pianoplayer.jpg");
+        background-image: url("/static/image/banners/pianoplayer_reduced.jpg");
         background-size: cover;
         @media (max-width: 960px) {
           background-size: cover;
@@ -298,7 +298,7 @@ $banners-height: 38vh;
       }
 
       &.mission {
-        background-image: url("/static/image/banners/club.jpg");
+        background-image: url("/static/image/banners/club_reduced.jpg");
         background-size: cover;
         @media (max-width: 960px) {
           background-size: cover;
