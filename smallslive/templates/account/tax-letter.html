@@ -22,9 +22,7 @@
 
           <p> Greenwich Village, New York, 10014</p>
 
-          <p>(646) 476-4346</p>
-
-          <p>Email: SmallsLIVEFoundation@smallslive.com</p>
+          <p>Email: Foundation@smallslive.com</p>
 
           <p><a href="http://www.smallslive.com">www.smallslive.com</a></p>
 
@@ -33,33 +31,32 @@
 
 
           <p>
-          {% now "m/d/y" %}
+            {% now "m/d/y" %}
           </p>
 
           <p>
-          Dear {{ user.first_name }} {{ user.last_name }}:
+            Dear {{ user.first_name }} {{ user.last_name }}:
           </p>
           <p>
-          We thank you for your support of the mission of the SmallsLIVE Foundation for Jazz Arts and Education.
-          Your generous donation is helping to support the musicians and the venues and allowing us to continue to present jazz music in New York City.
+            The SmallsLIVE Foundation for Jazz Arts & Education thanks you for your generous donation.
+            Your help supports the musicians and the venues and continues our mission of presenting live jazz music in New York City.
           </p>
           <p>Your donation for this tax year was: ${{ charges_value }} of which {% if charges_value == deductable_value %} 100% {% else %} ${{ deductable_value }} {% endif %} is tax deductible.</p>
 
-          <p>The SmallsLIVE Foundation Tax ID is 38-4083862.</p>
+          <p>The SmallsLIVE Foundation, INC. Tax ID is 38-4083862.</p>
 
 
           <p>
-          Our office is at 183 West 10th basement, New York City, 10014.
-          Our number is (646) 476-4346. The SmallsLIVE Foundation for Jazz Arts and Education
-          is an IRS recognized not-for-profit corporation organized in the state of New York.
+            Our office is at 183 W. 10th Street, basement, New York City, NY, 10014.
+            The SmallsLIVE Foundation for Jazz Arts & Education is an IRS recognized
+            not-for-profit corporation organized in the state of New York.
           </p>
           <p>
-          My Sincerest Regards,
+            My Sincerest Regards,
           <br>
-          Spike Wilner
+            Spike Wilner
           <br>
-          CEO
-          The SmallsLIVE Foundation, INC.
+            CEO The SmallsLIVE Foundation
           </p>
       </div>
   </div>
