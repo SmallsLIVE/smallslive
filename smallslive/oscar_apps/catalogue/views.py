@@ -96,6 +96,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, ProductMixin):
         self.get_products()
         ctx['artist_with_media'] = Artist.objects.exclude(artistproduct=None)
         ctx['is_catalogue'] = True
+        ctx['comma_separated_leaders'] = self.comma_separated_leaders
         total_donation = 0
         ctx['album_product'] = self.album_product
         if self.object.get_product_class().slug == 'album':

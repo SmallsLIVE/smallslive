@@ -601,7 +601,7 @@ $(document).ready(function() {
         .html(
           "Thank you for choosing to help jazz music and musicians all over the world. You have selected a monthly pledge of $" +
             value +
-            ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
+            ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. All donations grant access to the SmallsLIVE Archive."
         );
     } else {
       oneTimeSelected($(this));
