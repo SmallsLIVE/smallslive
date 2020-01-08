@@ -369,6 +369,22 @@
           right: 35px;
           top: 100%;
 
+          .years-choices {
+            max-height: 300px;
+            overflow-y: scroll;
+
+            &::-webkit-scrollbar {
+              -webkit-appearance: none;
+              width: 10px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              border-radius: 5px;
+              background-color: rgba(0,0,0,.5);
+              -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+            }
+          }
+
           .years-choices > div {
             padding: 2px 20px;
             line-height: 2em;
