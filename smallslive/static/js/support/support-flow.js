@@ -700,6 +700,10 @@ $(document).ready(function() {
         $mainContainer.find("#yearlyCustomConfirm").hide();
         $errorLabel.removeClass("hidden");
       }
+      if (value > 99999) {
+        $yearlyCustom.val(99999);
+        $mainContainer.find("#yearlyCustomConfirm").val(99999);
+      }
       if (event.keyCode == 13) {
         if ($mainContainer.find("#yearlyCustomConfirm").val() != "") {
           oneTimeSelected($yearlyCustom);
