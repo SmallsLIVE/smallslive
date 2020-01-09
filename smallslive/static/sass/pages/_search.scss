@@ -224,11 +224,11 @@ body.headers-1 {
       }
 
       span {
-        margin: 13px 0;
+        margin: 1.7vw 0;
         font-size: 6vw;
 
         @media (max-width: $screen-sm) {
-          margin: 10px 0;
+          //margin: 10px 0;
         }
       }
     }
@@ -239,6 +239,7 @@ body.headers-1 {
   display: none;
 
   @media (max-width: $screen-sm-max) {
+    padding-top: 2vw;
     display: flex;
   }
 
@@ -599,7 +600,7 @@ body.headers-1 {
   display: inline-flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-content: center;
+  align-content: flex-end;
   margin-left: 0;
   margin-top: -20px;
 
@@ -1612,6 +1613,8 @@ body.headers-1 {
 }
 
 .show-in-archive {
+  white-space: nowrap;
+  overflow: visible;
   align-self: flex-end;
   //margin-bottom: -7px;
   margin-left: 3.8vw;
@@ -2193,6 +2196,14 @@ body.home.admin-header {
   }
 }
 
+#musicianContent,
+#search-content {
+  padding: 20px 0;
+  @media(max-width: $screen-md){
+    padding: 2vw 0;
+  }
+}
+
 @media (min-width: $screen-sm-max) {
   .new-archive {
     border-bottom: 5px solid white;
@@ -2215,11 +2226,6 @@ body.home.admin-header {
         margin-right: 20px;
       }
     }
-  }
-
-  #musicianContent,
-  #search-content {
-    padding: 20px 0;
   }
 
   #musicianContent {

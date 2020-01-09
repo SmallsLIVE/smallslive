@@ -46,6 +46,18 @@
   margin-left: 20px;
 }
 .section-title {
+
+  &__container{
+    display: flex;
+    margin-bottom: 20px;
+
+    @media(max-width: $screen-md){
+      display: inline;
+      justify-content: center;
+      margin-bottom: 0;
+    }
+  }
+
   $underline-length: 600px;
   position: relative;
   margin-bottom: 20px;
@@ -155,6 +167,7 @@
     position: relative;
     z-index: 99;
     margin-top: 25px;
+    margin-bottom: 0;
     display: inline-flex;
     flex-wrap: wrap;
     padding-right: 2vw;
@@ -185,7 +198,7 @@
 
     @media (max-width: $screen-sm-max) {
       //background-size: 80vw 5px;
-      margin-bottom: 45px;
+      margin-bottom: 40px;
       //padding-bottom: 3px;
       //width: 97vw;
       width: fit-content;
@@ -196,8 +209,8 @@
       padding-left: 2vw;
 
     }
-    @media (min-width: 720px) and (max-width: $screen-sm-max) {
-      margin-top: 45px;
+    @media(max-width: $screen-sm-max) {
+      margin-top: 7vw;
     }
     @media (max-width: $screen-xs) {
       //background-size: 90vw 5px;
@@ -430,10 +443,10 @@
 }
 .tabs div .title1 {
   @media (min-width: 690px) and (max-width: 850px) {
-    line-height: 5vw;
+    //line-height: 5vw;
   }
   @media (min-width: 851px) and (max-width: $screen-sm-max) {
-    line-height: 4.4vw;
+    //line-height: 4.4vw;
   }
   @media (min-width: $screen-sm-max) and (max-width: 1024px) {
     line-height: 4.7vw;
