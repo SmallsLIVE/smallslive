@@ -51,6 +51,7 @@ $dashboard-desktop: 1200px;
 
       .title1 {
         font-size: 30px;
+        line-height: 36px;
       }
     }
 
@@ -479,11 +480,12 @@ $dashboard-desktop: 1200px;
       top: 0;
 
       @media(max-width: 769px){
-        font-size: 26px;
+        //font-size: 26px;
+        font-size: 5.3vw;
       }
-      @media(max-width: 450px){
-        font-size: 5.5vw;
-      }
+      //@media(max-width: 450px){
+      //  font-size: 5.5vw;
+      //}
 
       &.section-title {
         background-size: calc(550px + 3.5vw) 5px;
@@ -493,8 +495,8 @@ $dashboard-desktop: 1200px;
           line-height: 2.8vw;
         }
 
-        @media(max-width: 450px){
-          line-height: 4vw;
+        @media(max-width: 769px){
+          line-height: 3.7vw;
         }
 
         .title1 {
