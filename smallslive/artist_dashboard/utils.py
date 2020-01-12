@@ -37,7 +37,7 @@ def metrics_data_for_date_period(start_date, end_date):
             logger.warn('Event {0} does not exist (generating payout)'.format(event.get('event_id')))
 
     total_donations = 0
-    for donation in Donation.objects.filter(artist_id__isnull=False, amount__gt=0):
+    for donation in Donation.objects.filter(artist_id__isnull=False, amount__gt=0, confirmed=True):
         total_donations += donation.amount
         artists[donation.artist_id]['donations'] += donation.amount
 
