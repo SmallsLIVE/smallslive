@@ -43,7 +43,7 @@ function initializeArchiveDatePickers() {
     // Means any ajax results will not append to existing items.
     // For pagination use apply = false;
     initializeSearch();
-    $datePickerTo.datepicker("setStartDate", datePickerFromDate);
+    //$datePickerTo.datepicker("setStartDate", datePickerFromDate);
     sendEventRequest(
       "Archived",
       datePickerFromDate,
@@ -79,7 +79,7 @@ function initializeArchiveDatePickers() {
 
     datePickerToDate = newDate.date;
     datePickerToDateSet = true;
-    $datePickerFrom.datepicker("setEndDate", datePickerToDate);
+    //$datePickerFrom.datepicker("setEndDate", datePickerToDate);
     if (!datePickerFromDateSet) {
       $datePickerFrom.click();
       $datePickerFrom.focus();
