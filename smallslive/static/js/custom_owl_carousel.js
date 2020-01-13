@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-
   function getInitParams() {
     var $prev = $('div.today-left.prev');
     var $next = $('div.today-right.next');
@@ -84,8 +83,8 @@ $(document).ready(function () {
       // by positioning on the first placeholder item.
       console.log("Current: ", event.item.index);
       console.log("items: ", items);
-      if (event.item.index > items) {
-        owl.trigger('to.owl.carousel', items);
+      if (event.item.index > items - 1) {
+        owl.trigger('to.owl.carousel', items - 1);
       }
     }
   }
