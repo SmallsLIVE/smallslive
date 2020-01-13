@@ -1673,6 +1673,7 @@ body.headers-1 {
   flex-wrap: wrap;
   padding: 0 10%;
   margin-top: 40px;
+  min-height: 440px;
 
   @media (min-width: 1201px) {
     > *:nth-last-child(n + 6)::before {
