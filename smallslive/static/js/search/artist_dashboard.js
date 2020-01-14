@@ -297,9 +297,9 @@ $(document).ready(function () {
     $(document).on("click", "#datepicker-dashboard-btn", function () {
 
       if ($(".artist-events-list-info .datepicker-container").data('shown')) {
-        $(".event-metrics-container .datepicker-container").data('shown', false);
+        $(".event-metrics-container .datepicker-container").hide().data('shown', false);
       } else {
-        $(".artist-events-list-info  .datepicker-container").css("display", "flex")
+        $(".artist-events-list-info .datepicker-container").css("display", "flex")
         $(".artist-events-list-info .datepicker-container").data('shown', true);
         $("#dashboard-metrics-date-picker-from input").click();
         $("#dashboard-metrics-date-picker-from input").focus();
@@ -327,9 +327,14 @@ $(document).ready(function () {
     });
 
     $(document).mouseup(function (e) {
-      var container = $(".datepicker-dashboard-container");
-      if (!container.is(e.target) && container.has(e.target).length === 0) {
-        $(".event-metrics-container .datepicker-container").hide().data('shown', false);
+      var $container = $(".datepicker-dashboard-container");
+      if (!$container.is(e.target) && $container.has(e.target).length === 0) {
+
+        var $btn = $("#datepicker-dashboard-btn");
+
+        if (!$btn.is(e.target) && $btn.has(e.target).length === 0) {
+          $(".event-metrics-container .datepicker-container").hide().data("shown", false);
+        }
       }
     });
 
@@ -891,7 +896,7 @@ function initializeMetricsDatePickers () {
   $datePickerFromMetrics.on('click', function () {
     var dropdown = $('#dashboard-metrics-date-picker-from .dropdown-menu');
     if (!(dropdown[0] && dropdown[0].style.display === 'block')) {
-      $datePickerFrom.datepicker('show');
+      $datePickerFromMetrics.datepicker('show');
     }
   });
 
@@ -917,7 +922,7 @@ function initializeMetricsDatePickers () {
   $datePickerToMetrics.on('click', function () {
     var dropdown = $('#dashboard-metrics-date-picker-to .dropdown-menu');
     if (!(dropdown[0] && dropdown[0].style.display === 'block')) {
-      $datePickerTo.datepicker('show');
+      $datePickerToMetrics.datepicker('show');
     }
   });
 }
