@@ -3,7 +3,7 @@
     <div class="modal-content custom-modal no-cancel">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
-        <p class="title2 accent-color">Tickets</p>
+        <p class="title2 accent-color">Purchase Tickets</p>
           {% if event.tickets_url %}
             <p class="title3">Available from {{ event.get_venue_name|capfirst }}</p>
             <a href="{{ event.tickets_url }}" target="_blank" rel="noreferrer">
@@ -11,16 +11,16 @@
             </a>
           {% else %}
             <p class="title3">Advance Tickets are not available for this show.</p>
-            <p class="text4 text-grey">
+            <p class="text4">
                 {# {{ event.get_venue_name|default:'smalls'|capfirst }} #}
-                You may purchase a ticket on the evening of the event for your desired set.
-                Tickets for this event are only sold at the door, first come/first served.
-                Please arrive 30 minutes in advance of the set.
-                Tickets are also good for entry at Mezzrow at no additional charge depending on availability.
+                You must purchase tickets for this show directly at the club on the evening of the event.
+                We recommend that you arrive ½ hour before the set that you want to see.
+                Tickets are available on a first come/first served basis.
+            </p>
+            <p class="text4 text-grey">
+                More ticketing information <a class="accent-color underline" href="{% url 'contact-and-info' %}#passes-tickets">here</a>.
             </p>
           {% endif %}
-        </p>
-
       </div>
     </div>
   </div>

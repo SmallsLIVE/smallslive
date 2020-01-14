@@ -67,12 +67,16 @@
                 <!--there needs to be a way to get the logged in user's e-mail address also, what of the case where user sends to a different address?-->
                 a copy of the receipt will be sent to {% if order.lines.first.order.guest_email %}{{ order.lines.first.order.guest_email }}
                 {% else %} the e-mail provided.{% endif %}
-                Your name will be at the door with the host. Please come ½ hour before the scheduled start time ({{ order.lines.first.product.event_set.start }}).
-                Your ticket guarantees you a seat but seat assignment is first come first serve. Late-comers risk losing their seats.
-                Ticket sales are non-refundable but you may exchange them for another show depending on availability.
+                <br>
+                Your name will be with the doorman when you arrive. Please come ½ hour before the scheduled start time ({{ order.lines.first.product.event_set.start }}).
+                The ticket guarantees a seat. Seat assignment is first come first serve so please arrive on time.
+                We reserve the right to release a seat 15 minutes after the beginning of the concert.
+                <br>
+                Ticket sales are generally non-refundable but on a case by case basis.
+                You may exchange your ticket for another show depending on availability.
               </p>
               <p>
-                If you have any questions or issues, please feel free to contact us via email at <a href="mailto:info@smallslive.com">info@smallslive.com</a>
+                If you have any questions or issues, please feel free to contact us via email at <a href="mailto:ticketing@smallslive.com">ticketing@smallslive.com</a>
               </p>
             </div>
             {% endif %}
