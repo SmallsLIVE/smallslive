@@ -201,6 +201,16 @@ $event-row-padding: 3.5vw;
       }
     }
   }
+
+  .loading-image {
+    position: absolute;
+    top: 40%;
+    height: 10%;
+    right: 0;
+    width: 3vw;
+    pointer-events: none;
+    z-index: 1000;
+  }
 }
 
 .event-stripe.archive {

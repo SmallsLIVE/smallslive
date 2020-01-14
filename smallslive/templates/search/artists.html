@@ -41,13 +41,12 @@
 
 <div class="">
 
-  <div id="artist-load-gif" class="loading-image">
-    <img src="{% static 'image/loading.gif' %}" alt="">
-  </div>
-
   <main id="artists" style="position: relative;">
     <div class="slide-btn slider prev"><b class="indicator-icon icon-left-caret"></b></div>
     <div class="slide-btn slider next" data-callback-name="searchMoreArtists"><b class="indicator-icon icon-right-caret"></b></div>
+    <div id="artist-load-gif" class="loading-image">
+      <img src="{% static 'image/loading.gif' %}" alt="">
+    </div>
     <div class="event-row wrapped-events artists">
       {% include 'search/artist_results.html' %}
     </div>

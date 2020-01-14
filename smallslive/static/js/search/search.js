@@ -185,12 +185,14 @@ function sendArtistRequest(callback, callbackParam) {
   }
 
   toggleEventFilters(filters);
+  $("#artist-load-gif").css("display", "block");
 
   $.ajax({
     url: "/search/ajax/artist/",
     data: filters,
     dataType: "json",
     success: function (data) {
+      $("#artist-load-gif").css("display", "none");
       callback(data, callbackParam);
     },
     error: function(data) {

@@ -70,7 +70,7 @@ function bindNextClick() {
     }
     isSlideAnimating = true;
     var $next = $(this);
-    var $row = $next.next();
+    var $row = $next.parent().find('.event-row');
     var $win = $(window);
     var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var padding = $row.innerWidth() - $row.width();
@@ -79,7 +79,7 @@ function bindNextClick() {
     $row.animate({
         marginLeft: -left + 2 * padding
     }, 400, function () {
-        var $prev = $row.prev().prev();
+        var $prev = $row.parent().find('.prev');
         $prev.css('visibility', 'visible');
         $next.css('visibility', 'hidden');
         var $last = $row.find('article').last();
@@ -109,7 +109,7 @@ function bindPrevClick() {
     isSlideAnimating = true;
     var $prev = $(this);
     var $win = $(window);
-    var $row = $prev.next().next();
+    var $row = $prev.parent().find('.event-row');
     var $next = $prev.next();
     var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var padding = $row.innerWidth() - $row.width();
