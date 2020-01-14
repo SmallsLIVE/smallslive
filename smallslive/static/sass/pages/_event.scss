@@ -107,6 +107,11 @@ $player-height: 25.3vw;
     &.buy-tickets {
       white-space: nowrap;
     }
+
+    &.no-v-padding {
+      padding-bottom: 0;
+      padding-top: 0;
+    }
   }
 
 
@@ -602,7 +607,7 @@ $player-height: 25.3vw;
     .event-detail {
       border-radius: 5vw;
       height: 5vw;
-      opacity: 0;
+      opacity: 1;
       width: 5vw;
 
       &:hover {
