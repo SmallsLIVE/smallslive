@@ -46,7 +46,7 @@ $(document).ready(function () {
     $datePickerFrom.on('changeDate', function (newDate) {
       $("#search-date-picker-to-dashboard input").click();
       $("#search-date-picker-to-dashboard input").focus();
-      $datePickerTo.datepicker("setStartDate", newDate.date);
+      //$datePickerTo.datepicker("setStartDate", newDate.date);
     });
 
     $datePickerFrom.on('click', function () {
@@ -67,7 +67,7 @@ $(document).ready(function () {
 
     $datePickerTo.on("changeDate", function(newDate) {
 
-      $datePickerFrom.datepicker("setEndDate", newDate.date);
+      //$datePickerFrom.datepicker("setEndDate", newDate.date);
 
     });
 
@@ -112,20 +112,13 @@ $(document).ready(function () {
       loadMore();
     });
 
-    $("#dashboard-desktop-reset").click(function () {
-      defaultStatusValue = $("#artist_archive_status_filter option:first-child").val()
-      defaultStatusText = $("#artist_archive_status_filter option:first-child").text()
-      defaultOrderValue = $("#artist_archive_order option:first-child").val()
-      defaultOrderText = $("#artist_archive_order option:first-child").text()
-      $("#artist_archive_status_filter").val(defaultStatusValue)
-      $("#artist_archive_status_filter + .select-selected").text(defaultStatusText)
-      $("#artist_archive_order").val(defaultOrderValue)
-      $("#artist_archive_order + .select-selected").text(defaultOrderText)
-      $("#search-date-picker-from-dashboard").find(".date-picker-text").val("")
-      $("#search-date-picker-to-dashboard").find(".date-picker-text").val("")
+    $("#dashboard-reset").click(function () {
+      $("#dashboard-desktop-datepicker").hide().data("shown", false);
+      $("#search-date-picker-from-dashboard input").val("").datepicker("update");
+      $("#search-date-picker-to-dashboard input").val("").datepicker("update");
       currentPage = 0;
       totalPages = 1;
-      $('#artistEventsList').html("")
+      $('#artistEventsList').html("");
       $('#artistEventsList').addClass("artist-loading-gif");
       loadMore();
     });
@@ -136,7 +129,7 @@ $(document).ready(function () {
     });
 
     $(document).on("click", "#dashboard-desktop-datepicker-close", function () {
-      $("#dashboard-desktop-datepicker").hide().data('shown', false);
+      $("#dashboard-desktop-datepicker").hide().data("shown", false);
     });
 
   }
@@ -397,7 +390,7 @@ $(document).ready(function () {
 
   }
 
-  function sendEventRequest(callbacks) {
+  function sendEventRequest(callbacks, loadFirstEvent) {
 
     var dateFrom = $datePickerFrom.datepicker("getDate");
     var dateTo = $datePickerTo.datepicker("getDate");
@@ -458,7 +451,7 @@ $(document).ready(function () {
         var callback;
         while (callback = callbacks.pop()){
           if (typeof callback === 'function') {
-            callback(data);
+            callback(data, loadFirstEvent);
           }
         }
       }
@@ -466,7 +459,7 @@ $(document).ready(function () {
 
   }
 
-  function updateShows(data) {
+  function updateShows(data, loadFirstEvent) {
     $("#event-load-gif").addClass("hidden");
     $("#artistEventsList").removeClass("artist-loading-gif");
     $('.concerts-footer').show();
@@ -480,7 +473,7 @@ $(document).ready(function () {
           if (!$("#summary-no-results").hasClass("hidden")) {
             $("#summary-no-results").addClass("hidden");
           }
-          showFirstEvent(data);
+          showFirstEvent(data, loadFirstEvent);
         }
       } else {
         $("#artistEventsList").html(data.template);
@@ -714,14 +707,14 @@ $(document).ready(function () {
     showEventInfo(url);
   }
 
-  function showFirstEvent(data) {
+  function showFirstEvent(data, loadFirstEvent) {
 
-    fromDateLimit = firstEventDate;
-    toDateLimit = lastEventDate;
-    $datePickerFrom.datepicker("setStartDate", fromDateLimit);
-    $datePickerFrom.datepicker("setEndDate", toDateLimit);
-    $datePickerTo.datepicker("setStartDate", fromDateLimit);
-    $datePickerTo.datepicker("setEndDate", toDateLimit);
+    if (loadFirstEvent === true) {
+      fromDateLimit = firstEventDate;
+      toDateLimit = lastEventDate;
+      $datePickerFrom.datepicker("setStartDate", fromDateLimit);
+      $datePickerTo.datepicker("setEndDate", toDateLimit);
+    }
 
     showFirstEventForm(data);
     showFirstEventInfo(data);
@@ -773,7 +766,7 @@ $(document).ready(function () {
     }
 
     var callbacks = [updateShows];
-    sendEventRequest(callbacks);
+    sendEventRequest(callbacks, loadFirstEvent);
   }
 
 });
@@ -881,21 +874,21 @@ $(window).on('resize', function(e) {
 
 function initializeMetricsDatePickers () {
 
-  var $datePickerFrom = $('#dashboard-metrics-date-picker-from input');
-  $datePickerFrom.datepicker({
+  var $datePickerFromMetrics = $('#dashboard-metrics-date-picker-from input');
+  $datePickerFromMetrics.datepicker({
     format: 'mm/dd/yyyy',
     autoclose: true,
     container: '#dashboard-metrics-date-picker-from',
     showOnFocus: false
   });
 
-  $datePickerFrom.on('changeDate', function (newDate) {
+  $datePickerFromMetrics.on('changeDate', function (newDate) {
     eventDateFrom = newDate.date;
     $("#dashboard-metrics-date-picker-to input").click();
     $("#dashboard-metrics-date-picker-to input").focus();
   });
 
-  $datePickerFrom.on('click', function () {
+  $datePickerFromMetrics.on('click', function () {
     var dropdown = $('#dashboard-metrics-date-picker-from .dropdown-menu');
     if (!(dropdown[0] && dropdown[0].style.display === 'block')) {
       $datePickerFrom.datepicker('show');
@@ -904,15 +897,15 @@ function initializeMetricsDatePickers () {
 
   //////////////////////
 
-  var $datePickerTo = $('#dashboard-metrics-date-picker-to input');
-  $datePickerTo.datepicker({
+  var $datePickerToMetrics = $('#dashboard-metrics-date-picker-to input');
+  $datePickerToMetrics.datepicker({
     format: 'mm/dd/yyyy',
     autoclose: false,
     container: '#dashboard-metrics-date-picker-to',
     showOnFocus: false
   });
 
-  $datePickerTo.on('changeDate', function (newDate) {
+  $datePickerToMetrics.on('changeDate', function (newDate) {
     eventDateTo = newDate.date;
 
     from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
@@ -921,7 +914,7 @@ function initializeMetricsDatePickers () {
     $("#datepicker-description").html(from + " - " + to);
   });
 
-  $datePickerTo.on('click', function () {
+  $datePickerToMetrics.on('click', function () {
     var dropdown = $('#dashboard-metrics-date-picker-to .dropdown-menu');
     if (!(dropdown[0] && dropdown[0].style.display === 'block')) {
       $datePickerTo.datepicker('show');
