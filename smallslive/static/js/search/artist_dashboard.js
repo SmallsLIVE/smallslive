@@ -668,16 +668,19 @@ $(document).ready(function () {
       success: function(data) {
         $('#event-info-load-gif').addClass('hidden');
         $('#event-info').html(data);
+        var eventDateFrom = $("#event-info-event-date").val();
         if (!isFuture) {
           var $videoInfo = $(data).find(".player-video-info");
           var playList = []
+          var mediaType;
           $videoInfo.each(function () {
             var url = $(this).val();
             var id = $(this).data("id");
             var image = $(this).data("image");
+            mediaType = $(this).data("media-type")
             var sources = [{
               file: url,
-              type: "mp4",
+              type: mediaType,
             }];
             var playInfo = {
               sources: sources,
@@ -686,8 +689,13 @@ $(document).ready(function () {
             };
             playList.push(playInfo);
           });
-          initializeMetricsDatePickers();
-          setupPlayer(playList);
+          initializeMetricsDatePickers(eventDateFrom);
+          if (mediaType == 'mp4') {
+            setupVideoPlayer(playList);
+          } else {
+            setupAudioPlayer(playList);
+          }
+
         }
       },
       error: function() {
@@ -718,6 +726,8 @@ $(document).ready(function () {
       fromDateLimit = firstEventDate;
       toDateLimit = lastEventDate;
       $datePickerFrom.datepicker("setStartDate", fromDateLimit);
+      $datePickerTo.datepicker("setStartDate", fromDateLimit);
+      $datePickerFrom.datepicker("setEndDate", toDateLimit);
       $datePickerTo.datepicker("setEndDate", toDateLimit);
     }
 
@@ -726,15 +736,8 @@ $(document).ready(function () {
 
   }
 
-  function setupPlayer(playList) {
+  function setPlayList() {
 
-    videoPlayer = jwplayer("player-video").setup({
-      primary: 'html5',
-      playlist: playList,
-      skin: jwPlayerSkin,
-      width: "100%",
-      aspectratio: "16:9",
-    });
     videoPlayer.on('play', function () {
 
       videoPlaying = true;
@@ -751,11 +754,33 @@ $(document).ready(function () {
 
     });
 
-    videoPlayer.on('pause', function() {
+  }
 
+  function setupVideoPlayer(playList) {
 
+    videoPlayer = jwplayer("player-video").setup({
+      primary: 'html5',
+      playlist: playList,
+      skin: jwPlayerSkin,
+      width: "100%",
+      aspectratio: "16:9",
     });
 
+    setPlayList();
+
+  }
+
+  function setupAudioPlayer(playList) {
+
+    videoPlayer = jwplayer("player-video").setup({
+      primary: 'html5',
+      playlist: playList,
+      skin: jwPlayerSkin,
+      width: "100%",
+      aspectratio: "16:9"
+    });
+
+    setPlayList();
   }
 
   function loadMore(loadFirstEvent) {
@@ -877,7 +902,10 @@ $(window).on('resize', function(e) {
 });
 
 
-function initializeMetricsDatePickers () {
+function initializeMetricsDatePickers (eventDateFrom) {
+
+  var today = new Date();
+  var today = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
 
   var $datePickerFromMetrics = $('#dashboard-metrics-date-picker-from input');
   $datePickerFromMetrics.datepicker({
@@ -899,6 +927,9 @@ function initializeMetricsDatePickers () {
       $datePickerFromMetrics.datepicker('show');
     }
   });
+  $datePickerFromMetrics.datepicker("setStartDate", eventDateFrom);
+  $datePickerFromMetrics.datepicker("setEndDate", today);
+
 
   //////////////////////
 
@@ -909,6 +940,9 @@ function initializeMetricsDatePickers () {
     container: '#dashboard-metrics-date-picker-to',
     showOnFocus: false
   });
+
+  $datePickerToMetrics.datepicker("setStartDate", eventDateFrom);
+  $datePickerToMetrics.datepicker("setEndDate", today);
 
   $datePickerToMetrics.on('changeDate', function (newDate) {
     eventDateTo = newDate.date;

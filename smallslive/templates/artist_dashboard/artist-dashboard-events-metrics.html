@@ -4,12 +4,24 @@
 <div class='artist-set-main'>
   <div class="artist-event-info flex-column wrap">
     {% for set in sets_with_media %}
-      <input type="hidden"
-             class="player-video-info"
-             name="video-url"
-             value="{{ set.video_recording.media_file.get_sd_video_url|safe }}"
-             data-id="{{ set.video_recording.id }}"
-             data-image="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=600 %}">
+      {% if set.video_recording %}
+        <input type="hidden"
+               class="player-video-info"
+               name="video-url"
+               value="{{ set.video_recording.media_file.get_sd_video_url|safe }}"
+               data-id="{{ set.video_recording.id }}"
+               data-media-type="mp4"
+               data-image="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=600 %}">
+      {% else %}
+        <input type="hidden"
+               class="player-video-info"
+               name="video-url"
+               value="{{ set.audio_recording.media_file.get_sd_video_url|safe }}"
+               data-id="{{ set.audio_recording.id }}"
+               data-media-type="mp3"
+               data-image="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=600 %}">
+      {% endif %}
+
     {% endfor %}
 
     {% if sets_with_media %}

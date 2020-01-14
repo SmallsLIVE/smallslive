@@ -2,6 +2,7 @@
   <div id="event-info-close-btn" class="go-back">
     <img src="/static/image/arrow-right-red.svg" alt="">
   </div>
+  <input id="event-info-event-date" type="hidden" value="{{ event.get_date|date:'m/d/Y' }}">
   <div class="artist-set-info-mobile">
     <div class="text2"> {{ event.get_date|date:'m/d/Y' }} </div>
     <div class="text2"> {{ event.title }} </div>

@@ -94,11 +94,13 @@ class MediaFile(models.Model):
     def get_sd_video_url(self):
         if not settings.DEBUG or settings.FORCE_S3_SECURE:
             if self.media_type == 'audio':
-                self.sd_video_file.storage = AudioS3Storage(bucket=self.audio_bucket_name)
+                self.file.storage = AudioS3Storage(bucket=self.audio_bucket_name)
+
+                return self.file.url
             else:
                 self.sd_video_file.storage = VideoS3Storage(bucket=self.video_bucket_name)
 
-        return self.sd_video_file.url
+                return self.sd_video_file.url
 
     def get_downloadable_sd_video_url(self):
         response_headers = {

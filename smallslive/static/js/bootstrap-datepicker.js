@@ -929,33 +929,24 @@
 			}
 
 			html = '';
-			year = parseInt(year/10, 10) * 10;
-			if (year < startYear) {
-			  year = startYear;
-			}
 
 			var yearCont = this.picker.find('.datepicker-switch .years-choices');
-			if (year - startYear >= 3) {
-			  year -= 3;
-			} else {
-			  year -= year - startYear;
-			}
+
 			var years = $.map(this.dates, function(d){
 					return d.getUTCFullYear();
 				}),
 				classes;
-			for (var i = -3; i < 11; i++){
-				classes = ['year', 'text1'];
-				if (i === -3)
-					classes.push('old');
-				else if (i === 10)
-					classes.push('new');
-				if ($.inArray(year, years) !== -1)
-					classes.push('active');
-				if (year < startYear || year > endYear)
-					classes.push('disabled');
-				html += '<div class="' + classes.join(' ') + '">' + year + '</div>';
-				year += 1;
+
+			if (startYear !== -Infinity & endYear !== Infinity) {
+
+        for (var i = startYear; i <= endYear; i++) {
+          classes = ['year', 'text1'];
+          if ($.inArray(year, years) !== -1)
+            classes.push('active');
+          if (year < startYear || year > endYear)
+            classes.push('disabled');
+          html += '<div class="' + classes.join(' ') + '">' + i + '</div>';
+        }
 			}
 			yearCont.html(html);
 		},
