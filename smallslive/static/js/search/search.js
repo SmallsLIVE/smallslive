@@ -970,10 +970,12 @@ function updateArchiveShows(data) {
       // Date Picker must be hidden if less than 30 results.
       // Exception: not if the user is filtering with the date picker itself.
       $(".archive-datepicker.fixed").removeClass("desktop-hidden");
+      $(".shows-filter-container .datepicker-btn").removeClass("hidden");
       if (toggleDatePicker) {
         if (defaultFromDate === datePickerFromDate && defaultToDate === datePickerToDate) {
           if (data.showingResults < 30 || data.showingResults === "0") {
             $(".archive-datepicker.fixed").addClass("desktop-hidden");
+            $(".shows-filter-container .datepicker-btn").addClass("hidden");
           }
         }
       }

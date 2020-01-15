@@ -1,6 +1,6 @@
 <div class="event-section">
   <div class="shows-filter-container">
-    <div class="datepicker-btn white-border-button caret hover-fade archived">Filter by date
+    <div class="datepicker-btn white-border-button caret hover-fade archived{% if showing_event_results <= 30 %} hidden{% endif %}">Filter by date
     </div>
     <div class="white-border-select event-filter-select spaced">
       <select id="events-filter">
