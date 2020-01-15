@@ -23,7 +23,7 @@
             </div>
             {% if not is_future %}
             <div class="text2 ">
-              <span class="accent-color">{% if event.is_public_event %} Public {% else %} Private {% endif %}</span>
+              <span id="event-list-event-{{ event.pk }}" class="accent-color">{% if event.is_public_event %} Public {% else %} Private {% endif %}</span>
               <span class="text-grey" id="event-plays">{{ event.get_play_total }} plays /</span>
               <span class="text-grey" id="event-time">{{ event.get_seconds_total }}</span>
             </div>

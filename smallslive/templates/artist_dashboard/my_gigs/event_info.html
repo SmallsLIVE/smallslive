@@ -24,11 +24,11 @@
       <div class="flex-row">
         {% if is_admin and sets_with_media.count %}
           {% if event.has_published_media %}
-            <button class="publish-button">
+            <button class="private-button publish">
               Make Private
             </button>
           {% else %}
-            <button class="publish-button">
+            <button class="publish-button publish">
               Publish
             </button>
           {% endif %}

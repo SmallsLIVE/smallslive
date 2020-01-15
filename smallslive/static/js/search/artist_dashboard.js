@@ -270,6 +270,11 @@ $(document).ready(function () {
       askPublish(selectedEventId);
     });
 
+    $(document).on("click", "#event-info .private-button", function () {
+      selectedEventId = $(this).closest(".artist-set-actions").data("event-id");
+      askPrivate(selectedEventId);
+    });
+
     $(document).on("click", "#event-info .download", function () {
       selectedEventId = $(this).closest(".artist-set-actions").data("event-id");
       showSelectFormat(selectedEventId);
@@ -834,12 +839,22 @@ function publishEvent() {
     $.post('/events/' + selectedEventId + '/publish/', {
       csrfmiddlewaretoken: csrfToken
     }, function (data, status) {
-      var $button = $("#artist-event-action-" + selectedEventId).find("button.publish-button");
+      var $button = $("#artist-event-action-" + selectedEventId).find("button.publish");
       var newText = "Make Private";
+      var newClass = "private-button";
+      var oldClass = "publish-button";
+      var newStatus = "Public";
       if (!data.is_published) {
         newText = "Publish";
+        newStatus = "Private";
+        oldClass = "private-button";
+        newClass = "publish-button";
       }
       $button.text(newText);
+      $button.removeClass(oldClass);
+      $button.addClass(newClass);
+      $("#event-list-event-" + selectedEventId).text(newStatus);
+
     });
 }
 
