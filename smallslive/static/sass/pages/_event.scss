@@ -807,6 +807,16 @@ $player-height: 25.3vw;
   }
 }
 
+.event-page-container {
+  .jw-display
+    .jw-reset
+    .jw-display-icon-container.jw-display-icon-display.jw-reset
+    > div {
+
+    opacity: 1;
+  }
+}
+
 .comments-container {
   border-top: 4px solid white;
   padding-top: 20px;
