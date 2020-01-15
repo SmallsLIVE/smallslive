@@ -38,7 +38,7 @@ class Order(AbstractOrder):
         return tickets_count > 0
 
     def get_tickets_type(self):
-        qs = self.lines().filter(product__product_class__name='Ticket')
+        qs = self.lines.all().filter(product__product_class__name='Ticket')
         lines = list(qs)
         venue = None
         if lines:
