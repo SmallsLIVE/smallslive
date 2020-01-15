@@ -359,7 +359,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 'last_name': reservation_name[1]
             }
         if reservation_name:
-            kwargs["reservation_string"] = '{} {}'.format(reservation_name[0], reservation_name[1])
+            kwargs['reservation_string'] = '{} {}'.format(reservation_name[0], reservation_name[1])
         kwargs['bankcard_form'] = kwargs.get('bankcard_form', BankcardForm())
 
         return kwargs
@@ -394,6 +394,9 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         Take order submission.
         """
 
+        print '--------------------------'
+        print 'post -> '
+
         # Posting to payment-details isn't the right thing to do.  Form
         # submissions should use the preview URL.
         if not self.preview:
@@ -401,6 +404,14 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         self.ticket_name['first'] = self.request.POST.get('guest_first_name', '')
         self.ticket_name['last'] = self.request.POST.get('guest_last_name', '')
+
+        basket = self.request.basket
+
+        # If user is purchasing tickets, set the type (venue or smalls).
+        self.tickets_type = basket.get_tickets_type()  # TODO: add parameter venue_name='Mezzrow'
+        print 'Tickets: ', self.tickets_type
+        print 'Action: ', request.POST.get('action', '')
+
         # We use a custom parameter to indicate if this is an attempt to place
         # an order (normally from the preview page).  Without this, we assume a
         # payment form is being submitted from the payment details view. In
@@ -770,7 +781,10 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         self.card_token = self.request.POST.get('card_token')
         payment_method = kwargs.get('payment_method')
 
-        if self.tickets_type == 'mezzrow':
+        print 'handle_payment ->'
+        print 'Tickets: ', self.tickets_type
+
+        if self.tickets_type == 'ticket':
             self.request.session['flow_type'] = 'ticket_selection'
             self.handle_tickets_payment(
                 order_number,
