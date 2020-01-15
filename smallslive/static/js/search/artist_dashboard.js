@@ -278,9 +278,13 @@ $(document).ready(function () {
     $(document).on("click", ".set-changer", function (event) {
       event.preventDefault();
       $(".set-changer").removeClass("artist-active-set");
+      $(".set-changer").removeClass("accent-color");
       var setId = $(this).data("set-id");
       if (!$(this).hasClass("artist-active-set")) {
         $(this).addClass("artist-active-set");
+        if (!$(this).hasClass("artist-active-color")) {
+          $(this).addClass("accent-color");
+        }
       }
       var $toShow = $(".event-metrics-container.flex-row#set-metrics-" + setId);
       var playListIndex = $toShow.data("set-number");
