@@ -58,7 +58,8 @@
       $('#ticket-name').text("Tickets for the " + $(this).data('ticket-name') + " set");
       $('#ticket-price').text("$" +$(this).data('ticket-price'));
     })
-    $('#confirm-buy-tickets').click(function(){
+    $('#confirm-buy-tickets').click(function (e) {
+      e.preventDefault();
       $form.submit();
     })
     $('#cancel-buy-tickets').click(function (event) {
