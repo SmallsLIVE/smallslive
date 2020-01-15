@@ -141,7 +141,6 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
     def get_context_data(self, **kwargs):
 
         context = super(ShippingAddressView, self).get_context_data(**kwargs)
-        print context
         method = self.get_default_shipping_method(self.request.basket)
         shipping_charge = method.calculate(self.request.basket)
         context['shipping_charge'] = shipping_charge
@@ -394,9 +393,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         Take order submission.
         """
 
-        print '--------------------------'
-        print 'post -> '
-
         # Posting to payment-details isn't the right thing to do.  Form
         # submissions should use the preview URL.
         if not self.preview:
@@ -409,8 +405,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         # If user is purchasing tickets, set the type (venue or smalls).
         self.tickets_type = basket.get_tickets_type()  # TODO: add parameter venue_name='Mezzrow'
-        print 'Tickets: ', self.tickets_type
-        print 'Action: ', request.POST.get('action', '')
 
         # We use a custom parameter to indicate if this is an attempt to place
         # an order (normally from the preview page).  Without this, we assume a
@@ -567,15 +561,13 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         if not user.is_anonymous():
             first_name, last_name = user.first_name, user.last_name
-            print first_name, last_name
         else:
             first_name, last_name = self.checkout_session.get_reservation_name()
-            print first_name, last_name
 
-        if ticket_name["first"] and ticket_name["last"]:
+        if first_name and last_name:
             order_kwargs.update({
-                'first_name': ticket_name["first"],
-                'last_name': ticket_name["last"]
+                'first_name': first_name,
+                'last_name': last_name
             })
 
         # Taxes must be known at this point
@@ -957,11 +949,9 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         user = self.request.user
         if not user.is_anonymous():
             first_name, last_name = user.first_name, user.last_name
-            print first_name, last_name
         else:
             user = None
             first_name, last_name = self.checkout_session.get_reservation_name()
-            print first_name, last_name
             guest_email = self.checkout_session.get_guest_email()
             order_kwargs['guest_email'] = guest_email
         if first_name and last_name:

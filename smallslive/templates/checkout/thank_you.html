@@ -29,7 +29,7 @@
                     <ul class="store-done__info-list text4">
                         {% if order.has_tickets %}
                         <li>
-                          <span class="store-done__info-list__title">Reservation Name:</span> {{ order.lines.first.order.first_name }} {{ order.lines.first.order.last_name }}
+                          <span class="store-done__info-list__title">Reservation Name:</span> {{ order.first_name }} {{ order.last_name }}
                         </li>
                           <span class="store-done__info-list__title">Number of Tickets:</span> {{ order.lines.first.quantity }}
                         <li>
