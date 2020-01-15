@@ -484,7 +484,7 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
 
         payment_id = self.request.GET.get('payment_id')
         if payment_id:
-            # Donated directly  by PayPal or Stripe
+            # Donated directly by PayPal or Stripe
             source = Donation.objects.filter(reference=payment_id).first()
             if source:
                 source.confirmed = True

@@ -1,20 +1,26 @@
 {% extends "customer/emails/base.html" %}
 {% load currency_filters i18n %}
 
-{% block body %}<p xmlns="http://www.w3.org/1999/html">Dear {{ order.user.first_name }}:</p>
+{% block body %}
+
+    {% if order.user %}
+    <p xmlns="http://www.w3.org/1999/html">Dear {{ order.user.first_name }}:</p>
+    {% else %}
+    <p xmlns="http://www.w3.org/1999/html">Dear {{ order.first_name }}:</p>
+    {% endif %}
 
     {% with order_number=order.number %}
         {% for line in order.lines.all %}
             <p>
                 Thank you for your purchase of {{ line.quantity }} ticket(s) to {{ line.title }}  at {{ line.product.event_set.event.get_venue_name }} at {{ line.product.event_set.event.time }} on {{ line.product.event_set.event.date }}.
-                Your order number is {{order_number}}. Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
+                Your order number is {{ order_number }}. Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
             </p>
             <p>
                 Your name will with the doorman when you arrive. Please come ½ hour before the scheduled start time ({{ line.product.event_set.start }}). This ticket guarantees a seat.
                 Seating is first come/first serve so please arrive on time.  We reserve the right to release a seat 15 minutes after the beginning of the concert.
             </p>
             <p>
-                Ticket sales are generally non-refundable but on a case by case basis.  You may exchange your ticket for another show depending on availability.  
+                Ticket sales are generally non-refundable but on a case by case basis. You may exchange your ticket for another show depending on availability.
             </p>
         {% endfor %}
     {% endwith %}

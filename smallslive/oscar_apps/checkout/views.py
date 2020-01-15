@@ -398,8 +398,13 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         if not self.preview:
             return http.HttpResponseBadRequest()
 
-        self.ticket_name['first'] = self.request.POST.get('guest_first_name', '')
-        self.ticket_name['last'] = self.request.POST.get('guest_last_name', '')
+        first_name = self.request.POST.get('guest_first_name', '')
+        last_name = self.request.POST.get('guest_last_name', '')
+        if first_name and last_name:
+            self.checkout_session.set_reservation_name(first_name, last_name)
+
+        print 'Set reservation name: ', first_name, last_name
+        print self.checkout_session.get_reservation_name()
 
         basket = self.request.basket
 
@@ -412,11 +417,11 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         # this case, the form needs validating and the order preview shown.
         if request.POST.get('action', '') == 'place_order':
             self.card_token = self.request.POST.get('card_token')
-            return self.handle_place_order_submission(request, ticket_name=self.ticket_name)
+            return self.handle_place_order_submission(request)
 
-        return self.handle_payment_details_submission(request, ticket_name=self.ticket_name)
+        return self.handle_payment_details_submission(request)
 
-    def handle_payment_details_submission(self, request, ticket_name=None):
+    def handle_payment_details_submission(self, request):
         """
         Process payment. Stripe can be processed immediately, while
         PayPal will require a redirect and be finished in another class.
@@ -427,7 +432,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         payment_method = request.POST.get('payment_method')
         if basket.has_tickets():  # TODO: add parameter venue_name='Mezzrow'
             return self.handle_payment_details_submission_for_tickets(
-                billing_address_form, payment_method, ticket_name)
+                billing_address_form, payment_method)
         else:
             return self.handle_payment_details_submission_for_basket(
                 shipping_address, billing_address_form, payment_method)
@@ -453,14 +458,13 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
     def handle_payment_details_submission_for_tickets(self,
                                                       billing_address_form,
-                                                      payment_method, ticket_name=None):
+                                                      payment_method):
         """Customer can pay for Mezzrow tickets with PayPal or Credit Card.
         If CC, it is processed with PayPal PayFlow Pro"""
-        self.ticket_name = ticket_name
         if payment_method == 'paypal':
             return self.render_preview(self.request,
                                        billing_address_form=billing_address_form,
-                                       payment_method=payment_method, ticket_name=ticket_name)
+                                       payment_method=payment_method)
         else:
             bankcard_form = BankcardForm(self.request.POST)
             if not bankcard_form.is_valid():
@@ -469,8 +473,12 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 return self.render_payment_details(self.request, bankcard_form=bankcard_form,
                                                    billing_address_form=billing_address_form)
             else:
-                if ticket_name:
-                    reservation_string = '{} {}'.format(ticket_name['first'], ticket_name['last'])
+                first_name, last_name = self.checkout_session.get_reservation_name()
+                print '--------------------------------'
+                print 'handle payment details submission'
+                print 'First, Last: ', first_name, last_name
+                if first_name and last_name:
+                    reservation_string = '{} {}'.format(first_name, last_name)
                 return self.render_preview(self.request,
                                            bankcard_form=bankcard_form,
                                            payment_method=payment_method,
@@ -507,7 +515,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 return self.render_payment_details(self.request, form=form,
                                                    billing_address_form=billing_address_form)
 
-    def handle_place_order_submission(self, request, ticket_name=None):
+    def handle_place_order_submission(self, request):
         basket = request.basket
         payment_method = request.POST.get('payment_method')
         flow_type = request.POST.get('flow_type')
@@ -526,12 +534,12 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             # of passing it through the order.
             request.session['flow_type'] = flow_type
 
-        return self.submit(ticket_name=ticket_name, **submission)
+        return self.submit(**submission)
 
     def submit(self, user, basket,
                shipping_address, shipping_method,
                shipping_charge, billing_address, order_total,
-               payment_kwargs=None, order_kwargs=None, ticket_name=None):
+               payment_kwargs=None, order_kwargs=None):
         """
         Submit a basket for order placement.
 
@@ -559,10 +567,10 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         if order_kwargs is None:
             order_kwargs = {}
 
-        if not user.is_anonymous():
-            first_name, last_name = user.first_name, user.last_name
-        else:
-            first_name, last_name = self.checkout_session.get_reservation_name()
+        first_name, last_name = self.checkout_session.get_reservation_name()
+
+        print '-------------------'
+        print 'Reservation name: ', first_name, last_name
 
         if first_name and last_name:
             order_kwargs.update({
@@ -696,6 +704,9 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         # If all is ok with payment, try and place order
         logger.info("Order #%s: payment successful, placing order",
                     order_number)
+
+        print '----------------------------'
+        print 'Save order', order_kwargs
         try:
             order_kwargs.update({'order_type': basket.get_order_type()})
             response = self.handle_order_placement(
@@ -947,11 +958,10 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         Donation.confirm_by_reference(self.payment_id)
 
         user = self.request.user
-        if not user.is_anonymous():
-            first_name, last_name = user.first_name, user.last_name
-        else:
+        first_name, last_name = self.checkout_session.get_reservation_name()
+
+        if user.is_anonymous():
             user = None
-            first_name, last_name = self.checkout_session.get_reservation_name()
             guest_email = self.checkout_session.get_guest_email()
             order_kwargs['guest_email'] = guest_email
         if first_name and last_name:
