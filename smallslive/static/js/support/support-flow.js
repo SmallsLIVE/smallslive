@@ -681,7 +681,8 @@ $(document).ready(function() {
     $monthlyCustom = $mainContainer.find("#monthlyCustom");
     $yearlyCustom = $(this);
     var value = $yearlyCustom.val();
-    var $errorLabel = $(this).closest(".button-row").find("label.accent-color");
+    var $minErrorLabel = $(this).closest(".button-row").find("label.accent-color.min");
+    var $maxErrorLabel = $(this).closest(".button-row").find("label.accent-color.max");
 
     if (value && isPositiveInteger(value)) {
       resetButtons();
@@ -692,17 +693,22 @@ $(document).ready(function() {
       if (value >= 10) {
         $mainContainer.find("#yearlyCustomConfirm").val(value);
         $mainContainer.find("#yearlyCustomConfirm").show();
-        if (!$errorLabel.hasClass("hidden")) {
-          $errorLabel.addClass("hidden");
+        if (!$minErrorLabel.hasClass("hidden")) {
+          $minErrorLabel.addClass("hidden");
         }
       } else {
         $mainContainer.find("#yearlyCustomConfirm").val("");
         $mainContainer.find("#yearlyCustomConfirm").hide();
-        $errorLabel.removeClass("hidden");
+        $minErrorLabel.removeClass("hidden");
       }
       if (value > 99999) {
-        $yearlyCustom.val(99999);
-        $mainContainer.find("#yearlyCustomConfirm").val(99999);
+        $mainContainer.find("#yearlyCustomConfirm").val("");
+        $mainContainer.find("#yearlyCustomConfirm").hide();
+        $maxErrorLabel.removeClass("hidden");
+      } else {
+        if (!$maxErrorLabel.hasClass("hidden")) {
+          $maxErrorLabel.addClass("hidden");
+        }
       }
       if (event.keyCode == 13) {
         if ($mainContainer.find("#yearlyCustomConfirm").val() != "") {
