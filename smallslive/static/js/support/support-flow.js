@@ -1111,8 +1111,8 @@ $(document).ready(function() {
   $(document).on("click", "#backButton", function() {
 
     if (currentStep == "SelectType" &&
-        window.location.href.indexOf("event-support") > -1 ||
-          window.location.href.indexOf("product-support") > -1) {
+        (window.location.href.indexOf("event-support") > -1 ||
+          window.location.href.indexOf("product-support") > -1)) {
       window.history.back();
       return;
     }

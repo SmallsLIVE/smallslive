@@ -50,7 +50,11 @@ class Donation(models.Model):
         # Assuming amount is integer
         # Amount should be >= 10 but we're not restricting that here.
 
-        amount = int(self.amount)
+        try:
+            amount = int(self.amount)
+        except:
+            amount = Decimal(self.amount)
+            amount = int(amount)
 
         months = 0
         days = 0
