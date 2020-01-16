@@ -8,6 +8,14 @@
   left: calc(544px + 3.5vw);
 }
 
+.date-error {
+  padding-left: 3.5vw;
+
+  &.no-h-padding {
+    padding-left: 0;
+  }
+}
+
 .section-title-centered {
   position: relative;
   margin-bottom: 20px;

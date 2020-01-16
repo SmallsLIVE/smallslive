@@ -30,6 +30,9 @@
         {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
       {% endif %}
       </div>
+      <label class="accent-color text2 date-error  hidden">
+        Invalid date range selection
+      </label>
     {% endif %}
     {% if upcoming and artist_profile %}
       <div class="section-title home calendar upcoming-shows">

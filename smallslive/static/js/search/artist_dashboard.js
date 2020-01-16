@@ -107,8 +107,6 @@ $(document).ready(function () {
       $("#dashboard-desktop-datepicker").hide().data('shown', false);
       currentPage = 0;
       totalPages = 1;
-      $('#artistEventsList').html("")
-      $('#artistEventsList').addClass("artist-loading-gif");
       loadMore();
     });
 
@@ -366,6 +364,15 @@ $(document).ready(function () {
       var eventDateFrom = $("#dashboard-metrics-date-picker-from input").datepicker('getDate');
       var eventDateTo = $("#dashboard-metrics-date-picker-to input").datepicker('getDate');
 
+      if (eventDateFrom &&  eventDateTo &&  eventDateFrom > eventDateTo) {
+        $(".date-error.metrics").removeClass("hidden");
+        return;
+      } else {
+        if (!$(".date-error.metrics").hasClass("hidden")) {
+          $(".date-error.metrics").addClass("hidden");
+        }
+      }
+
       dateFrom = moment(eventDateFrom).format('MM/DD/YYYY');
       dateTo = moment(eventDateTo).format('MM/DD/YYYY');
 
@@ -416,6 +423,22 @@ $(document).ready(function () {
     if ($datePickerTo.length == 0) {
       dateTo = null;
     }
+
+    if (dateFrom &&  dateTo &&  dateFrom > dateTo) {
+      $(".date-error.list").removeClass("hidden");
+      $("#artistEventsList").removeClass("artist-loading-gif");
+      $("#event-load-gif").addClass("hidden");
+      return;
+    } else {
+      if (!$(".date-error.list").hasClass("hidden")) {
+        $(".date-error.list").addClass("hidden");
+      }
+    }
+
+    $('#artistEventsList').html("")
+    $('#artistEventsList').addClass("artist-loading-gif");
+    $("#event-load-gif").removeClass("hidden");
+    $('.concerts-footer').hide();
 
     params = {
       'page': ++currentPage
@@ -793,9 +816,6 @@ $(document).ready(function () {
   }
 
   function loadMore(loadFirstEvent) {
-
-    $("#event-load-gif").removeClass("hidden");
-    $('.concerts-footer').hide();
 
     var  optNumber = 0;
     var params = {};

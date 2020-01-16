@@ -204,6 +204,16 @@ function sendArtistRequest(callback, callbackParam) {
 
 function sendEventRequest(mode, dateFrom, dateTo, callback) {
 
+
+  if (dateFrom &&  dateTo &&  dateFrom > dateTo) {
+    $(".date-error").removeClass("hidden");
+    return;
+  } else {
+    if (!$(".date-error").hasClass("hidden")) {
+      $(".date-error").addClass("hidden");
+    }
+  }
+
   var selector = "#shows" + mode + "Content";
   var utcDateFrom = null;
   var utcDateTo = null;

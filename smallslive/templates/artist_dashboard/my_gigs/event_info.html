@@ -118,6 +118,9 @@
       {% endfor %}
     </div>
   </div>
+  <label class="metrics accent-color text4 date-error no-h-padding hidden">
+    Invalid date range selection
+  </label>
   {% for set in event.sets.with_media %}
     <div id="set-metrics-{{ set.pk }}"
          class="event-metrics-container metrics flex-row"
