@@ -7,8 +7,7 @@
         <p class="title2" tabindex="0">{{ event.date | date:"D, M d" }}</p>
         <p id="ticket-name" class="title2" tabindex="0"></p>
         <p id="ticket-price" class="title2 acent-color" tabindex="0"></p>
-        <p class="title2" tabindex="0">{{ session.availability.num_available }} reserve seats available</p>
-
+        <p class="title2" tabindex="0"><span id="ticket-availability"></span> reserve seats available</p>
         <div>
           <button id="cancel-buy-tickets" class="white-border-button" tabindex="0">Cancel</button>
           <button id="confirm-buy-tickets" class="white-border-button" tabindex="0">Confirm</button>
