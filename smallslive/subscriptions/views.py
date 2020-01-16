@@ -509,6 +509,11 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
 
                     }
                     Donation.objects.create(**donation)
+        product_id = self.request.GET.get('product_id')
+        if product_id:
+            product = Product.objects.get(pk=product_id)
+            context['comma_separated_leaders'] = product.get_leader_strings()
+            context['album_product'] = product
 
         if not payment_id or not source:
             context['error'] = 'We could not find your payment reference. Contact our support'
@@ -588,7 +593,7 @@ class ProductSupportView(ProductMixin, BecomeSupporterView):
         context['artist_with_media'] = self.artists_with_media
         context['active_card'] = self.active_card
         context['album_product'] = self.album_product
-        context['comma_separated_leaders'] = self.comma_separated_leaders
+        context['comma_separated_leaders'] = self.object.get_leader_strings()
 
         context['payment_info_url'] = reverse('payment_info')
         context['donation_preview_url'] = reverse('donation_preview')
