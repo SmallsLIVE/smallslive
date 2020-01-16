@@ -43,7 +43,14 @@
         forms.ajaxForm({
             type: 'post',
             success: function (response) {
-                this.element.html(response);
+                var that = this;
+                if (response.success && response.url) {
+                  $.get(response.url, function (e) {
+                    that.element.html(e)
+                  });
+                } else {
+                  this.element.html(response);
+                }
                 this.bindForms();
                 if (this.callback) {
                   this.callback();
