@@ -39,19 +39,19 @@ function resetSlideScroll() {
 function initializeButtons() {
 
   var $win = $(window);
-  var $prev = $('div.slide-btn.slider.prev');
-  var $next = $('div.slide-btn.slider.next');
+  var $prev = $("div.slide-btn.slider.prev");
+  var $next = $("div.slide-btn.slider.next");
 
   $prev.each(function () {
-      $(this).css('visibility', 'hidden');
+    $(this).css("visibility", "hidden");
   });
 
   $next.each(function () {
-      $(this).css('visibility', 'hidden');
-      var $last = $(this).next().find('article').last();
-      if (!$last.visible(false, false, 'horizontal')) {
-          $(this).css('visibility', 'visible');
-      }
+    $(this).css("visibility", "hidden");
+    var $last = $(this).parent().find(".event-row").find("article").last();
+    if (!$last.visible(false, false, "horizontal")) {
+      $(this).css("visibility", "visible");
+    }
   });
 }
 
@@ -63,14 +63,14 @@ function initializeSlides() {
 }
 
 function bindNextClick() {
-  $(document).on('click', 'div.slide-btn.slider.next', function (event) {
-    $(this).css('visibility', 'hidden');
+  $(document).on("click", "div.slide-btn.slider.next", function (event) {
+    $(this).css("visibility", "hidden");
     if (isSlideAnimating) {
       return false;
     }
     isSlideAnimating = true;
     var $next = $(this);
-    var $row = $next.parent().find('.event-row');
+    var $row = $next.parent().find(".event-row");
     var $win = $(window);
     var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var padding = $row.innerWidth() - $row.width();
@@ -79,17 +79,17 @@ function bindNextClick() {
     $row.animate({
         marginLeft: -left + 2 * padding
     }, 400, function () {
-        var $prev = $row.parent().find('.prev');
-        $prev.css('visibility', 'visible');
-        $next.css('visibility', 'hidden');
-        var $last = $row.find('article').last();
+        var $prev = $row.parent().find(".prev");
+        $prev.css("visibility", "visible");
+        $next.css("visibility", "hidden");
+        var $last = $row.find("article").last();
         if (!$last.visible()) {
-            $next.css('visibility', 'visible');
+            $next.css("visibility", "visible");
             isSlideAnimating = false;
         } else {
           // retrieve more results
           // Rely on HTML indicating the name of a callback function
-          var callback = $next.data('callback-name');
+          var callback = $next.data("callback-name");
           if (callback && typeof window[callback] === "function") {
             window[callback]();
           }
@@ -101,29 +101,32 @@ function bindNextClick() {
 }
 
 function bindPrevClick() {
-  $(document).on('click', 'div.slide-btn.slider.prev', function() {
-    $(this).css('visibility', 'hidden');
+  $(document).on("click", "div.slide-btn.slider.prev", function() {
+    $(this).css("visibility", "hidden");
     if (isSlideAnimating) {
       return false;
     }
     isSlideAnimating = true;
     var $prev = $(this);
     var $win = $(window);
-    var $row = $prev.parent().find('.event-row');
+    var $row = $prev.parent().find(".event-row");
     var $next = $prev.next();
     var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var padding = $row.innerWidth() - $row.width();
     var currentLeft = parseFloat($row.css("marginLeft"));
     var left = vw + currentLeft;
+    var newMargin = left - 2 * padding;
+    if (newMargin > 0) {
+      newMargin = 0;
+    }
     $row.animate({
-        marginLeft: left - 2 * padding
+        marginLeft: newMargin
     }, 300, function () {
-      $prev.css('visibility', 'hidden');
-      $next.css('visibility', 'visible');
+      $prev.css("visibility", "hidden");
+      $next.css("visibility", "visible");
       isSlideAnimating = false;
-      var $first = $row.find('article').first();
-      if (!$first.visible()) {
-          $prev.css('visibility', 'visible');
+      if (newMargin < 0) {
+        $prev.css("visibility", "visible");
       }
     });
   });
@@ -132,8 +135,8 @@ function bindPrevClick() {
 function bindSlideEvents() {
 
   var $win = $(window);
-  var $prev = $('div.slide-btn.slider.prev');
-  var $next = $('div.slide-btn.slider.next');
+  var $prev = $("div.slide-btn.slider.prev");
+  var $next = $("div.slide-btn.slider.next");
 
   bindNextClick();
   bindPrevClick();
@@ -151,11 +154,18 @@ function bindScroll() {
       return;
     }
 
+    var $prev = $("div.slide-btn.slider.prev");
+    var $next = $("div.slide-btn.slider.next");
+
+    if ($prev.css("visibility") == "hidden" && $next.css("visibility") == "hidden") {
+      return;
+    }
+
     down = true;
     x = e.pageX;
     initialX = x;
     currentLeft = parseFloat($(this).css("marginLeft"));
-    console.log('currentLeft: ' + currentLeft);
+    console.log("currentLeft: " + currentLeft);
 
     //return false;
   });
@@ -173,13 +183,13 @@ function bindScroll() {
       dragging = true;
       newX = e.pageX;
       diff = x - newX;
-      console.log('diff: ' + diff);
+      console.log("diff: " + diff);
       var $row = $("#artists .event-row");
       currentLeft = parseFloat($row.css("marginLeft"));
       paddingLeft = parseFloat($row.css("paddingLeft"));
       currentLeft -= diff;
       if (currentLeft < 0) {
-        var $articles = $row.find('article');
+        var $articles = $row.find("article");
         var maxMargin = $articles.length * $articles.outerWidth(true) + paddingLeft - $(window).width();
         maxMargin *= -1;
         if (currentLeft < maxMargin) {
@@ -188,7 +198,10 @@ function bindScroll() {
         } else {
           loadMore = false;
         }
-
+        if (Math.abs(currentLeft) < 1) {
+          currentLeft = 0;
+          $("div.slide-btn.slider.prev").css("visibility", "hidden");
+        }
         $row.css("marginLeft", currentLeft);
       }
       x = newX;
@@ -227,7 +240,7 @@ function bindScroll() {
       // Check for more artists the same way as if the next button had been clicked.
       if (loadMore) {
         var $next = $("div.slide-btn.slider.next");
-        var callback = $next.data('callback-name');
+        var callback = $next.data("callback-name");
         if (callback && typeof window[callback] === "function") {
           window[callback]();
         }
