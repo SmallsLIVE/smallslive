@@ -32,24 +32,30 @@
               <div id="player-video"></div>
             </div>
           {% else  %}
-            <a href="{{ event.get_absolute_url }}">
+            {% if first_set.audio_recording %}
               <div class="set-picture-container flex-column">
-                <div class="set-icon-overlay text2">
-                  {% if not event.is_future %}
-                    <i class="fa fa-play fa-thin-circle"></i>
-                  {% endif %}
-                </div>
-                <div class="picture-border">
-                  <div class="set-picture">
-                    {% if event.photo %}
-                      {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
-                    {% else %}
-                      {% include 'partials/thumbored_picture.html' %}
+                <div id="player-audio"></div>
+              </div>
+            {% else %}
+              <a href="{{ event.get_absolute_url }}">
+                <div class="set-picture-container flex-column">
+                  <div class="set-icon-overlay text2">
+                    {% if not event.is_future %}
+                      <i class="fa fa-play fa-thin-circle"></i>
                     {% endif %}
                   </div>
+                  <div class="picture-border">
+                    <div class="set-picture">
+                      {% if event.photo %}
+                        {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                      {% else %}
+                        {% include 'partials/thumbored_picture.html' %}
+                      {% endif %}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </a>
+              </a>
+            {% endif %}
           {% endif %}
         </div>
       {% endwith %}

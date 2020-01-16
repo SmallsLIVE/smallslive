@@ -644,7 +644,7 @@ $dashboard-desktop: 1200px;
         position: relative;
         justify-content: center;
 
-        #player-video {
+        #player-video, #player-audio {
           .jw-display
             .jw-reset
             .jw-display-icon-container.jw-display-icon-display.jw-reset

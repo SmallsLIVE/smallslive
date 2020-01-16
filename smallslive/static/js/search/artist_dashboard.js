@@ -804,10 +804,9 @@ $(document).ready(function () {
 
   function setupAudioPlayer(playList) {
 
-    videoPlayer = jwplayer("player-video").setup({
+    videoPlayer = jwplayer("player-audio").setup({
       primary: 'html5',
       playlist: playList,
-      skin: jwPlayerSkin,
       width: "100%",
       aspectratio: "16:9"
     });
