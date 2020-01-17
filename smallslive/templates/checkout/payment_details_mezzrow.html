@@ -216,7 +216,7 @@
         debug: false // optional - default false
       });
     });
-    inactive = ('{% if is_event_user_not_confirmed and not user.is_anonymous %}true{% else %}false{% endif %}')
+    inactive = {% if user.is_authenticated and show_email_confirmation_dialog %}true{% else %}false{% endif %};
     console.log(inactive)
     if (inactive === 'true'){
       $('#inactive-dialog').modal('show');

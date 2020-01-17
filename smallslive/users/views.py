@@ -396,6 +396,20 @@ class LoginView(CoreLoginView):
         else:
             return ["account/login.html"]
 
+    def form_valid(self, form):
+        result = super(LoginView, self).form_valid(form)
+
+        # We need to delete every item in the basket except tickets
+        # when the user logs in to avoid remembering any catalog items
+        # that might have been left over.
+        # The only case when a user is not authenticated and they add
+        # items to the basket, and then they can log in, is tickets purchases.
+        if self.request.user.is_authenticated():
+            basket = self.request.basket
+            basket.lines.exclude(product__product_class__name='Ticket').delete()
+
+        return result
+
 
 login_view = LoginView.as_view()
 
@@ -420,18 +434,6 @@ class EmailConfirmResendAjaxView(View):
 
 
 email_confirm_resend_ajax = EmailConfirmResendAjaxView.as_view()
-
-
-class LoginView(CoreLoginView):
-
-    def get_template_names(self):
-        if self.request.is_ajax():
-            return ["account/ajax_login.html"]
-        else:
-            return ["account/login.html"]
-
-
-login_view = LoginView.as_view()
 
 
 class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):

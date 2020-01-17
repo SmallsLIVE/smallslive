@@ -57,7 +57,7 @@
       $('#buy-tickets-dialog').modal('show');
       $('#ticket-name').text("Tickets for the " + $(this).data('ticket-name') + " set");
       $('#ticket-price').text("$" +$(this).data('ticket-price'));
-      $('#ticket-availability').text("$" +$(this).data('ticket-availability'));
+      $('#ticket-availability').text($(this).data('ticket-availability'));
     })
     $('#confirm-buy-tickets').click(function (e) {
       e.preventDefault();

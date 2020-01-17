@@ -359,8 +359,11 @@ class SmallsEmailConfirmation(EmailConfirmation):
         activate_url = request.build_absolute_uri(activate_url)
 
         referer = request.META.get('HTTP_REFERER', '')
+
         if 'donate' in referer:
             activate_url += '?donate=True'
+        elif request.GET.get('tickets'):
+            activate_url += '?tickets=True'
         elif 'catalog' in referer:
             activate_url += '?catalog=True&next=' + request.GET.get('next_after_confirm', '')
 

@@ -12,57 +12,55 @@
                   <div class="store-header__title__container">
                     <div tabindex="0" class="title1">tickets</div>
                  </div>
-                {% else %}
-                  <div class="white-line-bottom">
-                    <div class="title1 center" style="font-size: 30px;">Shopping cart</div>
-                  </div>
                 {% endif %}
             </div>
         </section>
-        {% if not basket.is_empty %}
-            <form action="." method="post" class="basket_summary" id="basket_formset">
-                {% csrf_token %}
-                {{ formset.management_form }}
-                <section class="store-cart__table container text9">
+        {% if basket.has_tickets %}
+          {% if not basket.is_empty %}
+              <form action="." method="post" class="basket_summary" id="basket_formset">
+                  {% csrf_token %}
+                  {{ formset.management_form }}
+                  <section class="store-cart__table container text9">
 
-                    {% if basket.has_physical_products %}
-                        {% include 'basket/partials/_basket_content_physical.html' %}
-                    {% endif %}
-                    {% if basket.has_digital_products %}
-                        {% include 'basket/partials/_basket_content_digital.html' %}
-                    {% endif %}
-                    {% if basket.has_tickets %}
-                        {% include 'basket/partials/_basket_content_tickets.html' %}
-                    {% endif %}
+                      {% if basket.has_physical_products %}
+                          {% include 'basket/partials/_basket_content_physical.html' %}
+                      {% endif %}
+                      {% if basket.has_digital_products %}
+                          {% include 'basket/partials/_basket_content_digital.html' %}
+                      {% endif %}
+                      {% if basket.has_tickets %}
+                          {% include 'basket/partials/_basket_content_tickets.html' %}
+                      {% endif %}
 
-                </section>
-                <section class="store-cart__footer container text9">
+                  </section>
+                  <section class="store-cart__footer container text9">
 
-                  {% if not basket.has_tickets %}
-                    <div class="col-xs-12 col-sm-12 store-cart__footer__right">
-                        <div class="store-cart__footer__price-container">
-                            <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
-                            <span class="store-cart__footer__price-container__label mt-2">Basket total:</span>
-                            <span class="store-cart__footer__price-container__value">{{ shipping_charge.excl_tax|currency:basket.currency }}</span>
-                            <span class="store-cart__footer__price-container__label mt-2">Shipping:</span>
-                            <div class="store-cart__footer__price-container__total">
-                                <span class="store-cart__footer__price-container__value">{{ order_total.excl_tax|currency:basket.currency }}</span>
-                                <span class="store-cart__footer__price-container__label mt-2">Total:</span>
-                            </div>
-                        </div>
-                    </div>
-                  {% endif %}
-                    <div class="col-xs-12 store-cart__footer__buttons">
-                        <button class="white-border-button checkout-white" onclick="window.history.back()">Cancel</button>
-                        <a href="{% url 'checkout:index' %}" class="white-border-button checkout-white">Continue</a>
-                    </div>
-                </section>
-            </form>
-        {% else %}
-            <section class="store-cart__empty">
-              <!-- this must be different for each checkout or the information should not refference a basket. may be mute point if there never is an 'else' -->
-                <h2>Your basket is empty.</h2>
-            </section>
+                    {% if not basket.has_tickets %}
+                      <div class="col-xs-12 col-sm-12 store-cart__footer__right">
+                          <div class="store-cart__footer__price-container">
+                              <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
+                              <span class="store-cart__footer__price-container__label mt-2">Basket total:</span>
+                              <span class="store-cart__footer__price-container__value">{{ shipping_charge.excl_tax|currency:basket.currency }}</span>
+                              <span class="store-cart__footer__price-container__label mt-2">Shipping:</span>
+                              <div class="store-cart__footer__price-container__total">
+                                  <span class="store-cart__footer__price-container__value">{{ order_total.excl_tax|currency:basket.currency }}</span>
+                                  <span class="store-cart__footer__price-container__label mt-2">Total:</span>
+                              </div>
+                          </div>
+                      </div>
+                    {% endif %}
+                      <div class="col-xs-12 store-cart__footer__buttons">
+                          <button class="white-border-button checkout-white" onclick="window.history.back()">Cancel</button>
+                          <a href="{% url 'checkout:index' %}" class="white-border-button checkout-white">Continue</a>
+                      </div>
+                  </section>
+              </form>
+          {% else %}
+              <section class="store-cart__empty">
+                <!-- this must be different for each checkout or the information should not refference a basket. may be mute point if there never is an 'else' -->
+                  <h2>Your basket is empty.</h2>
+              </section>
+          {% endif %}
         {% endif %}
     </div>
 </div>

@@ -361,8 +361,8 @@
           var modal = '#becomeMemberDialog';
           if (smallsConfig.user.isAuthenticated) {
             modal = '#become-a-supporter-dialog';
-            inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}');
-            if (inactive === 'true') {
+            inactive = {% if is_event_user_not_confirmed %}true{% else %}false{% endif %};
+            if (inactive === true) {
               modal = '#inactive-dialog';
             }
           }

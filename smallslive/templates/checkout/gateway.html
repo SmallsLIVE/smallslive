@@ -233,6 +233,10 @@
     $().ready(function(){
         $('#checkoutAsANewMember').click(() => {
             $('#becomeMemberDialog').modal();
+            var $form = $('#becomeMemberDialog').find("form");
+            var action = $form.attr("action");
+            action = action + "&tickets=true";
+            $form.attr("action", action);
         })
     })
     </script>
