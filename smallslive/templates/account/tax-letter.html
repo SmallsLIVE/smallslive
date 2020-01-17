@@ -35,7 +35,11 @@
           </p>
 
           <p>
-            Dear {{ user.first_name }} {{ user.last_name }}:
+            {% if user.first_name or user.last_name %}
+              Dear {{ user.first_name }} {{ user.last_name }}:
+            {% else %}
+              Dear beloved supporter:
+            {% endif %}
           </p>
           <p>
             The SmallsLIVE Foundation for Jazz Arts & Education thanks you for your generous donation.

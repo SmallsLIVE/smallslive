@@ -3,10 +3,10 @@
 
 
 {% block body %}
-{% if order.user.first_name and order.user.first_name != ''%}
+{% if order.user.first_name %}
 <p xmlns="http://www.w3.org/1999/html">Dear {{ order.user.first_name }},</p>
 {% else %}
-<p xmlns="http://www.w3.org/1999/html">Hello,</p>
+<p xmlns="http://www.w3.org/1999/html">Dear beloved supporter,</p>
 {% endif %}
 <p>
 Thank you for contributing to the SmallsLIVE Foundation for Jazz Arts and Education.
