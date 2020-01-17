@@ -29,7 +29,9 @@
           </div>
         {% endif %}
 
-        <a class="white-border-button no-v-padding" href="{{ currently_live_event_url }}">View currently live event</a>
+        {% if currently_live_event_url %}
+          <a class="white-border-button no-v-padding" href="{{ currently_live_event_url }}">View currently live event</a>
+        {% endif %}
 
       </div>
     </div>
