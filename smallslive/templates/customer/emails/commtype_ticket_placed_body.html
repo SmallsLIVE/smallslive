@@ -4,9 +4,13 @@
 {% block body %}
 
     {% if order.user %}
-    <p xmlns="http://www.w3.org/1999/html">Dear {{ order.user.first_name }}:</p>
+        {% if order.user.first_name %}
+            <p xmlns="http://www.w3.org/1999/html">Dear {{ order.user.first_name }}:</p>
+        {% else %}
+            <p xmlns="http://www.w3.org/1999/html">Dear beloved supporter:</p>
+        {% endif %}
     {% else %}
-    <p xmlns="http://www.w3.org/1999/html">Dear {{ order.first_name }}:</p>
+        <p xmlns="http://www.w3.org/1999/html">Dear {{ order.first_name }}:</p>
     {% endif %}
 
     {% with order_number=order.number %}
