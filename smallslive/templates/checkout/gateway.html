@@ -237,6 +237,7 @@
             var action = $form.attr("action");
             action = action + "&tickets=true";
             $form.attr("action", action);
+            $form.find("[name='email2']").removeClass("hidden").removeAttr("disabled");
         })
     })
     </script>

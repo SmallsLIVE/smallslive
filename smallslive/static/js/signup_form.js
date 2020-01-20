@@ -4,7 +4,7 @@ $(document).ready(function() {
 
   $memberForm = $('#form-become-member');
   $memberForm.submit(getAjaxSubmitForForm(
-    $memberForm, ["first_name", "last_name", "email", "password1", "password2",
+    $memberForm, ["first_name", "last_name", "email", "email2", "password1", "password2",
       "terms_of_service"]
   ));
 

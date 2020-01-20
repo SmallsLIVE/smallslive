@@ -42,6 +42,7 @@ class SignupView(AllauthSignupView):
 
     def get_context_data(self, **kwargs):
         context = super(SignupView, self).get_context_data(**kwargs)
+
         plan_name = self.kwargs.get('plan_name')
         plan = settings.SUBSCRIPTION_PLANS.get(plan_name)
         if not plan:
@@ -58,6 +59,19 @@ class SignupView(AllauthSignupView):
 
     def clean_email(self):
         return self.cleaned_data['email'].lower()
+
+    def get_form_kwargs(self):
+
+        kwargs = super(SignupView, self).get_form_kwargs()
+
+        # We assume email addresses match if the user
+        # hasn't submitted email address confirmation
+        kwargs['ignore_email2'] = False
+        if self.request.POST:
+            if 'email2' not in self.request.POST:
+                kwargs['ignore_email2'] = True
+
+        return kwargs
 
     def form_valid(self, form, **kwargs):
         user = form.save(self.request)

@@ -5,10 +5,17 @@ from allauth.account.forms import SignupForm, AddEmailForm
 
 
 class UserSignupForm(SignupForm):
+
     email = forms.EmailField(max_length=80, required=True,
                              label="E-mail",
                              widget=forms.EmailInput(attrs={
                                  'placeholder': 'Your e-mail address',
+                                 'class': 'form-control'
+                             }))
+    email2 = forms.EmailField(max_length=80, required=True,
+                             label="Confirm E-mail",
+                             widget=forms.EmailInput(attrs={
+                                 'placeholder': 'Confirm your e-mail address',
                                  'class': 'form-control'
                              }))
     first_name = forms.CharField(max_length=50, required=False,
@@ -25,6 +32,15 @@ class UserSignupForm(SignupForm):
                                 }))
     terms_of_service = forms.BooleanField(required=False)
     newsletter = forms.BooleanField(required=False)
+
+    def __init__(self, *args, **kwargs):
+
+        ignore_email2 = kwargs.pop('ignore_email2')
+        data = super(UserSignupForm, self).__init__(*args, **kwargs)
+        if ignore_email2:
+            self.fields['email2'].required = False
+
+        return data
 
     def signup(self, request, user):
         user.first_name = self.cleaned_data['first_name']
