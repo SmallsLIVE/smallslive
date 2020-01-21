@@ -21,4 +21,4 @@ will be processed shortly.{% endblocktrans %}
 {{ status_url }}{% endblocktrans %}
 {% endif %}
 
-{% blocktrans %}The team{% endblocktrans %}
+{% blocktrans %}The SmallsLIVE Foundation{% endblocktrans %}

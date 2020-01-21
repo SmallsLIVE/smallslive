@@ -7,7 +7,7 @@
         {% if order.user.first_name %}
             <p xmlns="http://www.w3.org/1999/html">Dear {{ order.user.first_name }}:</p>
         {% else %}
-            <p xmlns="http://www.w3.org/1999/html">Dear beloved supporter:</p>
+            <p xmlns="http://www.w3.org/1999/html">Dear Supporter:</p>
         {% endif %}
     {% else %}
         <p xmlns="http://www.w3.org/1999/html">Dear {{ order.first_name }}:</p>
@@ -28,5 +28,12 @@
             </p>
         {% endfor %}
     {% endwith %}
-
+    <p>
+    Thank you for your support,
+    </p>
+    <p>
+    The SmallsLIVE Foundation
+    </p>
+{% endblock %}
+{% block footer %}
 {% endblock %}

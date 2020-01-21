@@ -6,7 +6,7 @@
 {% if order.user.first_name %}
 Dear {{ order.user.first_name }},
 {% else %}
-Dear beloved supporter,
+Dear Supporter,
 {% endif %}
 
 Thank you for contributing to the SmallsLIVE Foundation for Jazz Arts and Education.
@@ -33,7 +33,7 @@ Shipping address:
 
 Thank you for your support,
 
-The SmallsLIVE Team
+The SmallsLIVE Foundation
 
 {% endblock %}
 
