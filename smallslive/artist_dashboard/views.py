@@ -1,5 +1,5 @@
 from datetime import timedelta
-import time
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from cacheops import cached
 from django.conf import settings
@@ -33,14 +33,15 @@ from artists.models import Artist, ArtistEarnings, \
     CurrentPayoutPeriod, Instrument, PastPayoutPeriod
 from events.models import Recording, Event
 import events.views as event_views
+from subscriptions.models import Donation
 import users.forms as user_forms
 from users.models import LegalAgreementAcceptance
 from users.views import HasArtistAssignedMixin, \
     HasArtistAssignedOrIsSuperuserMixin
 from .forms import ToggleRecordingStateForm, EventAjaxEditForm,  \
     EventEditForm, ArtistInfoForm, \
-    EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm, \
-    ArtistGigPlayedEditLazyInlineFormSet
+    EditProfileForm, ArtistResetPasswordForm, DonationQueryForm, \
+    MetricsPayoutForm, ArtistGigPlayedEditLazyInlineFormSet
 from artist_dashboard.tasks import generate_payout_sheet_task,\
     update_current_period_metrics_task
 
@@ -702,12 +703,45 @@ class PreviousPayoutsView(ListView):
 previous_payouts = PreviousPayoutsView.as_view()
 
 
-def metrics_payout(request):
+def metrics_payout_period(request):
+    """ Previously date range, income and costs were entered at the same time.
+    Calculation was made based on these parameters.
+    Now, we need a date range first, so that the total donations are calculated and
+    this number will be prepopulated for the calculation in metrics_payout"""
     if request.method == 'POST':
-        form = MetricsPayoutForm(request.POST)
+        form = DonationQueryForm(request.POST)
         if form.is_valid():
             start = form.cleaned_data.get('period_start')
             end = form.cleaned_data.get('period_end')
+            total = Donation.objects.total_amount_in_range(start, end) or 0.0
+            deductable = Donation.objects.total_deductible_in_range(start, end) or 0.0
+
+            start = start.strftime('%Y-%m-%d')
+            end = end.strftime('%Y-%m-%d')
+            total = str(int(total))
+            deductable = str(int(deductable))
+
+            return redirect('artist_dashboard:metrics_payout',
+                            period_start=start, period_end=end,
+                            total=total, deductable=deductable)
+        else:
+            messages.error(request, "Donation calculation failed. {}".format(form.errors))
+
+    else:
+        form = DonationQueryForm()
+
+    return render(request, 'artist_dashboard/metrics_payout_period.html', {'form': form})
+
+
+def metrics_payout(request, period_start=None,  period_end=None, total=None, deductable=None):
+    if request.method == 'POST':
+        form = MetricsPayoutForm(request.POST)
+        if form.is_valid():
+            start = datetime.strptime(form.cleaned_data.get('period_start'), '%Y-%m-%d')
+            start = timezone.make_aware(start, timezone.get_current_timezone())
+            end = datetime.strptime(form.cleaned_data.get('period_end'), '%Y-%m-%d')
+            end += timedelta(days=1)
+            end = timezone.make_aware(end, timezone.get_current_timezone())
             revenue = form.cleaned_data.get('revenue')
             operating_cost = form.cleaned_data.get('operating_cost')
             save_earnings = form.cleaned_data.get('save_earnings')
@@ -715,11 +749,19 @@ def metrics_payout(request):
             generate_payout_sheet_task.delay(start, end, revenue, operating_cost, save_earnings)
         else:
             messages.error(request, "Payout calculation failed. {}".format(form.errors))
-        return redirect("artist_dashboard:metrics_payout")
-    else:
-        form = MetricsPayoutForm()
+            return redirect("artist_dashboard:metrics_payout")
 
-    return render(request, 'artist_dashboard/metrics_payout.html', {'form': form})
+        return redirect("artist_dashboard:metrics_payout_period")
+    else:
+        initial = {
+            'period_start': period_start,
+            'period_end': period_end,
+        }
+        form = MetricsPayoutForm(initial=initial)
+
+    return render(request,
+                  'artist_dashboard/metrics_payout.html',
+                  {'form': form, 'total': total, 'deductable': deductable})
 
 
 @login_required

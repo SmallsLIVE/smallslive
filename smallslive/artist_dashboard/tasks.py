@@ -42,6 +42,10 @@ def generate_payout_sheet_task(start, end, revenue, operating_expenses, save_ear
     email.attach(filename, output.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
     email.send()
+
+    print '------------------>'
+    print 'Sending Email ------>'
+    print filename
     if save_earnings:
         period = PastPayoutPeriod.objects.first()
         output.seek(0)
