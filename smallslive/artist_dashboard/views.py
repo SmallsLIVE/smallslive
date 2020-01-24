@@ -713,17 +713,36 @@ def metrics_payout_period(request):
         if form.is_valid():
             start = form.cleaned_data.get('period_start')
             end = form.cleaned_data.get('period_end')
+
             total = Donation.objects.total_amount_in_range(start, end) or 0.0
             deductable = Donation.objects.total_deductible_in_range(start, end) or 0.0
+
+            foundation_total = Donation.objects.total_amount_foundation_in_range(start, end) or 0.0
+            foundation_deductable = Donation.objects.total_amount_foundation_in_range(start, end) or 0.0
+
+            projects_total = Donation.objects.total_amount_projects_in_range(start, end) or 0.0
+            projects_deductable = Donation.objects.total_amount_projects_in_range(start, end) or 0.0
+
+            events_total = Donation.objects.total_amount_shows_in_range(start, end) or 0.0
+            events_deductable = Donation.objects.total_amount_shows_in_range(start, end) or 0.0
 
             start = start.strftime('%Y-%m-%d')
             end = end.strftime('%Y-%m-%d')
             total = str(int(total))
             deductable = str(int(deductable))
+            foundation_total = str(int(foundation_total))
+            foundation_deductable = str(int(foundation_deductable))
+            projects_total = str(int(projects_total))
+            projects_deductable = str(int(projects_deductable))
+            events_total = str(int(events_total))
+            events_deductable = str(int(events_deductable))
 
             return redirect('artist_dashboard:metrics_payout',
                             period_start=start, period_end=end,
-                            total=total, deductable=deductable)
+                            total=total, deductable=deductable,
+                            foundation_total=foundation_total, foundation_deductable=foundation_deductable,
+                            projects_total=projects_total, projects_deductable=projects_deductable,
+                            events_total=events_total, events_deductable=events_deductable)
         else:
             messages.error(request, "Donation calculation failed. {}".format(form.errors))
 
@@ -733,7 +752,10 @@ def metrics_payout_period(request):
     return render(request, 'artist_dashboard/metrics_payout_period.html', {'form': form})
 
 
-def metrics_payout(request, period_start=None,  period_end=None, total=None, deductable=None):
+def metrics_payout(request, period_start=None,  period_end=None, total=None, deductable=None,
+                   foundation_total=None, foundation_deductable=None,
+                   projects_total=None, projects_deductable=None,
+                   events_total=None, events_deductable=None):
     if request.method == 'POST':
         form = MetricsPayoutForm(request.POST)
         if form.is_valid():
@@ -759,9 +781,39 @@ def metrics_payout(request, period_start=None,  period_end=None, total=None, ded
         }
         form = MetricsPayoutForm(initial=initial)
 
+    if not total is None:
+        total = int(total)
+        deductable = int(deductable)
+        foundation_total = int(foundation_total)
+        foundation_deductable = int(foundation_deductable)
+        projects_total = int(projects_total)
+        projects_deductable = int(projects_deductable)
+        events_total = int(events_total)
+        events_deductable = int(events_deductable)
+        costs = total - deductable
+        foundation_costs = foundation_total - foundation_deductable
+        projects_costs = projects_total - projects_deductable
+        events_costs = events_total - events_deductable
+    else:
+        costs = 0
+        foundation_costs = 0
+        projects_costs = 0
+        events_costs = 0
+
+    context= {
+        'form': form,
+        'total': total,
+        'costs': costs,
+        'foundation_total': foundation_total,
+        'foundation_costs': foundation_costs,
+        'projects_total': projects_total,
+        'projects_costs': projects_costs,
+        'events_total': events_total,
+        'events_costs': events_costs
+    }
     return render(request,
                   'artist_dashboard/metrics_payout.html',
-                  {'form': form, 'total': total, 'deductable': deductable})
+                  context)
 
 
 @login_required

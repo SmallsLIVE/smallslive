@@ -51,7 +51,7 @@ def donations_data_for_date_period(start_date, end_date, metrics):
     total_donations = 0
 
     # Donations to events
-    # Total amount to event -> take 50% -> divide by performers
+    # Total amount to event -> take 100% -> divide by performers
 
     donations_sqs = Donation.objects.filter(date__gte=start_date, date__lt=end_date,
                                             confirmed=True, event_id__isnull=False, amount__gt=0)
@@ -62,7 +62,7 @@ def donations_data_for_date_period(start_date, end_date, metrics):
             gigs = event.artists_gig_info.all()
             gigs_count = gigs.count()
             if gigs_count:
-                amount = donation.amount / 2 / gigs_count
+                amount = donation.amount / gigs_count
                 for gig in gigs:
                     metrics['metrics_info'][gig.artist_id]['donations'] += amount
 
@@ -101,7 +101,12 @@ def update_current_period_metrics():
 
 
 def generate_metrics_payout_sheet(file, start_date, end_date, revenue, operating_expenses, save_earnings=False):
-    pool = Decimal((revenue - operating_expenses) / Decimal(2.0))
+
+    # Donations - cost of items from donations.
+    donations = Donation.objects.total_deductible_foundation_in_range(start_date, end_date)
+    pool = donations / Decimal(2.0)
+    # Add extra revenue minus extra cost
+    pool += Decimal((revenue - operating_expenses) / Decimal(2.0))
     metrics = metrics_data_for_date_period(start_date, end_date)
     # TODO: under discussion: should donations be on the same spreadsheet?
     metrics = donations_data_for_date_period(start_date, end_date, metrics)
@@ -111,10 +116,11 @@ def generate_metrics_payout_sheet(file, start_date, end_date, revenue, operating
     sheet.set_column(8, 8, 30)
     sheet.write_row('I1', ('Total event seconds', metrics['total_event_seconds']), bold)
     sheet.write_row('I2', ('Total adjusted seconds', metrics['total_adjusted_seconds']), bold)
-    sheet.write_row('I3', ('Total personal donations', metrics['total_donations']), bold)
+    sheet.write_row('I3', ('Deductible Donations to Foundation', donations), bold)
     sheet.write_row('I4', ('Revenue', revenue), bold)
     sheet.write_row('I5', ('Operating costs', operating_expenses), bold)
     sheet.write_row('I6', ('Artist money pool', pool), bold)
+    sheet.write_row('I7', ('Total personal donations', metrics['total_donations']), bold)
     headers = ('Artist ID', 'Last name', 'First name', 'Seconds watched', 'Ratio', 'Payment', 'Personal Donations')
     sheet.write_row('A1', headers, bold)
 

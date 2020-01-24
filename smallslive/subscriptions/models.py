@@ -13,13 +13,59 @@ class DonationManager(models.Manager):
         end += relativedelta(days=1)
         donations = self.filter(date__gte=start, date__lt=end, confirmed=True)
 
-        return donations.aggregate(models.Sum('amount'))['amount__sum']
+        return donations.aggregate(models.Sum('amount'))['amount__sum'] or 0.0
 
     def total_deductible_in_range(self, start, end):
         end += relativedelta(days=1)
         donations = self.filter(date__gte=start, date__lt=end, confirmed=True)
 
-        return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum']
+        return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
+
+    def total_amount_foundation_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True).exclude(
+            event__isnull=False).exclude(
+            product__isnull=False)
+
+        return donations.aggregate(models.Sum('amount'))['amount__sum'] or 0.0
+    
+    def total_deductible_foundation_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True).exclude(
+            event__isnull=False).exclude(
+            product__isnull=False)
+
+        return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
+
+    def total_amount_projects_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True, product__isnull=False)
+
+        return donations.aggregate(models.Sum('amount'))['amount__sum']
+
+    def total_deductible_projects_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True, product__isnull=False)
+
+        return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
+    
+    def total_amount_shows_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True, event__isnull=False)
+
+        return donations.aggregate(models.Sum('amount'))['amount__sum'] or 0.0
+
+    def total_deductible_shows_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True, event__isnull=False)
+
+        return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
 
 
 class Donation(models.Model):

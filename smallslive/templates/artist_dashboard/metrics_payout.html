@@ -37,9 +37,51 @@
                   </span>
                 </div>
                 <div class="payout-calculator__input">
-                  <span class="payout-calculator__input__label">Total deductible:</span>
+                  <span class="payout-calculator__input__label">Costs:</span>
                   <span class="payout-calculator__input" >
-                    ${{ deductable|intcomma }}.00
+                    ${{ costs|intcomma }}.00
+                  </span>
+                </div>
+
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Total donated (foundation):</span>
+                  <span class="payout-calculator__input">
+                    ${{ foundation_total|intcomma }}.00
+                  </span>
+                  <span class="payout-calculator__input__label">Payout base %50</span>
+                </div>
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Items Costs (foundation):</span>
+                  <span class="payout-calculator__input" >
+                    ${{ foundation_costs|intcomma }}.00
+                  </span>
+                </div>
+
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Total donated (projects):</span>
+                  <span class="payout-calculator__input">
+                    ${{ projects_total|intcomma }}.00
+                  </span>
+                  <span class="payout-calculator__input__label">Payout base %50:</span>
+                </div>
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Costs (projects):</span>
+                  <span class="payout-calculator__input" >
+                    ${{ projects_costs|intcomma }}.00
+                  </span>
+                </div>
+
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Total donated (events):</span>
+                  <span class="payout-calculator__input">
+                    ${{ events_total|intcomma }}.00
+                  </span>
+                  <span class="payout-calculator__input__label">Payout base: %100</span>
+                </div>
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Costs (events:</span>
+                  <span class="payout-calculator__input" >
+                    ${{ events_costs|intcomma }}.00
                   </span>
                 </div>
 
