@@ -77,7 +77,11 @@
           </div>
           <div class="{{ event.get_venue_name|lower}}-color event-venue title5">Live at {{ event.get_venue_name }}</div>
           <div class="event-date title5">{{ event.get_date|date:'D M d' }}</div>
+          {% if event.sets.count > 1 %}
           <div class="event-sets title5">Sets at {{ event.get_set_hours_display}}</div>
+          {% else %}
+            <div class="event-sets title5">From {{ event.get_set_hours_display}}</div>
+          {% endif %}
           <div class="icon-overlay">
             <i id="btn-play-event" class="event-detail fa fa-play fa-thin-circle"></i>
           </div>
