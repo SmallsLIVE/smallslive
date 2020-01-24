@@ -7,6 +7,67 @@ from events.models import Event
 from users.models import SmallsUser
 
 
+class DonationManager(models.Manager):
+
+    def total_amount_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(date__gte=start, date__lt=end, confirmed=True)
+
+        return donations.aggregate(models.Sum('amount'))['amount__sum'] or 0.0
+
+    def total_deductible_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(date__gte=start, date__lt=end, confirmed=True)
+
+        return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
+
+    def total_amount_foundation_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True).exclude(
+            event__isnull=False).exclude(
+            product__isnull=False)
+
+        return donations.aggregate(models.Sum('amount'))['amount__sum'] or 0.0
+    
+    def total_deductible_foundation_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True).exclude(
+            event__isnull=False).exclude(
+            product__isnull=False)
+
+        return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
+
+    def total_amount_projects_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True, product__isnull=False)
+
+        return donations.aggregate(models.Sum('amount'))['amount__sum']
+
+    def total_deductible_projects_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True, product__isnull=False)
+
+        return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
+    
+    def total_amount_shows_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True, event__isnull=False)
+
+        return donations.aggregate(models.Sum('amount'))['amount__sum'] or 0.0
+
+    def total_deductible_shows_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True, event__isnull=False)
+
+        return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
+
+
 class Donation(models.Model):
     """One Time Donations executed
     Previously, Stripe was the only source of subscriptions.
@@ -38,6 +99,8 @@ class Donation(models.Model):
     # We'll need to accrue donations as archive access in days.
     # Each donation will extend the archive access expiry date.
     archive_access_expiry_date = models.DateField(blank=True, null=True)
+
+    objects = DonationManager()
 
     def __unicode__(self):
         if self.user:

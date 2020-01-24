@@ -206,15 +206,22 @@ class ArtistResetPasswordForm(allauth_forms.ResetPasswordForm):
         return self.cleaned_data["email"]
 
 
-class MetricsPayoutForm(forms.Form):
+class DonationQueryForm(forms.Form):
+
     period_start = forms.DateField(required=True)
     period_end = forms.DateField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(DonationQueryForm, self).__init__(*args, **kwargs)
+        current_period = CurrentPayoutPeriod.objects.first()
+        self.fields['period_start'].initial = current_period.period_start
+        self.fields['period_end'].initial = current_period.period_end
+
+
+class MetricsPayoutForm(forms.Form):
+    period_start = forms.CharField(widget=forms.HiddenInput, required=True)
+    period_end = forms.CharField(widget=forms.HiddenInput, required=True)
     revenue = forms.DecimalField(required=True)
     operating_cost = forms.DecimalField(required=True)
     save_earnings = forms.BooleanField(required=False)
 
-    def __init__(self, *args, **kwargs):
-        super(MetricsPayoutForm, self).__init__(*args, **kwargs)
-        current_period = CurrentPayoutPeriod.objects.first()
-        self.fields['period_start'].initial = current_period.period_start
-        self.fields['period_end'].initial = current_period.period_end

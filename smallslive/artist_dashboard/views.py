@@ -1,5 +1,5 @@
 from datetime import timedelta
-import time
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from cacheops import cached
 from django.conf import settings
@@ -33,14 +33,15 @@ from artists.models import Artist, ArtistEarnings, \
     CurrentPayoutPeriod, Instrument, PastPayoutPeriod
 from events.models import Recording, Event
 import events.views as event_views
+from subscriptions.models import Donation
 import users.forms as user_forms
 from users.models import LegalAgreementAcceptance
 from users.views import HasArtistAssignedMixin, \
     HasArtistAssignedOrIsSuperuserMixin
 from .forms import ToggleRecordingStateForm, EventAjaxEditForm,  \
     EventEditForm, ArtistInfoForm, \
-    EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm, \
-    ArtistGigPlayedEditLazyInlineFormSet
+    EditProfileForm, ArtistResetPasswordForm, DonationQueryForm, \
+    MetricsPayoutForm, ArtistGigPlayedEditLazyInlineFormSet
 from artist_dashboard.tasks import generate_payout_sheet_task,\
     update_current_period_metrics_task
 
@@ -702,12 +703,67 @@ class PreviousPayoutsView(ListView):
 previous_payouts = PreviousPayoutsView.as_view()
 
 
-def metrics_payout(request):
+def metrics_payout_period(request):
+    """ Previously date range, income and costs were entered at the same time.
+    Calculation was made based on these parameters.
+    Now, we need a date range first, so that the total donations are calculated and
+    this number will be prepopulated for the calculation in metrics_payout"""
     if request.method == 'POST':
-        form = MetricsPayoutForm(request.POST)
+        form = DonationQueryForm(request.POST)
         if form.is_valid():
             start = form.cleaned_data.get('period_start')
             end = form.cleaned_data.get('period_end')
+
+            total = Donation.objects.total_amount_in_range(start, end) or 0.0
+            deductable = Donation.objects.total_deductible_in_range(start, end) or 0.0
+
+            foundation_total = Donation.objects.total_amount_foundation_in_range(start, end) or 0.0
+            foundation_deductable = Donation.objects.total_amount_foundation_in_range(start, end) or 0.0
+
+            projects_total = Donation.objects.total_amount_projects_in_range(start, end) or 0.0
+            projects_deductable = Donation.objects.total_amount_projects_in_range(start, end) or 0.0
+
+            events_total = Donation.objects.total_amount_shows_in_range(start, end) or 0.0
+            events_deductable = Donation.objects.total_amount_shows_in_range(start, end) or 0.0
+
+            start = start.strftime('%Y-%m-%d')
+            end = end.strftime('%Y-%m-%d')
+            total = str(int(total))
+            deductable = str(int(deductable))
+            foundation_total = str(int(foundation_total))
+            foundation_deductable = str(int(foundation_deductable))
+            projects_total = str(int(projects_total))
+            projects_deductable = str(int(projects_deductable))
+            events_total = str(int(events_total))
+            events_deductable = str(int(events_deductable))
+
+            return redirect('artist_dashboard:metrics_payout',
+                            period_start=start, period_end=end,
+                            total=total, deductable=deductable,
+                            foundation_total=foundation_total, foundation_deductable=foundation_deductable,
+                            projects_total=projects_total, projects_deductable=projects_deductable,
+                            events_total=events_total, events_deductable=events_deductable)
+        else:
+            messages.error(request, "Donation calculation failed. {}".format(form.errors))
+
+    else:
+        form = DonationQueryForm()
+
+    return render(request, 'artist_dashboard/metrics_payout_period.html', {'form': form})
+
+
+def metrics_payout(request, period_start=None,  period_end=None, total=None, deductable=None,
+                   foundation_total=None, foundation_deductable=None,
+                   projects_total=None, projects_deductable=None,
+                   events_total=None, events_deductable=None):
+    if request.method == 'POST':
+        form = MetricsPayoutForm(request.POST)
+        if form.is_valid():
+            start = datetime.strptime(form.cleaned_data.get('period_start'), '%Y-%m-%d')
+            start = timezone.make_aware(start, timezone.get_current_timezone())
+            end = datetime.strptime(form.cleaned_data.get('period_end'), '%Y-%m-%d')
+            end += timedelta(days=1)
+            end = timezone.make_aware(end, timezone.get_current_timezone())
             revenue = form.cleaned_data.get('revenue')
             operating_cost = form.cleaned_data.get('operating_cost')
             save_earnings = form.cleaned_data.get('save_earnings')
@@ -715,11 +771,49 @@ def metrics_payout(request):
             generate_payout_sheet_task.delay(start, end, revenue, operating_cost, save_earnings)
         else:
             messages.error(request, "Payout calculation failed. {}".format(form.errors))
-        return redirect("artist_dashboard:metrics_payout")
-    else:
-        form = MetricsPayoutForm()
+            return redirect("artist_dashboard:metrics_payout")
 
-    return render(request, 'artist_dashboard/metrics_payout.html', {'form': form})
+        return redirect("artist_dashboard:metrics_payout_period")
+    else:
+        initial = {
+            'period_start': period_start,
+            'period_end': period_end,
+        }
+        form = MetricsPayoutForm(initial=initial)
+
+    if not total is None:
+        total = int(total)
+        deductable = int(deductable)
+        foundation_total = int(foundation_total)
+        foundation_deductable = int(foundation_deductable)
+        projects_total = int(projects_total)
+        projects_deductable = int(projects_deductable)
+        events_total = int(events_total)
+        events_deductable = int(events_deductable)
+        costs = total - deductable
+        foundation_costs = foundation_total - foundation_deductable
+        projects_costs = projects_total - projects_deductable
+        events_costs = events_total - events_deductable
+    else:
+        costs = 0
+        foundation_costs = 0
+        projects_costs = 0
+        events_costs = 0
+
+    context= {
+        'form': form,
+        'total': total,
+        'costs': costs,
+        'foundation_total': foundation_total,
+        'foundation_costs': foundation_costs,
+        'projects_total': projects_total,
+        'projects_costs': projects_costs,
+        'events_total': events_total,
+        'events_costs': events_costs
+    }
+    return render(request,
+                  'artist_dashboard/metrics_payout.html',
+                  context)
 
 
 @login_required

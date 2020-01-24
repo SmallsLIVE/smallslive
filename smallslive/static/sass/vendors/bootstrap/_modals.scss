@@ -166,3 +166,17 @@
     width: $modal-lg;
   }
 }
+
+#inactive-dialog {
+
+  @media (max-width: 500px) {
+    .title1 {
+      line-height: 1em;
+    }
+
+    p {
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+  }
+}

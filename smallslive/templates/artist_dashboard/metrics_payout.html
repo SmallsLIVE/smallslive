@@ -1,5 +1,6 @@
 {% extends "home_new.html" %}
 {% load add_get_parameter %}
+{% load humanize %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
@@ -7,20 +8,86 @@
 
 {% block content %}
     <div class="content-wrapper" style="border:none">
-        <form method="post" action="{% url "artist_dashboard:metrics_payout" %}">
+        <form method="post" action="{% url 'artist_dashboard:metrics_payout' %}">
             <section class="page-heading container" style="width: 100%;">
                 <h1>SmallsLIVE Payout Calculation Admin:</h1>
             </section>
             <section class="payout-calculator">
                 {% csrf_token %}
                 {{ form.errors }}
-                <div class="payout-calculator__input"><span class="payout-calculator__input__label">Period revenue:</span><input class="payout-calculator__text-input" type="number" name="revenue" {% if form.revenue.value %}value="{{ form.revenue.value }}"{% endif %} placeholder="Enter value: 0000.00"></div>
-                <div class="payout-calculator__input"><span class="payout-calculator__input__label">Period costs:</span><input class="payout-calculator__text-input" type="number" name="operating_cost" {% if form.operating_cost.value %}value="{{ form.operating_cost.value }}"{% endif %} placeholder="Enter value: 0000.00"></div>
-                <div class="payout-calculator__input"><span class="payout-calculator__input__label">Period start date:</span><span class="payout-calculator__date-picker" id="payout-calculator__date-picker-start"><input class="" type="text" name="period_start" readonly><i class="fa fa-caret-down"></i></span></div>
-                <div class="payout-calculator__input"><span class="payout-calculator__input__label">Period end date:</span><span class="payout-calculator__date-picker" id="payout-calculator__date-picker-end"><input class="" type="text" name="period_end" readonly><i class="fa fa-caret-down"></i></span></div>
-                <div class="payout-calculator__instructions">
-                    <p>Please select above the starting date and ending date for which you want to calculate the payout amounts for each artist.</p>
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Period start date:</span>
+                  <span class="payout-calculator__input">
+                    <input class="" type="hidden" name="period_start" value="{{ form.period_start.value }}" readonly>
+                    {{ form.period_start.value }}
+                  </span>
                 </div>
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Period end date:</span>
+                  <span class="payout-calculator__input">
+                    <input class="" type="hidden" name="period_end" value="{{ form.period_end.value }}" readonly>
+                    {{ form.period_end.value }}
+                  </span>
+                </div>
+
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Total donated:</span>
+                  <span class="payout-calculator__input">
+                    ${{ total|intcomma }}.00
+                  </span>
+                </div>
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Costs:</span>
+                  <span class="payout-calculator__input" >
+                    ${{ costs|intcomma }}.00
+                  </span>
+                </div>
+
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Total donated (foundation):</span>
+                  <span class="payout-calculator__input">
+                    ${{ foundation_total|intcomma }}.00
+                  </span>
+                  <span class="payout-calculator__input__label">Payout base %50</span>
+                </div>
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Items Costs (foundation):</span>
+                  <span class="payout-calculator__input" >
+                    ${{ foundation_costs|intcomma }}.00
+                  </span>
+                </div>
+
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Total donated (projects):</span>
+                  <span class="payout-calculator__input">
+                    ${{ projects_total|intcomma }}.00
+                  </span>
+                  <span class="payout-calculator__input__label">Payout base %50:</span>
+                </div>
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Costs (projects):</span>
+                  <span class="payout-calculator__input" >
+                    ${{ projects_costs|intcomma }}.00
+                  </span>
+                </div>
+
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Total donated (events):</span>
+                  <span class="payout-calculator__input">
+                    ${{ events_total|intcomma }}.00
+                  </span>
+                  <span class="payout-calculator__input__label">Payout base: %100</span>
+                </div>
+                <div class="payout-calculator__input">
+                  <span class="payout-calculator__input__label">Costs (events:</span>
+                  <span class="payout-calculator__input" >
+                    ${{ events_costs|intcomma }}.00
+                  </span>
+                </div>
+
+                <div class="payout-calculator__input"><span class="payout-calculator__input__label">Additional revenue:</span><input class="payout-calculator__text-input" type="number" name="revenue" {% if form.revenue.value %}value="{{ form.revenue.value }}"{% endif %} placeholder="Enter value: 0000.00"></div>
+                <div class="payout-calculator__input"><span class="payout-calculator__input__label">Period costs:</span><input class="payout-calculator__text-input" type="number" name="operating_cost" {% if form.operating_cost.value %}value="{{ form.operating_cost.value }}"{% endif %} placeholder="Enter value: 0000.00"></div>
+
                 <div class="payout-calculator__set-final__container">
                     <div class="payout-calculator__set-final__checkbox-container">
                         <input type="checkbox" class="payout-calculator__set-final__checkbox" name="save_earnings" id="save_earnings">
@@ -31,40 +98,13 @@
                     </div>
                 </div>
                 <button type="submit" class="payout-calculator__submit-button">Calculate</button>
+                <a href="{% url 'artist_dashboard:metrics_payout_period' %}">Go back to select date range</a>
             </section>
         </form>
     </div>
 {% endblock content %}
 
 {% block extra_js %}
-          <script src="{% static 'js/bootstrap-select.js' %}"></script>
-          <script src="{% static 'js/dashboard-base.js' %}"></script>
-
-
-          <!-- Bootstrap datepicker JavaScript -->
-          <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-          <script src="{% static 'js/metrics_datepicker.js' %}"></script>
-          <script>
-            var $datePickerStart = $('#payout-calculator__date-picker-start input');
-            $datePickerStart.datepicker({
-                format: 'yyyy-mm-dd',
-                minViewMode: "days",
-                orientation: "top auto",
-                startDate: new Date(2015, 10-1, 1),
-                autoclose: true
-            });
-
-            var $datePickerEnd = $('#payout-calculator__date-picker-end input');
-            $datePickerEnd.datepicker({
-                format: 'yyyy-mm-dd',
-                minViewMode: "days",
-                orientation: "top auto",
-                autoclose: true
-            });
-
-            var start_date = new Date({{ form.fields.period_start.initial.year }}, {{ form.fields.period_start.initial.month }}-1, {{ form.fields.period_start.initial.day}});
-            var end_date = new Date({{ form.fields.period_end.initial.year }}, {{ form.fields.period_end.initial.month }}-1, {{ form.fields.period_end.initial.day}});
-            $datePickerStart.datepicker("setDate", start_date);
-            $datePickerEnd.datepicker("setDate", end_date);
-          </script>
+  <script src="{% static 'js/bootstrap-select.js' %}"></script>
+  <script src="{% static 'js/dashboard-base.js' %}"></script>
 {% endblock %}
