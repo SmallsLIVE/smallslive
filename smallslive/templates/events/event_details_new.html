@@ -76,12 +76,17 @@
               <!--
                 <span class="accent-color"> / </span>
               //-->
+                {% if event.sets.count > 1 %}
                 Sets at
                 {% for set in sets %}
                   <span class="event-overlay-venue-set">
                     {{ set.start|time:'g:iA'}}
                   </span>
                 {% endfor %}
+                {% else %}
+                From
+                {{ event.get_set_hours_display}}
+                {% endif %}
               {% endif %}
             </div>
 
