@@ -158,12 +158,13 @@ class ArtistProduct(models.Model):
     artist = models.ForeignKey('artists.Artist', verbose_name='', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, verbose_name='', on_delete=models.CASCADE)
     instrument = models.ForeignKey('artists.Instrument', blank=True, null=True)
+    sort_order = models.CharField(max_length=30, blank=True)
     is_leader = models.BooleanField(default=False)
 
     class Meta:
         # abstract = True
         app_label = 'catalogue'
-        ordering = ['product', 'artist']
+        ordering = ['sort_order']
         unique_together = ('product', 'artist', 'instrument')
         verbose_name = 'Artist'
         verbose_name_plural = 'Artist list'

@@ -327,11 +327,11 @@ class ProductArtistClassSelectForm(forms.ModelForm):
 
     class Meta:
         model = ArtistProduct
-        fields = ('artist', 'is_leader')
+        fields = ('artist', 'is_leader', 'sort_order')
         
 
 BaseArtistFormSet = forms.inlineformset_factory(
-    Product, ArtistProduct, form=ProductArtistClassSelectForm, extra=15, max_num=25, can_order=True)
+    Product, ArtistProduct, form=ProductArtistClassSelectForm, extra=15, max_num=25)
 
 
 class ArtistMemberFormSet(BaseArtistFormSet):
