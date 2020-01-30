@@ -377,6 +377,7 @@ class Event(TimeStampedModel):
     date = models.DateField(blank=True, null=True)
 
     # Import information (Mezzrow - possibly other in the future)
+    # TODO: make sure this is unique. We won't have an issue with Mezzrow events though.
     original_id = models.CharField(blank=True, max_length=4096, null=True)
     import_date = models.DateTimeField(blank=True, null=True)
 

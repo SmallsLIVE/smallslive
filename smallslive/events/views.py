@@ -19,8 +19,8 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.timezone import timedelta
 from django.contrib.admin.views.decorators import staff_member_required
-from django.shortcuts import render
 from django.views.generic import DeleteView, TemplateView, View
+from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import BaseDetailView
 from django.views.generic import DetailView, FormView
@@ -410,6 +410,20 @@ class EventDetailView(DetailView):
 
 
 event_detail = EventDetailView.as_view()
+
+
+class EventDetailRedirectView(RedirectView):
+
+    def get_redirect_url(self, *args, **kwargs):
+
+        original_id = kwargs.get('pk')
+        event = Event.objects.get(original_id=original_id)
+        self.url = event.get_absolute_url()
+
+        return super(EventDetailRedirectView, self).get_redirect_url(*args, **kwargs)
+
+
+event_detail_redirect = EventDetailRedirectView.as_view()
 
 
 class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
