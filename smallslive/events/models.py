@@ -201,7 +201,9 @@ class EventQuerySet(models.QuerySet):
         if not is_staff:
             qs = qs.exclude(state=Event.STATUS.Draft)
 
-        qs = qs.order_by('start')
+        qs = qs.order_by('start', '-venue__sort_order')
+
+        assert False, qs.query
 
         return qs
 
@@ -1180,6 +1182,10 @@ class Venue(models.Model):
     aws_secret_access_key = models.CharField(max_length=4096, blank=True, null=True)
     aws_storage_bucket_name = models.CharField(max_length=4096, blank=True, null=True)
     stripe_publishable_key = models.CharField(max_length=4096, blank=True, null=True)
+
+    # Priority for sorting events
+    # Higher number shows first.
+    sort_order = models.PositiveIntegerField(default=0)
 
     def __unicode__(self):
         return self.name
