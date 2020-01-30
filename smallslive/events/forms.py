@@ -398,7 +398,8 @@ class VenueAddForm(forms.ModelForm):
             'aws_access_key_id',
             'aws_secret_access_key',
             'aws_storage_bucket_name',
-            'stripe_publishable_key'
+            'stripe_publishable_key',
+            'sort_order',
         )
 
     def save(self, commit=True):
