@@ -203,8 +203,6 @@ class EventQuerySet(models.QuerySet):
 
         qs = qs.order_by('start', '-venue__sort_order')
 
-        assert False, qs.query
-
         return qs
 
     def get_most_popular(self, range_size=None):
