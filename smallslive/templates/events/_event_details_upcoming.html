@@ -82,6 +82,10 @@
         $('#streamingNotAvailableDialog').modal('show');
       }
     });
+
+    // Scroll related events until live is visible
+    $(".event-related-videos .live")[0].scrollIntoView();
+
   });
 
   $('.event-video-placeholder').keypress(function (e){

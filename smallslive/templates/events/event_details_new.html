@@ -162,7 +162,7 @@
     </div>
     <div class="flex-column event-side">
       {% if streaming_tonight_videos %}
-      <div class="event-related-videos">
+      <div class="event-related-videos tonight">
         <div class="section-title section-flex">
           <div class="title1">Streaming Tonight <span class="date-separator" style="margin-right: 5px;">/</span></div>
           <div class="header-sub title1">{% now "m/d/y" %}</div>
@@ -170,13 +170,13 @@
         <div>
             <div>
             {% for related in streaming_tonight_videos %}
-              <div class="flex-row related-video{% if related == event %} selected{% endif %}{% if next_event and next_event.title == related.title %} next-up{% endif %}">
+              <div class="flex-row related-video{% if related == event %} selected{% endif %}{% if next_event and next_event.title == related.title %} next-up{% endif %}{% if related.is_live %} live{% endif %}">
                 {% if next_event and next_event.title == related.title %}
-                {% include 'events/event_card.html' with event=related mini=True show_time=True next_up=True %}
+                  {% include 'events/event_card.html' with event=related mini=True show_time=True next_up=True %}
                 {% elif related == event %}
-                {% include 'events/event_card.html' with event=related mini=True show_time=True current_event=True %}
+                  {% include 'events/event_card.html' with event=related mini=True show_time=True current_event=True %}
                 {% else %}
-                {% include 'events/event_card.html' with event=related mini=True show_time=True %}
+                  {% include 'events/event_card.html' with event=related mini=True show_time=True %}
                 {% endif %}
 
                 <div class="related-info flex-column content-centered">

@@ -316,7 +316,6 @@ class EventDetailView(DetailView):
         context['related_videos'] = Event.objects.event_related_videos(event)
         events = Event.objects.get_today_and_tomorrow_events(
             just_today=True, is_staff=self.request.user.is_staff)
-        events = [x for x in events if not x.is_past]
         context['streaming_tonight_videos'] = events
 
         # In this case, we need to change show info without reloading
