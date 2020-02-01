@@ -438,6 +438,7 @@ $player-height: 25.3vw;
     position: absolute;
     top: 1px;
     left: 0;
+    z-index: 1;
   }
 
   @keyframes play-overlay {

@@ -20,7 +20,7 @@
                 Your order number is {{ order_number }}. Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
             </p>
             <p>
-                Your name will with the doorman when you arrive. Please come ½ hour before the scheduled start time ({{ line.product.event_set.start }}). This ticket guarantees a seat.
+                The reservation name is {{ order.first_name }} {{ order.last_name }} and will be with the doorman when you arrive. Please come ½ hour before the scheduled start time ({{ line.product.event_set.start }}). This ticket guarantees a seat.
                 Seating is first come/first serve so please arrive on time.  We reserve the right to release a seat 15 minutes after the beginning of the concert.
             </p>
             <p>
