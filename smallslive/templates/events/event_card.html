@@ -31,4 +31,13 @@
       </div>
     {% endif %}
   </div>
+  {% if side_info %}
+    <div class="related-info flex-column content-centered">
+      <div class="flex-column">
+        <div class="text1 related-title">{{ related.title }}</div>
+
+        <div class="text1 text-grey">{{ related.get_date|date:'m/d/Y' }}</div>
+      </div>
+    </div>
+  {% endif %}
 </a>

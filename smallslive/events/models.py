@@ -201,7 +201,7 @@ class EventQuerySet(models.QuerySet):
         if not is_staff:
             qs = qs.exclude(state=Event.STATUS.Draft)
 
-        qs = qs.order_by('start')
+        qs = qs.order_by('start', '-venue__sort_order')
 
         return qs
 
@@ -377,6 +377,7 @@ class Event(TimeStampedModel):
     date = models.DateField(blank=True, null=True)
 
     # Import information (Mezzrow - possibly other in the future)
+    # TODO: make sure this is unique. We won't have an issue with Mezzrow events though.
     original_id = models.CharField(blank=True, max_length=4096, null=True)
     import_date = models.DateTimeField(blank=True, null=True)
 
@@ -1179,6 +1180,10 @@ class Venue(models.Model):
     aws_secret_access_key = models.CharField(max_length=4096, blank=True, null=True)
     aws_storage_bucket_name = models.CharField(max_length=4096, blank=True, null=True)
     stripe_publishable_key = models.CharField(max_length=4096, blank=True, null=True)
+
+    # Priority for sorting events
+    # Higher number shows first.
+    sort_order = models.PositiveIntegerField(default=0)
 
     def __unicode__(self):
         return self.name
