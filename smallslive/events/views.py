@@ -340,6 +340,12 @@ class EventDetailView(DetailView):
                     'start': start
                 }
 
+        live_events = None
+        if event.is_future or event.is_past:
+            live_events = Event.objects.get_live(event.venue_id)
+            if live_events:
+                context['currently_live_event_url'] = live_events[0].get_absolute_url()
+
         if event.is_future:
             event_url = event.get_absolute_url()
             start = event.get_actual_start_end()[0] - timedelta(
@@ -350,18 +356,12 @@ class EventDetailView(DetailView):
                 'start': start
             }
             context['products'] = self.object.get_tickets()
-            live_events = Event.objects.get_live(event.venue_id)
-            if live_events:
-                context['currently_live_event_url'] = live_events[0].get_absolute_url()
 
         # for modal in past events
         # need to find if there is currently a live event
-        today_and_tomorrow_events = Event.objects.get_today_and_tomorrow_events(
-            is_staff=self.request.user.is_staff
-        ).filter(venue_id=event.venue.id)
-        live_now = [x for x in today_and_tomorrow_events if x.is_live == True]
+        if live_events:
+            context['finished_next_event'] = live_events[0]
 
-        context['finished_next_event'] = live_now[0] if live_now else None
         context['archived_date_estimate'] = self.object.end + timedelta(days=14)
 
         context['sets'] = event.get_sets_info_dict()

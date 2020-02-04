@@ -11,19 +11,19 @@
         </p>
 
         {% if finished_next_event %}
-        <p class="title2 accent-color nowrap">
-          Current live show playing is: 
-          <span class="text1" style="color: black;">{{ finished_next_event.title }}</span>
-        </p>
+          <p class="title2 accent-color nowrap">
+            Current live show playing is:
+            <span class="text1" style="color: black;">{{ finished_next_event.title }}</span>
+          </p>
 
-        <div>
-          <button class="white-border-button">
-            <a href="{% url 'event_detail' finished_next_event.id finished_next_event.slug %}">
-              Go to Live Show
-            </a>
-          </button>
-          <button class="white-border-button cancel-button">Cancel</button>
-        </div>
+          <div>
+            <button class="white-border-button">
+              <a href="{% url 'event_detail' finished_next_event.id finished_next_event.slug %}">
+                Go to Live Show
+              </a>
+            </button>
+            <button class="white-border-button cancel-button">Cancel</button>
+          </div>
         {% endif %}
       </div>
     </div>

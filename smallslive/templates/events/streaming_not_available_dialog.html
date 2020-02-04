@@ -7,9 +7,9 @@
       <div class="modal-body">
         {% if not event.streamable %}
           <p class="title2 accent-color nowrap">This event will not be live streamed at the request of the artist</p>
-        {% elif sets %}
+        {% elif sets and user.is_authenticated %}
           <p class="title2 accent-color nowrap">This event will be streaming live{% if not event.is_today %} on {{ event.date|date:"m/d/Y" }} {% endif %} at {{ sets.0.start|time:"g:iA" }} EST.</p>
-        {% else %}
+        {% elif user.is_authenticated %}
           <p class="title2 accent-color nowrap">Streaming for this event will be available 15 minutes before it begins</p>
         {% endif %}
 

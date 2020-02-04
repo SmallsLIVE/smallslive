@@ -172,24 +172,12 @@
             {% for related in streaming_tonight_videos %}
               <div class="flex-row related-video{% if related == event %} selected{% endif %}{% if next_event and next_event.title == related.title %} next-up{% endif %}{% if related.is_live %} live{% endif %}">
                 {% if next_event and next_event.title == related.title %}
-                  {% include 'events/event_card.html' with event=related mini=True show_time=True next_up=True %}
+                  {% include 'events/event_card.html' with event=related mini=True show_time=True next_up=True side_info=True show_venue_on_side=True %}
                 {% elif related == event %}
-                  {% include 'events/event_card.html' with event=related mini=True show_time=True current_event=True %}
+                  {% include 'events/event_card.html' with event=related mini=True show_time=True current_event=True side_info=True show_venue_on_side=True %}
                 {% else %}
-                  {% include 'events/event_card.html' with event=related mini=True show_time=True %}
+                  {% include 'events/event_card.html' with event=related mini=True show_time=True side_info=True show_venue_on_side=True %}
                 {% endif %}
-
-                <div class="related-info flex-column content-centered">
-                  <div class="flex-column">
-                    <div class="text1 related-title">{{ related.title }}</div>
-                    <div class="text1 text-grey">
-                      {{ related.get_date|date:'m/d/Y' }}
-                    </div>
-                    <div class="accent-color text-uppercase">
-                        <strong class="{{ related.get_venue_name|lower }}-color">{{ related.get_venue_name }} {% if request.user.is_staff and related.state == "Draft"%} - Draft {% endif %}</strong>
-                    </div>
-                  </div>
-                </div>
               </div>
             {% endfor %}
             </div>
@@ -204,7 +192,7 @@
           <div>
             {% for related in related_videos%}
               <div class="flex-row related-video">
-                {% include 'events/event_card.html' with event=related mini=True side_info=True%}
+                {% include 'events/event_card.html' with event=related mini=True side_info=True %}
               </div>
             {% endfor %}
           </div>
@@ -265,13 +253,19 @@
         $donationConfirmationDialog.modal("show");
       });
 
+      // Scroll related events until live is visible
+      var $liveEvents = $(".event-related-videos .live");
+      if ($liveEvents.length) {
+        $(".event-related-videos .live")[0].scrollIntoView(false);
+      }
+
     });
 
     $(document).on('click', '[data-playlist-index]', function (ev) {
-        var subpage = subpages.get('comments');
-        if (subpage) {
-          subpage.setUrl($(this).data('comments-page'));
-        }
+      var subpage = subpages.get('comments');
+      if (subpage) {
+        subpage.setUrl($(this).data('comments-page'));
+      }
     });
 
 
