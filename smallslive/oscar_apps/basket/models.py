@@ -25,12 +25,25 @@ class Basket(AbstractBasket):
         return tickets_count > 0
 
     def get_tickets_type(self):
+
+        venue = None
         qs = self.all_lines().filter(product__product_class__name='Ticket')
         lines = list(qs)
-        venue = None
         if lines:
             line = lines[0]
-            venue = line.product.get_product_class().name.lower()
+            venue = line.product.event_set.event.get_venue_name().lower()
+
+        return venue
+
+    def get_tickets_venue(self):
+
+        venue = None
+        qs = self.all_lines().filter(product__product_class__name='Ticket')
+        lines = list(qs)
+
+        if lines:
+            line = lines[0]
+            venue = line.product.event_set.event.venue
 
         return venue
     

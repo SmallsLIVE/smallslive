@@ -46,6 +46,16 @@ class Order(AbstractOrder):
             venue = line.product.get_product_class().name.lower()
 
         return venue
+
+    def get_tickets_venue(self):
+        venue = None
+        qs = self.lines.all().filter(product__product_class__name='Ticket')
+        lines = list(qs)
+        if lines:
+            line = lines[0]
+            venue = line.product.event_set.event.venue
+
+        return venue
     
     def has_gift(self):
         gifts_count = self.lines.filter(product__product_class__slug='Gift').count()

@@ -399,6 +399,10 @@ class VenueAddForm(forms.ModelForm):
             'aws_secret_access_key',
             'aws_storage_bucket_name',
             'stripe_publishable_key',
+            'stripe_secret_key',
+            'paypal_client_id',
+            'paypal_client_secret',
+            'foundation',
             'sort_order',
         )
 
@@ -409,11 +413,15 @@ class VenueAddForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(VenueAddForm, self).__init__(*args, **kwargs)
 
-        if self.instance and self.instance.get_aws_access_key_id:
+        if self.instance:
             self.initial['aws_access_key_id'] = self.instance.get_aws_access_key_id
             self.initial['aws_secret_access_key'] = self.instance.get_aws_secret_access_key
             self.initial['aws_storage_bucket_name'] = self.instance.get_aws_storage_bucket_name
             self.initial['stripe_publishable_key'] = self.instance.get_stripe_publishable_key
+            self.initial['stripe_secret_key'] = self.instance.get_stripe_secret_key
+            self.initial['paypal_client_id'] = self.instance.get_paypal_client_id
+            self.initial['paypal_client_secret'] = self.instance.get_paypal_client_secret
+            self.initial['foundation'] = self.instance.foundation
 
         self.helper = FormHelper(self)
         layout = self.get_layout()
@@ -432,5 +440,9 @@ class VenueAddForm(forms.ModelForm):
             'aws_secret_access_key',
             'aws_storage_bucket_name',
             'stripe_publishable_key',
+            'stripe_secret_key',
+            'paypal_client_id',
+            'paypal_client_secret',
+            'foundation',
             Formset('default_times', template='form_widgets/set_formset_layout.html')
         )

@@ -37,22 +37,21 @@ class PaymentForm(forms.Form):
     cvc = forms.CharField(required=True, min_length=3, max_length=4)
     name = forms.CharField(required=True)
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, stripe_api_key, *args, **kwargs):
+        self.stripe_api_key = stripe_api_key
         super(PaymentForm, self).__init__(*args, **kwargs)
         self.user = user
-        if not user.is_authenticated():
-            return
-        try:
-            customer = Customer.objects.get(subscriber=user)
-            if customer and customer.can_charge():
-                self.fields['payment_method'].choices.insert(1, ('existing-credit-card', 'existing-credit-card'))
-                self.fields['payment_method'].initial = 'existing-credit-card'
-                self.can_use_existing = True
-        except Customer.DoesNotExist:
-            pass
+        if user.is_authenticated():
+            try:
+                customer = Customer.objects.get(subscriber=user)
+                if customer and customer.can_charge():
+                    self.fields['payment_method'].choices.insert(1, ('existing-credit-card', 'existing-credit-card'))
+                    self.fields['payment_method'].initial = 'existing-credit-card'
+                    self.can_use_existing = True
+            except Customer.DoesNotExist:
+                pass
 
     def clean(self):
-        print 'Clean ------------------->'
         existing_cc = self.data.get('payment_method', None) == 'existing-credit-card'
         data = super(PaymentForm, self).clean()
         if not self.errors:
@@ -68,16 +67,17 @@ class PaymentForm(forms.Form):
             else:
                 try:
                     token = stripe.Token.create(
-                        api_key='sk_test_SrCBpROYG7Gn8gua98U0y4TK',
+                        api_key=self.stripe_api_key,
                         card={
-                            "number": data.get('number'),
-                            "exp_month": data.get('exp_month'),
-                            "exp_year": data.get('exp_year'),
-                            "cvc": data.get('cvc'),
-                            "name": data.get('name'),
+                            'number': data.get('number'),
+                            'exp_month': data.get('exp_month'),
+                            'exp_year': data.get('exp_year'),
+                            'cvc': data.get('cvc'),
+                            'name': data.get('name'),
                         },
                     )
                     self.token = token.id
+                    print 'Sripe token: ', token
                 except stripe.error.CardError, e:
                     error = e.json_body['error']
                     self.add_error(error['param'], error['message'])
