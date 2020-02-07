@@ -5,21 +5,21 @@
     <div class="modal-content custom-modal">
       <a href="#" class="close-button"></a>
 
-      <div class="modal-body">
-        <p class="title2 accent-color nowrap">
-          This event will be available on the archive approximately on {{ archived_date_estimate|date:"m/d/Y" }}.
+      <div class="modal-body" style="text-align: center;">
+        <p class="title2 accent-color">
+          This event will be available in the archive approximately on {{ archived_date_estimate|date:"m/d/Y" }}.
         </p>
 
         {% if finished_next_event %}
-          <p class="title2 accent-color nowrap">
-            Current live show playing is:
-            <span class="text1" style="color: black;">{{ finished_next_event.title }}</span>
+          <p class="title2 accent-color">
+            Current live show:
+            <span class="title2" style="color: black;">{{ finished_next_event.title }}</span>
           </p>
 
           <div>
             <button class="white-border-button">
               <a href="{% url 'event_detail' finished_next_event.id finished_next_event.slug %}">
-                Go to Live Show
+                Live Now
               </a>
             </button>
             <button class="white-border-button cancel-button">Cancel</button>

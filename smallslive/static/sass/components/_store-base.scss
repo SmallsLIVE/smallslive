@@ -8,8 +8,8 @@
   border-bottom: none;
   @include title2;
 
-  @media (max-width: $screen-xs-max) {
-    padding: 15px 20px;
+  @media (max-width: $screen-sm-max) {
+    padding: 70px 0 0 0;
   }
 
   &__title {
@@ -38,7 +38,7 @@
           line-height: 43px;
 
           @media (max-width: 1023px) {
-            margin-top: 30px;
+            //margin-top: 30px;
           }
           @media (max-width: 1200px) {
             font-size: calc(1.93181818vw + 21.81818181px);
@@ -2380,6 +2380,10 @@
     display: none;
   }
 
+  @media(max-width: $screen-md){
+    padding: 70px 10px;
+  }
+
   &__left-column {
     .white-line-bottom {
       margin: 5px 0 20px 0;
@@ -2934,11 +2938,11 @@ form .back-to-payment-btn {
   }
 }
 
-.content-wrapper.basket {
-  @media (max-width: 1023px) {
-    padding-top: 20px;
-  }
-}
+//.content-wrapper.basket {
+//  @media (max-width: 1023px) {
+//    padding-top: 20px;
+//  }
+//}
 
 @media (min-width: 1024px) {
   .store-cart__table__header__title span.smaller.digital-info {

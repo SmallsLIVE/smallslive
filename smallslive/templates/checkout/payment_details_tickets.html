@@ -11,7 +11,7 @@
 {% block content %}
     {% include 'inactive_dialog.html' %}
 
-    <div class="payment-main-container">
+    <div class="payment-main-container payment-main-container--add-padding">
         <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
     {% if error %}
       <section class="store-error container">
@@ -20,7 +20,7 @@
     {% endif %}
     <section class="container">
 
-        <div class="section-title section-title-no-padded">
+        <div class="section-title section-title__first section-title-no-padded">
           <div tabindex="0" class="title1 center">Reservation</div>
         </div>
         <div class="flex-row col-xs-12 col-md-4 col-md-offset-4">
