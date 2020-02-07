@@ -55,7 +55,7 @@ class PaymentInfoView(TemplateView):
         billing_address_form = BillingAddressForm(None, self.request.user,
                                                   initial=self.get_billing_initial())
         context['billing_address_form'] = billing_address_form
-        context['payment_form'] = PaymentForm(self.request.user)
+        context['payment_form'] = PaymentForm(self.request.user, settings.STRIPE_SECRET_KEY)
 
         return context
 

@@ -363,7 +363,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
     def get_basket_context(self, basket):
         kwargs = {}
-        kwargs['form'] = kwargs.get('form', PaymentForm(self.request.user))
+        kwargs['form'] = kwargs.get('form', PaymentForm(self.request.user, settings.STRIPE_SECRET_KEY))
         if 'billing_address_form' not in kwargs and self.request.user.is_authenticated():
             shipping_address = self.get_shipping_address(basket)
             billing_initial = self.get_billing_initial()
@@ -491,7 +491,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
     def handle_payment_details_submission_for_basket(
             self, shipping_address, billing_address_form, payment_method):
-        form = PaymentForm(self.request.user, self.request.POST)
+        form = PaymentForm(self.request.user, settings.STRIPE_SECRET_KEY, self.request.POST)
 
         if billing_address_form and not billing_address_form.is_valid():
             print '*** error ****'
