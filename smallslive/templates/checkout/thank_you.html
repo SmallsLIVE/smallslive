@@ -10,7 +10,7 @@
 
     <div class="">
 
-        <section class="store-header__container">
+        <section class="store-header container">
              <div class="store-header__title__container">
                   {% if order.has_tickets %}
                   <div class="title1 title1--thankyou center"> Reservation Confirmed for
@@ -67,11 +67,13 @@
                 <!--there needs to be a way to get the logged in user's e-mail address also, what of the case where user sends to a different address?-->
                 a copy of the receipt will be sent to {% if order.lines.first.order.guest_email %}{{ order.lines.first.order.guest_email }}
                 {% else %} the e-mail provided.{% endif %}
-                <br>
+              </p>
+              <p>
                 Your name will be with the doorman when you arrive. Please come ½ hour before the scheduled start time ({{ order.lines.first.product.event_set.start }}).
                 The ticket guarantees a seat. Seat assignment is first come first serve so please arrive on time.
                 We reserve the right to release a seat 15 minutes after the beginning of the concert.
-                <br>
+              </p>
+              <p>
                 Ticket sales are generally non-refundable but on a case by case basis.
                 You may exchange your ticket for another show depending on availability.
               </p>

@@ -4,6 +4,18 @@
 
 .supporter-main-container,
 .payment-main-container {
+  &--add-padding{
+    @media(max-width: $screen-md){
+      padding-top: 85px;
+    }
+  }
+  padding: 0 25px;
+  align-items: center;
+  position: relative;
+
+  overflow: visible;
+  margin: 30px 10vw;
+
   .accent-color.minimum-error {
     position: absolute;
     margin-top: 10px;
@@ -215,13 +227,6 @@
     }
   }
 
-  padding: 25px;
-  align-items: center;
-  position: relative;
-
-  overflow: visible;
-  margin: 30px 10vw;
-
   #supporterSteps {
     padding-bottom: 30px;
   }
@@ -340,6 +345,9 @@
 
     @media (max-width: $screen-md-max) {
       width: 100%;
+    }
+    &__first{
+      margin-top: 0;
     }
   }
 
