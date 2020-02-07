@@ -408,21 +408,6 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
             return _ajax_response(
                 self.request, redirect(url)
             )
-        elif self.paypal_credit_card:
-            bankcard_form = BankcardForm(self.request.POST)
-            if bankcard_form.is_valid():
-                self.bankcard = bankcard_form.bankcard
-                self.handle_paypal_credit_card_payment()
-
-                url = reverse('become_supporter_complete') + \
-                      "?flow_type=" + self.flow_type
-
-                return _ajax_response(
-                    self.request, redirect(url)
-                )
-            else:
-
-                return JsonResponse({'errors': bankcard_form.errors})
         else:
             try:
                 payment_execute_url = self.request.build_absolute_uri(

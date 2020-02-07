@@ -1,8 +1,7 @@
 from django.conf.urls import url, include
 from oscar.apps.checkout.app import CheckoutApplication as CoreCheckoutApplication
 from oscar.core.loading import get_class
-from oscar_apps.checkout.views import ExecutePayPalPaymentView, \
-    ExecuteMezzrowPayPalPaymentView
+from oscar_apps.checkout.views import ExecutePayPalPaymentView
 
 
 class CheckoutApplication(CoreCheckoutApplication):
@@ -14,8 +13,6 @@ class CheckoutApplication(CoreCheckoutApplication):
             url(r'^files/', include(self.files_app.urls)),
             url(r'^paypal/execute/$', ExecutePayPalPaymentView.as_view(),
                 name='paypal_execute'),
-            url(r'^mezzrow-paypal/execute/$', ExecuteMezzrowPayPalPaymentView.as_view(),
-                name='mezzrow_paypal_execute'),
         ]
         return self.post_process_urls(urls)
 

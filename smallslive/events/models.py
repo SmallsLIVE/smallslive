@@ -1180,6 +1180,11 @@ class Venue(models.Model):
     aws_secret_access_key = models.CharField(max_length=4096, blank=True, null=True)
     aws_storage_bucket_name = models.CharField(max_length=4096, blank=True, null=True)
     stripe_publishable_key = models.CharField(max_length=4096, blank=True, null=True)
+    stripe_secret_key = models.CharField(max_length=4096, blank=True, null=True)
+    paypal_client_id = models.CharField(max_length=4096, blank=True, null=True)
+    paypal_client_secret = models.CharField(max_length=4096, blank=True, null=True)
+
+    foundation = models.BooleanField(default=True)
 
     # Priority for sorting events
     # Higher number shows first.
@@ -1227,6 +1232,24 @@ class Venue(models.Model):
             return self.fernet.decrypt(force_bytes(self.stripe_publishable_key))
         return None
 
+    @property
+    def get_stripe_secret_key(self):
+        if self.stripe_secret_key:
+            return self.fernet.decrypt(force_bytes(self.stripe_secret_key))
+        return None
+
+    @property
+    def get_paypal_client_id(self):
+        if self.paypal_client_id:
+            return self.fernet.decrypt(force_bytes(self.paypal_client_id))
+        return None
+
+    @property
+    def get_paypal_client_secret(self):
+        if self.paypal_client_secret:
+            return self.fernet.decrypt(force_bytes(self.paypal_client_secret))
+        return None
+
     @cached_property
     def fernet(self):
         return Fernet(derive_fernet_key(settings.SECRET_KEY))
@@ -1243,6 +1266,16 @@ class Venue(models.Model):
         )
         self.stripe_publishable_key = self.fernet.encrypt(
             force_bytes(self.stripe_publishable_key)
+        )
+        self.stripe_secret_key = self.fernet.encrypt(
+            force_bytes(self.stripe_secret_key)
+        )
+        self.paypal_client_id = self.fernet.encrypt(
+            force_bytes(self.paypal_client_id)
+        )
+
+        self.paypal_client_secret = self.fernet.encrypt(
+            force_bytes(self.paypal_client_secret)
         )
         super(Venue, self).save(*args, **kwargs)
 

@@ -25,12 +25,8 @@ class PayPalMixin(object):
             subtotal -= Decimal(shipping_charge)
         
         if not execute_uri:
-            if self.tickets_type == 'mezzrow':
-                execute_uri = 'checkout:mezzrow_paypal_execute'
-                cancel_uri = 'checkout:payment-details'
-            else:
-                execute_uri = 'checkout:paypal_execute'
-                cancel_uri = 'checkout:payment-details'
+            execute_uri = 'checkout:paypal_execute'
+            cancel_uri = 'checkout:payment-details'
 
             payment_execute_url = self.request.build_absolute_uri(
                 reverse(execute_uri))
@@ -62,17 +58,19 @@ class PayPalMixin(object):
 
         return data
 
-    def configure_paypal(self):
-        if self.tickets_type == 'mezzrow':
-            paypalrestsdk.configure({
-                'mode': settings.PAYPAL_MODE,  # sandbox or live
-                'client_id': settings.PAYPAL_MEZZROW_CLIENT_ID,
-                'client_secret': settings.PAYPAL_MEZZROW_CLIENT_SECRET})
+    def configure_paypal(self, venue=None):
+        if venue:
+            client_id = venue.get_paypal_client_id
+            client_secret = venue.get_paypal_client_secret
         else:
-            paypalrestsdk.configure({
-                'mode': settings.PAYPAL_MODE,  # sandbox or live
-                'client_id': settings.PAYPAL_CLIENT_ID,
-                'client_secret': settings.PAYPAL_CLIENT_SECRET})
+            # Assume foundation
+            client_id = settings.PAYPAL_CLIENT_ID
+            client_secret = settings.PAYPAL_CLIENT_SECRET
+
+        paypalrestsdk.configure({
+            'mode': settings.PAYPAL_MODE,  # sandbox or live
+            'client_id': client_id,
+            'client_secret': client_secret})
 
     def handle_paypal_payment(self, currency, item_list,
                               donation=False,
@@ -80,7 +78,8 @@ class PayPalMixin(object):
                               execute_uri=None,
                               cancel_uri=None):
 
-        self.configure_paypal()
+        venue = self.request.basket.get_tickets_venue()
+        self.configure_paypal(venue)
 
         payment_data = self.get_payment_data(item_list, currency, shipping_charge,
                                              execute_uri=execute_uri, cancel_uri=cancel_uri)
@@ -120,17 +119,8 @@ class PayPalMixin(object):
         else:
             raise UnableToTakePayment(payment.error)
 
-    def handle_paypal_credit_card_payment(self):
-
-        try:
-            facade.sale(1, self.amount, self.bankcard)
-        except Exception, e:
-            ignore_error = getattr(settings, 'IGNORE_BANKCARD_PAYMENT_ERRORS', False)
-            if not ignore_error:
-                raise e
-
-    def execute_payment(self):
-        self.configure_paypal()
+    def execute_payment(self, venue=None):
+        self.configure_paypal(venue)
         payment_id = self.request.GET.get('paymentId')
         payer_id = self.request.GET.get('PayerID')
         payment = paypalrestsdk.Payment.find(payment_id)
@@ -140,8 +130,8 @@ class PayPalMixin(object):
 
         return payment_id
 
-    def refund_paypal_payment(self, payment_id, total, currency):
-        self.configure_paypal()
+    def refund_paypal_payment(self, payment_id, total, currency, venue=None):
+        self.configure_paypal(venue)
         payment = paypalrestsdk.Payment.find(payment_id)
         sale_id = payment.transactions[0].related_resources[0].sale.id
         sale = paypalrestsdk.Sale.find(sale_id)
@@ -189,8 +179,12 @@ class StripeMixin(object):
                 Donation.objects.create(**donation)
 
     def handle_stripe_payment(self, order_number, basket_lines, **kwargs):
-        customer = self.request.user.customer
-        if not self.card_token.startswith('card_'):
+        if self.request.user.is_authenticated():
+            customer = self.request.user.customer
+        else:
+            customer = None
+        venue = self.request.basket.get_tickets_venue()
+        if not venue and customer and not self.card_token.startswith('card_'):
             customer.update_card(self.card_token)
             charge = customer.charge(
                 Decimal(
@@ -199,15 +193,17 @@ class StripeMixin(object):
             stripe_ref = charge.stripe_id
 
         else:
-            stripe_ref = Facade().charge(
-                order_number,
-                self.total,
-                card=self.card_token,
-                description=self.payment_description(
-                    order_number, self.total.incl_tax, **kwargs),
-                metadata=self.payment_metadata(
-                    order_number, self.total.incl_tax, basket_lines, **kwargs),
-                customer=customer.stripe_id)
+            print 'stripe.charge ->'
+            print 'Token: ', self.card_token
+            resp = stripe.Charge.create(
+                api_key=self.request.basket.get_tickets_venue().get_stripe_secret_key,
+                source=self.card_token,
+                amount=int(self.total.incl_tax * 100),  # Convert dollars into cents
+                currency=settings.STRIPE_CURRENCY,
+                description=self.payment_description(order_number, self.total.incl_tax, **kwargs),
+            )
+            print 'Resp: ', resp
+            stripe_ref = resp['id']
 
         cost = 0
         for line in basket_lines:
@@ -219,8 +215,12 @@ class StripeMixin(object):
 
         return stripe_ref
 
-    def refund_stripe_payment(self, charge_id):
-        charge = stripe.Charge.retrieve(id=charge_id)
+    def refund_stripe_payment(self, charge_id, venue=None):
+        if venue:
+            api_key = venue.get_stripe_secret_key
+        else:
+            api_key = settings.STRIPE_SECRET_KEY
+        charge = stripe.Charge.retrieve(api_key=api_key, id=charge_id)
         refund = charge.refund()
 
         return refund.id

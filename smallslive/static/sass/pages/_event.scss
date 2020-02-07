@@ -705,6 +705,16 @@ $player-height: 25.3vw;
         text-overflow: ellipsis;
       }
     }
+
+    &:hover {
+      .event-picture {
+        filter: $sepia-filter;
+      }
+
+      .icon-overlay {
+        opacity: 1;
+      }
+    }
   }
 }
 

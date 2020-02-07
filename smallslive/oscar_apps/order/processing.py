@@ -14,28 +14,21 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
 
     def handle_order_status_change(self, order, new_status, note_msg):
 
-        self.tickets_type = order.get_tickets_type()
         if new_status == 'Cancelled':
             payment_source = order.sources.first()
             reference = payment_source.reference
             amount = payment_source.amount_allocated
             currency = payment_source.currency
-            if payment_source.source_type.name == 'Mezzrow PayPal':
+            venue = order.get_tickets_venue()
+            if 'paypal' in payment_source.source_type.name.lower():
                 refund_reference = self.refund_paypal_payment(
                     reference,
                     amount,
-                    currency)
-            elif payment_source.source_type.name == 'Mezzrow Credit Card':
-                self.venue = None
-                refund_reference = payflow_facade.credit(order.number, amt=order.total_incl_tax)
-            elif payment_source.source_type.name == 'Stripe Credit Card':
+                    currency,
+                    venue)
+            elif 'stripe' in payment_source.source_type.name.lower():
                 refund_reference = self.refund_stripe_payment(
-                    reference)
-            elif payment_source.source_type.name == 'PayPal':
-                refund_reference = self.refund_paypal_payment(
-                    reference,
-                    amount,
-                    currency)
+                    reference, venue)
 
             lines = order.lines.all()
             line_quantities = lines.values_list('quantity', flat=True)

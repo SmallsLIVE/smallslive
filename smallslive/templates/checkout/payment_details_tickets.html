@@ -4,8 +4,6 @@
 {% load currency_filters %}
 {% load purchase_info_tags %}
 
-
-
 {% block store_nav_active %}active{% endblock %}
 
 {% block title %}Payment details{% endblock %}
@@ -68,63 +66,54 @@
           <div class="store__form__group clearfix payment-method-form" id="credit-card-form">
             <div class="col-xs-12 col-md-4 col-md-offset-4">
               <div class="signup__payment__card__info">
-                {% csrf_token %}
-                <div class="row">
-                  <div class="col-xs-6">
-                    <input type="text" class="store__form__input"
-                          id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*"
-                          data-stripe="number"
-                          autocomplete="off"
-                          name="number" {% if form.number.value %}value="{{ bankcard_form.number.value }}"{% endif %}
-                          placeholder="Credit Card Number">
-                    {% for error in bankcard_form.number.errors %}
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-xs-6">
+                        <input type="text" class="store__form__input"
+                           id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*"
+                           autocomplete="off" name="number" {% if form.number.value %}value="{{ form.number.value }}"{% endif %}
+                           placeholder="Credit Card Number">
+                        {% for error in form.number.errors %}
+                            <span class="store__form__field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+
+                      <div class="col-xs-3">
+                          <input type="text" class="store__form__input"
+                                 id="expiry-month" placeholder="MM" size="2" pattern="\d*"
+                                 autocomplete="off" name="exp_month" {% if form.exp_month.value %}value="{{ form.exp_month.value }}"{% endif %}
+                                 placeholder="Valid thru">
+                          {% for error in form.exp_month.errors %}
                         <span class="store__form__field-error">{{ error }}</span>
-                    {% endfor %}
-                  </div>
+                      {% endfor %}
+                      </div>
+                        <div class="col-xs-3">
+                            <input type="text" class="store__form__input" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" name="exp_year" {% if form.exp_year.value %}value="{{ form.exp_year.value }}"{% endif %}>
+                            {% for error in form.exp_year.errors %}
+                          <span class="store__form__field-error">{{ error }}</span>
+                      {% endfor %}
+                        </div>
 
-                  <div class="col-xs-3">
-                    <input type="text" class="store__form__input"
-                          data-stripe="exp-month"
-                          id="expiry-month" placeholder="MM" size="2" pattern="\d*"
-                          autocomplete="off" name="expiry_month_0" {% if form.exp_month.value %}value="{{ bankcard_form.expiry_month.value }}"{% endif %}
-                          placeholder="Valid thru">
-                    {% for error in bankcard_form.start_month.errors %}
-                    <span class="store__form__field-error">{{ error }}</span>
-                  {% endfor %}
-                  </div>
-                    <div class="col-xs-3">
-                        <input id="expiry-year-placeholder" type="text" class="store__form__input"
-                              placeholder="YY" size="2"
-                              pattern="\d*" autocomplete="off" {% if bankcard_form.exp_year.value %}value="{{ bankcard_form.expiry_year.value }}"{% endif %}>
-                        <input type="hidden" id="expiry-year" name="expiry_month_1" {% if bankcard_form.exp_year.value %}value="{{ bankcard_form.expiry_year.value }}"{% endif %}>
-                        {% for error in bankcard_form.expiry_month.errors %}
-                      <span class="store__form__field-error">{{ error }}</span>
-                  {% endfor %}
                     </div>
-
+                    <div class="row">
+                      <div class="col-xs-9">
+                        <input id="name-on-card"
+                               type="text"
+                               class="store__form__input"
+                               placeholder="Name on card"
+                               autocomplete="off"
+                               name="name"
+                               {% if form.name.value %}value="{{ form.name.value }}"{% endif %}>
+                      </div>
+                      <div class="col-xs-3">
+                        <input type="text" class="store__form__input" id="cvc" placeholder="xxx" size="4" pattern="\d*" autocomplete="off" name="cvc" {% if form.cvc.value %}value="{{ form.cvc.value }}"{% endif %}>
+                        {% for error in form.cvc.errors %}
+                        <span class="store__form__field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="payment-errors text1 accent-color"></div>
                 </div>
-                <div class="row">
-                  <div class="col-xs-9">
-                    <input type="text" class="store__form__input"
-                          id="name-on-card"
-                          placeholder="Name on card"
-                          data-stripe="name"
-                          autocomplete="off"
-                          name="name" {% if form.name.value %}value="{{ bankcard_form.name.value }}"{% endif %}>
-                  </div>
-                  <div class="col-xs-3">
-                    <input type="text" class="store__form__input"
-                          id="cvc" placeholder="xxx" size="4"
-                          data-stripe="cvc"
-                          pattern="\d*" autocomplete="off"
-                          name="ccv" {% if form.cvc.value %}value="{{ bankcard_form.ccv.value }}"{% endif %}>
-                    {% for error in bankcard_form.ccv.errors %}
-                    <span class="store__form__field-error">{{ error }}</span>
-                    {% endfor %}
-                  </div>
-                </div>
-                <div class="payment-errors text1 accent-color"></div>
-              </div>
               <div class="card-wrapper"></div>
             </div>
           </div>
