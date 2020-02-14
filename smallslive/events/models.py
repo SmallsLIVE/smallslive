@@ -1169,6 +1169,8 @@ class GigPlayed(models.Model):
     class Meta:
         ordering = ['event', 'sort_order', 'is_leader']
 
+    def __unicode__(self):
+        return u'{} - {}'.format(self.artist.full_name(), self.role.name)
 
 class Venue(models.Model):
 

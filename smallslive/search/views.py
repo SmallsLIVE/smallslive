@@ -244,7 +244,8 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
         if not artist_id and artist:
             artist_id = artist.pk
 
-        # Populate upcoming shows as well. That is the only case for now.
+        # Populate upcoming shows as well.
+        # We need them for the artist profile
         upcoming_event_blocks, showing_event_results, upcoming_num_pages, first, last, search_input = self.search(
             Event, '', results_per_page=60,
             artist_pk=artist_id, date_from=datetime.datetime.today(), search_input=search_input)

@@ -20,36 +20,39 @@ $(document).ready(function() {
 
   /* Handle nav scrolling */
   function handleScrolling(direction) {
-    const maxScrollLeft =
-      $("#a-z-search").get(0).scrollWidth - $("#a-z-search").get(0).clientWidth;
-    let scrollF = setInterval(function() {
-      $("#a-z-search").scrollLeft(
-        $("#a-z-search").scrollLeft() + direction * 30
-      );
-    }, 10);
-    setTimeout(() => {
-      clearInterval(scrollF);
-    }, 120);
-    let scrollS = setInterval(function() {
-      $("#a-z-search").scrollLeft(
-        $("#a-z-search").scrollLeft() + direction * 10
-      );
-    }, 80);
-    setTimeout(() => {
-      clearInterval(scrollS);
-    }, 320);
-    setTimeout(function() {
-      if ($("#a-z-search").scrollLeft() == 0) {
-        $(".scroll-right").css("visibility", "initial");
-        $(".scroll-left").css("visibility", "hidden");
-      } else if (Math.floor($("#a-z-search").scrollLeft()) == maxScrollLeft) {
-        $(".scroll-right").css("visibility", "hidden");
-        $(".scroll-left").css("visibility", "initial");
-      } else {
-        $(".scroll-left").css("visibility", "initial");
-        $(".scroll-right").css("visibility", "initial");
-      }
-    }, 310);
+
+    if ($("#a-z-search").get(0)) {
+      const maxScrollLeft =
+        $("#a-z-search").get(0).scrollWidth - $("#a-z-search").get(0).clientWidth;
+      let scrollF = setInterval(function() {
+        $("#a-z-search").scrollLeft(
+          $("#a-z-search").scrollLeft() + direction * 30
+        );
+      }, 10);
+      setTimeout(() => {
+        clearInterval(scrollF);
+      }, 120);
+      let scrollS = setInterval(function() {
+        $("#a-z-search").scrollLeft(
+          $("#a-z-search").scrollLeft() + direction * 10
+        );
+      }, 80);
+      setTimeout(() => {
+        clearInterval(scrollS);
+      }, 320);
+      setTimeout(function() {
+        if ($("#a-z-search").scrollLeft() == 0) {
+          $(".scroll-right").css("visibility", "initial");
+          $(".scroll-left").css("visibility", "hidden");
+        } else if (Math.floor($("#a-z-search").scrollLeft()) == maxScrollLeft) {
+          $(".scroll-right").css("visibility", "hidden");
+          $(".scroll-left").css("visibility", "initial");
+        } else {
+          $(".scroll-left").css("visibility", "initial");
+          $(".scroll-right").css("visibility", "initial");
+        }
+      }, 310);
+    }
   }
 
   /* Listen for window resize to see if arrows need to be hidden */

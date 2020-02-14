@@ -112,6 +112,7 @@
       initializeSearch();
       $("footer.footer-info").removeClass("active");
 
+      loadingEvents = false;
       $(window).scroll(function () {
         if ($(window).scrollTop() >= $(document).height() - $(window).height() - 200) {
           /* if artists are visible and is mobile (flex-wrap is set) */
@@ -123,7 +124,8 @@
           }
 
           /* if events are visible always load */
-          if ($("#search-content").is(":visible") && moreEvents) {
+          if ($("#search-content").is(":visible") && moreEvents && !loadingEvents) {
+            loadingEvents = true;
             loadMoreEvents('Archived');
           }
         };

@@ -30,7 +30,8 @@ var artistPageNum,
   is_mobile,
   show_event_setTime,
   toggleDatePicker,
-  rightValue;
+  rightValue,
+  loadingEvents;
 
 function incNumPages(mode) {
   if (mode == "Upcoming") {
@@ -290,11 +291,13 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
     data: searchFilters,
     dataType: "json",
     success: function(data) {
+      loadingEvents = false;
       if (callback) {
         callback(data);
       }
     },
     error: function (data) {
+      loadingEvents = false;
       console.log('error');
       console.log(data);
     }
@@ -480,7 +483,7 @@ $(document).ready(function () {
       searchTerm = searchTerm + " " + artistSearch;
     }
 
-    if (instrument && instrument != searchTerm) {
+    if (instrument && searchTerm.toLowerCase().indexOf(instrument.toLowerCase()) === -1) {
       searchTerm = searchTerm + " " + instrument;
     }
 
