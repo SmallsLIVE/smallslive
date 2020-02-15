@@ -181,6 +181,10 @@
 .map-wrapper {
   padding-bottom: 40px;
   @include filter(grayscale(60%));
+
+  @media (max-width: 960px) {
+    width: 100%;
+  }
 }
 //
 //@media (max-width: 740px) {
