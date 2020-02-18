@@ -130,7 +130,7 @@
                   {% endif%}
                   {% csrf_token %}
                   <div class="col-xs-12 store-cart__footer__buttons center">
-                    <a href="#" class="white-border-button checkout-white" onclick="window.history.back()"> Back</a>
+                    <a href="{{ event_url }}" class="white-border-button checkout-white"> Back</a>
                     <button class="white-border-button checkout-white">Confirm</button>
                     <input type="hidden" name="action" value="place_order"/>
                     <input type="hidden" name="payment_method" value="{{ payment_method }}">
