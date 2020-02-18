@@ -119,16 +119,20 @@
           {% endwith %}
 
         <div class="account-settings-info ">
-            <div class="text5">Expiration of archive access</div>
+          {% if user.verified_email %}
             {% if customer_detail.subscription.plan and not cancelled %}
-            <div class="text9 text-grey">There is no expiration date until the monthly pledge is cancelled</div>
+              <div class="text5">Expiration of archive access</div>
+              <div class="text9 text-grey">There is no expiration date until the monthly pledge is cancelled</div>
             {% elif user_archive_access_until %}
-            <div class="text9 text-grey"> {{ user_archive_access_until|date:"m/d/Y" }}</div>
+              <div class="text5">Expiration of archive access</div>
+              <div class="text9 text-grey"> {{ user_archive_access_until|date:"m/d/Y" }}</div>
             {% elif not customer_detail.subscription.plan and not period_end.due  %}
-            <div class="text9 text-grey">{{ period_end.date }}</div>
+              <div class="text5">Expiration of archive access 3</div>
+              <div class="text9 text-grey">{{ period_end.date }}</div>
             {% else %}
-            <div class="text9 text-grey">There is no access to the archive</div>
+              <div class="text9 text-grey">There is no access to the archive</div>
             {% endif %}
+          {% endif %}
         </div>
       </div>
 
@@ -155,7 +159,7 @@
               {% include 'account/billing-change-form.html' %}
             </div>
             <div id="billing-address">
-              {% if user.address_1 or user.address_2 or user.city %}
+              {% if billing_address %}
                 <div class="text9 text-grey">{{ billing_address.line1  }}</div>
                 <div class="text9 text-grey">{{ billing_address.line2 }}</div>
                 <div class="text9 text-grey">{{ billing_address.line4 }}</div>

@@ -20,7 +20,6 @@ class BasketView(basket_views.BasketView):
         if count:
             basket.save()
             if basket.is_empty:
-                print '************************'
                 storage = messages.get_messages(self.request)
                 for _ in storage:
                     pass
@@ -30,6 +29,10 @@ class BasketView(basket_views.BasketView):
                     del storage._loaded_messages[0]
 
         context = super(BasketView, self).get_context_data(**kwargs)
+
+        if basket.has_tickets():
+            event_url = basket.lines.first().product.event_set.event.get_absolute_url()
+            context['event_url'] = event_url
 
         return context
 
