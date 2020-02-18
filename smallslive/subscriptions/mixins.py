@@ -184,8 +184,9 @@ class StripeMixin(object):
         else:
             customer = None
         venue = self.request.basket.get_tickets_venue()
-        if not venue and customer and not self.card_token.startswith('card_'):
-            customer.update_card(self.card_token)
+        if not venue and customer:
+            if not self.card_token.startswith('card_'):
+                customer.update_card(self.card_token)
             charge = customer.charge(
                 Decimal(
                     self.total.incl_tax if self.amount is None else self.amount.incl_tax),
