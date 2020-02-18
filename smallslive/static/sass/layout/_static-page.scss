@@ -95,6 +95,15 @@
       }
     }
   }
+
+  .white-border-button {
+    display: inline;
+    padding-left: 20px;
+    padding-right: 20px;
+    @media (min-width: $screen-sm-max) {
+      display: none;
+    }
+  }
 }
 .static-content {
   @include text4;
