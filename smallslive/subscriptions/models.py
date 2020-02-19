@@ -1,3 +1,4 @@
+from datetime import date
 from dateutil.relativedelta import relativedelta
 from decimal import Decimal
 from django.db import models
@@ -112,7 +113,7 @@ class Donation(models.Model):
         # Calculate expiry date: $10 / month. Remainder: $1 / 3 days.
         # Assuming amount is integer
         # Amount should be >= 10 but we're not restricting that here.
-
+        # Should be capped to the last day of the tax year (Dec. 31st of the current year).
         try:
             amount = int(self.amount)
         except:
@@ -146,6 +147,11 @@ class Donation(models.Model):
             new_expiry_date = new_expiry_date + relativedelta(months=months)
         if days:
             new_expiry_date = new_expiry_date + relativedelta(days=days)
+
+        # Limit the date
+        last_day = date(timezone.now().date().year, 12, 31)
+        if new_expiry_date > last_day:
+            new_expiry_date = last_day
 
         print 'User: ', self.user
         print 'Last expiry date: ', last_expiry_date
