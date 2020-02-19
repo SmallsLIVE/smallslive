@@ -251,7 +251,6 @@ class SearchObject(object):
                     first_name__istartswith=term)
             self.sqs = self.sqs.filter(condition).distinct()
 
-
     def search_artist(self, terms=None,
                       instruments=None, all_sax_instruments=None, partial_instruments=None,
                       first_name=None, last_name=None, partial_name=None, artist_search=None):
@@ -323,17 +322,25 @@ class SearchObject(object):
                                   performers__last_name__iexact=last_name) | \
                                 Q(performers__first_name__iexact=last_name,
                                   performers__last_name__iexact=first_name)
-            elif partial_name:
+            elif partial_name or artist_search:
                 performers_first_name_condition = None
                 performers_last_name_condition = None
                 if partial_name:
                     performers_first_name_condition = Q(performers__first_name__istartswith=partial_name)
                 if artist_search:
-                    performers_first_name_condition &= Q(performers__last_name__istartswith=artist_search)
+                    artist_search_condition = Q(performers__last_name__istartswith=artist_search)
+                    if performers_first_name_condition:
+                        performers_first_name_condition &= artist_search_condition
+                    else:
+                        performers_first_name_condition = artist_search_condition
                 if partial_name:
                     performers_last_name_condition = Q(performers__last_name__istartswith=partial_name)
                 if artist_search:
-                    performers_last_name_condition &= Q(performers__first_name__istartswith=artist_search)
+                    artist_search_condition = Q(performers__first_name__istartswith=artist_search)
+                    if performers_last_name_condition:
+                        performers_last_name_condition &= artist_search_condition
+                    else:
+                        performers_last_name_condition = artist_search_condition
 
                 if performers_first_name_condition and performers_last_name_condition:
                     condition = performers_first_name_condition | performers_last_name_condition
