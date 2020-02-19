@@ -123,11 +123,14 @@ class DonationPreviewView(TemplateView):
             last = self.request.GET.get('last')
             context['last_4'] = last
 
-        try:
-            address = self.request.user.addresses.get(is_default_for_billing=True)
-            context['billing_address'] = address
-        except:
-            pass
+        # billing
+        context['billing_first_name'] = self.request.GET.get('first_name')
+        context['billing_last_name'] = self.request.GET.get('last_name')
+        context['billing_line1'] = self.request.GET.get('line1')
+        context['billing_line2'] = self.request.GET.get('line2')
+        context['billing_city'] = self.request.GET.get('line4')
+        context['billing_state'] = self.request.GET.get('state')
+        context['billing_country'] = self.request.GET.get('country')
 
         return context
 
@@ -263,6 +266,15 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
             self.stripe_token = None
             self.existing_cc = None
 
+    def set_billing_address(self):
+
+        billing_address_form = BillingAddressForm(
+            None, self.request.user, self.request.POST)
+        billing_address_form.fields['billing_option'].required = False
+        # Must be valid or would have failed on the previous step.
+        if billing_address_form.is_valid():
+            billing_address_form.save()
+
     def get_context_data(self, **kwargs):
 
         current_user = self.request.user
@@ -354,6 +366,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         self.set_attributes()
         self.set_product()
         self.set_event()
+        self.set_billing_address()
 
         if self.existing_cc:
             stripe_customer = self.request.user.customer.stripe_customer

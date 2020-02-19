@@ -69,13 +69,13 @@
         <div class="section-title section-title-no-padded">
           <div class="title1">Billing Information</div>
         </div>
-        {% if billing_address %}
+        {% if billing_first_name or billing_last_name %}
           <div class="store-overview__group__textblock">
-            <p>{{ billing_address.name }}</p>
-            <p>{{ billing_address.line1 }}</p>
-            <p>{{ billing_address.line2 }}</p>
-            <p>{{ billing_address.city }}{% if billing_address.state %},  {{ billing_address.state }}{% endif %}</p>
-            <p>{{ billing_address.country }}</p>
+            <p>{{ billing_first_name }} {{ billing_last_name }}</p>
+            <p>{{ billing_line1 }}</p>
+            <p>{{ billing_line2 }}</p>
+            <p>{{ billing_city }}{% if billing_state %},  {{ billing_state }}{% endif %}</p>
+            <p>{{ billing_country }}</p>
           </div>
         {% endif %}
         <div class="store-overview__group__textblock">

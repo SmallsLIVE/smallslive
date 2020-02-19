@@ -1044,11 +1044,19 @@ $(document).ready(function() {
     }
   }
 
+  function getBillingFormValues() {
+    var $billingForm = $mainContainer.find("#custom-billing-address .address");
+    var data = $billingForm.serialize();
+
+    return  data;
+  }
+
   function getDonationPreviewForm() {
     var $step = $mainContainer.find("#supporterStepPreview");
     var url = $step.data("donation-preview-url");
     url = url + "?type=" + selectedData.type + "&amount=" + selectedData.amount;
     url += "&payment_method=" + $("#payment-method").val();
+    url += "&" + getBillingFormValues();
     var cardNumber = $("#card-number").val();
     if (cardNumber) {
       url += "&last=" + cardNumber.substr(cardNumber.length - 4);
