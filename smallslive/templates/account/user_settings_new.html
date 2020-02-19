@@ -80,7 +80,11 @@
           {% endif %}
 
           {% if not user.has_archive_access %}
-            <button onclick="becomeSupporter()" {% if show_email_confirmation_dialog %} disabled {% endif %} class="white-border-button">Become a Supporting Member</button>
+            {% if show_email_confirmation_dialog %}
+              <button onclick="becomeSupporter()" class="white-border-button">Become a Supporting Member</button>
+            {% else %}
+              <button onclick="becomeSupporter()" class="white-border-button">Become a Supporting Member</button>
+            {% endif %}
           {% elif customer_detail.subscription.plan and not cancelled %}
             <div class="flex-row supporter-options">
             <button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>
@@ -92,7 +96,7 @@
         </div>
 
         <div class="account-settings-info ">
-          <a href="/subscriptions/donate" class="white-border-button">Make a One Time Donation</a>
+          <button onclick="makeADonation()" class="white-border-button">Make a One Time Donation</button>
         </div>
         <div class="account-settings-info">
           <div class="text5">Last donation</div>
@@ -274,8 +278,8 @@
       $('#one-time-donation').modal('hide');
     }
   }
-  function becomeSupporter(){
-    inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
+  function becomeSupporter (){
+    var inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}');
 
     if (inactive === 'true'){
       $('#inactive-dialog').modal('show');
@@ -283,5 +287,17 @@
       window.location = '{% url 'become_supporter' %}';
     }
   }
+
+  function makeADonation() {
+    var inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}');
+
+    if (inactive === 'true'){
+      $('#inactive-dialog').modal('show');
+    }else{
+      window.location = '{% url 'donate' %}';
+    }
+
+  }
+
 </script>
 {% endblock %}
