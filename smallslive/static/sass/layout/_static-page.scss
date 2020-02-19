@@ -116,12 +116,16 @@
   justify-content: center;
   &.closed {
     @media (max-width: $screen-sm-max) {
+      height: calc(100vw * .0390625 + 37.5px);
       transition: all 0.6s;
-      max-height: calc(100vw * .0390625 + 37.5px);
     }
   }
   .flex-row {
     width: 100%;
+
+    &.d-flex {
+      height: 100%;
+    }
   }
   strong {
     color: $accent-color;

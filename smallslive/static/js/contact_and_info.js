@@ -33,9 +33,8 @@ $(document).ready(function () {
   });
 
   $('.expand').click(function (e) {
-    var $container = $(e.target).closest('.info-page-container');
+    var $container = $(e.target).closest('article');
     $container.toggleClass('closed');
-    $container.find('article').toggleClass('closed');
     $(e.target).toggleClass('closed');
   });
 
