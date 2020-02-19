@@ -75,9 +75,20 @@
     $('#btn-play-event, .event-overlay').click(function () {
       /* Show 'sign in' modal if user is not logged in. Otherwise, redirect
       to the live stream view if the show is about to start. */
-      var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
-      if (moment() - allowStreamingTime > 0) {
-        window.location = "{{ streaming.event_url }}";
+
+      if (smallsConfig.user.isAuthenticated) {
+        var inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}');
+        if (inactive === 'true') {
+          modal = '#inactive-dialog';
+          $(modal).modal('show');
+        } else {
+          var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
+          if (moment() - allowStreamingTime > 0) {
+            window.location = "{{ streaming.event_url }}";
+          } else {
+            $('#streamingNotAvailableDialog').modal('show');
+          }
+        }
       } else {
         $('#streamingNotAvailableDialog').modal('show');
       }
