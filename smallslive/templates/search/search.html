@@ -27,7 +27,9 @@
 
 {% block content %}
 
-{% include 'inactive_dialog.html' %}
+{% if user.is_authenticated %}
+  {% include 'inactive_dialog.html' %}
+{% endif %}
 {% include 'become_a_supporter_dialog.html' %}
 
 {% if artist_profile %}

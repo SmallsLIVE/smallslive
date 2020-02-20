@@ -1,5 +1,6 @@
 {% if is_event_user_not_confirmed  %}
-  <div class="modal" role="dialog" id="inactive-dialog" aria-hidden="true">
+  <div class="modal" role="dialog" id="inactive-dialog" aria-hidden="true"
+       data-check-account-url="{{ check_account_status_url }}">
     <div class="modal-dialog">
       <div class="modal-content custom-modal no-cancel">
         <a href="#" class="close-button"></a>
@@ -71,8 +72,27 @@
         return false;
       });
 
+      var $inactiveModal = $('#inactive-dialog');
+
+      function checkAccountStatus() {
+        var url = $inactiveModal.data('check-account-url');
+        $.ajax({
+          url: url,
+          success: function (response) {
+            if (response.success && response.data.isVerified) {
+              window.location.reload();
+            } else {
+              setTimeout(checkAccountStatus, 1000);
+            }
+          }
+        });
+      }
+
+      // We need now to poll for a change in the email confirmation status so we
+      // Can reload the page to get the player functionality.
+      checkAccountStatus();
+
       {% if user.is_authenticated and show_email_confirmation_dialog %}
-        var $inactiveModal = $('#inactive-dialog');
         $inactiveModal.modal('show');
         var $closeButton = $inactiveModal.find('.close-button');
         $closeButton.click(function () {

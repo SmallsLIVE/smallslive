@@ -232,15 +232,15 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         else:
             return 0
 
-    @cached_property
+    @property
     def has_institutional_subscription(self):
         return self.institution is not None
 
-    @cached_property
+    @property
     def has_active_institutional_subscription(self):
         return self.institution is not None and self.institution.is_subscription_active()
 
-    @cached_property
+    @property
     def has_active_subscription(self):
         """Checks if a user has an active subscription."""
         return subscriber_has_active_subscription(self)
@@ -262,7 +262,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
             return subscription.current_period_end
 
-    @cached_property
+    @property
     def has_archive_access(self):
         """
             Monthly Pledge: existing  ($10) or new (free amount, min $10)
@@ -280,7 +280,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
                self.has_active_institutional_subscription or \
                self.is_artist
 
-    @cached_property
+    @property
     def get_subscription_plan(self):
         if self.is_staff:
             return {'name': 'Admin', 'type': 'premium'}
@@ -304,26 +304,26 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         else:
             return {'name': 'Live Video Stream Access', 'type': 'free'}
 
-    @cached_property
+    @property
     def get_current_subscription(self):
         if self.has_active_subscription:
             return self.customer.current_subscription
         else:
             return None
 
-    @cached_property
+    @property
     def has_activated_account(self):
         has_verified_email = EmailAddress.objects.filter(user=self,
                                                          verified=True).exists()
         is_social_account = self.socialaccount_set.exists()
         return has_verified_email or is_social_account
 
-    @cached_property
+    @property
     def can_watch_video(self):
         return self.has_activated_account and \
                self.has_archive_access
 
-    @cached_property
+    @property
     def can_listen_to_audio(self):
         return self.has_activated_account and \
                self.has_archive_access

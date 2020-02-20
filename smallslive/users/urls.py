@@ -18,5 +18,6 @@ urlpatterns = patterns('users.views',
     url(r'^signup/complete/', 'signup_complete', name="accounts_signup_complete"),
     url(r'^signup/(?P<plan_name>\w+)/', 'signup_view', name="accounts_signup"),
     url(r'^signup/', 'signup_landing', name="signup_landing"),
+    url(r'^check-account-status/', 'check_account_status', name='check_account_status'),
     url(r'^', include('allauth.urls', app_name="allauth")),
 )

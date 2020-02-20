@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.urlresolvers import reverse
 
 
 def show_modal(request):
@@ -11,7 +12,10 @@ def check_account_status(request):
     user = request.user
 
     if not user.is_authenticated():
-        return {'current_user': user}
+        return {
+            'current_user': user,
+            'check_account_status_url': reverse('check_account_status'),
+        }
 
     session = request.session
 
@@ -25,7 +29,8 @@ def check_account_status(request):
 
     return {
         'current_user': user,
-        'show_email_confirmation_dialog': show
+        'show_email_confirmation_dialog': show,
+        'check_account_status_url': reverse('check_account_status'),
     }
 
 

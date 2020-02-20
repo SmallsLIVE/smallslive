@@ -9,7 +9,9 @@
 {% load crispy_forms_tags %}
 
 {% block event_content %}
-{% include 'inactive_dialog.html' %}
+{% if user.is_authenticated %}
+  {% include 'inactive_dialog.html' %}
+{% endif %}
 {% include 'events/streaming_not_available_dialog.html' %}
 {% include 'events/tickets_dialog.html' %}
 
@@ -90,7 +92,8 @@
           }
         }
       } else {
-        $('#streamingNotAvailableDialog').modal('show');
+        var $modal = $('#becomeMemberDialog');
+        $modal.modal('show');
       }
     });
 

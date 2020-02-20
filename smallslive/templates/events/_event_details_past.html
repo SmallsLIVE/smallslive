@@ -9,7 +9,9 @@
 {% load crispy_forms_tags %}
 
 {% block event_content %}
-{% include 'inactive_dialog.html' %}
+{% if user.is_authenticated %}
+  {% include 'inactive_dialog.html' %}
+{% endif %}
 {% include 'events/live-stream-redirect-dialog.html' %}
 
   {% if event.published_videos or event.published_audio %}

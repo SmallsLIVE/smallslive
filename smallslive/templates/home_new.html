@@ -28,7 +28,9 @@
 {% endblock %}
 
 {% block content %}
-  {% include 'inactive_dialog.html' %}
+  {% if user.is_authenticated %}
+    {% include 'inactive_dialog.html' %}
+  {% endif %}
   {% include 'become_a_supporter_dialog.html' %}
   {% if activation_key %}
     {% include 'artist_registration/set_password_dialog.html' %}

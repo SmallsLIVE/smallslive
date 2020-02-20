@@ -314,6 +314,19 @@ def user_settings_view_new(request):
     })
 
 
+def check_account_status(request):
+    user = request.user
+    is_authenticated = user.is_authenticated()
+    data = {
+        'isAuthenticated': is_authenticated,
+        'isVerified': is_authenticated and user.has_activated_account,
+    }
+    response = json.dumps({'success': True,
+                           'data': data})
+
+    return HttpResponse(response, content_type="application/json")
+
+
 class UserTaxLetterHtml(TemplateView):
 
     template_name = 'account/tax-letter.html'

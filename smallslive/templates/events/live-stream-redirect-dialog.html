@@ -2,7 +2,7 @@
      tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
   <div class="modal-dialog medium">
-    <div class="modal-content custom-modal">
+    <div class="modal-content custom-modal{% if not finished_next_event %} no-cancel{% endif %}">
       <a href="#" class="close-button"></a>
 
       <div class="modal-body" style="text-align: center;">
