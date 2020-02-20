@@ -34,6 +34,7 @@ $(document).ready(function () {
 
   $('.expand').click(function (e) {
     var $container = $(e.target).closest('article');
+
     $container.toggleClass('closed');
     $(e.target).toggleClass('closed');
   });
