@@ -123,9 +123,6 @@
   .flex-row {
     width: 100%;
 
-    &.d-flex {
-      height: 100%;
-    }
   }
   strong {
     color: $accent-color;
@@ -196,7 +193,9 @@
   @include filter(grayscale(60%));
 
   @media (max-width: 960px) {
+    position: relative;
     width: 100%;
+    z-index: 0;
   }
 }
 //
@@ -252,6 +251,8 @@
         width: 100%
       }
     }
+    position: relative;
+    z-index: 999;
   }
 }
 
