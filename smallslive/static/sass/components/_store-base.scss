@@ -1,3 +1,5 @@
+$tablet-break: 650px;
+
 .store-header {
   padding: 0 30px;
   text-align: left;
@@ -2683,6 +2685,12 @@ img.defineImageRatio {
         min-height: 46.1vw;
       }
 
+      @media (min-width: $tablet-break) {
+        max-width: 31.1vw;
+        min-width: 31.1vw;
+        min-height: 31.1vw;
+      }
+
       @media (min-width: $screen-md) {
         max-width: 22.85vw;
         min-width: 22.85vw;
@@ -2701,6 +2709,11 @@ img.defineImageRatio {
         max-width: 46.1vw;
         min-width: 46.1vw;
         font-size: 13px;
+      }
+
+      @media (min-width: $tablet-break) {
+        max-width: 31.1vw;
+        min-width: 31.1vw;
       }
 
       @media (min-width: $screen-md) {
@@ -2741,6 +2754,11 @@ img.defineImageRatio {
         min-width: 46.1vw;
         font-size: 13px;
         line-height: 13px;
+      }
+
+      @media (min-width: $tablet-break) {
+        max-width: 31.1vw;
+        min-width: 31.1vw;
       }
 
       @media (min-width: $screen-md) {
@@ -2807,6 +2825,12 @@ img.defineImageRatio {
     @media (min-width: 0px) {
       height: 46.1vw;
       width: 46.1vw;
+    }
+
+    @media (min-width: $tablet-break) {
+      height: 31.1vw;
+      min-height: 31.1vw;
+      width: 31.1vw;
     }
 
     @media (min-width: $screen-md) {
