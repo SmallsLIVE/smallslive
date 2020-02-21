@@ -125,7 +125,7 @@
           {% endwith %}
 
         <div class="account-settings-info ">
-          {% if user.verified_email %}
+          {% if user.has_activated_account %}
             {% if customer_detail.subscription.plan and not cancelled %}
               <div class="text5">Expiration of archive access</div>
               <div class="text9 text-grey">There is no expiration date until the monthly pledge is cancelled</div>
