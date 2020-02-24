@@ -110,6 +110,11 @@ class Donation(models.Model):
             return u'anonymous: {} - {}'.format(self.amount, self.date)
 
     def get_new_expiry_date(self):
+
+        # Currently we're debating weather give the user access to the last
+        # day of the year regardless donation amount or accrue time according
+        # to it.
+
         # Calculate expiry date: $10 / month. Remainder: $1 / 3 days.
         # Assuming amount is integer
         # Amount should be >= 10 but we're not restricting that here.
@@ -150,8 +155,12 @@ class Donation(models.Model):
 
         # Limit the date
         last_day = date(timezone.now().date().year, 12, 31)
-        if new_expiry_date > last_day:
-            new_expiry_date = last_day
+
+        # Spike deprecated this for the time being.
+        # if new_expiry_date > last_day:
+
+        # Make the last day of the year the last day of access
+        new_expiry_date = last_day
 
         print 'User: ', self.user
         print 'Last expiry date: ', last_expiry_date
