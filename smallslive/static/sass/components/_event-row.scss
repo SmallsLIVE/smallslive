@@ -210,6 +210,19 @@ $event-row-padding: 3.5vw;
     width: 3vw;
     pointer-events: none;
     z-index: 1000;
+
+    @media (max-width: $screen-sm-max) {
+      bottom: 5px;
+      left: calc(50% - 1.5vw);
+      height: 10px;
+      right: auto;
+      top: auto;
+
+      img {
+        height: 30px;
+        width: 30px;
+      }
+    }
   }
 }
 
@@ -243,6 +256,10 @@ $event-row-padding: 3.5vw;
   @media (max-width: $screen-sm-max) {
     overflow-y: hidden;
     overflow-x: auto;
+
+    &.artists {
+      overflow-x: hidden;
+    }
   }
 }
 

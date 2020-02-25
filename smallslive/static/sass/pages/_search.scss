@@ -1838,6 +1838,13 @@ body.headers-1 {
 }
 @media (max-width: $screen-sm-max) {
   .calendar-filters .select-selected {
+    height: 5vw;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 650px) {
+  .calendar-filters .select-selected {
     height: 8vw;
     font-size: 12px;
   }
