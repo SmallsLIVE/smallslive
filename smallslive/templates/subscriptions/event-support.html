@@ -14,6 +14,7 @@
 
 {% block confirmation_modals %}
   {% include 'subscriptions/popups/event_support_one_time_selection_confirmation_dialog.html' %}
+  {% include 'subscriptions/popups/supporter_gift_selection_confirmation_dialog.html' %}
 
   <div class="modal fade" id="donateBitcoinDialog" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
@@ -69,28 +70,45 @@
         All tax information is available from your account settings.
       </div>
 //-->
-      <div class="flex-column items-center  supporter-plan-input" id="one-time-input">
-        <div class="section-title-centered section-title-no-padded section-title__event">
-          <div class="title1">Artist Sponsorship</div>
-        </div>
+      <p class="text9" style="padding: 0 10%">This is a 100% tax-deductable donation to the SmallsLIVE Foundation.
+        50% of your donation will be given directly to the following musicians:
+        {{ comma_separated_artists }}.
+      </p>
+      <div class="text9">
+        Please choose one of the following:
+      </div>
 
-        <p class="text9">This is a 100% tax-deductable donation to the SmallsLIVE Foundation.
-          50% of your donation will be given directly to the following musicians:
-          {{ comma_separated_artists }}.
-        </p>
+      <div class="button-row button-row-margin supporter-type-select">
+        <div class="store__form__selection__option">
+          <button class="select-supporter-type-toggle active" data-id="one-time">
+            One Time Donation
+          </button>
+        </div>
+        <div class="store__form__selection__option">
+          <button class="select-supporter-type-toggle" data-id="gift">
+            Choose a Gift
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-column items-center supporter-plan-input" id="one-time-input">
+
         <div id="supportPledge"
              class="donation-container button-row button-row-big pledge"
-             data-dialog-type="event">
+             data-dialog-type="event" style="margin-top: 0;">
+          <div class="section-title section-title-no-padded">
+            <div class="title1">One Time Donation</div>
+          </div>
           <button class="donation-button" value=10>$10</button>
           <button class="donation-button" value=20>$20</button>
           <button class="donation-button" value=100>$100</button>
           <div class="flex-column">
-            <div class="flex-row custom-out">
+          <div class="flex-row custom-out">
               <div class="custom-input text4">
                 <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" max="99999" value="supporter-yearly-pledge">
                 <label><div>ENTER  AMOUNT<br>($10 minimum)</div></label>
               </div>
-              <button class="confirm-custom test1" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
+              <button class="confirm-custom" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
                 <span class="bar bar-1"></span>
                 <span class="bar bar-2"></span>
               </button>
@@ -99,11 +117,13 @@
           <label class="hidden accent-color min" style="margin-top:20px;">
             $10 is the minimum donation
           </label>
-          <label class="hidden accent-color max" style="margin-top:20px;">
+          <label class="hidden accent-color max">
             If you’d like to make a donation of $100,000 or greater, please contact us directly.
           </label>
         </div>
       </div>
+
+      {% include 'subscriptions/supporter_gift_selection.html' with hidden=True no_description=True %}
     </div>
 
     <div id="supporterStepBilling" class="supporter-step" style="display: none"

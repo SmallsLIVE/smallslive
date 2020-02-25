@@ -975,6 +975,8 @@ function updateArchiveShows(data) {
     var $eventSubHeaderFooter = "#archived-event-subheader-footer";
     var $totals = $("#archived-event-totals");
     $totals.html(data.showingResults);
+    $("#date-from-label").html(data.firstEventDate);
+    $("#date-to-label").html(data.lastEventDate);
 
     if (apply || eventFilter) {
       apply = false;
@@ -1007,11 +1009,5 @@ function updateArchiveShows(data) {
     $(selector).toggle(data.numPages != eventPageNum);
     $("#number-of-shows-label").text(data.showingResults);
 
-    if (datePickerFromDate) {
-      $("#date-from-label").text(formatDate(datePickerFromDate));
-    }
-    if (datePickerToDate) {
-      $("#date-to-label").text(formatDate(datePickerToDate));
-    }
   }
 }

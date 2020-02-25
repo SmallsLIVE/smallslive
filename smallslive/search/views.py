@@ -78,6 +78,8 @@ class MainSearchView(View, SearchMixin):
         referer = request.META.get('HTTP_REFERER', '')
 
         date_from, date_to = self.get_filter_dates(referer)
+        first = None
+        last = None
 
         if entity == 'artist':
 
@@ -123,8 +125,12 @@ class MainSearchView(View, SearchMixin):
         data = {
             'template': temp,
             'showingResults': showing_results,
-            'numPages': num_pages
+            'numPages': num_pages,
         }
+
+        if last and first:
+            data['firstEventDate'] = last.get_date().strftime('%m/%d/%Y'),
+            data['lastEventDate'] = first.get_date().strftime('%m/%d/%Y')
 
         return JsonResponse(data)
 

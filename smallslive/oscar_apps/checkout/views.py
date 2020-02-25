@@ -255,11 +255,18 @@ class SuccessfulOrderMixin(object):
                 success_url += '?flow_type=' + flow_type
                 # remove flow_type from session
                 del self.request.session['flow_type']
+                if 'event_id' in self.request.session:
+                    del self.request.session['event_id']
+                    del self.request.session['event_slug']
 
                 sl_utils.clean_messages(self.request)
 
                 if self.payment_id:
                     success_url += '&payment_id=' + self.payment_id
+
+                if self.event_id:
+                    success_url += '&event_id=' + self.event_id
+                    success_url += '&event_slug=' + self.event_slug
 
             response = http.JsonResponse({'success_url': success_url})
         else:
@@ -296,6 +303,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         self.amount = None
         self.card_token = None
         self.event_id = None
+        self.event_slug = None
         self.order = None
         self.payment_id = None
         self.product_id = None
@@ -523,14 +531,23 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
     def handle_place_order_submission(self, request):
 
         payment_method = request.POST.get('payment_method')
-        flow_type = request.POST.get('flow_type')
-        submission = self.build_submission()
-        submission['payment_kwargs']['payment_method'] = payment_method
+        self.event_id = request.POST.get('event_id')
+        self.event_slug = request.POST.get('event_slug')
+        if self.event_id:
+            # Use session to retrieve parameters after PayPal payment redirect.
+            # Could be stored on Order but that would mean adding event_id to all orders.
+            # PayPal has no mechanism to return parameters.
+            request.session['event_id'] = self.event_id
+            request.session['event_slug'] = self.event_slug
 
+        flow_type = request.POST.get('flow_type')
         if flow_type:
             # Set flow_type in session b/c there's no easy way
             # of passing it through the order.
             request.session['flow_type'] = flow_type
+
+        submission = self.build_submission()
+        submission['payment_kwargs']['payment_method'] = payment_method
 
         return self.submit(**submission)
 
@@ -843,6 +860,11 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         Confirm the payment and place the order
         """
 
+        # Get flow type from session
+        flow_type = self.request.session.get('flow_type')
+        event_id = self.request.session.get('event_id')
+        event_slug = self.request.session.get('event_slug')
+
         try:
             self.handle_payment()
         except UnableToTakePayment as e:
@@ -858,16 +880,22 @@ class ExecutePayPalPaymentView(AssignProductMixin,
 
             return self.render_payment_details(
                 self.request, error=error_msg)
+        if event_id:
+            del self.request.session['event_id']
+            del self.request.session['event_slug']
 
-        # Get flow type from session
-        flow_type = self.request.session.get('flow_type')
         if flow_type:
-
+            del self.request.session['flow_type']
             sl_utils.clean_messages(self.request)
 
-            return http.HttpResponseRedirect(reverse(
+            redirect_url = reverse(
                 'become_supporter_complete') + '?payment_id={}&flow_type={}'.format(
-                self.payment_id, flow_type))
+                self.payment_id, flow_type)
+            if event_id:
+                redirect_url += '&event_id={}&event_slug={}'.format(
+                    event_id, event_slug)
+
+            return http.HttpResponseRedirect(redirect_url)
         else:
             return http.HttpResponseRedirect(reverse(
                 'checkout:thank-you') + '?payment_id={}'.format(self.payment_id))

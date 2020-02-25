@@ -474,6 +474,14 @@ $(document).ready(function() {
     $(this).append(
       $('<input type="hidden" name="product_id" />').val(productId)
     );
+    var eventId = $mainContainer.find("#supporterSteps").data("event-id");
+    var eventSlug = $mainContainer.find("#supporterSteps").data("event-slug");
+    $(this).append(
+      $('<input type="hidden" name="event_id" />').val(eventId)
+    );
+    $(this).append(
+      $('<input type="hidden" name="event_slug" />').val(eventSlug)
+    );
 
     $.ajax({
       url: $(this).attr("action"),
@@ -778,7 +786,7 @@ $(document).ready(function() {
     var tax = 0;
     var priceInt = parseInt(price.substring(1).replace(/,/g, ""));
     if (cost && cost != "None" && cost != "0.00") {
-      tax = "$ " + (priceInt - parseInt(cost)).toFixed(2).toString();
+      tax = "$" + (priceInt - parseInt(cost)).toFixed(2).toString();
     } else if (cost == "None" || cost == "0.00") {
       tax = "100%";
     }

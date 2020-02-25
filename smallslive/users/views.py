@@ -253,6 +253,7 @@ def user_settings_view_new(request):
             customer = request.user.customer
         except:
             customer = None
+
         user_archive_access_until = None
         if request.user.has_archive_access:
             user_archive_access_until = request.user.get_archive_access_expiry_date()

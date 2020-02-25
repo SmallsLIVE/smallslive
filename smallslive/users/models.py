@@ -266,7 +266,8 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     def has_archive_access(self):
         """
             Monthly Pledge: existing  ($10) or new (free amount, min $10)
-            Donations: min $10. $100 /year, $10/month, $1/day
+            Donations: min $10. $100 /year, $10/month, $1/day ** Spike  has new requested full access
+            to the tax year regardless donation.
             VIPs
             Institutional Subscriptions
             Artists

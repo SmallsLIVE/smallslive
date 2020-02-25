@@ -315,8 +315,7 @@ class SearchObject(object):
                 if search_description:
                     condition |= Q(title__iucontains=first_name) | \
                                  Q(description__iucontains=first_name) | \
-                                 Q(title__iucontains=last_name) | \
-                                 Q(description__iucontains=last_name)
+                                 Q(title__iucontains=last_name)
                 else:
                     condition = Q(performers__first_name__iexact=first_name,
                                   performers__last_name__iexact=last_name) | \
@@ -346,8 +345,7 @@ class SearchObject(object):
                     condition = performers_first_name_condition | performers_last_name_condition
 
                 if not instruments_condition and not artist_search:
-                    desc_condition = Q(title__iucontains=partial_name) | \
-                                     Q(description__iucontains=partial_name)
+                    desc_condition = Q(title__iucontains=partial_name)
                     if condition:
                         condition |= desc_condition
                     else:
@@ -477,7 +475,10 @@ class SearchObject(object):
                 instruments_conditions, names_condition)
         else:
             if names_condition:
-                self.sqs = self.sqs.filter(names_condition)
+                if leader_condition:
+                    self.sqs = self.sqs.filter(leader_condition, names_condition)
+                else:
+                    self.sqs = self.sqs.filter(names_condition)
 
         # Filter by number of performers (No filter applied yet if # performers provided)
         if number_of_performers:
