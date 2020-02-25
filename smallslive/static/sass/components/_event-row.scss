@@ -302,7 +302,7 @@ $event-row-padding: 3.5vw;
     @media (max-width: $screen-md){
       height: calc(100% - 11vw);
     }
-    @media (max-width: 768px){
+    @media (max-width: 650px){
       height: calc(100% - 14vw);
     }
   }
@@ -353,7 +353,7 @@ $event-row-padding: 3.5vw;
       }
     }
 
-    @media (max-width: 768px){
+    @media (max-width: 650px){
       height: 14vw;
     }
 
@@ -374,7 +374,7 @@ $event-row-padding: 3.5vw;
         text-decoration: underline;
       }
 
-      @media (max-width: $screen-sm) {
+      @media (max-width: 650px) {
         &.title5 {
           padding-right: 10px;
           font-size: 2.5vw;
@@ -479,7 +479,7 @@ $event-row-padding: 3.5vw;
         margin: 0;
       }
 
-      @media (max-width: $screen-sm) {
+      @media (max-width: 650px) {
         .event-info-title {
           font-size: 4.5vw;
           line-height: 4.5vw;
@@ -681,8 +681,12 @@ $event-row-padding: 3.5vw;
       @include event-card($live-card-width-tablet, $live-card-width-tablet);
     }
 
-    @media (max-width: $screen-sm-max) {
-      @include event-card($live-card-width-mobile, $live-card-width-mobile);
+    @media (max-width: $screen-sm-max)  and (min-width: 651px) {
+      @include event-card($live-card-width-tablet, $live-card-width-tablet);
+    }
+
+    @media (max-width: 650px) {
+      @include event-card($regular-card-width-tablet, $regular-card-width-tablet);
     }
   }
 }
@@ -714,6 +718,9 @@ $event-row-padding: 3.5vw;
   //  }
   }
 
+  @media (max-width: $screen-sm) {
+    height: calc(67vw * 0.64 - 100px);
+  }
   //@media (min-width: 768px) and (max-width: 960px) {
   //  height: 350px;
   //  a .event-card .event-picture-container .picture-border .event-picture {
@@ -721,7 +728,7 @@ $event-row-padding: 3.5vw;
   //  }
   //}
 
-  @media (max-width: $screen-sm) {
+  @media (max-width: 650px) {
     height: calc(90vw * 0.64 - 60px);
     min-height: 200px;
 //    a .event-card .event-picture-container .picture-border .event-picture {
@@ -781,6 +788,10 @@ $event-row-padding: 3.5vw;
   }
 
   @media (max-width: $screen-sm-max) {
+    @include event-card(21.1vw, 21.1vw);
+  }
+
+  @media (max-width: 650px) {
     @include event-card($regular-card-width-mobile, $regular-card-width-mobile);
   }
 }
@@ -848,10 +859,10 @@ $event-row-padding: 3.5vw;
   top: 15px;
 
   @media (max-width: 960px) {
-    font-size: 18px;
+    font-size: 13px;
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 650px) {
     font-size: 16px;
   }
 

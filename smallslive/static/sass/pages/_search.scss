@@ -433,6 +433,12 @@ body.headers-1 {
           vertical-align: top;
         }
 
+        @media (max-width: 960px) and (min-width: 650px) {
+          font-size: 1.5vw;
+          height: 5vw;
+          margin-top: 0;
+        }
+
         @media (max-width: 420px) {
           height: 13vw;
           margin-top: 0;
@@ -1448,6 +1454,11 @@ body.headers-1 {
       &.caret {
         margin-right: 0;
       }
+    }
+
+    @media (max-width: 960px) and (min-width: 650px) {
+      font-size: 1.5vw;
+      height: 5vw;
     }
 
     @media (max-width: 420px) {

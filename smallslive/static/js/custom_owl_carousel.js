@@ -26,7 +26,7 @@ $(document).ready(function () {
           stagePadding: controlButtonWidth,
         },
         650:{
-          items: 3,
+          items: 2,
           stagePadding: controlButtonWidth,
         },
         961:{
