@@ -124,7 +124,7 @@ class EventQuerySet(models.QuerySet):
         ).exclude(pk=event.pk)
 
         leader = event.leader
-        total_results = 10
+        total_results = 25
         if leader:
             leader_is_leader = (
                 Q(artists_gig_info__is_leader=True) &
