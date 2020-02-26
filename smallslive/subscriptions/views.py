@@ -24,6 +24,7 @@ from oscar.core.loading import get_class
 from artists.models import Artist
 from events.models import Event
 from users.models import SmallsUser
+from users.utils import custom_send_receipt
 from subscriptions.models import Donation
 from .forms import PlanForm, ReactivateSubscriptionForm
 from .mixins import PayPalMixin, StripeMixin
@@ -168,6 +169,9 @@ class ExecutePayPalPaymentView(PayPalMixin, View):
         if donation.event_id:
             url += '&flow_type=event_support&event_id=' + \
                 str(donation.event_id)
+
+        custom_send_receipt(receipt_type='one_time',
+                            amount=donation.amount, user=donation.user)
 
         return redirect(url)
 
