@@ -21,6 +21,7 @@ from oscar_apps.partner.strategy import Selector
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from oscar.apps.payment.models import SourceType, Source
 from oscar.core.loading import get_class
+from artists.models import Artist
 from events.models import Event
 from users.models import SmallsUser
 from subscriptions.models import Donation
@@ -188,12 +189,30 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         self.existing_cc = None
         self.flow_type = ''
         self.plan_type = None
+        self.artist_id = None
+        self.artist_full_name = None
         self.product_id = None
         self.product_title = ''
         self.stripe_token = None
         self.tickets_type = None
         self.paypal_credit_card = None
         super(BecomeSupporterView, self).__init__(*args, **kwargs)
+
+    def get_artist_context(self):
+
+        artist_id = self.request.GET.get('artist_id')
+        if not artist_id:
+            return {}
+        full_name = Artist.objects.get(pk=artist_id).full_name
+        context = {
+            'artist_id': artist_id,
+            'full_name': full_name
+        }
+
+        self.artist_id = artist_id
+        self.artist_full_name = full_name
+
+        return context
 
     def get_product_context(self):
         product_id = self.request.GET.get('product_id')
@@ -238,6 +257,15 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         self.event_title = title
 
         return context
+
+    def set_artist(self):
+        artist_id = self.request.POST.get('artist_id')
+        if not artist_id:
+            return
+
+        artist = Artist.objects.get(pk=artist_id)
+        self.artist_id = artist_id
+        self.artist_full_name = artist.full_name()
 
     def set_event(self):
         event_id = self.request.POST.get('event_id')
@@ -286,6 +314,8 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         context['form_action'] = reverse('become_supporter')
         context['flow_type'] = self.request.GET.get(
             'flow_type', "become_supporter")
+        artist_context = self.get_artist_context()
+        context.update(artist_context)
         product_context = self.get_product_context()
         context.update(product_context)
         event_context = self.get_event_context()
@@ -364,6 +394,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
     def post(self, request, *args, **kwargs):
 
         self.set_attributes()
+        self.set_artist()
         self.set_product()
         self.set_event()
         self.set_billing_address()
@@ -385,6 +416,8 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                 if self.event_id:
                     url += '&event_id=' + self.event_id
                     url += '&event_slug=' + self.event_slug
+                if self.artist_id:
+                    url += '&artist_id=' + self.artist_id
 
                 print 'Redirect URL: ', url
 
@@ -513,6 +546,10 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
             context['comma_separated_leaders'] = product.get_leader_strings()
             context['album_product'] = product
 
+        artist_id = self.request.GET.get('artist_id')
+        if artist_id:
+            context['artist'] = Artist.objects.get(pk=artist_id)
+
         if not payment_id or not source:
             context['error'] = 'We could not find your payment reference. Contact our support'
 
@@ -552,6 +589,26 @@ class DonateView(BecomeSupporterView):
         return context
 
 donate = DonateView.as_view()
+
+
+class ArtistSupportView(BecomeSupporterView):
+
+    template_name = 'subscriptions/artist-support.html'
+
+    def get_context_data(self, **kwargs):
+
+        context = super(ArtistSupportView, self).get_context_data(**kwargs)
+        context['flow_type'] = 'artist_support'
+
+        context['payment_info_url'] = reverse('payment_info')
+        context['donation_preview_url'] = reverse('donation_preview')
+        context['artist_id'] = self.artist_id
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+
+        return context
+
+
+artist_support = ArtistSupportView.as_view()
 
 
 class EventSupportView(BecomeSupporterView):

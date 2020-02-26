@@ -482,6 +482,10 @@ $(document).ready(function() {
     $(this).append(
       $('<input type="hidden" name="event_slug" />').val(eventSlug)
     );
+    var artistId = $mainContainer.find("#supporterSteps").data("artist-id");
+    $(this).append(
+      $('<input type="hidden" name="artist_id" />').val(artistId)
+    );
 
     $.ajax({
       url: $(this).attr("action"),

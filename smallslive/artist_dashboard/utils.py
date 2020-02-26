@@ -50,8 +50,17 @@ def donations_data_for_date_period(start_date, end_date, metrics):
 
     total_donations = 0
 
+    # Donations to artists
+    # Total amount to artist -> take 0%
+    donations_sqs = Donation.objects.filter(date__gte=start_date, date__lt=end_date,
+                                            confirmed=True, artist_id__isnull=False, amount__gt=0)
+    for donation in donations_sqs:
+        amount = donation.amount
+        total_donations += amount
+        metrics['metrics_info'][donation.artist_id]['donations'] += amount
+
     # Donations to events
-    # Total amount to event -> take 100% -> divide by performers
+    # Total amount to event -> take 0% -> divide by performers
 
     donations_sqs = Donation.objects.filter(date__gte=start_date, date__lt=end_date,
                                             confirmed=True, event_id__isnull=False, amount__gt=0)

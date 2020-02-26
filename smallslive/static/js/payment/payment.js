@@ -14,29 +14,26 @@ function renderCardAnimation(selector) {
 function startStripePayment($form, action_url, completeSubpage) {
   console.log('Send Stripe API Request ->');
   var flowType = $mainContainer.find("#supporterSteps").data("flow");
-      // Insert the token into the form so it gets submitted to the server
-  // and submit
   $form.append(
     $('<input type="hidden" name="flow_type" />').val(flowType)
   );
 
+  var artistId = $mainContainer.find("#supporterSteps").data("artist-id");
+  $form.append(
+    $('<input type="hidden" name="artist_id" />').val(artistId)
+  );
+
   var productId = $mainContainer.find("#supporterSteps").data("product-id");
-      // Insert the token into the form so it gets submitted to the server
-  // and submit
   $form.append(
     $('<input type="hidden" name="product_id" />').val(productId)
   );
 
   var eventId = $mainContainer.find("#supporterSteps").data("event-id");
-      // Insert the token into the form so it gets submitted to the server
-  // and submit
   $form.append(
     $('<input type="hidden" name="event_id" />').val(eventId)
   );
 
   var eventSlug = $mainContainer.find("#supporterSteps").data("event-slug");
-      // Insert the token into the form so it gets submitted to the server
-  // and submit
   $form.append(
     $('<input type="hidden" name="event_slug" />').val(eventSlug)
   );

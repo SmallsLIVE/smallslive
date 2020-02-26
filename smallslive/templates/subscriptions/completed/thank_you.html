@@ -70,6 +70,12 @@
           <span class='accent-color'>Your support benefits this artist and our mission.</span>
           {% endif %}
         </p>
+      {% elif flow_type == 'artist_support' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for your support of the smallslive foundation for jazz arts and education as well as {{ artist.full_name }}.
+          <br>
+          <span class='accent-color'>Your support benefits this artist and our mission.</span>
+        </p>
       {% endif %}
     </div>
   </div>
@@ -99,6 +105,10 @@
   {% elif flow_type == 'event_support' %}
     <a href="{% url 'event_detail' event.id event.slug %}">
       <button>Return to Event</button>
+    </a>
+  {% elif flow_type == 'artist_support' %}
+    <a href="{% url 'search' %}?artist_pk={{ artist.pk }}">
+      <button>Return to artist</button>
     </a>
   {% endif %}
 

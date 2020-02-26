@@ -1,0 +1,171 @@
+{% extends "subscriptions/contribute-flow.html" %}
+{% load static from staticfiles %}
+{% load full_static %}
+{% load djstripe_tags %}
+{% load reviews_tags %}
+{% load thumbnail %}
+{% load i18n %}
+{% load display_tags %}
+{% load staticfiles %}
+{% load purchase_info_tags %}
+{% load currency_filters %}
+{% load thumbor_tags %}
+{% load basket_tags %}
+
+{% block confirmation_modals %}
+  {% include 'subscriptions/popups/event_support_one_time_selection_confirmation_dialog.html' %}
+  {% include 'subscriptions/popups/supporter_gift_selection_confirmation_dialog.html' %}
+
+  <div class="modal fade" id="donateBitcoinDialog" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content custom-modal">
+        <a href="#" class="close-button"></a>
+        <div class="modal-body">
+          <p class="title2 accent-color title">Thank you for your support</p>
+            <p class="title-big subtitle"></p>
+            <p class="text9 text">
+              The SmallsLIVE Foundation accepts donations in bitcoin. The SmallsLIVE Foundation bitcoin wallet is -> WALLET
+            </p>
+            <p class="text9 text">
+              Donation in bitcoin is tax deductible. Your tax deduction will be equal to the fair market value of the donated bitcoin at the time of donation.
+            </p>
+            <p class="text9 text">
+              To receive documentation of your donation, please contact us at <a href="foundation@smallslive.com">foundation@smallslive.com</a> with your intention to donate in bitcoin.
+              We will contact you directly with a confirmation of the transfer and a receipt for your tax purposes.
+            </p>
+          <div class="text4 text-centered" style="display: flex; justify-content: center;">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block flow_title %}
+  <p class="text2 accent-color">You are Sponsoring "{{ event.title }}" {{ event.get_date|date:'m/d/Y' }}</p>
+{% endblock %}
+
+{% block flow_steps %}
+  <div id="supporterSteps"
+       class="button-row button-row-margin button-row-no-hover"
+       data-flow="artist_support"
+       data-artist-id="{{ artist_id }}">
+    {% if not completed %}
+      <div class="step-button active"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+    {% endif %}
+  </div>
+  {% if not completed %}
+    <div id="supporterStep" class="supporter-step hidden"></div>
+
+    <div id="supporterStepSelectType" class="supporter-step">
+<!--
+      <div class="text9">You are
+        making a tax deductable donation
+        to the SmallsLIVE Foundation for Jazz Arts and Education.<br>
+        All tax information is available from your account settings.
+      </div>
+//-->
+      <p class="text9" style="padding: 0 10%">This is a 100% tax-deductable donation to the SmallsLIVE Foundation.
+        50% of your donation will be given directly to the following musicians:
+        {{ comma_separated_artists }}.
+      </p>
+      <div class="text9">
+        Please choose one of the following:
+      </div>
+
+      <div class="button-row button-row-margin supporter-type-select">
+        <div class="store__form__selection__option">
+          <button class="select-supporter-type-toggle active" data-id="one-time">
+            One Time Donation
+          </button>
+        </div>
+        <div class="store__form__selection__option">
+          <button class="select-supporter-type-toggle" data-id="gift">
+            Choose a Gift
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-column items-center supporter-plan-input" id="one-time-input">
+
+        <div id="supportPledge"
+             class="donation-container button-row button-row-big pledge"
+             data-dialog-type="event" style="margin-top: 0;">
+          <div class="section-title section-title-no-padded">
+            <div class="title1">One Time Donation</div>
+          </div>
+          <button class="donation-button" value=10>$10</button>
+          <button class="donation-button" value=20>$20</button>
+          <button class="donation-button" value=100>$100</button>
+          <div class="flex-column">
+          <div class="flex-row custom-out">
+              <div class="custom-input text4">
+                <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" max="99999" value="supporter-yearly-pledge">
+                <label><div>ENTER  AMOUNT<br>($10 minimum)</div></label>
+              </div>
+              <button class="confirm-custom" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
+                <span class="bar bar-1"></span>
+                <span class="bar bar-2"></span>
+              </button>
+            </div>
+          </div>
+          <label class="hidden accent-color min" style="margin-top:20px;">
+            $10 is the minimum donation
+          </label>
+          <label class="hidden accent-color max">
+            If you’d like to make a donation of $100,000 or greater, please contact us directly.
+          </label>
+        </div>
+      </div>
+
+      {% include 'subscriptions/supporter_gift_selection.html' with hidden=True no_description=True %}
+    </div>
+
+    <div id="supporterStepBilling" class="supporter-step" style="display: none"
+         data-payment-info-url="{{ payment_info_url }}"
+         data-payment-info-pending-url="{% url 'supporter_pending' %}"
+         data-payment-info-complete-url="{% url 'become_supporter' %}">
+    </div>
+
+    <div id="supporterStepShipping" class="supporter-step" style="display: none">
+
+    </div>
+
+    <div id="supporterStepPreview" class="supporter-step" style="display: none"
+         data-donation-preview-url="{{ donation_preview_url }}">
+
+    </div>
+
+
+  {% endif %}
+
+{% endblock %}
+
+{% block flow_payment %}
+{% endblock %}
+
+
+{% block flow_confirm %}
+  <button id="backButton" class="button-bordered">Back</button>
+  <button id="confirmButton" data-hide='true' class="button-bordered">Confirm</button>
+{% endblock %}
+
+{% block extra_js %}
+  {{ block.super }}
+  <script>
+
+    var flow = "event_support";
+    var type = "one-time";
+    var step = "SelectType";
+
+    $(document).ready(function () {
+      setSelected(flow, type, 0, step);
+      checkConfirmButton();
+    });
+
+  </script>
+{% endblock %}

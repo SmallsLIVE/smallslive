@@ -2,6 +2,8 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
+{% include 'subscriptions/popups/artist_support_confirmation_dialog.html' %}
+
 <div  class="content-centered clearfix" style="width: 100%;">
   <div class="artist-search-profile-bio-buttons__container hidden-xs hidden-sm">
     <div class="artist-search-profile-bio-buttons flex-row">
@@ -52,6 +54,7 @@
         {% else %}
             {% include 'partials/search_artist_profile_picture.html' with photo_url="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" crop_box=artist.photo_crop_box %}
         {% endif %}
+        <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">sponsor</button>
       </div>
       <div class="flex-column white-line-right">
         <div>
@@ -68,22 +71,22 @@
         </div>
         <div class="white-line-bottom medium hidden-xs hidden-md hidden-sm"></div>
         <div class="artist-details__container mobile-padding">
-        {% if artist.public_email %}
-          <div class="artist-details-email">
-            <p class="text4 text-uppercase">Email: <a href="mailto:{{ artist.public_email }}">{{ artist.public_email }}</a></p>
+          {% if artist.public_email %}
+            <div class="artist-details-email">
+              <p class="text4 text-uppercase">Email: <a href="mailto:{{ artist.public_email }}">{{ artist.public_email }}</a></p>
+            </div>
+          {% endif %}
+          {% if artist.website %}
+            <div class="artist-details-website">
+              <p class="text4 text-uppercase">Website: <a href="{{ artist.website }}" rel="noreferrer noopener" target="_blank">{{ artist.website|schemaless_url }}</a></p>
+            </div>
+          {% endif %}
+          <!--
+          <div class="close-button-container visible-xs visible-sm visible-md">
+            <a href="#" class="close-button" onclick="window.history.back()"></a>
           </div>
-        {% endif %}
-        {% if artist.website %}
-          <div class="artist-details-website">
-            <p class="text4 text-uppercase">Website: <a href="{{ artist.website }}" rel="noreferrer noopener" target="_blank">{{ artist.website|schemaless_url }}</a></p>
-          </div>
-        {% endif %}
-        <!--
-        <div class="close-button-container visible-xs visible-sm visible-md">
-          <a href="#" class="close-button" onclick="window.history.back()"></a>
+          //-->
         </div>
-        //-->
-      </div>
       </div>
     </div>
     <!-- end of artist header -->
@@ -160,5 +163,16 @@
         $(this).text('read more');
       }
     });
-  });
+
+
+    $(document).on("click", "#confirmDonationButton", function () {
+      var artisId = {{ artist.pk }};
+      window.location = "{% url 'artist_support' %}?artist_id={{ artist.pk }}";
+    });
+
+    var $donationConfirmationDialog = $("#supportConfirmationDialog");
+    $('#one-time-donation-btn').on('click', function () {
+      $donationConfirmationDialog.modal("show");
+    });
+   });
 </script>

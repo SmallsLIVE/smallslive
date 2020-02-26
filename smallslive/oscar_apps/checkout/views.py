@@ -259,6 +259,9 @@ class SuccessfulOrderMixin(object):
                     del self.request.session['event_id']
                     del self.request.session['event_slug']
 
+                if 'artist_id' in self.request.session:
+                    del self.request.session['artist_id']
+
                 sl_utils.clean_messages(self.request)
 
                 if self.payment_id:
@@ -267,6 +270,9 @@ class SuccessfulOrderMixin(object):
                 if self.event_id:
                     success_url += '&event_id=' + self.event_id
                     success_url += '&event_slug=' + self.event_slug
+
+                if self.artist_id:
+                    success_url += '&artist_id=' + self.artist_id
 
             response = http.JsonResponse({'success_url': success_url})
         else:
@@ -291,6 +297,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
     def __init__(self, *args, **kwargs):
         """
         product_id: Product the payment goes to.
+        artist_id: Artist the payment goes to.
         event_id: Event the payment goes to.
         card_token: Stripe token.
         amount: Item price.
@@ -302,6 +309,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         super(PaymentDetailsView, self).__init__(*args, **kwargs)
         self.amount = None
         self.card_token = None
+        self.artist_id = None
         self.event_id = None
         self.event_slug = None
         self.order = None
@@ -539,6 +547,13 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             # PayPal has no mechanism to return parameters.
             request.session['event_id'] = self.event_id
             request.session['event_slug'] = self.event_slug
+
+        self.artist_id = request.POST.get('artist_id')
+        if self.artist_id:
+            # Use session to retrieve parameters after PayPal payment redirect.
+            # Could be stored on Order but that would mean adding artist_id to all orders.
+            # PayPal has no mechanism to return parameters.
+            request.session['artist_id'] = self.artist_id
 
         flow_type = request.POST.get('flow_type')
         if flow_type:
@@ -800,7 +815,9 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 'reference': self.payment_id,
                 'confirmed': False,
                 'deductable_amount': str(total_deductable),
-                'product_id': self.product_id
+                'product_id': self.product_id,
+                'artist_id': self.artist_id,
+                'event_id': self.event_id,
             }
             Donation.objects.create(**donation)
 
@@ -864,6 +881,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         flow_type = self.request.session.get('flow_type')
         event_id = self.request.session.get('event_id')
         event_slug = self.request.session.get('event_slug')
+        artist_id = self.request.session.get('artist_id')
 
         try:
             self.handle_payment()
@@ -884,6 +902,9 @@ class ExecutePayPalPaymentView(AssignProductMixin,
             del self.request.session['event_id']
             del self.request.session['event_slug']
 
+        if artist_id:
+            del self.request.session['artist_id']
+
         if flow_type:
             del self.request.session['flow_type']
             sl_utils.clean_messages(self.request)
@@ -894,6 +915,9 @@ class ExecutePayPalPaymentView(AssignProductMixin,
             if event_id:
                 redirect_url += '&event_id={}&event_slug={}'.format(
                     event_id, event_slug)
+            if artist_id:
+                redirect_url += '&artist_id={}'.format(
+                    artist_id)
 
             return http.HttpResponseRedirect(redirect_url)
         else:
