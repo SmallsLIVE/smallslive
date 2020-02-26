@@ -20,12 +20,14 @@
           <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
           <a href="{% url 'become_supporter' %}">Become a supporter</a>
-        {% else %}
+        {% elif user.has_active_subscription %}
           <a class="banner-button-info"
           {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
           {% else %} onclick="nextoBecomeSupporter();" {% endif %}>
             Make a Donation
           </a>
+        {% else %}
+          <a href="{% url 'become_supporter' %}">Make a Donation</a>
         {% endif %}
       </div>
     </div>
@@ -46,12 +48,14 @@
           <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
           <a href="{% url 'become_supporter' %}">Become a supporter</a>
-        {% else %}
+        {% elif user.has_active_subscription %}
           <a class="banner-button-info"
           {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
           {% else %} onclick="nextoBecomeSupporter();" {% endif %}>
             Make a Donation
           </a>
+        {% else %}
+          <a href="{% url 'become_supporter' %}">Make a Donation</a>
         {% endif %}
       </div>
     </div>
@@ -72,12 +76,14 @@
           <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
           <a href="{% url 'become_supporter' %}">Become a supporter</a>
-        {% else %}
+        {% elif user.has_active_subscription %}
           <a class="banner-button-info"
           {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
           {% else %} onclick="nextoBecomeSupporter();" {% endif %}>
             Make a Donation
           </a>
+        {% else %}
+          <a href="{% url 'become_supporter' %}">Make a Donation</a>
         {% endif %}
       </div>
     </div>
