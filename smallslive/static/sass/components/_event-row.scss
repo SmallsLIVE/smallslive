@@ -608,18 +608,6 @@ $event-row-padding: 3.5vw;
 
       img {
         width: 100%;
-
-        &:before {
-          content: " ";
-          display: block;
-          position: absolute;
-          top: 0;
-          left: 0;
-          height: $event-card-height;
-          width: 100%;
-          background-image: url("../image/no-event-image-placeholder.jpg");
-          background-size: cover;
-        }
       }
     }
 
@@ -668,6 +656,27 @@ $event-row-padding: 3.5vw;
   }
 }
 
+@mixin error-image($error-image) {
+  .event-picture-container,
+  .event-picture-container-dashboard {
+    .event-picture {
+      img {
+        &:before {
+          content: " ";
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 100%;
+          background-image: $error-image;
+          background-size: cover;
+        }
+      }
+    }
+  }
+}
+
 .event-card {
   @media (min-width: 1366px) {
     @include event-card($live-card-width-large, $live-card-width-large * 0.6);
@@ -706,6 +715,7 @@ $event-row-padding: 3.5vw;
       @include event-card($regular-card-width-tablet, $regular-card-width-tablet);
     }
   }
+  @include error-image(url("../image/no-event-image-placeholder.jpg"));
 }
 
 .owl-carousel {
@@ -789,6 +799,8 @@ $event-row-padding: 3.5vw;
       $regular-card-width-mobile * 0.6
     );
   }
+
+  @include error-image(url("../image/no-event-image-placeholder.jpg"));
 }
 
 .event-card-square {
@@ -811,6 +823,7 @@ $event-row-padding: 3.5vw;
   @media (max-width: 650px) {
     @include event-card($regular-card-width-mobile, $regular-card-width-mobile);
   }
+  @include error-image(url("../image/no-artist-photo-thumbnail.jpg"));
 }
 
 .event-card-small {
@@ -819,6 +832,8 @@ $event-row-padding: 3.5vw;
   .event-picture-container {
     border-radius: 0;
   }
+
+  @include error-image(url("../image/no-event-image-placeholder.jpg"));
 }
 
 //TODO Move
@@ -828,6 +843,7 @@ $event-row-padding: 3.5vw;
 
     .event-card {
       @include event-card(300px, 300px);
+      @include error-image(url("../image/no-event-image-placeholder.jpg"));
 
       .event-picture-container {
         .event-picture {

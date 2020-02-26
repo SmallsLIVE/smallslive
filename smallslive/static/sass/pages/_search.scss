@@ -1208,6 +1208,18 @@ body.headers-1 {
   img {
     width: 100%;
     border: 4px solid $border-color;
+
+    &:before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-image: url("../image/no-artist-photo-thumbnail.jpg");
+      background-size: cover;
+    }
   }
 
   .white-border-button {
