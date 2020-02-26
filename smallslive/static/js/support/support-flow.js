@@ -1132,7 +1132,8 @@ $(document).ready(function() {
 
     if (currentStep == "SelectType" &&
         (window.location.href.indexOf("event-support") > -1 ||
-          window.location.href.indexOf("product-support") > -1)) {
+          window.location.href.indexOf("artist-support") > -1 ||
+            window.location.href.indexOf("product-support") > -1)) {
       window.history.back();
       return;
     }
