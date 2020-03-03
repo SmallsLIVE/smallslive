@@ -998,9 +998,10 @@
 				switch (target[0].nodeName.toLowerCase()){
 					case 'th':
 						switch (target[0].className){
-							//case 'datepicker-switch':
-							//	// this.showMode(1);
-							//	break;
+							case 'datepicker-switch':
+							  if (!$(this.element).parent().hasClass("custom-date-picker"))  {
+                  this.showMode(1);
+                }
 							case 'prev':
 							case 'next':
 								var dir = DPGlobal.modes[this.viewMode].navStep * (target[0].className === 'prev' ? -1 : 1);
@@ -1085,20 +1086,26 @@
 						}
 						break;
           case 'div':
-            if (target.hasClass('year')) {
-              day = this.viewDate.getUTCDay();
-              year = parseInt(target.text(), 10);
-              month = this.viewDate.getUTCMonth();
-              var newDate = UTCDate(year, month, day);
-              $(target).parents('.years-dropdown').toggleClass('hidden');
-              this._trigger('changeYear', newDate);
-              this._setDate(newDate, 'view');
-              break;
+            if ($(this.element).parent().hasClass("custom-date-picker")) {
+              if (target.hasClass('year')) {
+                day = this.viewDate.getUTCDay();
+                year = parseInt(target.text(), 10);
+                month = this.viewDate.getUTCMonth();
+                var newDate = UTCDate(year, month, day);
+                $(target).parents('.years-dropdown').toggleClass('hidden');
+                this._trigger('changeYear', newDate);
+                this._setDate(newDate, 'view');
+                break;
+              } else {
+                $(target).siblings('.years-dropdown').toggleClass('hidden');
+                break;
+              }
             } else {
-              $(target).siblings('.years-dropdown').toggleClass('hidden');
-              break;
+              if (target.parent().hasClass('datepicker-switch')) {
+                this.showMode(1);
+              }
             }
-
+            break;
 				}
 			}
 			if (this.picker.is(':visible') && this._focused_from){
