@@ -6,7 +6,7 @@
 {% endif %}
 {% if photo_url %}
   {% if crop_box %}
-    src="{% thumbor_url photo_url|urlencode crop=crop_box width=width|default_if_none:600 %}"
+    src="{% thumbor_url photo_url|urlencode height=height|default_if_none:360 width=width|default_if_none:600 crop=crop_box %}"
   {% else %}
     src="{% thumbor_url photo_url|urlencode height=height|default_if_none:360 width=width|default_if_none:600 smart=True %}"
   {% endif %}

@@ -795,6 +795,7 @@ $(document).ready(function() {
       tax = "100%";
     }
 
+    var hasLibraryAccess = $itemForm.data("has-library-access") === "True";
     var $content = $selectionConfirmationDialog.find(".text");
     $content.find(".price").text(price);
     $content.find(".tax").text(tax);
@@ -803,6 +804,11 @@ $(document).ready(function() {
       $selectionConfirmationDialog.find(".variants").show();
     }  else {
       $selectionConfirmationDialog.find(".variants").hide();
+    }
+    if (hasLibraryAccess) {
+      $("#library-notice").show();
+    } else {
+      $("#library-notice").hide();
     }
     var $giftContent = $selectionConfirmationDialog.find(".gift-content");
     $giftContent.html($item);

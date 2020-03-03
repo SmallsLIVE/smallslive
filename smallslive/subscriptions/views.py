@@ -157,9 +157,8 @@ class ExecutePayPalPaymentView(PayPalMixin, View):
 
         # Access will be granted in Complete view if payment_id matches.
         payment_id = self.execute_payment()
-
         # Check if payment id belongs to a Catalog donation -> product_id is set
-        donation = Donation.objects.filter(reference=payment_id).first()
+        donation = Donation.objects.confirm_by_reference(payment_id)
 
         url = reverse('become_supporter_complete') + \
             '?payment_id={}'.format(payment_id)
@@ -185,6 +184,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
 
     def __init__(self, *args, **kwargs):
         self.amount = None
+        self.deductable_amount = None
         self.bitcoin = False
         self.check = False
         self.event_id = None
@@ -366,34 +366,52 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         return context
 
     def execute_bitcoin_payment(self):
-
-        if self.product_id:
-            # We need to record the product id if donation comes from the Catalog.
-            donation = {
-                'user': self.request.user,
-                'currency': 'USD',
-                'amount': self.amount,
-                'reference': self.bitcoin,
-                'confirmed': False,
-                'product_id': self.product_id,
-                'event_id': self.event_id,
-            }
-            Donation.objects.create(**donation)
+        donation = {
+            'user': self.request.user,
+            'currency': 'USD',
+            'amount': self.amount,
+            'payment_source': 'BitCoin',
+            'confirmed': False,
+            'artist_id': self.artist_id,
+            'product_id': self.product_id,
+            'event_id': self.event_id,
+        }
+        Donation.objects.create(**donation)
 
     def execute_check_payment(self):
+        donation = {
+            'user': self.request.user,
+            'currency': 'USD',
+            'amount': self.amount,
+            'payment_source': 'Check',
+            'confirmed': False,
+            'artist_id': self.artist_id,
+            'product_id': self.product_id,
+            'event_id': self.event_id,
+        }
+        Donation.objects.create(**donation)
 
-        if self.product_id:
-            # We need to record the product id if donation comes from the Catalog.
-            donation = {
-                'user': self.request.user,
-                'currency': 'USD',
-                'amount': self.amount,
-                'reference': self.bitcoin,
-                'confirmed': False,
-                'product_id': self.product_id,
-                'event_id': self.event_id,
-            }
-            Donation.objects.create(**donation)
+    def create_donation(self, payment_source=None,
+                        reference=None, confirmed=True):
+
+        user = None
+        if self.request.user.is_authenticated():
+            user = self.request.user
+
+        donation_data = {
+            'user': user,
+            'currency': 'USD',
+            'amount': self.amount,
+            'deductable_amount': self.deductable_amount,
+            'payment_source': payment_source,
+            'reference': reference,
+            'confirmed': confirmed,
+            'artist_id': self.artist_id,
+            'product_id': self.product_id,
+            'event_id': self.event_id,
+        }
+
+        return Donation.objects.create(**donation_data)
 
     def post(self, request, *args, **kwargs):
 
@@ -412,7 +430,12 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
 
         if self.stripe_token:
             try:
-                self.execute_stripe_payment()
+                # If no reference returned, then the user is subscribing to a plan
+                # Donation will come through the webhook instead.
+                reference = self.execute_stripe_payment()
+                if reference:
+                    self.create_donation(payment_source='Stripe Foundation',
+                                         reference=reference)
                 url = reverse('become_supporter_complete') + \
                     "?flow_type=" + self.flow_type
                 if self.product_id:
@@ -422,8 +445,6 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                     url += '&event_slug=' + self.event_slug
                 if self.artist_id:
                     url += '&artist_id=' + self.artist_id
-
-                print 'Redirect URL: ', url
 
                 return _ajax_response(
                     self.request, redirect(url)
@@ -441,6 +462,8 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
             if self.event_id:
                 url += '&event_id=' + self.event_id
                 url += '&event_slug=' + self.event_slug
+            if self.artist_id:
+                url += '&artist_id=' + self.artist_id
 
             return _ajax_response(
                 self.request, redirect(url)
@@ -478,7 +501,8 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                     cancel_uri=payment_cancel_url
                 )
             except RedirectRequiredAjax as e:
-                print 'JsonResponse ....'
+                self.create_donation(payment_source='PayPal Foundation',
+                                     reference=e.reference, confirmed=False)
                 return JsonResponse({'payment_url': e.url})
 
 
@@ -522,8 +546,7 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
             # Donated directly by PayPal or Stripe
             source = Donation.objects.filter(reference=payment_id).first()
             if source:
-                source.confirmed = True
-                source.save()
+                # confirmation will be set on order successful so we can set the order.
                 if source.product_id:
                     album_product = Product.objects.get(pk=source.product_id)
                     if album_product.is_child:
@@ -537,11 +560,11 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
                     # Create Donation
                     donation = {
                         'user': user,
+                        'order': source.order,
                         'currency': source.currency,
                         'amount': source.amount_allocated,
                         'reference': payment_id,
                         'confirmed': True,
-
                     }
                     Donation.objects.create(**donation)
         product_id = self.request.GET.get('product_id')

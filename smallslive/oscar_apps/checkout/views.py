@@ -209,11 +209,16 @@ class SuccessfulOrderMixin(object):
         placed.
         """
 
+        if 'event_id' in self.request.session:
+            self.event_id = self.request.session['event_id']
+            self.event_slug = self.request.session['event_slug']
+
+        if 'artist_id' in self.request.session:
+            self.artist_id = self.request.session['artist_id']
+
         if not self.tickets_type:
-            donation = Donation.objects.filter(reference=self.payment_id).first()
-            if donation:
-                donation.confirmed = True
-                donation.save()
+            Donation.objects.create_by_order(
+                self.order, artist_id=self.artist_id, event_id=self.event_id)
 
         if self.tickets_type:
             # Set status to completed for lines if it's a ticket.
@@ -255,6 +260,7 @@ class SuccessfulOrderMixin(object):
                 success_url += '?flow_type=' + flow_type
                 # remove flow_type from session
                 del self.request.session['flow_type']
+
                 if 'event_id' in self.request.session:
                     del self.request.session['event_id']
                     del self.request.session['event_slug']
@@ -318,6 +324,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         self.tickets_type = None
         self.ticket_name = {}
         self.total = None
+        self.total_deductable = None
 
     def get_template_names(self):
         """
@@ -539,8 +546,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
     def handle_place_order_submission(self, request):
 
         payment_method = request.POST.get('payment_method')
-        self.event_id = request.POST.get('event_id')
-        self.event_slug = request.POST.get('event_slug')
+        self.event_id = request.POST.get('event_id') or None
+        self.event_slug = request.POST.get('event_slug') or None
         if self.event_id:
             # Use session to retrieve parameters after PayPal payment redirect.
             # Could be stored on Order but that would mean adding event_id to all orders.
@@ -548,7 +555,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             request.session['event_id'] = self.event_id
             request.session['event_slug'] = self.event_slug
 
-        self.artist_id = request.POST.get('artist_id')
+        self.artist_id = request.POST.get('artist_id') or None
         if self.artist_id:
             # Use session to retrieve parameters after PayPal payment redirect.
             # Could be stored on Order but that would mean adding artist_id to all orders.
@@ -777,14 +784,10 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         self.card_token = self.request.POST.get('card_token')
         payment_method = kwargs.get('payment_method')
 
-        print 'handle_payment ->'
-        print 'Tickets: ', self.tickets_type
-
         self.product_id = basket_line.product_id
         currency = total.currency
         if self.card_token:
             self.total = total
-            print 'Payment Total: ', total
             self.payment_id = self.handle_stripe_payment(order_number, basket_lines, **kwargs)
             source_name = 'Stripe Credit Card'
             source_type, __ = SourceType.objects.get_or_create(name=source_name)
@@ -797,7 +800,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             self.add_payment_source(source)
             self.add_payment_event('Purchase', total.incl_tax, reference=self.payment_id)
             # Set an ongoing donation, finished when payment is confirmed
-            total_deductable = basket._get_deductable_physical_total()
+            self.total_deductable = basket._get_deductable_physical_total()
             venue = self.request.basket.get_tickets_venue()
 
             #  Do not register a donation if the Venue is not part of the foundation.
@@ -807,19 +810,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             # Anonymous donation or purchase
             if not self.request.user.is_authenticated():
                 return
-
-            donation = {
-                'user': self.request.user,
-                'currency': currency,
-                'amount': total.incl_tax,
-                'reference': self.payment_id,
-                'confirmed': False,
-                'deductable_amount': str(total_deductable),
-                'product_id': self.product_id,
-                'artist_id': self.artist_id,
-                'event_id': self.event_id,
-            }
-            Donation.objects.create(**donation)
 
         elif payment_method == 'paypal':
             item_list = self.get_item_list(basket_lines)
@@ -868,6 +858,8 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         self.payment_id = None
         self.tickets = None
         self.tickets_type = None
+        self.event_id = None
+        self.artist_id = None
 
     def get(self, request, *args, **kwargs):
 
@@ -879,9 +871,9 @@ class ExecutePayPalPaymentView(AssignProductMixin,
 
         # Get flow type from session
         flow_type = self.request.session.get('flow_type')
-        event_id = self.request.session.get('event_id')
-        event_slug = self.request.session.get('event_slug')
-        artist_id = self.request.session.get('artist_id')
+        self.event_id = self.request.session.get('event_id') or None
+        self.event_slug = self.request.session.get('event_slug') or None
+        self.artist_id = self.request.session.get('artist_id') or None
 
         try:
             self.handle_payment()
@@ -898,11 +890,11 @@ class ExecutePayPalPaymentView(AssignProductMixin,
 
             return self.render_payment_details(
                 self.request, error=error_msg)
-        if event_id:
+        if self.event_id:
             del self.request.session['event_id']
             del self.request.session['event_slug']
 
-        if artist_id:
+        if self.artist_id:
             del self.request.session['artist_id']
 
         if flow_type:
@@ -912,12 +904,12 @@ class ExecutePayPalPaymentView(AssignProductMixin,
             redirect_url = reverse(
                 'become_supporter_complete') + '?payment_id={}&flow_type={}'.format(
                 self.payment_id, flow_type)
-            if event_id:
+            if self.event_id:
                 redirect_url += '&event_id={}&event_slug={}'.format(
-                    event_id, event_slug)
-            if artist_id:
+                    self.event_id, self.event_slug)
+            if self.artist_id:
                 redirect_url += '&artist_id={}'.format(
-                    artist_id)
+                    self.artist_id)
 
             return http.HttpResponseRedirect(redirect_url)
         else:
@@ -972,8 +964,6 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         self.add_payment_source(source)
         self.add_payment_event(
             payment_event, total_incl_tax, reference=self.payment_id)
-
-        Donation.confirm_by_reference(self.payment_id)
 
         user = self.request.user
         first_name, last_name = self.checkout_session.get_reservation_name()

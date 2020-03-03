@@ -136,6 +136,11 @@ class Product(AbstractProduct):
 
         return product_image
 
+    def has_library_access(self):
+        category = self.categories.filter(name='Full Access').first()
+
+        return bool(category)
+
     def _clean_child(self):
         """
         Validates a child product

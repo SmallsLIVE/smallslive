@@ -1,8 +1,10 @@
+from decimal import Decimal as D
 from oscar.apps.order.signals import order_placed
 from oscar.apps.order.abstract_models import AbstractOrder
 from oscar.core.loading import get_model, get_class
 from django.conf import settings
 from django.contrib.sites.models import Site
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMultiAlternatives, EmailMessage
 from django.db import models
 
@@ -61,8 +63,19 @@ class Order(AbstractOrder):
         gifts_count = self.lines.filter(product__product_class__slug='Gift').count()
         return gifts_count > 0
 
+    def get_deductable_total(self):
+        total = D('0.00')
+        for line in self.lines.all():
+            try:
+                total += line.quantity * (line.unit_price_incl_tax - line.unit_cost_price)
+            except ObjectDoesNotExist:
+                # Handle situation where the product may have been deleted
+                pass
+
+        return total
+
     # signal receiving method to send email to fulfilment partner
-    def send_fulfilment_request(sender, **kwargs):
+    def send_fulfillment_request(sender, **kwargs):
         code = 'ORDER_PLACED'
         order = kwargs['order']
         user = kwargs['user']
@@ -88,7 +101,7 @@ class Order(AbstractOrder):
                                      to=[to_email])
             email.send()
 
-    order_placed.connect(send_fulfilment_request)
+    order_placed.connect(send_fulfillment_request)
 
 # add import statement at the end, so that django imports overridden model names first
 from oscar.apps.order.models import *

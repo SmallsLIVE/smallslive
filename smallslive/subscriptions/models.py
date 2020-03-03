@@ -3,9 +3,11 @@ from dateutil.relativedelta import relativedelta
 from decimal import Decimal
 from django.db import models
 from django.utils import timezone
+from oscar.apps.payment.models import Source
 from artists.models import Artist
 from events.models import Event
 from oscar_apps.catalogue.models import Product
+from oscar_apps.order.models import Order
 from users.models import SmallsUser
 
 
@@ -69,6 +71,41 @@ class DonationManager(models.Manager):
 
         return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
 
+    def create_by_order(self, order, artist_id=None, event_id=None):
+
+        assert artist_id is None or bool(artist_id)
+        assert event_id is None or bool(event_id)
+
+        total = order.total_incl_tax
+        deductable_total = order.get_deductable_total()
+        source = Source.objects.filter(order=order).first()
+
+        donation = {
+            'user': order.user,
+            'order': order,
+            'payment_source': 'PayPal Foundation',
+            'currency': 'USD',
+            'amount': total,
+            'reference': source.reference,
+            'confirmed': True,
+            'deductable_amount': deductable_total,
+            'product_id': order.lines.first().product_id,
+            'artist_id': artist_id,
+            'event_id': event_id,
+        }
+
+        donation_obj = self.create(**donation)
+
+        return donation_obj
+
+    def confirm_by_reference(self, reference):
+
+        donation = self.get(reference=reference)
+        donation.confirmed = True
+        donation.save()
+
+        return donation
+
 
 class Donation(models.Model):
     """One Time Donations executed
@@ -98,11 +135,14 @@ class Donation(models.Model):
 
     product = models.ForeignKey(Product, blank=True, null=True,
                                 related_name='donations')
+    order = models.ForeignKey(Order, blank=True, null=True,
+                              related_name='donations')
     event = models.ForeignKey(Event, blank=True, null=True,
                               related_name='donations')
     # We're having a $10 minimum donation instead of $100 for the whole year
     # We'll need to accrue donations as archive access in days.
     # Each donation will extend the archive access expiry date.
+    # Update: Spike has requested to give access to the full year regardless amount.
     archive_access_expiry_date = models.DateField(blank=True, null=True)
 
     objects = DonationManager()
@@ -175,7 +215,8 @@ class Donation(models.Model):
         return new_expiry_date
 
     def save(self, *args, **kwargs):
-        if self.deductable_amount == 0:
+
+        if not self.deductable_amount:
             self.deductable_amount = self.amount
 
         # Set expiry date if it's a new object.
@@ -187,12 +228,7 @@ class Donation(models.Model):
 
         super(Donation, self).save(*args, **kwargs)
 
-    @staticmethod
-    def confirm_by_reference(reference):
-        donation = Donation.objects.filter(reference=reference).first()
-        if donation:
-            donation.confirmed = True
-            donation.save()
+
 
 
 

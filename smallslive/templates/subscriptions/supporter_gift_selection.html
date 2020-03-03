@@ -26,6 +26,7 @@
                method="post"
                class="add-to-basket hidden"
                data-requires-shipping="{{ product.get_product_class.requires_shipping }}"
+               data-has-library-access="{{ product.has_library_access }}"
                style="width: 100%">
               {% basket_form request product 'single' as basket_form %}
               <div class="store-add-small">

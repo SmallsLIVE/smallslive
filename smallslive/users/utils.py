@@ -1,20 +1,19 @@
 import decimal
 from datetime import date, timedelta
 from allauth.account import signals
-from allauth.account.app_settings import EmailVerificationMethod
 from allauth.account.adapter import get_adapter
+from allauth.account.app_settings import EmailVerificationMethod
 from allauth.account.utils import get_login_redirect_url, user_email
-
-from custom_stripe.models import CustomPlan, CustomerDetail
 from djstripe.models import Customer, Charge, CurrentSubscription, convert_tstamp, Plan
 from djstripe.settings import PAYMENTS_PLANS, INVOICE_FROM_EMAIL, SEND_INVOICE_RECEIPT_EMAILS
-from django.core.urlresolvers import reverse
 from django.conf import settings
-from django.core.mail import EmailMessage
 from django.contrib.sites.models import Site
+from django.core.mail import EmailMessage
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.utils import timezone
+from custom_stripe.models import CustomPlan
 
 
 def add_years(d, years):
@@ -281,11 +280,12 @@ def custom_send_receipt(receipt_info={},
     num_sent = EmailMessage(
         subject,
         message,
-        to=[receipt_info["customer"].subscriber.email],
+        to=[user.email],
         from_email=INVOICE_FROM_EMAIL).send()
 
     if receipt_info.get('customer'):
         receipt_info["customer"].receipt_sent = num_sent > 0
         receipt_info["customer"].save()
+
 
 

@@ -798,3 +798,5 @@ CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 FORCE_S3_SECURE = False
 
 WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'
+
+ADMIN_EMAILS = ast.literal_eval(os.environ.get('ADMIN_EMAILS', '[]'))

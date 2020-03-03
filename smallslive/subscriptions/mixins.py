@@ -74,7 +74,8 @@ class PayPalMixin(object):
 
     def handle_paypal_payment(self, currency, item_list,
                               donation=False,
-                              deductable_total=0.00, shipping_charge=0.00,
+                              deductable_total=0.00,
+                              shipping_charge=0.00,
                               execute_uri=None,
                               cancel_uri=None):
 
@@ -88,32 +89,13 @@ class PayPalMixin(object):
         success = payment.create()
         if success:
             payment_id = payment.id
-            if donation:
-                user = self.request.user
-                if not user.is_authenticated():
-                    user = None
-                # Create Donation even though the payment is not yet authorized.
-                donation = {
-                    'user': user,
-                    'currency': 'USD',
-                    'amount': self.amount,
-                    'reference': payment_id,
-                    'confirmed': False,
-                    'deductable_amount': str(deductable_total),
-                    'product_id': self.product_id,
-                    'event_id': self.event_id,
-                }
-                Donation.objects.create(**donation)
-
             for link in payment.links:
                 if link.rel == 'approval_url':
                     # Convert to str to avoid Google App Engine Unicode issue
                     # https://github.com/paypal/rest-api-sdk-python/pull/58
                     approval_url = str(link.href)
-                    print("Redirect for approval: %s" % approval_url)
-
             if self.request.is_ajax():
-                raise RedirectRequiredAjax(approval_url)
+                raise RedirectRequiredAjax(approval_url, payment_id)
             else:
                 raise RedirectRequired(approval_url)
         else:
@@ -126,7 +108,8 @@ class PayPalMixin(object):
         payment = paypalrestsdk.Payment.find(payment_id)
         if not payment.execute({'payer_id': payer_id}):
             print(payment.error)  # Error Hash
-            raise UnableToTakePayment(payment.error)
+            if  payment.error.get('name') != 'PAYMENT_ALREADY_DONE':
+                raise UnableToTakePayment(payment.error)
 
         return payment_id
 
@@ -157,6 +140,8 @@ class StripeMixin(object):
     def execute_stripe_payment(self):
         # As per Aslan's request
         # Yearly donations will no longer exist. They are One Time Donations  now.
+
+        stripe_ref = None
         customer, created = Customer.get_or_create(
             subscriber=subscriber_request_callback(self.request))
         if self.plan_type == 'month':
@@ -167,16 +152,9 @@ class StripeMixin(object):
                 customer, self.stripe_token, self.amount)
             if self.product_id:
                 # We need to record the product id if donation comes from the Catalog.
-                donation = {
-                    'user': self.request.user,
-                    'currency': 'USD',
-                    'amount': self.amount,
-                    'reference': stripe_ref,
-                    'confirmed': False,
-                    'product_id': self.product_id,
-                    'event_id': self.event_id,
-                }
-                Donation.objects.create(**donation)
+                pass
+
+        return stripe_ref
 
     def handle_stripe_payment(self, order_number, basket_lines, **kwargs):
         if self.request.user.is_authenticated():

@@ -129,6 +129,11 @@ function startPayPalPayment($form, action_url, completeSubpage) {
     $('<input type="hidden" name="event_slug" />').val(eventSlug)
   );
 
+  var artistId = $mainContainer.find("#supporterSteps").data("artist-id");
+  $form.append(
+    $('<input type="hidden" name="artist_id" />').val(artistId)
+  );
+
   $.ajax({
     type: "POST",
     url: action_url,
@@ -176,6 +181,11 @@ function startBitCoinPayment($form, action_url, completeSubpage) {
     $('<input type="hidden" name="event_slug" />').val(eventSlug)
   );
 
+  var artistId = $mainContainer.find("#supporterSteps").data("artist-id");
+  $form.append(
+    $('<input type="hidden" name="artist_id" />').val(artistId)
+  );
+
   $.ajax({
     type: "POST",
     url: action_url,
@@ -219,6 +229,11 @@ function startCheckPayment($form, action_url, completeSubpage) {
       // Insert the token into the form so it gets submitted to the server
   $form.append(
     $('<input type="hidden" name="event_slug" />').val(eventSlug)
+  );
+
+  var artistId = $mainContainer.find("#supporterSteps").data("artist-id");
+  $(this).append(
+    $('<input type="hidden" name="artist_id" />').val(artistId)
   );
 
   $.ajax({

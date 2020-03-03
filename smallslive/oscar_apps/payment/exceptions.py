@@ -6,5 +6,6 @@ class RedirectRequiredAjax(PaymentError):
     Exception to be used when payment processsing requires a redirect
     """
 
-    def __init__(self, url):
+    def __init__(self, url, reference):
         self.url = url
+        self.reference = reference
