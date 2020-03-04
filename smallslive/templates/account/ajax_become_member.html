@@ -51,8 +51,14 @@
               </label>
             </div>
           </div>
-          <div class="form-group">
-            <a class="text4 text-grey" href="{% url 'static_page' 'privacy' %}">Privacy Policy</a>
+          <div class="form-check form-check-inline">
+            <div class="checkbox">
+              <label class="text4 text-grey">
+                <input type="checkbox" name="privacy">
+                <a href="{% url 'static_page' 'privacy' %}">I have reviewed the Privacy Policy</a>
+                <p class="form-error-text hidden" id="privacy-error"></p>
+              </label>
+            </div>
           </div>
           <div class="form-group flex-column items-center">
             <input class="login-button" value="Become a member" type="submit">
