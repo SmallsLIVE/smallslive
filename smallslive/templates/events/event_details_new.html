@@ -102,7 +102,9 @@
               </a>
             {% endif %}
             {% if event.is_live or event.is_past %}
-              <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">sponsor</button>
+              {% if user.is_authenticated and user.has_activated_account %}
+                <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">sponsor</button>
+              {% endif %}
             {% endif %}
             {% if not event.is_live and event.is_future %}
             {% if products %}
