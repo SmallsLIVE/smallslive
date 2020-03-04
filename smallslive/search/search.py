@@ -25,11 +25,18 @@ SAX_INSTRUMENTS = [
     'TENOR SAX',
 ]
 
-SAX_INSTRUMENTS_ALIASES = [
+SAX_INSTRUMENTS_ALIASES_1 = [
     'ALTO SAXOPHONE',
     'BARITONE SAXOPHONE',
     'SOPRANO SAXOPHONE',
     'TENOR SAXOPHONE',
+]
+
+SAX_INSTRUMENTS_ALIASES_2 = [
+    'ALTO',
+    'BARITONE',
+    'SOPRANO',
+    'TENOR',
 ]
 
 
@@ -60,17 +67,23 @@ class SearchObject(object):
         for sax in SAX_INSTRUMENTS:
             if sax in search_term:
                 # Make sure sax is not an alias before removing from search_terms
-                if not [x for x in SAX_INSTRUMENTS_ALIASES if x in search_term and sax in x]:
+                if not [x for x in SAX_INSTRUMENTS_ALIASES_1 if x in search_term and sax in x]:
                     searched_sax_instruments.append(sax)
                     # Remove from search terms
                     search_term = search_term.replace(sax, '')
 
         # USER ENTERED '<type> SAXOPHONE'
-        for sax in SAX_INSTRUMENTS_ALIASES:
+        for sax in SAX_INSTRUMENTS_ALIASES_1:
             if sax in search_term:
                 # Make sure 'SAXOPHONE' is stored as 'SAX'
                 searched_sax_instruments.append(sax.replace('OPHONE', ''))
                 # Remove from search terms
+                search_term = search_term.replace(sax, '')
+
+        # USER ENTERED '<type>'
+        for index, sax in enumerate(SAX_INSTRUMENTS_ALIASES_2):
+            if sax in search_term:
+                searched_sax_instruments.append(SAX_INSTRUMENTS[index])
                 search_term = search_term.replace(sax, '')
 
         # User entered only "SAX" or "SAXOPHONE"
