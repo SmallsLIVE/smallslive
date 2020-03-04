@@ -20,8 +20,8 @@ PAID BY CREDIT CARD: -${{ charge.amount|floatformat:2 }}
 {% else %}We are sorry, but we failed to charge your credit card ending in {{ charge.card_last_4 }} for the amount ${{ charge.amount|floatformat:2 }}.
 {% endif %}{% endif %}
 
-Please contact us with any questions regarding this invoice.
+Please contact us with any questions regarding this invoice at info@smallslive.com 
 
 ---
-Your {{ site.name }} Team
+The SmallsLIVE Foundation
 {{ protocol }}://{{ site.domain }}
