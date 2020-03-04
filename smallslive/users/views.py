@@ -291,7 +291,10 @@ def user_settings_view_new(request):
             billing_address = request.user.addresses.get(
                 is_default_for_billing=True)
         except UserAddress.DoesNotExist:
-            billing_address = UserAddress()
+            try:
+                billing_address = request.user.addresses.first()
+            except UserAddress.DoesNotExist:
+                billing_address = UserAddress()
 
     return render(request, 'account/user_settings_new.html', {
         'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,

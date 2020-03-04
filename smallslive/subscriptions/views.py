@@ -81,6 +81,9 @@ class PaymentInfoView(TemplateView):
 
     def get_billing_initial(self):
         address = self.get_default_billing_address()
+        if not address:
+            address = self.request.user.addresses.first()
+
         if address:
             initial = model_to_dict(address)
             return initial
@@ -93,7 +96,10 @@ class PaymentInfoView(TemplateView):
         try:
             return self.request.user.addresses.get(is_default_for_billing=True)
         except:
-            return None
+            try:
+                return self.request.user.addresses.first()
+            except:
+                return None
 
 
 payment_info = PaymentInfoView.as_view()

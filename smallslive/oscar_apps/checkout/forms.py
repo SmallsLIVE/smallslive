@@ -137,6 +137,7 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
         super(BillingAddressForm, self)._post_clean()
 
     def save(self, commit=True):
+
         if self.cleaned_data.get('billing_option') == self.SAME_AS_SHIPPING:
             # Convert shipping address into billing address
             billing_addr = BillingAddress()

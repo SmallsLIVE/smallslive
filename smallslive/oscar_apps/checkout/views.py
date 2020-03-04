@@ -410,6 +410,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
     def get_billing_initial(self):
         address = self.get_default_billing_address()
+        if not address:
+            address = self.request.user.addresses.first()
         if address:
             initial = model_to_dict(address)
             return initial
