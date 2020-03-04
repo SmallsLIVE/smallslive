@@ -201,9 +201,9 @@ def subscribe_to_plan(customer, stripe_token, amount, plan_type,
     customer.update_card(stripe_token)
     subscribe(customer, plan, flow)
     custom_receipt = {}
-    custom_receipt["customer"] = customer
-    custom_receipt["plan"] = plan
-    custom_receipt["type"] = "subscribe"
+    custom_receipt['customer'] = customer
+    custom_receipt['plan'] = plan
+    custom_receipt['type'] = 'subscribe'
     custom_send_receipt(receipt_info=custom_receipt)
 
     # Donation will come through Stripe's webhook
@@ -251,30 +251,31 @@ def custom_send_receipt(receipt_info={},
                         receipt_type=None, user=None, amount=None):
 
     site = Site.objects.get_current()
-    protocol = getattr(settings, "DEFAULT_HTTP_PROTOCOL", "http")
+    protocol = getattr(settings, 'DEFAULT_HTTP_PROTOCOL', 'http')
     receipt_type = receipt_info.get('type') or receipt_type
-    if receipt_type == "subscribe":
+    if receipt_type == 'subscribe':
+        user = receipt_info['customer'].subscriber
         ctx = {
-            "amount": receipt_info["plan"].amount,
-            "user": receipt_info["customer"].subscriber,
-            "site": site,
-            "protocol": protocol,
+            'amount': receipt_info['plan'].amount,
+            'user': user,
+            'site': site,
+            'protocol': protocol,
         }
-        subject = render_to_string("djstripe/email/subject.txt", ctx)
-        message = render_to_string("djstripe/email/body_base_pledge.txt", ctx)
-    elif receipt_type == "one_time":
+        subject = render_to_string('djstripe/email/subject.txt', ctx)
+        message = render_to_string('djstripe/email/body_base_pledge.txt', ctx)
+    elif receipt_type == 'one_time':
         if receipt_info.get('amount'):
             amount = receipt_info['amount']
             user = receipt_info['customer'].subscriber
         ctx = {
-            "amount": amount,
-            "user": user,
-            "site": site,
-            "protocol": protocol,
+            'amount': amount,
+            'user': user,
+            'site': site,
+            'protocol': protocol,
         }
-        subject = render_to_string("djstripe/email/subject.txt", ctx)
-        message = render_to_string("djstripe/email/body_base_onetime.txt", ctx)
-    elif receipt_type == "gift":
+        subject = render_to_string('djstripe/email/subject.txt', ctx)
+        message = render_to_string('djstripe/email/body_base_onetime.txt', ctx)
+    elif receipt_type == 'gift':
         pass
     subject = subject.strip()
     num_sent = EmailMessage(
@@ -284,8 +285,7 @@ def custom_send_receipt(receipt_info={},
         from_email=INVOICE_FROM_EMAIL).send()
 
     if receipt_info.get('customer'):
-        receipt_info["customer"].receipt_sent = num_sent > 0
-        receipt_info["customer"].save()
-
+        receipt_info['customer'].receipt_sent = num_sent > 0
+        receipt_info['customer'].save()
 
 

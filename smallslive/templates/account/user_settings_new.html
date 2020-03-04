@@ -83,7 +83,7 @@
 
           {% if not user.has_archive_access %}
             {% if show_email_confirmation_dialog %}
-              <button onclick="becomeSupporter()" class="white-border-button">Become a Supporting Member</button>
+              <button onclick="$('#inactive-dialog').modal('show');" class="white-border-button">Become a Supporting Member</button>
             {% else %}
               <button onclick="becomeSupporter()" class="white-border-button">Become a Supporting Member</button>
             {% endif %}
@@ -98,7 +98,9 @@
         </div>
 
         <div class="account-settings-info ">
-          <button onclick="makeADonation()" class="white-border-button">Make a One Time Donation</button>
+          {% if user.has_archive_access %}
+            <button onclick="makeADonation()" class="white-border-button">Make a One Time Donation</button>
+          {% endif %}
         </div>
         <div class="account-settings-info">
           <div class="text5">Last donation</div>
