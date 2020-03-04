@@ -55,8 +55,8 @@ def donations_data_for_date_period(start_date, end_date, metrics):
     donations_sqs = Donation.objects.filter(date__gte=start_date, date__lt=end_date,
                                             confirmed=True, artist_id__isnull=False, amount__gt=0)
     for donation in donations_sqs:
-        amount = donation.amount
-        total_donations += amount
+        amount = donation.deductable_amount
+        total_donations += donation.amount
         metrics['metrics_info'][donation.artist_id]['donations'] += amount
 
     # Donations to events
@@ -71,7 +71,7 @@ def donations_data_for_date_period(start_date, end_date, metrics):
             gigs = event.artists_gig_info.all()
             gigs_count = gigs.count()
             if gigs_count:
-                amount = donation.amount / gigs_count
+                amount = donation.deductable_amount / gigs_count
                 for gig in gigs:
                     metrics['metrics_info'][gig.artist_id]['donations'] += amount
 
@@ -85,7 +85,7 @@ def donations_data_for_date_period(start_date, end_date, metrics):
             product_id=donation.product_id, is_leader=True)
         products_donations_count = products_donations.count()
         if products_donations_count:
-            amount = donation.amount / 2 / products_donations_count
+            amount = donation.deductable_amount / 2 / products_donations_count
             for product_donation in products_donations:
                 metrics['metrics_info'][product_donation.artist_id]['donations'] += amount
         else:
@@ -109,11 +109,11 @@ def update_current_period_metrics():
     return True
 
 
-def generate_metrics_payout_sheet(file, start_date, end_date, revenue, operating_expenses, save_earnings=False):
+def generate_metrics_payout_sheet(file, start_date, end_date,
+                                  foundation_total, foundation_costs,
+                                  revenue, operating_expenses, save_earnings=False):
 
-    # Donations - cost of items from donations.
-    donations = Donation.objects.total_deductible_foundation_in_range(start_date, end_date)
-    pool = donations / Decimal(2.0)
+    pool = (foundation_total - foundation_costs) / Decimal(2.0)
     # Add extra revenue minus extra cost
     pool += Decimal((revenue - operating_expenses) / Decimal(2.0))
     metrics = metrics_data_for_date_period(start_date, end_date)
@@ -125,7 +125,7 @@ def generate_metrics_payout_sheet(file, start_date, end_date, revenue, operating
     sheet.set_column(8, 8, 30)
     sheet.write_row('I1', ('Total event seconds', metrics['total_event_seconds']), bold)
     sheet.write_row('I2', ('Total adjusted seconds', metrics['total_adjusted_seconds']), bold)
-    sheet.write_row('I3', ('Deductible Donations to Foundation', donations), bold)
+    sheet.write_row('I3', ('Deductible Donations to Foundation', foundation_total - foundation_costs), bold)
     sheet.write_row('I4', ('Revenue', revenue), bold)
     sheet.write_row('I5', ('Operating costs', operating_expenses), bold)
     sheet.write_row('I6', ('Artist money pool', pool), bold)

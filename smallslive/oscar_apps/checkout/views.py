@@ -209,6 +209,9 @@ class SuccessfulOrderMixin(object):
         placed.
         """
 
+        if 'product_id' in self.request.session:
+            self.product_id = self.request.session['product_id']
+
         if 'event_id' in self.request.session:
             self.event_id = self.request.session['event_id']
             self.event_slug = self.request.session['event_slug']
@@ -218,7 +221,8 @@ class SuccessfulOrderMixin(object):
 
         if not self.tickets_type:
             Donation.objects.create_by_order(
-                self.order, artist_id=self.artist_id, event_id=self.event_id)
+                self.order,
+                artist_id=self.artist_id, event_id=self.event_id, product_id=self.product_id)
 
         if self.tickets_type:
             # Set status to completed for lines if it's a ticket.
@@ -260,6 +264,9 @@ class SuccessfulOrderMixin(object):
                 success_url += '?flow_type=' + flow_type
                 # remove flow_type from session
                 del self.request.session['flow_type']
+
+                if 'product_id' in self.request.session:
+                    del self.request.session['product_id']
 
                 if 'event_id' in self.request.session:
                     del self.request.session['event_id']
@@ -318,9 +325,9 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         self.artist_id = None
         self.event_id = None
         self.event_slug = None
+        self.product_id = None
         self.order = None
         self.payment_id = None
-        self.product_id = None
         self.tickets_type = None
         self.ticket_name = {}
         self.total = None
@@ -546,6 +553,11 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
     def handle_place_order_submission(self, request):
 
         payment_method = request.POST.get('payment_method')
+
+        self.product_id = request.POST.get('product_id') or None
+        if self.product_id:
+            request.session['product_id'] = self.product_id
+
         self.event_id = request.POST.get('event_id') or None
         self.event_slug = request.POST.get('event_slug') or None
         if self.event_id:
@@ -784,7 +796,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         self.card_token = self.request.POST.get('card_token')
         payment_method = kwargs.get('payment_method')
 
-        self.product_id = basket_line.product_id
         currency = total.currency
         if self.card_token:
             self.total = total
@@ -858,6 +869,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         self.payment_id = None
         self.tickets = None
         self.tickets_type = None
+        self.product_id = None
         self.event_id = None
         self.artist_id = None
 
@@ -871,6 +883,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
 
         # Get flow type from session
         flow_type = self.request.session.get('flow_type')
+        self.product_id = self.request.session.get('product_id') or None
         self.event_id = self.request.session.get('event_id') or None
         self.event_slug = self.request.session.get('event_slug') or None
         self.artist_id = self.request.session.get('artist_id') or None
@@ -890,6 +903,10 @@ class ExecutePayPalPaymentView(AssignProductMixin,
 
             return self.render_payment_details(
                 self.request, error=error_msg)
+
+        if self.product_id:
+            del self.request.session['product_id']
+
         if self.event_id:
             del self.request.session['event_id']
             del self.request.session['event_slug']
@@ -904,6 +921,9 @@ class ExecutePayPalPaymentView(AssignProductMixin,
             redirect_url = reverse(
                 'become_supporter_complete') + '?payment_id={}&flow_type={}'.format(
                 self.payment_id, flow_type)
+
+            if self.product_id:
+                redirect_url += '&product_id={}'.format(self.product_id)
             if self.event_id:
                 redirect_url += '&event_id={}&event_slug={}'.format(
                     self.event_id, self.event_slug)

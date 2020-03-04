@@ -28,32 +28,32 @@ class DonationManager(models.Manager):
     def total_amount_foundation_in_range(self, start, end):
         end += relativedelta(days=1)
         donations = self.filter(
-            date__gte=start, date__lt=end, confirmed=True).exclude(
-            event__isnull=False).exclude(
-            product__isnull=False)
+            date__gte=start, date__lt=end, confirmed=True,
+            event__isnull=True, artist__isnull=True, product__isnull=True)
 
         return donations.aggregate(models.Sum('amount'))['amount__sum'] or 0.0
     
     def total_deductible_foundation_in_range(self, start, end):
         end += relativedelta(days=1)
         donations = self.filter(
-            date__gte=start, date__lt=end, confirmed=True).exclude(
-            event__isnull=False).exclude(
-            product__isnull=False)
+            date__gte=start, date__lt=end, confirmed=True,
+            event__isnull=True, artist__isnull=True, product__isnull=True)
 
         return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
 
     def total_amount_projects_in_range(self, start, end):
         end += relativedelta(days=1)
         donations = self.filter(
-            date__gte=start, date__lt=end, confirmed=True, product__isnull=False)
+            date__gte=start, date__lt=end, confirmed=True, product__isnull=False).exclude(
+            product__product_class__name='Gift')
 
         return donations.aggregate(models.Sum('amount'))['amount__sum']
 
     def total_deductible_projects_in_range(self, start, end):
         end += relativedelta(days=1)
         donations = self.filter(
-            date__gte=start, date__lt=end, confirmed=True, product__isnull=False)
+            date__gte=start, date__lt=end, confirmed=True, product__isnull=False).exclude(
+            product__product_class__name='Gift')
 
         return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
     
@@ -71,10 +71,25 @@ class DonationManager(models.Manager):
 
         return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
 
-    def create_by_order(self, order, artist_id=None, event_id=None):
+    def total_amount_artists_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True, artist__isnull=False)
+
+        return donations.aggregate(models.Sum('amount'))['amount__sum'] or 0.0
+
+    def total_deductible_artists_in_range(self, start, end):
+        end += relativedelta(days=1)
+        donations = self.filter(
+            date__gte=start, date__lt=end, confirmed=True, artist__isnull=False)
+
+        return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
+
+    def create_by_order(self, order, artist_id=None, event_id=None, product_id=None):
 
         assert artist_id is None or bool(artist_id)
         assert event_id is None or bool(event_id)
+        assert product_id is None or bool(product_id)
 
         total = order.total_incl_tax
         deductable_total = order.get_deductable_total()
@@ -89,7 +104,7 @@ class DonationManager(models.Manager):
             'reference': source.reference,
             'confirmed': True,
             'deductable_amount': deductable_total,
-            'product_id': order.lines.first().product_id,
+            'product_id': product_id,
             'artist_id': artist_id,
             'event_id': event_id,
         }

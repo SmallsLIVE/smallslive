@@ -8,9 +8,15 @@ from artist_dashboard.utils import generate_metrics_payout_sheet, \
 from artists.models import PastPayoutPeriod
 
 
-def attach_metrics_payout_sheet(start, end, revenue, operating_expenses, save_earnings):
+def attach_metrics_payout_sheet(start, end,
+                                foundation_total, foundation_costs,
+                                revenue, operating_expenses,
+                                save_earnings):
     output = StringIO.StringIO()
-    generate_metrics_payout_sheet(output, start, end, revenue, operating_expenses, save_earnings)
+    generate_metrics_payout_sheet(output, start, end,
+                                  foundation_total, foundation_costs,
+                                  revenue, operating_expenses,
+                                  save_earnings)
     output.seek(0)
     filename = "payments-{}_{}_{}-{}_{}_{}.xlsx".format(
         start.year, start.month, start.day, end.year, end.month, end.day)
@@ -27,7 +33,10 @@ def attach_donations_payout_sheet(start, end, revenue, operating_expenses, save_
 
 
 @shared_task(default_retry_delay=10, rate_limit="4/m", max_retries=2)
-def generate_payout_sheet_task(start, end, revenue, operating_expenses, save_earnings=False):
+def generate_payout_sheet_task(start, end,
+                               foundation_total, foundation_costs,
+                               revenue, operating_expenses,
+                               save_earnings=False):
 
     email = EmailMessage(
             "Payment spreadsheet",
@@ -37,7 +46,10 @@ def generate_payout_sheet_task(start, end, revenue, operating_expenses, save_ear
             ["aslan1st@mac.com", "martin.prunell@gmail.com"]
     )
     output, filename = attach_metrics_payout_sheet(
-        start, end, revenue, operating_expenses, save_earnings)
+        start, end,
+        foundation_total, foundation_costs,
+        revenue, operating_expenses,
+        save_earnings)
 
     email.attach(filename, output.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 

@@ -221,6 +221,8 @@ class DonationQueryForm(forms.Form):
 class MetricsPayoutForm(forms.Form):
     period_start = forms.CharField(widget=forms.HiddenInput, required=True)
     period_end = forms.CharField(widget=forms.HiddenInput, required=True)
+    foundation_total = forms.DecimalField(required=True)
+    foundation_costs = forms.DecimalField(required=True)
     revenue = forms.DecimalField(required=True)
     operating_cost = forms.DecimalField(required=True)
     save_earnings = forms.BooleanField(required=False)
