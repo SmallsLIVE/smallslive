@@ -999,9 +999,7 @@
 					case 'th':
 						switch (target[0].className){
 							case 'datepicker-switch':
-							  if (!$(this.element).parent().hasClass("custom-date-picker"))  {
-                  this.showMode(1);
-                }
+							  break;
 							case 'prev':
 							case 'next':
 								var dir = DPGlobal.modes[this.viewMode].navStep * (target[0].className === 'prev' ? -1 : 1);
