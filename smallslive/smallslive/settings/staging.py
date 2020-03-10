@@ -131,4 +131,6 @@ METRICS_SERVER_URL = "https://smallslive-metrics-staging.herokuapp.com"  # no tr
 # Paypal
 PAYPAL_SANDBOX_MODE = env_var("PAYPAL_SANDBOX_MODE", True)
 
+# Celery
+BROKER_URL = get_env_variable("REDISCLOUD_CELERY_QUEUE_URL")
 CELERY_ALWAYS_EAGER = True
