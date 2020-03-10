@@ -1,8 +1,10 @@
+import boto
 import collections
 import logging
 from decimal import Decimal
 import xlsxwriter
 from dateutil.relativedelta import relativedelta
+from django.conf import settings
 from artists.models import Artist, ArtistEarnings, CurrentPayoutPeriod, PastPayoutPeriod
 from events.models import Event
 from metrics.models import UserVideoMetric
@@ -110,12 +112,10 @@ def update_current_period_metrics():
 
 
 def generate_metrics_payout_sheet(file, start_date, end_date,
-                                  foundation_total, foundation_costs,
                                   revenue, operating_expenses, save_earnings=False):
 
-    pool = (foundation_total - foundation_costs) / Decimal(2.0)
     # Add extra revenue minus extra cost
-    pool += Decimal((revenue - operating_expenses) / Decimal(2.0))
+    pool = revenue - operating_expenses
     metrics = metrics_data_for_date_period(start_date, end_date)
     # TODO: under discussion: should donations be on the same spreadsheet?
     metrics = donations_data_for_date_period(start_date, end_date, metrics)
@@ -125,10 +125,8 @@ def generate_metrics_payout_sheet(file, start_date, end_date,
     sheet.set_column(8, 8, 30)
     sheet.write_row('I1', ('Total event seconds', metrics['total_event_seconds']), bold)
     sheet.write_row('I2', ('Total adjusted seconds', metrics['total_adjusted_seconds']), bold)
-    sheet.write_row('I3', ('Deductible Donations to Foundation', foundation_total - foundation_costs), bold)
     sheet.write_row('I4', ('Revenue', revenue), bold)
     sheet.write_row('I5', ('Operating costs', operating_expenses), bold)
-    sheet.write_row('I6', ('Artist money pool', pool), bold)
     sheet.write_row('I7', ('Total personal donations', metrics['total_donations']), bold)
     headers = ('Artist ID', 'Last name', 'First name', 'Seconds watched', 'Ratio', 'Payment', 'Personal Donations')
     sheet.write_row('A1', headers, bold)
@@ -202,3 +200,79 @@ def generate_donations_payout_sheet(file, start_date, end_date, revenue, operati
         sheet.write(idx, 3, artist[1]['donations'])
 
     workbook.close()
+
+
+def get_payout_sheets(generate_url=True):
+
+    conn = boto.connect_s3(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                           aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                           calling_format=boto.s3.connection.OrdinaryCallingFormat())
+
+    bucket_name = 'payout-sheets'
+    bucket = conn.get_bucket(bucket_name)
+
+    files = []
+    for obj in bucket.get_all_keys():
+        data = {
+            'name': obj.name,
+            'last_modified': obj.last_modified,
+        }
+        if generate_url:
+            data['url'] = obj.generate_url(expires_in=300)
+
+        files.append(data)
+
+    return files
+
+
+def get_metrics_payout_file_name(start, end):
+    filename = "payments-{}_{}_{}-{}_{}_{}.xlsx".format(
+        start.year, start.month, start.day, end.year, end.month, end.day)
+
+    return filename
+
+
+def start_generate_payout_sheet(start, end):
+
+    file_name = get_metrics_payout_file_name(start, end)
+    file_name = file_name + '.generating'
+
+    bucket = get_payout_bucket()
+    object_key = boto.s3.key.Key(bucket)
+    object_key.key = file_name
+    object_key.set_contents_from_string("generating")
+
+
+def end_generate_payout_sheet():
+
+    bucket = get_payout_bucket()
+    to_delete = []
+    for obj in bucket.get_all_keys():
+        if '.generating' in obj.name:
+            to_delete.append(obj)
+
+    for obj in to_delete:
+        bucket.delete_key(obj.key)
+
+
+def upload_payout_sheet(file_name, output):
+
+    bucket = get_payout_bucket()
+    object_key = boto.s3.key.Key(bucket)
+    object_key.key = file_name
+    object_key.set_contents_from_string(output.read())
+
+
+def get_payout_bucket():
+    conn = boto.connect_s3(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                           aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                           calling_format=boto.s3.connection.OrdinaryCallingFormat())
+
+    try:
+        bucket_name = 'payout-sheets'
+        bucket = conn.create_bucket(bucket_name, location=boto.s3.connection.Location.DEFAULT)
+    except boto.exception.S3CreateError, e:
+        if 'BucketAlreadyExists' in str(e):
+            bucket = conn.get_bucket(bucket_name)
+
+    return bucket

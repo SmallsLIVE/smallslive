@@ -30,82 +30,13 @@
                   </span>
                 </div>
 
-                <div class="payout-calculator__input hidden">
-                  <span class="payout-calculator__input__label">Total donated:</span>
-                  <span class="payout-calculator__input">
-                    ${{ total|intcomma }}.00
-                  </span>
-                </div>
-                <div class="payout-calculator__input hidden">
-                  <span class="payout-calculator__input__label">Costs:</span>
-                  <span class="payout-calculator__input" >
-                    ${{ costs|intcomma }}.00
-                  </span>
-                </div>
-
-                <div class="payout-calculator__input">
-                  <span class="payout-calculator__input__label">Total donated (foundation):</span>
-                  <span class="payout-calculator__input">
-                   $<input class="payout-calculator__text-input" type="number" name="foundation_total" value="{{ foundation_total }}.00">
-                  </span>
-                  <span class="payout-calculator__input__label">Payout base: %50</span>
-                </div>
-                <div class="payout-calculator__input">
-                  <span class="payout-calculator__input__label">Costs (foundation):</span>
-                  <span class="payout-calculator__input" >
-                    $<input class="payout-calculator__text-input" type="number" name="foundation_costs" value="{{ foundation_costs }}.00">
-                  </span>
-                </div>
-
-                <div class="payout-calculator__input">
-                  <span class="payout-calculator__input__label">Total donated (projects):</span>
-                  <span class="payout-calculator__input">
-                    ${{ projects_total|intcomma }}.00
-                  </span>
-                  <span class="payout-calculator__input__label">Payout base: %50</span>
-                </div>
-                <div class="payout-calculator__input">
-                  <span class="payout-calculator__input__label">Costs (projects):</span>
-                  <span class="payout-calculator__input" >
-                     ${{ projects_costs|intcomma }}.00
-                  </span>
-                </div>
-
-                <div class="payout-calculator__input">
-                  <span class="payout-calculator__input__label">Total donated (events):</span>
-                  <span class="payout-calculator__input">
-                    ${{ events_total|intcomma }}.00
-                  </span>
-                  <span class="payout-calculator__input__label">Payout base: %100</span>
-                </div>
-                <div class="payout-calculator__input">
-                  <span class="payout-calculator__input__label">Costs (events:</span>
-                  <span class="payout-calculator__input" >
-                    ${{ events_costs|intcomma }}.00
-                  </span>
-                </div>
-
-                <div class="payout-calculator__input">
-                  <span class="payout-calculator__input__label">Total donated (artists):</span>
-                  <span class="payout-calculator__input">
-                    ${{ artists_total|intcomma }}.00
-                  </span>
-                  <span class="payout-calculator__input__label">Payout base: %100</span>
-                </div>
-                <div class="payout-calculator__input">
-                  <span class="payout-calculator__input__label">Costs (artists):</span>
-                  <span class="payout-calculator__input" >
-                    ${{ artists_costs|intcomma }}.00
-                  </span>
-                </div>
-
                 <div class="payout-calculator__input">
                   <span class="payout-calculator__input__label">
-                    Additional revenue:</span>
-                    $<input class="payout-calculator__text-input" type="number" name="revenue" value="0.00">
+                    Revenue:</span>
+                    $<input class="payout-calculator__text-input" type="number" name="revenue" value="{{ form.revenue.value }}">
                 </div>
                 <div class="payout-calculator__input">
-                  <span class="payout-calculator__input__label">Additional costs:</span>
+                  <span class="payout-calculator__input__label">Costs:</span>
                   $<input class="payout-calculator__text-input" type="number" name="operating_cost" value="0.00">
                 </div>
 
@@ -119,6 +50,7 @@
                     </div>
                 </div>
                 <button type="submit" class="payout-calculator__submit-button">Calculate</button>
+                <a id="spreadsheet-download" class="hidden" href="">Download Report</a>
                 <a href="{% url 'artist_dashboard:metrics_payout_period' %}">Go back to select date range</a>
             </section>
         </form>
@@ -128,4 +60,5 @@
 {% block extra_js %}
   <script src="{% static 'js/bootstrap-select.js' %}"></script>
   <script src="{% static 'js/dashboard-base.js' %}"></script>
+
 {% endblock %}
