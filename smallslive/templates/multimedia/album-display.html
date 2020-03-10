@@ -181,6 +181,10 @@
     <div class="album__info__container">
       <div class="album__header__title"><!--album title container (maybe not necessary)-->
         <div class="album__header__title--no-underline">{% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }} {{ album_product.upc }}</div><!--album title-->
+        <p class="text9 accent-color" style="align-self: normal; font-style: italic; margin-top: 15px; font-size: 1.8em;">
+          You may choose to receive this album as a download or cd for a partially tax-deductible donation.
+          Your sponsorship directly supports this artist and the SmallsLIVE Foundation.
+        </p>
         <div class="album__musician-list">
           <ul>
           {% for artist_product in album_product.artistproduct_set.all %}
@@ -212,11 +216,6 @@
       <div class="description-container text4">
         {{ album_product.description|safe }}
       </div>
-      <p class="text9 accent-color" style="align-self: normal; font-style: italic;">
-        Sponsor this artist with a tax deductible donation to the SmallsLIVE Foundation.
-        Your donation directly supports this artist and this project.
-        You may choose to receive this album as a download or cd for a partially tax-deductible donation.
-      </p>
     </div>
   </div>
 

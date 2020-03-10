@@ -62,7 +62,7 @@
         {%  endif %}
       {% elif flow_type == 'event_support' %}
         <p tabindex="0" class="title7"><span class="big-letter">T</span>
-          hank you for your support of the smallslive foundation for jazz arts and education as well as {{ comma_separated_artists }}.
+          hank you for your support of {{ comma_separated_artists }} as well as the smallslive foundation for jazz arts and education.
           <br>
           {% if event.performers.count > 1 %}
           <span class='accent-color'>Your support benefits these artists and our mission.</span>
@@ -72,7 +72,7 @@
         </p>
       {% elif flow_type == 'artist_support' %}
         <p tabindex="0" class="title7"><span class="big-letter">T</span>
-          hank you for your support of the smallslive foundation for jazz arts and education as well as {{ artist.full_name }}.
+          hank you for your support of {{ artist.full_name }} as well as the smallslive foundation for jazz arts and education.
           <br>
           <span class='accent-color'>Your support benefits this artist and our mission.</span>
         </p>
