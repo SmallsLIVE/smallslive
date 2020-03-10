@@ -44,7 +44,7 @@ def generate_payout_sheet_task(start, end,
         revenue, operating_expenses,
         save_earnings)
 
-    upload_payout_sheet(file, output)
+    upload_payout_sheet(file_name, output)
 
     if save_earnings:
         period = PastPayoutPeriod.objects.first()
