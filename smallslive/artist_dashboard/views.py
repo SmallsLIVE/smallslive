@@ -741,22 +741,29 @@ def metrics_payout(request, period_start=None,  period_end=None, revenue=None):
     if request.method == 'POST':
         form = MetricsPayoutForm(request.POST)
         if form.is_valid():
+            print 'metrics_payout.form.is_valid = True'
             start = datetime.strptime(form.cleaned_data.get('period_start'), '%Y-%m-%d')
             start = timezone.make_aware(start, timezone.get_current_timezone())
             end = datetime.strptime(form.cleaned_data.get('period_end'), '%Y-%m-%d')
             end += timedelta(days=1)
             end = timezone.make_aware(end, timezone.get_current_timezone())
+            print 'metrics_payout.start, end', start, end
             revenue = form.cleaned_data.get('revenue')
             operating_cost = form.cleaned_data.get('operating_cost')
+            print 'metrics_payout.revenue, operating_costs', revenue, operating_cost
+
             save_earnings = form.cleaned_data.get('save_earnings')
+            print 'metrics_payout.start_generate_payout_sheet ...'
             start_generate_payout_sheet(start, end)
+            print 'metrics_payout.start_generate_payout_sheet ok!'
+            print 'metrics_payout.generate_payout_sheet.delay ...'
             generate_payout_sheet_task.delay(start, end,
                                              revenue, operating_cost, save_earnings)
+            print 'metrics_payout.generate_payout_sheet.delay ok!'
+            return redirect('artist_dashboard:metrics_payout_period')
         else:
             messages.error(request, "Payout calculation failed. {}".format(form.errors))
             return redirect('artist_dashboard:metrics_payout')
-
-        return redirect('artist_dashboard:metrics_payout_period')
     else:
         initial = {
             'period_start': period_start,
