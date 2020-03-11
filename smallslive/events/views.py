@@ -881,21 +881,27 @@ class PublishEvent(GenericViewSet):
             if event.has_published_media():
                 for event_set in event.sets.with_media():
                     recording = event_set.video_recording
-                    recording.state = Recording.STATUS.Hidden
-                    recording.save()
+                    if recording:
+                        recording.state = Recording.STATUS.Hidden
+                        recording.save()
+
                     recording = event_set.audio_recording
-                    recording.state = Recording.STATUS.Hidden
-                    recording.save()
+                    if recording:
+                        recording.state = Recording.STATUS.Hidden
+                        recording.save()
+
                     data['is_published'] = False
             else:
                 for event_set in event.sets.with_media():
                     recording = event_set.video_recording
-                    recording.state = Recording.STATUS.Published
-                    recording.save()
+                    if recording:
+                        recording.state = Recording.STATUS.Published
+                        recording.save()
 
                     recording = event_set.audio_recording
-                    recording.state = Recording.STATUS.Published
-                    recording.save()
+                    if recording:
+                        recording.state = Recording.STATUS.Published
+                        recording.save()
                     data['is_published'] = True
 
         except Recording.DoesNotExist:
