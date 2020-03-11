@@ -45,15 +45,16 @@
                                         {% if gig_info.is_admin and set.has_media %}
                                             {% if set.video_recording and set.video_recording.is_published or
                                                   set.audio_recording and set.audio_recording.is_published %}
-                                                <button class="publish-button" onclick="askPublish({{ set.id }})">
+                                                <button class="publish-button" onclick="askPublish({{ set.id }})" data-comma-separated-leaders="{{ event.comma_separated_leaders }}" >
                                                     Publish
                                                 </button>
                                             {% else %}
-                                                <button class="publish-button" onclick="askPrivate({{ set.id }})">Make
+                                                <button class="publish-button" onclick="askPrivate({{ set.id }})" data-comma-separated-leaders="{{ event.comma_separated_leaders }}">Make
                                                     Private
                                                 </button>
                                             {% endif %}
-                                            <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')">
+                                            <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')"
+                                                    data-comma-separated-leaders="{{ event.comma_separated_leaders }}">
                                                 Download
                                             </button>
                                             <button>

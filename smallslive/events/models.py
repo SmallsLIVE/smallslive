@@ -807,6 +807,15 @@ class Event(TimeStampedModel):
             leader = None
         return leader
 
+    def comma_separated_leaders(self):
+        """"""
+        # TODO: remove confusion between leader and admin
+        artists = []
+        for item in self.artists_gig_info.filter(is_leader=True):
+            artists.append(item.artist.full_name())
+
+        return ','.join(artists)
+
     def listing_date(self):
         """
         Shows the listing date for an event, for instance an event that is technically
@@ -1171,6 +1180,7 @@ class GigPlayed(models.Model):
 
     def __unicode__(self):
         return u'{} - {}'.format(self.artist.full_name(), self.role.name)
+
 
 class Venue(models.Model):
 

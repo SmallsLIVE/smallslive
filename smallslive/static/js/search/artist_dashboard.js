@@ -153,15 +153,28 @@ $(document).ready(function () {
 
     $(document).on('click', '#form-edit-button', function () {
       var $submit = $("#submit-id-submit");
-      if ($submit.attr("disabled") === "disabled") {
-        $("#submit-id-submit").removeAttr('disabled');
-        enableEditForm();
-        $(this).text('Cancel')
+      if ($(this).hasClass("sidemusician")) {
+        var leaders = $(this).data("comma-separated-leaders");
+        $("#sideMusicianModal .comma-separated-leaders").html(leaders);
+        $("#sideMusicianModal .message1").hide();
+        $("#sideMusicianModal .message2").hide();
+        var number = "1";
+        if (leaders.indexOf(",") > -1) {
+          number = "2";
+        }
+        $("#sideMusicianModal .message" + number).show();
+        $("#sideMusicianModal").modal('show');
       } else {
-        $("#submit-id-submit").attr("disabled", "disabled");
-        disableEditForm();
-        cancelUploadedImage();
-        $(this).text('Edit');
+        if ($submit.attr("disabled") === "disabled") {
+          $("#submit-id-submit").removeAttr('disabled');
+          enableEditForm();
+          $(this).text('Cancel')
+        } else {
+          $("#submit-id-submit").attr("disabled", "disabled");
+          disableEditForm();
+          cancelUploadedImage();
+          $(this).text('Edit');
+        }
       }
     });
 
@@ -264,18 +277,63 @@ $(document).ready(function () {
     });
 
     $(document).on("click", "#event-info .publish-button", function () {
-      selectedEventId = $(this).closest(".artist-set-actions").data("event-id");
-      askPublish(selectedEventId);
+      // TODO : fix duplicate code.
+      if ($(this).hasClass("sidemusician")) {
+        var leaders = $(this).data("comma-separated-leaders");
+        $("#sideMusicianModal .comma-separated-leaders").html(leaders);
+        $("#sideMusicianModal .message1").hide();
+        $("#sideMusicianModal .message2").hide();
+        var number = "1";
+        if (leaders.indexOf(",") > -1) {
+          number = "2";
+        }
+        $("#sideMusicianModal .message" + number).show();
+        $("#sideMusicianModal").modal('show');
+      } else {
+
+        selectedEventId = $(this).closest(".artist-set-actions").data("event-id");
+        askPublish(selectedEventId);
+      }
     });
 
     $(document).on("click", "#event-info .private-button", function () {
-      selectedEventId = $(this).closest(".artist-set-actions").data("event-id");
-      askPrivate(selectedEventId);
+      // TODO : fix duplicate code.
+      if ($(this).hasClass("sidemusician")) {
+        var leaders = $(this).data("comma-separated-leaders");
+        $("#sideMusicianModal .comma-separated-leaders").html(leaders);
+        $("#sideMusicianModal .message1").hide();
+        $("#sideMusicianModal .message2").hide();
+        var number = "1";
+        if (leaders.indexOf(",") > -1) {
+          number = "2";
+        }
+        $("#sideMusicianModal .message" + number).show();
+        $("#sideMusicianModal").modal('show');
+      } else {
+
+        selectedEventId = $(this).closest(".artist-set-actions").data("event-id");
+        askPrivate(selectedEventId);
+      }
     });
 
     $(document).on("click", "#event-info .download", function () {
-      selectedEventId = $(this).closest(".artist-set-actions").data("event-id");
-      showSelectFormat(selectedEventId);
+      if ($(this).hasClass("sidemusician")) {
+        // TODO : fix duplicate code.
+        var leaders = $(this).data("comma-separated-leaders");
+        $("#sideMusicianModal .comma-separated-leaders").html(leaders);
+        $("#sideMusicianModal .message1").hide();
+        $("#sideMusicianModal .message2").hide();
+        var number = "1";
+        if (leaders.indexOf(",") > -1) {
+          number = "2";
+        }
+        $("#sideMusicianModal .message" + number).show();
+        $("#sideMusicianModal").modal('show');
+      } else {
+
+        selectedEventId = $(this).closest(".artist-set-actions").data("event-id");
+        showSelectFormat(selectedEventId);
+      }
     });
 
     $(document).on("click", ".set-changer", function (event) {

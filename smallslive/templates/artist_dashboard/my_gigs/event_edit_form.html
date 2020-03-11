@@ -18,7 +18,10 @@
 {% endif %}
 <div class="button-row-margin">
   <div class="flex-row">
-    <button id="form-edit-button" {% if not is_admin %}disabled {% endif %}class="white-border-button">Edit</button>
+    <button id="form-edit-button"
+            class="white-border-button {% if not is_admin %}sidemusician{% endif %}"
+            data-comma-separated-leaders="{{ event.comma_separated_leaders }}">Edit
+    </button>
     <input disabled type="submit"
            name="submit"
            value="Save event"

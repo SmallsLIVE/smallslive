@@ -22,26 +22,19 @@
        data-event-id="{{ event.pk }}">
     <div class="button-row button-row-margin">
       <div class="flex-row">
-        {% if is_admin and sets_with_media.count %}
+        {% if sets_with_media.count %}
           {% if event.has_published_media %}
-            <button class="private-button publish">
+            <button class="private-button publish {% if not is_admin %}sidemusician{% endif %}" data-comma-separated-leaders="{{ event.comma_separated_leaders }}">
               Make Private
             </button>
           {% else %}
-            <button class="publish-button publish">
+            <button class="publish-button publish {% if not is_admin %}sidemusician{% endif %}" data-comma-separated-leaders="{{ event.comma_separated_leaders }}">
               Publish
             </button>
           {% endif %}
-          <button class="download white-border-button separated">
+          <button class="download white-border-button separated {% if not is_admin %}sidemusician{% endif %}" data-comma-separated-leaders="{{ event.comma_separated_leaders }}">
               Download
           </button>
-        {% else %}
-          {% if event.has_published_media %}
-            <button disabled>Make Private</button>
-          {% else %}
-            <button disabled>Publish</button>
-          {% endif %}
-          <button disabled class="white-border-button separated">Download</button>
         {% endif %}
       </div>
     </div>
