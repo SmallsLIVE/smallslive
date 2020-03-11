@@ -675,6 +675,7 @@ $dashboard-desktop: 1200px;
 
         .jw-preview {
           background-size: cover;
+          filter: $sepia-filter;
         }
       }
 
