@@ -133,10 +133,12 @@ class SearchObject(object):
 
         instruments = list(set(instruments))
 
+        term_for_artist = None
         number_of_performers = None
         for word in words:
             if word.lower().strip() in POSSIBLE_NUMBER_OF_PERFORMERS:
                 number_of_performers = word
+                term_for_artist = word
 
         if number_of_performers in words:
             words.remove(number_of_performers)
@@ -169,7 +171,7 @@ class SearchObject(object):
             last_name = ''
 
         return words, instruments, all_sax_instruments, partial_instruments, \
-            number_of_performers, first_name, last_name, partial_name, artist_search
+            number_of_performers, first_name, last_name, partial_name, artist_search, term_for_artist
 
     def filter_artist_instruments(self, instruments, all_sax_instruments):
 
@@ -206,7 +208,7 @@ class SearchObject(object):
             ).distinct()
         self.sqs = temp_sqs
 
-    def filter_partial_name(self, partial_name, artist_search):
+    def filter_partial_name(self, partial_name, artist_search=None):
         condition = Q(last_name__iexact=partial_name)
         if artist_search:
             condition &= Q(first_name__istartswith=artist_search)
@@ -244,7 +246,8 @@ class SearchObject(object):
         self.sqs = list(self.sqs) + list(sqs_instruments)
 
     def filter_artist_names(self, first_name, last_name, partial_name,
-                            artist_search, partial_instruments, terms):
+                            artist_search, partial_instruments, terms,
+                            term_for_artist):
 
         condition = None
         if artist_search and not partial_name:
@@ -263,17 +266,19 @@ class SearchObject(object):
                     last_name__istartswith=term) | Q(
                     first_name__istartswith=term)
             self.sqs = self.sqs.filter(condition).distinct()
-        else:
-            self.sqs = self.sqs.none()
+        elif term_for_artist:
+            self.sqs = Event.objects.none()
+            # self.filter_partial_name(term_for_artist)
 
     def search_artist(self, terms=None,
                       instruments=None, all_sax_instruments=None, partial_instruments=None,
-                      first_name=None, last_name=None, partial_name=None, artist_search=None):
+                      first_name=None, last_name=None, partial_name=None, artist_search=None,
+                      term_for_artist=None):
 
         self.sqs = Artist.objects.all().prefetch_related('instruments')
         self.filter_artist_instruments(instruments, all_sax_instruments)
         self.filter_artist_names(first_name, last_name, partial_name,
-                                 artist_search, partial_instruments, terms)
+                                 artist_search, partial_instruments, terms, term_for_artist)
 
         return self.sqs
 

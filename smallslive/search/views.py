@@ -143,13 +143,13 @@ class SearchBarView(View):
         search = SearchObject()
         search_input = search.process_input(main_search)
         terms, instruments, all_sax_instruments, partial_instruments, number_of_performers, \
-            first_name, last_name, partial_name, artist_search = search_input
+            first_name, last_name, partial_name, artist_search, term_for_artist = search_input
 
         artists = []
         artist_results_per_page = 6
 
         sqs = search.search_artist(terms, instruments, all_sax_instruments, partial_instruments,
-                                   first_name, last_name, partial_name, artist_search)
+                                   first_name, last_name, partial_name, artist_search, term_for_artist)
         
         paginator = Paginator(sqs, artist_results_per_page)
         artists_results = paginator.count
