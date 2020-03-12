@@ -45,7 +45,7 @@ $(document).ready(function () {
         else {
           $searchBar.css("display", "none");
         }
-      }, 800, e);
+      }, 1200, e);
     });
 
     $(".search-bar-autocomplete-container").on('focusout', function (e) {

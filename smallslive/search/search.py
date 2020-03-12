@@ -263,6 +263,8 @@ class SearchObject(object):
                     last_name__istartswith=term) | Q(
                     first_name__istartswith=term)
             self.sqs = self.sqs.filter(condition).distinct()
+        else:
+            self.sqs = self.sqs.none()
 
     def search_artist(self, terms=None,
                       instruments=None, all_sax_instruments=None, partial_instruments=None,
@@ -411,17 +413,18 @@ class SearchObject(object):
         return names_and_instruments_condition
 
     def filter_number_of_performers(self, leader_condition, number_of_performers,
-                                    names_and_instruments_condition):
+                                    names_and_instruments_condition, names_condition):
 
-        if names_and_instruments_condition or not leader_condition:
+        if names_and_instruments_condition or names_condition:
 
             # Leader filter was applied before or it wasn't provided.
-            conditions = Q(num_performers=number_of_performers)
             if names_and_instruments_condition:
-                conditions &= names_and_instruments_condition
+                conditions = names_and_instruments_condition
+            elif names_condition:
+                conditions = names_condition
             self.sqs = self.sqs\
                 .annotate(num_performers=Count('performers', distinct=True)) \
-                .filter(conditions)
+                .filter(Q(num_performers=number_of_performers) & conditions)
         else:
             self.sqs = self.sqs \
                 .annotate(num_performers=Count('performers', distinct=True)) \
@@ -488,15 +491,19 @@ class SearchObject(object):
                 instruments_conditions, names_condition)
         else:
             if names_condition:
-                if leader_condition:
-                    self.sqs = self.sqs.filter(leader_condition, names_condition)
-                else:
-                    self.sqs = self.sqs.filter(names_condition)
+                if not number_of_performers:
+                    if leader_condition:
+                        self.sqs = self.sqs.filter(leader_condition, names_condition)
+                    else:
+                        self.sqs = self.sqs.filter(names_condition)
 
         # Filter by number of performers (No filter applied yet if # performers provided)
         if number_of_performers:
             self.filter_number_of_performers(
-                leader_condition, number_of_performers, names_and_instruments_conditions)
+                leader_condition, number_of_performers, names_and_instruments_conditions, names_condition)
+
+        print '************************************************************'
+        print self.sqs.query
 
         # Filter by venue and dates
         self.filter_venue(venue)
