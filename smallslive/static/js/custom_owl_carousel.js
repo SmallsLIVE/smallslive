@@ -25,7 +25,7 @@ $(document).ready(function () {
           margin:2,
           stagePadding: controlButtonWidth,
         },
-        650:{
+        651:{
           items: 2,
           stagePadding: controlButtonWidth,
         },
