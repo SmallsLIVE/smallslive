@@ -37,12 +37,9 @@ def invoice_payment_succeeded(sender, **kwargs):
 def check_admin_update(sender, instance, update_fields=None, **kwargs):
     is_delayed = instance.payment_source == 'Check' or \
                  instance.payment_source == 'BitCoin'
-    if instance.pk:
-        old_instance = subscriptions.models.Donation.objects.get(pk=instance.pk)
-        # Transition to confirmed
-        send_email = not old_instance.confirmed and instance.confirmed and not is_delayed
-    else:
-        send_email = instance.confirmed or is_delayed
+    # Send notification when Donation is created only for check or bitcoin.
+    if not instance.pk:
+        send_email = is_delayed
 
     send_email = send_email and not instance.payment_source == 'Stripe Subscription'
 
