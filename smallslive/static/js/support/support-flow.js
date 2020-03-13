@@ -772,6 +772,7 @@ $(document).ready(function() {
     var $selectionConfirmationDialog = $mainContainer.find(dialogSelector);
     $selectionConfirmationDialog.find(".title").text($(this).find(".gift-title").text());
     var giftTier = $(this).attr("data-type");
+    var giftDescription = $(this).attr("data-description");
     var hasVariants =
       $(this).data("variants") && $(this).data("variants") != "0";
     $selectionConfirmationDialog
@@ -800,6 +801,11 @@ $(document).ready(function() {
     $content.find(".price").text(price);
     $content.find(".tax").text(tax);
     $content.find(".gift-tier").text(giftTier);
+    if (giftDescription) {
+      $selectionConfirmationDialog.find(".description").text(giftDescription).show();
+    } else {
+      $selectionConfirmationDialog.find(".description").hide();
+    }
     if (hasVariants) {
       $selectionConfirmationDialog.find(".variants").show();
     }  else {
