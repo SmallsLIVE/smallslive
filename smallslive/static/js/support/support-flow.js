@@ -802,7 +802,7 @@ $(document).ready(function() {
     $content.find(".tax").text(tax);
     $content.find(".gift-tier").text(giftTier);
     if (giftDescription) {
-      $selectionConfirmationDialog.find(".description").text(giftDescription).show();
+      $selectionConfirmationDialog.find(".description").html(giftDescription).show();
     } else {
       $selectionConfirmationDialog.find(".description").hide();
     }
