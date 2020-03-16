@@ -69,7 +69,7 @@
                   <h2 class="mini-artist-info__title"><a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }}</a></h2>
                   <p class="mini-artist-info__instrument">{{ gig_info.role }}</p>
                   {% if gig_info.artist.biography %}
-                    <p class="mini-artist-info__bio">{{ gig_info.artist.biography|striptags|truncatewords:28 }}</p>
+                    <p class="mini-artist-info__bio">{{ gig_info.artist.biography|striptags|safe|truncatewords:28 }}</p>
                   {% else %}
                     <p class="mini-artist-info__bio unavailable">No artist biography available</p>
                   {% endif %}

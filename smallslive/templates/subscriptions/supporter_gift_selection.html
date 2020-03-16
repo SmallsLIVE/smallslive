@@ -53,7 +53,7 @@
                       data-cost="{{ session.stockrecord.cost_price }}"
                       data-inclTax="{{ session.price.incl_tax }}"
                       data-type="{{ product.title }}"
-                      data-description="{{ product.description }}"
+                      data-description="{{ product.description|striptags|safe }}"
                       data-variants="{{ product.variants.count }}">
                 <span class="price-tag">{{ session.price.incl_tax|currency:session.price.currency }} </span>
                 <span class="gift-title">{{ product.get_title }}</span>
@@ -65,7 +65,7 @@
                        data-cost="{{ session.stockrecord.cost_price }}"
                        data-inclTax="{{ session.price.incl_tax }}"
                        data-type="{{ product.title }}"
-                       data-description="{{ product.description }}"
+                       data-description="{{ product.description|striptags|safe }}"
                        data-variants="{{ product.variants.count }}">
                  <span class="price-tag">{{ session.price.excl_tax|currency:session.price.currency }} </span>
                  <span class="gift-title">{{ product.get_title }}</span>

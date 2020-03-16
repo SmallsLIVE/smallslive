@@ -12,14 +12,14 @@
   <meta property="og:type" content="profile" />
   <meta property="og:site_name" content="SmallsLIVE" />
   <meta property="og:title" content="{{ artist.full_name }} profile" />
-  <meta property="og:title" content="{{ artist.biography|truncatewords:40|striptags }}" />
+  <meta property="og:title" content="{{ artist.biography|truncatewords:40|striptags|safe }}" />
   {% if artist.photo %}
     <meta property="og:image" content="https:{% thumbor_url artist.photo.url|urlencode height=315 width=600 smart=True %}" />
     <meta itemprop="image" content="https:{% thumbor_url artist.photo.url|urlencode height=315 width=600 smart=True %}">
   {% endif %}
   <meta property="fb:app_id" content="{{ facebook_app_id }}" />
   <meta itemprop="name" content="{{ artist.full_name }} profile">
-  <meta itemprop="description" content="{{ artist.biography|truncatewords:40|striptags }}">
+  <meta itemprop="description" content="{{ artist.biography|truncatewords:40|striptags|safe}}">
 {% endblock %}
 
 {% block home_content %}
@@ -110,7 +110,7 @@
           <div class="flex-column items-center">
             <div class="text7 artist-biography">
               {% if artist.biography %}
-                {{ artist.biography|safe }}
+                {{ artist.biography|striptags|safe }}
               {% else %}
                 <p class="unavailable">This artist does not have a bio yet.</p>
               {% endif %}

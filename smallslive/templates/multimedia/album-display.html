@@ -214,7 +214,7 @@
     </div>
     <div>
       <div class="description-container text4">
-        {{ album_product.description|safe }}
+        {{ album_product.description|striptags|safe }}
       </div>
     </div>
   </div>
