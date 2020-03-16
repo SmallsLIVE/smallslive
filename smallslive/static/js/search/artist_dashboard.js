@@ -1,3 +1,4 @@
+"use strict";
 
 $(document).ready(function () {
 
@@ -7,6 +8,9 @@ $(document).ready(function () {
   var firstEventDate;
   var toDateLimit
   var lastEventDate;
+
+  var startDateMetrics;
+  var endDateMetrics;
 
   initializeFilters();
   initializeDashboardDatePickers();
@@ -443,27 +447,60 @@ $(document).ready(function () {
 
     $(document).on("click", ".datepicker-dashboard-left-panel > div", function () {
 
+      var loadMetrics = false;
+      var $datePickerFrom = $("#dashboard-metrics-date-picker-from input");
+      var $datePickerTo = $("#dashboard-metrics-date-picker-to input")
+
       if ($(this).data('date') == "all") {
-        $("#dashboard-metrics-date-picker-from input").datepicker("update", new Date(2000, 0, 1));
-        $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date());
+        $datePickerFrom.datepicker("update", startDateMetrics);
+        $datePickerTo.datepicker("update", endDateMetrics);
+        loadMetrics = true;
       } else if ($(this).data('date') == "period") {
         d = new Date();
         d.setFullYear(d.getFullYear() - 1);
         $("#dashboard-metrics-date-picker-from input").datepicker("update", d);
         $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date());
       } else {
-        $("#dashboard-metrics-date-picker-from input").datepicker("update", new Date($(this).data('start')));
-        $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date($(this).data('end')));
+        var newStart = new Date($(this).data('start'));
+        var newEnd = new Date($(this).data('end'));
+        var startLimit = new Date(startDateMetrics);
+        if (newEnd >= startLimit) {
+          var endLimit = new Date(endDateMetrics);
+          if (newStart < startLimit) {
+            newStart = startLimit;
+          }
+          if (newEnd > endLimit) {
+            newEnd = endLimit;
+          }
+          $("#dashboard-metrics-date-picker-from input").datepicker("update", newStart);
+          $("#dashboard-metrics-date-picker-to input").datepicker("update", newEnd);
+          loadMetrics = true;
+        } else {
+          // There can be no results since date range  is outside the limits;
+        }
+
       }
 
-      $("#metrics-datepicker-description").html($(this).text());
+      if (loadMetrics) {
 
-      $("#dashboard-metrics-date-picker-to input").click();
-      $("#dashboard-metrics-date-picker-to input").focus();
+        $("#metrics-datepicker-description").html($(this).text());
 
-      $("#datepicker-dashboard-left-panel").hide();
+        $("#dashboard-metrics-date-picker-to input").click();
+        $("#dashboard-metrics-date-picker-to input").focus();
 
-      loadMetricsData();
+        $("#datepicker-dashboard-left-panel").hide();
+
+        loadMetricsData();
+      } else {
+
+        $("#datepicker-dashboard-left-panel").hide();
+        $(".event-metrics-container.metrics").each(function () {
+          var setId = $(this).data("set-id");
+          var $container = $("#set-metrics-" + setId);
+          $container.find(".play-value").html("0");
+          $container.find(".time-value").html("00:00:00");
+        });
+      }
 
     });
 
@@ -493,12 +530,12 @@ $(document).ready(function () {
       }
     }
 
-    $('#artistEventsList').html("")
+    $('#artistEventsList').hide();
     $('#artistEventsList').addClass("artist-loading-gif");
     $("#event-load-gif").removeClass("hidden");
     $('.concerts-footer').hide();
 
-    params = {
+    var params = {
       'page': ++currentPage
     };
 
@@ -557,6 +594,7 @@ $(document).ready(function () {
   function updateShows(data, loadFirstEvent) {
     $("#event-load-gif").addClass("hidden");
     $("#artistEventsList").removeClass("artist-loading-gif");
+    $('#artistEventsList').show();
     $('.concerts-footer').show();
     if (data.template) {
       if (data.total_results > 0) {
@@ -779,6 +817,10 @@ $(document).ready(function () {
             };
             playList.push(playInfo);
           });
+          startDateMetrics = eventDateFrom;
+          var today = new Date();
+          var today = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+          endDateMetrics = today;
           initializeMetricsDatePickers(eventDateFrom);
           if (mediaType == 'mp4') {
             setupVideoPlayer(playList);
@@ -998,7 +1040,7 @@ $(window).on('resize', function(e) {
 });
 
 
-function initializeMetricsDatePickers (eventDateFrom) {
+function initializeMetricsDatePickers(eventDateFrom) {
 
   var today = new Date();
   var today = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
