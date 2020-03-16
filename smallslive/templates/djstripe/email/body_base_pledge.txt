@@ -2,7 +2,7 @@ Dear {% block customer_name %}{% if charge.customer.subscriber.get_full_name %}{
 
 Thank you for contributing to the SmallsLIVE Foundation for Jazz Arts and Education.
 
-You have pledged to make a monthly donation of {{charge.amount}}. Monthly pledges are 100% tax deductible and are billed automatically.
+You have pledged to make a monthly donation of {{ amount }}. Monthly pledges are 100% tax deductible and are billed automatically.
 Monthly pledges may be cancelled at any time from your Account Settings.
 All donations grant access to the SmallsLIVE Archive.
 
