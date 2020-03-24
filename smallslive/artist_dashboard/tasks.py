@@ -1,34 +1,35 @@
-import boto
 import StringIO
 from celery import shared_task
-from django.conf import settings
 from django.core.files.base import ContentFile
 
+from artists.models import PayoutPeriodGeneration
 from artist_dashboard.utils import generate_metrics_payout_sheet, \
     generate_donations_payout_sheet, update_current_period_metrics, \
-    get_metrics_payout_file_name, upload_payout_sheet, \
-    end_generate_payout_sheet
+    get_metrics_payout_file_name, end_generate_payout_sheet, \
+    metrics_data_for_date_period, donations_data_for_date_period
 from artists.models import PastPayoutPeriod
 
 
-def attach_metrics_payout_sheet(start, end,
-                                  revenue, operating_expenses,
-                                  save_earnings):
+def attach_metrics_payout_sheet(metrics, start, end,
+                                revenue, operating_expenses,
+                                save_earnings, process_personal_donations=False):
+
     output = StringIO.StringIO()
-    generate_metrics_payout_sheet(output, start, end,
+    generate_metrics_payout_sheet(metrics, output, start, end,
                                   revenue, operating_expenses,
-                                  save_earnings)
+                                  save_earnings, process_personal_donations)
     output.seek(0)
-    filename = get_metrics_payout_file_name(start, end)
+    filename = get_metrics_payout_file_name(start, end, personal=process_personal_donations)
     return output, filename
 
 
-def attach_donations_payout_sheet(start, end, revenue, operating_expenses, save_earnings):
+def attach_donations_sheet(donations, start, end):
+
     output = StringIO.StringIO()
-    generate_donations_payout_sheet(output, start, end, revenue, operating_expenses, save_earnings)
+    generate_donations_payout_sheet(donations, output)
     output.seek(0)
-    filename = "donations-{}_{}_{}-{}_{}_{}.xlsx".format(
-        start.year, start.month, start.day, end.year, end.month, end.day)
+    filename = 'donations-admin-{}_{}_{}-{}_{}_{}.xlsx'.format(
+            start.year, start.month, start.day, end.year, end.month, end.day)
     return output, filename
 
 
@@ -39,19 +40,35 @@ def generate_payout_sheet_task(start, end,
     """ Deprecate email in favor of download. Generate file and upload to s3.
     Poll to download when ready"""
 
+    # Spreadsheet for admins with personal donations.
+    metrics = metrics_data_for_date_period(start, end)
+    metrics = donations_data_for_date_period(start, end, metrics)
     output, file_name = attach_metrics_payout_sheet(
+        metrics,
         start, end,
         revenue, operating_expenses,
-        save_earnings)
+        save_earnings, process_personal_donations=True)
+    PayoutPeriodGeneration.objects.attach_admin_spreadsheet(start, end, output, file_name)
 
-    upload_payout_sheet(file_name, output)
+    # Spreadsheet for musicians does not contain personal
+    # Donations
+    output, file_name = attach_metrics_payout_sheet(
+        metrics,
+        start, end,
+        revenue, operating_expenses,
+        save_earnings, process_personal_donations=False)
+    PayoutPeriodGeneration.objects.attach_musicians_spreadsheet(start, end, output, file_name)
+
+    # Direct donation information
+    output, file_name = attach_donations_sheet(metrics['donations'], start, end)
+    PayoutPeriodGeneration.objects.attach_donations_spreadsheet(start, end, output, file_name)
 
     if save_earnings:
         period = PastPayoutPeriod.objects.first()
         output.seek(0)
-        # period.payout_spreadsheet.save(file_name, ContentFile(output.read()), save=True)
+        period.payout_spreadsheet.save(file_name, ContentFile(output.read()), save=True)
 
-    end_generate_payout_sheet()
+    end_generate_payout_sheet(start, end, )
 
 
 @shared_task

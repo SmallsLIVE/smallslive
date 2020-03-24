@@ -1,8 +1,7 @@
 import os
-import urllib
-
 from allauth.account.models import EmailAddress, EmailConfirmation
 from django.contrib.auth import get_user_model
+from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Count, Lookup, Q, Sum
@@ -279,15 +278,68 @@ class Instrument(models.Model):
         return u""
 
 
+class PayoutPeriodGenerationManager(models.Manager):
+
+    def attach_admin_spreadsheet(self, start, end, output, file_name):
+        instance = self.filter(period_start=start, period_end=end).first()
+        if instance:
+            instance.admin_payout_spreadsheet.save(file_name, ContentFile(output.read()), save=True)
+
+    def attach_musicians_spreadsheet(self, start, end, output, file_name):
+        instance = self.filter(period_start=start, period_end=end).first()
+        if instance:
+            instance.musicians_payout_spreadsheet.save(file_name, ContentFile(output.read()), save=True)
+
+    def attach_donations_spreadsheet(self, start, end, output, file_name):
+        instance = self.filter(period_start=start, period_end=end).first()
+        if instance:
+            instance.donations_spreadsheet.save(file_name, ContentFile(output.read()), save=True)
+
+
+class PayoutPeriodGeneration(models.Model):
+    """When calculation starts, it needs to run on a background task.
+        statuses: "processing", "finished".
+    """
+    STATUSES = Choices('initial', 'processing', 'success', 'error')
+
+    period_start = models.DateField()
+    period_end = models.DateField()
+    total_seconds = models.BigIntegerField(default=0)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=4, default=0)
+    admin_payout_spreadsheet = models.FileField(upload_to='payouts/',
+                                                storage=get_payouts_storage_object(), blank=True)
+    musicians_payout_spreadsheet = models.FileField(upload_to='payouts/',
+                                                    storage=get_payouts_storage_object(), blank=True)
+    donations_spreadsheet = models.FileField(upload_to='payouts/',
+                                             storage=get_payouts_storage_object(), blank=True)
+    calculation_start = models.DateTimeField(auto_now_add=True)
+    calculation_end = models.DateTimeField(blank=True, null=True)
+    status = models.CharField(choices=STATUSES, max_length=255, blank=True)
+    status_message = models.TextField(blank=True, null=True)
+
+    objects = PayoutPeriodGenerationManager()
+
+    def __unicode__(self):
+        return '{} - {} - {}'.format(self.period_start, self.period_end, self.status)
+
+
 class PastPayoutPeriod(models.Model):
     period_start = models.DateField()
     period_end = models.DateField()
     total_seconds = models.BigIntegerField(default=0)
     total_amount = models.DecimalField(max_digits=10, decimal_places=4, default=0)
-    payout_spreadsheet = models.FileField(upload_to='payouts/', storage=get_payouts_storage_object(), blank=True)
+    admin_payout_spreadsheet = models.FileField(upload_to='payouts/',
+                                                storage=get_payouts_storage_object(), blank=True)
+    musicians_payout_spreadsheet = models.FileField(upload_to='payouts/',
+                                                    storage=get_payouts_storage_object(), blank=True)
+    donations_spreadsheet = models.FileField(upload_to='payouts/',
+                                             storage=get_payouts_storage_object(), blank=True)
 
     class Meta:
         ordering = ['-period_end']
+
+    def __unicode__(self):
+        return u"{0}-{1}".format(self.period_start, self.period_end)
 
 
 class ArtistEarnings(models.Model):

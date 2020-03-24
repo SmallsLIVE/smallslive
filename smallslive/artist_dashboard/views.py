@@ -30,7 +30,7 @@ from metrics.models import UserVideoMetric
 from rest_framework.authtoken.models import Token
 
 from artists.models import Artist, ArtistEarnings, \
-    CurrentPayoutPeriod, Instrument, PastPayoutPeriod
+    CurrentPayoutPeriod, Instrument, PastPayoutPeriod, PayoutPeriodGeneration
 from events.models import Recording, Event
 import events.views as event_views
 from subscriptions.models import Donation
@@ -44,7 +44,7 @@ from .forms import ToggleRecordingStateForm, EventAjaxEditForm,  \
     MetricsPayoutForm, ArtistGigPlayedEditLazyInlineFormSet
 from artist_dashboard.tasks import generate_payout_sheet_task,\
     update_current_period_metrics_task
-from artist_dashboard.utils import get_payout_sheets, start_generate_payout_sheet
+from artist_dashboard.utils import start_generate_payout_sheet
 
 
 class MyEventsView(HasArtistAssignedMixin, ListView):
@@ -783,32 +783,19 @@ def metrics_payout(request, period_start=None,  period_end=None, revenue=None):
 @login_required
 def metrics_payout_poll(request):
 
-    payouts = get_payout_sheets()
-    if payouts:
-        payout_file = sorted(payouts, key=lambda x: x['last_modified'], reverse=True)[0]
-    else:
-        payout_file = None
+    template = 'artist_dashboard/payout_generation.html'
+
+    generated_payouts = PayoutPeriodGeneration.objects.all()
+    context = {'generated_payouts': generated_payouts}
+
+    tpl = render_to_string(
+        template,
+        context,
+        context_instance=RequestContext(request))
 
     data = {
-        'success': bool(payout_file),
-        'file': payout_file
-    }
-
-    return JsonResponse(data)
-
-
-@login_required
-def metrics_payout_download(request):
-
-    payouts = get_payout_sheets(generate_url=True)
-    if payouts:
-        payout_file = sorted(payouts, key=lambda x: x['last_modified'], reverse=True)[0]
-    else:
-        payout_file = None
-
-    data = {
-        'success': bool(payout_file),
-        'file': payout_file,
+        'success': True,
+        'template': tpl
     }
 
     return JsonResponse(data)

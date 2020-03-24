@@ -5,7 +5,8 @@ from decimal import Decimal
 import xlsxwriter
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
-from artists.models import Artist, ArtistEarnings, CurrentPayoutPeriod, PastPayoutPeriod
+from artists.models import Artist, ArtistEarnings, CurrentPayoutPeriod, \
+    PastPayoutPeriod, PayoutPeriodGeneration
 from events.models import Event
 from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import ArtistProduct
@@ -51,6 +52,7 @@ def donations_data_for_date_period(start_date, end_date, metrics):
     print 'Processing donations ...'
 
     total_donations = 0
+    donation_data=[]
 
     # Donations to artists
     # Total amount to artist -> take 0%
@@ -58,31 +60,54 @@ def donations_data_for_date_period(start_date, end_date, metrics):
                                             confirmed=True, artist_id__isnull=False, amount__gt=0)
     for donation in donations_sqs:
         amount = donation.deductable_amount
-        total_donations += donation.amount
+        total_donations += donation.deductable_amount
         metrics['metrics_info'][donation.artist_id]['donations'] += amount
+        order_number = donation.order.number if donation.order else ''
+        item = {
+            'user': donation.user.email,
+            'date': donation.date,
+            'amount': donation.amount,
+            'deductible_amount': donation.deductable_amount,
+            'artist': donation.artist.full_name(),
+            'payment_source': donation.payment_source,
+            'reference': donation.reference,
+            'order_number': order_number,
+        }
+        donation_data.append(item)
 
     # Donations to events
     # Total amount to event -> take 0% -> divide by performers
-
     donations_sqs = Donation.objects.filter(date__gte=start_date, date__lt=end_date,
                                             confirmed=True, event_id__isnull=False, amount__gt=0)
     for donation in donations_sqs:
-        total_donations += donation.amount
+        total_donations += donation.deductable_amount
         event = Event.objects.filter(pk=donation.event_id).first()
         if event:
+            order_number = donation.order.number if donation.order else ''
             gigs = event.artists_gig_info.all()
             gigs_count = gigs.count()
             if gigs_count:
                 amount = donation.deductable_amount / gigs_count
                 for gig in gigs:
                     metrics['metrics_info'][gig.artist_id]['donations'] += amount
+            item = {
+                'user': donation.user.email,
+                'date': donation.date,
+                'amount': donation.amount,
+                'deductible_amount': donation.deductable_amount,
+                'event': donation.event.slug,
+                'payment_source': donation.payment_source,
+                'reference': donation.reference,
+                'order_number': order_number,
+            }
+            donation_data.append(item)
 
     # Donations to projects
     # Total amount to project -> take 50% -> divide by leaders
     donations_sqs = Donation.objects.filter(date__gte=start_date, date__lt=end_date,
                                             confirmed=True, product_id__isnull=False, amount__gt=0)
     for donation in donations_sqs:
-        total_donations += donation.amount
+        total_donations += donation.deductable_amount
         products_donations = ArtistProduct.objects.filter(
             product_id=donation.product_id, is_leader=True)
         products_donations_count = products_donations.count()
@@ -92,8 +117,21 @@ def donations_data_for_date_period(start_date, end_date, metrics):
                 metrics['metrics_info'][product_donation.artist_id]['donations'] += amount
         else:
             print 'Warning: no leaders for product {}'.format(donation.product.title)
+        order_number = donation.order.number if donation.order else ''
+        item = {
+            'user': donation.user.email,
+            'date': donation.date,
+            'amount': donation.amount,
+            'deductible_amount': donation.deductable_amount,
+            'product': donation.product.get_title(),
+            'payment_source': donation.payment_source,
+            'reference': donation.reference,
+            'order_number': order_number
+        }
+        donation_data.append(item)
 
     metrics['total_donations'] = total_donations
+    metrics['donations'] = donation_data
 
     return metrics
 
@@ -111,14 +149,12 @@ def update_current_period_metrics():
     return True
 
 
-def generate_metrics_payout_sheet(file, start_date, end_date,
-                                  revenue, operating_expenses, save_earnings=False):
+def generate_metrics_payout_sheet(metrics, file, start_date, end_date,
+                                  revenue, operating_expenses, save_earnings=False,
+                                  process_personal_donations=False):
 
     # Add extra revenue minus extra cost
     pool = revenue - operating_expenses
-    metrics = metrics_data_for_date_period(start_date, end_date)
-    # TODO: under discussion: should donations be on the same spreadsheet?
-    metrics = donations_data_for_date_period(start_date, end_date, metrics)
     workbook = xlsxwriter.Workbook(file, {'in_memory': True})
     bold = workbook.add_format({'bold': True})
     sheet = workbook.add_worksheet('Payments')
@@ -127,11 +163,14 @@ def generate_metrics_payout_sheet(file, start_date, end_date,
     sheet.write_row('I2', ('Total adjusted seconds', metrics['total_adjusted_seconds']), bold)
     sheet.write_row('I4', ('Revenue', revenue), bold)
     sheet.write_row('I5', ('Operating costs', operating_expenses), bold)
-    sheet.write_row('I7', ('Total personal donations', metrics['total_donations']), bold)
-    headers = ('Artist ID', 'Last name', 'First name', 'Seconds watched', 'Ratio', 'Payment', 'Personal Donations')
+    if process_personal_donations:
+        sheet.write_row('I7', ('Total personal donations', metrics['total_donations']), bold)
+        headers = ('Artist ID', 'Last name', 'First name', 'Seconds watched', 'Ratio', 'Payment', 'Personal Donations')
+    else:
+        headers = ('Artist ID', 'Last name', 'First name', 'Seconds watched', 'Ratio', 'Payment')
     sheet.write_row('A1', headers, bold)
 
-    if save_earnings:
+    if save_earnings and process_personal_donations:
         payout_period = PastPayoutPeriod.objects.create(
             period_start=start_date,
             period_end=end_date,
@@ -151,15 +190,16 @@ def generate_metrics_payout_sheet(file, start_date, end_date,
     for idx, artist in enumerate(metrics['metrics_info'].items(), start=1):
         ratio = artist[1]['ratio']
         payment = Decimal(ratio * pool)
-        personal_donations = artist[1]['donations']
         sheet.write(idx, 0, artist[0])
         sheet.write(idx, 1, artist[1]['last_name'])
         sheet.write(idx, 2, artist[1]['first_name'])
         sheet.write(idx, 3, artist[1]['seconds_played'])
         sheet.write(idx, 4, ratio)
         sheet.write(idx, 5, payment)
-        sheet.write(idx, 6, personal_donations)
-        if save_earnings:
+        if process_personal_donations:
+            personal_donations = artist[1]['donations']
+            sheet.write(idx, 6, personal_donations)
+        if save_earnings and process_personal_donations:
             previous_payout = ArtistEarnings.objects.filter(artist_id=artist[0]).first()
             # balance from previous payout periods carry over only if they exist and they're less than $20
             if previous_payout:
@@ -181,86 +221,58 @@ def generate_metrics_payout_sheet(file, start_date, end_date,
     workbook.close()
 
 
-def generate_donations_payout_sheet(file, start_date, end_date, revenue, operating_expenses, save_earnings=False):
+def generate_donations_payout_sheet(donations, file):
     """ Potentially generate donations in another spreadsheet. Under discussion currently."""
-    donations = donations_data_for_date_period(start_date, end_date)
     workbook = xlsxwriter.Workbook(file, {'in_memory': True})
     bold = workbook.add_format({'bold': True})
     sheet = workbook.add_worksheet('Donations')
-    sheet.set_column(8, 8, 30)
-    sheet.write_row('I1', ('Total donations', revenue), bold)
-    sheet.write_row('I2', ('Operating costs', operating_expenses), bold)
-    headers = ('Artist ID', 'Last name', 'First name', 'Payment')
+    headers = ('User', 'Date', 'Amount', 'Deductible', 'Artist', 'Event',
+               'Product', 'Payment Source', 'Reference', 'Order Number')
     sheet.write_row('A1', headers, bold)
 
-    for idx, artist in enumerate(donations['donation_info'].items(), start=1):
-        sheet.write(idx, 0, artist[0])
-        sheet.write(idx, 1, artist[1]['last_name'])
-        sheet.write(idx, 2, artist[1]['first_name'])
-        sheet.write(idx, 3, artist[1]['donations'])
+    for idx, item in enumerate(donations, start=1):
+        sheet.write(idx, 0, item['user'])
+        sheet.write(idx, 1, item['date'].strftime('%m/%d/%Y'))
+        sheet.write(idx, 2, item['amount'])
+        sheet.write(idx, 3, item['deductible_amount'])
+        sheet.write(idx, 4, item.get('artist', ''))
+        sheet.write(idx, 5, item.get('event', ''))
+        sheet.write(idx, 6, item.get('product', ''))
+        sheet.write(idx, 7, item.get('payment_source', ''))
+        sheet.write(idx, 8, item.get('reference', ''))
+        sheet.write(idx, 9, item.get('order_number', ''))
 
     workbook.close()
 
 
-def get_payout_sheets(generate_url=True):
-
-    conn = boto.connect_s3(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                           aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                           calling_format=boto.s3.connection.OrdinaryCallingFormat())
-
-    bucket_name = 'payout-sheets'
-    bucket = conn.get_bucket(bucket_name)
-
-    files = []
-    for obj in bucket.get_all_keys():
-        data = {
-            'name': obj.name,
-            'last_modified': obj.last_modified,
-        }
-        if generate_url:
-            data['url'] = obj.generate_url(expires_in=300)
-
-        files.append(data)
-
-    return files
-
-
-def get_metrics_payout_file_name(start, end):
-    filename = "payments-{}_{}_{}-{}_{}_{}.xlsx".format(
-        start.year, start.month, start.day, end.year, end.month, end.day)
+def get_metrics_payout_file_name(start, end, personal=False):
+    if personal:
+        filename = "payments-admin-{}_{}_{}-{}_{}_{}.xlsx".format(
+            start.year, start.month, start.day, end.year, end.month, end.day)
+    else:
+        filename = "payments-musicians-{}_{}_{}-{}_{}_{}.xlsx".format(
+            start.year, start.month, start.day, end.year, end.month, end.day)
 
     return filename
 
 
 def start_generate_payout_sheet(start, end):
 
-    file_name = get_metrics_payout_file_name(start, end)
-    file_name = file_name + '.generating'
-
-    bucket = get_payout_bucket()
-    object_key = boto.s3.key.Key(bucket)
-    object_key.key = file_name
-    object_key.set_contents_from_string("generating")
-
-
-def end_generate_payout_sheet():
-
-    bucket = get_payout_bucket()
-    to_delete = []
-    for obj in bucket.get_all_keys():
-        if '.generating' in obj.name:
-            to_delete.append(obj)
-
-    for obj in to_delete:
-        bucket.delete_key(obj.key)
+    data = {
+        'period_start': start,
+        'period_end': end,
+    }
+    payout = PayoutPeriodGeneration.objects.get_or_create(**data)[0]
+    payout.status = PayoutPeriodGeneration.STATUSES.processing
+    payout.save()
 
 
-def upload_payout_sheet(file_name, output):
+def end_generate_payout_sheet(start, end):
 
-    bucket = get_payout_bucket()
-    object_key = boto.s3.key.Key(bucket)
-    object_key.key = file_name
-    object_key.set_contents_from_string(output.read())
+    payout_generation = PayoutPeriodGeneration.objects.filter(
+        period_start=start, period_end=end).first()
+    payout_generation.status = PayoutPeriodGeneration.STATUSES.success
+    payout_generation.save()
 
 
 def get_payout_bucket():

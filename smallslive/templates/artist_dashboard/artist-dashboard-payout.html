@@ -49,7 +49,7 @@
     $(document).ready(function () {
         artistSeconds.innerHTML = formattedPayout(artistSecondsValue)
         eventsSeconds.innerHTML = formattedPayout(eventsSecondsValue)
-        downloadButton.innerHTML = '       <a href="{{ earning.payout_period.payout_spreadsheet.url }}" download> <button class="white-border-button payout-bar-button"> Download XLS </button> </a>'
+        downloadButton.innerHTML = '       <a href="{{ earning.musicians_payout_period.payout_spreadsheet.url }}" download> <button class="white-border-button payout-bar-button"> Download XLS </button> </a>'
 
     });
 </script> {% endblock %}
