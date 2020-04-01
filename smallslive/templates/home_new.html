@@ -36,6 +36,10 @@
     {% include 'artist_registration/set_password_dialog.html' %}
   {% endif %}
 
+  {% include 'more_info_foundation_popup.html' %}
+  {% include 'more_info_archive_popup.html' %}
+  {% include 'more_info_live_stream_popup.html' %}
+
   <div class="main-container pad-content {% if calendar %}calendar{% else %}home-new{% endif %}">
     {% block home_content %}
     <main>

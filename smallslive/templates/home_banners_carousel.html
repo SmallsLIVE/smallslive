@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="banner-learnmore">
-        <a class="banner-button-info" href="{% url 'contact-and-info' %}#foundation ">More Info</a>
+        <button class="banner-button-info" onclick="showMoreInfoFoundation();">More Info</button>
         {% if not user.is_authenticated %}
         <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
         {% elif not user.has_activated_account %}
@@ -41,7 +41,7 @@
           </div>
       </div>
       <div class="banner-learnmore">
-        <a class="banner-button-info" href="{% url 'contact-and-info' %}#archive ">More Info</a>
+        <button class="banner-button-info" onclick="showMoreInfoArchive();">More Info</button>
         {% if not user.is_authenticated %}
         <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
         {% elif not user.has_activated_account %}
@@ -69,7 +69,7 @@
         </div>
       </div>
       <div class="banner-learnmore">
-        <a class="banner-button-info" href="{% url 'contact-and-info' %}#streaming ">More Info</a>
+        <button class="banner-button-info" onclick="showMoreInfoLiveStream();">More Info</button>
         {% if not user.is_authenticated %}
         <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
         {% elif not user.has_activated_account %}
@@ -132,6 +132,19 @@
 
 {% block extra_js %}
 <script>
+
+  function showMoreInfoFoundation() {
+    $("#moreInfoFoundationPopup").modal("show");
+  }
+
+  function showMoreInfoArchive() {
+    $("#moreInfoArchivePopup").modal("show");
+  }
+
+  function showMoreInfoLiveStream() {
+    $("#moreInfoLiveStreamPopup").modal("show");
+  }
+
   function nextoBecomeSupporter(){
     $('#becomeMemberDialog').modal('show')
     $('#form-login').attr('action', $('#form-login').attr('action') + "{% url 'become_supporter' %}?flow_type=one_time_donation".substring(1))
