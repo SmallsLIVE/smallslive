@@ -98,7 +98,7 @@
         </div>
       </div>
       <div class="banner-learnmore">
-        <a class="banner-button-info" href="{% url 'contact-and-info' %}#catalog ">More Info</a>
+        <button class="banner-button-info" onclick="showMoreInfoCatalog();">More Info</button>
         {% if not user.is_authenticated %}
         <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
         {% elif not user.has_activated_account %}
@@ -143,6 +143,10 @@
 
   function showMoreInfoLiveStream() {
     $("#moreInfoLiveStreamPopup").modal("show");
+  }
+
+  function showMoreInfoCatalog() {
+    $("#moreInfoCatalogPopup").modal("show");
   }
 
   function nextoBecomeSupporter(){
