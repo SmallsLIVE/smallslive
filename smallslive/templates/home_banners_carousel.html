@@ -59,6 +59,27 @@
         {% endif %}
       </div>
     </div>
+    <div id="banner-supporting-box" class="box flex-column mission">
+      <div class="banner__inside-container">
+        <div class="banner-logo" >
+          <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
+        </div>
+        <div class="banner-text-container">
+          <p class="title">catalog</p>
+        </div>
+      </div>
+      <div class="banner-learnmore">
+        <button class="banner-button-info" onclick="showMoreInfoCatalog();">More Info</button>
+        {% if not user.is_authenticated %}
+        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        {% elif not user.has_activated_account %}
+          <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
+        {% elif not user.can_watch_video %}
+          <a href="{% url 'become_supporter' %}">Become a supporter</a>
+        {% endif %}
+      </div>
+
+    </div>
     <div id="banner-mission-box" class="box flex-column mission">
       <div class="banner__inside-container">
         <div class="banner-logo" >
@@ -88,27 +109,6 @@
       </div>
     </div>
 
-    <div id="banner-supporting-box" class="box flex-column mission">
-      <div class="banner__inside-container">
-        <div class="banner-logo" >
-          <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
-        </div>
-        <div class="banner-text-container">
-          <p class="title">catalog</p>
-        </div>
-      </div>
-      <div class="banner-learnmore">
-        <button class="banner-button-info" onclick="showMoreInfoCatalog();">More Info</button>
-        {% if not user.is_authenticated %}
-        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
-        {% elif not user.has_activated_account %}
-          <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
-        {% elif not user.can_watch_video %}
-          <a href="{% url 'become_supporter' %}">Become a supporter</a>
-        {% endif %}
-      </div>
-
-    </div>
   {% elif active = 'catalog' %}
     <!-- no banner at the moment -->
   {% else %}
