@@ -62,6 +62,7 @@ gunicorn==19.3.0
 html5lib==0.999
 idna==2.1
 ipython==3.1.0
+jsonfield==2.0.2
 kombu==3.0.30
 libsass==0.7.0
 libthumbor==1.0.1
