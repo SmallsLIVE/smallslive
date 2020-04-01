@@ -13,10 +13,12 @@
 {% block home_content %}
 <main class="calendar">
   <div class="event-stripe">
-    {% include 'events/today_and_tomorrow.html' with custom_venue_style=True calendar_page=True%}
+    <div class="section-title {% if calendar_page %}calendar {% else %}home {% endif %}flex-row" style="background-size: calc(800px + 3.5vw) 5px">
+      <div class="title1">
+        There are currently no scheduled events at the clubs
+      </div>
+    </div>
   </div>
-  <!-- desktop calendar - no event images -->
-  {% include 'events/upcoming_calendar.html' with upcoming=True show_extend_date=True show_event_venue=False hide_play=True day_list=day_list new_date=new_date %}
 </main>{% endblock home_content %}
 
 {% block extra_js %}

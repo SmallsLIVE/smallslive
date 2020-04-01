@@ -253,6 +253,7 @@
   &.home {
     position: relative;
     z-index: 99;
+    background-size: calc(415px + 3.5vw) 5px;
 
     .white-border-button {
       margin-left: 120px;
