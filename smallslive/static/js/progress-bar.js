@@ -57,7 +57,7 @@ function getPercentage(e) {
 
 function keepMoving(event) {
   $(document).on("touchmove", document, e => {
-    e.preventDefault;
+    e.preventDefault();
     updateProgress(getPercentage(e), event);
   });
   $(document).on("mousemove", document, e => {
@@ -67,7 +67,7 @@ function keepMoving(event) {
 
 function stopMoving() {
   $(document).unbind("mousemove");
-  $(document).unbind("touchmovel");
+  $(document).unbind("touchmove");
 }
 
 $(document).on("mousedown", ".progress-btn", e => {
