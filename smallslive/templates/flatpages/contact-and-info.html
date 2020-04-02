@@ -12,19 +12,6 @@
       <div class="flex-row content-centered">
         <ul id="contact-and-info-index" class="static-nav-menu">
           <li class="white-border-button no-border
-                  {% block venues-location-active %}{% endblock %}" id="venues-location">
-            <a tabindex="-1" href="#" style="color: rgb(255, 0, 0);">Venues/Location</a>
-          </li>
-
-          <li tabindex="-1" class="white-border-button no-border
-                  {% block passes-tickets-statement-active %}{% endblock %}" id="passes-tickets">
-            <a tabindex="-1" href="#">Tickets</a>
-          </li>
-          <li class="white-border-button no-border
-                  {% block hours-polices-active %}{% endblock %}" id="hours-policies">
-            <a tabindex="-1" href="#">Hours/Policies</a>
-          </li>
-          <li class="white-border-button no-border
                   {% block foundation-active %}{% endblock %}"  id="foundation"><a
                   tabindex="-1" href="#">Foundation</a>
           </li>
@@ -33,12 +20,24 @@
                   tabindex="-1" href="#">Archive</a>
           </li>
           <li class="white-border-button no-border
+                  {% block catalog-active %}{% endblock %}" id="catalog"><a
+                  tabindex="-1" href="#">SmallsLIVE Catalog</a>
+          </li>
+          <li class="white-border-button no-border
                   {% block live-stream-active %}{% endblock %}" id="streaming"><a
                   tabindex="-1" href="#">Live Stream</a>
           </li>
           <li class="white-border-button no-border
-                  {% block catalog-active %}{% endblock %}" id="catalog"><a
-                  tabindex="-1" href="#">SmallsLIVE Catalog</a>
+                  {% block venues-location-active %}{% endblock %}" id="venues-location">
+            <a tabindex="-1" href="#" style="color: rgb(255, 0, 0);">Venues/Location</a>
+          </li>
+          <li class="white-border-button no-border
+                  {% block hours-polices-active %}{% endblock %}" id="hours-policies">
+            <a tabindex="-1" href="#">Hours/Policies</a>
+          </li>
+          <li tabindex="-1" class="white-border-button no-border
+                  {% block passes-tickets-statement-active %}{% endblock %}" id="passes-tickets">
+            <a tabindex="-1" href="#">Tickets</a>
           </li>
           <li class="white-border-button no-border
                   {% block about-us-active %}{% endblock %}" id="about-us">
@@ -46,13 +45,13 @@
           </li>
         </ul>
         <div class="flex-column info-page-container">
-           {% include "flatpages/venues-location.html" %}
-           {% include "flatpages/passes-tickets.html" %}
-           {% include "flatpages/hours-policies.html" %}
            {% include "flatpages/foundation.html" %}
            {% include "flatpages/archive.html" %}
-           {% include "flatpages/streaming.html" %}
            {% include "flatpages/catalog.html" %}
+           {% include "flatpages/streaming.html" %}
+           {% include "flatpages/venues-location.html" %}
+           {% include "flatpages/hours-policies.html" %}
+           {% include "flatpages/passes-tickets.html" %}
            {% include "flatpages/about-us.html" %}
         </div>
       </div>

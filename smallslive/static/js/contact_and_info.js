@@ -1,6 +1,6 @@
 
 $(document).ready(function () {
-  var pages = ["venues-location", "passes-tickets", "hours-policies", "foundation", "archive", "streaming", "catalog", "about-us"];
+  var pages = ["foundation", "archive", "catalog", "streaming", "venues-location", "hours-policies", "passes-tickets", "about-us"];
 
   $(window).scroll(function () {
 
