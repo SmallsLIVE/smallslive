@@ -118,12 +118,9 @@ class Product(AbstractProduct):
 
     def get_description(self):
         """
-        Return a product's description or it's parent's description if it has no description
+        Return a product's description
         """
-        description = self.description
-        if self.parent_id:
-            if not self.description:
-                description = self.parent.description
+        description = self.description or ''
 
         return description
 
