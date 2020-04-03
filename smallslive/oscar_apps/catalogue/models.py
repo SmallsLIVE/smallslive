@@ -116,6 +116,17 @@ class Product(AbstractProduct):
                 title = u"{0} ({1})".format(self.parent.title, self.title)
         return unicode(title)
 
+    def get_description(self):
+        """
+        Return a product's description or it's parent's description if it has no description
+        """
+        description = self.description
+        if self.parent_id:
+            if not self.description:
+                description = self.parent.description
+
+        return description
+
     def get_child_product_title(self):
         """
         Return a product's title or it's parent's title if it has no title
