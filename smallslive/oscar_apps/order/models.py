@@ -67,7 +67,10 @@ class Order(AbstractOrder):
         total = D('0.00')
         for line in self.lines.all():
             try:
-                total += line.quantity * (line.unit_price_incl_tax - line.unit_cost_price)
+                deductable_amount = line.unit_price_incl_tax
+                if line.unit_cost_price:
+                    deductable_amount -=  line.unit_cost_price
+                total += line.quantity * deductable_amount
             except ObjectDoesNotExist:
                 # Handle situation where the product may have been deleted
                 pass
