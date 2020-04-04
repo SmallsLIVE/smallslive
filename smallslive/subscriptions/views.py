@@ -349,9 +349,6 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
 
             context['gifts'] = []
             context['costs'] = []
-            selector = Selector()
-            strategy = selector.strategy(
-                request=self.request, user=current_user)
             for product in Product.objects.filter(product_class__slug='gift'):
                 context['gifts'].append(product)
                 if product.variants.count():
@@ -361,8 +358,20 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                     context['costs'].append(
                         product.stockrecords.first().cost_price)
 
+            def get_product_price(x):
+                selector = Selector()
+                strategy = selector.strategy(
+                    request=self.request, user=self.request.user)
+
+                if x.variants.count():
+                    price = strategy.fetch_for_product(product=x.variants.first()).price.incl_tax
+                else:
+                    price = strategy.fetch_for_product(product=x).price.incl_tax
+
+                return price
+
             context['gifts'].sort(
-                key=lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
+                key=lambda x: get_product_price(x))
 
         # Don't skip intro if user is not active. We need to force them to stay
         # on the Intro page with the "Confirm Email" button.

@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from artists.models import Artist
 from oscar_apps.partner.strategy import Selector
@@ -13,6 +12,18 @@ class ProductMixin(object):
         self.physical_album_list = []
         self.track_list = []
         self.album_list = []
+
+    def get_product_price(self, x):
+        selector = Selector()
+        strategy = selector.strategy(
+            request=self.request, user=self.request.user)
+
+        if x.variants.count():
+            price = strategy.fetch_for_product(product=x.variants.first()).price.incl_tax
+        else:
+            price = strategy.fetch_for_product(product=x).price.incl_tax
+
+        return price
 
     def get_products(self):
 
@@ -30,9 +41,6 @@ class ProductMixin(object):
         # TODO: create mixin for gifts so it can be used in become a supporter too.
         self.gifts = []
         self.costs = []
-        selector = Selector()
-        strategy = selector.strategy(
-            request=self.request, user=self.request.user)
 
         self.album_product = self.object
         products = Product.objects.filter(parent=self.album_product, product_class__slug__in=[
@@ -58,14 +66,8 @@ class ProductMixin(object):
 
         self.child_product = variant
 
-        def get_product_price(x):
-            if x.variants.count():
-                strategy.fetch_for_product(product=x.variants.first()).price.incl_tax
-            else:
-                return strategy.fetch_for_product(product=x).price.incl_tax
-
         self.gifts.sort(
-            key=lambda x: get_product_price(x))
+            key=lambda x: self.get_product_price(x))
 
         self.comma_separated_leaders = self.album_product.get_leader_strings()
 
