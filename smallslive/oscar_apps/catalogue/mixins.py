@@ -58,8 +58,14 @@ class ProductMixin(object):
 
         self.child_product = variant
 
+        def get_product_price(x):
+            if x.variants.count():
+                strategy.fetch_for_product(product=x.variants.first()).price.incl_tax
+            else:
+                return strategy.fetch_for_product(product=x).price.incl_tax
+
         self.gifts.sort(
-            key=lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
+            key=lambda x: get_product_price(x))
 
         self.comma_separated_leaders = self.album_product.get_leader_strings()
 
