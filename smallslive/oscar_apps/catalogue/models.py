@@ -35,6 +35,8 @@ class Product(AbstractProduct):
 
     set = models.CharField(max_length=50, blank=True)
 
+    misc_file = models.FileField(upload_to='misc_files', blank=True, null=True)
+
     objects = ProductManager()
 
     class Meta(AbstractProduct.Meta):

@@ -120,13 +120,30 @@ class Basket(AbstractBasket):
         total = D('0.00')
         for line in self.physical_lines():
             try:
-                print dir(line)
                 total += getattr(line, 'line_price_excl_tax_incl_discounts')
                 total -= line.stockrecord.cost_price
             except ObjectDoesNotExist:
                 # Handle situation where the product may have been deleted
                 pass
+
         return total
+
+    @property
+    def get_deductable_digital_total(self):
+        total = D('0.00')
+        for line in self.digital_lines():
+            try:
+                total += getattr(line, 'line_price_excl_tax_incl_discounts')
+                total -= line.stockrecord.cost_price
+            except ObjectDoesNotExist:
+                # Handle situation where the product may have been deleted
+                pass
+
+        return total
+
+    @property
+    def get_deductable_total(self):
+        return self.get_deductable_digital_total + self.get_deductable_physical_total()
 
     def add_product(self, product, quantity=1, options=None, stockrecord=None):
         """

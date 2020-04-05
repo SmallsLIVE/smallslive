@@ -267,7 +267,7 @@ class MyDownloadsView(LoginRequiredMixin, ListView):
 my_downloads = MyDownloadsView.as_view()
 
 
-class NewMyDownloadsView(LoginRequiredMixin, ListView, ProductMixin):
+class NewMyDownloadsView(LoginRequiredMixin, ProductMixin, ListView):
     context_object_name = 'lines'
     template_name = 'multimedia/library.html'
 
@@ -281,6 +281,7 @@ class NewMyDownloadsView(LoginRequiredMixin, ListView, ProductMixin):
         self.get_purchased_products()
 
         context['album_list'] = self.album_list
+        context['downloads_list'] = self.downloads_list
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
 
         return context
@@ -345,6 +346,27 @@ class AlbumView(TemplateView):
         return context
 
 album_view = AlbumView.as_view()
+
+
+class DownloadView(TemplateView):
+    """
+    To be called from AJAX (Library).
+    """
+    template_name = 'catalogue/partials/detail.html'
+
+    def get_context_data(self, **kwargs):
+
+        context = super(DownloadView, self).get_context_data(**kwargs)
+        product = Product.objects.filter(pk=self.request.GET.get('productId', '')).first()
+        context['product'] = product
+        context['library'] = True
+        customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
+        if customer_detail:
+            context['active_card'] = customer_detail.active_card
+
+        return context
+
+download_view = DownloadView.as_view()
 
 
 class AddTracksView(TemplateView):

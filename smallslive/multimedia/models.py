@@ -46,8 +46,6 @@ class MediaFile(models.Model):
         self.audio_bucket_name = None
         self.video_bucket_name = None
 
-
-
         # FIXME: This is broken. It assumes Event.venue is not null.
         try:
             venue = self.recording.event.venue

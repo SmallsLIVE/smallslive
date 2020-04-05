@@ -48,72 +48,7 @@
 {% endblock %}
 
 {% block store_content %}
-    <div class="store-single__content">
-        <div class="row">
-            <div class="store-single__item flex-row">
-                <div class="store-single__item__images">
-                    {% with all_images=product.images.all %}
-                        <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
-                            {% for image in all_images %}
-                                {% if not image.is_missing %}
-                         <img
-                                            src="{% thumbor_url image.original.url|urlencode height=300 width=300 smart=True %}"
-                                            alt="{{ product.get_title }}" class="defineImageRatio">
-                                {% else %}
-                                   <img
-                                            src="{% static "image/image_not_found.jpg" %}" alt="{{ product.get_title }}"
-                                            class="">
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-
-                    {% endwith %}
-                </div>
-                <div class="store-single__item__content">
-                    <div class="store-single__item__name">
-                        <a href="#">{{ product.title }}</a>
-                    </div>
-                    <div class="store-single__item__subtitle text-grey">
-                        {{ product.subtitle }}
-                    </div>
-                    <div class="store-single__item__description">
-                        {{ product.short_description|safe }}
-                    </div>
-                    <div class="store-single__item__details">
-                        {% if product.description %}
-                            {{ product.description|safe }}
-                        {% endif %}
-                    </div>
-                    {% purchase_info_for_product request product as session %}
-                        <span class="store-single__item__price">
-                            {% if session.price.exists %}
-                                {% if session.price.excl_tax == 0 %}
-                                    {% trans "Free" %}
-                                {% elif session.price.is_tax_known %}
-                                    {{ session.price.incl_tax|currency:session.price.currency }}
-                                {% else %}
-                                    {{ session.price.excl_tax|currency:session.price.currency }}
-                                {% endif %}
-                            {% else %}
-                                &nbsp;
-                            {% endif %}
-                        </span>
-                    <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk %}" method="post"
-                          class="add-to-basket">
-                        <div class="store-add-large">
-                            {% if session.availability.is_available_to_buy %}
-                                <div class="store-add-large">
-                                  <div class="arrow-button-container">
-                                      <a href="{% url 'donate' %}" class="white-border-button">Make a One Time Donation to receive this gift</a>
-                                  </div>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include 'partials/detail.html' %}
 {% endblock store_content %}
 
 {% block extra_js %}

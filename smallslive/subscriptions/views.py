@@ -557,6 +557,7 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
         context['flow_type'] = self.request.GET.get('flow_type') or context.get('flow_type')
 
         payment_id = self.request.GET.get('payment_id')
+        file_product = None
         if payment_id:
             # Donated directly by PayPal or Stripe
             source = Donation.objects.filter(reference=payment_id).first()
@@ -568,6 +569,11 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
                         album_product = album_product.parent
                     context['comma_separated_leaders'] = album_product.get_leader_strings()
                     context['album_product'] = album_product
+
+            if source.order:
+                file_product = source.order.lines.first().product
+                if file_product.misc_file:
+                    file_product = file_product.misc_file.url
 
             else:
                 source = Source.objects.filter(reference=payment_id).first()
@@ -594,6 +600,8 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
 
         if not payment_id or not source:
             context['error'] = 'We could not find your payment reference. Contact our support'
+
+        context['file_product'] = file_product
 
         return context
 

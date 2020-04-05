@@ -197,7 +197,7 @@ class AssignProductMixin(object):
                     UserCatalogue.objects.filter(user=self.request.user).update(has_full_catalogue_access=True)
                 else:
                     UserCatalogue.objects.get_or_create(user=self.request.user, has_full_catalogue_access=True)
-            if line.product.product_class.slug in ['physical-album', 'digital-album', 'track']:
+            if line.product.product_class.slug in ['physical-album', 'digital-album', 'track'] or line.product.misc_file:
                 UserCatalogueProduct.objects.get_or_create(user=self.request.user, product=line.product)
 
 

@@ -28,6 +28,7 @@ class ProductForm(oscar_forms.ProductForm):
             'gift_price',
             'event',
             'set',
+            'misc_file',
             'ordering'
         ]
 
@@ -44,6 +45,7 @@ class ProductForm(oscar_forms.ProductForm):
             del self.fields['featured']
             del self.fields['gift']
             del self.fields['gift_price']
+            del self.fields['misc_file']
             del self.fields['ordering']
             self.fields['event'].widget = forms.TextInput()
             self.fields['set'].widget.attrs['placeholder'] = 'Set number (i.e. 2) or set time (i.e. 7:30 pm)'

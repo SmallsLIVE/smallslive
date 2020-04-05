@@ -77,6 +77,12 @@
           <span class='accent-color'>Your support benefits this artist and our mission.</span>
         </p>
       {% endif %}
+      {% if file_product %}
+        <p class="text5 text-center" style="margin-top: 60px;">
+          Please click to download the <a download="{{ file_product }}" href="{{ file_product }}" class="accent-color underline" style="">file</a>
+        </p>
+      {%  endif %}
+
     </div>
   </div>
 {% endblock %}

@@ -12,6 +12,7 @@ class ProductMixin(object):
         self.physical_album_list = []
         self.track_list = []
         self.album_list = []
+        self.downloads_list = []
 
     def get_product_price(self, x):
         selector = Selector()
@@ -81,6 +82,7 @@ class ProductMixin(object):
         current_user = self.request.user
         if not current_user.is_authenticated():
             self.album_list = []
+            self.downloads_list = []
         else:
             catalogue_access = UserCatalogue.objects.filter(user=self.request.user).first()
             if catalogue_access and catalogue_access.has_full_catalogue_access:
@@ -125,3 +127,6 @@ class ProductMixin(object):
                     self.album_list.append(album_info)
 
                 self.album_list = sorted(self.album_list, key=lambda k: k['parent'].title)
+
+            self.downloads_list = Product.objects.filter(
+                misc_file__isnull=False, access__user=self.request.user)
