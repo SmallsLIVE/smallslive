@@ -260,14 +260,14 @@ function changeProgress(progress, player) {
   updateProgressTrack('player', newProgress)
 }
 
-$(".event-display.album").on("click", function () {
+$(".event-display.display-album").on("click", function () {
   albumId = $(this).data("parent-pk");
   album_type = $(this).data("type");
   bought_tracks = $(this).data("bought");
   loadAlbum(albumId, bought_tracks, album_type);
 })
 
-$(".event-display.download").on("click", function () {
+$(".event-display.display-download").on("click", function () {
   itemId = $(this).attr("id");
   loadDownload(itemId);
 })
