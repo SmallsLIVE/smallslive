@@ -1,0 +1,152 @@
+{% extends "subscriptions/contribute-flow.html" %}
+{% load static from staticfiles %}
+{% load full_static %}
+{% load djstripe_tags %}
+{% load reviews_tags %}
+{% load thumbnail %}
+{% load i18n %}
+{% load display_tags %}
+{% load staticfiles %}
+{% load thumbor_tags %}
+
+
+{% block confirmation_modals %}
+  {% include 'subscriptions/popups/supporter_monthly_selection_confirmation_dialog.html' %}
+  {% include 'subscriptions/popups/supporter_one_time_selection_confirmation_dialog.html' %}
+  {% include 'subscriptions/popups/supporter_gift_selection_confirmation_dialog.html' %}
+{% endblock %}
+
+{% block flow_title %}
+  {% if not completed %}
+    {% if flow_type == 'become_supporter' and not user.has_archive_access %}
+      <p tabindex="0" class="text2 accent-color">Become a supporting member</p>
+    {% elif flow_type == 'product_support' %}
+      <p tabindex="0" class="text2 accent-color">Support Artist</p>
+    {% else %}
+      <p tabindex="0" class="text2 accent-color">Make a Donation</p>
+    {% endif %}
+  {% else %}
+      <p class="text2 accent-color"></p>
+  {% endif %}
+{% endblock %}
+
+{% block flow_steps %}
+
+  <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover"
+       data-artist-id="{{ artist_id }}"
+       data-flow="{{ flow_type }}"
+       data-free-donate="{{ can_free_donate }}">
+    {% if not completed %}
+      <div class="step-button active"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+    {% endif %}
+  </div>
+  {% if not completed %}
+    <div id="supporterStep" class="supporter-step hidden"></div>
+
+    {% if not skip_intro %}
+      <div id="supporterStepIntro" class="supporter-step">
+        <div class="supporter-text flex-column">
+          <p  tabindex="0" class="title7"><span class="big-letter">T</span>HE <span class='accent-color'>SMALLSLIVE FOUNDATION</span> IS A
+          <span class='accent-color'>NOT-FOR-PROFIT</span> ORGANIZED FOR THE PURPOSE OF THE <span class='accent-color'>DISSEMINATION OF JAZZ MUSIC</span>
+          THROUGH OUR ARCHIVE, LIVE STREAMS, SPONSORSHIP OF INDIVIDUAL JAZZ PROJECTS & TOURS, EDUCATION, AND LIVE PERFORMANCES AT SMALLS & MEZZROW.
+          WE ARE SUPPORTED BY OUR MEMBERS THROUGH <span ><a class='accent-color underline' href="{% url 'contact-and-info' %}#foundation">TAX DEDUCTIBLE DONATIONS</a>.</span></p>
+        </div>
+      </div>
+    {% endif %}
+
+    <div id="supporterStepSelectType" class="supporter-step" {% if not skip_intro %}style="display: none"{% endif %}>
+      {% include 'subscriptions/supporter_step_select_type.html' %}
+    </div>
+
+    <div id="supporterStepShipping" class="supporter-step" style="display: none">
+
+    </div>
+
+    <div id="supporterStepBilling" class="supporter-step" style="display: none"
+         data-payment-info-url="{{ payment_info_url }}"
+         data-payment-info-complete-url="{% url 'become_supporter' %}"
+         data-payment-info-pending-url="{% url 'supporter_pending' %}">
+    </div>
+
+    <div id="supporterStepPreview" class="supporter-step" style="display: none"
+         data-donation-preview-url="{{ donation_preview_url }}">
+    </div>
+
+  {% endif %}
+
+{% endblock %}
+
+{% block flow_payment %}
+{% endblock %}
+
+{% block flow_completed %}
+  <div id="supporterStepThankYou" class="flex-column items-center supporter-text-container">
+    <div class="supporter-text">
+    {% if flow_type = "become_supporter" %}
+      <p tabindex="0" class="title7"><span class="big-letter">T</span>
+        hank you for becoming a <span class='accent-color'>supporting member</span> of the smallslive foundation for jazz arts and education.
+        we greatly appreciate your support of our mission.  <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+        please enjoy our livestreams and extensive audio/video archive.
+      </p>
+    {% elif flow_type = "update_pledge" %}
+    <p tabindex="0" class="title7"><span class="big-letter">T</span>
+        hank you for updating your <span class='accent-color'>membership</span> of the smallslive foundation for jazz arts and education.
+        we greatly appreciate your support of our mission.  <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+      </p>
+    {% elif flow_type = "one_time_donation" %}
+    <p tabindex="0" class="title7"><span class="big-letter">T</span>
+        hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.
+        <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+      </p>
+    {% endif %}
+    </div>
+  </div>
+{% endblock %}
+{% block flow_confirm %}
+
+  {% if not completed %}
+    <button id="backButton" class="button-bordered">Back</button>
+
+    {% if not user.has_activated_account %}
+      <button id="supportConfirmEmailButton"
+              onclick="$('#inactive-dialog').modal('show');">Confirm email
+      </button>
+    {% else %}
+      <button id="confirmButton" data-hide='true' class="button-bordered">Confirm</button>
+    {% endif %}
+
+  {% else %}
+    {% if flow_type = "become_supporter" %}
+    <a href="{% url 'archive' %}">
+      <button>Access the archive</button>
+    </a>
+    {% else %}
+    <a href="{% url 'user_settings_new' %}">
+      <button>Continue</button>
+    </a>
+    {% endif  %}
+  {% endif %}
+
+{% endblock %}
+{% block extra_js %}
+  {{ block.super }}
+  <script>
+
+    var flow = "become_supporter";
+    var type;
+    var step = "Intro";
+    {% if skip_intro %}
+      step = "SelectType";
+    {% endif %}
+
+    $(document).ready(function () {
+      setSelected(flow, type, 0, step);
+      checkConfirmButton();
+    });
+
+  </script>
+{% endblock %}

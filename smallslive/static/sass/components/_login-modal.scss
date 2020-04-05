@@ -1,162 +1,107 @@
 .modal {
-  top:10%;
+  top: 10%;
+  max-height: 100%;
+  overflow: scroll;
 }
 
+#login-modal{
+  .title1{
+    font-weight: 700;
+  }
+}
 .modal-backdrop {
   height: 100%;
   opacity: 0.65 !important;
 }
 
-.login-modal .modal-body {
+.custom-modal .modal-body {
   overflow: hidden;
 }
 
-.login-modal {
-  padding: 30px 80px;
-  background-image: url('../image/login-modal-bg.jpg');
-  background-size: cover;
-  background-position: center center;
-  color: white;
-  border: 1px solid rgba(255,255,255,0.3);
+@mixin form-styles {
+  .form-group {
+    width: 100%;
 
-  & .form-error-text {
-    @include lato;
-    font-size: 12px;
-    background-color: $main-accent-color-darker;
-    padding: 4px 8px;
-    color: white;
-    border-radius: 5px;
-  }
-
-  &__title {
-    @include lato-black;
-    font-size: 48px;
-    margin-top: 0;
-    margin-bottom: 11px;
-    text-align: center;
-    margin-bottom: 10px;
-  }
-
-  &__text {
-    @include lato;
-    font-size: 14px;
-    margin-bottom: 21px;
-    text-align: center;
-
-    a {
-      @include lato-black;
+    label, .login-agreement {
+      @include text4;
+      color: $text-grey;
     }
-
-    &--heavy {
-      @include lato-black;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    &.attention {
-      background-color: $main-accent-color;
-      padding: 5px;
-      margin-top: 20px;
-
-      a {
-        color: #fff;
-        @include lato-black;
-
-        &:hover, &:focus {
-          color: rgba(#fff, 0.7);
-        }
+    a.login-agreement{
+      &:focus{
+        text-decoration: none;
+      }
+      &:hover{
+        color:black;
       }
     }
-  }
+    input[type="text"], input[type="password"], input[type="email"] {
+      @include bordered-input;
+      @include place-holder-color($black);
+      background-color: $white-transparent;
+      border-radius: 0;
+    }
 
-  & h2 {
-    margin-top: 0;
-    @include lato-black;
-    font-size: 18px;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-
-  & .form-control {
-    margin-bottom: 10px;
-    padding: 15px 10px;
-    font-size: 16px;
-    height: initial;
-  }
-
-  & a.forgot-password {
-    @include lato-black;
-    color: $main-accent-color;
-    text-decoration: none;
-    
-    &:hover {
-      color: $main-accent-color;
-      text-decoration: none;
-      opacity: 0.8;
+    input[type="checkbox"] {
+      margin: 1px 0 0 -20px;
     }
   }
 
-  & .checkbox-label {
-    @include lato;
-    margin-left: 6px;
+  .login-button {
+    @include white-border-button;
+    @include input-border;
+
+    margin-top: 30px;
+    padding: 0 40px;
   }
+}
 
-  & .login-button {
-    @extend .btn;
-    @include lato-bold;
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 2px $main-accent-color solid;
-    color: white;
-    font-style: italic;
-    padding: 11px 35px;
-    font-size: 16px;
-    width: 100%;
+.custom-form {
+  @include form-styles;
+}
 
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.7);
-      color: rgba(255, 255, 255, 0.6);
-    }
-  }
+.custom-modal {
+  border: 8px solid $white-transparent;
+  border-radius: 0;
+  background-color: $background-color;
+  background-clip: unset;
 
-  & .fb-login-button {
-    @extend .btn;
-    @include lato-bold;
-    background-color: rgba(59, 89, 151, 0.5);
-    border: 2px #3B5996 solid;
-    color: white;
-    font-style: italic;
-    padding: 8px 10px;
-    font-size: 14px;
-    width: 100%;
+  padding: 35px;
 
-    & i {
-      font-size: 28px;
-      margin-right: 8px;
-      font-weight: normal;
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    content {
+      align-items: flex-start;
     }
 
-    &:hover {
-      background-color: rgba(59, 89, 151, 0.3);
-      color: rgba(255, 255, 255, 0.6);
-    }
-  }
-  
-  &__cta-signup {
-    @include lato-black;
-    font-size: 18px;
-    color: $main-accent-color;
-    text-decoration: none;
-    text-align: center;
-    display: block;
-    width: 100%;
+    form {
+      @include form-styles;
+      width: 70%;
 
-    
-    &:hover {
-      opacity: 0.8;
-      color: $main-accent-color;
-      text-decoration: none;
+      margin-top: 10px;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .title1 {
+      margin-bottom: 40px;
+    }
+
+    .title3 {
+      text-align: center;
     }
   }
+}
+
+.form-button {
+  @include white-border-button;
+  @include input-border;
+
+  margin-top: 40px;
+  padding: 0 40px;
 }
 
 .modal-separator {
@@ -179,7 +124,7 @@
 
 .modal-dialog .close {
   background: none;
-  border: none;
+  border: 0;
   font-size: 40px;
   position: absolute;
   top: 10px;
@@ -187,10 +132,10 @@
 }
 
 @media (max-width: 750px) {
-  .login-modal {
+  .custom-modal {
     padding: 30px 10px;
   }
-  
+
   .fb-login-button {
     margin-top: 10px;
   }

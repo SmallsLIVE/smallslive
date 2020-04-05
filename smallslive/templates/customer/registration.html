@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% load i18n %}
+
+{% block title %}
+    {% trans 'Register' %} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{{ homepage_url }}">{% trans 'Home' %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li class="active">{% trans 'Register' %}</li>
+    </ul>
+{% endblock %}
+
+{% block headertext %}
+    {% trans "Register" %}
+{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper" style="border:none">
+        <section class="container" style="text-align:center">
+            <div class="white-line-bottom">
+                <span class="title1">{% trans "Become member" %}</span>
+            </div>
+        </section>
+        <div class="gateway row-fluid" style="display: flex;">
+            <div class="span6 register_form" style="margin: 0 auto;">
+                <form id="register_form" action="." method="post" class="form-stacked">
+                    {% csrf_token %}
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="custom-form">
+                                <div class="form-inline form-group" data-type='anonymous'>
+                                    {% include "partials/form_fields.html"  %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button name="registration_submit" type="submit" value="Register" class="btn white-border-button btn-large js-disable-on-click" style="margin:15px 0" data-loading-text="{%trans 'Registering...' %}">{% trans 'Register' %}</button>
+                    {% if cancel_url %}
+                    <a  class="btn white-border-button btn-large" href="{{ cancel_url }}">{% trans "cancel" %}</a>.
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+ 
+{% endblock content %}
+
+

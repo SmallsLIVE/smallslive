@@ -191,7 +191,7 @@
                   <li class="metrics__event-list__row row">
                       <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
                           {% if event.photo %}
-                            <a href="{{ event.get_absolute_url }}"><img src="{% thumbor_url event.photo.url|urlencode height=68 width=68 smart=True %}" alt=""/></a>
+                            <a href="{{ event.get_absolute_url }}"><img src="{% thumbor_url event.get_photo_url|urlencode height=68 width=68 smart=True %}" alt=""/></a>
                           {% else %}
                             <a href="{{ event.get_absolute_url }}"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/></a>
                           {% endif %}
@@ -224,7 +224,7 @@
             <li class="metrics__event-list__row row">
                 <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
                     {% if event.photo %}
-                      <a href="{{ event.get_absolute_url }}"><img src="{% thumbor_url event.photo.url|urlencode height=68 width=68 smart=True %}" alt=""/></a>
+                      <a href="{{ event.get_absolute_url }}"><img src="{% thumbor_url event.get_photo_url|urlencode height=68 width=68 smart=True %}" alt=""/></a>
                     {% else %}
                       <a href="{{ event.get_absolute_url }}"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/></a>
                     {% endif %}
@@ -441,7 +441,6 @@
                     withCredentials: true
                 },
                 success: function (data, textStatus, jqXHR) {
-                    console.log(data)
                     playsData.labels = data.dates;
                     playsData.datasets[0].data = data.audio_plays_list;
                     playsData.datasets[1].data = data.video_plays_list;

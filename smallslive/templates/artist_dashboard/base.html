@@ -52,7 +52,7 @@
             <button class="navbar__user__button dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown"
                     aria-expanded="true">
               {% if request.user.artist.photo %}
-                <img class="navbar__user__image" src="{% thumbor_url request.user.artist.photo.url|urlencode height=40 width=40 smart=True %}" alt=""/>
+                <img class="navbar__user__image" src="{% thumbor_url request.user.artist.get_photo_url|urlencode height=40 width=40 smart=True %}" alt=""/>
               {% else %}
                 <img class="navbar__user__image" src="{% static 'image/dashboard/user-image.png' %}">
               {% endif %}
@@ -79,7 +79,7 @@
 
   <footer class="container">
       <div class="footer-content">
-          <img class="footer-logo" src="{% static "logo-black.svg" %}" alt=""/>
+          <img class="footer-logo" src="{% static "new_logo_transparent_black.svg" %}" alt=""/>
           <ul class="footer-nav">
               <li><a href="{% url "static_page" "privacy" %}">Privacy</a></li>
               <li><a href="{% url "terms-and-conditions" %}">Terms and Conditions</a></li>

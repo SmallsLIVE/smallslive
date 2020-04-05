@@ -1,0 +1,307 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load i18n %}
+{% load djstripe_tags %}
+{% block homepage_nav_active %}active{% endblock %}
+
+{% block title %}Smalls Jazz Club{% endblock %}
+
+{# TODO Shouldn't be needed here #}
+{% block body_class %}home no-scroll absolute{% endblock %}
+
+{% block extra_head %}
+  <meta name="description"
+        content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
+{% endblock %}
+
+{% block header %}
+{% include 'partials/header.html' %}
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  {% include 'inactive_dialog.html' %}
+{% endif %}
+{% include 'become_a_supporter_dialog.html' %}
+
+<div class="account-settings-container-new flex-row">
+  <div class="account-settings-info-container">
+    <div class="flex-column">
+      <div id="user-account" class="account-settings-view">
+        <div class="title5 account-settings-title text-bottom-line">Account info</div>
+        <div data-toggle-tab="user-account-info" data-toggle-tab-group="user-account">
+          <div class="account-settings-info">
+              <div class="text5">Name</div>
+              <div class="text9 text-grey">{{user.first_name}} {{user.last_name}}</div>
+            </div>
+            <div class="account-settings-info">
+              <div class="text5">Email</div>
+              <div class="text9 text-grey">{{user.email}}</div>
+            </div>
+            <div class="account-settings-info">
+              <div class="text5">Password</div>
+              <div class="text9 text-grey">xxxxxxxxxx</div>
+            </div>
+            <button class="white-border-button" data-toggle-tab-target="user-account-form" data-toggle-tab-group="user-account">Edit info</button>
+        </div>
+        <div data-toggle-tab="user-account-form" data-toggle-tab-group="user-account" style="display:none">
+            {% include 'account/account-change-form.html' %}
+        </div>
+      </div>
+      {% if request.user.artist %}
+      <div id="user-payout" class="account-settings-view">
+        <div class="title5 account-settings-title text-bottom-line">Payout info</div>
+        <div data-toggle-tab-group="user-payout" data-toggle-tab="user-payout-info">
+          <div class="account-settings-info">
+            <div class="text5">Mailing address</div>
+              {% if user.address_1 or user.address_2 or user.city %}
+                <div class="text9 text-grey">{{ user.address_1 }}</div>
+                <div class="text9 text-grey">{{ user.address_2 }}</div>
+                <div class="text9 text-grey">{{user.city }}</div>
+              {% else %}
+                <div class="text9 text-grey">There is no address assigned</div>
+              {% endif %}
+          </div>
+            <button class="white-border-button" data-toggle-tab-target="user-payout-form" data-toggle-tab-group="user-payout">Edit info</button>
+        </div>
+
+        <div data-toggle-tab="user-payout-form" data-toggle-tab-group="user-payout" style="display:none">
+          {% include 'account/payout_info.html' %}
+        </div>
+      </div>
+      {% endif %}
+      <div id="user-donation-settings" class="account-settings-view">
+        <div class="title5 account-settings-title text-bottom-line">Supporter settings</div>
+        <div class="account-settings-info">
+          <div class="text5">Current Monthly Pledge</div>
+          {% if customer_detail.subscription.plan and not cancelled %}
+            <div class="text9 accent-color">${{ monthly_pledge_in_dollars }}/{{ customer_detail.subscription.plan.interval }}</div>
+          {% else %}
+            <div class="text9 accent-color">{% if cancelled %}Subscription canceled{% else %}None{% endif %}</div>
+          {% endif %}
+
+          {% if not user.has_archive_access %}
+            {% if show_email_confirmation_dialog %}
+              <button onclick="$('#inactive-dialog').modal('show');" class="white-border-button">Become a Supporting Member</button>
+            {% else %}
+              <button onclick="becomeSupporter()" class="white-border-button">Become a Supporting Member</button>
+            {% endif %}
+          {% elif customer_detail.subscription.plan and not cancelled %}
+            <div class="flex-row supporter-options">
+            <button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>
+            <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Update Pledge</a>
+            </div>
+          {% else  %}
+            <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Make a Recurring Monthly Pledge</a>
+          {% endif %}
+        </div>
+
+        <div class="account-settings-info ">
+          {% if user.has_archive_access %}
+            <button onclick="makeADonation()" class="white-border-button">Make a One Time Donation</button>
+          {% endif %}
+        </div>
+        <div class="account-settings-info">
+          <div class="text5">Last donation</div>
+          <div class="text9 text-grey">
+            {% with customer_charges|first as first_charge %}
+              {% if not customer_charges %}
+                You have not yet made a donation
+              </div>
+                </div>
+
+                <button href="{% url 'user_tax_letter' %}" class="white-border-button disabled" disabled>Download tax document</button>
+              {% else %}
+                {{ first_charge.created|date:"d/m/Y"  }} ${{ first_charge.amount }}
+                </div>
+                </div>
+                <div class="account-settings-info">
+                  <div class="text5">Total donations this year</div>
+                  <div class="text9 accent-color">${{ charges_value }}</div>
+                </div>
+                <br>
+                <br>
+                <a href="{% url 'user_tax_letter' %}"  class="white-border-button">Download tax document</a>
+              {% endif %}
+          {% endwith %}
+
+        <div class="account-settings-info ">
+          {% if user.has_activated_account %}
+            {% if customer_detail.subscription.plan and not cancelled %}
+              <div class="text5">Expiration of archive access</div>
+              <div class="text9 text-grey">There is no expiration date until the monthly pledge is cancelled</div>
+            {% elif user_archive_access_until %}
+              <div class="text5">Expiration of archive access</div>
+              <div class="text9 text-grey"> {{ user_archive_access_until|date:"m/d/Y" }}</div>
+            {% elif not customer_detail.subscription.plan and not period_end.due  %}
+              <div class="text5">Expiration of archive access 3</div>
+              <div class="text9 text-grey">{{ period_end.date }}</div>
+            {% else %}
+              <div class="text9 text-grey">There is no access to the archive</div>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+
+      <div id="user-billing" class="account-settings-view">
+        <div class="title5 account-settings-title text-bottom-lineFin">Billing</div>
+          <div class="account-settings-info">
+            <div class="text5">Credit card</div>
+            {% if not customer_detail.active_card %}
+              <div class="text9 text-grey">There is no credit card assigned</div>
+            {% else %}
+            <div id="credit-card-info">
+              <div class="text9 text-grey">xxxx-xxxx-xxxx-{{customer_detail.active_card.last4}}</div>
+              <div class="text9 text-grey">exp: {{customer_detail.active_card.exp_month}}/{{customer_detail.active_card.exp_year}}</div>
+              <button id='update-credit-card' class="white-border-button">Update</button>
+            </div>
+            <div id="credit-card-update">
+              {% include 'account/credit-card-update-form.html' %}
+            </div>
+            {% endif %}
+          </div>
+          <div class="account-settings-info">
+            <div class="text5">Billing address</div>
+            <div id='billing-change' style='display:none'>
+              {% include 'account/billing-change-form.html' %}
+            </div>
+            <div id="billing-address">
+              {% if billing_address %}
+                <div class="text9 text-grey">{{ billing_address.line1  }}</div>
+                <div class="text9 text-grey">{{ billing_address.line2 }}</div>
+                <div class="text9 text-grey">{{ billing_address.line4 }}</div>
+              {% else %}
+                <div class="text9 text-grey">There is no address assigned</div>
+              {% endif %}
+
+              <button {% if show_email_confirmation_dialog %} disabled {% endif %} id='update-billing' class="white-border-button">Update</button>
+            <div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div class="modal fade" id="cancel-subscription" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content custom-modal no-cancel">
+        <a href="#" class="close-button"></a>
+        <div class="modal-body">
+          {% if user.has_active_subscription %}
+            <section class="account-settings-view">
+              <div class="title5 account-settings-title text-bottom-line" style="text-align: center;">Cancelling pledge</div>
+              <div class="account-settings-info cancel-info">
+                  <div class="text9">
+                    Your actual monthly pledge is ${{monthly_pledge_in_dollars}} giving you access to the archive until
+                    {{ user.get_archive_access_expiry_date|date:"n/j/Y" }}.<br>
+                    Canceling it will make the access to the archive videos unavailable until the renovation of the pledge or the
+                    making of a one time donation.
+                  </div>
+                  <div class="custom-settings-form">
+                    <form action="{% url 'cancel_subscription' %}" method="post" id="cancel-form" >
+                      {% csrf_token %}
+                      <button class="white-border-button" style="margin: 0 auto ; width: 100%;" >Cancel monthly pledge</button>
+                    </form>
+                  </div>
+              </div>
+            </section>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock%}
+
+{% block footer %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/tabs.js' %}"></script>
+<script src="{% static 'js/subpages.js' %}"></script>
+<script src="{% static 'js/jquery.form.js' %}"></script>
+<script>
+
+  $(document).ready(function () {
+
+    var completeSubpage;
+    var notCompleteContainer;
+    var subpages = window.subpages;
+    subpages.register();
+
+    $('.update-pledge').on('click', function () {
+      $('#update-setting-steps-complete').html("")
+      $('#update-pledge-modal').modal('show');
+      var updatePledgeSubpage = window.subpages.get("update-pledge");
+      completeSubpage = "update-pledge-complete"
+      notCompleteContainer = $('#update-setting-steps')
+      updatePledgeSubpage.load();
+    });
+
+    $('#become-supporter').on('click', function () {
+      $('#become-member-steps-complete').html("")
+      $('#become-member-modal').modal('show');
+      var updatePledgeSubpage = window.subpages.get("become-member");
+      completeSubpage = "become-member-complete";
+      notCompleteContainer = $('#become-member-steps');
+      updatePledgeSubpage.setCallback(renderObjects);
+      updatePledgeSubpage.load();
+    });
+
+    $('#update-billing').click(function(){
+      $('#billing-change').css('display', 'inherit');
+      $('#billing-address').hide();
+
+    })
+    $('#update-credit-card').click(function(){
+      $('#credit-card-update').css('display', 'inherit');
+      $('#credit-card-info').hide();
+
+    })
+
+    $('.close-button').bind("click", ToggleDisplay);
+
+    function ToggleDisplay() {
+      var $currentModal = $(this).closest('.modal');
+      $currentModal.modal('hide');
+    }
+
+    var $streamingDialog = $('#cancel-subscription');
+    var $streamingCloseButton = $($streamingDialog.find('.close-button')[0]);
+    $streamingCloseButton.click(function () {
+      $streamingDialog.modal('hide');
+    });
+
+  });
+
+  function endDonation(){
+    if("{{ redirect_url }}"){
+      window.location = "{{ redirect_url }}"
+    }else{
+      $('#one-time-donation').modal('hide');
+    }
+  }
+  function becomeSupporter (){
+    var inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}');
+
+    if (inactive === 'true'){
+      $('#inactive-dialog').modal('show');
+    }else{
+      window.location = '{% url 'become_supporter' %}';
+    }
+  }
+
+  function makeADonation() {
+    var inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}');
+
+    if (inactive === 'true'){
+      $('#inactive-dialog').modal('show');
+    }else{
+      window.location = '{% url 'donate' %}';
+    }
+
+  }
+
+</script>
+{% endblock %}

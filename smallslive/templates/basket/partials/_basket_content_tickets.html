@@ -1,0 +1,57 @@
+{% load static from staticfiles %}
+{% load thumbnail %}
+{% load currency_filters %}
+{% load purchase_info_tags %}
+<div class ="container-fluid store-cart__table__container">
+{% for form in formset %}
+  {% with line=form.instance product=form.instance.product %}
+    {% if not product.is_shipping_required %}
+      {% purchase_info_for_line request line as session %}
+        {{ form.id }}
+        <div class="row clearfix">
+          <div class="col-xs-6 store-cart__table__cell ticket-info">
+            <a href="{{ product.get_absolute_url }}">{{ product.get_title }}</a>
+            <div tabindex="0" class="{{ product.event_set.event.venue|lower }}-color">
+              {{ product.event_set.event.venue }} Jazz Club
+            </div>
+            <div tabindex="0">
+              <!-- What is product.set? This should not be product.title because the title of the event should not be here... -->
+              The {{ product.set }} Set
+            </div>
+          </div>
+          <div class="col-xs-6 store-cart__table__cell ticket-pricing">
+            <div class="ticket-pricing quantity">
+              <div class="store-cart__table__cell quantity">
+                <div class="store-cart__quantity-control">
+                  <button class="store-cart__quantity-control__button control-decrease {% if form.quantity.value <= 1 %}disabled{% endif %}" {% if form.quantity.value <= 1 %}disabled{% endif %} data-behaviour="decrease"><i
+                  class="fa fa-minus-circle"></i></button>
+                  <span class="store-cart__quantity-control__label">{{ form.quantity.value }}</span>
+                  <input type="hidden" name="form-{{ forloop.counter0 }}-quantity"  value="{{ form.quantity.value }}"/>
+                  <div style="display: none;"><input id="id_form-{{ forloop.counter0 }}-DELETE" name="form-{{ forloop.counter0 }}-DELETE" type="checkbox"></div>
+                  <button class="store-cart__quantity-control__button control-increase"  data-behaviour="increase"><i
+                  class="fa fa-plus-circle"></i></button>
+                </div>
+              </div>
+            </div>
+            <div tabindex="0" class="price">
+              {{ line.unit_price_excl_tax|currency:line.price_currency }}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endwith %}
+    <!-- End of cart table row -->
+  {% endfor %}
+  <!-- Cart table footer -->
+  <div class="row clearfix">
+    <div class="col-sm-12 store-cart__table__cell ticket-pricing store-cart__table__cell__sub-total">
+      <div class="title">
+        Sub-total:
+      </div>
+      <div tabindex="0" class="store-cart__table__footer__cell value">
+        {{ basket.digital_total_excl_tax|currency:basket.currency }}
+      </div>
+    </div>
+  </div>
+  <!-- End of cart table footer -->
+</div>

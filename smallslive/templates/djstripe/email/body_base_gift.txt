@@ -1,0 +1,33 @@
+Dear {% block customer_name %}{% if charge.customer.subscriber.get_full_name %}{{ charge.customer.subscriber.get_full_name }}{% else %}Supporter{% endif %}{% endblock %},
+
+Thank you for contributing to the SmallsLIVE Foundation for Jazz Arts and Education.
+
+You have made a donation of $xx.xx of which $xx.xx is tax deductible. All tax documents are available from your Account Settings.
+
+All donations grant access to the SmallsLIVE Archive. You have also chosen to receive a T-Shirts as a gift for your contribution.
+
+Your order number is 137253 and will be processed shortly.
+
+Your order contains:
+
+T-Shirt - quantity: 1 - price: $120.00
+
+Basket total: $120.00 Shipping: $0.00 Order Total: $120.00
+
+Shipping address:
+
+Aslan Crawley
+
+148 West 16th Street
+
+New York
+
+NY
+
+10011
+
+United States of America
+
+Thank you for your support,
+
+The SmallsLIVE Foundation

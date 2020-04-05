@@ -8,9 +8,9 @@
             <div class="gradient-overlay"></div>
             {% if event.photo %}
                 {% if event.photo_crop_box %}
-                      <img src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=600 %}" alt="" class="event-details__image img div-fill-img"/>
+                      <img src="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=600 %}" alt="" class="event-details__image img div-fill-img"/>
                     {% else %}
-                      <img src="{% thumbor_url event.photo.url|urlencode height=360 width=600 smart=True %}" alt="" class="event-details__image img div-fill-img"/>
+                      <img src="{% thumbor_url event.get_photo_url|urlencode height=360 width=600 smart=True %}" alt="" class="event-details__image img div-fill-img"/>
                     {% endif %}
             {% else %}
                 <img src="{% static "image/no-event-image-placeholder.jpg" %}" class="event-details__image img div-fill-img" alt=""/>

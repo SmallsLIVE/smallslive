@@ -8,7 +8,10 @@
     {% for result in page.object_list %}
       <div class="search-event">
         <p class="search-event__date">{{ result.object.listing_date|date:"n/j/Y" }}</p>
-        <a href="{{ result.object.get_absolute_url }}"><h2 class="search-event__title">{{ result.object.title }}</h2></a>
+        <h3 class="search-event__venue">{{ result.object.get_venue_name }}</h3>
+        <a href="{{ result.object.get_absolute_url }}">
+          <h2 class="search-event__title">{{ result.object.title }}</h2>
+        </a>
         <p class="search-event__sidemen-section-title">Artists:</p>
         <p class="search-event__sidemen">
             {% for gig_info in result.object.get_performers %} <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist }} <span

@@ -1,7 +1,13 @@
 from datetime import timedelta
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from cacheops import cached
 from django.conf import settings
-from django.db.models import Max
+from django.db.models import Max, Sum
+from django.http import Http404, JsonResponse
+from django.template import RequestContext
+from django.template.loader import render_to_string
+from dateutil import parser
 
 try:
     import cStringIO as StringIO
@@ -14,7 +20,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import TemplateView, DetailView, FormView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from braces.views import SuperuserRequiredMixin
@@ -23,52 +29,59 @@ import allauth.account.views as allauth_views
 from metrics.models import UserVideoMetric
 from rest_framework.authtoken.models import Token
 
-from artists.models import Artist, ArtistEarnings, CurrentPayoutPeriod
+from artists.models import Artist, ArtistEarnings, \
+    CurrentPayoutPeriod, Instrument, PastPayoutPeriod, PayoutPeriodGeneration
 from events.models import Recording, Event
 import events.views as event_views
+from subscriptions.models import Donation
 import users.forms as user_forms
 from users.models import LegalAgreementAcceptance
-from users.views import HasArtistAssignedMixin, HasArtistAssignedOrIsSuperuserMixin
-from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm,\
-    EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm
-from artist_dashboard.tasks import generate_payout_sheet_task, update_current_period_metrics_task
+from users.views import HasArtistAssignedMixin, \
+    HasArtistAssignedOrIsSuperuserMixin
+from .forms import ToggleRecordingStateForm, EventAjaxEditForm,  \
+    EventEditForm, ArtistInfoForm, \
+    EditProfileForm, ArtistResetPasswordForm, DonationQueryForm, \
+    MetricsPayoutForm, ArtistGigPlayedEditLazyInlineFormSet
+from artist_dashboard.tasks import generate_payout_sheet_task,\
+    update_current_period_metrics_task
+from artist_dashboard.utils import start_generate_payout_sheet
 
 
 class MyEventsView(HasArtistAssignedMixin, ListView):
+
     context_object_name = 'gigs'
-    paginate_by = 15
+    paginate_by = 30
     template_name = 'artist_dashboard/my_gigs.html'
 
     def get_context_data(self, **kwargs):
         context = super(MyEventsView, self).get_context_data(**kwargs)
         paginator = context['paginator']
         current_page_number = context['page_obj'].number
-        adjacent_pages = 2
-        startPage = max(current_page_number - adjacent_pages, 1)
-        if startPage <= 3:
-            startPage = 1
-        endPage = current_page_number + adjacent_pages + 1
-        if endPage >= paginator.num_pages - 1:
-            endPage = paginator.num_pages + 1
-        page_numbers = [n for n in xrange(startPage, endPage) if n > 0 and n <= paginator.num_pages]
         context.update({
-            'page_numbers': page_numbers,
-            'show_first': 1 not in page_numbers,
-            'show_last': paginator.num_pages not in page_numbers,
-            })
+            'total_results': paginator.count,
+            'total_pages': paginator.num_pages,
+            'current_page': current_page_number,
+            'is_dashboard': True,
+        })
 
         return context
 
     def get_queryset(self):
         artist = self.request.user.artist
+
         queryset = artist.gigs_played.select_related('event')
-        queryset = self.apply_filters(queryset).order_by('-event__start')
+        queryset = self.apply_filters(queryset)
+
         return queryset
 
     def apply_filters(self, queryset):
         audio_filter = self.request.GET.get('audio_filter')
+        start_date_filter = self.request.GET.get('start_date_filter')
+        end_date_filter = self.request.GET.get('end_date_filter')
         video_filter = self.request.GET.get('video_filter')
         leader_filter = self.request.GET.get('leader_filter')
+        order = self.request.GET.get('order')
+
         if audio_filter and audio_filter in Recording.FILTER_STATUS:
             if audio_filter == 'None':
                 queryset = queryset.exclude(event__recordings__media_file__media_type='audio')
@@ -93,39 +106,230 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
             else:
                 queryset = queryset.filter(is_leader=False)
 
-        return queryset.distinct()
+        if start_date_filter:
+            start_date_filter = parser.parse(start_date_filter, fuzzy=True)
+            if not start_date_filter.tzinfo:
+                start_date_filter = timezone.make_aware(
+                    start_date_filter, timezone.get_current_timezone())
+            # Exclude 1 am events which belong to the previous day.
+            start_date_filter = start_date_filter.replace(hour=5, minute=0, second=0)
+            queryset = queryset.filter(
+                event__start__gte=start_date_filter
+            )
+
+        if end_date_filter:
+            end_date_filter = parser.parse(end_date_filter, fuzzy=True)
+            if not end_date_filter.tzinfo:
+                end_date_filter = timezone.make_aware(
+                    end_date_filter, timezone.get_current_timezone())
+            # Events finish at 5:00 am the next day
+            end_date_filter = end_date_filter + timedelta(days=1)
+            end_date_filter = end_date_filter.replace(hour=5, minute=0, second=0)
+            print '*** END DATE ***** ', end_date_filter
+            queryset = queryset.filter(
+                event__start__lte=end_date_filter
+            )
+
+        if order:
+            if order == 'newest':
+                queryset = queryset.order_by('-event__date')
+            elif order == 'oldest':
+                queryset = queryset.order_by('event__date')
+            elif order == 'popular':
+                queryset = queryset.order_by('-event__seconds_played')
+            else:
+                queryset = queryset.order_by('-event__date')
+
+        return queryset
 
 
 class MyFutureEventsView(MyEventsView):
+
     def get_queryset(self):
         artist = self.request.user.artist
         now = timezone.now()
-        queryset = artist.gigs_played.select_related('event').filter(event__start__gte=now)
-        queryset = self.apply_filters(queryset).order_by('event__start')
+        queryset = artist.gigs_played.select_related('event').prefetch_related('event__sets').filter(
+            event__start__gte=now
+        )
+        queryset = self.apply_filters(queryset)
+
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super(MyFutureEventsView, self).get_context_data(**kwargs)
-        context['future_active'] = True
+        context['is_future'] = True
+        context['reverse_ajax'] = 'artist_dashboard:my_future_events_ajax'
         return context
+
 
 my_future_events = MyFutureEventsView.as_view()
 
 
+class MyEventsAJAXView(MyEventsView):
+
+    def get(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        first = self.object_list.first()
+        last = self.object_list.last()
+        first_event_date = None
+        last_event_date = None
+        if first:
+            if request.GET.get('order') == 'oldest':
+                temp = first
+                first = last
+                last = temp
+
+            first_event_date = last.event.get_date().strftime('%m/%d/%Y')
+            last_event_date = first.event.get_date().strftime('%m/%d/%Y')
+
+        context = self.get_context_data(**kwargs)
+
+        data = {
+            'template': render_to_string(
+                self.template_name, context,
+                context_instance=RequestContext(request)
+            ),
+            'first_event_date': first_event_date,
+            'last_event_date': last_event_date,
+            'total_results': context.get('total_results'),
+            'total_pages': context.get('total_pages'),
+            'current_page': context.get('current_page'),
+        }
+        
+        return JsonResponse(data)
+
+
 class MyPastEventsView(MyEventsView):
+
+    def get_queryset(self):
+        artist = self.request.user.artist
+        queryset = artist.gigs_played.select_related('event').prefetch_related('event__sets').filter(
+            event__recordings__media_file__isnull=False
+        )
+        queryset = self.apply_filters(queryset)
+
+        return queryset.distinct()
+
+    def get_context_data(self, **kwargs):
+        context = super(MyPastEventsView, self).get_context_data(**kwargs)
+        context['is_future'] = False  # TODO: make dynamic.
+        return context
+        
+
+my_past_events = MyPastEventsView.as_view()
+
+
+class MyPastEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
+
+    template_name = 'artist_dashboard/my_gigs/event_list_page.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MyPastEventsAJAXView, self).get_context_data(**kwargs)
+        return context
+
+my_past_events_ajax = MyPastEventsAJAXView.as_view()
+
+
+class MyFutureEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
+
+    template_name = 'artist_dashboard/my_gigs/event_list_page.html'
+
     def get_queryset(self):
         artist = self.request.user.artist
         now = timezone.now()
-        queryset = artist.gigs_played.select_related('event').filter(event__start__lt=now)
-        queryset = self.apply_filters(queryset).order_by('-event__start')
+        queryset = artist.gigs_played.select_related('event').prefetch_related('event__sets').filter(
+            event__start__gte=now
+        )
+
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsView, self).get_context_data(**kwargs)
-        context['past_active'] = True
+        context['is_future'] = True  # TODO: make dynamic.
         return context
 
-my_past_events = MyPastEventsView.as_view()
+my_future_events_ajax = MyFutureEventsAJAXView.as_view()
+
+
+class MyPastEventsInfoView(DetailView):
+    
+    model = Event
+    pk_url_kwarg = 'pk'
+    template_name = 'artist_dashboard/my_gigs/event_info.html'
+    context_object_name = 'event'
+
+    def get_object(self, *a, **k):
+        obj = super(MyPastEventsInfoView, self).get_object(*a, **k)
+        if self.request.user.artist not in obj.performers.all() :
+            raise Http404("Event for that artist doesnt exist")
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super(MyPastEventsInfoView, self).get_context_data(**kwargs)
+        artist = self.request.user.artist
+        events_with_media = self.object.sets.with_media()
+        context.update({
+            'event_sets': events_with_media
+        })
+        context['is_admin'] = self.object.artists_gig_info.filter(
+            artist_id=artist.id).first().is_leader
+        context['sidemen'] = self.object.artists_gig_info.filter(
+            is_leader=False)
+        context['leaders'] = self.object.artists_gig_info.filter(
+            is_leader=True)
+        context['current_payout_period'] = CurrentPayoutPeriod.objects.first()
+        #copied metrics code
+        today = timezone.datetime.today()
+        month_start = today.replace(day=1)
+        start_of_week = today - timedelta(days=today.weekday())
+        context['date_ranges'] = [
+            {
+                'display': 'Last Week',
+                'start': (start_of_week - timedelta(days=7)).isoformat(),
+                'end': start_of_week.isoformat()
+            },
+            {
+                'key': 'month',
+                'display': 'This Month',
+                'start': month_start.isoformat(),
+                'end': today.isoformat()
+            },
+            {
+                'display': 'Last Month',
+                'start': (month_start - relativedelta(months=1)).isoformat(),
+                'end': month_start.isoformat()
+            },
+            {
+                'display': 'Last 3 Months',
+                'start': (month_start - relativedelta(months=3)).isoformat(),
+                'end': month_start.isoformat()
+            },
+            {
+                'display': 'Last 6 Months',
+                'start': (month_start - relativedelta(months=6)).isoformat(),
+                'end': month_start.isoformat()
+            }
+        ]
+
+        default_ranges = [{
+            'content': 'All Time',
+            'date': 'all',
+        }]
+        old_payout_ranges = PastPayoutPeriod.objects.order_by('-period_start')[:6]
+        current_payout = CurrentPayoutPeriod.objects.first()
+        current_payout.period_start = old_payout_ranges[0].period_end + timedelta(days=1)
+        current_payout.period_end = timezone.now().date()
+        context['datepicker_current_range'] = current_payout
+        context['datepicker_default_ranges'] = default_ranges
+        context['datepicker_old_payout_ranges'] = old_payout_ranges
+
+        form = EventEditForm()
+        context['form'] = form
+        context['is_dashboard'] = True
+        
+        return context
+
+my_past_events_info = MyPastEventsInfoView.as_view()
 
 
 class DashboardView(HasArtistAssignedMixin, TemplateView):
@@ -157,6 +361,7 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
         context['first_login'] = first_login
         context['current_payout_period'] = CurrentPayoutPeriod.objects.first()
         context['previous_payout_period'] = artist.earnings.first()
+        context['is_dashboard'] = True
         # don't show intro.js when user reloads the dashboard
         if first_login:
             self.request.user.last_login += timedelta(seconds=1)
@@ -166,7 +371,96 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
 dashboard = DashboardView.as_view()
 
 
+class MetricsView(HasArtistAssignedMixin, FormView):
+    template_name = 'artist_dashboard/metrics.html'
+    form_class = ArtistInfoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(MetricsView, self).get_context_data(**kwargs)
+        artist = self.request.user.artist
+        # artist_event_ids = list(self.request.user.artist.event_id_list())
+
+        # need to pass the artist ID to cached function so it caches a different result for each artist
+        # @cached(timeout=6*60*60)
+        # def _most_popular_events(artist_id):
+        #     context = {}
+        #     most_popular_event_ids = UserVideoMetric.objects.top_all_time_events(artist_event_ids=artist_event_ids)
+        #     most_popular_events = []
+        #     for event_data in most_popular_event_ids:
+        #         try:
+        #             event = Event.objects.filter(id=event_data['event_id']).annotate(
+        #                 added=Max('recordings__date_added')).first()
+        #             most_popular_events.append(event)
+        #         except Event.DoesNotExist:
+        #             pass
+        #     context['most_popular_events'] = most_popular_events
+        #     return context
+
+        # context.update(_most_popular_events(artist.id))
+        first_login = self.request.user.is_first_login()
+        context['current_payout_period'] = CurrentPayoutPeriod.objects.first()
+        context['previous_payout_period'] = artist.earnings.first()
+        context['form_action'] = self.request.get_full_path()
+
+        today = timezone.datetime.today()
+        month_start = today.replace(day=1)
+
+        start_of_week = today - timedelta(days=today.weekday())
+        context['date_ranges'] = [
+            {
+                'display': 'Last Week',
+                'start': (start_of_week - timedelta(days=7)).isoformat(),
+                'end': start_of_week.isoformat()
+            },
+            {
+                'key': 'month',
+                'display': 'This Month',
+                'start': month_start.isoformat(),
+                'end': today.isoformat()
+            },
+            {
+                'display': 'Last Month',
+                'start': (month_start - relativedelta(months=1)).isoformat(),
+                'end': month_start.isoformat()
+            },
+            {
+                'display': 'Last 3 Months',
+                'start': (month_start - relativedelta(months=3)).isoformat(),
+                'end': month_start.isoformat()
+            },
+            {
+                'display': 'Last 6 Months',
+                'start': (month_start - relativedelta(months=6)).isoformat(),
+                'end': month_start.isoformat()
+            }
+        ]
+
+        # don't show intro.js when user reloads the dashboard
+        if first_login:
+            self.request.user.last_login += timedelta(seconds=1)
+            self.request.user.save()
+          # if this is a POST request we need to process the form data
+        if 'artist_info' in self.request.POST:
+            # create a form instance and populate it with data from the request:
+            artist_info_form = ArtistInfoForm(data=self.request.POST, instance=self.request.user)
+            # check whether it's valid:
+            if artist_info_form.is_valid():
+                artist_info_form.save(self.request)
+                messages.success(self.request, "You've successfully updated your payoutinfo.")
+                return redirect('artist_dashboard:metrics_payout') 
+        # if a GET (or any other method) we'll create a blank form
+        else:
+            artist_info_form = ArtistInfoForm(instance=self.request.user)
+
+        context['artist_info_form'] = artist_info_form
+      
+        return context
+
+metrics = MetricsView.as_view(success_url='/dashboard/my-metrics/')
+
+
 class EditProfileView(HasArtistAssignedMixin, UpdateView):
+
     form_class = EditProfileForm
     model = Artist
     template_name = 'artist_dashboard/edit_profile.html'
@@ -187,8 +481,6 @@ class EventDetailView(HasArtistAssignedMixin, event_views.EventDetailView):
     def get_context_data(self, **kwargs):
         context = super(EventDetailView, self).get_context_data(**kwargs)
         context['is_leader'] = self.request.user.artist.is_leader_for_event(self.object)
-        context['audio'] = self.object.recordings.audio()
-        context['video'] = self.object.recordings.video()
         return context
 
 event_detail = EventDetailView.as_view()
@@ -220,9 +512,14 @@ event_metrics = EventMetricsView.as_view()
 
 
 class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
+
     form_class = EventEditForm
-    success_url = reverse_lazy("artist_dashboard:my_past_events")
-    template_name = 'artist_dashboard/event_edit.html'
+    success_url = reverse_lazy('artist_dashboard:my_past_events')
+    inlines = [ArtistGigPlayedEditLazyInlineFormSet]
+    inlines_names = ['artists']
+
+    def get_template_names(self):
+        return 'artist_dashboard/event_edit.html'
 
     def get_context_data(self, **kwargs):
         context = super(EventEditView, self).get_context_data(**kwargs)
@@ -231,7 +528,50 @@ class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
         context['video'] = self.object.recordings.video()
         return context
 
+
 event_edit = EventEditView.as_view()
+
+
+class EventEditAjaxView(EventEditView):
+
+    form_class = EventAjaxEditForm
+    inlines = [ArtistGigPlayedEditLazyInlineFormSet]
+    inlines_names = ['artists']
+
+    def get_context_data(self, **kwargs):
+        context = super(EventEditAjaxView, self).get_context_data(**kwargs)
+        artist = self.request.user.artist
+        context['is_admin'] = self.object.artists_gig_info.filter(
+            artist_id=artist.id).first().is_leader
+        context['gig_instruments'] = Instrument.objects.all()
+
+        if self.request.GET.get('future') == 'True':
+            context['is_future'] = True
+
+        return context
+
+    def get_template_names(self):
+        return 'artist_dashboard/my_gigs/event_edit_form.html'
+
+    def post(self, *args, **kwargs):
+        response = super(EventEditAjaxView, self).post(*args, **kwargs)
+
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        if self.request.is_ajax():
+            if form.is_valid():
+                event_data = {
+                    'eventId': form.instance.pk,
+                    'title': form.instance.title,
+                    'photoUrl': form.instance.photo.url,
+                }
+                data = {'success': True, 'data': event_data}
+                response = JsonResponse(data)
+
+        return response
+
+event_edit_ajax = EventEditAjaxView.as_view()
 
 
 class ToggleRecordingStateView(HasArtistAssignedMixin, UpdateView):
@@ -364,24 +704,101 @@ class PreviousPayoutsView(ListView):
 previous_payouts = PreviousPayoutsView.as_view()
 
 
-def metrics_payout(request):
+@login_required
+def metrics_payout_period(request):
+    """ Previously date range, income and costs were entered at the same time.
+    Calculation was made based on these parameters.
+    Now, we need a date range first, so that the total donations are calculated and
+    this number will be prepopulated for the calculation in metrics_payout"""
     if request.method == 'POST':
-        form = MetricsPayoutForm(request.POST)
+        form = DonationQueryForm(request.POST)
         if form.is_valid():
             start = form.cleaned_data.get('period_start')
             end = form.cleaned_data.get('period_end')
+
+            foundation_deductable = Donation.objects.total_deductible_foundation_in_range(start, end) or 0.0
+            revenue = foundation_deductable / 2
+
+            start = start.strftime('%Y-%m-%d')
+            end = end.strftime('%Y-%m-%d')
+            revenue = str(int(revenue))
+
+            return redirect('artist_dashboard:metrics_payout',
+                            period_start=start, period_end=end,
+                            revenue=revenue)
+        else:
+            messages.error(request, "Donation calculation failed. {}".format(form.errors))
+
+    else:
+        form = DonationQueryForm()
+
+    return render(request, 'artist_dashboard/metrics_payout_period.html', {'form': form})
+
+
+@login_required
+def metrics_payout(request, period_start=None,  period_end=None, revenue=None):
+
+    if request.method == 'POST':
+        form = MetricsPayoutForm(request.POST)
+        if form.is_valid():
+            print 'metrics_payout.form.is_valid = True'
+            start = datetime.strptime(form.cleaned_data.get('period_start'), '%Y-%m-%d')
+            start = timezone.make_aware(start, timezone.get_current_timezone())
+            end = datetime.strptime(form.cleaned_data.get('period_end'), '%Y-%m-%d')
+            end += timedelta(days=1)
+            end = timezone.make_aware(end, timezone.get_current_timezone())
+            print 'metrics_payout.start, end', start, end
             revenue = form.cleaned_data.get('revenue')
             operating_cost = form.cleaned_data.get('operating_cost')
+            print 'metrics_payout.revenue, operating_costs', revenue, operating_cost
+
             save_earnings = form.cleaned_data.get('save_earnings')
-            messages.success(request, "Payout calculation started.")
-            generate_payout_sheet_task.delay(start, end, revenue, operating_cost, save_earnings)
+            print 'metrics_payout.start_generate_payout_sheet ...'
+            start_generate_payout_sheet(start, end)
+            print 'metrics_payout.start_generate_payout_sheet ok!'
+            print 'metrics_payout.generate_payout_sheet.delay ...'
+            generate_payout_sheet_task.delay(start, end,
+                                             revenue, operating_cost, save_earnings)
+            print 'metrics_payout.generate_payout_sheet.delay ok!'
+            return redirect('artist_dashboard:metrics_payout_period')
         else:
             messages.error(request, "Payout calculation failed. {}".format(form.errors))
-        return redirect("artist_dashboard:metrics_payout")
+            return redirect('artist_dashboard:metrics_payout')
     else:
-        form = MetricsPayoutForm()
+        initial = {
+            'period_start': period_start,
+            'period_end': period_end,
+            'revenue': int(revenue)
+        }
+        form = MetricsPayoutForm(initial=initial)
 
-    return render(request, 'artist_dashboard/metrics_payout.html', {'form': form})
+    context = {
+        'form': form
+    }
+    return render(request,
+                  'artist_dashboard/metrics_payout.html',
+                  context)
+
+
+@login_required
+def metrics_payout_poll(request):
+
+    template = 'artist_dashboard/payout_generation.html'
+
+    generated_payouts = PayoutPeriodGeneration.objects.all()
+    context = {'generated_payouts': generated_payouts}
+
+    tpl = render_to_string(
+        template,
+        context,
+        context_instance=RequestContext(request))
+
+    data = {
+        'success': True,
+        'template': tpl
+    }
+
+    return JsonResponse(data)
 
 
 @login_required
@@ -406,7 +823,7 @@ def artist_settings(request):
         if artist_info_form.is_valid():
             artist_info_form.save(request)
             messages.success(request, "You've successfully updated your profile.")
-            return redirect('artist_dashboard:settings')
+            return redirect('artist_dashboard:settings') 
     # if a GET (or any other method) we'll create a blank form
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)
@@ -436,19 +853,17 @@ def artist_settings(request):
     })
 
 
-class DashboardLoginView(allauth_views.LoginView):
-    success_url = reverse_lazy('artist_dashboard:home')
-    template_name = 'artist_dashboard/login.html'
+class DashboardLoginView(TemplateView):
 
-    def form_valid(self, form):
-        response = super(DashboardLoginView, self).form_valid(form)
-        form.user.last_login = timezone.now()
-        form.user.save()
-        return response
+    template_name = 'home_new.html'
 
-    def get_authenticated_redirect_url(self):
-        return reverse('artist_dashboard:home')
+    def get(self, request):
+        url = '?' + self.request.get_full_path().split('?')[1]
+        return redirect(reverse("home")+url)
 
+    def post(self, request):
+        return redirect(reverse("home"))
+    
 login = DashboardLoginView.as_view()
 
 
@@ -477,3 +892,71 @@ class ResetPasswordFromKeyDoneView(allauth_views.PasswordResetFromKeyDoneView):
     template_name = 'artist_dashboard/change_password_done.html'
 
 password_reset_from_key_done = ResetPasswordFromKeyDoneView.as_view()
+
+
+class ArtistPayoutAjaxView(HasArtistAssignedMixin, DetailView):
+    
+    template_name = 'artist_dashboard/artist-dashboard-payout.html'
+    model = ArtistEarnings
+
+    def get_context_data(self, **kwargs):
+        context = super(ArtistPayoutAjaxView, self).get_context_data()
+        context['artist'] = self.request.user.artist
+        context['earning'] = self.object
+        return context
+
+    # def get(self, request, *args, **kwargs):
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
+
+
+artist_payout_detail_ajax = ArtistPayoutAjaxView.as_view()
+
+
+@login_required
+def payout_form(request):
+    # if this is a POST request we need to process the form data
+    if 'artist_info' in request.POST:
+        # create a form instance and populate it with data from the request:
+        artist_info_form = ArtistInfoForm(data=request.POST, instance=request.user)
+        # check whether it's valid:
+        if artist_info_form.is_valid():
+            artist_info_form.save(request)
+            data = {
+               'address-1':artist_info_form['address_1'].value(),
+               'address-2':artist_info_form['address_2'].value(),
+               'city':artist_info_form['city'].value(),
+            }
+            return JsonResponse(data)
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        artist_info_form = ArtistInfoForm(instance=request.user)
+
+    return render(request, 'artist_dashboard/artist-payout-form.html', {
+        'artist_info_form': artist_info_form,
+    })
+
+
+@login_required
+def metrics_ajax_display(request):
+    month = request.GET.get('month')
+    year = request.GET.get('year')
+    set_id = request.GET.get('set_id', None)
+    data = {}
+    if month and year:
+        if set_id:
+            metrics_data = UserVideoMetric.objects.date_counts(int(month), int(year), int(set_id))
+        else:
+            metrics_data = UserVideoMetric.objects.date_counts(int(month), int(year))
+        data={
+                'dates': metrics_data['dates'],
+                'audio_minutes_list': metrics_data['audio_minutes_list'],
+                'video_minutes_list': metrics_data['video_minutes_list'],
+                'total_minutes_list': metrics_data['total_minutes_list'],
+                'audio_plays_list': metrics_data['audio_plays_list'],
+                'video_plays_list': metrics_data['video_plays_list'],
+                'total_plays_list': metrics_data['total_plays_list'],
+            }
+
+    return JsonResponse(data)

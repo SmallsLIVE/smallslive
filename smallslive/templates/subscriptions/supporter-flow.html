@@ -1,0 +1,50 @@
+{% extends 'subscriptions/supporter_base.html' %}
+{% block home_content %}
+  {% if flow_type == 'become_supporter' or flow_type = 'one_time_donation' or flow_type = 'update_pledge' %}
+    {% include 'subscriptions/become-supporter.html' %}
+  {% elif flow_type == 'donate' %}
+    {% include 'subscriptions/direct_donation.html' %}
+  {% elif flow_type == 'product_support'%}
+    {% include 'subscriptions/product-support.html' %}
+  {% elif flow_type == 'event_support'%}
+    {% include 'subscriptions/event-support.html' %}
+  {% endif %}
+{% endblock home_content %}
+
+{% block extra_js %}
+  {{ block.super }}
+  <script>
+
+
+    var flow = "{{ flow_type }}";
+    var type = "one-time";
+    var step = "SelectType";
+
+    {% if flow_type == "event_support" %}
+      flow = "event_support";
+    {% else %}
+      {% if flow_type == "product_support" %}
+        flow = "catalog";
+      {% else %}
+        {% if flow_type == "one_time_donation" %}
+          step = "Intro";
+        {% else  %}
+          {% if flow_type = "donate" %}
+            step = "Intro";
+          {% else %}
+            flow = "become_supporter";
+            step = "Intro";
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+    $(document).ready(function () {
+      setSelected(flow, type, 0, step);
+      checkConfirmButton();
+    });
+
+  </script>
+{% endblock %}
+
+

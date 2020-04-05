@@ -31,32 +31,35 @@
 
   &__button {
     @include lato-bold-italic;
-    @include red-button;
+    background: $black;
+    color: $white-transparent;
+    padding: 3px;
 
-    &:after, &:before {
-      left: 100%;
-      top: 50%;
-      border: solid transparent;
-      content: " ";
-      height: 0;
-      width: 0;
-      position: absolute;
-      pointer-events: none;
-    }
 
-    &:after {
-      border-color: rgba(136, 183, 213, 0);
-      border-left-color: $main-accent-color;
-      border-width: 15px;
-      margin-top: -15px;
-    }
-
-    &:before {
-      border-color: rgba(255, 255, 255, 0);
-      border-left-color: #fff;
-      border-width: 16px;
-      margin-top: -16px;
-    }
+    //&:after, &:before {
+    //  left: 100%;
+    //  top: 50%;
+    //  border: solid transparent;
+    //  content: " ";
+    //  height: 0;
+    //  width: 0;
+    //  position: absolute;
+    //  pointer-events: none;
+    //}
+    //
+    //&:after {
+    //  border-color: rgba(136, 183, 213, 0);
+    //  border-left-color: $main-accent-color;
+    //  border-width: 15px;
+    //  margin-top: -15px;
+    //}
+    //
+    //&:before {
+    //  border-color: rgba(255, 255, 255, 0);
+    //  border-left-color: #fff;
+    //  border-width: 16px;
+    //  margin-top: -16px;
+    //}
   }
 }
 

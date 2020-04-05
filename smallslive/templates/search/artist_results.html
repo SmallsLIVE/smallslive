@@ -1,0 +1,31 @@
+{% if artists_blocks %}
+  {% for artist_block in artists_blocks %}
+    {% for artist in artist_block %}
+      <article class="event-display">
+
+        {% include 'artists/artist_card.html' with artist=artist secondary=secondary hide_play=True %}
+        <div class="event-info new">
+          <div>
+            <div class="{% if not show_event_venue %} margin-bottom{% endif %}">{{ artist.last_name }}, {{ artist.first_name }}</div>
+            <br>
+            {% for instrument in artist.instruments.all %}
+              <div class="event-info-title">{{ instrument }}</div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </article>
+    {% endfor  %}
+  {% endfor %}
+  <div class="flex-column artist-column-mobile">
+    {% for artist_block in artists_blocks %}
+      {% for artist in artist_block %}
+        <div class="artist-mobile">
+          <a class="text2 artist-row " href="#" data-id="{{ artist.pk }}">
+            {% if artist.last_name %}{{ artist.last_name }}{% endif %} {% if artist.last_name and artist.first_name %}, {% endif %}{{ artist.first_name }} / {{ artist.instruments.all.first }}
+          </a>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+{% endif %}

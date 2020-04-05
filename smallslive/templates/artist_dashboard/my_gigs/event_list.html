@@ -1,0 +1,78 @@
+{% load static from staticfiles %}
+<div class="flex-column items-flex-stretch artist-events-list active{% if is_future %} future{% endif %}">
+  {% if not is_future %}
+
+    <div id="summary-data" class="section-title summary-data archive title1 hidden">
+      <span id="date-from-label" class=""></span>
+      <span style="margin: 0 5px;">-</span>
+      <span id="date-to-label" class=""></span>
+      <span class="" style="margin: 0 5px;"> / </span>
+      <span id="number-of-shows-label" class="accent-color"></span>
+      <span class="" style="margin-left: 5px;">Shows</span>
+      <span class="accent-color"></span>
+    </div>
+    <div id="summary-no-results" class="section-title summary-data archive title1{% if gigs %} hidden{% endif %}">
+      <span class="accent-color">No Archived Shows</span>
+    </div>
+
+    <div id="dashboard-filters" class="artist-archive-filter flex-row hidden">
+
+      <div class="white-border-select status-filter" id="dashboard-status-filter">
+        <select id="artist_archive_status_filter">
+          <option value="all">All</option>
+          <option value="leader">Leader</option>
+          <option value="sidemusician">Bandmember</option>
+        </select>
+      </div>
+
+      <div class="white-border-button datepicker-dashboard-main-btn" style="margin: 0 2%;">
+        Date
+      </div>
+
+      <div class="datepicker-container noclick" id="dashboard-desktop-datepicker">
+        <a id="dashboard-desktop-datepicker-close" href="#" class="close-button"></a>
+        <div class="custom-date-picker" id="search-date-picker-from-dashboard" style="flex: 1;">
+          <input class="date-picker-text" type="text" placeholder="Select date" readonly style="border-left: 0;">
+        </div>
+        <div class="custom-date-picker" id="search-date-picker-to-dashboard" style="flex: 1;">
+          <input class="date-picker-text" type="text" placeholder="Select date" readonly style="border-top: 0; border-right: 0;">
+        </div>
+        <div class="white-border-button" id="dashboard-apply-button" style="flex: 0.5;">Apply</div>
+
+        <div id="dashboard-reset" class="datepicker-reset text2 text-grey">Reset</div>
+      </div>
+
+      <div class="white-border-select order-filter" id="dashboard-order-filter">
+        <select id="artist_archive_order_filter">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="popular">Popular</option>
+        </select>
+      </div>
+    </div>
+    <label class="list accent-color text2 date-error hidden">
+      Invalid date range selection
+    </label>
+  {% else %}
+    <div id="summary-data" class="section-title summary-data archive title1 hidden">
+      <span id="number-of-shows-label" class="accent-color"></span>
+      <span class="" style="margin-left: 5px;">Shows</span>
+      <span class="accent-color"></span>
+    </div>
+    <div id="summary-no-results" class="section-title summary-data archive title1{% if gigs %} hidden{% endif %}">
+      <span class="accent-color">No Upcoming Shows</span>
+    </div>
+  {% endif %}
+  <div id="artistEventsList" class="artist-list" ></div>
+  <div id="event-load-gif" class="hidden events-gif text-center">
+    <img src="{% static 'image/loading.gif' %}" alt="" style="width: 10%;">
+  </div>
+  {% if current_page < total_pages %}
+    <div class="concerts-footer" >
+      <button id="load-more-btn" class="white-border-button load-more-btn" style="margin: 0 auto;">
+        <span>Load More</span>
+      </button>
+    </div>
+  {% endif %}
+
+</div>

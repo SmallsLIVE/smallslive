@@ -15,6 +15,7 @@
 {% block title %}{{ category.name }} - {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
+    <span class="store-header__title__divider">|</span>
     {% for category in category.get_ancestors %}
         <span class="store-header__title__category"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></span>
         <span class="store-header__title__divider">|</span>
@@ -23,12 +24,14 @@
 {% endblock %}
 
 {% block store_content %}
-    <div class="col-xs-12 col-sm-8 col-md-9 store-listing__content">
+    <div class="store-listing__content flex-column">
         {% if featured_product %}
             {% purchase_info_for_product request featured_product as session %}
-            <div class="store-subtle-heading">Featured</div>
-            <div class="store-listing__big-item row">
-                <div class="col-xs-12 col-sm-6 store-listing__big-item__image">
+            <div class="section-title">
+                <div class="title1">Featured</div>
+            </div>
+            <div class="store-listing__big-item flex-row">
+                <div class="store-listing__big-item__image">
                     {% with image=featured_product.primary_image %}
                         {% if not image.is_missing %}
                           <a href="{{ featured_product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode width=400 smart=True %}" alt="{{ featured_product.get_title }}"></a>
@@ -37,11 +40,11 @@
                         {% endif %}
                     {% endwith %}
                 </div>
-                <div class="col-xs-12 col-sm-6 store-listing__big-item__content">
-                    <h2 class="store-listing__big-item__name">
+                <div class="store-listing__big-item__content">
+                    <div class="store-listing__big-item__name">
                         <a href="{{ featured_product.get_absolute_url }}">{{ featured_product.title }}</a>
-                    </h2>
-                    <div class="store-listing__big-item__description">
+                    </div>
+                    <div class="store-listing__big-item__description text-grey">
                         {{ featured_product.short_description|safe }}
                     </div>
                         {% if session.price.exists %}
@@ -58,7 +61,7 @@
                     <form id="add_to_basket_form" action="{% url 'basket:add' pk=featured_product.pk  %}" method="post" class="add-to-basket">
                       {% if session.availability.is_available_to_buy %}
                         {% basket_form request product 'single' as basket_form %}
-                        <div class="store-add-large">
+                        <div class="store-add-large" style='flex-direction: column'>
                             {% csrf_token %}
                             {{ basket_form.quantity }}
                             {% if basket_form.fields.child_id.choices %}
@@ -67,10 +70,11 @@
                                     <option value="{{ item_value }}">{{ item_name }}</option>
                                   {% endfor %}
                               </select>
-                              <div class="arrow-button-container"><button type="submit" class="store-add-large__button"><i class="fa fa-plus"></i></button><span class="arrow"></span></div>
+                              <div class="arrow-button-container"><button type="submit" class="white-border-button"></button></div>
                             {% else %}
                               {{ basket_form.child_id }}
-                              <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
+                                <!--<div class="arrow-button-container"><button type="submit" class="store-add-large__button" style='margin: 0; margin-bottom: 15px '>Add to cart</button><span style='margin-bottom: 15px ' class="arrow"></span></div>-->
+                                <div><button type="submit" class="white-border-button">Add to cart</button></div>
                             {% endif %}
                         </div>
                       {% endif %}
@@ -78,6 +82,9 @@
                 </div>
             </div>
         {% endif %}
+        <div class="section-title">
+            <div class="title1">Store products</div>
+        </div>
         <div class="row store-listing__products-container">
             {% if products %}
                 {% for product in products %}

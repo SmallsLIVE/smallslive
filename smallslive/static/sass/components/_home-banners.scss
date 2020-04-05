@@ -1,0 +1,588 @@
+$banners-height: 38vh;
+
+.banners {
+  @media (max-width: $screen-md-max) {
+    display: none;
+  }
+
+  margin-bottom: 30px;
+  width: 100%;
+
+  /* is the bellow old code?? remove??
+  #banner-container {
+    position: relative;
+    overflow: hidden;
+    height: 23vw;
+    background-image: url("/static/image/banners/club.jpg");
+    background-size: 100% 100%;
+
+    .banner-background {
+      img {
+        width: 100%;
+      }
+    }
+
+    .banner-border {
+      height: 100%;
+      width: 100%;
+
+      border-top: 1px solid $light-grey;
+      border: none;
+
+      padding: 1vh 2vw;
+
+      .banner-title-button {
+        padding: 1px 1px;
+
+        #banner-title {
+          @include title4;
+          color: white;
+          padding-left: 2vw;
+          padding-right: 2vw;
+          padding-top: 0.7vw;
+          text-wrap: normal;
+
+          &.custom-banner-text {
+            font-size: 1px;
+            max-width: 355px;
+          }
+        }
+
+        .learnmore-container {
+          z-index: 2;
+
+          .banner-learnmore {
+            padding: 0 2vw;
+            vertical-align: top;
+          }
+
+          #banner-button {
+            justify-content: center;
+            @include white-border-button;
+            width: 100%;
+          }
+
+          #banner-button-info {
+            justify-content: center;
+            @include white-border-button;
+            width: 100%;
+          }
+        }
+      }
+
+      .banner-text-container {
+        flex: 1;
+
+        #banner-text {
+          @include title-banner;
+          color: white;
+          text-align: justify;
+          margin: 0;
+          padding-left: 30px;
+          padding-right: 30px;
+        }
+      }
+    }
+
+    &.supporter {
+      .banner-border {
+        padding-left: 1.5vw;
+        padding-right: 1.5vw;
+
+        .banner-title-button {
+          flex: none;
+          width: 25.5%;
+
+          #banner-title {
+            padding-left: 1.7vw;
+            padding-right: 1.7vw;
+            padding-top: 1.7vw;
+
+            &.custom-banner-text {
+              letter-spacing: 0.6vw;
+              line-height: 2.5vw;
+              max-width: initial;
+              font-size: 2.35vw;
+              font-weight: 300;
+              text-align: justify;
+              white-space: nowrap;
+
+              .accent-color {
+                letter-spacing: 3px;
+                white-space: nowrap;
+              }
+
+              .last {
+                letter-spacing: 0.47vw;
+                white-space: nowrap;
+              }
+            }
+          }
+        }
+
+        .learnmore-container {
+          margin-top: 1.5vw;
+          text-align: center;
+          whites-pace: nowrap;
+
+          .banner-learnmore {
+            display: inline-block;
+            margin-left: 0;
+            margin-right: 2%;
+            padding: 0;
+            padding-left: 1%;
+            vertical-align: top;
+            width: 50%;
+          }
+
+          .banner-learnmore-info {
+            display: inline-block;
+            width: 35%;
+          }
+        }
+
+        .banner-text-container {
+          flex: none;
+          width: 73.5%;
+
+          #banner-text {
+            letter-spacing: 0.136vw;
+            text-align: left;
+            font-size: 1.46vw;
+            line-height: 1.87vw;
+          }
+        }
+      }
+    }
+  }
+  */
+
+  .banner-options {
+    width: 100%;
+
+    .banner-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: $white-transparent;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+
+      &.shadow-text {
+        @include shadow-text;
+      }
+
+      #banner-archive-box {
+        margin-right: 0.94%;
+      }
+
+      #banner-live-box {
+        margin-right: 0.94%;
+      }
+    }
+  }
+
+  &.carousel {
+    display: none;
+    white-space: nowrap;
+    width: 100vw;
+    text-align: center;
+    margin-bottom: 0px;
+    background-size: cover;
+
+    & + * + .event-stripe {
+      margin-top: 0;
+
+      & > .live {
+        margin-top: 0;
+      }
+    }
+
+    .slick-dots {
+      bottom: 0;
+
+      @media (max-width: 960px) {
+        display: none !important;
+      }
+
+      li {
+        margin: 0 2.35px;
+      }
+    }
+
+    .slick-dots li button:before {
+      font-size: 20px;
+      content: "○";
+      opacity: 1;
+    }
+
+    .slick-dots .slick-active button:before {
+      content: "●";
+      opacity: 1;
+      color: black;
+    }
+
+    @media (max-width: $screen-md-max) {
+      display: block;
+    }
+
+    .box {
+      .banner-learnmore {
+        display: flex;
+        margin: auto;
+        /* temp :likely this should be recalculated using css locks
+        margin-top: 1.5vw;*/
+        /*
+        @media (min-width: 960px) {
+          margin-top: 5px;
+        }
+        @media (min-width: 1200px) {
+          margin-top: 0;
+          margin-bottom: 30px;
+        }
+
+        @media (max-width: 960px) {
+          margin-top: calc(-8.998vw + 145.295px);
+        }
+        */
+      }
+
+      .banner-text-container {
+        .content {
+          @include reen-kufi-normal;
+        }
+      }
+
+      // .banner-text-container{
+
+      // }
+      &.flex-column {
+        display: flex;
+        height: 55vw;
+        justify-content: flex-start;
+        padding: 0;
+      }
+
+      display: inline-block;
+      filter: brightness(1.85);
+      font-family: "Oswald", sans-serif;
+      justify-content: space-between;
+
+      margin-bottom: 40px;
+
+      @media (max-width: 960px) {
+        margin-bottom: 10px;
+      }
+
+      vertical-align: top;
+      -webkit-filter: brightness(1.85);
+      width: 100vw;
+      filter: none;
+
+      &.live {
+        background-image: url("/static/image/banners/roy_reduced.jpg");
+        background-size: cover;
+        @media (max-width: 960px) {
+          background-size: cover;
+        }
+      }
+
+      &.archive {
+        background-image: url("/static/image/banners/pianoplayer_reduced.jpg");
+        background-size: cover;
+        @media (max-width: 960px) {
+          background-size: cover;
+        }
+      }
+
+      &.mission {
+        background-image: url("/static/image/banners/club_reduced.jpg");
+        background-size: cover;
+        @media (max-width: 960px) {
+          background-size: cover;
+        }
+      }
+
+      p.title {
+        font-weight: 600;
+        font-size: 8.5vw;
+        letter-spacing: 0;
+        margin-top: 3px;
+        text-transform: uppercase;
+        transform: scaleY(1.2);
+      }
+
+      p.content {
+        font-size: 3vw;
+        margin: 0 auto;
+        text-align: left;
+        white-space: initial;
+        height: 20vw;
+        /*padding: 0 5vw;*/
+      }
+
+      button,
+      a {
+        color: white;
+        font-size: 1vw;
+        border: 3px solid white;
+        padding: 1vw;
+
+        background-color: transparent;
+        text-transform: uppercase;
+        font-weight: 400;
+        letter-spacing: 3px;
+
+        @media (max-width: 1024px) {
+          font-size: 3vw;
+        }
+      }
+    }
+  }
+}
+
+.darked-image {
+  @include background-image-with-overlay(rgba(0, 0, 0, 0.6));
+}
+
+.lighten-image {
+  @include background-image-with-overlay(rgba(255, 255, 255, 0.85));
+}
+
+.fake-image {
+  width: 33vw;
+
+  &:hover {
+    opacity: 0.5;
+    filter: brightness(250%);
+  }
+
+  img {
+    width: 100%;
+  }
+
+  &.archive {
+    margin-right: 0.5vw;
+  }
+
+  &.live {
+    margin-right: 0.5vw;
+  }
+}
+
+.banner-text {
+  font-family: "Reem Kufi", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 1px;
+  text-transform: initial;
+}
+
+.custom-banner-text {
+  height: 80%;
+
+  div {
+    display: none;
+  }
+}
+
+.home-banner-buttons {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+  display: flex;
+  flex-direction: row-reverse;
+  width: 500px;
+}
+
+.home-new .banners.carousel {
+  display: block;
+  .banner__inside-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .banner-text-container {
+    display: flex;
+    //margin: auto;
+    margin-right: 3vw;
+    flex-direction: column;
+    align-self: center;
+    /*
+    margin-top: 2.3vw;
+
+    @media (max-width: 960px) {
+      height: 22vw;
+    }
+    @media (min-width: 960px) {
+      margin-top: calc(2.083vw - 8.9px);
+      height: calc(23.75vw - 25px);
+    }
+    @media (min-width: 1200px) {
+      margin-top: 1.6rem;
+      height: 27rem;
+    }
+    */
+  }
+
+  .banner-logo {
+    display: flex;
+    align-items: center;
+    //position: absolute;
+    //right: 3px;
+    //top: 3px;
+
+    img {
+      //width: 8vw;
+      height: 20vw;
+      //min-width: 30px;
+      max-width: 265px;
+      max-height: 265px;
+    }
+  }
+
+  .box {
+    &.flex-column {
+      height: 30.5vw;
+      position: relative;
+
+      @media (min-width: 960px) {
+        max-height: 335px;
+      }
+
+      @media (max-width: 960px) {
+        //height: calc(17.34vw + 168.53px);
+
+        .content {
+          color: white;
+          font-family: Oswald;
+          font-size: calc(2.27vw + 10.25px);
+          height: auto;
+          /*margin-top: 5vw;*/
+          /*padding: 0px 1.5vw;*/
+          letter-spacing: 0.1px;
+          font-weight: 400;
+          line-height: calc(2.191vw + 13.989px);
+          margin: 2vw auto;
+          width: 90vw;
+        }
+      }
+    }
+
+    p {
+      &.title {
+        //border-bottom: 4px solid #d21535;
+        display: flex;
+        color: white;
+        margin: 0 auto;
+        width: 100%;
+        //max-width: 720px;
+        font-size: 14.3vw;
+        /*
+        @media (max-width: 960px) {
+          font-size: 6vw;
+          line-height: 5.5vw;
+          width: 80%;
+        }
+        @media (min-width: 960px) {
+          font-size: calc(5vw - 6px);
+          line-height: calc(4.3vw - 3px);
+          margin-bottom: calc(2.083vw - 8.9px);
+        }
+        */
+        @media (min-width: 1200px) {
+          font-size: 17rem;
+          //line-height: 4.9rem;
+          //margin-bottom: 1.6rem;
+        }
+        &__foundation {
+          &--top{
+            //font-size: 10.5rem;
+          }
+          &--bottom{
+            //font-size: 10rem;
+            //line-height: 8rem;
+          }
+        }
+      }
+
+      &.content {
+        color: white;
+        font-family: Oswald;
+        font-size: 2.5rem;
+        height: auto;
+        margin-top: 0;
+        /*padding: 0px 8.5vw;*/
+        letter-spacing: -1px;
+        font-weight: 400;
+        line-height: 110%;
+        text-align: center;
+        text-transform: uppercase;
+        @media (min-width: 960px) {
+          font-size: calc(2.065vw + 12.156px);
+          width: calc(117.7vw - 332px);
+        }
+        @media (min-width: 1200px) {
+          font-size: 3.9rem;
+          width: 79vw;
+        }
+
+        &.wide {
+          padding-left: 0.5vw;
+          padding-right: 0.5vw;
+
+          @media (max-width: 960px) {
+            margin-top: 2vw;
+          }
+        }
+
+        &.wide {
+          padding-left: 0.5vw;
+          padding-right: 0.5vw;
+
+          @media (max-width: 960px) {
+            margin-top: 2vw;
+          }
+        }
+      }
+    }
+
+    button,
+    a {
+      padding: 0.5vw 2.5vw;
+      font-family: "Reem Kufi", sans-serif;
+      /*font-size: 0.9vw;*/
+      margin: 0 14px;
+
+      &:hover {
+        background-color: $white-transparent;
+        color: black;
+      }
+
+      @media (min-width: 960px) {
+        font-size: calc(1.7vw - 5px);
+      }
+
+      @media (min-width: 1200px) {
+        font-size: 1.5rem;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      @media (max-width: 960px) {
+        font-size: 13px;
+      }
+
+      @media (max-width: 400px) {
+        font-size: 10px;
+        /*line-height performs differently for a and button elements bc display is different by default*/
+        /*line-height: 20px;*/
+      }
+    }
+  }
+}

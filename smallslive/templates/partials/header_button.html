@@ -1,0 +1,6 @@
+{% url button_url as button_url %}
+<a href="{{ button_url }}">
+    <p class="no-border {% if button_url and button_url in request.path and button_url != '/' or button_url == '/' and request.path == '/' %}active{% endif %}">
+        {{ button_text }}
+    </p>
+</a>

@@ -1,0 +1,14 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+background-image:url(
+{% if photo_url %}
+  {% if crop_box %}
+    '{% thumbor_url photo_url|urlencode crop=crop_box width=600 %}'
+  {% else %}
+    '{% thumbor_url photo_url|urlencode height=360 width=600 smart=True %}'
+  {% endif %}
+{% else %}
+  '{% static "image/no-event-image-placeholder.jpg" %}'
+{% endif %}
+); background-size: cover; position: absolute; width: 100%; height: 60%; z-index: -1;

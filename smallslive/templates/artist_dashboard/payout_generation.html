@@ -1,0 +1,51 @@
+<table id="" class="generation-table">
+  <thead>
+    <tr class="table_row">
+      <th>
+        Period
+      </th>
+      <th>
+        Status
+      </th>
+      <th>
+        Admin
+      </th>
+      <th>
+        Musicians
+      </th>
+      <th>
+        Direct Donations
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in generated_payouts %}
+    <tr>
+      <td><span class="text3">{{ item.period_start }} - {{ item.period_end }}</span></td>
+      <td><span class="text3">{{ item.status }}</span></td>
+      <td>
+        {% if item.status == 'success' and item.admin_payout_spreadsheet %}
+          <a class="link text3" href="{{ item.admin_payout_spreadsheet.url }}">{{ item.admin_payout_spreadsheet.name }}</a>
+        {% else %}
+          Generating ..
+        {% endif %}
+      </td>
+      <td>
+        {% if item.status == 'success' and item.musicians_payout_spreadsheet %}
+          <a class="link text3" href="{{ item.musicians_payout_spreadsheet.url }}">{{ item.musicians_payout_spreadsheet.name }}</a>
+        {% else %}
+          Generating ..
+        {% endif %}
+      </td>
+      <td>
+        {% if item.status == 'success' and item.donations_spreadsheet %}
+          <a class="link text3" href="{{ item.donations_spreadsheet.url }}">{{ item.donations_spreadsheet.name }}</a>
+        {% else %}
+          Generating ..
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<!-- end table -->

@@ -1,16 +1,14 @@
 {% extends "static-page.html" %}
 {% load static from staticfiles %}
 
-{% block newsletters-active %}static-nav__item--active{% endblock %}
+{% block newsletters-active %}active{% endblock %}
 
 {% block title %}Newsletters{% endblock %}
 
 {% block static-content %}
-  <section class="static-content newsletters col-xs-12 col-sm-9">
-    <h1 class="static-content__main-title">Newsletters Archive</h1>
-    <p>
-        This is the newsletter archive.
-    </p>
+  <section class="static-content newsletters">
+    <h1 class="main-title">Newsletters Archive</h1>
+
     {% if not user.newsletter %}
     <div class="newsletters__subscribe row">
         <div class="col-xs-12 newsletters__subscribe__text">

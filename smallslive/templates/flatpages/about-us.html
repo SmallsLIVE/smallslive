@@ -1,26 +1,72 @@
-{% extends "static-page.html" %}
-{% load static from staticfiles %}
-{% load thumbor_tags %}
-
-{% block about-us-active %}static-nav__item--active{% endblock %}
-
-{% block title %}About us{% endblock %}
-
-{% block static-content %}
-  <section class="static-content {% if files %}col-sm-6 col-md-5 col-lg-6{% else %}col-sm-9 col-md-9{% endif %}">
-    <h1 class="static-content__main-title">{{ page.title }}</h1>
-
-    {{ page.content|safe }}
-  </section>
-  {% if files %}
-  <aside class=" static-sidebar col-sm-3 col-md-4 col-lg-3 hidden-xs">
-    {% for file in files %}
-    <figure>
-      <img src="{% thumbor_url file.file.url|urlencode width=365  %}" class="static-sidebar__image" alt="{{ file.name }}"/>
-      <figcaption class="static-content__caption">{{ file.name }}</figcaption>
-    </figure>
-    {% endfor %}
-  </aside>
-{% endif %}
-
-{% endblock static-content %}
+<article class="static-content static-tab active closed" id="about-us-tab">
+  <div class="flex-row">
+    <div class="flatpage-content">
+      <h1 id="mobile-about-us" class="main-title expand" tabindex="0">
+        About us
+      </h1>
+      <div class="flex-row">
+        <div class="flex-colum">
+          <p tabindex="0">
+            Smalls Jazz Club was created in 1994 by the enigmatic Mitchell
+            Borden. Borden, a former Navy submariner, registered nurse,
+            philosopher & jazz violinist, founded the club with an initiative to
+            create an environment that was conducive to Jazz Music and its
+            culture. Borden, who booked and managed the club, approached
+            business from a stance of generosity rather than profit.
+          </p>
+          <p tabindex="0">
+            The original Smalls was a raw basement space and had no liquor
+            license. For just $10, patrons could bring their own beer and come
+            to the club at any time, day or night. They could stay as long as
+            they liked and often left just as day began to break. Borden’s
+            concern was only with the music and the musicians who created it.
+            Under his generous care, a culture of vibrant and newly energized
+            young musicians claimed Smalls as their home base and began to
+            develop their individuality in the music. This included such
+            musicians as: Howard Alden, J.D. Allen, William Ash, Ehud Asherie,
+            Omer Avital, David Berkman, Peter Bernstein, Brian Blade, Seamus
+            Blake, Dwayne Burno, Chris Byars, Shard Cassity, Dwayne Clemons, Jay
+            Collins, Marion Cowings, Jon Davis, Sasha Dobson, Duane Eubanks,
+            Brian Floody, Joel Frahm, Ray Gallon, Paul Gill, Larry Goldings, Ned
+            Goold, Jimmy Greene, Larry Ham, Tardo Hammer, Roy Hargrove, Ari
+            Hoenig, Sherman Irby, Norah Jones, Ryan Kisor, Guillermo Klein,
+            Myrna Lake, Carolyn Leonhart, Jason Linder, Joe Magnarelli, Jeremy
+            Manasia, Joe Martin, Donny McCauslin, Brad Mehldau, Neal Miner,
+            Tyler Mitchell, Jane Monheit, Mike Mullen, Zaid Nasser, Charles
+            Owens, Jeremy Pelt, Sasha Perry, Jean Michel Pilc, Chris Potter,
+            Josh Redman, Jon Roche, Ari Roland, Kurt Rosenwinkel, Grant Stewart,
+            Phil Stewart, Joe Strasser, Greg Tardy Mark Turner, Diego Urcola,
+            Richie Vitale, Myron Walden, Scott Wendholt, Spike Wilner, Ben
+            Wolfe, Sam Yahel, Peter Zak and many others.
+          </p>
+          <p tabindex="0">
+            After the events of 9/11/2001 transformed the economic landscape of
+            New York City, Smalls Jazz Club went bankrupt in 2002. Borden then
+            focused his energies on creating Fat Cat, a popular spot for college
+            age people. Smalls was taken over by a Brazilian bar owner who renamed
+            the place “The Rio Bar”, which became a dismal failure. Frustrated by his
+            failure, he approached Borden and asked him to re-open Smalls with him as
+            owner and Mitch as manager. Mitch agreed and Smalls was reborn in 2004. By
+            2007 the Brazilian owner realized that the jazz business was a poor one,
+            decided to put the club up for sale. It was in February of 2007 that jazz
+            pianist Spike Wilner and his friend Lee Kostrinsky became partners with
+            Borden and sought to restore the club to its original vibrant spirit.
+            Kostrinsky stayed on until 2011 when he decided to sell his share of the
+            club. Mitch Borden and Spike Wilner continued to run the club until Borden’s
+            retirement in 2019.  Smalls Jazz Club has emerged as the top club of its
+            kind – a throwback to another era when jazz clubs were both proving ground
+            for top artists but also social scenes for the jazz community. Smalls Jazz Club
+            now has a international reputation and draws fans from all over the world as
+            a destination spot for great jazz. In September of 2014, Wilner and Borden
+            opened the second club on the opposite corner of West 10th street and 7th ave – Mezzrow.
+            Dedicated to the great “Really The Blues” Mezz Mezzrow, Mezzrow draws its inspiration
+            for the great piano rooms of the New York past, particularly Bradley’s.
+          </p>
+        </div>
+      </div>
+      <div class="text-right">
+        <button class="white-border-button close">Close</button>
+      </div>
+    </div>
+  </div>
+</article>

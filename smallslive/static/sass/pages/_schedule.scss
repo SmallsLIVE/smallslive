@@ -1,0 +1,66 @@
+$events-top-margin: 40px;
+
+.schedule-dates-container {
+  margin-top: $events-top-margin;
+  position: relative;
+  top: -$events-top-margin;
+
+  .big-icon {
+    color: $black;
+  }
+
+
+  .schedule-days {
+    flex: 1;
+    @media (max-width: $screen-sm-max) {
+      padding: 40px
+    }
+  }
+}
+
+.flex-mobile-columns {
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: $screen-md-min) {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+.dropdowns-container {
+  margin-top: 50px;
+  @media (min-width: $screen-md-min) {
+    margin-top: 0;
+    margin-right: 10%;
+    position: relative;
+    top: -$events-top-margin;
+  }
+}
+
+.schedule-day-column {
+  .event-title {
+    max-width: 100px;
+  }
+
+  a {
+    color: $black;
+
+    &:hover {
+      color: $accent-color;
+      text-decoration: underline;
+    }
+  }
+
+}
+
+.schedule-move-icon {
+  min-width: 120px;
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

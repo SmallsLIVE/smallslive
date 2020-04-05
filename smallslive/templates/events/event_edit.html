@@ -4,16 +4,35 @@
 {% block title %}Edit event {{ event.title }}{% endblock %}
 
 {% block content %}
-  <div class="content-wrapper">
-  <section class="admin-interface container">
-  <h1 class="admin-interface__main-title">Add/Edit gig:</h1>
-    <form method="post"  class="admin-interface__form" enctype="multipart/form-data">
-      {% crispy form %}
-      <div class="buttonHolder">
-        <input type="submit" name="submit" value="Save event" class="admin-interface__form__button" id="submit-id-submit">
-        <input type="button" name="delete" value="Delete event" class="admin-interface__form__button danger" id="button-id-delete" data-target="#deleteModal" data-toggle="modal">
-      </div>
-    </form>
+  <div class="content-wrapper" style="border:none">
+    <section class="admin-interface container">
+      <h1 class="admin-interface__main-title">Add/Edit gig:</h1>
+      <form method="post"  class="admin-interface__form" enctype="multipart/form-data">
+        {% crispy form %}
+        {% if event.get_tickets %}
+          <ul><strong>Tickets:</strong>
+          {% for product in event.get_tickets %}
+            <li><a href="{% url 'dashboard:catalogue-product' pk=product.id %}">{{ product.title }}</a></li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+        {% if event.get_tickets|length < event.sets.count %}
+          <div class="alert alert-warning alert__tickets">
+            <div id="div_id_state" class="form-group">
+              <label class="control-label">Add tickets to sets (create sets as needed)</label>
+              <div class="controls ">
+                {% for ticket_form in ticket_forms %}
+                  {% crispy ticket_form %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+        <div class="buttonHolder">
+          <input type="submit" name="submit" value="Save event" class="white-border-button inline separated" id="submit-id-submit">
+          <input type="button" name="delete" value="Delete event" class="white-border-button inline separated" id="button-id-delete" data-target="#deleteModal" data-toggle="modal">
+        </div>
+      </form>
     </section>
   </div>
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

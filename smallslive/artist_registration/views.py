@@ -1,17 +1,18 @@
-from allauth.account import views as allauth_views
-from allauth.account import app_settings
-from allauth.account.adapter import get_adapter
-from allauth.account.models import EmailConfirmation
-from allauth.account.utils import perform_login
-from allauth.account.views import sensitive_post_parameters_m
-from braces.views import LoginRequiredMixin
+from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.utils import timezone
+from django.views.generic.base import RedirectView
 from django.views.generic.edit import FormView
+from allauth.account import views as allauth_views
+from allauth.account import app_settings
+from allauth.account.adapter import get_adapter
+from allauth.account.models import EmailConfirmation
+from allauth.account.utils import perform_login
+from allauth.account.views import sensitive_post_parameters_m, _ajax_response
 from artists.models import Artist
 from .forms import CompleteSignupForm, InviteArtistForm
 
@@ -40,10 +41,21 @@ class InviteArtistView(FormView):
         return reverse('artist_edit', kwargs={'pk': self.artist.id, 'slug': self.artist.slug})
 
 
+class ActivateAccountRedirectView(RedirectView):
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        activation_key = kwargs.get('key', 'nokey')
+        return reverse('home') + '?activate_account=' + activation_key
+
+
 class ArtistAccountActivateView(allauth_views.PasswordSetView):
     form_class = CompleteSignupForm
-    success_url = reverse_lazy('artist_dashboard:home')
-    template_name = 'artist_registration/set_password.html'
+    success_url = reverse_lazy('artist_dashboard:edit_profile')
+
+    def get_template_names(self):
+        template_name = 'artist_registration/set_password.html'
+        return [template_name]
 
     @sensitive_post_parameters_m
     def dispatch(self, request, *args, **kwargs):
@@ -62,7 +74,6 @@ class ArtistAccountActivateView(allauth_views.PasswordSetView):
     def get(self, *args, **kwargs):
         try:
             self.object = self.get_object()
-            return self.post(*args, **kwargs)
         except Http404:
             self.object = None
         return super(ArtistAccountActivateView, self).get(*args, **kwargs)
@@ -82,6 +93,16 @@ class ArtistAccountActivateView(allauth_views.PasswordSetView):
         ctx = super(ArtistAccountActivateView, self).get_context_data(**kwargs)
         ctx["confirmation"] = self.get_object()
         return ctx
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            response = self.form_valid(form)
+            return _ajax_response(
+                self.request, response, form=form)
+        else:
+            return JsonResponse({'errors': form.errors})
 
     def form_valid(self, form):
         logout(self.request)

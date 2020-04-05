@@ -75,12 +75,17 @@
       margin: 0 0 2px;
     }
 
-    .event-name {
+    .event-name, .event-venue {
       font-size: 14px;
       @include lato-bold;
       color: $base-text-color;
       margin: 0;
       line-height: 150%;
+    }
+
+    .event-venue {
+      font-size: 14px;
+      color: $main-accent-color;
     }
 
     &__media-indicators-container {

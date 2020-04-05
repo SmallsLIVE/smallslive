@@ -1,0 +1,22 @@
+<div class="event-row{% if carousel %} {{ carousel }} owl-carousel owl-theme{% endif %}">
+  {% for event in events %}
+    <article class="event-display"> {% include 'events/event_card.html' with event=event secondary=secondary hide_play=True %}
+      <div class="event-info new">
+        <div>
+          <div class="">{{ event.get_date|date:'m/d/Y' }}</div>
+            {% if show_event_venue %}
+              <div class="{{ event.get_venue_name|lower}}-color">{{ event.get_venue_name }}</div>
+            {% else %}
+              <br>
+            {% endif %}
+          <div class="event-info-title">{{ event.title }} {{ related.state }}</div>
+
+        </div>
+      </div>
+      {% if request.user.is_staff and event.state == "Draft"%}
+      <p class="accent-color draft-label-most-popular title2">Draft</p>
+            
+      {% endif %}
+    </article>
+  {% endfor %}
+</div>

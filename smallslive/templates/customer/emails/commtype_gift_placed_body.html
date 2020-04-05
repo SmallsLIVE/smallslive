@@ -1,0 +1,56 @@
+{% extends "customer/emails/base.html" %}
+{% load currency_filters i18n %}
+
+
+{% block body %}
+{% if order.user.first_name %}
+<p xmlns="http://www.w3.org/1999/html">Dear {{ order.user.first_name }},</p>
+{% else %}
+<p xmlns="http://www.w3.org/1999/html">Dear Supporter,</p>
+{% endif %}
+<p>
+Thank you for contributing to the SmallsLIVE Foundation for Jazz Arts and Education.
+</p>
+<p>
+You have made a donation of {{ order.basket_total_incl_tax }} of which {{ order.basket.get_deductable_total }} is tax deductible. All tax documents are available from your Account Settings.
+</p>
+<p>
+You will also receive access to The SmallsLIVE Archive. You have also chosen to receive a {{ order.lines.first.title }} as a gift for your contribution.
+</p>
+<p>
+Your order number is {{ order }} and will be processed shortly.
+</p>
+</p>
+Your order contains:
+</p>
+{% for line in order.lines.all %}
+<p>
+{{ line.title }} - quantity: {{ line.quantity }} - price:{{ line.line_price_incl_tax }}
+</p>
+{% endfor %}
+<p>
+Basket total: {{ order.basket_total_incl_tax }} Shipping: {{ order.shipping_incl_tax }} Total: {{ order.total_incl_tax }}
+</p>
+<p>
+{% if order.shipping_address %}
+Shipping address:
+</p>
+{% for field in order.shipping_address.active_address_fields %}
+    <p>
+        {{ field }}
+    </p>
+{% endfor %}
+<p>
+{% endif %}
+
+{% if order.lines.first.product.misc_file %}
+    Your order contains a digital product you can download by clicking <a href="{{ order.lines.first.product.misc_file.url }}" download="{{ order.lines.first.product.misc_file.url }}">here</a>
+{% endif %}
+Thank you for your support,
+</p>
+<p>
+The SmallsLIVE Foundation
+</p>
+{% endblock %}
+{% block footer %}
+{% endblock %}

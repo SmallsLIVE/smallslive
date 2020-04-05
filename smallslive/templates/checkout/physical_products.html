@@ -1,0 +1,79 @@
+{% load static from staticfiles %}
+{% load thumbnail %}
+{% load currency_filters %}
+{% load purchase_info_tags %}
+ 
+ <div class="store-overview__group">
+    <h4 class="store-overview__group__table__heading">Physical items:</h4>
+    <div class="store-overview__group__table">
+        <!-- table header start -->
+        <div class="basket-header clearfix"">
+            <div class="col-xs-2 image">
+                Image
+            </div>
+            <div class="col-xs-7 details">
+                Details
+            </div>
+            <div class="col-xs-3 total">
+                Total
+            </div>
+        </div>
+        <!-- end of table header -->
+        {% for line in basket.physical_lines %}
+            {% with product=line.product  %}
+                <!-- table row start -->
+                <div class="store-overview__group__table__row clearfix">
+                    <div class="col-xs-2 image">
+                        {% if product.parent_id %}
+                            {% with image=product.parent.primary_image %}
+                                {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                    <a class="square-container" href="{{ product.parent.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                src="{{ thumb.url }}"
+                                                                                alt="{{ product.get_title }}"></a>
+                                {% endthumbnail %}
+                            {% endwith %}
+                        {% else %}
+                            {% with image=product.primary_image %}
+                                {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                    <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                src="{{ thumb.url }}"
+                                                                                alt="{{ product.get_title }}"></a>
+                                {% endthumbnail %}
+                            {% endwith %}
+                        {% endif %}
+                    </div>
+                    <div class="col-xs-7 details">
+                        <p class="store-overview__group__table__product-name">
+                            {% if product.parent_id %}
+                                {{ product.parent.title }}
+                            {% else %}
+                                {{ product.title }}
+                            {% endif %}
+                        </p>
+                        <p class="store-overview__group__table__product-details">
+                            {% if product.parent_id %}
+                                {{ product.title }}
+                            {% endif %}
+                        </p>
+                        <p class="store-overview__group__table__product-details">
+                            {{ line.quantity }} x ${{ line.unit_price_excl_tax }}
+                        </p>
+                    </div>
+                    <div class="col-xs-3 total">
+                        ${{ line.price_excl_tax }}
+                    </div>
+                </div>
+            {% endwith %}
+            <!-- end of table row -->
+        {% endfor %}
+        <!-- group total -->
+        <div class="store-overview__group__total clearfix">
+            <div class="col-xs-9 store-overview__group__total__label">
+                Sub-total:
+            </div>
+            <div class="col-xs-3 store-overview__group__total__value">
+                {{ basket.physical_total_excl_tax|currency:basket.currency }}
+            </div>
+        </div>
+    </div>
+</div>

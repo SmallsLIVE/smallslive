@@ -1,0 +1,165 @@
+{% extends "events/event_details_new.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load thumbnail %}
+{% load currency_filters %}
+{% load i18n %}
+{% load purchase_info_tags %}
+{% load basket_tags %}
+{% load crispy_forms_tags %}
+{% block event_content %}
+<div class="player-container">
+  {% if is_event_user_not_confirmed %}
+    <div class="not-auth-container">
+      {% if event.photo %}
+        {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+      {% else %}
+        {% include 'partials/thumbored_picture.html' %}
+      {% endif %}
+      <div class="icon-overlay">
+        <i class="fa fa-play fa-thin-circle"></i>
+      </div>
+    </div>
+  {% else %}
+    <div class="wrapper">
+      <iframe id="UstreamIframe"
+              width="100%" height="100%"
+              src="{{ event.get_live_stream }}"
+              frameborder="0"
+              style="position:absolute; top:0; left: 0" allowfullscreen allowautoplay
+              webkitallowfullscreen></iframe>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+{% block extra_js %}
+{{ block.super }}
+<script src="https://developers.video.ibm.com/js/ustream-embedapi.min.js"></script>
+<script>
+  $(document).ready(function () {
+
+    {% if is_event_user_not_confirmed %}
+
+      function cannotWatchModalOpen() {
+        var modal = '#becomeMemberDialog';
+        if (smallsConfig.user.isAuthenticated) {
+          modal = '#become-a-supporter-dialog';
+          inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
+          if (inactive === 'true'){
+            modal = '#inactive-dialog';
+          }
+        }
+        $(modal).modal('show');
+      }
+
+      $(document).on('click', '.not-auth-container', function (event) {
+        cannotWatchModalOpen()
+      })
+
+    {% else %}
+
+      {% if next_event %}
+        var changeTime = moment("{{ next_event.start.isoformat }}");
+        var waitTime = changeTime.diff(moment(), 'miliseconds');
+        var intervalId = setInterval(function () {
+            clearInterval(intervalId);
+            $('.current-event').addClass('hidden');
+            $('.next-event').removeClass('hidden');
+            $('.related-video.selected').removeClass('selected');
+            $('.related-video.next-up').addClass('selected');
+        }, waitTime);
+      {% endif %}
+
+
+      {% if count_metrics %}
+        var first_play = true
+        function playCallback(event, playing) {
+          console.log(playing);
+          if (playing) {
+            if(first_play){
+              updateViewCount(this)
+              first_play = false
+            }
+            if (! activeTracker) {
+              setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);
+            }
+          } 
+        }
+
+        function stopTracker(){
+          activeTracker = null;
+        }
+
+        var viewer = UstreamEmbed('UstreamIframe');
+        viewer.addListener('playing', playCallback);
+        viewer.addListener('pause', stopTracker);
+
+
+        var playsCountSent = [];
+        var activeTracker = null;
+
+        function updateViewCount(player) {
+          var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
+          if (playsCountSent.indexOf(id) === -1) {
+            playsCountSent.push(id);
+            $.post('/multimedia/update_media_viewcount/', {
+              recording_id: id,
+              csrfmiddlewaretoken: '{{ csrf_token }}'
+            });
+          }
+        }
+
+        var metricsSignedData = {{ metrics_signed_data|safe }};
+
+        var pingMetricsServer = function(mediaId) {
+          var data = {};
+          data.signed_data = metricsSignedData[mediaId];
+          data.csrfmiddlewaretoken = '{{ csrf_token }}';
+          $.ajax({
+            url: "{{ metrics_server_url }}/metric/",
+            method: 'POST',
+            headers: {
+                "Authorization": "Token {{ user_token }}"
+            },
+            data: data,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function () {
+              $.ajax({
+                url: "{{ event_metrics_update_url }}",
+                method: 'POST',
+                data: data,
+                success: function (response) {
+                  console.log(response);
+                },
+                error: function (xhr, ajaxOptions, thrownError)  {
+                  console.log(xhr.responseText);
+                }
+              });
+            },
+            error: function (xhr, ajaxOptions, thrownError)  {
+              console.log(xhr.responseText);
+            }
+          });
+          // Additionally update totals in the Event model.
+        };
+
+        function setUpTimerForMedia(mediaId) {
+          pingMetricsServer(mediaId);
+          if (!activeTracker) {
+            activeTracker = window.setInterval(function () {
+              pingMetricsServer(mediaId);
+            }, {{ metrics_ping_interval }} * 1000);
+          }
+        }
+      {% endif %}
+
+    {% endif %}
+
+  });
+
+
+
+</script>
+{% endblock %}

@@ -2,8 +2,8 @@ from allauth.account import app_settings
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import user_pk_to_url_str, user_username
 from allauth.utils import build_absolute_uri
-import datetime
-from calendar import monthrange
+
+from crispy_forms.layout import Layout
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
@@ -12,18 +12,19 @@ from django.core.urlresolvers import reverse
 from django_countries import countries
 import floppyforms
 import allauth.account.forms as allauth_forms
+from extra_views import InlineFormSet
 from localflavor.us.forms import USStateField
 from localflavor.us.us_states import STATE_CHOICES
 from artists.forms import ArtistAddForm
-from artists.models import CurrentPayoutPeriod
+from artists.models import Artist, CurrentPayoutPeriod
 from events import forms as event_forms
 from events.forms import Formset
-from events.models import Recording
+from events.models import Recording, GigPlayed
 
 User = get_user_model()
 
-STATE_CHOICES_WITH_EMPTY = (('', ''),) + STATE_CHOICES
-COUNTRIES_WITH_EMPTY = (('', ''),) + tuple(countries)
+STATE_CHOICES_WITH_EMPTY = (('', 'State'),) + STATE_CHOICES
+COUNTRIES_WITH_EMPTY = (('', 'Country'),) + tuple(countries)
 
 
 class ToggleRecordingStateForm(forms.ModelForm):
@@ -32,18 +33,73 @@ class ToggleRecordingStateForm(forms.ModelForm):
         fields = ('state',)
 
 
+class ArtistGigPlayedAddInlineFormSet(InlineFormSet):
+    model = GigPlayed
+    fields = ('artist', 'role', 'is_leader', 'sort_order')
+    extra = 0
+    can_delete = False
+
+    def construct_formset(self):
+        formset = super(ArtistGigPlayedAddInlineFormSet, self).construct_formset()
+        for num, form in enumerate(formset):
+            form.fields['artist'].empty_label = "Artist"
+            form.fields['artist'].widget.attrs['class'] = "artist_field"
+            form.fields['role'].empty_label = "Role"
+            form.fields['role'].widget.attrs['class'] = "role_field"
+            form.fields['is_leader'].initial = False
+            form.fields['is_leader'].label = 'Leader'
+            form.fields['sort_order'].initial = num
+            form.fields['sort_order'].widget = forms.HiddenInput()
+            form.fields['sort_order'].widget.attrs['class'] = "sort_order_field"
+
+        return formset
+
+
+class ArtistGigPlayedEditLazyInlineFormSet(ArtistGigPlayedAddInlineFormSet):
+    """
+    Filter the dropdowns so we can use selectize and autocomplete instead
+    of loading the full artist list.
+    """
+
+    can_delete = True
+
+
 class EventEditForm(event_forms.EventEditForm):
+
+    start_streaming_before_minutes = forms.IntegerField(initial=15, widget=forms.HiddenInput)
+
     class Meta(event_forms.EventEditForm.Meta):
         pass
 
+    def get_layout(self):
+        return Layout(
+            'title',
+            Formset('artists', template='form_widgets/formset_layout.html'),
+            'photo',
+            'cropping'
+        )
+
     def __init__(self, *args, **kwargs):
         super(EventEditForm, self).__init__(*args, **kwargs)
-        del self.fields['title']
+        del self.fields['venue']
         del self.fields['subtitle']
         del self.fields['state']
-        del self.fields['start']
-        del self.fields['end']
-        self.helper[3] = Formset('artists', template='form_widgets/formset_layout.html', admin=False)
+        del self.fields['date']
+
+
+class EventAjaxEditForm(EventEditForm):
+
+    def __init__(self, *args, **kwargs):
+        super(EventAjaxEditForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            if 'class' in self.fields[field].widget.attrs:
+                class_names = self.fields[field].widget.attrs['class'].split(' ')
+                if 'form-control' not in class_names:
+                    class_names.append('form-control')
+                    print class_names
+                    self.fields[field].widget.attrs['class'] = ' '.join(class_names)
+            else:
+                self.fields[field].widget.attrs['class'] = 'form-control'
 
 
 class ArtistInfoForm(forms.ModelForm):
@@ -67,8 +123,17 @@ class ArtistInfoForm(forms.ModelForm):
         self.fields['state'].widget.attrs['class'] = 'form-control selectpicker'
         self.fields['country'].widget.attrs['class'] = 'form-control selectpicker'
         # default to US if nothing is set, initial not working as the form is bound
-        if not self.initial['country']:
+        if not self.initial.get('country'):
             self.initial['country'] = 'US'
+        
+        self.fields['first_name'].widget.attrs['placeholder'] = self.fields['first_name'].label
+        self.fields['last_name'].widget.attrs['placeholder'] = self.fields['last_name'].label
+        self.fields['address_1'].widget.attrs['placeholder'] = self.fields['address_1'].label
+        self.fields['address_2'].widget.attrs['placeholder'] = self.fields['address_2'].label
+        self.fields['city'].widget.attrs['placeholder'] = self.fields['city'].label
+        self.fields['zip'].widget.attrs['placeholder'] = self.fields['zip'].label
+        self.fields['state'].widget.attrs['placeholder'] = self.fields['state'].label
+        self.fields['country'].widget.attrs['placeholder'] = self.fields['country'].label
 
     def clean(self):
         cleaned_data = super(ArtistInfoForm, self).clean()
@@ -86,8 +151,8 @@ class ArtistInfoForm(forms.ModelForm):
             if not state:
                 self.add_error('state', 'You must select a valid US state or territory.')
             taxpayer_id = cleaned_data.get('taxpayer_id')
-            if not taxpayer_id:
-                self.add_error('taxpayer_id', 'You must enter a valid taxpayer ID as a US citizen.')
+            # if not taxpayer_id:
+            #     self.add_error('taxpayer_id', 'You must enter a valid taxpayer ID as a US citizen.')
             self.fields['state'].clean(state)
             self.fields['taxpayer_id'].clean(state)
         else:
@@ -99,6 +164,7 @@ class ArtistInfoForm(forms.ModelForm):
 class EditProfileForm(ArtistAddForm):
     def __init__(self, *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
+        self.fields['website'].widget = forms.TextInput()
         for field in self.Meta.fields:
             self.fields[field].widget.attrs['class'] = self.fields[field].widget.attrs.get('class', '') + ' form-control'
         self.fields['salutation'].widget.attrs['class'] = 'form-control selectpicker'
@@ -140,15 +206,22 @@ class ArtistResetPasswordForm(allauth_forms.ResetPasswordForm):
         return self.cleaned_data["email"]
 
 
-class MetricsPayoutForm(forms.Form):
+class DonationQueryForm(forms.Form):
+
     period_start = forms.DateField(required=True)
     period_end = forms.DateField(required=True)
-    revenue = forms.DecimalField(required=True)
-    operating_cost = forms.DecimalField(required=True)
-    save_earnings = forms.BooleanField(required=False)
-    
+
     def __init__(self, *args, **kwargs):
-        super(MetricsPayoutForm, self).__init__(*args, **kwargs)
+        super(DonationQueryForm, self).__init__(*args, **kwargs)
         current_period = CurrentPayoutPeriod.objects.first()
         self.fields['period_start'].initial = current_period.period_start
         self.fields['period_end'].initial = current_period.period_end
+
+
+class MetricsPayoutForm(forms.Form):
+    period_start = forms.CharField(widget=forms.HiddenInput, required=True)
+    period_end = forms.CharField(widget=forms.HiddenInput, required=True)
+    revenue = forms.DecimalField(required=True)
+    operating_cost = forms.DecimalField(required=True)
+    save_earnings = forms.BooleanField(required=False)
+

@@ -13,60 +13,44 @@
 {% block product %}
   {% purchase_info_for_product request product as session %}
     <!-- Single store item -->
-    <div class="col-xs-12 col-sm-6 {% if full_width %}col-md-3{% else %}col-md-4{% endif %} store-list-item">
-        <div class="store-list-item__image cd-ratio-container">
+    <div tabindex="0" class="store-list-item flex-column items-flex-stretch">
+        <div class="store-list-item-image">
+          {% if product.parent_id %}
+            {% with image=product.parent.primary_image %}
+              {% if not image.is_missing %}
+                <a tabindex="-1" aria-label="." href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+              {% else %}
+                <a tabindex="-1" aria-label="." href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+              {% endif %}
+            {% endwith %}
+          {% else %}
             {% with image=product.primary_image %}
                 {% if not image.is_missing %}
-                  <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=240 width=264 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                  <a tabindex="-1" href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
                 {% else %}
-                  <a href="{{ product.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                  <a href="{{ product.get_absolute_url }}"><img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
                 {% endif %}
             {% endwith %}
+          {% endif %}
         </div>
-        <h4 class="store-list-item__name"><a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title }}</a></h4>
-        {% if product.product_class.slug == "album" %}<p class="store-list-item__info">{% if product.has_physical_media %}CD / {% endif %}{% if product.has_digital_media %}Digital download / {% endif %}{% if product.has_tracks %}Tracks{% endif %}</p>{% endif %}
-        {% if session.price.exists %}
-            {% if session.price.excl_tax == 0 %}
-                <span class="store-list-item__price">{% trans "Free" %}</span>
-            {% elif session.price.is_tax_known %}
-                <span class="store-list-item__price">{{ session.price.incl_tax|currency:session.price.currency }}</span>
-            {% else %}
-                <span class="store-list-item__price">{{ session.price.excl_tax|currency:session.price.currency }}</span>
-            {% endif %}
-        {% else %}
-            <span class="store-list-item__price">&nbsp;</span>
-        {% endif %}
+
+        <span class="text2 store-list-item-tile">
+            <a aria-label="." tabindex="-1" href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title }}</a>
+        </span>
+        <span class="text4">
+        </span>
         <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
           {% if session.availability.is_available_to_buy %}
             {% basket_form request product 'single' as basket_form %}
-            <div class="store-add-small">
                 {% csrf_token %}
                 {{ basket_form.quantity }}
-                {% if basket_form.fields.child_id.choices %}
-                  <select class="store-add-small__options" name="child_id">
-                      {% for variant in product.variants.all %}
-                      {% purchase_info_for_product request variant as variant_session %}
-                          {% if session.availability.is_available_to_buy %}
-                                <option data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}" value="{{ variant.id }}">{{ variant.title }} ({{ variant_session.price.excl_tax|currency:variant_session.price.currency }})</option>
-                          {% endif %}
-                      {% endfor %}
-                  </select>
-                  {% if user.is_authenticated %}
-                      <div class="arrow-button-container"><button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span></div>
-                  {% else %}
-                      <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="store-add-small__button"><i class="fa fa-plus"></i></a><span class="arrow"></span></div>
-                  {% endif %}
-                {% else %}
-                  {{ basket_form.child_id }}
-                    {% if user.is_authenticated %}
-                      <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
-                    {% else %}
-                      <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="store-add-large__button">Add to cart</a><span class="arrow"></span></div>
-                    {% endif %}
-                {% endif %}
-            </div>
           {% endif %}
         </form>
     </div>
     <!-- End of single store item -->
 {% endblock %}
+    <script>
+    $(".store-list-item").keypress(function(e) {
+      window.location = $(this).children('div').children('a').attr('href')
+    });
+    </script>

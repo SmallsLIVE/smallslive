@@ -8,19 +8,21 @@ class ProductQuerySet(models.query.QuerySet):
         Applies select_related and prefetch_related for commonly related
         models to save on queries
         """
-        return self.select_related('product_class')\
-            .prefetch_related('children',
-                              'product_options',
-                              'product_class__options',
-                              'stockrecords',
-                              'images',
-                              )
+        return self.prefetch_related('children',
+                                     'product_options',
+                                     'product_class__options',
+                                     'stockrecords',
+                                     'images',
+                                    )
 
     def browsable(self):
         """
         Excludes non-canonical products.
         """
-        return self.filter(parent=None).exclude(product_class__slug='track')
+        return self.filter(parent=None) \
+            .exclude(product_class__slug='ticket') \
+            .select_related('product_class') \
+            .exclude(product_class__slug='track')
 
 
 class ProductManager(models.Manager):

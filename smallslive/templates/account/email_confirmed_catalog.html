@@ -1,0 +1,72 @@
+{% extends "home_new.html" %}
+{% load djstripe_tags %}
+{% load static from staticfiles %}
+{% load socialaccount %}
+
+{% block extra_head %}
+    {% providers_media_js %}
+{% endblock %}
+
+{% block title %}EMAIL CONFIRMED{% endblock %}
+
+{% block content %}
+  {% include 'sign_in_to_become_a_supporter_dialog.html' %}
+  <div class="container">
+    <div class="flex-column items-center email-confirm">
+      <p class="title1">Welcome to The SmallsLIVE Foundation</p>
+
+      <div class="content">
+        <p class="text9">
+          Your email is confirmed.
+          You now have access to all our live streamed shows.
+          Your account settings can be found by clicking on your name in the upper right hand corner.
+        </p>
+        <p class="text9">
+          Please consider becoming a Supporting Member of the SmallsLIVE Foundation by making a tax deductible donation.
+          The SmallsLIVE Foundation supports recording projects, tours, and educational
+          initiatives, subsidizes the operation of the venues and offers emergency aid
+          for jazz musicians in need. All donations grant access to the SmallsLIVE Archive.
+        </p>
+      </div>
+
+      <div class="text4 text-centered button-row">
+        {% if not user.is_authenticated %}
+        <button class="white-border-button sign-in-button separated" href="#logIn" data-toggle="modal">
+          Sign in
+        </button>
+        {% endif %}
+        <button id="email-confirmed-catalog-btn"
+                class="white-border-button sign-in-button separated"
+                {% if not user.is_authenticated %}
+                  href="#logIn"
+                {% endif %}
+                data-toggle="modal">
+          Continue to Support Artist
+        </button>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  {% if not user.is_authenticated %}
+    <script>
+      $(document).ready(function(){
+        $('#email-confirmed-catalog-btn').click(function () {
+          var $form = $('#form-login');
+          var action = $form.attr('action');
+          // TODO: Use URL from backend
+          action = action + '?next='  + {% url 'donate' %} ;
+          $form.attr('action', action);
+        });
+      });
+    </script>
+  {% else %}
+    <script>
+      $(document).on('click', '#email-confirmed-catalog-btn', function(){
+        window.location = "{{ next_url }}";
+      })
+    </script>
+  {% endif %}
+
+{% endblock extra_js %}

@@ -1,0 +1,25 @@
+{% if not user.can_watch_videos %}
+  <div class="modal fade in" role="dialog" id="sign-in-to-become-a-supporter-dialog" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal">
+          <a href="#" class="close-button"></a>
+          <div class="modal-body">
+              <p class="title2 accent-color">SIGN IN</p>
+              <p class="title1">SIGN IN</p>
+              <p class="text9 text-justified">
+                Please sign in before becoming a supporter
+              </p>
+              <div class="text4 text-centered button-row margin-top">
+                <button class="white-border-button sign-in-button separated" href="#logIn" data-toggle="modal">
+                  Sign in
+                </button>
+              </div>
+          </div>
+          <div>
+          </div>
+        </div>
+    </div>
+  </div>
+{% endif %}
+
+

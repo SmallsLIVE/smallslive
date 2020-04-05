@@ -1,0 +1,110 @@
+{% load static from staticfiles %}
+
+                    {% else %}
+                        <button disabled>Edit Event</button>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if not is_future %}
+            <div class="artist-event-set-info">
+                {% for set in event.sets.all %}
+                    <div class="flex-row wrap artist-event-set text2" id="set-id-{{ set.id }}">
+                        <div class="artist-event-card">
+                            {% include 'events/event_card.html' with event=event %}
+                        </div>
+                        <div class="flex-column">
+                            <div class="flex-row wrap artsist-set-info">
+                                <div>
+                                    <div class="accent-color artist-event-date">
+                                        {% if set.video_recording or set.audio_recording %}
+                                            Set {% if set.video_recording %}{{ set.video_recording.set_number }}{% elif set.audio_recording %}{{ set.audio_recording.set_number }}{% endif %} - {{ set.start|date:"g:i A" }}
+                                        {% else %}
+                                            Set {{ forloop.counter }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="artist-publish-info">
+                                        <div class="text-grey">
+                                            {% if set.video_recording or set.audio_recording %}
+                                                This set is currently
+                                                <span class="accent-color">
+                                                    <span class="set-status">
+                                                        {% if set.video_recording %}{{ set.video_recording.state }}
+                                                        {% elif set.audio_recording %}{{ set.audio_recording.state }}
+                                                        {% endif %}
+                                                    </span>
+                                                </span>
+                                            {% else %}
+                                                This set is not uploaded yet.
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="artist-event-actions flex-row">
+                                    <div class="button-row button-row-margin">
+                                        {% if gig_info.is_admin and set.has_media %}
+                                            {% if set.video_recording and set.video_recording.is_published or
+                                                  set.audio_recording and set.audio_recording.is_published %}
+                                                <button class="publish-button" onclick="askPublish({{ set.id }})" data-comma-separated-leaders="{{ event.comma_separated_leaders }}" >
+                                                    Publish
+                                                </button>
+                                            {% else %}
+                                                <button class="publish-button" onclick="askPrivate({{ set.id }})" data-comma-separated-leaders="{{ event.comma_separated_leaders }}">Make
+                                                    Private
+                                                </button>
+                                            {% endif %}
+                                            <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')"
+                                                    data-comma-separated-leaders="{{ event.comma_separated_leaders }}">
+                                                Download
+                                            </button>
+                                            <button>
+
+                                                <a href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">
+                                                    Metrics
+                                                </a>
+                                            </button>
+                                        {% else %}
+                                            {% if set.video_recording and set.video_recording.is_published %}
+                                                <button disabled>Make Private</button>
+                                            {% else %}
+                                                <button disabled>Publish</button>
+                                            {% endif %}
+                                            <button disabled>Download</button>
+                                            <button disabled>Metrics</button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                            </div>
+                            {% if not gig_info.is_admin %}
+                                <div>
+                                    <div class="text-grey">
+                                        <div>Admin only material.</div>
+                                        <div>To access this feature, you must be a designated admin for this event.</div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div>
+                <div class="flex-row artist-event-set text2" id="set-id-{{ set.id }}">
+                    <div class="artist-event-card">
+                        {% include 'events/event_card.html' with event=event %}
+                    </div>
+                    <div class="flex-row artsist-set-info">
+                        <div class="artist-publish-info">
+                            <div class="text-grey">
+                                Sets at {{ event.get_set_hours_display }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    {% endwith %}
+{% endfor %}
+

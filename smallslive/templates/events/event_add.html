@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load crispy_forms_tags static %}
 
 {% block title %}Add new event{% endblock title %}
@@ -7,19 +7,42 @@
   <script>
     var django = {jQuery: jQuery};
   </script>
-  {{ form.media }}
-  <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
   <link href="{% static 'css/selectize.bootstrap3.css' %}" rel="stylesheet">
+  <link href="/static/image_cropping/css/jquery.Jcrop.min.css" type="text/css" media="all" rel="stylesheet" />
+  <link href="/static/image_cropping/css/image_cropping.css" type="text/css" media="all" rel="stylesheet" />
+  <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+  <!-- Image Cropping is removing jQuery, let's remember it -->
+  <script>
+    window.__jQuery = window.jQuery;
+    window.__$ = window.$;
+  </script>
+  <script type="text/javascript" src="/static/image_cropping/js/jquery.Jcrop.min.js"></script>
+  <script type="text/javascript" src="/static/image_cropping/image_cropping.js"></script>
+  <script>
+    window.jQuery = window.__jQuery;
+    window.$ = window.__$;
+  </script>
 {% endblock extra_head %}
 
 {% block content %}
-  <div class="content-wrapper">
+  <div class="content-wrapper" style="border:none">
   <section class="admin-interface container">
   <h1 class="admin-interface__main-title">Add/Edit gig:</h1>
     <form method="post"  class="admin-interface__form" enctype="multipart/form-data">
       {% crispy form %}
+      <div class="alert alert-warning alert__tickets">
+        <div id="div_id_state" class="form-group">
+          <label for="id_state" class="control-label">Add tickets to sets (create sets as needed)</label>
+
+          <div class="controls ">
+            {% for ticket_form in ticket_forms %}
+              {% crispy ticket_form %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
       <div class="buttonHolder">
-            <input type="submit" name="submit" value="Save event" class="admin-interface__form__button" id="submit-id-submit">
+        <input type="submit" name="submit" value="Save event" class="admin-interface__form__button" id="submit-id-submit">
       </div>
     </form>
     </section>
@@ -30,12 +53,107 @@
   <script type="text/javascript" src="{% static 'js/selectize.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
-  <script src="{% static "js/event_form.js" %}"></script>
+  <script src="{% static 'js/event_form.js' %}"></script>
   <script>
+
+    function checkTicketFormVisibility(element) {
+      $full_form = $(element).parents(".form-group").next();
+        if($(element).is(':checked')) {
+          $full_form.show();
+        } else {
+          $full_form.hide();
+        }
+    }
     var show_times = {{ show_times|safe }};
     $(document).ready(function() {
+
+      $toggle = $(".toggle");
+      $toggle.click(function() {
+        checkTicketFormVisibility(this)
+      });
+      checkTicketFormVisibility($toggle);
       EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
       EventForm.init(true);
+
+      function updateUploadedImage(data) {
+
+        var $imageId = $('#id_image_id');
+        $imageId.val(data.id);
+
+        var $image = $("#div_id_photo img");
+        $image.attr("src", data.src);
+        $('#div_id_cropping .controls').show();
+        $('#div_id_photo img').toggleClass('hidden');
+
+        var $imageInput = $("#id_photo");
+        $imageInput.data("thumbnail-url", data.src);
+        $imageInput.attr("data-thumbnail-url", data.src);
+
+        $(".jcrop-holder").remove();
+        $("#id_cropping-image").remove();
+        $(".field-box.allow-fullsize").remove();
+        image_cropping.init();
+
+      }
+
+
+      // Ajax upload image
+      $(document).on('change', '#id_photo', function () {
+        var $form = $(this).closest('form');
+        var data = new FormData($form.get(0));
+        $('#div_id_photo img').toggleClass('hidden');
+        $('#image-load-gif').toggleClass('hidden');
+        $('#event_edit_modal').find('.modal-body').html('');
+        $.ajax({
+            url: "{% url 'upload_image_preview' %}",
+            type: "POST",
+            data: data,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (data) {
+              if (data.success) {
+                $('#div_id_photo img').toggleClass('hidden');
+                $('#image-load-gif').toggleClass('hidden');
+                updateUploadedImage(data);
+              }
+            }
+        });
+      });
+
+      // TODO: remove duplicate code in artist_dashboard.js
+      function loadArtist(value, select) {
+        $.ajax({
+          type: 'GET',
+          url: '/search/artist_form_autocomplete/?artist-start=' + value,
+          success: function(data){
+            data.artist_list.forEach(function(artist) {
+
+              // Select already selected artists and  exclude them from the options.
+              var $artists = $(".artist_field option[selected='selected']");
+              var exclude = $(".artist_field option[selected='selected']").map(function () {
+                return $(this).val();
+              }).get();
+
+              if (exclude.indexOf(artist.val.toString()) < 0) {
+                select.selectize.addOption({ value: artist.val, text: artist.full_name });
+                select.selectize.refreshOptions();
+              }
+            })
+          }
+        })
+      }
+
+      $(document).on("keyup", ".artist_field .selectize-input input", function () {
+        var artistSelectorContainer = $(this).closest("td");
+        var selectElement = $(artistSelectorContainer).find("select")[0];
+        //var selectizeElement = $(artistSelectorContainer).find(".selectize-dropdown-content")[0];
+        if ($(this).val().length > 1) {
+          loadArtist($(this).val(), selectElement)
+        }
+      });
+
     });
   </script>
 {% endblock %}

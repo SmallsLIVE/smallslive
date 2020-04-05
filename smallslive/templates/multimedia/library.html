@@ -1,0 +1,161 @@
+{% extends "store_base.html" %}
+{% load static from staticfiles %}
+{% load thumbnail %}
+{% load thumbor_tags %}
+
+{% block title %}Library{% endblock %}
+
+{% block store_content %}
+  {% include 'subscriptions/download_confirmation_dialog.html' %}
+  {% include 'subscriptions/popups/product_support_confirmation_dialog.html' %}
+  <div class="section-title catalog featured">
+    <div class="title1">Library</div>
+  </div>
+
+  <!-- library.html -->
+  <main class="newest-recordings-container downloads">
+    {% if album_list or downloads_list %}
+      <div class="slide-btn catalog prev"><b class="indicator-icon icon-left-caret"></b></div>
+      <div class="slide-btn catalog next"><b class="indicator-icon icon-right-caret"></b></div>
+      <div class="event-row catalog-carousel owl-carousel owl-theme">
+        {% for item in downloads_list %}
+          <article class="event-display download"
+                   id="{{ item.pk }}">
+            {% include 'promotions/featured_card.html' with event=item redirect=True secondary=secondary hide_play=True%}
+            <div class="event-info">
+              <div>
+                  <div class="event-info-title">{{ item.title }}</div>
+                </div>
+            </div>
+          </article>
+        {% endfor %}
+        {% for album in album_list %}
+          {% with image=album.parent %}
+            <article class="event-display album"
+                     id='{{ album.parent.pk }}'
+                     data-parent-pk="{{ album.parent.pk }}"
+                     data-type="{{ album.album_type }}"
+                     data-bought="{{ album.bought_tracks }}">
+              {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
+              <div class="event-info">
+                <div>
+                    <div class="event-info-title">{{ image.title }}</div>
+                  </div>
+              </div>
+            </article>
+          {% endwith %}
+        {% endfor %}
+    {% else %}
+    <div class="education__article">
+      <p class="" style="padding: 0 3.5vw;">
+        <!-- No items in library text here -->
+        The SmallsLIVE Catalog is a collection of individually produced artist projects. SmallsLIVE Members may sponsor
+        artists of their choice and receive their music as downloads or CDs. Sponsorships directly support the artist.
+      </p>
+    </div>
+    {% endif %}
+    </div>
+  </main>
+  <section id="my-downloads-album__list"></section>
+  <!-- end library.html -->
+
+{% endblock store_content %}
+
+
+{% block extra_js %}
+  {{ block.super }}
+  <script>
+    var stripePublicKey = "{{ STRIPE_PUBLIC_KEY }}";
+    var getUrlParameter = function getUrlParameter(sParam) {
+      var sPageURL = window.location.search.substring(1),
+      sURLVariables = sPageURL.split('&'),
+      sParameterName,
+      i;
+
+      for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] === sParam) {
+          return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+      }
+    };
+
+    var el, setTime;
+
+    function loadAlbum(productId, bought_tracks, album_type) {
+      var params = {};
+      params.productId = productId;
+      params.album_type = album_type;
+      params.bought_tracks = JSON.stringify(bought_tracks);
+
+      // TODO: fix hardcoded URL
+      $.ajax({
+        url: "/multimedia/library/" + productId,
+        data: params,
+        success: function (data) {
+          albumContainer = $("#my-downloads-album__list");
+          $(albumContainer).html(data);
+          Array.prototype.forEach.call(audioPlayers, function(player) {
+            player.addEventListener("play", function () {
+              setTime = setInterval(t => {
+                currentTime = Math.floor(player.currentTime);
+                $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar");
+                timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0];
+                progress = player.currentTime / player.duration * 100;
+                //console.log('library.html play listener updateProgressTrack: ' + progress.toString());
+                updateProgressTrack( $(player).data('track'), progress);
+                progressWidth = progress + "%";
+                $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progressWidth);
+                $(timeTracker).html(readableTime(currentTime));
+              }, 100);
+            });
+            player.addEventListener("pause", function () {
+              clearInterval(setTime);
+              $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").removeClass("active-bar");
+            });
+            player.addEventListener("ended", function() {
+              $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").removeClass("active-bar");
+              $(player).closest(".big-player").find(".purchases-player-button").removeClass("mypause-btn");
+              $(player).closest(".big-player").find(".purchases-player-button").addClass("myplay-btn");
+              $playerContainerButton.find('div').html('<i class="fas fa-play"></i>');
+              $(".active-track").removeClass("active-track");
+              player.currentTime = 0;
+              clearInterval(setTime);
+            });
+          });
+          el = document.querySelector(".track-container");
+        }
+      });
+    }
+
+    function loadDownload(productId) {
+      var params = {};
+      params.productId = productId;
+
+      // TODO: fix hardcoded URL
+      $.ajax({
+        url: "/multimedia/downloads/" + productId,
+        data: params,
+        success: function (data) {
+          var $albumContainer = $("#my-downloads-album__list");
+          $albumContainer.html(data);
+        }
+      });
+    }
+  </script>
+
+  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+  <script src="{% static 'js/progress-bar.js' %}"></script>
+  <script src="{% static 'js/catalog/catalog.js' %}"></script>
+
+  <script>
+    $().ready(function () {
+      if (getUrlParameter('album')) {
+        $('#'+getUrlParameter('album')).click();
+      } else {
+        $('.event-display:first').click();
+      }
+    })
+  </script>
+
+{% endblock %}

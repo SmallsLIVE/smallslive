@@ -1,15 +1,22 @@
 import json
+import ast
 from braces.views import LoginRequiredMixin
 from cacheops import cached, cached_view
+from django.conf import settings
 from django.db.models import F, Q, Max
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import ListView, CreateView
-from metrics.models import UserVideoMetric
+from django.views.generic import ListView, CreateView, TemplateView, View
+from django_thumbor import generate_url
 from oscar.apps.order.models import Line
+from metrics.models import UserVideoMetric
+from oscar_apps.catalogue.models import Product
+from oscar_apps.catalogue.mixins import ProductMixin
+from oscar_apps.partner.strategy import Selector
+from custom_stripe.models import CustomerDetail
 from events.models import Recording, Event
 from .forms import TrackFileForm
-from .models import MediaFile
+from .models import ImageMediaFile, MediaFile
 
 
 def json_error_response(error_message):
@@ -56,7 +63,7 @@ class MostPopularVideos(ListView):
                     pass
             return most_popular_video
         return _get_most_popular_videos()
-    
+
     def get_context_data(self, **kwargs):
         context = super(MostPopularVideos, self).get_context_data(**kwargs)
         context['most_popular_videos'] = True
@@ -205,9 +212,52 @@ class UploadTrackView(CreateView):
 upload_track = UploadTrackView.as_view()
 
 
+class UploadImagePreview(View):
+
+    def sanitize_file_name(self, name):
+        # Trim file name to avoid errors with database field.
+        if len(name) > 100:
+            parts = name.split('.')
+            # extension should be the last substring after .
+            extension = parts[-1]
+            # rebuild everything that is not the extension.
+            # Should work even if there's no extension
+            name = '.'.join(parts[:-1])
+            if name:
+                name = name[:50] + '.' + extension
+            else:
+                name = extension
+
+        return name
+
+    def post(self, *args, **kwargs):
+        image = self.request.FILES['photo']
+        image.name = self.sanitize_file_name(image.name)
+        image_file = ImageMediaFile.objects.create(photo=image)
+
+        filters = {
+            'width': 300,
+        }
+        url = generate_url(image_url=image_file.photo.url, **filters)
+
+        data = {
+            'success': True,
+            'src': url,
+            'id': image_file.pk,
+            'width': image_file.photo.width,
+            'height': image_file.photo.height,
+        }
+        response = json.dumps(data)
+
+        return HttpResponse(response, content_type="application/json")
+
+
+upload_image_preview = UploadImagePreview.as_view()
+
+
 class MyDownloadsView(LoginRequiredMixin, ListView):
     context_object_name = 'lines'
-    template_name = 'multimedia/my-downloads.html'
+    template_name = 'multimedia/new-downloads.html'
 
     def get_queryset(self):
         return Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter(Q(
@@ -215,3 +265,123 @@ class MyDownloadsView(LoginRequiredMixin, ListView):
             order__user=self.request.user).distinct('stockrecord')
 
 my_downloads = MyDownloadsView.as_view()
+
+
+class NewMyDownloadsView(LoginRequiredMixin, ProductMixin, ListView):
+    context_object_name = 'lines'
+    template_name = 'multimedia/library.html'
+
+    def get_queryset(self):
+        return Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter(
+            product__product_class__slug__in=['digital-album', 'physical-album', 'track'],
+            order__user=self.request.user).distinct('stockrecord')
+
+    def get_context_data(self, **kwargs):
+        context = super(NewMyDownloadsView, self).get_context_data(**kwargs)
+        self.get_purchased_products()
+
+        context['album_list'] = self.album_list
+        context['downloads_list'] = self.downloads_list
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+
+        return context
+
+new_downloads = NewMyDownloadsView.as_view()
+
+
+class AlbumView(TemplateView):
+    """
+    To be called from AJAX (Library).
+    """
+    model = Product
+    pk_url_kwarg = 'pk'
+    template_name = 'multimedia/album-display.html'
+    context_object_name = 'album_product'
+
+    def get_context_data(self, **kwargs):
+
+        context = super(AlbumView, self).get_context_data(**kwargs)
+
+        context['library'] = True
+        # It's not possible to buy individual tracks anymore.
+        context['is_bought'] = True
+        album_product = Product.objects.filter(pk=self.request.GET.get('productId', '')).first()
+        context['total_donation'] = self.request.user.get_project_donation_amount(album_product.pk)
+        products = Product.objects.filter(parent=album_product, product_class__slug__in=[
+            'physical-album',
+            'digital-album'
+        ])
+        context['gifts'] = []
+        context['costs'] = []
+        selector = Selector()
+        strategy = selector.strategy(
+            request=self.request, user=self.request.user)
+        for product in products:
+            print 'Product: ', product
+            context['gifts'].append(product)
+            if product.variants.count():
+                stock = product.variants.first().stockrecords.first()
+                context['costs'].append(
+                    stock.cost_price)
+            else:
+                stock = product.stockrecords.first()
+                if stock:
+                    context['costs'].append(
+                        stock.cost_price)
+
+                context['gifts'].sort(
+            key=lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
+
+        context['album_product'] = album_product
+        variant = Product.objects.filter(parent=album_product, product_class__slug__in=[
+            'physical-album',
+            'digital-album'
+        ]).first()
+        context['mp3_available'] = album_product.tracks.filter(stockrecords__is_hd=False).count() > 0
+        context['child_product'] = variant
+        customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
+        if customer_detail:
+            context['active_card'] = customer_detail.active_card
+
+        return context
+
+album_view = AlbumView.as_view()
+
+
+class DownloadView(TemplateView):
+    """
+    To be called from AJAX (Library).
+    """
+    template_name = 'catalogue/partials/detail.html'
+
+    def get_context_data(self, **kwargs):
+
+        context = super(DownloadView, self).get_context_data(**kwargs)
+        product = Product.objects.filter(pk=self.request.GET.get('productId', '')).first()
+        context['product'] = product
+        context['library'] = True
+        customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
+        if customer_detail:
+            context['active_card'] = customer_detail.active_card
+
+        return context
+
+download_view = DownloadView.as_view()
+
+
+class AddTracksView(TemplateView):
+    template_name = 'multimedia/basket-items.html'
+
+    def get_context_data(self, **kwargs):
+
+        tracks = self.request.GET.getlist('trackId', [])
+        products = Product.objects.filter(pk__in=tracks)
+        context = super(AddTracksView, self).get_context_data(**kwargs)
+        context['products'] = products
+
+        customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
+        context['active_card'] = customer_detail.active_card
+
+        return context
+
+add_tracks = AddTracksView.as_view()

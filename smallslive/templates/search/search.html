@@ -1,0 +1,156 @@
+{% extends 'home_new.html' %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load i18n %}
+
+{% block homepage_nav_active %}active{% endblock %}
+
+{% block title %}Smalls Jazz Club{% endblock %}
+
+{# TODO Shouldn't be needed here #}
+{% block body_class %}home headers-3{% endblock %}
+
+{% block extra_nav %}
+  <div class="search-tabs tabs{% if artist_profile %} artist-profile {% endif %}">
+    <div class="active" data-toggle-tab-target="musicians" data-toggle-tab-group="search-results" data-toggle-hide="no">
+      <span class="title1">Musicians</span>
+    </div>
+    <div data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results" data-toggle-hide="no">
+      <span class="title1">Shows</span>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_head %}
+  <meta name="description" content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+  {% include 'inactive_dialog.html' %}
+{% endif %}
+{% include 'become_a_supporter_dialog.html' %}
+
+{% if artist_profile %}
+  <div class="artist-search-profile-container pad-content">
+    {% include 'artists/artist_detail_search.html' with archived=event_results upcoming=upcoming_events %}
+  </div>
+{% endif %}
+
+<div class="search-container pad-content new-archive{% if user.is_superuser %} admin{% endif %}{% if artist_profile%} artist-profile{% endif %}">
+
+    {% if not artist_profile %}
+      <section id="musicianContent"
+               data-toggle-tab="musicians"
+               class="search-tab-content active search-page"
+               data-toggle-tab-group="search-results">
+        <div class="musicians-results">
+          <!-- removed pagination because of update to autoscroll
+          <div id="artist-subheader" class="showing-results text1" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
+          //-->
+          <div class="section-title title1 musicians-results-title">
+            {% if artists_blocks %} <span id="total-artist" class="accent-color">{{ showing_artist_results }} </span>
+              {% if showing_artist_results > 1 %}
+                &nbsp;Musicians
+              {% else %}
+                Musician
+              {% endif %}
+            {% else %} No musicians found
+            {% endif%}
+            <span class="quotation" style="display: {% if not query_term %}none;{% else %}inline{% endif %}">&nbsp;"</span>
+            <span class="accent-color" id="musician-search-title">
+              {{ query_term }}
+            </span>
+            <span class="quotation" style="display: {% if not query_term %}none;{% else %}inline{% endif %}">"</span>
+          </div>
+        </div>
+        {% if artists_blocks %}
+          {% include 'search/artists.html' %}
+        {% endif %}
+      </section>
+    {% endif %}
+
+    <section id="search-content" class="search-content" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
+      {% include 'events/shows.html' with events=event_results archived=True default_to_date=default_to_date secondary=True %}
+    </section>
+    <section id="search-content" class="search-content" data-toggle-tab="upcoming-shows" data-toggle-tab-group="search-results" style="display: none;">
+      <!-- include upcoming shows (as placeholder and hidden), so then can be toggled when viewing artists profile -->
+      {% include 'events/shows.html' with events=upcoming_events upcoming=True default_from_date=default_from_date secondary=True hide_filters=True show_event_venue=True show_metrics=False show_time=True%}
+    </section>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    var defaultFromDate = new Date("{{  first_event_date }}");
+    var defaultToDate = new Date("{{ last_event_date }}");
+    var eventOrderFilter = 'newest';
+
+    var datePickerFromDate = defaultFromDate;
+    var datePickerToDate = defaultToDate;
+
+    var setFromDate = false;
+    var setToDate = true;
+    var datePickerLeft = 45;
+    var datePickerTop = 38;
+
+    var $datePickerFrom = $(".archive-datepicker.fixed .custom-date-picker.from input");
+    var $datePickerTo= $(".archive-datepicker.fixed .custom-date-picker.to input");
+    var startDate = "{{ first_event_date }}";
+    var endDate = "{{ last_event_date }}";
+    var venue = "all";
+    var moreArtists = true;
+
+    {% if showing_event_results == '0' %}
+      var moreEvents = false;
+    {% else %}
+      var moreEvents = true;
+    {% endif %}
+
+    $(document).ready(function () {
+
+      initializeArchiveDatePickers();
+      initializeSearch();
+      $("footer.footer-info").removeClass("active");
+
+      loadingEvents = false;
+      $(window).scroll(function () {
+        if ($(window).scrollTop() >= $(document).height() - $(window).height() - 200) {
+          /* if artists are visible and is mobile (flex-wrap is set) */
+          /* desktop loads more with slide buttons */
+
+          var $musiciansContent = $("#musicianContent");
+          if ($musiciansContent.is(":visible") && $musiciansContent.find(".event-row").css("flex-wrap") == "wrap") {
+            searchMoreArtists();
+          }
+
+          /* if events are visible always load */
+          if ($("#search-content").is(":visible") && moreEvents && !loadingEvents) {
+            loadingEvents = true;
+            loadMoreEvents('Archived');
+          }
+        };
+      });
+
+    });
+
+    (function ($) {
+      $.each(['show', 'hide'], function (i, ev) {
+        var el = $.fn[ev];
+        $.fn[ev] = function () {
+          this.trigger(ev);
+          return el.apply(this, arguments);
+        };
+      });
+    })(jQuery);
+
+  </script>
+  <script src="{% static 'js/moment.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+  <script src="{% static 'js/tabs.js' %}"></script>
+  <script src="{% static 'js/search/search.js' %}"></script>
+  <script src="{% static 'js/search/search_datepickers.js' %}"></script>
+  <script src="{% static 'js/search/artist_index.js' %}"></script>
+  <script src="{% static 'js/slider.js' %}"></script>
+{% endblock %}

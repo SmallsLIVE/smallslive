@@ -6,16 +6,25 @@
 @import 'vendors/bourbon/bourbon';
 @import 'vendors/slick';
 @import 'vendors/slick-theme';
+@import 'vendors/owl-carousel/owl.carousel';
+@import 'vendors/owl-carousel/owl.theme.default';
 
 @import 'utils/variables';
 @import 'utils/functions';
+@import 'utils/flex';
 @import 'utils/helpers';
 @import 'utils/mixins';
+@import 'utils/tabs';
 
+@import 'base/fonts';
+@import 'base/colors';
 @import 'base/typography';
 @import 'base/base';
+@import 'base/inputs';
 
 @import 'layout/header';
+@import 'layout/header2';
+
 @import 'layout/footer';
 @import 'layout/static-page';
 @import 'layout/call-to-action';
@@ -23,17 +32,31 @@
 @import 'layout/generic-text-page';
 @import 'layout/alerts';
 
+@import 'pages/style-guide';
+@import 'pages/home';
+@import 'pages/become-supporter';
+@import 'pages/event';
+@import 'pages/search';
+@import 'pages/schedule';
+@import 'pages/artist_detail';
+@import 'pages/artist-dashboard';
+@import 'pages/account-settings';
+@import 'pages/tax-letter';
+
+
 @import 'components/about-smalls';
 @import 'components/admin-email';
 @import 'components/artist-bio';
 @import 'components/artist-details';
 @import 'components/artist-events';
 @import 'components/buy-album';
+@import 'components/close-button';
 @import 'components/event-description';
-@import 'components/event-details';
+//@import 'components/event-details';
 @import 'components/event-object';
 @import 'components/event-tracks';
 @import 'components/event-video';
+@import 'components/gateway';
 @import 'components/header-img';
 @import 'components/homepage-archive';
 @import 'components/homepage-news';
@@ -54,6 +77,7 @@
 @import 'components/search-instrument-object';
 @import 'components/search-nav';
 @import 'components/search-store-object';
+@import 'components/section-title';
 @import 'components/social-media-btn';
 @import 'components/video-audio';
 @import 'components/login-modal';
@@ -76,7 +100,7 @@
 @import 'components/subscription-settings';
 @import 'components/archive-lists';
 @import 'components/audio-player';
-@import 'components/event-view';
+//@import 'components/event-view';
 @import 'components/store-base';
 @import 'components/my-downloads';
 @import 'components/admin-metrics';
@@ -88,3 +112,12 @@
 @import 'components/no-bg-calendar';
 @import 'components/homepage-upcoming';
 @import 'components/homepage-date-browser';
+@import 'components/simple-pagination';
+
+
+@import 'components/event-row';
+@import 'components/home-banners';
+@import 'components/white-border-select';
+@import 'components/account-confirmation';
+@import 'components/artist-tracks';
+@import 'components/_education';

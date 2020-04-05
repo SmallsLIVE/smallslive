@@ -1,0 +1,170 @@
+{% load account %}
+{% load static from staticfiles %}
+
+<!-- mobile devices header -->
+<nav class="navbar navbar-default mobile-navbar visible-xs visible-sm" role="navigation">
+  <div class="container mobile-menu">
+    <!-- Grouping logo and toggle for mobile -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed mobile-nav__button" data-toggle="collapse"
+              data-target="#smalls-menu-collapse">
+        <i class="fa fa-bars"></i>
+      </button>
+      <button type="button" class="navbar-toggle collapsed mobile-nav__button" data-toggle="collapse" data-target="#search-collapse">
+          <i class="fa fa-search"></i>
+      </button>
+      <a href="/" class="smalls-hor-logo"><img src="{% static 'smalls_live_horizontal_negative.svg' %}" alt=""/></a>
+    </div>
+
+    <!-- Collect the nav links, forms and other content for toggling -->
+    <div class="collapse navbar-collapse menu" id="smalls-menu-collapse">
+      <div class="header-top">
+        <div class="container">
+          <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="{% url "live-stream" %}">Live now!</a></li>
+            <li><a href="{% url "archive" %}">Archive</a></li>
+            <li><a href="{% url "promotions:home" %}">SmallsLIVE Store</a></li>
+            <li><a role="button" data-toggle="collapse" href="#mobile-nav-info-links" aria-expanded="false" aria-controls="mobile-nav-info-links">Info <i class="fa fa-caret-down"></i> </a></li>
+            <li class="nopadding">
+                <ul class="mobile-navbar__submenu collapse" id="mobile-nav-info-links">
+                    <li class="hidden-sm"><a href="{% url "contact-and-info" %}">Contact & Info</a></li>
+                    <li class="hidden-sm"><a href="{% url "about-us" %}">About us</a></li>
+                    <li class="hidden-sm"><a href="{% url "revenue-share" %}">Revenue Share</a></li>
+                    <li class="hidden-sm"><a href="{% url "photo-gallery" %}">Photo Gallery</a></li>
+                    <li class="hidden-sm"><a href="{% url "newsletters" %}">Newsletters</a></li>
+                    <li class="hidden-sm"><a href="{% url "static_page" "press" %}">Press</a></li>
+                </ul>
+            </li>
+            <li role="presentation" class="divider"></li>
+            <li><a href="https://www.mezzrow.com" target="_blank">Mezzrow</a></li>
+            <li role="presentation" class="divider"></li>
+            {% if user.is_authenticated %}
+                <li class="mobile-navbar__user-name">{% user_display user %}</li>
+                {% if request.user.artist %}
+                  <li><a href="{% url "artist_dashboard:home" %}">Artist Dashboard</a></li>
+                {% endif %}
+                <li><a href="{% url "my-downloads" %}">Library</a></li>
+                <li><a href="{% url "user_settings" %}">User Settings</a></li>
+                {% if not request.user.is_staff %}
+                  <li><a href="{% url "subscription_settings" %}">My Subscription / Upgrade</a></li>
+                {% endif %}
+                <li><a href="{% url "account_logout" %}">Sign out</a></li>
+             {% else %}
+                <li><a class="mobile-nav__signin-button" href="#" data-toggle="modal" data-target="#logIn">Sign in</a></li>
+                <li><a class="mobile-nav__signup-button" href="{% url "signup_landing" %}">Sign up</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Collapsed search -->
+    <div class="collapse navbar-collapse search-dropdown" id="search-collapse">
+      <div class="header-top">
+        <div class="container">
+          <ul class="nav navbar-nav">
+            <li>
+                <div class="search">
+                  <form action="{% url "artist_search" %}" method="get">
+                    <div class="form-group has-feedback">
+                      <input id="header--search" type="text" name="q" class="form-control search__input" placeholder="Search our Archive..."/>
+                      <i class="fa fa-search form-control-feedback"></i>
+                    </div>
+                  </form>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /.navbar-collapse -->
+    <!--
+                <form action="" class="search">
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control search__input" placeholder="Search our Archive..."/>
+                        <i class="fa fa-search form-control-feedback"></i>
+                    </div>
+                </form>
+    -->
+  </div>
+  <!-- /. container-fluid -->
+</nav>
+<!-- end of mobile devices header -->
+
+<!-- regular header -->
+<header class="container hidden-xs hidden-sm">
+  <a href="/" class="smalls-logo"><img src="{% static 'new_logo_transparent.png' %}" width="101" height="100" alt=""/></a>
+  <ul class="header-social clearfix">
+          <li class="header-social__item"><a target="_blank" href="https://www.facebook.com/smallsjazzclubnyc"><i class="fa fa-facebook"></i></a></li>
+          <li class="header-social__item"><a target="_blank" href="https://twitter.com/smallsjazzclub"><i class="fa fa-twitter"></i></a></li>
+          <li class="header-social__item"><a target="_blank" href="https://instagram.com/smallsjazzclub/"><i class="fa fa-instagram"></i></a></li>
+  </ul>
+
+  {% with active_plan=user.get_subscription_plan.type %}
+  {% if active_plan == "free" %}
+  <ul class="header-login">
+    <li class="header-login__upgrade">
+      <a href="{% url "subscription_settings" %}">
+        <div class="btn-group btn-group-xs">Upgrade</div>
+      </a>
+    </li>
+  </ul>
+  {% endif %}
+  {% endwith %}
+
+
+  <ul class="header-login clearfix">
+    {% if user.is_authenticated %}
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle header-login__user-name" data-toggle="dropdown" role="button" aria-expanded="false">{% user_display user %}{% if basket.num_lines  %}<span class="badge header-user">{{ basket.num_lines }}</span>{% endif %} <span class="caret"></span></a>
+        <ul class="dropdown-menu header-login__user-dropdown" role="menu">
+            {% if request.user.artist %}
+              <li><a href="{% url "artist_dashboard:home" %}">Library</a></li>
+            {% endif %}
+            <li><a href="{% url 'basket:summary' %}">Shopping Cart {% if basket.num_lines  %}<span class="badge header-user">{{ basket.num_lines }}</span>{% endif %}</a></li>
+            <li><a href="{% url "my-downloads" %}">My Downloads</a></li>
+            <li><a href="{% url "user_settings" %}">User Settings</a></li>
+            {% if not request.user.is_staff %}
+              <li><a href="{% url "subscription_settings" %}">Subscription Settings</a></li>
+            {% endif %}
+            <li><a href="{% url "account_logout" %}">Sign out</a></li>
+        </ul>
+      </li>
+    {% else %}
+        <li class="header-login__item"><a href="#" data-toggle="modal" data-target="#logIn">Sign in</a></li>
+        <li class="header-login__item"><a href="{% url "signup_landing" %}">Sign up</a></li>
+    {% endif %}
+  </ul>
+  <div class="header-nav-group">
+      <nav class="navigation navbar-collapse">
+        <ul class="navigation__menu">
+          <li class="navigation__item {% block homepage_nav_active %}{% endblock %}"><a href="/"><i class="navigation__icon fa fa-2x fa-home "></i><span class="menu-label">Home</span></a></li>
+          <li class="navigation__separator"></li>
+          <li class="navigation__item {% block livestream_nav_active %}{% endblock %}"><a href="{% url "live-stream" %}"><i
+                  class="navigation__icon fa fa-play-circle"></i><span class="menu-label">Live now!</span></a></li>
+                  <li class="navigation__separator"></li>
+          <li class="navigation__item {% block archive_nav_active %}{% endblock %}"><a href="{% url "archive" %}"><i
+                  class="navigation__icon fa fa-video-camera"></i><span class="menu-label">Archive</span></a></li>
+                  <li class="navigation__separator"></li>
+          <li class="navigation__item {% block store_nav_active %}{% endblock %}"><a href="{% url "promotions:home" %}"><i class="navigation__icon fa fa-shopping-cart"></i><span class="menu-label">SmallsLIVE Store</span></a></li>
+          <li class="navigation__separator"></li>
+          <li class="navigation__item {% block info_nav_active %}{% endblock %}"><a href="{% url "contact-and-info" %}"><i class="navigation__icon fa fa-info-circle"></i>
+           <span class="menu-label">Info</span></a></li>
+          <li class="navigation__separator"></li>
+          <li class="navigation__item hide-on-search"><a href="https://www.mezzrow.com" target="_blank"><img id="mezzrow-logo-header" src="{% static 'image/mezzrow-logo-negative.svg' %}"></a></li>
+          <li class="navigation__separator hide-on-search"></li>
+          <li class="navigation__item nav-search">
+              <div class="search">
+                  <form action="{% url "artist_search" %}" method="get">
+                    <div class="form-group has-feedback" id="header-search-container">
+                      <input id="header--search" type="text" name="q" class="form-control search__input" placeholder="Search SmallsLIVE"/>
+                      <i class="fa fa-search form-control-feedback"></i>
+                    </div>
+                  </form>
+              </div>
+          </li>
+        </ul>
+      </nav>
+  </div>
+</header>
+<!-- end of regular header -->

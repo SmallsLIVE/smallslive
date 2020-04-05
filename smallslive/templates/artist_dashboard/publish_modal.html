@@ -1,0 +1,69 @@
+<div class="modal fade dashboard-publish" id="publishConfirm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal">
+            <div class="modal-body">
+                <p class="title2 accent-color">Publish</p>
+                <p class="title1">This event is currently private</p>
+                <p class="text4 text-justify">
+                    Making your performance public will add it to the archive making it available to the SmallsLIVE supporting members.
+                    You will be able to generate residual money from your performance as is laid out in the Artist Agreement.
+                    Learn more about the <a href="{% url 'revenue-share' %}" target="_blank" class="accent-color">Revenue Share</a>.
+                </p>
+                <div class="button-row button-row-margin">
+                    <button onclick="hidePublish()">Cancel</button>
+                    <button onclick="publishEvent()">Make Public</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="privateConfirm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal">
+            <div class="modal-body">
+                <p class="title2 accent-color">Publish</p>
+                <p class="title1">This event is currently published</p>
+                <p class="text4 text-justify">
+                    Making your performance private will remove it from the archive making it unavailable to the SmallsLIVE supporting members.
+                    You will not be able to generate any royalties from your performance.
+                    Learn more about the <a href="{% url 'revenue-share' %}" target="_blank" class="accent-color">Revenue Share</a>.
+                </p>
+
+                <div class="button-row button-row-margin">
+                    <button onclick="hideMakePrivate()">Cancel</button>
+                    <button onclick="publishEvent()">Make Private</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="publishSuccess" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal">
+            <div class="modal-body">
+                <p class="title2 accent-color">Publish</p>
+                <p class="title1">Your event is now <span class="success-state">public</span></p>
+                <div class="button-row button-row-margin">
+                    <button id="hide-scss-btn" onclick="hideSuccess()">Got it</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="downloadFormat" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal no-cancel">
+            <a href="#" class="close-button"></a>
+            <div class="modal-body">
+                <p class="title2 accent-color">Download</p>
+                <p class="title1">Select your choice</p>
+                <div class="table-container"></div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+{% for comment in object_list %}
+    <div class="comment">
+        {% if user.is_superuser %}     
+            <button data-value="{{ comment.id }}" class="remove-comment"></button>
+        {% endif %}
+        <div class="comment-head">
+            <i class="fa fa-comment"></i>
+            
+            <span class="comment-head-user text1">{{ comment.author.display_name }}</span>
+            <span class="text-grey text-lowercase text4">{{ comment.created_at|timesince }} ago</span>
+        </div>
+        <div class="comment-body text8">
+            {{ comment.content}}
+        </div>
+    </div>
+{% endfor %}

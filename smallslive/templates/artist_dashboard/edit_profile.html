@@ -1,4 +1,4 @@
-{% extends "artist_dashboard/base.html" %}
+{% extends "artist_dashboard/home.html" %}
 {% load crispy_forms_tags %}
 {% load static from staticfiles %}
 
@@ -6,8 +6,21 @@
   <script>
     var django = {jQuery: jQuery};
   </script>
-  {{ form.media }}
   <link href="{% static 'css/selectize.bootstrap3.css' %}" rel="stylesheet">
+  <link href="/static/image_cropping/css/jquery.Jcrop.min.css" type="text/css" media="all" rel="stylesheet" />
+  <link href="/static/image_cropping/css/image_cropping.css" type="text/css" media="all" rel="stylesheet" />
+  <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+  <!-- Image Cropping is removing jQuery, let's remember it -->
+  <script>
+    window.__jQuery = window.jQuery;
+    window.__$ = window.$;
+  </script>
+  <script type="text/javascript" src="/static/image_cropping/js/jquery.Jcrop.min.js"></script>
+  <script type="text/javascript" src="/static/image_cropping/image_cropping.js"></script>
+  <script>
+    window.jQuery = window.__jQuery;
+    window.$ = window.__$;
+  </script>
 {% endblock extra_head %}
 
 {% block edit-profile-active %}active{% endblock %}
@@ -15,84 +28,106 @@
 {% block title %}Edit my public profile{% endblock title %}
 
 {% block content %}
-  <section class="page-heading container">
-        <h1>Edit my public profile</h1>
-        <a target="_blank" class="page-heading__button-link" href="{{ request.user.artist.get_absolute_url }}">View on live site</a>
-   </section>
-  <section class="edit-public-profile container">
-      <form action="{% url "artist_dashboard:edit_profile" %}" method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <h2 class="edit-public-profile__heading">Basic information</h2>
-          <div class="row">
-              <div class="col-xs-12 col-sm-2">
-                  <div class="form-group {% if form.salutation.errors  %}has-error{% endif %}">
-                    {{ form.salutation.label_tag }}
-                    {{ form.salutation }}
-                    {% for error in form.salutation.errors %}
-                        <p class="form-error-text">{{ error  }}</p>
-                    {% endfor %}
-                  </div>
-              </div>
-              <div class="col-xs-12 col-sm-5">
-                  <div class="form-group {% if form.first_name.errors  %}has-error{% endif %}">
-                    {{ form.first_name.label_tag }}
-                    {{ form.first_name }}
-                    {% for error in form.first_name.errors %}
-                        <p class="form-error-text">{{ error  }}</p>
-                    {% endfor %}
-                  </div>
-              </div>
-              <div class="col-xs-12 col-sm-5">
-                  <div class="form-group {% if form.last_name.errors  %}has-error{% endif %}">
-                    {{ form.last_name.label_tag }}
-                    {{ form.last_name }}
-                    {% for error in form.last_name.errors %}
-                        <p class="form-error-text">{{ error  }}</p>
-                    {% endfor %}
-                  </div>
-              </div>
-          </div>
-          <div class="form-separator-light"></div>
-          <h2 class="edit-public-profile__heading">My instruments</h2>
-          <div id="div_id_instruments" class="form-group  {% if form.instruments.errors  %}has-error{% endif %}">
-              <label for="id_instruments" class="control-label ">Instruments</label>
-              {{ form.instruments }}
-              {% for error in form.instruments.errors %}
-                  <p class="form-error-text">{{ error  }}</p>
-              {% endfor %}
-          </div>
-          <div class="form-separator-light"></div>
-          <h2 class="edit-public-profile__heading">Biography</h2>
-          <div id="div_id_biography" class="form-group {% if form.biography.errors  %}has-error{% endif %}">
-              {{ form.biography }}
-              {% for error in form.biography.errors %}
-                  <p class="form-error-text">{{ error  }}</p>
-              {% endfor %}
-          </div>
-          <div class="form-separator-light"></div>
-          <div class="form-group {% if form.website.errors  %}has-error{% endif %}">
-                    {{ form.website.label_tag }}
-                    {{ form.website }}
-                    {% for error in form.website.errors %}
-                        <p class="form-error-text">{{ error  }}</p>
-                    {% endfor %}
-                  </div>
-          <div class="form-separator-light"></div>
-          <h2 class="edit-public-profile__heading">Photo</h2>
-          <div class="form-group {% if form.photo.errors  %}has-error{% endif %}">
-            {{ form.photo.label_tag }}
-            {{ form.photo }}
-            {% for error in form.photo.errors %}
-                <p class="form-error-text">{{ error  }}</p>
-            {% endfor %}
-          </div>
-          <div id="div_id_cropping" class="form-group {% if form.photo.errors  %}has-error{% endif %}">
-            <p class="help">Enable cropping</p>
-            {{ form.cropping }}
-          </div>
-          <input type="submit" name="submit" class="admin-interface__form__button" value="Save">
-      </form>
-  </section>
+    <div class="artist-profile-container edit flex-column items-flex-stretch">
+        <div class="flex-column">
+            
+            <section class="section-title" style="justify-content: space-between;     padding-right: 3.5vw;">
+                <div class="title1">Public profile</div>
+                <div>
+                    <a target="_blank" class="pull-right white-border-button"
+                    href="{{ request.user.artist.get_absolute_url }}">
+                        View on live site
+                    </a>
+                </div>
+            </section>
+        </div>
+        <section class="artist-form">
+            <form class="admin-interface__form" action="{% url 'artist_dashboard:edit_profile' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="flex-column" style="margin-top: 20px;">
+                    <div class="flex-row content-centered artist-info-container" style="flex-wrap: wrap">
+                        <div class="flex-column flex-grow artist-profile-picture">
+                            <div class="form-group {% if form.photo.errors %}has-error{% endif %}">
+                                <div id="image-upload-loading" class="loading hidden text-center">
+                                  <img width="60" src="{% static 'image/loading.gif' %}">
+                                </div>
+                                <div class="cropping-photo">
+                                  <div id="div_id_photo" class="form-group">
+                                    <div class="controls ">
+                                      {{ form.photo }}
+                                    </div>
+                                  </div>
+                                  <div id="div_id_cropping" class="form-group">
+                                    <div class="controls ">
+                                      {{ form.cropping }}
+                                      <label class="hidden">Enable cropping</label>
+                                    </div>
+                                  </div>
+                                  {{ form.image_id }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-column flex-grow">
+                            <div class="flex-row">
+                                <div class="form-group profile-first-name {% if form.first_name.errors %}has-error{% endif %}">
+                                    {{ form.first_name.label_tag }}
+                                    {{ form.first_name }}
+                                    {% for error in form.first_name.errors %}
+                                        <p class="form-error-text">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-group {% if form.last_name.errors %}has-error{% endif %}">
+                                    {{ form.last_name.label_tag }}
+                                    {{ form.last_name }}
+                                    {% for error in form.last_name.errors %}
+                                        <p class="form-error-text">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div id="div_id_instruments"
+                                 class="form-group  {% if form.instruments.errors %}has-error{% endif %}">
+                                <label for="id_instruments" class="control-label ">Instruments</label>
+                                {{ form.instruments }}
+                                {% for error in form.instruments.errors %}
+                                    <p class="form-error-text">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group {% if form.website.errors %}has-error{% endif %}">
+                                {{ form.website.label_tag }}
+                                {{ form.website }}
+                                {% for error in form.website.errors %}
+                                    <p class="form-error-text">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group {% if form.public_email.errors %}has-error{% endif %}">
+                                {{ form.public_email.label_tag }}
+                                {{ form.public_email }}
+                                {% for error in form.public_email.errors %}
+                                    <p class="form-error-text">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="title1" style="text-transform:uppercase">biography</h2>
+                        <div id="div_id_biography" class="form-group {% if form.biography.errors %}has-error{% endif %}">
+                            {{ form.biography }}
+                            {% for error in form.biography.errors %}
+                                <p class="form-error-text">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                <div class="flex-column items-center">
+
+                    <div class="button-row button-row-margin">
+                        <input type="submit" name="submit" value="Save">
+                        <button onclick="window.location = '{% url 'artist_dashboard:home' %}'">Cancel</button>
+                    </div>
+                </div>
+                </div>
+            </form>
+        </section>
+    </div>
 {% endblock content %}
 
 {% block extra_js %}
@@ -108,4 +143,9 @@
         }
     </script>
   {% endif %}
+  <script>
+    var uploadImagePreviewUrl = "{% url 'upload_image_preview' %}";
+    var csrfToken = "{{ csrf_token }}";
+  </script>
+  <script src="{% static 'js/search/artist_dashboard.js' %}"></script>
 {% endblock extra_js %}

@@ -1,0 +1,185 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load common_tags %}
+{% load i18n %}
+
+<section class=" new-calendar search-tab-content {% if archived %}archived{% else %}upcoming{% endif %} {{ archived|yesno:',shows-calendar' }} "
+         data-toggle-tab="{% if archived %}archived{% else %}upcoming{% endif %}-shows"
+         data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
+  <div class="title-and-filters-container">
+         
+    <div class="section-title home calendar upcoming-shows" style="margin-top: 30px;">
+      <div id="upcoming-shows" class="title1" data-last-event-date="{{ last_event.date }}">
+        Upcoming Shows <span class="accent-color">\</span>
+        <span id="upcoming-shows-date-from">{{ first_event.date|date:"b j" }}</span><span style="margin-left: 5px">-</span>
+        <span id="upcoming-shows-date-to">{{ last_event.date|date:"b j" }}</span>
+      </div>
+
+    </div>
+    <div class="calendar-filters desktop">
+      <div class="white-border-select club-filter-select">
+        <select id="calendar-club-filter">
+          <option value="all">All</option>
+          {% for venue in venues %}
+            <option value="{{venue.pk}}">{{venue.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="datepicker-container noclick">
+        <div class="custom-date-picker">
+          <input class="date-picker-text desktop" type="text" placeholder="Select date" readonly style="width: 100%;">
+        </div>
+      </div>
+      <div class="datepicker-btn white-border-button caret hover-fade upcoming" style="width: 150px; border-width: 2px;">Date</div>
+    </div>
+  </div>
+
+  <div class="flex-row upcoming-schedule">
+    {% include 'search/upcoming_calendar_dates.html' with day_list=day_list %}
+  </div>
+  <input  type="hidden" id="load-more-calendar" data-starting-date="{{ new_date }}" data-venue="all">
+
+</section>
+
+<script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
+<script>
+
+  var $datePickerBtn = $(".calendar-filters:visible .datepicker-btn");
+  var containerSelector = ".calendar-filters:visible .datepicker-container";
+  var $datePickerContainer = $(containerSelector);
+  var $datePickerCalendar = $(".calendar-filters:visible .custom-date-picker input");
+  var startDate = new Date();
+  var nextDate = startDate;
+  var venue = "all";
+
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+
+  var queryFromScroll;
+
+  $(window).on('load', function () {
+
+    $datePickerCalendar.datepicker({
+      format: "mm/dd/yyyy",
+      autoclose: true,
+      container: ".calendar-filters:visible .custom-date-picker",
+      showOnFocus: false,
+      startDate: startDate,
+      endDate: new Date("{{ last_event.date }}")
+    });
+
+    $datePickerCalendar.on("changeDate", function (event) {
+      nextDate = event.date;
+      startDate = nextDate;
+      getCalendarAjax(15, true);
+      toggleDisplay(this);
+    });
+
+    $datePickerBtn.on("click", toggleDisplay);
+    $(document).on("click", hide);
+
+    function toggleDisplay(event) {
+      if ($datePickerContainer.data("shown")) {
+        hide(event);
+      } else {
+        display()
+      };
+    }
+
+    function display() {
+
+      $datePickerContainer.css({
+        left: datePickerLeft,
+        top: datePickerTop
+      });
+      $datePickerContainer
+        .css("display", "flex");
+
+      $datePickerContainer.data("shown", true);
+      $datePickerCalendar.datepicker("show");
+      $datePickerCalendar.prop("disabled", true);
+      $datePickerCalendar.focus();
+
+    }
+
+    function hide(event) {
+      var $target = $(event.target);
+      if (
+        $target.closest(".noclick").length == 0 &&
+        !($target.hasClass("day") || $target.hasClass("year"))
+      ) {
+        if (!$target.hasClass("datepicker-btn")) {
+          $datePickerContainer.hide().data("shown", false);
+        }
+      }
+    }
+  });
+
+  function getCalendarAjax(days, filtered, callback) {
+    var data = {'days': days, 'venue': venue};
+
+    var day = nextDate.getDate();
+    var monthIndex = nextDate.getMonth() + 1;
+    var year = nextDate.getFullYear();
+    data['starting_date'] = year + '-' + monthIndex + '-' + day;
+
+
+    $.ajax({
+      url: '/search/upcoming-ajax/',
+      data: data,
+      dataType: "json",
+      success: function (data) {
+        if (filtered)  {
+          $(".flex-column.day-list").remove()
+          $(".upcoming-schedule").html(data.template);
+        } else {
+          $(".upcoming-schedule").find(".flex-column.day-list").last().after(data.template);
+        }
+        $("#load-more-calendar").data("starting-date", data.new_date);
+        var dateLabel = monthNames[startDate.getMonth()] + " " + startDate.getDate();
+        $("#upcoming-shows-date-from").text(dateLabel);
+        if (typeof callback === "function") {
+          callback();
+        }
+      },
+      error: function(err) {
+        console.log(err);
+        if (typeof callback === "function") {
+          callback(err);
+        }
+      }
+    });
+  }
+
+  $(window).scroll(function () {
+    if (queryFromScroll) {
+      return;
+    }
+    if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
+      $loadMore = $("#load-more-calendar");
+      var lastEventDate = $("#upcoming-shows").data("last-event-date");
+      lastEventDate = new Date(lastEventDate);
+      nextDate = $loadMore.data("starting-date");
+      var parts = nextDate.split('-');
+      nextDate = new Date(parts[0], parts[1] - 1, parts[2]);
+      if (nextDate < lastEventDate) {
+        queryFromScroll = true;
+        getCalendarAjax(15, false, function (err) {
+          if (!err) {
+            queryFromScroll = false;
+          }
+        });
+      }
+    };
+  });
+
+  $("#calendar-club-filter").change(function () {
+    $("#load-more-calendar").data("venue", $(this).find("option:selected").val());
+    venue = $(this).find("option:selected").val();
+    nextDate = startDate;
+    getCalendarAjax(12, true);
+  });
+
+</script>
+  

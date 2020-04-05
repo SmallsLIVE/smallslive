@@ -1,6 +1,7 @@
 {% extends "oscar/dashboard/catalogue/product_update.html" %}
 {% load i18n %}
 {% load static from staticfiles %}
+{% load thumbnail %}
 
 {% block extrastyles %}
     {{ block.super }}
@@ -8,12 +9,137 @@
 {% endblock %}
 
 {% block tabs %}
-    {{ block.super }}
+    {% if product %}
+        <li class="active"><a href="#overview" data-toggle="tab">{% trans 'Overview' %}</a></li>
+    {% endif %}
+    <li><a href="#product_details" data-toggle="tab">{% trans 'Product details' %}</a></li>
+    {% if not parent %}
+        <li><a href="#product_category" data-toggle="tab">{% trans 'Categories' %} </a></li>
+    {% endif %}
+    {% if product_class.has_attributes %}
+        <li><a href="#product_attributes" data-toggle="tab">{% trans 'Attributes' %}</a></li>
+    {% endif %}
+    {% if not parent %}
+        <li><a href="#product_images" data-toggle="tab">{% trans 'Images' %}</a></li>
+    {% endif %}
+    {% if not product.is_parent %}
+        <li><a href="#product_stock" data-toggle="tab">{% trans 'Stock and pricing' %}</a></li>
+    {% endif %}
+    {% if user.is_staff and not parent %}
+        <li><a href="#child_products" data-toggle="tab">{% trans 'Variants' %}</a></li>
+    {% endif %}
+    {% if not parent %}
+        <li><a href="#product_recommended" data-toggle="tab">{% trans 'Upselling' %}</a></li>
+    {% endif %}
+
     {% if track_formset %}
-        <li><a href="#tracks" data-toggle="tab">Tracks</a></li>
+        <li><a href="#tracks" data-toggle="tab">{% trans 'Tracks' %}</a></li>
+    {% endif %}
+    {% if product_class.name = "Album" or product_class.name = "Track" %}
+        <li><a href="#artist" data-toggle="tab">{% trans 'Artist List' %}</a></li>
     {% endif %}
 {% endblock %}
 
+{% block product_details %}
+    {% if product %}
+        <div class="tab-pane active" id="overview">
+            <div class="table-header">
+                <h3>{% trans "Overview" %}</h3>
+            </div>
+            {% block product_overview_content %}
+            <div class="well">
+                <h3>{{ product.get_title }}</h3>
+                <hr />
+                <div class="row-fluid">
+                    {% block product_overview_content_image %}
+                    <div class="span4">
+                        {% if product.primary_image.original.url %}
+                            {% with image=product.primary_image %}
+                                    <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class="thumbnail">
+                                        <img src="{{ thumb.url }}" class="row-fluid" alt="{{ product.get_title }}" data-description="{% if image.caption %}{{ image.caption }}{% endif %}">
+                                    </a>
+                            {% endwith %}
+                        {% endif %}
+                    </div>
+                    {% endblock %}
+                    {% block product_overview_content_stats %}
+                    <div class="span8">
+                        <p><strong>{% trans "Description" %}</strong><br /> {{ product.description|safe }}</p>
+
+                            {% with stats=product.stats %}
+                                <table class="table table-striped table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th>{% trans "Views" %}</th>
+                                            <td>{{ stats.num_views|default:0 }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{% trans "Baskets" %}</th>
+                                            <td>{{ stats.num_basket_additions|default:0 }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{% trans "Purchases" %}</th>
+                                            <td>{{ stats.num_purchases|default:0 }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            {% endwith %}
+                        </div>
+                    </div>
+                    {% endblock %}
+                </div>
+                <div class="row-fluid">
+                    {% block product_overview_content_categories %}
+                    <div class="span6">
+                        <div class="table-header">
+                            <h3>{% trans "Categories" %}</h3>
+                        </div>
+                        <table class="table table-striped table-bordered">
+                            {% for category in product.categories.all %}
+                                <tr><td>{{ category.full_name }}</td></tr>
+                            {% empty %}
+                                <tr><td>{% trans "No categories setup for this product" %}</td></tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    {% endblock %}
+                    {% block product_overview_content_ranges %}
+                    <div class="span6">
+                        <div class="table-header">
+                            <h3>{% trans "Ranges" %}</h3>
+                        </div>
+                        <table class="table table-striped table-bordered">
+                            {% for range in product.includes.all %}
+                                <tr><td><a href="{% url 'dashboard:range-update' pk=range.id %}" alt="{{ range.name }}">{{ range.name }}</a></td></tr>
+                            {% empty %}
+                                <tr><td>{% trans "No ranges currently include this product for this product" %}</td></tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    {% endblock %}
+                </div>
+            {% endblock product_overview_content %}
+        </div>
+    {% endif %}
+    <div class="tab-pane" id="artist">
+        {% block artist_content %}
+            <table class="table table-striped table-bordered form-inline">
+                <caption>{% trans "Artist" %}</caption>
+                {{ artist_formset.management_form }}
+                {{ artist_formset.non_form_errors }}
+                {% for artist_form in artist_formset %}
+                    <tr>
+                        <td>
+                            {% include "partials/form_fields_inline.html" with form=artist_form %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endblock artist_content %}
+    </div>
+
+    {{ block.super }}
+{% endblock %}
 {% block child_products %}
     {% with children=product.children.all %}
         <div class="tab-pane" id="child_products">

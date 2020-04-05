@@ -1,0 +1,184 @@
+{% load schemaless_url %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% include 'subscriptions/popups/artist_support_confirmation_dialog.html' %}
+
+<div  class="content-centered clearfix" style="width: 100%;">
+  <div class="artist-search-profile-bio-buttons__container hidden-xs hidden-sm">
+    <div class="artist-search-profile-bio-buttons flex-row">
+      {% if archived and upcoming or archived and artist.albums %}
+        <button data-toggle-tab-group="search-results" data-toggle-tab-target="archived-shows" id="archive-shows-button" class="white-border-button hover-fade active">Archived Shows</button>
+      {% endif %}
+      {% if upcoming and archived or upcoming and artist.albums %}
+        <button data-toggle-tab-group="search-results" data-toggle-tab-target="upcoming-shows" id="upcoming-shows-button" class="white-border-button hover-fade">Upcoming Shows</button>
+      {% endif %}
+      <button data-toggle-tab-group="search-results" data-toggle-tab-target="smallslive-tracks" id="smallslive-tracks-button" class="white-border-button hover-fade {% if not artist.albums %} hidden {% endif %}">Smallslive Tracks</button>
+    </div>
+    <!-- <a href="#" class="close-button" onclick="window.history.back()"></a> -->
+  </div>
+  <div class="artist-search-profile-resume">
+    <input id="artist-profile-artist-pk" type="hidden" value="{{ artist.pk }}">
+
+    <!--
+    <div class="mobile-padding visible-xs visible-sm visible-md">
+        <div class="text1">
+            Total shows: <span class='accent-color'>{{ artist.archive_shows }}</span>
+        </div>
+        {% if artist.public_email %}
+            <div>
+                <p class="text4 text-uppercase">Email: <a href="mailto:{{ artist.public_email }}">{{ artist.public_email }}</a></p>
+            </div>
+        {% endif %}
+        {% if artist.website %}
+            <div>
+                <p class="text4 text-uppercase">Website: <a href="{{ artist.website }}" class="text-lowercase" target="_blank" rel="noreferrer">{{ artist.website|schemaless_url }}</a></p>
+            </div>
+        {% endif %}
+        <div class="text4 artist-search-profile-bio collapsed">
+            {% if artist.biography %}
+                {{ artist.biography|safe|striptags }}
+            {% else %}
+                This artist does not have a bio yet.
+            {% endif %}
+        </div>
+        {% if artist.biography %} <span class="read-more text4 text-grey">Read more</span> {% endif %}
+    </div>
+    //-->
+
+    <!-- beginning of artist header ( image, name, instrument, # shows, website, email) -->
+    <div class="artist-search-profile__header">
+      <div class="artist-search-profile-image">
+        {% if artist.photo %}
+            {% include 'partials/search_artist_profile_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
+        {% else %}
+            {% include 'partials/search_artist_profile_picture.html' with photo_url="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" crop_box=artist.photo_crop_box %}
+        {% endif %}
+        {% if user.is_authenticated and user.has_activated_account %}
+          <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">sponsor</button>
+        {% elif user.is_authenticated %}
+          <button onclick="$('#inactive-dialog').modal('show');" class="white-border-button" style="display: inline;">sponsor</button>
+        {% else %}
+          <button onclick="$('#becomeMemberDialog').modal('show');" class="white-border-button" style="display: inline;">sponsor</button>
+        {% endif %}
+      </div>
+      <div class="flex-column white-line-right">
+        <div>
+          <div class="musician-title mobile-padding">
+              {{ artist.full_name }}
+          </div>
+        </div>
+        <div class="white-line-bottom thicker visible-xs visible-sm visible-md"></div>
+        <div class="flex-row artist-search-profile__subtitle">
+          <div class="musician-instrument mobile-padding">{{ artist.get_main_instrument_name }}</div>
+          <div class="text1 show-in-archive">
+              Total shows: <span class='accent-color'>{{ artist.archived_shows  }}</span>
+          </div>
+        </div>
+        <div class="white-line-bottom medium hidden-xs hidden-md hidden-sm"></div>
+        <div class="artist-details__container mobile-padding">
+          {% if artist.public_email %}
+            <div class="artist-details-email">
+              <p class="text4 text-uppercase">Email: <a href="mailto:{{ artist.public_email }}">{{ artist.public_email }}</a></p>
+            </div>
+          {% endif %}
+          {% if artist.website %}
+            <div class="artist-details-website">
+              <p class="text4 text-uppercase">Website: <a href="{{ artist.website }}" rel="noreferrer noopener" target="_blank">{{ artist.website|schemaless_url }}</a></p>
+            </div>
+          {% endif %}
+          <!--
+          <div class="close-button-container visible-xs visible-sm visible-md">
+            <a href="#" class="close-button" onclick="window.history.back()"></a>
+          </div>
+          //-->
+        </div>
+      </div>
+    </div>
+    <!-- end of artist header -->
+
+  </div>
+
+  <!-- artist bio -->
+  <div class="artist-search-profile-bio-container">
+    <div>
+      <div class="artist-search-profile-bio collapsed text4">
+        {% if artist.biography %}
+            {{ artist.biography|striptags|safe }}
+        {% else %}
+            This artist does not have a bio yet.
+        {% endif %}
+      </div>
+      {% if artist.biography %} <span class="read-more text4 text-grey">Read more</span> {% endif %}
+    </div>
+  </div>
+
+</div>
+
+<div class="tabs artist-tabs">
+  {% if archived and upcoming or archived and artist.albums %}
+    <div class="active" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
+      <span class="title1">Archived</span>
+    </div>
+  {% else %}
+    <div>
+      <span class="title1"></span>
+    </div>
+  {% endif %}
+  {% if upcoming and archived or upcoming and artist.albums %}
+    <div data-toggle-tab-target="upcoming-shows" data-toggle-tab-group="search-results">
+      <span class="title1">Upcoming</span>
+    </div>
+  {% else %}
+    <div>
+      <span class="title1"></span>
+    </div>
+  {% endif %}
+  {% if artist.albums %}
+    <div data-toggle-tab-target="smallslive-tracks" data-toggle-tab-group="search-results">
+      <span class="title1">Tracks</span>
+    </div>
+  {% endif %}
+</div>
+
+<div id="smallslive-tracks" data-toggle-tab="smallslive-tracks" style="display: none;"  data-toggle-tab-group="search-results">
+  <div class="section-title musicians-results">
+    <div class="title1 shows-results-title">Smallslive Tracks</div>
+  </div>
+  <div class="all-artist-tracks flex-row">
+    {% if artist.albums %}
+      {% for artistproduct in artist.albums %}
+        {% include "catalogue/partials/product.html" with product=artistproduct.product %}
+      {% endfor %}
+    {% else %}
+      <div class="no-result-container text2">No results</div>
+    {% endif %}
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function () {
+    $(".read-more").click(function () {
+      var $bio = $('.artist-search-profile-bio');
+      if ($bio.hasClass('collapsed')) {
+        $bio.removeClass('collapsed');
+        $(this).text('less');
+      } else {
+        $bio.addClass('collapsed');
+        $(this).text('read more');
+      }
+    });
+
+
+    $(document).on("click", "#confirmDonationButton", function () {
+      var artisId = {{ artist.pk }};
+      window.location = "{% url 'artist_support' %}?artist_id={{ artist.pk }}";
+    });
+
+    var $donationConfirmationDialog = $("#supportConfirmationDialog");
+    $('#one-time-donation-btn').on('click', function () {
+      $donationConfirmationDialog.modal("show");
+    });
+   });
+</script>

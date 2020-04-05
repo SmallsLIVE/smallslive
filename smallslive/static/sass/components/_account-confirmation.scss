@@ -1,0 +1,59 @@
+
+.email-confirm {
+
+  p.title1 {
+
+    font-size: calc(5vw - 6px);
+    line-height: calc(4.3vw - 3px);
+    border-bottom: 4px solid white;
+    /*will need to calulate margin-top by hand to complete*/
+    margin: calc(3.083vw - 8.9px) auto;
+    letter-spacing: 0px;
+    width: calc(76vw - 6px);
+    text-align: center;
+    max-width: 840px;
+
+    @media (max-width: 960px) {
+      font-size: calc(3.75vw + 6.5px);
+      line-height: calc(3.4375vw + 5.16px);
+      width: calc(64.0625vw + 95px);
+      margin: 18px 0 calc(2.083vw - 3.9px) 0;
+      border-bottom-width: calc(.15625vw + 2.5px);
+    }
+    @media (min-width: 960px) {
+      font-size: calc(3.3333vw + 10px);
+      line-height: calc(3.333vw + 6px);
+      width: calc(54.1666vw + 190px);
+      margin-bottom: calc(2.083vw - 8.9px);
+    }
+    @media (min-width: 1200px) {
+      font-size: 5rem;
+      line-height: 4.4rem;
+      margin-bottom: 1.6rem;
+    }
+  }
+
+  div.content {
+
+    max-width: 800px;
+    width: calc(41.666vw + 300px);
+    text-align: left;
+
+    p {
+
+      margin: 1vw auto;
+      font-size: 2.4em;
+
+      @media (max-width: 960px) {
+        font-size: calc(1.093vw + 13.5072px);
+        width: calc(65.625vw + 70px);
+      }
+    }
+
+  }
+
+  button{
+    margin: 1vw auto;
+  }
+
+}

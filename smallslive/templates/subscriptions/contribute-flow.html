@@ -1,0 +1,89 @@
+{% extends 'subscriptions/supporter_base.html' %}
+{% load static from staticfiles %}
+{% load full_static %}
+{% load djstripe_tags %}
+
+{% block home_content %}
+  {% block confirmation_modals %}
+  {% endblock %}
+  <div class="flex-column supporter-main-container">
+      {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
+    <div class="supporter-image">
+        <div style="
+        background-image:url( {% static 'image/supporter-background.jpg' %} ); background-size: cover; position: absolute; width: 100%; height: 100%; z-index: -1; left:0;
+
+                ">
+        </div>
+        <div class="banner-blur-container"></div>
+    </div>
+    {% block flow_title %}
+    {% endblock %}
+    <div class="flex-column items-center items-wrapper">
+      {% block flow_steps %}
+      {% endblock %}
+      {% block flow_payment %}
+      <div id="supporterStepBilling" class="supporter-step" style="display: none">
+        <div class="flex-column flex-grow payment-information">
+          <div class="flex-column">
+            <div class="section-title section-title-no-padded">
+              <div class="title7">Payment Information</div>
+            </div>
+          </div>
+          <div class="supporter-card-data">
+            <div id="paypal-button"></div>
+            <form method="POST" role="form" id="formSupporter"
+                  action="{{ form_action }}">
+              {% csrf_token %}
+              <input type="text" id="hiddenTypeInput" name="type" hidden>
+              <input type="number" id="hiddenAmountInput" name="amount" hidden>
+              <input type="text" name="redirect_url" value="{{ redirect_url }}"hidden>
+              <div class="flex-column content-space-between flex-grow">
+                <div class="flex-row content-space-between">
+                  <input id="full-name" type="text" class="form-control credit-card" placeholder="Full Name on Credit Card" data-stripe="name">
+                  <input type="text" class="form-control quarter-group" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month">
+                  <input type="text" class="form-control quarter-group" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
+                </div>
+                <div class="flex-row content-space-between">
+                  <input type="text" class="form-control"  id="card-number" placeholder="Credit Card Number"
+                         size="20" pattern="[\d ]*" autocomplete="off" data-stripe="number" name="number">
+
+                  <input type="text" class="form-control half" id="cvc" placeholder="CVC" size="4" pattern="\d*" autocomplete="off" data-stripe="cvc" name="cvc">
+                </div>
+                <div class="form-group">
+                  <p class="form-error-text hidden" id="type-error"></p>
+                  <p class="form-error-text hidden" id="quantity-error"></p>
+                  <p class="form-error-text hidden" id="card_name-error"></p>
+                  <p class="form-error-text hidden" id="expiration_date-error"></p>
+                  <p class="form-error-text hidden" id="credit_card_number-error"></p>
+                  <p class="form-error-text hidden" id="credit_card_cvc-error"></p>
+                  <p class="form-error-text hidden" id="all-errors"></p>
+                </div>
+              </div>
+            </form>
+            <div id="form-general-error" class="accent-color text-center text3"></div>
+            <div class='card-wrapper'></div>
+          </div>
+        </div>
+      </div>
+      {% endblock %}
+      {% if completed %}
+      {% block flow_completed %}
+      {% endblock %}
+      {% endif %}
+
+    </div>
+    <div class="button-row button-row-margin-all confirm-button">
+
+      {% block flow_confirm %}
+      {% endblock %}
+
+    </div>
+    {% if not completed %}
+      <div id="sentHint" class="processing-message" hidden>
+        <p class="text4 text-grey">Processing...Do not close window.</p>
+      </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+

@@ -8,127 +8,13 @@
 {% block title %}Event details for {{ event.title }}{% endblock %}
 
 {% block content %}
-  <section class="page-heading-event flexbox-equal-height-nocenter container">
-      <div class="col-xs-12 col-sm-8 page-heading-event__info">
-          <p class="page-heading-event__name">{{ event.full_title }}</p>
-          <p class="page-heading-event__date">{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</p>
-          <p class="page-heading-event__label">With:</p>
-          <p class="page-heading-event__artists">
-              {% for gig_info in event.get_performers %}
-                  {{ gig_info.artist.full_name }} <span class="instrument">({{ gig_info.role }})</span>{% if not forloop.last %}  // {% endif %}
-              {% endfor %}
-          </p>
-      </div>
-      <div class="col-xs-12 col-sm-4 hidden-xs page-heading-event__image" style="background-image: url('{% if event.photo %}{% thumbor_url event.photo.url|urlencode height=320 width=320 smart=True %}{% else %}{% static 'image/no-event-photo-thumbnail.jpg' %}{% endif %}');"></div>
-  </section>
-  <div id="event-media">
-  {% if audio %}
-  <section class="event-media container">
-      <h2 class="event-media__heading">Event audio:</h2>
-      <ul class="event-media__list">
-          <!-- single media -->
-        {% for recording in audio %}
-          <li class="event-media__single flexbox-equal-height">
-              <div class="col-xs-12 col-sm-4 flexbox-equal-height">
-                  <div class="event-media__single__icon {$ published_{{ recording.id }} == 'Published' ? 'published' : 'private' $} flexbox-equal-height">
-                      <i class="fa fa-volume-down"></i>
-                  </div>
-                  <div class="event-media__details">
-                      <p class="event-media__title">{{ recording.media_file.file.name }}</p>
-                      <p class="event-media__meta">{{ recording.media_file.size|filesizeformat }}</p>
-                  </div>
-              </div>
-            {% if is_leader %}
-              <div class="event-media__controls col-xs-12 col-sm-4">
-                  <a href="{{ recording.media_file.get_downloadable_file_url }}" download class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                    <form action="{% url "artist_dashboard:recording_toggle" pk=recording.id %}" method="post" v-el="form_{{ recording.id }}">
-                      <button class="event-media__control {$ published_{{ recording.id }} == 'Published' ? 'make-private' : 'publish' $}"
-                         v-on="click: toggleState('{{ recording.id }}')"><span></span></button>
-                      {% csrf_token %}
-                      <input type="hidden" name="state" value="{{ recording.state }}" v-model="published_{{ recording.id }}" />
-                    </form>
-              </div>
-            {% endif %}
-              <div class="event-media__player col-xs-12 col-sm-4">
-                  <div class="jwplayer-placeholder" id="audio_{{ recording.id }}" data-audio="{{ recording.media_file.get_file_url }}">jwplayer goes here</div>
-              </div>
-          </li>
-        {% endfor %}
-      </ul>
-  </section>
-  {% endif %}
-  {% if video %}
-  <section class="event-media container">
-      <h2 class="event-media__heading">Event video:</h2>
-      <ul class="event-media__list">
-        {% for recording in video %}
-          <!-- single media -->
-          <li class="event-media__single flexbox-equal-height">
-              <div class="col-xs-12 col-sm-4 flexbox-equal-height">
-                  <div class="event-media__single__icon published flexbox-equal-height">
-                      <i class="fa fa-video-camera"></i>
-                  </div>
-                  <div class="event-media__details">
-                      <p class="event-media__title">{{ recording.media_file.file.name }}</p>
-                      <p class="event-media__meta">{{ recording.media_file.size|filesizeformat }}</p>
-                  </div>
-              </div>
-            {% if is_leader %}
-              <div class="event-media__controls col-xs-12 col-sm-4">
-                  <a href="{{ recording.media_file.get_downloadable_sd_video_url }}" download class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                    <form action="{% url "artist_dashboard:recording_toggle" pk=recording.id %}" method="post" v-el="form_{{ recording.id }}">
-                      <button class="event-media__control {$ published_{{ recording.id }} == 'Published' ? 'make-private' : 'publish' $}"
-                         v-on="click: toggleState('{{ recording.id }}')"><span></span></button>
-                      {% csrf_token %}
-                      <input type="hidden" name="state" value="{{ recording.state }}" v-model="published_{{ recording.id }}" />
-                    </form>
-              </div>
-            {% endif %}
-              <div class="event-media__player col-xs-12 col-sm-4">
-                  <a href="#" class="event-media__download jwplayer-video" data-target="#videoPlayerModal" data-toggle="modal" data-video="{{ recording.media_file.get_sd_video_url }}"><i class="fa fa-play-circle"></i><span>Watch video</span></a>
-              </div>
-          </li>
-        {% endfor %}
-      </ul>
-  </section>
-  {% endif %}
-
-  </div>
-  <section class="event-media artists-status container">
-      <h2 class="event-media__heading">Contracts status:</h2>
-      <ul class="contracts-list">
-        {% for gig_info in event.artists_gig_info.all %}
-          <li><i class="fa fa-check-circle {% if gig_info.artist.user.legal_agreement_acceptance %}signed{% endif %}">
-          </i>{% if request.user == gig_info.artist.user %}Me{% else %}{{ gig_info.artist.full_name }}{% endif %}
-            {% if gig_info.is_leader %}<span class="contracts-list__is-leader">leader</span>{% endif %}</li>
-        {% endfor %}
-      </ul>
-  </section>
-
-<div class="modal event-video-modal fade" id="videoPlayerModal" tabindex="-1" role="dialog" aria-labelledby="VideoPlayerModal"
-     aria-hidden="true">
-  <div class="modal-dialog event-video">
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
-    <style>
-      .embed-container {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
-      max-width: 100%;
-    }
-
-    .embed-container iframe, .embed-container object, .embed-container embed {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }</style>
-    <div id='embed-container'>
+    <div class="flex-column items-center">
+        <h1 class="title2 accent-color">Archived Event</h1>
+        <div class="text-grey title2">
+            {% if event.get_venue_name %}{{ event.get_venue_name }} | {% endif %} {{ event.start|date:"F j, Y" }} | {{ event.start|date:"g:i A" }} & {{ event.end|date:"g:i A" }}
+        </div>
     </div>
-  </div>
-</div>
+
 {% endblock content %}
 
 {% block extra_js %}

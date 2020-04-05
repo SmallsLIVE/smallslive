@@ -16,14 +16,8 @@
 {% block content %}
   {{ block.super }}
 
-  <section class="event-edit container">
-    <form method="post" class="admin-interface__form" enctype="multipart/form-data">
-      {% crispy form %}
-      <div class="buttonHolder">
-        <input type="submit" name="submit" value="Save event" class="admin-interface__form__button"
-               id="submit-id-submit">
-      </div>
-    </form>
+  <section class="aritst-event-edit container">
+      {% include 'artist_dashboard/event_edit_form.html' %}
   </section>
 {% endblock content %}
 
@@ -32,12 +26,33 @@
   <script type="text/javascript" src="{% static 'js/selectize.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
-  <script src="{% static "js/event_form.js" %}"></script>
+  <script src="{% static 'js/event_form.js' %}"></script>
   <script>
     var show_times = {{ show_times|safe }};
     $(document).ready(function() {
       EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
       EventForm.init(false);
+
+      $('input[type="file"]').change(function (event)  {
+        var $form = $('#event-edit-frm');
+        var data = new FormData($form.get(0));
+        $.ajax({
+            url: "{% url 'upload_image_preview' %}",
+            type: "POST",
+            data: data,
+            enctype: 'multipart/form-data',
+            processData: false,  // Important!
+            contentType: false,
+            cache: false,
+            success: function (data) {
+              if (data.success) {
+                $('#div_id_photo img').attr('src', data.src);
+              }
+            }
+        });
+      });
+
+
     });
   </script>
 {% endblock %}

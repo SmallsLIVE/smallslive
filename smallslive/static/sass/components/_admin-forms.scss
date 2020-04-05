@@ -1,5 +1,5 @@
 .admin-interface {
-  background-color: #FFFFFF;
+  /* background-color: #FFFFFF; */
   padding: 30px 20px 40px;
 
   &__group-separator {
@@ -23,12 +23,22 @@
   &__main-title {
     @include lato-black;
     font-size: 32px;
-    color: $main-accent-color;
+    color: black;
     line-height: 130%;
     margin-bottom: 20px;
   }
 
   &__form {
+
+    textarea {
+      width: 100%;
+    }
+
+    #div_id_photo {
+      a {
+        display: none;
+      }
+    }
 
     &__heading {
       @include lato-black;
@@ -47,48 +57,68 @@
         font-size: 12px;
         color: $main-accent-color;
       }
-    }
 
-    & .form-control, & .selectize-input {
-        @include lato;
-        font-size: 16px;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 0;
-
-        &.focus {
-          border-radius: 0;
-          outline: none;
-          border-color: $main-accent-color;
-          -webkit-box-shadow: none;
-          -moz-box-shadow: none;
-          box-shadow: none;
+      &.white-border-button {
+        width: 150px;
+        input {
+          position: absolute;
+          top: -1000px;
         }
 
-        &.textarea {
-          min-height: 200px;
+        &.photo {
+          width: auto;
         }
       }
 
+      #div_id_cropping {
+        label {
+          display: none;
+        }
+      }
+
+    }
+
+    & .form-control,
+    & .selectize-input {
+      @include lato;
+      font-size: 16px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 0;
+
+      &.focus {
+        border-radius: 0;
+        outline: none;
+        border-color: $main-accent-color;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+      }
+
+      &.textarea {
+        min-height: 200px;
+      }
+    }
+
     & input[type="checkbox"] {
-        float: left;
-        clear: left;
-        display: block;
+      float: left;
+      clear: left;
+      display: block;
     }
 
     & .checkbox-label {
-        @include lato;
-        font-size: 14px;
-        display: block;
-        margin-bottom: 10px;
-      }
+      @include lato;
+      font-size: 14px;
+      display: block;
+      margin-bottom: 10px;
+    }
 
     & .btn {
       @include lato;
       background-color: #ccc;
       border-radius: 0;
       border: none;
-      color: #6F6F6F;
+      color: #6f6f6f;
       padding: 10px 20px;
       font-size: 14px;
       margin-right: 10px;
@@ -124,7 +154,8 @@
       border-radius: 5px;
       @include transition(all 0.3s ease-in-out);
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         padding: 10px 30px;
       }
     }
@@ -146,11 +177,11 @@
 
       & thead {
         @include lato-bold;
-        color: #4A4A4A;
-        background-color: #EEEEEE;
+        color: #4a4a4a;
+        background-color: #eeeeee;
         font-size: 12px;
         padding: 10px;
-        border-bottom: 1px solid #DDDDDD;
+        border-bottom: 1px solid #dddddd;
       }
 
       & tbody {
@@ -159,20 +190,22 @@
 
       & tr {
         vertical-align: middle;
-        background-color: none;
-        border-bottom: 1px solid #DDDDDD;
+        background-color: rgba(240, 240, 235, 0.9);
+        border-bottom: 1px solid #dddddd;
       }
 
       & td {
         vertical-align: middle;
       }
 
-      & .form-control, & .selectize-input {
+      & .form-control,
+      & .selectize-input {
         margin: 0;
         @include lato;
       }
 
-      & .fa, & .artist-remove {
+      & .fa,
+      & .artist-remove {
         display: block;
         width: 100%;
         text-align: center;
@@ -196,7 +229,8 @@
     }
   }
 
-  & .artists-table__button {
+  & .artists-table__button,
+  & .event-sets-table__button {
     background-color: $main-accent-color;
     color: #fff;
     margin-top: -10px;
@@ -224,11 +258,11 @@
       @include lato;
 
       &.txt-warning {
-        color: #DC9231;
+        color: #dc9231;
       }
 
       &.txt-success {
-        color: #5FA051;
+        color: #5fa051;
       }
 
       &.txt-alert {
@@ -241,4 +275,12 @@
       }
     }
   }
+}
+
+.bootstrap-datetimepicker-widget {
+  min-width: 300px;
+}
+
+#hint_id_cropping {
+  display: none;
 }

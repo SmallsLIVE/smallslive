@@ -1,6 +1,7 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
+{% load addurlparameter %}
 
 {% block title %}SmallsLIVE Audio/Video Archive{% endblock %}
 
@@ -33,6 +34,18 @@
           <a href="{% url "signup_landing" %}" class="archive-new__header-cta__cta">Membership options</a>
         </section>
       {% endif %}
+      <section class="archive__venue_filter">
+        <div class="homepage-date-browser__venue_filter">
+          <h2>Filter by venue:</h2>
+          <div class="homepage-date-browser__venue_filter__venues">
+            {% for venue in venues %}
+              <a href="{% addurlparameter 'venue' venue.id %}"
+                 {% if venue.id == venue_selected %}class="active"{% endif %}>{{ venue.name }}</a>
+            {% endfor %}
+            <a href="{% addurlparameter 'venue' None %}" {% if not venue_selected %}class="active"{% endif %}>All</a>
+          </div>
+        </div>
+      </section>
 
       <section class="archive-new__carousel container">
         <ul class="archive-new__carousel__switches">
@@ -54,12 +67,13 @@
               <a href="{{ event.get_absolute_url }}" class="archive-new__carousel__item__container">
                 {% if event.photo %}
                   <img class="event-image"
-                       src="{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}">
+                       src="{% thumbor_url event.get_photo_url|urlencode height=300 width=350 smart=True %}">
                 {% else %}
                   <img class="event-image" src="{% static 'image/no-event-photo-thumbnail--archive-carousel.jpg' %}">
                 {% endif %}
                 <span class="event-date">{{ event.start|date:"n/j/Y" }}</span>
                 <h4 class="event-name">{{ event.title }}</h4>
+                <h4 class="event-venue">{{ event.get_venue_name }}</h4>
               </a>
             </div>
           {% endfor %}
@@ -72,12 +86,13 @@
               <a href="{{ event.get_absolute_url }}" class="archive-new__carousel__item__container">
                 {% if event.photo %}
                   <img class="event-image"
-                       src="{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}">
+                       src="{% thumbor_url event.get_photo_url|urlencode height=300 width=350 smart=True %}">
                 {% else %}
                   <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
                 {% endif %}
                 <span class="event-date">{{ event.start|date:"n/j/Y" }}</span>
                 <h4 class="event-name">{{ event.title }}</h4>
+                <h4 class="event-venue">{{ event.get_venue_name }}</h4>
               </a>
             </div>
           {% endfor %}
@@ -102,7 +117,6 @@
           <!-- calendar control -->
           <li class="no-bg-calendar__control">
             <a class="no-bg-calendar__control__content-container" href="{{ prev_url }}#archive-dates-browser">
-              <i class="fa fa-angle-left"></i>
               {% if month_view %}
                 <h3><span>Display </span>previous month</h3>
               {% else %}
@@ -123,6 +137,7 @@
                     <div>
                       <span class="event-time">{{ event.start|date:"g:i A" }} to {{ event.end|date:"g:i A" }}</span>
                       <h3 class="event-name">{{ event.title }}</h3>
+                      <h3 class="event-venue">{{ event.get_venue_name }}</h3>
                     </div>
                   </div>
                   <div class="no-bg-calendar__event__media-indicators-container">

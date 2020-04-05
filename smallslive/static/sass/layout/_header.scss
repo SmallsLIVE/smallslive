@@ -1,12 +1,14 @@
 header {
-  @include bottom-section-border;
-  margin-top: 15px;
+  &.container {
+    @include bottom-section-border;
+  }
 }
 
 .smalls-logo {
   float: left;
-  margin-top: 19px;
-  margin-bottom: 19px;
+  img {
+    width: 60px;
+  }
 }
 
 .navbar-default {

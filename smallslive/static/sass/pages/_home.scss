@@ -1,0 +1,150 @@
+body {
+  // TODO Remove
+  &.home {
+    &.absolute {
+      .mobile-header {
+        position: absolute;
+      }
+    }
+    &.admin-header {
+      @media (max-width: $screen-sm) {
+        &.headers-1 {
+          .main-container {
+            padding-top: 100px;
+          }
+        }
+        .main-container {
+          padding-top: 55px;
+        }
+      }
+    }
+    font-size: 10px;
+    background: $background-color;
+
+    @media (max-width: $screen-sm-max) {
+      width: calc(100vw);
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+  }
+
+  &.no-scroll {
+    overflow: hidden;
+  }
+}
+
+@mixin variable-admin-padding($extra) {
+  @media (max-width: $screen-sm-max) {
+    &.admin-shown {
+      padding-top: ($mobile-bar-height * 2) + $extra;
+    }
+  }
+}
+
+body.mobile-search-header-shown {
+  .mobile-header .fa-search {
+    color: $accent-color;
+  }
+}
+
+.main-container {
+  @include animated();
+  display: flex;
+  flex-direction: column;
+
+  .set-password {
+    min-height: 60vh;
+  }
+}
+
+.event-container {
+  margin-top: 18px;
+}
+
+div.event-strip {
+  margin-top: 0;
+}
+.event-stripe {
+  &.live {
+    margin-top: 20px;
+  }
+  margin-bottom: 30px;
+  margin-top: 15px;
+  position: relative;
+
+  @media (max-width: $screen-sm-max) {
+    margin-bottom: 20px;
+  }
+
+  .select-container {
+    margin-left: 260px;
+
+    @media (max-width: $screen-md-min) {
+      margin-left: 20px;
+    }
+  }
+
+  main {
+    overflow: hidden;
+    position: relative;
+    width: auto;
+  }
+}
+#a-z-search {
+  text-align: left;
+  width: 89%;
+  overflow: hidden;
+  display: flex;
+  @media (max-width: $screen-sm-max) {
+    overflow-x: scroll;
+    width: 100%;
+
+    .white-border-button {
+      padding: 15px;
+      line-height: 5px !important;
+    }
+  }
+  .white-border-button {
+    background-color: #f0f0eb;
+    display: inline-block;
+    line-height: 300%;
+
+    &.active {
+      background-color: #fff;
+    }
+  }
+}
+.scroll-right,
+.scroll-left {
+  line-height: 200%;
+  background-color: white;
+  display: flex;
+  width: 5%;
+  @media (max-width: $screen-sm-max) {
+    width: 15%;
+  }
+}
+.sign-in-button,
+.user-menu {
+  margin-left: 20px;
+}
+
+.home-filter {
+  &.white-border-select {
+    width: 150px;
+
+    @media (max-width: $screen-sm-min) {
+      width: 100px;
+      font-size: 0.9em;
+    }
+  }
+}
+.user-menu .select-selected {
+  display: inherit;
+  white-space: nowrap;
+  line-height: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(20ch - 2px);
+  min-width: 15ch;
+}

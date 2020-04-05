@@ -1,0 +1,35 @@
+$background-color: #f0f0eb;
+$white-transparent: rgba(255, 255, 255, 0.9);
+$accent-color: #d21535;
+$accent-color-dark: darken($accent-color, 10%);
+$border-color: $white-transparent;
+$black: black;
+$light-grey: #aeaeae;
+$text-grey: #808080;
+$background-grey: #e0e0dc;
+$mezzrow: #f1bb53;
+$smallslive: #d21535;
+
+.accent-color {
+  color: $accent-color;
+}
+.smalls-color {
+  color: $smallslive !important;
+  &--thankyou {
+    display: inline-block;
+  }
+}
+.mezzrow-color {
+  color: $mezzrow;
+  &--thankyou {
+    display: inline-block;
+  }
+}
+.text-grey {
+  color: $text-grey;
+}
+
+$underline-height: 3px;
+
+$sepia-filter: grayscale(100%) brightness(50%) sepia(100%) saturate(20%)
+  hue-rotate(335deg);

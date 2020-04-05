@@ -1,0 +1,53 @@
+{% load static from staticfiles %}
+{% load pipeline %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% stylesheet 'dashboard_css' %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>{{ event.title }} ticket details | Mezzrow</title>
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body class="no-background">
+<div class="container">
+  <div class="row">
+    <h1>{{ event_set.event.title }}
+    at {{ event_set.event.get_venue_name }}
+      <small>{{ event_set.event.date }} </small>
+    </h1>
+  </div>
+  {% for item in show_data %}
+    <div class="row">
+      <h4>{{ item.event_set.start|time:'f A' }}</h4>
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Party name</th>
+          <th>No. of seats</th>
+          <th>Price paid</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for line in item.tickets %}
+          <tr>
+            <td>{{ line.order.number }}</td>
+            <td><strong>{{ line.order.last_name }}, {{ line.order.first_name }}</strong></td>
+            <td><strong>{{ line.quantity }}</strong></td>
+            <td>${{ line.line_price_incl_tax }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endfor %}
+</div>
+</body>
+</html>

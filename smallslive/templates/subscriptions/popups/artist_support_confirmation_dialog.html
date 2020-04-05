@@ -1,0 +1,38 @@
+{% load static from staticfiles %}
+{% load full_static %}
+{% load djstripe_tags %}
+{% load reviews_tags %}
+{% load thumbnail %}
+{% load i18n %}
+{% load display_tags %}
+{% load staticfiles %}
+{% load purchase_info_tags %}
+{% load currency_filters %}
+{% load thumbor_tags %}
+{% load basket_tags %}
+
+<div class="modal fade" id="supportConfirmationDialog" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content custom-modal">
+      <a href="#" class="close-button"></a>
+      <div class="modal-body">
+        <p class="title2 accent-color title">Sponsorship Donation</p>
+        <!--
+          <p class="title-big subtitle"></p>
+        //-->
+          <p class="text9 justified-text text">
+            Sponsorships are tax-deductable donations that directly support the musician(s). You are sponsoring
+            {{ artist.full_name }}.
+
+
+
+          </p>
+          <p class="gift-content"></p>
+        <div class="text4 text-centered" style="display: flex; justify-content: center;">
+          <button class="white-border-button cancel-button" style="margin-left: 5px;">Cancel</button>
+          <button id="confirmDonationButton" class="white-border-button confirm" style="margin-left: 5px;">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,238 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load common_tags %}
+{% load i18n %}
+
+{% block homepage_nav_active %}active{% endblock %}
+
+{% block title %}Smalls Jazz Club{% endblock %}
+
+{# TODO Shouldn't be needed here #}
+{% block body_class %}home{% endblock %}
+
+{% block extra_head %}
+  <meta name="description"
+        content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
+{% endblock %}
+
+{% block header %}
+  <div class="navigation-bars">
+    {% if user.is_superuser %}
+      {% include 'admin_header.html' %}
+    {% endif %}
+    {% include 'partials/header.html' %}
+    {% block extra_nav %}
+    {% endblock %}
+  </div>
+{% endblock %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+    {% include 'inactive_dialog.html' %}
+  {% endif %}
+  {% include 'become_a_supporter_dialog.html' %}
+  {% if activation_key %}
+    {% include 'artist_registration/set_password_dialog.html' %}
+  {% endif %}
+
+  {% include 'more_info_foundation_popup.html' %}
+  {% include 'more_info_archive_popup.html' %}
+  {% include 'more_info_live_stream_popup.html' %}
+  {% include 'more_info_catalog_popup.html' %}
+
+  <div class="main-container pad-content {% if calendar %}calendar{% else %}home-new{% endif %}">
+    {% block home_content %}
+    <main>
+      {% include 'home_banners_carousel.html' %}
+      <div class="event-stripe">
+
+
+        <section id="recently-added-section" class="event-stripe">
+          <div class="section-title home recently">
+            <div class="title1">
+              <span id="ra-most-popular-toggle" class="no-link">Most Popular</span>
+            </div>
+            <span id="most-popular-filter-container" class="select-container">
+              <div class="white-border-select home-filter">
+                <select id="most-popular-filter">
+                  <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
+                  <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
+                  <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
+                  <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
+                </select>
+              </div>
+            </span>
+          </div>
+          <main id="most-popular-container">
+            <div class="slide-btn popular prev"><b class="indicator-icon icon-left-caret"></b></div>
+            <div class="slide-btn popular next"><b class="indicator-icon icon-right-caret"></b></div>
+            {% include 'events/event_row.html' with events=popular_in_archive secondary=True carousel='popular-carousel' %}
+          </main>
+        </section>
+
+        <section id="most-popular-section" class="event-stripe hidden">
+          <div class="section-title home archive">
+            <div class="title1"><a href="#" id="mp-recently-added-toggle"> Recently Added</a>  \ <a href="#" id="mp-most-popular-toggle" class="accent-color">Most Popular</a></div>
+
+          </div>
+
+        </section>
+
+        <section class="event-stripe">
+          <div class="section-title home highlights">
+            <div class="title1">Highlights from the Archive</div>
+          </div>
+          <main>
+            <div class="highlights slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+            <div class="highlights slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+            {% include 'events/event_row.html' with events=staff_picks carousel='tonight-events highlights-carousel' %}
+          </main>
+        </section>
+      </div>
+    </main>
+    {% endblock %}
+  </div>
+{% endblock%}
+
+{% block footer %}
+  <!-- Removed mobile footer as per Spike's request -->
+  <div style="margin: 10px 50px;">
+    <footer class="footer-info flex-column items-center active" style="margin-bottom: unset;">
+      <img class="footer-logo" style="margin-bottom: 5px;" src="{% static 'new_logo_transparent_black.svg' %}" alt="SmallsLIVE Foundation logo" width="100">
+      <div class="text-grey">Copyright ®{% now 'Y' %} SmallsLIVE All rights reserved.</div>
+      <div>
+        <a href="{% url 'static_page' 'privacy' %}">Privacy Policy</a> |
+        <a href="{% url 'terms-and-conditions' %}">Terms and Conditions</a> |
+        <a href="{% url 'contact-and-info' %}">Contact + Info</a>
+      </div>
+      {% if not current_user.newsletter %}
+        <div class="newsletter">
+          <p class="text4">subscribe to our newsletter</p>
+          <form class="admin-interface__form flex-row" action="{% url 'newsletters' %}" method="post">
+              {% csrf_token %}
+              <input class="form-control" type="email" required name="email" placeholder="email address" value="{% if current_user.is_authenticated %}{{ current_user.email }}{% endif %}"/>
+              <input class="white-border-button" type="submit" value="SUBSCRIBE" class="homepage-news__button"/>
+          </form>
+        </div>
+      {% endif %}
+    </footer>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  {% if activation_key %}
+    <script>
+      $(document).ready(function () {
+        // Show artist sign up form using the modal
+        var  $modal = $("#artist-set-password-dialog");
+        $modal.modal("show");
+        var url = "{% url "artist_registration_confirm_email_ajax" key=activation_key %}";
+        $.get(url, function (data) {
+          $modal.find(".modal-body").html(data);
+        });
+
+
+        $(document).on("submit", "#artist-registration-set-password-form", function (event) {
+          event.preventDefault();
+          var form = $(this);
+          var url = form.attr('action');
+
+          $.ajax({
+           type: "POST",
+           url: url,
+           data: form.serialize(),
+           success: function (data) {
+            if (data.location) {
+              window.location.href = data.location;
+            } else if (data.errors) {
+              for (var key in data.errors) {
+                $modal.find("#" + key + "-error").html(data.errors[key]).removeClass("hidden");
+              }
+            }
+           }
+         });
+
+        });
+
+      });
+    </script>
+  {% endif  %}
+
+  <script>
+    $(document).ready(function () {
+
+      /* Functionality for switching between recently added and most popular
+         This has been changed many times. Leaving the code here for convenience
+         until there is a final decision */
+
+      initializePopularCarousel();
+
+      function setTextEllipsisClass(tabName) {
+        /* The unselected tab text will be trimmed on mobile */
+
+        var $recentlyAdded = $("#ra-recently-added-toggle");
+        var $section = $recentlyAdded.closest(".section-title");
+        var $mostPopular = $("#ra-most-popular-toggle");
+        if (tabName == "popular") {
+          if (!$recentlyAdded.hasClass("trim")) {
+            $recentlyAdded.addClass("trim");
+            if (!$section.hasClass("trim")) {
+              $section.addClass("trim");
+            }
+          }
+        } else {
+          $recentlyAdded.removeClass("trim");
+          $section.removeClass("trim");
+        }
+
+      }
+
+      $('#ra-most-popular-toggle').click(function (event) {
+        if (!$(this).hasClass("accent-color")) {
+          $(this).addClass("accent-color");
+        }
+        $('#ra-recently-added-toggle').removeClass("accent-color");
+        $('#recently-added-container').addClass('hidden');
+        $('#most-popular-container').removeClass('hidden');
+        $('#most-popular-filter-container').removeClass('hidden');
+        initializePopularCarousel();
+        setTextEllipsisClass("popular");
+      });
+
+      $('#ra-recently-added-toggle').click(function (event) {
+        event.preventDefault();
+        if (!$(this).hasClass("accent-color")) {
+          $(this).addClass("accent-color");
+        }
+        $('#ra-most-popular-toggle').removeClass("accent-color");
+        $('#recently-added-container').removeClass('hidden');
+        $('#most-popular-container').addClass('hidden');
+        $('#most-popular-filter-container').addClass('hidden');
+        initializeRecentlyCarousel();
+        setTextEllipsisClass("recently");
+      });
+
+      var popularFilterDefaultValue = "{{ popular_select }}";
+      var popularQueryUrl = "{% url 'event_popular_ajax' %}";
+
+      var $filter = $("#most-popular-filter");
+
+      var setMostPopular = function(value) {
+        var mostPopularFilter = $("#most-popular-container").find(".event-row");
+        $.get(popularQueryUrl + "?range=" + value, function(data) {
+          mostPopularFilter.hide()
+          mostPopularFilter.replaceWith(data.content);
+          initializePopularCarousel();
+          mostPopularFilter.show();
+        });
+      };
+
+      $filter.on("change", function() {
+        setMostPopular($filter.val());
+      });
+
+    });
+  </script>
+
+{% endblock extra_js %}

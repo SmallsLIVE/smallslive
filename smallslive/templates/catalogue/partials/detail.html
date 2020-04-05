@@ -1,0 +1,51 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load thumbnail %}
+{% load currency_filters %}
+{% load i18n %}
+{% load purchase_info_tags %}
+{% load basket_tags %}
+
+<div class="store-single__content">
+  <div class="row">
+    <div class="store-single__item flex-row">
+      <div class="store-single__item__images">
+        {% with all_images=product.images.all %}
+          <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
+            {% for image in all_images %}
+              {% if not image.is_missing %}
+                <img src="{% thumbor_url image.original.url|urlencode height=300 width=300 smart=True %}"
+                     alt="{{ product.get_title }}" class="defineImageRatio">
+              {% else %}
+                <img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}">
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endwith %}
+      </div>
+      <div class="store-single__item__content">
+        <div class="store-single__item__name">
+          <a href="#">{{ product.title }}</a>
+        </div>
+        <div class="store-single__item__subtitle text-grey">
+          {{ product.subtitle }}
+        </div>
+        <div class="store-single__item__description">
+          {{ product.short_description|safe }}
+        </div>
+        <div class="store-single__item__details">
+          {% if product.description %}
+            {{ product.description|safe }}
+          {% endif %}
+        </div>
+        <div>
+          {% if product.misc_file %}
+            <a download="{{ product.misc_file.url }}"
+               class="text9"
+               href="{{ product.misc_file.url }}">Download file</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "store_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
@@ -8,36 +8,80 @@
 
 {% block content %}
 
-    <div class="content-wrapper">
+    <div class="">
 
         <section class="store-header container">
-            <div class="store-header__content">
-                <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span class="store-header__title__category">Order complete!</span></h1>
-            </div>
+             <div class="store-header__title__container">
+                  {% if order.has_tickets %}
+                  <div class="title1 title1--thankyou center"> Reservation Confirmed for
+                    <span class="{{ order.lines.first.product.event_set.event.get_venue_name|lower }}-color {{ order.lines.first.product.event_set.event.get_venue_name|lower }}-color--thankyou">
+                      {{ order.lines.first.product.event_set.event.get_venue_name }} Jazz Club
+                    </span>
+                  </div>
+                  {% else %}
+                  <div class="title1 center">Smalls LIVE</div>
+                  {% endif %}
+              </div>
         </section>
         <section class="store-done container">
             <div class="row">
-                <div class="hidden-xs col-sm-5 col-md-5 store-done__graphic">
-                    <img src="{% static "logo-black.svg" %}" alt="SmallsLIVE logo"/>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-6 store-done__content">
-                    <h3 class="store-done__heading">Payment successful!</h3>
-                    <ul class="store-done__info-list">
-                        {% with source=order.sources.first %}
-                            <li>your {{ source.source_type|lower }} has been charged for <b>${{ order.total_excl_tax }}</b></li>
-                        {% endwith %}
-                        <li>we have sent <b>the receipt</b> to the email address you supplied</li>
+                <div class="col-xs-12 store-done__content">
+                    <ul class="store-done__info-list text4">
+                        {% if order.has_tickets %}
+                        <li>
+                          <span class="store-done__info-list__title">Reservation Name:</span> {{ order.first_name }} {{ order.last_name }}
+                        </li>
+                          <span class="store-done__info-list__title">Number of Tickets:</span> {{ order.lines.first.quantity }}
+                        <li>
+                        </li>
+                        <li>
+                          <span class="store-done__info-list__title">Event:</span> {{ order.lines.first.title }} {{ order.lines.first.product.event_set.start }} set
+                        </li>
+                        <li>
+                          <span class="store-done__info-list__title">Date:</span> {{ order.lines.first.product.event_set.event.date }}
+                        </li>
+                        <li>
+                          <span class="store-done__info-list__title">Venue:</span> {{ order.lines.first.product.event_set.event.get_venue_name }} Jazz Club
+                        </li>
+                        <li>
+                          <span class="store-done__info-list__title">Order Number:</span> {{order.lines.first.order.number}}
+                        </li>
                         {% if order.has_physical_products %}
-                            <li>we will attend to shipping your order as quickly as possible.</li>
+                        <li>
+                          We will attend to shipping your order as quickly as possible.
+                        </li>
                         {% endif %}
-                        {% if order.has_digital_products %}
-                            <li>you can find your downloads under <a href="{% url "my-downloads" %}">my downloads</a></li>
+                        <!--are tickets considered digital products??-->
+                        {% if order.has_digital_products and not order.has_tickets %}
+                        <li>
+                          You can find your downloads under <a href="{% url "my-downloads" %}">my downloads</a>
+                        </li>
                         {% endif %}
-
-                        <li>if you have any questions or issues, please feel free to contact us via email on <a href="mailto:info@smallslive.com">info@smallslive.com</a></li>
+                        <li></li>
                     </ul>
                 </div>
             </div>
+            <div class="store-done__content disclaimer text4">
+              <p>
+                Your card {% if card_info.last_4 %} ending in {{ card_info.last_4 }}{% endif %} has been charged for ${{ order.total_excl_tax }} and
+                <!--there needs to be a way to get the logged in user's e-mail address also, what of the case where user sends to a different address?-->
+                a copy of the receipt will be sent to {% if order.lines.first.order.guest_email %}{{ order.lines.first.order.guest_email }}
+                {% else %} the e-mail provided.{% endif %}
+              </p>
+              <p>
+                Your name will be with the doorman when you arrive. Please come ½ hour before the scheduled start time ({{ order.lines.first.product.event_set.start }}).
+                The ticket guarantees a seat. Seat assignment is first come first serve so please arrive on time.
+                We reserve the right to release a seat 15 minutes after the beginning of the concert.
+              </p>
+              <p>
+                Ticket sales are generally non-refundable but on a case by case basis.
+                You may exchange your ticket for another show depending on availability.
+              </p>
+              <p>
+                If you have any questions or issues, please feel free to contact us via email at <a href="mailto:ticketing@smallslive.com">ticketing@smallslive.com</a>
+              </p>
+            </div>
+            {% endif %}
         </section>
     </div>
 

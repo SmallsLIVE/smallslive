@@ -8,7 +8,7 @@
     margin: 0 30px 15px 0;
 
     &__label {
-      min-width: 160px;
+      min-width: 260px;
       display: inline-block;
     }
   }
@@ -96,5 +96,14 @@
     font-size: 18px;
     color: #fff;
     @include lato-bold;
+  }
+}
+
+#payoutGenerationModal {
+  td, th {
+    padding: 8px;
+    line-height: 1.42857;
+    vertical-align: bottom;
+    border-top: 1px solid #ddd;
   }
 }

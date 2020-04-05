@@ -1,0 +1,21 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+<a href="{{ event.get_absolute_url }}" aria-label="{{ event.title }},  Live at {{ event.get_venue_name }}, sets start at {{ event.get_set_hours_display}}">
+  <div class="event-card">
+    <div class="event-picture-container">
+      <div class="picture-border">
+        <div class="event-picture">
+          {% if event.photo %}
+            {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+          {% else %}
+            {% include 'partials/thumbored_picture.html' %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="event-dates links1 live">
+        <span class="accent-box{% if not event.is_live %} hidden{% endif %}{% if next_up %} next-up{% endif %}{% if current_event %} current-event{% endif %}">Live Now</span>
+    </div>
+  </div>
+</a>

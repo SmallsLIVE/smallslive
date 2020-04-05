@@ -1,0 +1,20 @@
+{% for day in day_list %}
+    {% if day.day_start.date <= last_event.date %}
+    <div class="flex-column day-list">
+        <div class="title1" data-date="{{ day.day_start.date }}">
+            {{ day.day_start|date:'D M d' }}
+        </div>
+        {% for event in day.day_events %}
+            <div class="flex-column day-event">
+                <a href="{{ event.get_absolute_url }}">
+                    <div class="{{ event.get_venue_name|lower}}-color text2"> {{ event.venue }} </div>
+                    <div class="text-grey text2"> {{ event.get_set_hours_display }}</div>
+                    <div class="text2 day_event_title"> {{ event.title }} {% if event.is_draft %}- <span class="accent-color">DRAFT</span>{% endif %}</div>
+                </a>
+            </div>
+        {% empty %}
+            <div class="text6 no-event"> To Be Announced </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% endfor%}

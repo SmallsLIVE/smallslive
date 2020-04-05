@@ -1,0 +1,112 @@
+{% if is_event_user_not_confirmed  %}
+  <div class="modal" role="dialog" id="inactive-dialog" aria-hidden="true"
+       data-check-account-url="{{ check_account_status_url }}">
+    <div class="modal-dialog">
+      <div class="modal-content custom-modal no-cancel">
+        <a href="#" class="close-button"></a>
+        <div class="modal-body">
+          <p class="title1 send">Please confirm your email address</p>
+          <p class="text9 send">
+            {% if email_sent %}
+              You will receive an e-mail to: <span class="accent-color">{{ user.email }}</span> within 10 minutes.  Click the link in the e-mail to confirm your address.
+            {% else %}
+              A confirmation e-mail was sent on {{ user.date_joined|date:"M j, Y"}} to <span class="accent-color">{{ user.email }}</span>.
+              <br>Click the link in the e-mail to confirm your address.
+            {% endif %}
+          </p>
+          <p class="title1 sent hidden">Confirmation email re-sent</p>
+          <p class="text9 text-justified sent hidden">
+            Your confirmation e-mail has been re-sent to: <span class="accent-color">{{ user.email }}</span> and should appear in your inbox within 10 minutes. Click the link in your e-mail to confirm your address.
+          </p>
+          <div class="text4 text-centered" style="margin-top: 40px">
+            <div>
+              <form id="resendConfirmationForm"
+                    action="{% url 'account_email' %}"
+                    method="post" style="display: inline">
+                {% csrf_token %}
+                <input id="user_email_hidden" type="hidden" name="email" value="{{ user.email }}">
+                <input id="action_send" type="hidden" name="action_send" value="">
+                <input id="submitConfirmationButton" type="submit" class="white-border-button" value="Resend confirmation email">
+              </form>
+            </div>
+            <p>
+            </p>
+            <p>
+              <a class="accent-color hover-underline" href="mailto:support@smallslive.com">
+                  support@smallslive.com
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function resendConfirmation($form) {
+      var $content = $('#inactive-dialog .modal-body');
+      $content.find('.send').addClass('hidden');
+      var $submitButton = $('#submitConfirmationButton');
+      $submitButton.hide();
+      $.ajax({
+        url: "{% url 'email_confirm_resend_ajax' %}",
+        method: 'POST',
+        data: $form.serialize(),
+        success: function (data) {
+          if (data.success) {
+            $content.find('.sent').removeClass('hidden');
+            $submitButton.show();
+          } else {
+            $submitButton.show();
+          }
+        },
+        error: function (xhr, ajaxOptions, thrownError)  {
+          console.log(xhr.responseText);
+          $submitButton.show();
+        }
+      });
+    }
+    $(document).ready(function () {
+      $('#resendConfirmationForm').submit(function (event) {
+        event.preventDefault();
+        resendConfirmation($(this));
+        return false;
+      });
+
+      var $inactiveModal = $('#inactive-dialog');
+
+      function checkAccountStatus() {
+        var url = $inactiveModal.data('check-account-url');
+        $.ajax({
+          url: url,
+          success: function (response) {
+            if (response.success && response.data.isVerified) {
+              window.location.reload();
+            } else {
+              setTimeout(checkAccountStatus, 1000);
+            }
+          }
+        });
+      }
+
+      // We need now to poll for a change in the email confirmation status so we
+      // Can reload the page to get the player functionality.
+      checkAccountStatus();
+
+      {% if user.is_authenticated and show_email_confirmation_dialog %}
+        $inactiveModal.modal('show');
+        var $closeButton = $inactiveModal.find('.close-button');
+        $closeButton.click(function () {
+           $inactiveModal.modal('hide');
+        });
+        $inactiveModal.on('hidden.bs.modal', function () {
+          var $content = $('#inactive-dialog .modal-body');
+          $content.find('.send').removeClass('hidden');
+          if (!$content.find('.sent').hasClass('hidden')) {
+            $content.find('.sent').addClass('hidden');
+          }
+        });
+      {% endif %}
+
+    });
+  </script>
+{% endif %}

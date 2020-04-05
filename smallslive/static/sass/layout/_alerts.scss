@@ -1,5 +1,6 @@
 .alert {
-  color: #fff;
+  color: rgb(0, 0, 0);
+  background-color: #f0f0eb;
   border-radius: 0;
   @include lato;
   border: none;
@@ -8,6 +9,24 @@
   @include transition(all 0.3s ease-in-out);
   width: 100%;
   margin: 0;
+  height: auto;
+  border: 8px solid #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 35px;
+  -webkit-box-shadow: 0px 0px 113px -16px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 113px -16px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 113px -16px rgba(0, 0, 0, 0.75);
+
+  z-index: 999;
+
+  &__tickets{
+    box-shadow: none;
+    margin-bottom: 20px;
+  }
+
 
   & p {
     margin: 0;
@@ -16,73 +35,34 @@
   & button.close {
     opacity: 0.5;
     @include transition(all 0.3s ease-in-out);
-    
-    &:hover, &:focus {
+
+    &:hover,
+    &:focus {
       opacity: 1;
     }
   }
 
-  &.alert-success {
-    background-color: rgba(#5FA051, 0.95);
-  }
-
-  &.alert-info {
-    background-color: rgba(#222, 0.95);
-
-    & p {
-      margin: 0;
-    }
-
-    & .btn-info {
-      background-color: rgba(#fff, 0.00);
-      border-radius: 5px;
-      border: 2px solid rgba(#fff, 0.5);
-      padding: 7px 10px;
-      display: inline-block;
-      margin: 5px;
-      font-size: 12px;
-      @include lato-bold;
-      text-transform: uppercase;
-      color: rgba(#fff, 0.85);
-
-      &:hover, &:focus {
-        border-color: #fff;
-        color: #fff;
-      }
-
-      &:first-of-type {
-        margin-left: 20px;
-      }
-    }
-  }
-
-  &.alert-warning {
-    background-color: rgba(#DC9231, 0.95);
-
-    & p {
-      margin: 0 15px;
-    }
-  }
-
-  &.alert-danger {
-    background-color: rgba($main-accent-color, 0.95);
-
-    & p {
-      margin: 0 15px;
-    }
-  }
-
-  & .close {
-    background: none;
-    margin-right: 40px;
-    vertical-align: middle;
-  }
 }
 
+
 .messages {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+
+  div {
+    width: auto;
+
+    .alert-buttons {
+      a {
+        margin: 0 5px;
+      }
+    }
+
+  }
 }

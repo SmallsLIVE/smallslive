@@ -1,0 +1,22 @@
+{% extends 'home_new.html' %}
+{% load static from staticfiles %}
+{% block extra_js %}
+  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+  <script src="https://js.stripe.com/v2/"></script>
+  <script src="{% static 'js/card.js' %}"></script>
+  <script src="{% static 'js/payment/payment.js' %}"></script>
+  <script src="{% static 'js/support/support-flow.js' %}"></script>
+  <script>
+
+    $(document).ready(function () {
+
+      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
+
+      $('#donateBitcoin').click(function () {
+        $('#donateBitcoinDialog').modal('show');
+      });
+
+    });
+
+  </script>
+{% endblock %}

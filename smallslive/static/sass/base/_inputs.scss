@@ -1,0 +1,262 @@
+@mixin input-border {
+  border: 3px solid $border-color;
+}
+
+@mixin white-border-button {
+  @include button1;
+  height: $input-height;
+
+
+  @media (min-width: $screen-md-min) {
+    padding: 0 1vw;
+  }
+
+  background-color: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.active {
+    background-color: $white-transparent;
+  }
+
+  &:not(.no-border) {
+    @include input-border;
+  }
+
+  color: $black;
+
+  &:disabled {
+    color: grey;
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: $white-transparent;
+
+    &:disabled {
+      background-color: transparent;
+    }
+
+    &.disabled {
+      background-color: transparent;
+    }
+  }
+}
+
+.pp-btn {
+  border: 0px;
+  background: #f0f0eb;
+}
+
+.white-border-button {
+  @include white-border-button;
+
+  &.button-title1 {
+    padding: 0 60px;
+
+    div {
+      @include title1;
+    }
+
+    height: 70px;
+  }
+
+  &.separated {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  &.inline {
+    display: inline-block;
+  }
+
+  &::placeholder {
+    font-size: 30px;
+  }
+}
+
+a {
+  &.white-border-button {
+    display: inline-block;
+
+    &.flex-button {
+      display: flex;
+
+      i {
+        padding-left: 3px;
+      }
+    }
+
+    line-height: 33px;
+    vertical-align: middle;
+  }
+}
+
+@mixin bordered-input {
+  @include input-border;
+  @include text4;
+  box-shadow: none;
+  height: $input-height;
+  font-size: 1.2em;
+
+  background-color: $white-transparent;
+  padding: 8px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.bordered-input {
+  @include bordered-input;
+}
+
+@mixin input-icon($content, $color) {
+  position: relative;
+
+  &::before {
+    background-repeat: no-repeat;
+    content: $content;
+    font-family: "FontAwesome", serif;
+    color: $color;
+    position: absolute;
+    left: 11px;
+    font-size: 1.8em;
+    top: 7px;
+    z-index: 1;
+  }
+}
+
+.search-input {
+  background-image: url(/static/image/search-icon.svg);
+  background-repeat: no-repeat;
+  background-size: 20px;
+  background-position: 10px;
+
+  input {
+    @include bordered-input;
+    background-color: transparent;
+    width: 30vw;
+    padding-left: 38px;
+    text-transform: uppercase;
+
+    @media (max-width: 1300px) {
+      width: 23vw;
+    }
+  }
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+
+  &.margin-top {
+    margin-top: 20px;
+  }
+
+  input {
+    @include bordered-input;
+    @include button1;
+    min-width: 125px;
+    text-align: center;
+
+    &.bigger {
+      min-width: 200px;
+    }
+  }
+
+  p {
+    display: flex;
+    align-items: center;
+  }
+
+  a,
+  p,
+  button {
+    color: $black;
+  }
+
+  &:not(.button-row-no-hover) {
+
+    p,
+    button {
+      &:hover:enabled {
+        background-color: $white-transparent;
+      }
+    }
+  }
+
+  button,
+  p {
+    @include white-border-button;
+  }
+
+  &:not(.button-row-big) {
+
+    button,
+    p {
+      @include button1;
+    }
+  }
+
+  &.button-row-big {
+
+    button,
+    p,
+    input {
+      @include title7;
+      line-height: 1em;
+      min-height: 50px;
+
+      &.active {
+        border: 1px solid $accent-color;
+      }
+    }
+
+    input {
+      &::placeholder {
+        @include reen-kufi-normal;
+        padding-bottom: -50px;
+        // Compensate text transform
+        transform: scaleY(0.7);
+        position: relative;
+        top: -10px;
+        font-size: 10px;
+      }
+    }
+  }
+
+  &.button-row-margin {
+
+    &>button,
+    &>a,
+    &>p {
+      margin: 0 10px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  &.button-row-margin-all {
+
+    &>button,
+    &>a,
+    &>p {
+      margin: 0 10px;
+    }
+  }
+}
+
+.buttons-row {
+  display: inline-block;
+  margin: 0 5px;
+  vertical-align: top;
+}

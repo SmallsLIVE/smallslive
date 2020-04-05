@@ -7,118 +7,64 @@
 {% load purchase_info_tags %}
 {% load basket_tags %}
 
-{% block store_nav_active %}active{% endblock %}
 
 {% block title %}{{ product.get_title }} - {{ block.super }}{% endblock %}
-
-{% block extra_head %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/fancybox/jquery.fancybox.css' %}">
-  <style type="text/css">
-    @media (max-width: 992px) {
-      .fancybox-next span {
-        left: auto;
-        right: -22px;
-      }
-
-      .fancybox-prev span {
-        left: -20px;
-      }
-
-      .fancybox-nav span {
-        visibility: visible;
-      }
-    }
-  </style>
-{% endblock %}
-
-{% block breadcrumbs %}
-    {% for category in category.get_ancestors %}
-        <span class="store-header__title__category"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></span>
-        <span class="store-header__title__divider">|</span>
-    {% endfor %}
-    <span class="store-header__title__category"><a href="{{ product.category.get_absolute_url }}">{{ category.name }}</a></span>
-    {% with category=product.categories.all.0 %}
-        {% for c in category.get_ancestors_and_self %}
-            <span class="store-header__title__category"><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></span>
-            <span class="store-header__title__divider">|</span>
-        {% endfor %}
-        <span class="store-header__title__category"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></span>
-    {% endwith %}
-{% endblock %}
-
 {% block store_content %}
-  <div class="col-xs-12 col-sm-8 col-md-9 store-single__content">
-    <div class="row">
-      <div class="store-single__item row">
-        <div class="col-xs-12 col-sm-6 store-single__item__images">
-          {% with all_images=product.images.all %}
-          <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
-            {% for image in all_images %}
-                {% thumbnail image.original "x365" upscale=False as thumb %}
-                <div class="store-single__item__images__big-image square-container">
-                    <a href="{{ thumb.url }}" class="fancybox"><img class="defineImageRatio"
-                                                                    src="{{ thumb.url }}"
-                                                                    alt="{{ product.get_title }}"></a>
+<div class="my-downloads-album row big-player">
+<div class="my-downloads-album__cover flex-column player-container " data-track=0 style="border-radius: 0px;">
+    {% with image=product.primary_image %}
+    {% if product.parent_id %}
+        {% with image=product.parent.primary_image %}
+                <div style="position: relative; min-width:255px">
+                    <img class="defineImageRatio" src="{{ image.original.url }}" alt="{{ product.get_title }}">
+                    <div class="purchases-player-button myplay-btn">
+                        <div class="fa-thin-circle fa" >
+                        <i class="fas fa-play"></i></div>
+                    </div>
                 </div>
-                {% endthumbnail %}
-            {% endfor %}
-          </div>
-          <span class="store-single__item__images__helper">(Click/tap on the image to zoom.)</span>
-          <ul class="store-single__item__images__thumbnails">
-            {% for image in all_images %}
-              {% thumbnail image.original "x75" upscale=False as thumb %}
-                  <li data-slickPosition="{{ forloop.counter0 }}"
-                      class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}">
-                      <img class="defineImageRatio" src="{{ thumb.url }}"
-                           alt="{{ product.get_title }} thumbnail"></li>
-              {% endthumbnail %}
-            {% endfor %}
-          </ul>
-          {% endwith %}
-        </div>
-        <div class="col-xs-12 col-sm-6 store-single__item__content">
-          <h2 class="store-single__item__name">
-            <a href="#">{{ product.title }}</a>
-          </h2>
-          <h3 class="store-single__item__subtitle">
-              {{ product.subtitle }}
-          </h3>
-          {% if product.event %}
-          <div class="store-single__item__event-link">
-            <a href="{{ product.event.get_absolute_url }}">View event in our Archive</a>
-            <span class="arrow"></span>
-          </div>
+
+        {% endwith %}
+    {% else %}
+        {% with image=product.primary_image %}
+            <div style="position: relative; min-width:255px">
+                <img class="defineImageRatio" src="{{ image.original.url }}" alt="{{ product.get_title }}" style="border-radius: 0px;">
+                    <div class="purchases-player-button myplay-btn">
+                    <div class="fa-thin-circle fa" >
+                    <i class="fas fa-play"></i></div>
+                </div>
+            </div>
+        {% endwith %}
+    {% endif %}
+    {% endwith %}
+    <div class="flex-column">
+      <a class="store-single__item__name" href="{{ product.get_absolute_url }}">{% if product.parent %}{{ product.parent.title }} - {% endif %}{{ product.title }}</a>
+      <br>
+      {% for artist in  product.artist.all %}
+        <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} {{ artist.last_name }} / {{ artist.instruments.first }}</a><br>
+      {% endfor %}
+      <div class="store-single__item__name" style="color:black"> 
+      {% purchase_info_for_product request product as session %}
+      {% if session.price.exists %}
+          {% if session.price.excl_tax == 0 %}
+              {% trans "Free" %}
+          {% elif session.price.is_tax_known %}
+              {{ session.price.incl_tax|currency:session.price.currency }}
+          {% else %}
+              {{ session.price.excl_tax|currency:session.price.currency }}
           {% endif %}
-          <div class="store-single__item__description">
-            {{ product.short_description|safe }}
-          </div>
-          <div class="store-single__item__details">
-              {% if product.description %}
-                  <span class="store-single__item__details__title">Detailed description:</span>
-                  {{ product.description|safe }}
-              {% endif %}
-          </div>
-          {% purchase_info_for_product request product as session %}
-          <span class="store-single__item__price">
-              {% if session.price.exists %}
-                  {% if session.price.excl_tax == 0 %}
-                      {% trans "Free" %}
-                  {% elif session.price.is_tax_known %}
-                      {{ session.price.incl_tax|currency:session.price.currency }}
-                  {% else %}
-                      {{ session.price.excl_tax|currency:session.price.currency }}
-                  {% endif %}
-              {% else %}
-                  &nbsp;
-              {% endif %}
-          </span>
-        <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
-          {% if session.availability.is_available_to_buy %}
-            {% basket_form request product 'single' as basket_form %}
-            <div class="store-add-large">
-                {% csrf_token %}
-                {{ basket_form.quantity }}
-                {% if basket_form.fields.child_id.choices %}
+      {% else %}
+          &nbsp;
+      {% endif %}
+      </div>
+      <br>
+      <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
+        {% if session.availability.is_available_to_buy %}
+          {% basket_form request product 'single' as basket_form %}
+          <div class="store-add-large">
+              {% csrf_token %}
+              {{ basket_form.quantity }}
+              {% if basket_form.fields.child_id.choices %}
+                <div class='white-border-select'>
                   <select class="store-add-large__options" name="child_id">
                       {% for variant in product.variants.all %}
                       {% purchase_info_for_product request variant as variant_session %}
@@ -127,193 +73,336 @@
                           {% endif %}
                       {% endfor %}
                   </select>
-                  {% if user.is_authenticated %}
-                    <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
-                  {% else %}
-                    <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="store-add-large__button">Add to cart</a><span class="arrow"></span></div>
-                  {% endif %}
+                </div>
+                {% if user.is_authenticated %}
+                  <div class="arrow-button-container"><button type="submit" class="white-border-button">Add to cart</button></div>
                 {% else %}
-                  {{ basket_form.child_id }}
-                  {% if user.is_authenticated %}
-                    <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
-                  {% else %}
-                    <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="store-add-large__button">Add to cart</a><span class="arrow"></span></div>
-                  {% endif %}
+                  <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="white-border-button">Add to cart</a></div>
                 {% endif %}
-            </div>
-          {% endif %}
-        </form>
-        </div>
-      </div>
-    </div>
-    {% if product.event %}
-    <div class="store-single__recording__artists">
-      <h3 class="store-single__recording__artists__heading">Event artists:</h3>
-      <div class="row">
-        {% for gig_info in product.event.get_performers %}
-          <div class="mini-artist col-xs-12">
-            <div class="mini-artist__image">
-              {% if gig_info.artist.photo %}
-                  <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% thumbor_url gig_info.artist.photo.url|urlencode height=80 width=80 smart=True %}" alt="{{ gig_info.artist.full_name }} photo"/></a>
+              {% else %}
+                {{ basket_form.child_id }}
+                {% if user.is_authenticated %}
+                  <div class="arrow-button-container"><button type="submit" class="white-border-button">Add to cart</button></div>
                 {% else %}
-                  <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
+                  <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="white-border-button">Add to cart</a></div>
+                {% endif %}
               {% endif %}
-            </div>
-            <div class="mini-artist-info">
-              <h2 class="mini-artist-info__title"><a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }}</a></h2>
-              <p class="mini-artist-info__instrument">{{ gig_info.role }}</p>
-              <p class="mini-artist-info__bio">{{ gig_info.artist.biography|striptags|truncatewords:28 }}</p>
-              <a class="mini-artist-info__button" href="{{ gig_info.artist.get_absolute_url }}">Artist profile</a><span class="arrow"></span>
-            </div>
           </div>
-        {% endfor %}
-      </div>
+        {% endif %}
+      </form>
     </div>
-    {% endif %}
-    <div class="store-single__recording__tracks">
-      <h3 class="store-single__recording__artists__heading">Track listing:</h3>
-      <div style="width: 1px; height: 1px; position: absolute; top: -9999px; left: -9999px;">
-        <div id="player-audio"></div>
-      </div>
-      <!-- tracks table -->
-      <div class="store-single__recording__tracks-table">
-        <!-- tracks table header -->
-        <div class="store-single__recording__tracks-table__header row">
-          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
-            <div class="hidden-xs hidden-sm">Preview</div>
-          </div>
-          <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-single__recording__tracks-table__column title">
-            Title
-          </div>
-          <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
-            Duration
-          </div>
-          <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-single__recording__tracks-table__column price">
-            Mp3 / HD
-          </div>
-          <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-single__recording__tracks-table__column buy-track">
+</div>
+<div class="song-container">
+    <div class="my-downloads-album__tracks-table">
+    {% for track in product.tracks.all|dictsort:"ordering" %}
+        <!-- tracks table row -->
+        <div style="position:relative">
+            <div class="my-downloads-album__tracks-table__row flex-row">
+                <div class="progress-bar"></div>
+                <div class="hidden my-downloads-album__tracks-table__column audio">
+                    <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
+                   {% if track.get_hd_track_stockrecord %}
+                        <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                    {% else %}
+                        <source src="{{ track.get_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                    {% endif %}
 
-          </div>
-        </div>
-        <!-- end of tracks table header -->
-        {% for track in product.tracks.all|dictsort:"ordering" %}
-          <!-- tracks table row -->
-          <div class="store-single__recording__tracks-table__row row">
-            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
-              {% if track.preview %}
-                <a href="#" class="playback-control" data-playlist-id="{{ forloop.counter0 }}"><i class="fa fa-play"></i></a>
-              {% endif %}
-            </div>
-            <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-single__recording__tracks-table__column title">
-              {{ track.title }}
-            </div>
-            <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
-              {{ track.attr.duration }}
-            </div>
-            <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-single__recording__tracks-table__column price">
-              {% if track.get_track_stockrecord %}${{ track.get_track_stockrecord.price_excl_tax }}{% else %}-{% endif %} / {% if track.get_hd_track_stockrecord %}${{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}-{% endif %}
-            </div>
-            <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-single__recording__tracks-table__column buy-track">
-                {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
+                    </audio>
+                </div>
+                <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
+                    <div class="my-downloads-album__tracks-table__column title2">
+                    {{ track.title }}
+                    </div>
+                    <div class="my-downloads-album__tracks-table__column composer text1">
+                        {{ track.attr.composer }}
+                    </div>
+                </div>
+                <div class="store-buy my-downloads-album__tracks-table__column duration text1">
+                    {{ track.attr.duration }}
+                </div>
+                <div class="my-downloads-album__tracks-table__column buy-track store-buy">
                     <div class="buy-button-container">
-                        {% if user.is_authenticated %}
-                          <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i
-                            class="fa fa-caret-down"></i></a>
-                        {% else %}
-                          <a class="tracks-table__button" href="#" data-toggle="modal" data-target="#logIn">Buy track <i
-                            class="fa fa-caret-down"></i></a>
-                        {% endif %}
-                  <ul class="dropdown-menu" role="menu">
-                    {% if track.get_track_stockrecord %}
-                      <li>
-                        {% basket_form request track 'single' as basket_form %}
-                        <form id="add_to_basket_form" action="{% url 'basket:add' pk=track.pk  %}" method="post" class="add-to-basket">
-                          {% csrf_token %}
-                          {{ basket_form.quantity }}
-                          {{ basket_form.child_id }}
-                          <input type="hidden" name="stockrecord_id" value="{{ track.get_track_stockrecord.id }}"/>
-                          <input type="submit" value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
-                        </form>
-                      </li>
-                    {% endif %}
-                    {% if track.get_hd_track_stockrecord %}
-                      <li>
-                        {% basket_form request track 'single' as basket_form %}
-                        <form id="add_to_basket_form" action="{% url 'basket:add' pk=track.pk  %}" method="post" class="add-to-basket">
-                          {% csrf_token %}
-                          {{ basket_form.quantity }}
-                          {{ basket_form.child_id }}
-                          <input type="hidden" name="stockrecord_id" value="{{ track.get_hd_track_stockrecord.id }}"/>
-                          <input type="submit" value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
-                        </form>
-                      </li>
-                    {% endif %}
-                  </ul>
+                      {% if user.is_authenticated %}
+                        <a class="white-border-button  flex-button"
+                                      data-toggle="dropdown" aria-expanded="false"
+                                      href="">Buy track <i
+                                          class="fa fa-caret-down"></i></a>
+                      {% else %}
+                        <a class="tracks-table__button" href="#"
+                           data-toggle="modal" data-target="#logIn">Buy
+                          track <i class="fa fa-caret-down"></i></a>
+                      {% endif %}
+                      <div class="dropdown-menu" role="menu">
+                          {% if track.get_track_stockrecord %}
 
-              </div>
-                {% endif %}
+                           {% basket_form request track 'single' as basket_form %}
+                            <form id="add_to_basket_form"
+                                  action="{% url 'basket:add' pk=track.pk %}"
+                                  method="post"
+                                  class="add-to-basket">
+                              {% csrf_token %}
+                              {{ basket_form.quantity }}
+                              {{ basket_form.child_id }}
+                              <input type="hidden"
+                                     name="stockrecord_id"
+                                     value="{{ track.get_track_stockrecord.id }}"/>
+                              <input class="white-border-button flex no-border" type="submit"
+                                     value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
+                            </form>
+
+
+
+                          {% comment %} <a class="white-border-button flex border-not" href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download {% endcomment %}
+                          {% else %}
+
+                          {% basket_form request track 'single' as basket_form %}
+                            <form id="add_to_basket_form"
+                                  action="{% url 'basket:add' pk=track.pk %}"
+                                  method="post"
+                                  class="add-to-basket">
+                              {% csrf_token %}
+                              {{ basket_form.quantity }}
+                              {{ basket_form.child_id }}
+                              <input type="hidden"
+                                     name="stockrecord_id"
+                                     value="{{ track.get_hd_track_stockrecord.id }}"/>
+                              <input class="white-border-button flex no-border" type="submit"
+                                     value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
+                            </form>
+
+
+
+
+                          {% comment %} <a class="white-border-button flex border-not" href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download {% endcomment %}
+                          {% endif %}
+
+                      </div>
+
+
+                      {% comment %} {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
+                    <div class="buy-button-container">
+                      {% if user.is_authenticated %}
+                         <a class="white-border-button"
+                                       data-toggle="dropdown" aria-expanded="false"
+                                       href="">Buy track <i
+                                            class="fa fa-caret-down"></i></a>
+                      {% else %}
+                        <a class="tracks-table__button" href="#"
+                           data-toggle="modal" data-target="#logIn">Buy
+                          track <i class="fa fa-caret-down"></i></a>
+                      {% endif %}
+                      <ul class="dropdown-menu" role="menu">
+                        {% if track.get_track_stockrecord %}
+                          <li>
+                            {% basket_form request track 'single' as basket_form %}
+                            <form id="add_to_basket_form"
+                                  action="{% url 'basket:add' pk=track.pk %}"
+                                  method="post"
+                                  class="add-to-basket">
+                              {% csrf_token %}
+                              {{ basket_form.quantity }}
+                              {{ basket_form.child_id }}
+                              <input type="hidden"
+                                     name="stockrecord_id"
+                                     value="{{ track.get_track_stockrecord.id }}"/>
+                              <input type="submit"
+                                     value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
+                            </form>
+                          </li>
+                        {% endif %}
+                        {% if track.get_hd_track_stockrecord %}
+                          <li>
+                            {% basket_form request track 'single' as basket_form %}
+                            <form id="add_to_basket_form"
+                                  action="{% url 'basket:add' pk=track.pk %}"
+                                  method="post"
+                                  class="add-to-basket">
+                              {% csrf_token %}
+                              {{ basket_form.quantity }}
+                              {{ basket_form.child_id }}
+                              <input type="hidden"
+                                     name="stockrecord_id"
+                                     value="{{ track.get_hd_track_stockrecord.id }}"/>
+                              <input type="submit"
+                                     value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
+                            </form>
+                          </li>
+                        {% endif %}
+                      </ul>
+                    </div>
+                  {% endif %}
+ {% endcomment %}
+
+
+                    </div>
+                </div>
             </div>
-          </div>
-        {% endfor %}
+        </div>
         <!-- end of tracks table row -->
-      </div>
-      <!-- end of tracks table -->
+    {% endfor %}
     </div>
-  </div>
+    <!-- end of tracks table -->
+</div>
+</div>
+
 {% endblock store_content %}
 
 {% block extra_js %}
-  {{ block.super }}
-  <script src="{% static 'js/jquery.fancybox.pack.js' %}"></script>
-  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $(".fancybox").fancybox({
-        preload: 2
-      });
-
-      var audioPlayer = jwplayer("player-audio").setup({
-        primary: 'html5',
-        playlist: [
-          {% for track in product.tracks.all|dictsort:"ordering" %}
-            {% if track.preview %}
-                {
-                  sources: [{
-                    file: "{{ track.get_track_preview_url|safe }}",
-                    type: "mp3"
-                  }],
-                  mediaid: {{ track.id }}
-                }
-            {% else %}{
-                  sources: [{
-                    file: "blank.mp3",
-                    type: "mp3"
-                  }],
-                  mediaid: {{ track.id }}
-              }
-            {% endif %}{% if not forloop.last %},{% endif %}
-          {% endfor %}
-        ],
-        skin: "https:{% static "jwplayer-skin/smalls.xml" %}",
-        width: "100%",
-        height: 0
-      });
-      $(".playback-control").on('click', function(e) {
-          e.preventDefault();
-          if (audioPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {
-            audioPlayer.pause();
-          } else {
-            audioPlayer.playlistItem($(this).data('playlist-id'));
-            $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
-          }
-          $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
-      });
-
-      $("select.store-add-large__options").on("change", function(val) {
-        var selectedPrice = $(this).find(":selected").data('price');
-        $(this).closest('.store-single__item__content').find('.store-single__item__price').text(selectedPrice);
-      })
-
+<script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+<script>
+    var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
+    $(".my-downloads-album__tracks-table__row.flex-row").on("click", function(event){
+        progress = calculateProgress($(this),event)
+        //find audio player, its track number and change the big player track number
+        audioPlayer = $(this).find(".audio audio")[0]
+        audioPlayerTrack = $(audioPlayer).data("track")
+        mainContainer = $(this).closest(".big-player")[0]
+        playerContainer =$(mainContainer).find(".player-container")[0]
+        $(playerContainer).data("track", audioPlayerTrack)
+        //make active track color red, toggles player button and remove previous track color
+        var trackInfo = $(this).find(".track-info")
+        lastPlayerContainerButton = $(lastPlayerContainer).find(".purchases-player-button ")
+        playerContainerButton = $(playerContainer).find(".purchases-player-button")
+        audioProgress = audioPlayer.currentTime / audioPlayer.duration * 100
+        if( $(trackInfo).hasClass("active-track")){
+            if(Math.abs(progress - audioProgress) > 5 ){
+                {% comment %} changeProgress(progress, audioPlayer) {% endcomment %}
+                $(".active-track").removeClass("active-track")
+                play = false
+                $(playerContainerButton).removeClass("mypause-btn")
+                $(playerContainerButton).addClass("myplay-btn")
+                $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
+            }else{
+                $(".active-track").removeClass("active-track")
+                play = false
+                $(playerContainerButton).removeClass("mypause-btn")
+                $(playerContainerButton).addClass("myplay-btn")
+                $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
+            }
+        }else{
+            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red" )
+            $(".active-track").removeClass("active-track")
+            $(this).find(".track-info").addClass("active-track")
+            play = true;
+            $(lastPlayerContainerButton).addClass("myplay-btn")
+            $(lastPlayerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("mypause-btn")
+            $(playerContainerButton).removeClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-pause"></i>')
+        }
+        //toggles player
+        if(lastPlayer != undefined){
+            lastPlayer.pause()
+        }
+        togglePlayer(audioPlayer, play)
+        
+        lastPlayerContainer = playerContainer
+        lastPlayer = audioPlayer
     });
-  </script>
+    function togglePlayer(playerContainer, play){
+        if(play){
+            audioPlayer.play()
+        }else{
+            audioPlayer.pause()
+        }
+    }
+    $(".purchases-player-button").on("click", function(){
+        bigContainer = $(this).closest(".big-player")[0]
+        playerContainer = $(bigContainer).find(".player-container")[0]
+        playerContainerButton = $(playerContainer).find(".purchases-player-button")[0]
+        trackNumber = $(playerContainer).data("track")
+        trackInfo = $(bigContainer).find(".track-info[data-track='" + trackNumber +  "']")[0]
+        audioPlayer = $(bigContainer).find(".audio audio[data-track='" + trackNumber +  "']")[0]
+        lastPlayerContainerButton = $(lastPlayerContainer).find(".purchases-player-button ")
+        if( $(trackInfo).hasClass("active-track")){
+            $(trackInfo).removeClass("active-track")
+            play = false
+            $(playerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
+        }else{
+            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red" )
+            $(".active-track").removeClass("active-track")
+            $(trackInfo).addClass("active-track")
+            play = true
+            $(lastPlayerContainerButton).addClass("myplay-btn")
+            $(lastPlayerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("mypause-btn")
+            $(playerContainerButton).removeClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-pause"></i>')
+
+        }
+        if(lastPlayer != undefined){
+            lastPlayer.pause()
+        }
+        togglePlayer(audioPlayer, play)
+        lastPlayerContainer = playerContainer
+        lastPlayer = audioPlayer
+
+    })
+    var audioPlayers = document.getElementsByClassName("audio-player");
+    Array.prototype.forEach.call(audioPlayers, function(player) {
+        var setTime
+        player.addEventListener("play", function(){
+                setTime = setInterval( t=> {
+                currentTime = Math.floor(player.currentTime)
+                $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red")
+                timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0]
+                progress = player.currentTime / player.duration * 100
+                progressWidth = progress + "%"
+                $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progressWidth )
+                $(timeTracker).html(readableTime(currentTime)) 
+            },1000)
+               
+        });
+        player.addEventListener("pause", function(){
+            clearInterval(setTime)
+            $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "black" )
+        });
+        player.addEventListener("ended", function(){
+            $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "black" );
+            $(player).closest(".big-player").find(".purchases-player-button").removeClass("mypause-btn");
+            $(player).closest(".big-player").find(".purchases-player-button").addClass("myplay-btn");
+            $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
+            $(".active-track").removeClass("active-track");
+            player.currentTime = 0;
+            clearInterval(setTime)
+        });
+    });
+    function readableTime(seconds) {
+        var hr = ~~(seconds / 3600);
+        var min = ~~((seconds % 3600) / 60);
+        var sec = seconds % 60;
+        var sec_min = "";
+        if (hr > 0) {
+            sec_min += "" + hr + ":" + (min < 10 ? "0" : "");
+        }
+        sec_min += "" + min + ":" + (sec < 10 ? "0" : "");
+        sec_min += "" + sec;
+        return sec_min;
+    }
+
+
+    function calculateProgress(element, position) {
+    
+    var mX, mY, distance,
+        $element  = $(element);
+
+    function calculateDistance(elem, mouseX, mouseY) {
+        return Math.floor(mouseX - (elem.offset().left), 2);
+    }
+    
+    mX = position.pageX;
+    mY = position.pageY;
+    distance = Math.floor(calculateDistance($element, mX, mY) / element.width() * 100); 
+    return distance  
+    };
+    function changeProgress(progress, player){
+        newProgress = Math.floor(player.duration) * progress / 100
+        player.currentTime = newProgress;
+    }
+
+</script>
+
 {% endblock %}
+

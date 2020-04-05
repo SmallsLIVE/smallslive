@@ -1,20 +1,23 @@
+from stripe.error import APIConnectionError, InvalidRequestError
 from allauth.account import signals
 from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress, EmailConfirmation
+from djstripe.models import Customer
+from djstripe.utils import subscriber_has_active_subscription
+from rest_framework.authtoken.models import Token
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import Q, Sum
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.functional import cached_property
-from djstripe.utils import subscriber_has_active_subscription
+from custom_stripe.models import CustomerDetail
 from model_utils import Choices
-from rest_framework.authtoken.models import Token
-
 from newsletters.utils import subscribe_to_newsletter, unsubscribe_from_newsletter
 
 
@@ -75,6 +78,8 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     login_count = models.IntegerField(default=0)
     accept_agreement = models.BooleanField(default=False)
     renewal_date = models.DateField(blank=True, null=True)
+    # One Time Donations will set this date to one year after the donation is made.
+    archive_access_until = models.DateTimeField(blank=True, null=True)
     subscription_price = models.IntegerField(blank=True, null=True)
     company_name = models.CharField(max_length=150, blank=True)
     address_1 = models.CharField(max_length=100, blank=True)
@@ -106,6 +111,37 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         or the email address.
         """
         return self.get_full_name() or self.email
+
+    def save(self, **kwargs):
+
+        # Force lowercase email
+        self.email = self.email.lower()
+
+        old_email = None
+
+        if self.pk:
+            old_email = self._meta.model.objects.filter(
+                id=self.id
+            ).only('email').first().email
+
+        super(SmallsUser, self).save(**kwargs)
+
+        if old_email and old_email != self.email:
+            self.update_stripe_customer(email=self.email)
+
+    def update_stripe_customer(self, **kwargs):
+        """
+        :param kwargs: Update params (https://stripe.com/docs/api#customers)
+        :return: bool: Wether is was updated or not.
+        """
+        try:
+            customer = self.customer.stripe_customer
+            for (key, value) in kwargs.items():
+                customer[key] = value
+            customer.save()
+            return True
+        except (Customer.DoesNotExist, InvalidRequestError):
+            return False
 
     def get_full_name(self):
         """
@@ -156,20 +192,96 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     def is_first_login(self):
         return self.date_joined == self.last_login
 
-    @cached_property
+    def get_donations(self, this_year=True):
+        # Assume always USD.
+        qs = self.donations.filter(user=self, confirmed=True)
+        if this_year:
+            current_date = timezone.now()
+            first_day = current_date.replace(month=1, day=1, hour=0,
+                                             minute=0, second=0, microsecond=0)
+            qs = qs.filter(date__gte=first_day)
+
+        return qs
+
+    @property
+    def get_donation_amount(self, this_year=True):
+
+        qs = self.get_donations(this_year=this_year)
+
+        amount_data = qs.values('user_id').annotate(total_donations=Sum('amount'))
+        if amount_data:
+            return amount_data[0]['total_donations']
+        else:
+            return 0
+
+    @property
+    def get_donation_expiry_date(self):
+        """ Get access expiry date """
+        last_donation = self.get_donations().order_by('-date').first()
+        if last_donation:
+            return last_donation.archive_access_expiry_date
+        else:
+            return None
+
+    def get_project_donation_amount(self, product_id):
+        condition = Q(product__parent_id=product_id) | Q(product_id=product_id)
+        qs = self.get_donations(this_year=False).filter(condition)
+        amount_data = qs.values('user_id').annotate(total_donations=Sum('amount'))
+        if amount_data:
+            return amount_data[0]['total_donations']
+        else:
+            return 0
+
+    @property
     def has_institutional_subscription(self):
         return self.institution is not None
 
-    @cached_property
+    @property
     def has_active_institutional_subscription(self):
         return self.institution is not None and self.institution.is_subscription_active()
 
-    @cached_property
+    @property
     def has_active_subscription(self):
         """Checks if a user has an active subscription."""
         return subscriber_has_active_subscription(self)
 
-    @cached_property
+    def get_archive_access_expiry_date(self):
+        """Returns date of archive access expiry for a user.
+        Date is set by donations ($10 / month).
+        If there is no donation yet, the user might be on a subscription.
+        The new system after Jan  1st. 2020 will start accruing donations.
+        """
+        donation = self.donations.order_by('-date').first()
+        if donation:
+            return donation.archive_access_expiry_date
+        else:
+            try:
+                subscription = self.customer.current_subscription
+            except:
+                return None
+
+            return subscription.current_period_end
+
+    @property
+    def has_archive_access(self):
+        """
+            Monthly Pledge: existing  ($10) or new (free amount, min $10)
+            Donations: min $10. $100 /year, $10/month, $1/day ** Spike  has new requested full access
+            to the tax year regardless donation.
+            VIPs
+            Institutional Subscriptions
+            Artists
+        """
+        today = timezone.localtime(
+            timezone.now().replace(hour=0, minute=0, second=0)).date()
+        date = self.get_donation_expiry_date
+        return date and date >= today or \
+               self.get_subscription_plan['type'] != 'free' or \
+               self.is_vip or \
+               self.has_active_institutional_subscription or \
+               self.is_artist
+
+    @property
     def get_subscription_plan(self):
         if self.is_staff:
             return {'name': 'Admin', 'type': 'premium'}
@@ -183,31 +295,54 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
             return {'name': 'Institutional (inactive)', 'type': 'free'}
         elif self.has_active_subscription:
             plan_id = self.customer.current_subscription.plan
-            return settings.DJSTRIPE_PLANS[plan_id]
+            if plan_id in settings.DJSTRIPE_PLANS:
+                return settings.DJSTRIPE_PLANS[plan_id]
+            else:
+                return {
+                    'name': 'Common Subscriptions',
+                    'type': 'basic'
+                }
         else:
             return {'name': 'Live Video Stream Access', 'type': 'free'}
 
-    @cached_property
+    @property
     def get_current_subscription(self):
         if self.has_active_subscription:
             return self.customer.current_subscription
         else:
             return None
 
-    @cached_property
+    @property
     def has_activated_account(self):
         has_verified_email = EmailAddress.objects.filter(user=self,
                                                          verified=True).exists()
         is_social_account = self.socialaccount_set.exists()
         return has_verified_email or is_social_account
 
-    @cached_property
+    @property
     def can_watch_video(self):
-        return self.has_activated_account and self.get_subscription_plan['type'] != 'free'
+        return self.has_activated_account and \
+               self.has_archive_access
 
-    @cached_property
+    @property
     def can_listen_to_audio(self):
-        return self.has_activated_account and self.get_subscription_plan['type'] != 'free'
+        return self.has_activated_account and \
+               self.has_archive_access
+
+    def get_active_card(self):
+
+        try:
+            customer_detail = CustomerDetail.get(id=self.customer.stripe_id)
+        except APIConnectionError:
+            customer_detail = None
+        except InvalidRequestError:
+            customer_detail = None
+        except CustomerDetail.DoesNotExist:
+            customer_detail = None
+        except SmallsUser.customer.RelatedObjectDoesNotExist:
+            customer_detail = None
+        if customer_detail:
+            return customer_detail.active_card
 
 
 class SmallsEmailConfirmation(EmailConfirmation):
@@ -223,17 +358,24 @@ class SmallsEmailConfirmation(EmailConfirmation):
             else Site.objects.get_current()
         activate_url = reverse(activate_view, args=[self.key])
         activate_url = request.build_absolute_uri(activate_url)
+
+        referer = request.META.get('HTTP_REFERER', '')
+
+        if 'donate' in referer:
+            activate_url += '?donate=True'
+        elif request.GET.get('tickets'):
+            activate_url += '?tickets=True'
+        elif 'catalog' in referer:
+            activate_url += '?catalog=True&next=' + request.GET.get('next_after_confirm', '')
+
         ctx = {
-            "user": self.email_address.user,
-            "activate_url": activate_url,
-            "current_site": current_site,
-            "key": self.key,
+            'user': self.email_address.user,
+            'activate_url': activate_url,
+            'current_site': current_site,
+            'key': self.key,
         }
         ctx.update(**kwargs)
-        if signup:
-            email_template = 'account/email/email_confirmation_signup'
-        else:
-            email_template = 'account/email/email_confirmation'
+        email_template = 'account/email/email_confirmation_signup'
         get_adapter().send_mail(email_template,
                                 self.email_address.email,
                                 ctx)
@@ -248,8 +390,10 @@ class SmallsEmailAddress(EmailAddress):
         proxy = True
 
     def send_confirmation(self, request, signup=False, **kwargs):
+
         confirmation = SmallsEmailConfirmation.create(self)
         confirmation.send(request, signup=signup, **kwargs)
+
         return confirmation
 
 

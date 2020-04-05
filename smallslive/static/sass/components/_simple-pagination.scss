@@ -1,0 +1,25 @@
+.page-numbers-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+
+  .simple-pagination {
+    margin-top: 20px;
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+        @include title2;
+        display: inline-block;
+        margin-right: 5px;
+        margin-left: 5px;
+
+        .page-link {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

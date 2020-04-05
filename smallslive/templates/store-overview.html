@@ -238,13 +238,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="store-overview__return-button__container">
-                    <a href="#" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to cart</a>
-                </div>
             </div>
             <div class="col-xs-12 col-sm-4 store-overview__right-column">
                 <div class="store-overview__group">
-                    <h3 class="store-overview__group__heading">Shipping information:</h3>
+                    <h3 class="store-overview__group__heading">Shipping:</h3>
                     <div class="store-overview__group__textblock">
                         <p>Matej Grozdanovic</p>
                         <p>Street name 123</p>
@@ -256,10 +253,13 @@
                     </div>
                 </div>
                 <div class="store-overview__return-button__container">
-                    <a href="#" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to shipping</a>
+                    {% if not shipping_method.name = "No shipping required" %}
+                        <a href="{% url 'checkout:shipping-address' %}" class="white-border-button">Edit </a>
+                    {% endif %}
+
                 </div>
                 <div class="store-overview__group">
-                    <h3 class="store-overview__group__heading">Billing information:</h3>
+                    <h3 class="store-overview__group__heading">Billing:</h3>
                     <div class="store-overview__group__textblock">
                         <p>Matej Grozdanovic</p>
                         <p>Street name 123</p>
@@ -273,21 +273,12 @@
                         <p>Matej Grozdanovic</p>
                     </div>
                     <div class="store-overview__return-button__container">
-                    <a href="#" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to billing</a>
+                    <a href="#" class="store-overview__return-button">Edit</a>
                 </div>
                 </div>
             </div>
         </section>
         <section class="store-cart__footer container">
-            <div class="col-xs-12 col-sm-6 store-cart__footer__left">
-                <p class="store-cart__footer__left__text">We accept the following payment options:</p>
-                <div class="store-cart__footer__card-icons">
-                    <img src="{% static 'image/payment/visa.png' %}" alt="Visa">
-                    <img src="{% static 'image/payment/mastercard.png' %}" alt="MasterCard">
-                    <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
-                    <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
-                </div>
-            </div>
             <div class="col-xs-12 col-sm-6 store-cart__footer__right">
                 <div class="store-cart__footer__price-container">
                     <span class="store-cart__footer__price-container__value">$1999.99</span>
@@ -301,7 +292,7 @@
                 </div>
             </div>
             <div class="col-xs-12 store-cart__footer__buttons">
-                <a href="#" class="store-cart__footer__button-back"><i class="fa fa-angle-double-left"></i> Back to payment information</a>
+                <a href="{% url 'basket:summary' %}" class="white-border-button left back-to-payment-btn"> Back</a>
                 <a href="#" class="store-cart__footer__button-next">Pay and order</a>
             </div>
         </section>

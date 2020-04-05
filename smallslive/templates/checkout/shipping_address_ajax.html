@@ -1,0 +1,81 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load currency_filters %}
+{% load purchase_info_tags %}
+
+
+
+    <div>
+
+        <form action="{% url 'checkout:shipping-address' %}" method="post" id="new_shipping_address">
+            {% csrf_token %}
+            <section class="container">
+                <div class="section-title section-title-no-padded">
+                    <div  tabindex="0"  class="title1">Shipping Information</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" name="first_name" class="store__form__input" id="first_name" placeholder="First Name"{% if form.first_name.value %}value="{{ form.first_name.value }}"{% endif %}>
+                        {% for error in form.first_name.errors %}
+                            <span class="store__form__field-error">{{ error }}</span>
+                        {% endfor %}
+                        <input type="text" name="last_name" class="store__form__input" id="last_name" placeholder="Last Name" {% if form.last_name.value %}value="{{ form.last_name.value }}"{% endif %}>
+                        {% for error in form.last_name.errors %}
+                            <span class="store__form__field-error">{{ error }}</span>
+                        {% endfor %}
+                        <input type="text" name="line1" class="store__form__input" id="line1" placeholder="Address Line 1" {% if form.line1.value %}value="{{ form.line1.value }}"{% endif %}>
+                        {% for error in form.line1.errors %}
+                            <span class="store__form__field-error">{{ error }}</span>
+                        {% endfor %}
+                        <input type="text" name="line2" class="store__form__input" id="line2" placeholder="Address Line 2" {% if form.line2.value %}value="{{ form.line2.value }}"{% endif %}>
+                        {% for error in form.line2.errors %}
+                            <span class="store__form__field-error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <input type="text" name="line4" id="city" class="store__form__input" placeholder="City" {% if form.line4.value %}value="{{ form.line4.value }}"{% endif %}>
+                                {% for error in form.line4.errors %}
+                                    <span class="store__form__field-error">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-xs-6">
+                                <input type="text" name="postcode" id="postcode" class="store__form__input" placeholder="Zip Code" {% if form.postcode.value %}value="{{ form.postcode.value }}"{% endif %}>
+                                {% for error in form.postcode.errors %}
+                                    <span class="store__form__field-error">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="white-border-select">
+                            <select name="state" id="state" class="store__form__select">
+                                <option value="">Select State</option>
+                                {% for val, choice in form.fields.state.widget.choices %}
+                                  {% if val %}
+                                    <option value="{{ val }}" {% if val == form.state.value %}selected{% endif %}>{{ choice }}</option>
+                                  {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% for error in form.state.errors %}
+                            <span class="store__form__field-error">{{ error }}</span>
+                        {% endfor %}
+                        <div class="white-border-select">
+                            <select name="country" id="country" class="store__form__select">
+                                <option value="">Select Country</option>
+                                {% for val, choice in form.fields.country.choices %}
+                                  {% if val %}
+                                    <option value="{{ val }}" {% if val == form.country.value %}selected{% endif %}>{{ choice }}</option>
+                                  {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% for error in form.country.errors %}
+                            <span class="store__form__field-error">{{ error }}</span>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </section>
+        </form>
+    </div>

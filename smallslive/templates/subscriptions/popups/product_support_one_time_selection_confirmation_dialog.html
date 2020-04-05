@@ -1,0 +1,38 @@
+{% load static from staticfiles %}
+{% load full_static %}
+{% load djstripe_tags %}
+{% load reviews_tags %}
+{% load thumbnail %}
+{% load i18n %}
+{% load display_tags %}
+{% load staticfiles %}
+{% load purchase_info_tags %}
+{% load currency_filters %}
+{% load thumbor_tags %}
+{% load basket_tags %}
+
+<div class="modal fade selectionConfirmationDialog"
+     id="productOneTimeSelectionConfirmationDialog"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content custom-modal">
+      <a href="#" class="close-button"></a>
+      <div class="modal-body">
+        <p class="title2 accent-color title">Product Sponsorship</p>
+        <p tabindex="0" class="title-big subtitle">One Time Donation</p>
+        <p tabindex="0" class="text9 justified-text text">
+          You have selected a One Time Donation of $<span class="price"></span>.
+          One Time Donations are 100% tax deductible.
+          All tax documents are available from your Account Settings.
+          All donations grant access to the SmallsLIVE Archive.
+        </p>
+        <div class="text4 text-centered" style="display: flex; justify-content: center;">
+          <button id="cancelSelectionButton" class="white-border-button cancel-button" style="margin-left: 5px;">Cancel</button>
+          <button id="confirmOneTimeSelectionButton" class="white-border-button confirm" style="margin-left: 5px;">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

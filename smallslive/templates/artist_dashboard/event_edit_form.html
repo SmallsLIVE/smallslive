@@ -1,0 +1,8 @@
+{% load crispy_forms_tags static %}
+<form method="post" id="event-edit-frm" class="admin-interface__form" enctype="multipart/form-data" action="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
+  {% crispy form %}
+  <div class="buttonHolder">
+    <input type="submit" name="submit" value="Save event" class="white-border-button inline separated"
+           id="submit-id-submit">
+  </div>
+</form>

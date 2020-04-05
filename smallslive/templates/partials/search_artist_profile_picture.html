@@ -1,0 +1,9 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+<img
+{% if photo_url %}
+    src="{% thumbor_url photo_url|urlencode crop=crop_box width=600 height=600 %}"
+{% else %}
+    src="{% static 'image/no-artist-photo-thumbnail.jpg' %}"
+{% endif %} alt="">

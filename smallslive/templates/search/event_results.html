@@ -1,0 +1,5 @@
+{% if events %}
+  {% include 'events/event_row.html' with events=events show_event_venue=show_event_venue %}
+{% else %}
+    <div class="no-result-container text2">No results</div>
+{% endif %}

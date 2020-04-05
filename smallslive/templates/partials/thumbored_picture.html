@@ -1,0 +1,15 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+<img
+{% if local_url %}
+    src="{% static local_url %}"
+{% endif %}
+{% if photo_url %}
+  {% if crop_box %}
+    src="{% thumbor_url photo_url|urlencode height=height|default_if_none:360 width=width|default_if_none:600 crop=crop_box %}"
+  {% else %}
+    src="{% thumbor_url photo_url|urlencode height=height|default_if_none:360 width=width|default_if_none:600 smart=True %}"
+  {% endif %}
+{% else %}
+    src="{% static 'image/no-event-image-placeholder.jpg' %}"
+{% endif %} alt="">

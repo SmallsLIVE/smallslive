@@ -1,0 +1,41 @@
+{% extends "customer/emails/base.html" %}
+{% load currency_filters i18n %}
+
+
+{% block body %}
+{% if order.user.first_name %}
+Dear {{ order.user.first_name }},
+{% else %}
+Dear Supporter,
+{% endif %}
+
+Thank you for contributing to the SmallsLIVE Foundation for Jazz Arts and Education.
+
+You have made a donation of {{ order.basket_total_incl_tax }} of which {{ order.basket.get_deductable_physical_total }} is tax deductible. All tax documents are available from your Account Settings.
+
+All donations grant access to the SmallsLIVE Archive. You have also chosen to receive a {{order.lines.first.title}} as a gift for your contribution.
+
+Your order number is {{ order }} and will be processed shortly.
+
+Your order contains:
+
+{% for line in order.lines.all %}
+{{ line.title }} - quantity: {{ line.quantity }} - price:{{ line.line_price_incl_tax }}
+{% endfor %}
+
+Basket total: {{ order.basket_total_incl_tax }} Shipping: {{ order.shipping_incl_tax }} Total: {{ order.total_incl_tax }}
+
+Shipping address:
+
+{% for field in order.shipping_address.active_address_fields %}
+    {{ field }}
+{% endfor %}
+
+Thank you for your support,
+
+The SmallsLIVE Foundation
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

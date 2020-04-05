@@ -9,9 +9,9 @@
     <div class="homepage-upcoming__event"
          {% if event.photo %}
             {% if event.photo_crop_box %}
-              style="background-image: url('{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=600 %}')"
+              style="background-image: url('{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=600 %}')"
             {% else %}
-              style="background-image: url('{% thumbor_url event.photo.url|urlencode height=360 width=600 smart=True %}')"
+              style="background-image: url('{% thumbor_url event.get_photo_url|urlencode height=360 width=600 smart=True %}')"
             {% endif %}
          {% else %}
             style="background-image: url('{% static "image/no-event-image-placeholder.jpg" %}')"
@@ -35,7 +35,7 @@
   </div>
   <!-- timeslotslot selector -->
   <div class="homepage-upcoming__footer row">
-    <h2>Today at Smalls:</h2>
+    <h2>Today's shows:</h2>
     <ol class="homepage-upcoming__footer__timeslots carousel-indicators">
         {% for event in events_today %}
           <li data-slickPosition="{{ forloop.counter0 }}" class="timeslot {% if forloop.first %}active{% endif %}">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</li>

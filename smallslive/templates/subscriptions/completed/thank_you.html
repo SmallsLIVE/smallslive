@@ -1,0 +1,121 @@
+{% extends "subscriptions/contribute-flow.html" %}
+{% load static from staticfiles %}
+{% load full_static %}
+{% load djstripe_tags %}
+{% load reviews_tags %}
+{% load thumbnail %}
+{% load i18n %}
+{% load display_tags %}
+{% load staticfiles %}
+{% load thumbor_tags %}
+
+{% block flow_title %}
+  {% if comma_separated_leaders %}
+    <p class="text2 accent-color">You are sponsoring
+      {{ comma_separated_leaders }}
+    </p>
+  {% else %}
+    <p class="text2 accent-color">Thank you for your support
+    </p>
+  {% endif %}
+{% endblock %}
+
+{% block flow_completed %}
+  <div id="supporterStepThankYou" class="flex-column items-center supporter-text-container">
+    <div class="supporter-text">
+      {% if flow_type == 'become_supporter' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for becoming a <span class='accent-color'>supporting member</span> of the smallslive foundation for jazz arts and education.
+          we greatly appreciate your support of our mission.
+          <span class='accent-color'>All donations grant access to the SmallsLIVE Archive.</span>
+        </p>
+      {% elif flow_type == 'update_pledge' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for updating your <span class='accent-color'>membership</span> of the smallslive foundation for jazz arts and education.
+          we greatly appreciate your support of our mission.
+          <span class='accent-color'>All donations grant access to the SmallsLIVE Archive.</span>
+        </p>
+      {% elif flow_type == 'one_time_donation' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.
+          <span class='accent-color'>All donations grant access to the SmallsLIVE Archive.</span>
+        </p>
+      {% elif flow_type == 'donate' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.
+          <span class='accent-color'>All donations grant access to the SmallsLIVE Archive.</span>
+        </p>
+      {% elif flow_type == 'product_support' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for your support of the smallslive foundation for jazz arts and education as well as {{ comma_separated_leaders }}.
+          <br>
+          {% if album_product.get_leaders.count > 1 %}
+          <span class='accent-color'>Your support benefits these artists and our mission.</span>
+          {% else %}
+          <span class='accent-color'>Your support benefits this artist and our mission.</span>
+          {% endif %}
+        </p>
+        {% if album_product %}
+          <p class="text5 text-center" style="margin-top: 60px;">
+            Your digital recordings can be found in your <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="accent-color underline" style="">Library</a>
+          </p>
+        {%  endif %}
+      {% elif flow_type == 'event_support' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for your support of {{ comma_separated_artists }} as well as the smallslive foundation for jazz arts and education.
+          <br>
+          {% if event.performers.count > 1 %}
+          <span class='accent-color'>Your support benefits these artists and our mission.</span>
+          {% else %}
+          <span class='accent-color'>Your support benefits this artist and our mission.</span>
+          {% endif %}
+        </p>
+      {% elif flow_type == 'artist_support' %}
+        <p tabindex="0" class="title7"><span class="big-letter">T</span>
+          hank you for your support of {{ artist.full_name }} as well as the smallslive foundation for jazz arts and education.
+          <br>
+          <span class='accent-color'>Your support benefits this artist and our mission.</span>
+        </p>
+      {% endif %}
+      {% if file_product %}
+        <p class="text5 text-center" style="margin-top: 60px;">
+          Please click to download the <a download="{{ file_product }}" href="{{ file_product }}" class="accent-color underline" style="">file</a>
+        </p>
+      {%  endif %}
+
+    </div>
+  </div>
+{% endblock %}
+{% block flow_confirm %}
+
+  {% if flow_type == 'become_supporter' %}
+    <a href="{% url 'archive' %}">
+      <button>Access the archive</button>
+    </a>
+  {% elif flow_type == 'update_pledge' %}
+    <a href="{% url 'user_settings_new' %}">
+      <button>Continue</button>
+    </a>
+  {% elif flow_type == 'one_time_donation' %}
+    <a href="{% url 'user_settings_new' %}">
+      <button>Continue</button>
+    </a>
+  {% elif flow_type == 'donate' %}
+    <a href="{% url 'home' %}">
+      <button>Home</button>
+    </a>
+  {% elif flow_type == 'product_support' %}
+    <a href="{% url 'promotions:home' %}">
+      <button>Continue browsing the Catalog</button>
+    </a>
+  {% elif flow_type == 'event_support' %}
+    <a href="{% url 'event_detail' event.id event.slug %}">
+      <button>Return to Event</button>
+    </a>
+  {% elif flow_type == 'artist_support' %}
+    <a href="{% url 'search' %}?artist_pk={{ artist.pk }}">
+      <button>Return to artist</button>
+    </a>
+  {% endif %}
+
+{% endblock %}

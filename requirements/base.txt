@@ -68,6 +68,7 @@ libthumbor==1.0.1
 lxml==3.3.4
 mailchimp==2.0.9
 mock==1.0.1
+natsort==3.5.0
 newrelic==2.54.0.41
 oauthlib==0.7.2
 phonenumbers==6.3.0
@@ -86,7 +87,7 @@ redis==2.10.6
 requests==2.8.1
 requests-oauthlib==0.4.2
 six==1.10.0
-git+https://github.com/SmallsLIVE/smallslive-metrics-djangoapp.git@ae8bae500d81c385946b3adfa8df3a0575a51342#egg=smallslive_metrics_app-0.1.37
+git+https://github.com/SmallsLIVE/smallslive-metrics-djangoapp.git@e5b4b537a4356ea4e2ba1e9a20409d33c8fef544#egg=smallslive_metrics_app-0.1.45
 sorl-thumbnail==11.12.1b
 sqlparse==0.1.14
 static==1.1.1
@@ -96,3 +97,6 @@ urllib3==1.10.1
 whitenoise==2.0.4
 wsgiref==0.1.2
 xlsxwriter==0.7.3
+django-wkhtmltopdf==3.2.0
+wkhtmltopdf-pack==0.12.2.4
+paypalrestsdk

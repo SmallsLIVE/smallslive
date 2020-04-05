@@ -93,7 +93,7 @@ class SmallsUserAdmin(UserAdmin, HijackUserAdminMixin):
                                   'subscription_price', 'company_name', 'newsletter')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'is_vip',
                                     'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined', 'archive_access_until')}),
     )
     add_fieldsets = (
         (None, {
@@ -111,3 +111,4 @@ class SmallsUserAdmin(UserAdmin, HijackUserAdminMixin):
     ordering = ['email', 'last_login']
 
 admin.site.register(SmallsUser, SmallsUserAdmin)
+

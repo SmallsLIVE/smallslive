@@ -1,0 +1,114 @@
+{% extends "home_new.html" %}
+{% load add_get_parameter %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block title %}Metrics payout{% endblock %}
+
+{% block content %}
+
+  <div class="modal fade" id="payoutGenerationModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width: 80%;">
+      <div class="modal-content custom-modal no-cancel">
+        <a href="#" class="close-button"></a>
+        <div class="modal-body">
+          <p class="title2 accent-color title">Payout Generation</p>
+          <p class="text9 justified-text text">
+            Generation Status
+          </p>
+
+          <div id="table-generation-container">
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrapper" style="border:none">
+    <form method="post" action="{% url 'artist_dashboard:metrics_payout_period' %}">
+      <section class="page-heading container" style="width: 100%;">
+        <h1>SmallsLIVE Payout Calculation Admin:</h1>
+      </section>
+      <section class="payout-calculator">
+        {% csrf_token %}
+        {{ form.errors }}
+        <div class="payout-calculator__input"><span class="payout-calculator__input__label">Period start date:</span><span class="payout-calculator__date-picker" id="payout-calculator__date-picker-start"><input class="" type="text" name="period_start" readonly><i class="fa fa-caret-down"></i></span></div>
+        <div class="payout-calculator__input"><span class="payout-calculator__input__label">Period end date:</span><span class="payout-calculator__date-picker" id="payout-calculator__date-picker-end"><input class="" type="text" name="period_end" readonly><i class="fa fa-caret-down"></i></span></div>
+        <div class="payout-calculator__instructions">
+            <p>Please select above the starting date and ending date for which you want to calculate the payout amounts for each artist.</p>
+        </div>
+
+        <button type="submit" class="payout-calculator__submit-button">Get Donations</button>
+        <button id="view-generated-information" class="payout-calculator__submit-button" style="margin: 0 25px;">View Spreadsheets</button>
+        <a class="text3" href="#" id="download-payout" class="hidden"></a>
+      </section>
+    </form>
+  </div>
+{% endblock content %}
+
+{% block extra_js %}
+  <script src="{% static 'js/bootstrap-select.js' %}"></script>
+  <script src="{% static 'js/dashboard-base.js' %}"></script>
+
+
+  <!-- Bootstrap datepicker JavaScript -->
+  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+  <script src="{% static 'js/metrics_datepicker.js' %}"></script>
+  <script>
+    var $datePickerStart = $('#payout-calculator__date-picker-start input');
+    $datePickerStart.datepicker({
+        format: 'yyyy-mm-dd',
+        minViewMode: "days",
+        orientation: "top auto",
+        startDate: new Date(2015, 10-1, 1),
+        autoclose: true
+    });
+
+    var $datePickerEnd = $('#payout-calculator__date-picker-end input');
+    $datePickerEnd.datepicker({
+        format: 'yyyy-mm-dd',
+        minViewMode: "days",
+        orientation: "top auto",
+        autoclose: true
+    });
+
+    var start_date = new Date({{ form.fields.period_start.initial.year }}, {{ form.fields.period_start.initial.month }}-1, {{ form.fields.period_start.initial.day}});
+    var end_date = new Date({{ form.fields.period_end.initial.year }}, {{ form.fields.period_end.initial.month }}-1, {{ form.fields.period_end.initial.day}});
+    $datePickerStart.datepicker("setDate", start_date);
+    $datePickerEnd.datepicker("setDate", end_date);
+
+    var pollUrl = "{% url 'artist_dashboard:metrics_payout_poll' %}";
+
+    function poll() {
+      // Poll for spreadsheets
+      $.ajax({
+        url: pollUrl,
+        success: function (data) {
+          if (data.success) {
+            var $tableContainer = $("#table-generation-container");
+            if ($tableContainer.length) {
+              $tableContainer.html(data.template);
+            }
+            window.setTimeout(poll, 5000);
+          }
+        }
+      });
+    }
+
+    $(document).ready(function () {
+
+      poll();
+
+      $("#view-generated-information").click(function (e) {
+        e.preventDefault();
+        $("#payoutGenerationModal").modal("show");
+      });
+
+    });
+
+
+
+  </script>
+{% endblock %}

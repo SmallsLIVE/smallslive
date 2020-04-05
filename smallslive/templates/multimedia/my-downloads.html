@@ -1,16 +1,15 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load static from staticfiles %}
 {% load thumbnail %}
 {% load thumbor_tags %}
 
-{% block title %}My downloads{% endblock %}
+{% block title %}Library{% endblock %}
 
 {% block content %}
-    <div class="content-wrapper">
 
-        <section class="my-downloads-header">
-            <h1 class="my-downloads-header__title container">My downloads</h1>
-        </section>
+      <div class="white-line-bottom">
+        <div class="title1 center">Library</div>
+      </div>
         <section class="my-downloads-album__list container">
           {% if lines %}
             {% regroup lines by product.album as album_list %}
@@ -45,13 +44,16 @@
                             <h3 class="my-downloads-album__tracks-table__heading">Tracks bought:</h3>
                             <!-- tracks table header -->
                             <div class="my-downloads-album__tracks-table__header row">
-                                <div class="col-xs-7 col-sm-5 col-md-5 col-lg-6 my-downloads-album__tracks-table__column title">
+                                <div class="col-xs-12 col-sm-8 col-md-7 col-lg-5 my-downloads-album__tracks-table__column duration">
+                                    Play
+                                </div>
+                                <div class="col-xs-2 col-sm-4 col-md-2 col-lg-2 my-downloads-album__tracks-table__column title">
                                     Title
                                 </div>
-                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                <div class="col-sm-3 col-md-2 hidden-xs hidden-sm hidden-md col-lg-2 my-downloads-album__tracks-table__column composer">
                                     Composer
                                 </div>
-                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                <div class="col-md-2 col-lg-1 hidden-xs hidden-sm hidden-md my-downloads-album__tracks-table__column duration">
                                     Duration
                                 </div>
                                 <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
@@ -63,25 +65,33 @@
                             {% for track in track_list %}
                               <!-- tracks table row -->
                               <div class="my-downloads-album__tracks-table__row row">
-                                  <div class="col-xs-7 col-sm-5 col-md-5 col-lg-6 my-downloads-album__tracks-table__column title">
-                                      {{ track.grouper.title }}
-                                  </div>
-                                  <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
-                                      {{ track.grouper.attr.composer }}
-                                  </div>
-                                  <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
-                                      {{ track.grouper.attr.duration }}
-                                  </div>
-                                  <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
-                                      <div class="buy-button-container">
-                                          <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
-                                          <ul class="dropdown-menu" role="menu">
+                                <div class="col-xs-12 col-sm-8 col-md-7 col-lg-5 my-downloads-album__tracks-table__column duration">
+                                    <audio class="audio-player" controls>
+                                        {% for line in track.list %}
+                                        <source src="{{ line.stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                                        {% endfor %}
+                                    </audio>
+                                </div>
+                                <div class="col-xs-2 col-sm-4 col-md-2 col-lg-2 my-downloads-album__tracks-table__column title">
+                                    {{ track.grouper.title }}
+                                </div>
+                                <div class="col-sm-3 col-md-2 col-lg-2 hidden-xs hidden-sm hidden-md my-downloads-album__tracks-table__column composer">
+                                    {{ track.grouper.attr.composer }}
+                                </div>
+                                <div class="col-md-2 col-lg-1 hidden-xs hidden-sm hidden-md my-downloads-album__tracks-table__column duration">
+                                    {{ track.grouper.attr.duration }}
+                                </div>
+
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <div class="dropdown-menu" role="menu">
                                             {% for line in track.list %}
-                                              <li><a href="{{ line.stockrecord.digital_download.get_downloadable_file_url }}" download="{{ line.stockrecord.digital_download.file.name }}">Download {% if line.stockrecord.is_hd %}HD{% else %}mp3{% endif %}</a></li>
+                                            <a class="white-border-button flex" href="{{ line.stockrecord.digital_download.get_downloadable_file_url }}" download="{{ line.stockrecord.digital_download.file.name }}">Download {% if line.stockrecord.is_hd %}HD{% else %}mp3{% endif %}</a>
                                             {% endfor %}
-                                          </ul>
-                                      </div>
-                                  </div>
+                                        </div>
+                                    </div>
+                                </div>
                               </div>
                               <!-- end of tracks table row -->
                             {% endfor %}
@@ -99,5 +109,19 @@
           {% endif %}
         </section>
 
-    </div>
+
 {% endblock content %}
+
+
+{% block extra_js %}
+<script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+<script>
+    $('.audio-player').on('ended', function() {
+        songIndex = $('.audio-player').index(this) + 1
+        if( $('.audio-player')[songIndex]){
+            $('.audio-player')[songIndex].play();
+        }
+    });
+</script>
+
+{% endblock %}

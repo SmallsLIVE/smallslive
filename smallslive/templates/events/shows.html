@@ -1,0 +1,55 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load i18n %}
+
+<section id="shows{% if archived %}Archived{% else %}Upcoming{% endif %}Content"
+         class="archived-shows old-calendar search-tab-content{% if archived %} archived{% else %} upcoming{% endif %}{% if artist_profile %} active{% endif %} {{ archived|yesno:',shows-calendar' }} "
+         data-toggle-tab="{% if archived %}archived{% else %}upcoming{% endif %}-shows"
+         data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
+  {% if archived or upcoming %}
+    {% if archived %}
+      <div class="section-title__container">
+        <div class="section-title archive">
+        {% if first and last %}
+          <div class="title1">
+            <span id="date-from-label">{{ last.get_date|date:'m/d/Y' }}</span>
+            <span style="margin: 0 5px;">-</span>
+            <span id="date-to-label">{{ first.get_date|date:'m/d/Y' }}</span>
+          </div>
+          <span class="title1" style="margin: 0 5px;"> / </span>
+        {% endif %}
+        {% if first and last %}
+          <span id="number-of-shows-label" class="accent-color title1">{{ showing_event_results }}</span>
+          <span class="title1 label__related--more" style="margin-left: 5px;">Related Shows</span>
+          <span class="title1 label__related--less" style="margin-left: 5px;">Related</span>
+        {% else %}
+          <span class="accent-color title1">This artist has no archived shows</span>
+        {% endif %}
+        </div>
+      {% if events %}
+        {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
+      {% endif %}
+      </div>
+      <label class="accent-color text2 date-error  hidden">
+        Invalid date range selection
+      </label>
+    {% endif %}
+    {% if upcoming and artist_profile %}
+      <div class="section-title home calendar upcoming-shows">
+        <div id="upcoming-shows" class="title1" data-last-event-date="{{ last_event.date }}">
+          Upcoming Shows
+        </div>
+      </div>
+    {% endif %}
+  {% endif %}
+  <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
+    {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming show_event_venue=show_event_venue secondary=True hide_play=hide_play with_date_picker=True %}
+  </main>
+
+  <div id="event-load-gif" class="loading-image events-gif text-center">
+      <img src="{% static 'image/loading.gif' %}" alt="">
+  </div>
+
+</section>
+
+<script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>

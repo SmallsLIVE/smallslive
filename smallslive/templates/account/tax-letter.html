@@ -1,0 +1,68 @@
+{% load pipeline %}
+{% load static from staticfiles %}
+<html lang="en">
+<head>
+  {% stylesheet 'css' %}
+
+  <style>
+    body {background-image: none !important; background-color: white  !important;
+    }
+  </style>
+  <meta charset="utf-8">
+  <title>Tax letter</title>
+</head>
+
+<body>
+  <div class="tax-letter-container">
+      <div class="tax-letter-header">
+          <img src="{% static 'new_logo_white.jpg' %}"  alt="" style="width: 70px; margin-bottom: 20px;"/>
+          <p>The SmallsLIVE Foundation, INC.</p>
+
+          <p>183 West 10th Street</p>
+
+          <p> Greenwich Village, New York, 10014</p>
+
+          <p>Email: Foundation@smallslive.com</p>
+
+          <p><a href="http://www.smallslive.com">www.smallslive.com</a></p>
+
+      </div>
+      <div class="tax-letter-body">
+
+
+          <p>
+            {% now "m/d/y" %}
+          </p>
+
+          <p>
+            {% if user.first_name or user.last_name %}
+              Dear {{ user.first_name }} {{ user.last_name }}:
+            {% else %}
+              Dear Supporter:
+            {% endif %}
+          </p>
+          <p>
+            The SmallsLIVE Foundation for Jazz Arts & Education thanks you for your generous donation.
+            Your help supports the musicians and the venues and continues our mission of presenting live jazz music in New York City.
+          </p>
+          <p>Your donation for this tax year was: ${{ charges_value }} of which {% if charges_value == deductable_value %} 100% {% else %} ${{ deductable_value }} {% endif %} is tax deductible.</p>
+
+          <p>The SmallsLIVE Foundation, INC. Tax ID is 38-4083862.</p>
+
+
+          <p>
+            Our office is at 183 W. 10th Street, basement, New York City, NY, 10014.
+            The SmallsLIVE Foundation for Jazz Arts & Education is an IRS recognized
+            not-for-profit corporation organized in the state of New York.
+          </p>
+          <p>
+            My Sincerest Regards,
+          <br>
+            Spike Wilner
+          <br>
+            CEO The SmallsLIVE Foundation
+          </p>
+      </div>
+  </div>
+</body>
+</html>

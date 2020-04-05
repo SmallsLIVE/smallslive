@@ -1,0 +1,29 @@
+{% load i18n %}
+{% load currency_filters %}
+
+    <p class="text4 basket-ammount">
+        {% if basket.is_empty %}
+            {% trans "Your basket is now empty" %}
+        {% else %}
+            {% if basket.is_tax_known %}
+                {% blocktrans with total=basket.total_incl_tax|currency:basket.currency %}
+                Your basket total is now <strong>{{ total }}</strong>
+                {% endblocktrans %}
+            {% else %}
+                {% blocktrans with total=basket.total_excl_tax|currency:basket.currency %}
+                Your basket total is now <strong>{{ total }}</strong>
+                {% endblocktrans %}
+            {% endif %}
+        {% endif %}
+    </p>
+
+{% if include_buttons %}    
+
+    <div class="alert-buttons">
+        <a href="{% url 'basket:summary' %}" class="white-border-button">{% trans "View basket" %}</a>
+        <a href="{% url 'checkout:index' %}" class="white-border-button">{% trans "Checkout now" %}</a>
+        <a href="{% url 'promotions:home' %}" class="white-border-button">{% trans "Continue Browsing the Catalog" %}</a>
+    </div>
+
+
+{% endif %}

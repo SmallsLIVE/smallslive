@@ -1,161 +1,109 @@
-{% extends "artist_dashboard/base.html" %}
+{% extends "artist_dashboard/home.html" %}
 {% load add_get_parameter %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
+
+{% block extra_head %}
+  <script>
+    var django = {jQuery: jQuery};
+  </script>
+  <link href="{% static 'css/selectize.bootstrap3.css' %}" rel="stylesheet">
+  <link href="/static/image_cropping/css/jquery.Jcrop.min.css" type="text/css" media="all" rel="stylesheet" />
+  <link href="/static/image_cropping/css/image_cropping.css" type="text/css" media="all" rel="stylesheet" />
+  <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+  <!-- Image Cropping is removing jQuery, let's remember it -->
+  <script>
+    window.__jQuery = window.jQuery;
+    window.__$ = window.$;
+  </script>
+  <script type="text/javascript" src="/static/image_cropping/js/jquery.Jcrop.min.js"></script>
+  <script type="text/javascript" src="/static/image_cropping/image_cropping.js"></script>
+  <script>
+    window.jQuery = window.__jQuery;
+    window.$ = window.__$;
+  </script>
+
+{% endblock extra_head %}
 
 {% block my-events-active %}active{% endblock %}
 
 {% block title %}My events{% endblock %}
 
-
 {% block content %}
-  <section class="page-heading page-heading-selector container">
-      <h1>My events:</h1>
-      <ul class="page-heading-selector__selector">
-        <li {% if past_active %}class="active"{% endif %}>
-          <a href="{% url "artist_dashboard:my_past_events" %}">Past events</a>
-        </li>
-        <li {% if future_active %}class="active"{% endif %}>
-          <a href="{% url "artist_dashboard:my_future_events" %}">Future events</a>
-        </li>
-      </ul>
-  </section>
-  <section class="events__filters container">
-      <ul class="flexbox-equal-height">
-          <li class="events__filters__heading">
-              Filters:
-          </li>
-          <li class="events__filters__group">
-              <ul>
-                  <li {% if request.GET.audio_filter %}class="active"{% endif %}>Audio:</li>
-                  <li {% if request.GET.audio_filter == "Published" %}class="active"{% endif %}><a href="{% add_get audio_filter="Published" page=None %}">Published</a> {% if request.GET.audio_filter == "Published" %}<a href="{% add_get audio_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.audio_filter == "Hidden" %}class="active"{% endif %}><a href="{% add_get audio_filter="Hidden" page=None %}">Private</a> {% if request.GET.audio_filter == "Hidden" %}<a href="{% add_get audio_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.audio_filter == "None" %}class="active"{% endif %}><a href="{% add_get audio_filter="None" page=None %}">Not available</a> {% if request.GET.audio_filter == "None" %}<a href="{% add_get audio_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-              </ul>
-          </li>
-          <li class="events__filters__group">
-              <ul>
-                  <li {% if request.GET.video_filter %}class="active"{% endif %}>Video:</li>
-                  <li {% if request.GET.video_filter == "Published" %}class="active"{% endif %}><a href="{% add_get video_filter="Published" page=None %}">Published</a> {% if request.GET.video_filter == "Published" %}<a href="{% add_get video_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.video_filter == "Hidden" %}class="active"{% endif %}><a href="{% add_get video_filter="Hidden" page=None %}">Private</a> {% if request.GET.video_filter == "Hidden" %}<a href="{% add_get video_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.video_filter == "None" %}class="active"{% endif %}><a href="{% add_get video_filter="None" page=None %}">Not available</a> {% if request.GET.video_filter == "None" %}<a href="{% add_get video_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-              </ul>
-          </li>
-          <li class="events__filters__group">
-              <ul>
-                  <li {% if request.GET.leader_filter %}class="active"{% endif %}>Leader status:</li>
-                  <li {% if request.GET.leader_filter == "true" %}class="active"{% endif %}><a href="{% add_get leader_filter="true" page=None %}">Leader</a> {% if request.GET.leader_filter == "true" %}<a href="{% add_get leader_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.leader_filter == "false" %}class="active"{% endif %}><a href="{% add_get leader_filter="false" page=None %}">Sideman</a> {% if request.GET.leader_filter == "false" %}<a href="{% add_get leader_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-              </ul>
-          </li>
-          <li class="events__filters__group">
-              <a class="clear-toggle" href="{% add_get audio_filter=None video_filter=None leader_filter=None page=None%}"><i class="fa fa-remove"></i> Clear filters</a>
-          </li>
-      </ul>
-  </section>
-  <section class="events__list container">
-      <ul>
-        {% for gig_info in gigs %}
-          {% with event=gig_info.event  %}
-          <!-- single event row -->
-          <li class="event-row flexbox-equal-height">
-              <div class="hidden-xs hidden-sm col-md-2 event-row__image">
-                  {% if event.photo %}
-                      {% if gig_info.is_leader %}
-                          <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
-                            <img src="{% thumbor_url event.photo.url|urlencode height=170 width=170 smart=True %}" alt=""/>
-                          </a>
-                      {% else %}
-                          <a href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">
-                            <img src="{% thumbor_url event.photo.url|urlencode height=170 width=170 smart=True %}" alt=""/>
-                          </a>
-                      {% endif %}
-                  {% else %}
-                      {% if gig_info.is_leader %}
-                          <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
-                            <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                          </a>
-                      {% else %}
-                          <a href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">
-                            <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                          </a>
-                      {% endif %}
-                  {% endif %}
-              </div>
-              <div class="col-xs-12 col-sm-7 col-md-6 event-row__description">
-                  <p class="event-row__description__date">{{ event.listing_date|date:"l, F d, Y" }}  |  {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</p>
-                  {% if gig_info.is_leader %}
-                    <a class="event-row__description__name" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">{{ event.full_title }} {% if gig_info.is_leader %}<span class="event-row__is-leader">leader</span>{% endif %}</a>
-                  {% else %}
-                    <a class="event-row__description__name" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">{{ event.full_title }} {% if gig_info.is_leader %}<span class="event-row__is-leader">leader</span>{% endif %}</a>
-                  {% endif %}
-                  <p class="event-row__description__label">Artists:</p>
-                  <p class="event-row__description__artists">
-                    {% for gig_info in event.get_performers %}
-                      {{ gig_info.artist.full_name }} <span class="instrument">({{ gig_info.role }})</span>{% if not forloop.last %}  // {% endif %}
-                    {% endfor %}
-                  </p>
-              </div>
-              <div class="col-xs-12 col-sm-5 col-md-4 event-row__info">
-                  <div class="col-xs-3 event-row__info__audio">
-                      <i class="fa fa-volume-down {{ event.audio_status }}"></i>
-                      <p class="event-row__info__label">Event audio</p>
-                      <p class="event-row__info__status {{ event.audio_status }}">{{ event.audio_status|capfirst }}</p>
-                  </div>
-                  <div class="col-xs-3 event-row__info__video">
-                      <i class="fa fa-video-camera {{ event.video_status }}"></i>
-                      <p class="event-row__info__label">Event video</p>
-                      <p class="event-row__info__status {{ event.video_status }}">{{ event.video_status|capfirst }}</p>
-                  </div>
-                  {% if gig_info.is_leader %}
-                      <a class="col-xs-3 event-row__info__edit-button" href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
-                          <i class="fa fa-edit"></i>
-                          <p class="event-row__info__label">Edit / download</p>
-                      </a>
-                  {% else %}
-                      <a class="col-xs-3 event-row__info__edit-button" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">
-                          <i class="fa fa-align-center"></i>
-                      <p class="event-row__info__label">Details / download</p>
-                      </a>
-                  {% endif %}
-                  {% if event.audio_status != 'none' or event.video_status != 'none' %}
-                      {% if not request.user.legal_agreement_acceptance %}
-                          <a class="col-xs-3 event-row__info__edit-button disabled">
-                            <i class="fa fa-bar-chart"></i>
-                            <p class="event-row__info__label">Event metrics</p>
-                          </a>
-                      {% else %}
-                          <a class="col-xs-3 event-row__info__edit-button" href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">
-                            <i class="fa fa-bar-chart"></i>
-                            <p class="event-row__info__label">Event metrics</p>
-                          </a>
-                      {% endif %}
-                  {% endif %}
-              </div>
-          </li>
-          {% endwith %}
-        {% endfor %}
-      </ul>
-  </section>
-  <section class="page-pagination container">
-      <p class="search-pagination-info">Showing results {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ paginator.count }}</p>
-          {% if page_obj.has_previous or page_obj.has_next %}
-                <div class="search-pagination">
-                  {% if page_obj.has_previous %}<a href="{% add_get page=page_obj.previous_page_number %}"><span class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
-                  {% if show_first %}
-                    <a href="{% add_get page=1 %}"><span class="search-pagination__page {% if page_obj.number == 1 %}active{% endif %}">1</span></a>
-                    ...
-                  {% endif %}
-                  {% for page in page_numbers %}
-                    <a href="{% add_get page=page %}"><span class="search-pagination__page {% if page == page_obj.number %}active{% endif %}">{{ page }}</span></a>
-                  {% endfor %}
-                  {% if show_last %}
-                    ...
-                    <a href="{% add_get page=paginator.num_pages %}"><span class="search-pagination__page {% if page_obj.number == paginator.num_pages %}active{% endif %}">{{ paginator.num_pages }}</span></a>
-                  {% endif %}
-                  {% if page_obj.has_next %}<a href="{% add_get page=page_obj.next_page_number %}"><span class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
+  {% include 'artist_dashboard/publish_modal.html' %}
+  {% include 'artist_dashboard/sidemusician_modal.html' %}
 
-                </div>
-            {% endif %}
-  </section>
+  {# TODO Move container to dashboard base #}
+  <div class="artist-profile-container flex-column" style="padding-left: 0; padding-right: 0;">
+    <div class="event-mobile-info" id="event-info-mobile-card" style="display:none;width:100%;padding:0"></div>
+
+    <div id="artistEventsContainer" class="flex-row items-flex-stretch artist-events-container{% if is_future %} future{% endif %}" style="border-top: none;">
+      {% include 'artist_dashboard/my_gigs/event_list.html' %}
+      <div class="flex-column artist-event{% if is_future %} future{% endif %}">
+
+        <div id="artistEventsInfo" class="flex-row items-flex-stretch artist-events-list-info">
+          <div id="event-edit-form-load-gif" class="hidden events-gif text-center">
+            <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
+          </div>
+          <div id="edit-event-dashboard" class="edit-event-dashboard{% if is_future %} future{% endif %}">
+
+          </div>
+          <div id="event-info-load-gif" class="hidden events-gif text-center">
+            <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
+          </div>
+          <div id="event-info" class="artist-dashboard-event-container {% if is_future %} future{% else %} active{% endif %}">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 {% endblock content %}
+
+{% block extra_js %}
+  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+  <script src="{% static 'js/selectize.min.js' %}"></script>
+  <script src="{% static 'js/Chart.min.js' %}"></script>
+  <script src="{% static 'js/subpages.js' %}"></script>
+  <script src="{% static 'js/jquery.form.js' %}"></script>
+  <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
+  <script src="{% static 'js/moment.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+  <script src="{% static 'js/event_form.js' %}"></script>
+  <script src="{% static 'js/search/artist_dashboard.js' %}"></script>
+
+  <script>
+
+    var videoPlayer;
+    var videoPlaying = false;
+    var currentListIndex;
+
+    {% if is_future %}
+      var eventsUrl = "{% url 'artist_dashboard:my_future_events_ajax' %}";
+    {% else %}
+      var eventsUrl = "{% url 'artist_dashboard:my_past_events_ajax' %}";
+    {% endif %}
+
+    var selectedEventId;
+    var selectedSetId;
+    var currentPage = 0;
+    var totalPages = 1;
+
+    var jwPlayerSkin = "https:{% static "jwplayer-skin/smalls.xml" %}";
+
+    //////////
+
+    EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
+
+    var countsURL = "{% url 'event_counts' %}";
+
+    var uploadImagePreviewUrl = "{% url 'upload_image_preview' %}";
+    var loadingGif = "{% static 'image/loading.gif' %}";
+    var csrfToken = "{{ csrf_token }}";
+    var isFuture = {% if is_future %}true{% else %}false{% endif %};
+
+  </script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/selectize.bootstrap3.css' %}">
+
+{% endblock %}

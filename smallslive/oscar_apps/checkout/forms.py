@@ -11,6 +11,10 @@ from oscar.apps.payment import forms as payment_forms
 from oscar.apps.order.models import BillingAddress
 from oscar.apps.address.models import UserAddress
 
+from oscar.apps.checkout.forms import GatewayForm as CoreGatewayForm
+from oscar.apps.customer.utils import normalise_email
+from email_validator import validate_email, EmailNotValidError
+
 
 STATE_CHOICES_WITH_EMPTY = (('', ''),) + STATE_CHOICES
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -25,32 +29,30 @@ class ShippingAddressForm(checkout_forms.ShippingAddressForm):
 
 
 class PaymentForm(forms.Form):
-    PAYMENT_CHOICES = Choices('paypal', 'credit-card')
+    PAYMENT_CHOICES = Choices('paypal', 'credit-card', 'existing-credit-card')
     payment_method = forms.ChoiceField(required=True, choices=PAYMENT_CHOICES, initial='credit-card')
-    number = forms.CharField(required=False, min_length=16, max_length=20)
-    exp_month = forms.CharField(required=False, max_length=2)
-    exp_year = forms.CharField(required=False, min_length=2, max_length=4)
-    cvc = forms.CharField(required=False, min_length=3, max_length=4)
-    name = forms.CharField(required=False)
+    number = forms.CharField(required=True, min_length=16, max_length=20)
+    exp_month = forms.CharField(required=True, max_length=2)
+    exp_year = forms.CharField(required=True, min_length=2, max_length=4)
+    cvc = forms.CharField(required=True, min_length=3, max_length=4)
+    name = forms.CharField(required=True)
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, stripe_api_key, *args, **kwargs):
+        self.stripe_api_key = stripe_api_key
         super(PaymentForm, self).__init__(*args, **kwargs)
         self.user = user
-        try:
-            customer = Customer.objects.get(subscriber=user)
-            if customer and customer.can_charge():
-                self.fields['payment_method'].choices.insert(1, ('existing-credit-card', 'existing-credit-card'))
-                self.fields['payment_method'].initial = 'existing-credit-card'
-                self.can_use_existing = True
-        except Customer.DoesNotExist:
-            pass
+        if user.is_authenticated():
+            try:
+                customer = Customer.objects.get(subscriber=user)
+                if customer and customer.can_charge():
+                    self.fields['payment_method'].choices.insert(1, ('existing-credit-card', 'existing-credit-card'))
+                    self.fields['payment_method'].initial = 'existing-credit-card'
+                    self.can_use_existing = True
+            except Customer.DoesNotExist:
+                pass
 
     def clean(self):
         existing_cc = self.data.get('payment_method', None) == 'existing-credit-card'
-        if self.data and not existing_cc:
-            for field in self.fields:
-                if field != 'payment_method':
-                    self.fields[field].required = True
         data = super(PaymentForm, self).clean()
         if not self.errors:
             if existing_cc:
@@ -65,15 +67,17 @@ class PaymentForm(forms.Form):
             else:
                 try:
                     token = stripe.Token.create(
+                        api_key=self.stripe_api_key,
                         card={
-                            "number": data.get('number'),
-                            "exp_month": data.get('exp_month'),
-                            "exp_year": data.get('exp_year'),
-                            "cvc": data.get('cvc'),
-                            "name": data.get('name'),
+                            'number': data.get('number'),
+                            'exp_month': data.get('exp_month'),
+                            'exp_year': data.get('exp_year'),
+                            'cvc': data.get('cvc'),
+                            'name': data.get('name'),
                         },
                     )
                     self.token = token.id
+                    print 'Sripe token: ', token
                 except stripe.error.CardError, e:
                     error = e.json_body['error']
                     self.add_error(error['param'], error['message'])
@@ -133,6 +137,7 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
         super(BillingAddressForm, self)._post_clean()
 
     def save(self, commit=True):
+
         if self.cleaned_data.get('billing_option') == self.SAME_AS_SHIPPING:
             # Convert shipping address into billing address
             billing_addr = BillingAddress()
@@ -146,6 +151,13 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
                 address = UserAddress.objects.get(
                     user=self.instance.user,
                     hash=address.generate_hash())
+                    
+                last_address = UserAddress.objects.get(user=self.instance.user, is_default_for_billing=True)
+                last_address.is_default_for_billing = False
+                
+                address.is_default_for_billing = True
+                address.save()
+                
             except UserAddress.DoesNotExist:
                 address.is_default_for_billing = True
                 address.save()
@@ -153,3 +165,30 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
 
     def validate_unique(self):
         pass
+
+
+class GatewayForm(CoreGatewayForm):
+    username = forms.EmailField(required=True,widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    first_name = forms.CharField(max_length=150, required=False,
+                                       widget=forms.TextInput(attrs={'placeholder': 'First name'}))
+    last_name = forms.CharField(max_length=150, required=False,
+                                       widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
+    password = forms.CharField(label=("Password"), widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+
+    
+    def clean(self):
+        if not self.is_guest_checkout():
+            if 'first_name' in self.errors:
+                del self.errors['first_name']
+            if 'last_name' in self.errors:
+                del self.errors['last_name']
+        return super(GatewayForm, self).clean()
+
+    def clean_username(self):
+        email = normalise_email(self.cleaned_data['username'])
+        try:
+            v = validate_email(email)
+            email = v["email"]
+        except EmailNotValidError as e:
+            raise forms.ValidationError("The email address is invalid. Perhaps there was a typo? Please try again.")
+        return email

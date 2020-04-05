@@ -7,6 +7,19 @@ footer a {
   color: #121212;
 }
 
+.footer-info {
+  margin-bottom: 50px;
+  display: none;
+
+  &.active {
+    display: flex;
+    @media (max-width: $screen-sm-max) {
+      /* Reinstalling footer as per Aslan's request */
+      //display: none;
+    }
+  }
+}
+
 footer a:hover {
   color: rgba(0, 0, 0, 0.6);
   text-decoration: none;

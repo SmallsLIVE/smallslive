@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from models import Artist, Instrument
+from models import Artist, Instrument, PayoutPeriodGeneration, \
+    PastPayoutPeriod, CurrentPayoutPeriod, ArtistEarnings
 
 
 class ArtistAdmin(admin.ModelAdmin):
@@ -18,3 +19,8 @@ class InstrumentAdmin(admin.ModelAdmin):
 
 admin.site.register(Artist, ArtistAdmin)
 admin.site.register(Instrument, InstrumentAdmin)
+admin.site.register(PayoutPeriodGeneration)
+admin.site.register(PastPayoutPeriod)
+admin.site.register(CurrentPayoutPeriod)
+admin.site.register(ArtistEarnings)
+

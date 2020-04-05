@@ -1,0 +1,39 @@
+{% extends 'subscriptions/supporter_base.html' %}
+{% load static from staticfiles %}
+{% block home_content %}
+  {% block flow_completed %}
+    <div class="flex-column supporter-main-container">
+      <div class="supporter-image">
+        <div style="
+        background-image:url( {% static 'image/supporter-background.jpg' %} ); background-size: cover; position: absolute; width: 100%; height: 100%; z-index: -1; left:0;
+
+                ">
+        </div>
+        <div class="banner-blur-container"></div>
+      </div>
+      <div class="flex-column items-center items-wrapper">
+        <div id="supporterStepThankYou" class="flex-column items-center supporter-text-container">
+          <div class="supporter-text">
+            <p class="title7"><span class="big-letter">T</span>
+              hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.  <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span>
+            </p>
+            <p class="text9" style="margin-top: 40px; text-align: left;">
+              The SmallsLIVE Foundation bitcoin wallet is <strong> WALLET ADDRESS </strong>
+            </p>
+            <p class="text9" style="text-align: left;">
+              Donation in bitcoin is tax deductible.
+              Your tax deduction will be equal to the fair market value of the donated bitcoin at the time of donation.
+              To receive documentation of your donation, please contact us at <a href="mailto:foundation@smallslive.com">foundation@smallslive.com</a> with your intention to donate in bitcoin.
+              We will contact you directly with a confirmation of the transfer and a receipt for your tax purposes.
+            </p>
+          </div>
+          <div class="button-row button-row-margin confirm-button">
+            <a href="{% url 'home' %}">
+              <button>Go To Home</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endblock %}
+{% endblock home_content %}

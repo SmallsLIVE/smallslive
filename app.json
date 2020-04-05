@@ -75,6 +75,21 @@
     },
     "WEB_CONCURRENCY": {
       "required": true
+    },
+    "AWS_ACCESS_KEY_ID": {
+      "required": true
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "required": true
+    },
+    "AWS_STORAGE_BUCKET_NAME": {
+      "required": true
+    },
+    "THUMBOR_SECURITY_KEY": {
+      "required": true
+    },
+    "THUMBOR_SERVER": {
+      "required": true
     }
   },
   "formation": {
@@ -83,7 +98,7 @@
     }
   },
   "addons": [
-    "heroku-postgresql",
+    "heroku-postgresql:hobby-basic",
     "rediscloud",
     "searchbox"
   ],

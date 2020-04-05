@@ -69,6 +69,16 @@
       }
     }
 
+    .event-venue {
+      @include lato-black;
+      font-size: 22px;
+      color: rgba(#fff, 0.7);
+
+      @media(max-width: $screen-xs-max) {
+        font-size: 32px;
+      }
+    }
+
     .event-timeslot {
       @include lato-black;
       color: #fff;

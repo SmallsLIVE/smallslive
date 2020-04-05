@@ -1,0 +1,423 @@
+{% extends "events/event_details_new.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load thumbnail %}
+{% load currency_filters %}
+{% load i18n %}
+{% load purchase_info_tags %}
+{% load basket_tags %}
+{% load crispy_forms_tags %}
+
+{% block event_content %}
+{% if user.is_authenticated %}
+  {% include 'inactive_dialog.html' %}
+{% endif %}
+{% include 'events/live-stream-redirect-dialog.html' %}
+
+  {% if event.published_videos or event.published_audio %}
+    {% if event.published_videos %}
+      <!--show archived video-->
+      <div tabindex="0" id="videoContainer" class="player-container {% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}">
+        {% if not user.can_watch_video %}
+          <div class="not-auth-container">
+            {% if event.photo %}
+              {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+            {% else %}
+              {% include 'partials/thumbored_picture.html' %}
+            {% endif %}
+            <div class="icon-overlay">
+              <i class="fa fa-play fa-thin-circle"></i>
+            </div>
+          </div>
+        {% endif%}
+        <div id="player-video"></div>
+        <div class="player-info" id="playerTextOverlay">
+          {% include 'events/_event_player_overlay.html' %}
+        </div>
+      </div>
+    {% endif %}
+    {% if event.published_audio %}
+      <div id="audioContainer" class="player-container" style="display: none;">
+
+        {% if not user.can_watch_video %}
+          <div class="not-auth-container">
+            {% if event.photo %}
+              {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+            {% else %}
+              {% include 'partials/thumbored_picture.html' %}
+            {% endif %}
+            <div class="icon-overlay">
+              <i class="fa fa-play fa-thin-circle"></i>
+            </div>
+          </div>
+        {% endif%}
+
+        <div id="player-audio" class="{% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}"></div>
+        <div class="player-info audio" id="playerAudioTextOverlay">
+          {% include 'events/_event_player_overlay.html' with info_label='Audio Only' %}
+        </div>
+      </div>
+    {% endif %}
+  {% else %}
+    <!--event not yet archived-->
+    <div tabindex="0" class="event-video-placeholder flex-column content-space-between" style="flex: initial;">
+      <span class="event-video-placeholder-picture">
+        {% if event.photo %}
+        <img src="{% thumbor_url event.get_photo_url|urlencode height=360 width=600 crop=event.photo_crop_box %}"
+             onError="this.src='{% static 'image/no-event-image-placeholder.jpg' %}'" style="width: 100%">
+        {% else %}
+        <img src="{% static 'image/no-event-image-placeholder.jpg' %}" style="width: 100%">
+        {% endif %}
+      </span>
+      <div class="player-info pointer-events">
+        <div class="live-now text2{% if not event.is_live %} hidden{% endif %}">Live now</div>
+        <div class="event-overlay upcoming">
+          <div class="nested-row">
+            <p class="event-title-ajax event-info-title">{{ event.title }}</p>
+            <img class="upcoming-logo" src="{% static 'new_logo_transparent.png' %}" alt="Smalls"
+                            class="img-circle"/>
+          </div>
+          <div class="{{ event.get_venue_name|lower}}-color event-venue title5">Live at {{ event.get_venue_name }}</div>
+          <div class="event-date title5">{{ event.get_date|date:'D M d' }}</div>
+          {% if event.sets.count > 1 %}
+          <div class="event-sets title5">Sets at {{ event.get_set_hours_display}}</div>
+          {% else %}
+            <div class="event-sets title5">From {{ event.get_set_hours_display}}</div>
+          {% endif %}
+          <div class="icon-overlay">
+            <i id="btn-play-event" class="event-detail fa fa-play fa-thin-circle"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block control_buttons %}
+<div class="event-player-buttons event-change-buttons">
+{% if event.is_past and user.can_watch_video %}
+  {% for set in sets %}
+    {% if set.has_media %}
+      <button class="set-select-button white-border-button {{ forloop.counter0|yesno:',active' }}"
+              data-comments-page="{% url 'event_comments' pk=event.id slug=event.slug %}?set={{ forloop.counter0 }}"
+              data-playlist-index="{{ forloop.counter0 }}">Set {{ forloop.counter }}
+      </button>
+    {% endif %}
+  {% endfor %}
+  {% if event.published_audio %}
+      <button class="white-border-button audio togglePlayer" style="display: inline;">
+        Audio only
+      </button>
+  {% endif %}
+  {% if event.published_videos %}
+
+    <button class="white-border-button video togglePlayer"
+            style="display: none;">
+        Video player
+    </button>
+  {% endif %}
+{% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+  <script>
+    $(document).ready(function () {
+      // taken from _event_details_upcoming.html
+      $('#btn-play-event, .event-overlay').click(function () {
+        /* Show 'sign in' modal if user is not logged in. Otherwise, redirect
+        to the live stream view if the show is about to start. */
+        if (smallsConfig.user.isAuthenticated) {
+          inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
+          if (inactive === 'true'){
+            modal = '#inactive-dialog';
+            $(modal).modal('show');
+          } else {
+            var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
+            if (moment() - allowStreamingTime > 0) {
+              window.location = "{{ streaming.event_url }}";
+            } else {
+              $('#streamingNotAvailableDialog').modal('show');
+            }
+          }
+        } else {
+          var $modal = $('#becomeMemberDialog');
+          $modal.modal('show');
+        }
+      });
+
+      {% if count_metrics %}
+        var playsCountSent = [];
+        var activeTracker = null;
+
+        function updateViewCount(player) {
+          var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
+          if (playsCountSent.indexOf(id) === -1) {
+            playsCountSent.push(id);
+            var url = '{% url 'update_media_viewcount' %}';
+            $.post(url, {
+              recording_id: id,
+              csrfmiddlewaretoken: '{{ csrf_token }}'
+            }, function (data) {
+              console.log(data);
+            }).fail(function(response) {
+                console.log('Error: ' + response.responseText);
+            });;
+          }
+        }
+
+        var metricsSignedData = {{ metrics_signed_data|safe }};
+
+        var pingMetricsServer = function(mediaId) {
+          var data = {};
+          data.signed_data = metricsSignedData[mediaId];
+          data.csrfmiddlewaretoken = '{{ csrf_token }}';
+          $.ajax({
+            url: "{{ metrics_server_url }}/metric/",
+            method: 'POST',
+            headers: {
+                "Authorization": "Token {{ user_token }}"
+            },
+            data: data,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function () {
+              $.ajax({
+                url: "{{ event_metrics_update_url }}",
+                method: 'POST',
+                data: data,
+                success: function (response) {
+                  console.log(response);
+                },
+                error: function (xhr, ajaxOptions, thrownError)  {
+                  console.log(xhr.responseText);
+                }
+              });
+            },
+            error: function (xhr, ajaxOptions, thrownError)  {
+              console.log(xhr.responseText);
+            }
+          });
+          // Additionally update totals in the Event model.
+
+        };
+
+        function setUpTimerForMedia(mediaId) {
+          pingMetricsServer(mediaId);
+          if (!activeTracker) {
+            activeTracker = window.setInterval(function () {
+              pingMetricsServer(mediaId);
+            }, {{ metrics_ping_interval }} * 1000);
+          }
+        }
+      {% endif %}
+
+      {% if event.published_audio or event.published_videos %}
+        var player;
+        $('.set-select-button').on('click', function () {
+          var selectedIndex = $(this).data('playlist-index');
+          player.playlistItem(selectedIndex);
+          $('#set-number').html(selectedIndex + 1);
+          $('.set-select-button').removeClass('active');
+          $(this).toggleClass('active');
+        });
+      {% endif %}
+
+      {% if event.published_audio and user.can_watch_video %}
+        audioPlayer = jwplayer("player-audio").setup({
+          primary: 'html5',
+          playlist: [
+            {% for audio in event.published_audio %}
+              {
+                sources: [{
+                  file: "{{ audio.media_file.get_file_url|safe }}",
+                  type: "mp3"
+                }],
+                image:   {% if event.photo %}
+                            {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                          {% else %}
+                            {% include 'partials/thumbor_url.html' %}
+                          {% endif %}
+
+                ,
+                mediaid: {{ audio.id }}
+              }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+          ],
+          width: "100%",
+          height: "45.3vw", // If you change this please be kind and change the corresponding css.
+          aspectratio: "16:9"
+        });
+        player = audioPlayer;
+        audioPlayer.on('play', function () {
+          var $videoContainer = $('#videoContainer');
+          if ($videoContainer.hasClass('forbidden')) {
+            videoPlayer.stop();
+            audioPlayer.stop();
+            var modal = '#becomeMemberDialog';
+            if (smallsConfig.user.isAuthenticated) {
+              modal = '#become-a-supporter-dialog';
+            }
+            $(modal).modal('show');
+          } else {
+            {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
+            {% if count_metrics %}
+              updateViewCount(this);
+              if (! activeTracker) {
+                setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);
+              }
+            {% endif %}
+          }
+        });
+
+        audioPlayer.on('pause', function () {
+          $("#playerAudioTextOverlay .event-overlay").addClass("audio");
+          {% if count_metrics %}
+            window.clearInterval(activeTracker);
+            activeTracker = null;
+          {% endif %}
+        });
+
+        audioPlayer.on('ready', function () {
+          var playlist = audioPlayer.getPlaylist();
+          var playlistItems = "";
+          $.each(playlist, function (index, item) {
+            playlistItems += '<button class="';
+            if (index === 0) {
+              playlistItems += ' active';
+            }
+            playlistItems += '" data-comments-page="' + '{% url 'event_comments' pk=event.id slug=event.slug %}?set=' + index;
+            playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</button>';
+          });
+          $("#audio-sets-list").html(playlistItems);
+        });
+
+        $('#audio-sets-list').on('click', 'button', function () {
+          var currentIndex = audioPlayer.getPlaylistIndex();
+          var selectedIndex = $(this).data('playlist-index');
+          audioPlayer.playlistItem(selectedIndex);
+          $('#set-number').html(selectedIndex + 1);
+          $(this).toggleClass('active');
+          $('#audio-sets-list button[data-playlist-index=' + currentIndex + ']').toggleClass('active');
+        });
+      {% endif %}
+
+      {% if event.published_videos and user.can_watch_video %}
+        videoPlayer = jwplayer("player-video").setup({
+            primary: 'html5',
+            playlist: [
+                {% for video in event.published_videos %}{% if video.media_file.sd_video_file %}
+                {
+                    sources: [{
+                        file: "{{ video.media_file.get_sd_video_url|safe }}",
+                        type: "mp4"
+                    }],
+                    mediaid: {{ video.id }},
+                    image: {% if event.photo %}
+                          {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                        {% else %}
+                          {% include 'partials/thumbor_url.html' %}
+                        {% endif %}
+                }{% if not forloop.last %},{% endif %}
+                {% endif %}{% endfor %}
+            ],
+            skin: "https:{% static "jwplayer-skin/smalls.xml" %}",
+            width: "100%",
+            aspectratio: "16:9",
+        });
+        player = videoPlayer;
+        videoPlayer.on('play', function () {
+            var $videoContainer = $('#videoContainer');
+            if ($videoContainer.hasClass('forbidden')) {
+              videoPlayer.stop();
+              audioPlayer.stop();
+              var modal = '#becomeMemberDialog';
+              if (smallsConfig.user.isAuthenticated) {
+                modal = '#become-a-supporter-dialog';
+              }
+              $(modal).modal('show');
+
+            } else {
+              var $overlay = $('#playerTextOverlay');
+              $overlay.addClass('hidden');
+              $overlay.removeClass('paused');
+              audioPlayer.pause(true);
+              {% if count_metrics %}
+                updateViewCount(this);
+              {% endif %}
+              {% if count_metrics %}setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);{% endif %}
+              $overlay.css('opacity', 0);
+            }
+
+        });
+          videoPlayer.on('pause', function() {
+            var $overlay = $('#playerTextOverlay');
+            $overlay.removeClass('hidden');
+            $overlay.addClass('paused');
+            {% if count_metrics %}
+              window.clearInterval(activeTracker);
+              activeTracker = null;
+            {% endif %}
+            $overlay.css('opacity', 1);
+          });
+      {% else %}
+        function cannotWatchModalOpen() {
+          var modal = '#becomeMemberDialog';
+          if (smallsConfig.user.isAuthenticated) {
+            modal = '#become-a-supporter-dialog';
+            inactive = {% if is_event_user_not_confirmed %}true{% else %}false{% endif %};
+            if (inactive === true) {
+              modal = '#inactive-dialog';
+            }
+          }
+          $(modal).modal('show');
+        }
+
+        $(document).on('click', '.not-auth-container .icon-overlay', function (event) {
+          cannotWatchModalOpen()
+        });
+
+      {% endif %}
+
+      if ($("#videoContainer").length === 0) {
+        $('#videoContainer').hide();
+        $('#audioContainer').show()
+        $this = $('.white-border-button.audio.togglePlayer');
+        $this.hide();
+      }
+
+      $('.togglePlayer').click(function () {
+
+        $this = $(this);
+        if ($this.hasClass('video')) {
+          if($("#audioContainer").length > 0){
+            jwplayer("player-audio").pause(true)
+          }
+          $this.parent().find('.audio').css('display', 'inline');
+          $this.hide();
+          $('#videoContainer').show();
+          $('#audioContainer').hide()
+          player = videoPlayer;
+        } else {
+          if($("#videoContainer").length > 0){
+            jwplayer("player-video").pause(true)
+          }
+          $this.parent().find('.video').css('display', 'inline');
+          $this.hide();
+          $('#audioContainer').show();
+          $('#videoContainer').hide();
+          player = audioPlayer;
+        }
+
+        // Update comments page.
+        var url = $('button[data-playlist-index]:visible.active').data('comments-page');
+        var comments = subpages.get('comments');
+        if (comments) {
+          comments.setUrl(url);
+        }
+      });
+    });
+  </script>
+{% endblock %}

@@ -15,7 +15,7 @@
 {% block content %}
     <div class="content-wrapper">
       <section class="mobile-intro container hidden">
-          <a href="/" class="smalls-logo"><img src="{% static 'logo.svg' %}" alt=""/></a>
+          <a href="/" class="smalls-logo"><img src="{% static 'new_logo_transparent.png' %}" alt=""/></a>
       </section>
 
       {% include "blocks/homepage-upcoming-final.html" %}
@@ -31,8 +31,17 @@
 
       <section class="homepage-date-browser container">
         <div class="homepage-date-browser__header">
-          <h1>Upcoming at Smalls:</h1>
+          <h1>Upscoming shows:</h1>
           <a href="{% url "schedule" %}" class="homepage-date-browser__cta">Browse our full calendar</a>
+        </div>
+        <div class="homepage-date-browser__venue_filter">
+          <h2>Filter by venue:</h2>
+          <div class="homepage-date-browser__venue_filter__venues">
+            {% for venue in venues %}
+              <a href="{% url "home" %}?venue={{ venue.id }}" {% if venue.id == venue_selected %}class="active"{% endif %}>{{ venue.name }}</a>
+            {% endfor %}
+            <a href="{% url "home" %}" {% if not venue_selected %}class="active"{% endif %}>All</a>
+          </div>
         </div>
         <ul class="no-bg-calendar__container">
           {% for date, date_events in next_7_days %}
@@ -48,6 +57,7 @@
                     <div>
                       <span class="event-time">{{ event.start|date:"g:i A" }} to {{ event.end|date:"g:i A" }}</span>
                       <h3 class="event-name">{{ event.title }}</h3>
+                      <h4 class="event-venue">{{ event.get_venue_name }}</h4>
                     </div>
                   </div>
                 </a>

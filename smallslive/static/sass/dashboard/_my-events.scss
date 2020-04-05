@@ -93,6 +93,11 @@
     }
   }
 
+  &__venue {
+    @include lato;
+    color: #878787;
+  }
+
   &__description {
     padding-right: 20px;
     border-right: 1px solid #ddd;

@@ -14,11 +14,22 @@ from .models import Artist
 class ArtistAddForm(forms.ModelForm):
     class Meta:
         model = Artist
-        fields = ('salutation', 'first_name', 'last_name',  'instruments', 'biography', 'website', 'photo', 'cropping')
+        fields = ('salutation', 'first_name', 'last_name',  'instruments',
+                  'biography', 'website', 'photo', 'cropping', 'public_email')
         widgets = {
             'instruments': floppyforms.SelectMultiple,
             'photo': ImageCropWidget,
         }
+
+    def save(self, commit=True):
+        artist = super(ArtistAddForm, self).save(commit)
+        if commit:
+            instruments = self.cleaned_data['instruments']
+            for instrument in instruments:
+                instrument.artist_count = instrument.artist_count + 1
+                instrument.save()
+
+        return artist
 
     def __init__(self, *args, **kwargs):
         super(ArtistAddForm, self).__init__(*args, **kwargs)
@@ -26,7 +37,7 @@ class ArtistAddForm(forms.ModelForm):
         self.helper.form_action = 'artist_add'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
-        self.fields['photo'].label = "Photo (landscape-style JPG w/ instrument preferred)"
+        self.fields['photo'].label = "Upload / Change Profile Photo"
 
 
 class ArtistInviteForm(forms.Form):

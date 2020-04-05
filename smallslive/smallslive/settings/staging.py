@@ -23,6 +23,12 @@ DATABASES['default'] = dj_database_url.config()
 DATABASES['default']['CONN_MAX_AGE'] = 60
 DATABASES['metrics'] = dj_database_url.config('METRICS_DB_URL')
 
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+MIDDLEWARE_CLASSES = ('sslify.middleware.SSLifyMiddleware',) + MIDDLEWARE_CLASSES
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 REDIS_URL = urlparse.urlparse(get_env_variable('REDISCLOUD_URL'))
 
 CACHEOPS_REDIS = {
@@ -115,14 +121,19 @@ MANDRILL_API_KEY = get_env_variable('MANDRILL_API_KEY')
 # EMAIL_HOST_USER = "smallslive@appsembler.com"
 # EMAIL_HOST_PASSWORD = get_env_variable('MANDRILL_API_KEY')
 DEFAULT_FROM_EMAIL = OSCAR_FROM_EMAIL = 'smallslive-staging@smallslive.com'
-DEFAULT_FROM_REGISTRATION_EMAIL = "smallsliveusers-staging@smallslive.com"
+DEFAULT_FROM_REGISTRATION_EMAIL = "smallslive-staging@smallslive.com"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
 
 # Metrics
-METRICS_SERVER_URL = "https://metrics-staging.smallslive.com"  # no trailing slash
+METRICS_SERVER_URL = "https://smallslive-metrics-staging.herokuapp.com"  # no trailing slash
 
 # Paypal
 PAYPAL_SANDBOX_MODE = env_var("PAYPAL_SANDBOX_MODE", True)
 
-CELERY_ALWAYS_EAGER = True
+# Celery
+# BROKER_URL = get_env_variable("REDISCLOUD_CELERY_QUEUE_URL")
+CELERY_ALWAYS_EAGER = False
+CELERY_CREATE_MISSING_QUEUES = True
+BROKER_POOL_LIMIT = 1
+BROKER_URL = get_env_variable('CLOUDAMQP_URL')

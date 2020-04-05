@@ -1,0 +1,207 @@
+.account-settings-container {
+  padding: 0 10%;
+  margin-bottom: 40px;
+
+  .account-form {
+    padding: 0 10%;
+  }
+
+  .settings-left {
+    width: 560px;
+    padding-right: 20px;
+  }
+
+  .settings-right {
+    width: 560px;
+    padding-left: 20px;
+  }
+
+  .zip-country {
+    width: 48%;
+  }
+
+  .select-selected,
+  .select-items {
+    background-color: white;
+    justify-content: left;
+  }
+
+  .select-items div:hover,
+  .same-as-selected {
+    background-color: rgba(240, 240, 235, 0.5);
+  }
+
+  .white-border-select {
+    padding-bottom: 16px;
+    text-transform: none;
+  }
+
+  @media (max-width: $screen-sm-max) {
+    .settings-left {
+      padding-right: 0;
+    }
+
+    .settings-right {
+      padding-left: 0;
+    }
+  }
+
+  .input-label-checkbox {
+    margin-left: 5px;
+  }
+
+  .white-border-button {
+    margin-top: 20px;
+  }
+
+  .white-line {
+    border-bottom: 3px solid white;
+    margin-top: 50px;
+    margin-bottom: 30px;
+  }
+}
+.account-settings-container-new {
+  padding: 0 0 0 10%;
+  margin-bottom: 40px;
+
+  @media (max-width: $screen-sm-max) {
+    margin-top: 10px;
+  }
+
+  @media (max-width: 425px) {
+    padding-left: 0%;
+  }
+  .text-bottom-line {
+    background: linear-gradient(
+        to right,
+        $white-transparent,
+        $white-transparent
+      )
+      no-repeat bottom left;
+    background-size: 100% 2px;
+  }
+  .account-settings-info-container {
+    height: 100vh;
+    overflow-y: auto;
+    width: 100%;
+    display: flex;
+    > .flex-column {
+      height: auto;
+    }
+  }
+  .account-settings-menu {
+    margin-right: 90px;
+    > .text1 {
+      padding: 10px;
+      margin-right: 10px;
+      &:hover {
+        background-color: $white-transparent;
+      }
+      &.white-background {
+        background-color: $white-transparent;
+      }
+    }
+
+    @media (max-width: $screen-sm-max) {
+      display: none;
+    }
+  }
+  .form-control {
+    &:first-child {
+      margin-top: 15px;
+    }
+    color: grey;
+  }
+
+  .account-settings-view {
+    margin-bottom: 30px;
+    > *:not(.title5) {
+      margin-left: 5px;
+    }
+    .title5 {
+      line-height: 20px;
+    }
+    .account-settings-info,
+    button,
+    a {
+      margin-top: 10px;
+    }
+    .account-settings-info .supporter-options {
+      .white-border-button {
+        width: 40%;
+        font-size: 10px;
+      }
+    }
+    .cancel-info {
+      > * {
+        padding: 20px 0;
+      }
+    }
+    .custom-settings-form {
+      form {
+        color: red;
+        margin: 10px auto;
+      }
+    }
+  }
+  .modal-dialog.donate-dialog {
+    width: 95vw;
+    min-height: 95vh;
+    .modal-content.custom-modal {
+      padding: 0 45px;
+      min-height: 95vh;
+      @media (max-width: $screen-md-max) {
+        padding: 0px;
+        .close-button {
+          z-index: 3;
+        }
+        > .modal-body {
+          padding: 0;
+        }
+        .items-wrapper {
+          width: 80vw;
+        }
+        .no-spinners {
+          min-width: 0px;
+        }
+        .title1 {
+          margin-bottom: 0px;
+        }
+        #supporterStep3 {
+          .section-title {
+            margin: 0 auto 20px;
+            min-width: 100%;
+          }
+        }
+      }
+    }
+    .donate-setting-container {
+      .supporter-main-container {
+        margin: 0;
+        min-height: 0;
+      }
+    }
+    .custom-modal .modal-body form {
+      width: 100%;
+      .form-control:first-child {
+        margin-top: 10px;
+      }
+    }
+  }
+}
+#credit-card-update {
+  display: none;
+}
+.supporter-options {
+  justify-content: space-between;
+}
+.supporter-options .white-border-button {
+  display: flex;
+  margin-right: 0;
+}
+
+.account-settings-info .white-border-button {
+  padding: 10px;
+  display: flex;
+  width: 100%;
+}

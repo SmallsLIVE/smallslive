@@ -1,0 +1,2291 @@
+$mobile-filter-button-width: 40vw;
+
+.load-more-artist-button {
+  display: none;
+
+  @media (max-width: $screen-sm-max) {
+    display: flex;
+    margin-bottom: 30px;
+    width: 33vw;
+    margin-left: 33vw;
+  }
+}
+
+body.headers-1 {
+  .search-container {
+    @media (max-width: $screen-sm-max) {
+    }
+  }
+}
+
+.musicians-results.white-line-bottom {
+  ~ .artist-search-profile-container[style*="display: block"].pad-content {
+    ~ .search-container.pad-content {
+      @media (max-width: $screen-sm-max) {
+        padding-top: 30px;
+      }
+    }
+  }
+}
+
+.home.headers-3 {
+  &.admin-header {
+    .search-container.pad-content {
+      @media (max-width: $screen-sm-max) {
+        padding-top: 120px;
+
+        &.new-archive {
+          padding-top:  90px;
+        }
+
+        &.artist-profile {
+          padding-top: 0;
+        }
+      }
+    }
+  }
+
+  .search-container.pad-content {
+    @media (max-width: $screen-sm-max) {
+      padding-top: 40px;
+    }
+
+    &.artist-profile {
+      padding-top: 0;
+    }
+  }
+}
+
+.home.headers-4 {
+  &.admin-header {
+    .search-container.pad-content {
+      @media (max-width: $screen-sm-max) {
+        padding-top: 0;
+        &.mobile-search-header-shown {
+          padding-top: 150px;
+        }
+        &.artist-profile {
+          padding-top: 0;
+        }
+      }
+    }
+  }
+
+  .search-container.pad-content {
+    @media (max-width: $screen-sm-max) {
+      padding-top: 130px;
+    }
+  }
+}
+
+.caret {
+  cursor: pointer;
+  position: relative;
+
+  &:after {
+    content: " ";
+    height: 0;
+    width: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
+    position: absolute;
+    right: 6px;
+    top: 40%;
+    transition: all 0.3s linear;
+    cursor: pointer;
+    pointer-events: inherit;
+    z-index: -1;
+
+    @media (max-width: $screen-xs) {
+      display: none;
+    }
+  }
+}
+
+.hover-fade:hover {
+  border-color: #e0e0dc;
+  background-color: $white-transparent;
+}
+
+.artists-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  @media (min-width: $screen-lg-min) {
+    z-index: 2;
+    margin-top: 30px;
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    width: auto;
+    padding: 0 6vw;
+    height: auto;
+  }
+
+  @media (max-width: $screen-sm-max) {
+    display: flex;
+    flex-direction: column;
+    visibility: visible;
+    position: relative;
+
+    .artist-column-mobile:last-of-type {
+      .load-more-button {
+        display: flex;
+      }
+    }
+  }
+
+  .artist-column {
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: space-between;
+    width: 13vw;
+    margin: 0 4.5vw;
+    padding: 0;
+
+    @media (max-width: $screen-md-min) {
+      font-size: 1em;
+      width: 100vw;
+    }
+
+    .artist-row {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      line-height: 22px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 13vw;
+
+      @media (max-width: $screen-md-min) {
+        font-size: 11px;
+      }
+    }
+
+    a {
+      color: $black;
+
+      &:hover {
+        color: $accent-color;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.artist-search-a-z {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.no-result-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4em;
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
+.tabs {
+  display: none;
+  background-color: $background-grey;
+
+  @media (max-width: $screen-sm-max) {
+    width: 100%;
+    display: flex;
+    flex: 1;
+    align-items: stretch;
+    justify-content: stretch;
+    z-index: 1000;
+
+    &.artist-tabs {
+      margin-top: 0px;
+
+      & > div {
+        background-color: $background-color;
+      }
+    }
+
+    & > div {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &.active {
+        border-bottom: 2px solid $accent-color;
+        color: $accent-color;
+      }
+
+      span {
+        margin: 1.7vw 0;
+        font-size: 6vw;
+
+        @media (max-width: $screen-sm) {
+          //margin: 10px 0;
+        }
+      }
+    }
+  }
+}
+
+.search-tabs {
+  display: none;
+
+  @media (max-width: $screen-sm-max) {
+    padding-top: 2vw;
+    display: flex;
+  }
+
+  &.artist-profile {
+    display: none;
+  }
+}
+
+.search-container {
+  #showsArchivedContent {
+    @media (max-width: $screen-sm-max) {
+      margin-top: 0;
+      min-height: 500px;
+    }
+  }
+
+  .search-tab-content {
+    position: relative;
+    max-width: 100vw;
+
+    @media (max-width: $screen-sm-max) {
+      overflow-y: hidden;
+    }
+  }
+
+  .artist-column-mobile {
+    display: none;
+  }
+
+  //Mobile
+  @media (max-width: $screen-sm-max) {
+
+    .search-tab-content {
+      &:not(.active) {
+        display: none;
+      }
+
+      display: flex;
+      flex-direction: column;
+      margin-top: 5%;
+      min-height: 100vh;
+    }
+
+    .section-title {
+    }
+
+    .artists-container {
+      .artist-column-mobile {
+        width: 100vw;
+        display: flex;
+        overflow-y: auto;
+
+        .white-border-button {
+          padding: 20px;
+          width: 25%;
+          height: 50px;
+          margin: 0 auto;
+        }
+
+        .artist-mobile {
+          flex: 1;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding: 0 64px;
+          margin-bottom: 20px;
+
+          > a {
+            color: grey;
+            margin-left: 6vw;
+          }
+        }
+      }
+
+      .artist-column {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: $screen-md-min) {
+  .search-container .datepicker-container.noclick {
+    top: 11.5vw !important;
+  }
+}
+
+.instruments-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  flex-wrap: wrap;
+  background-color: #f0f0eb;
+  border: solid white;
+  border-radius: 10px;
+  display: none;
+  position: absolute;
+  margin: 0 15%;
+  padding: 30px;
+
+  @media (max-width: $screen-sm-max) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+    width: 100vw;
+    position: absolute;
+    height: 74vh;
+    overflow-y: auto;
+    top: 38px;
+  }
+
+  @media (min-width: $screen-sm-max) {
+    width: 70%;
+    left: 50px;
+
+    .instrument {
+      width: 80px;
+    }
+  }
+
+  z-index: 1010;
+
+  .instrument {
+    width: 130px;
+    margin: 5px;
+
+    @media (max-width: $screen-sm-max) {
+      font-size: 2em;
+      margin: 0 15px;
+      width: 150px;
+    }
+
+    @media (max-width: $screen-md-min) {
+      width: 95px;
+    }
+
+    &:hover {
+      text-decoration: underline;
+      color: $accent-color;
+      cursor: pointer;
+    }
+  }
+}
+:root {
+  --accessibility: 5px solid red !important;
+}
+// *:focus {
+//   border: var(--accessibility);
+//   box-sizing: content-box;
+// }
+.shows-filter-container {
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  > * {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .datepicker-container.noclick {
+    @media (min-width: 1366px) {
+      left: 170px !important;
+    }
+
+    @media (max-width: 1366px) and (min-width: $screen-sm-max) {
+      left: 11.5vw !important;
+    }
+  }
+
+  .datepicker-btn {
+    @media (min-width: $screen-sm-max) {
+      display: none;
+    }
+  }
+
+  .white-border-select {
+    &:not(.no-arrow) {
+      .select-selected {
+        @media (max-width: $screen-sm-max) {
+          padding: 0.5em;
+          padding-left: 5vw;
+          padding-right: 6.5vw;
+          border: 3px solid rgba(255, 255, 255, 0.9);
+          font-size: 2.5vw;
+          height: 8vw;
+          line-height: 2.5vw;
+          vertical-align: top;
+        }
+
+        @media (max-width: 960px) and (min-width: 650px) {
+          font-size: 1.5vw;
+          height: 5vw;
+          margin-top: 0;
+        }
+
+        @media (max-width: 420px) {
+          height: 13vw;
+          margin-top: 0;
+        }
+
+        &:hover {
+          border-color: #e0e0dc;
+          border-width: 3px;
+        }
+
+        &:after {
+          @media (max-width: $screen-xs) {
+            display: none;
+          }
+        }
+
+        &.select-arrow-active {
+          border-color: red;
+          border-width: 3px;
+          background: $white-transparent;
+        }
+      }
+    }
+  }
+
+  @media (min-width: $screen-lg-min) {
+    .white-border-select,
+    .custom-date-picker {
+      width: 120px;
+    }
+
+    > .white-border-button {
+      margin-right: 20px;
+    }
+
+    > .white-border-select,
+    > .white-border-button {
+      background-color: #f0f0eb;
+      width: 200px;
+    }
+  }
+
+  @media (max-width: 1366px) and (min-width: $screen-sm-max) {
+    > .white-border-select {
+      width: 14vw;
+    }
+  }
+
+  @media (max-width: $screen-sm-max) {
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+  }
+
+  @media (minx-width: 720px) {
+    margin-bottom: 20px;
+  }
+}
+
+#musicianContent .artist-arrows {
+  position: absolute;
+  width: auto;
+  top: 140px;
+
+  @media (max-width: $screen-sm-max) {
+    display: none;
+  }
+}
+
+.events-results {
+  min-height: 100px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 10px;
+
+  .event-row {
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: $screen-sm-max) {
+    padding-left: 0;
+    padding-right: 0;
+
+    .event-row {
+      flex-wrap: wrap;
+      padding: 0 0 0 20px;
+    }
+  }
+
+  @media (max-width: $screen-sm-max) {
+    padding-top: 23px;
+  }
+}
+
+.loading-image {
+  margin-left: auto;
+  margin-right: auto;
+  display: none;
+  height: 200px;
+
+  align-items: center;
+
+  img {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.subheader-results {
+  vertical-align: bottom;
+}
+
+.results-text {
+  letter-spacing: 0;
+  font-weight: 900;
+  font-size: 1.2em;
+}
+
+.concerts-footer {
+  margin-top: 30px;
+  margin-bottom: 100px;
+}
+
+.load-more-btn {
+  background-color: #f0f0eb;
+  @include title1;
+  font-size: 2.5em;
+  width: auto;
+  height: auto;
+  padding: 10px 30px;
+}
+
+.page-numbers-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.page-numbers-list-item {
+  display: inline;
+  font-weight: bold;
+  color: #a6a6a6;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.active-page {
+  font-weight: 900;
+  color: black;
+}
+
+.change-page:hover {
+  cursor: pointer;
+  font-weight: 900;
+  color: black;
+}
+
+.change-page > li:hover {
+  font-weight: 900;
+  color: black;
+}
+
+.event-section {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: flex-end;
+  margin-left: 0;
+  margin-top: -20px;
+
+  @media(max-width: $screen-sm-max) {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .datepicker-btn {
+    &.white-border-button {
+      width: auto;
+      white-space: nowrap;
+    }
+  }
+
+  .select-selected {
+    background-color: #f0f0eb;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+  }
+
+  .white-border-select {
+    @include button1;
+    position: relative;
+    color: $black;
+
+    &:not(.no-arrow) {
+      .select-selected {
+        &:after {
+          right: 6%;
+        }
+      }
+    }
+  }
+
+  .event-filter-select {
+
+    .select-selected {
+      @media (max-width: $screen-sm-max) {
+        padding-left: 5vw;
+        padding-right: 5vw;
+      }
+    }
+    .select-items {
+      top: 98%;
+    }
+  }
+}
+
+
+.white-border-button, .white-border-select {
+  &.spaced {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+}
+
+.search-artist-box-container {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.search-artist-box-container {
+  @media (max-width: $screen-sm-max) {
+    flex-direction: column;
+    justify-content: center;
+    width: 95%;
+  }
+
+  &.store {
+    width: 30vw;
+
+    @media (max-width: $screen-md-min) {
+      width: 85vw;
+    }
+
+    .search-container {
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      width: 100%;
+
+      @media (max-width: $screen-xs) {
+        width: 90%;
+      }
+
+      img {
+        left: 15px;
+
+        @media (max-width: $screen-xs) {
+          left: 15px;
+        }
+      }
+
+      .search-artist-box {
+        margin: 0;
+        width: 100%;
+      }
+
+      .reset-search {
+        margin: 0;
+        right: 4px;
+        left: initial;
+
+        @media (max-width: $screen-xs) {
+          left: initial;
+        }
+      }
+    }
+  }
+
+  @media (max-width: $screen-sm-max) {
+    #a-z-search .scroll-right,
+    #a-z-search .scroll-left {
+      width: 10vw;
+    }
+  }
+
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+  display: flex;
+  position: relative;
+  width: 700px;
+  margin: 0px auto 10px 3.5vw;
+
+  img {
+    width: 21px;
+    position: absolute;
+    left: 110px;
+    top: 12px;
+  }
+}
+
+.search-artist-box {
+  @include bordered-input;
+  width: 350px;
+  margin-right: 0;
+  margin-left: 100px;
+  border-radius: 10px;
+  padding-left: 40px;
+  padding-right: 40px;
+  text-transform: uppercase;
+}
+
+.instrument-btn {
+  background-color: #f0f0eb;
+  display: inline-block;
+  width: 200px;
+  height: auto;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin-left: 30px;
+  align-self: center;
+  text-align: center;
+  white-space: nowrap;
+
+  @media (max-width: $screen-sm-max) {
+    @include caret;
+    margin: 0 auto;
+  }
+
+}
+
+.event-sub-w {
+  width: 590px;
+}
+
+.event-stripe .date-picker-text::placeholder {
+  color: black;
+  opacity: 1;
+  text-align: center;
+}
+
+.event-stripe {
+  margin-bottom: 0px;
+
+  &.archive {
+    @media (max-width: $screen-sm-max) {
+      display: none;
+    }
+  }
+}
+
+.search-bar-autocomplete-container {
+  &.mobile-search-container {
+    @media (min-width: 960px) {
+      display: none !important;
+    }
+  }
+
+  position: absolute;
+  background-color: #f0f0eb;
+  border-color: white;
+  border-style: solid;
+  border-radius: 8px;
+  border-width: 2px;
+  width: 398px;
+  z-index: 9999;
+  top: 47px;
+  left: 90px;
+  display: none;
+  padding: 10px;
+
+  &.searching {
+    min-height: 574px;
+    display: block;
+    background-image: url(/static/image/loading.gif);
+    background-size: 25px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-position-y: 50px;
+  }
+
+  .search-bar-artist {
+    display: inline-block;
+    padding-bottom: 6px;
+  }
+
+  .search-bar-event {
+    display: inline-block;
+    padding: 6px 0;
+  }
+
+  @media(max-width: 1200px) {
+    left: 75px;
+  }
+
+  @media (max-width: $screen-sm-max) {
+    left: 0;
+    top: 108px;
+    border-radius: 0;
+    background-color: white;
+    width: 100%;
+    box-shadow: 0 9px 9px 0 rgba(145, 140, 145, 1);
+    overflow: scroll;
+    max-height: calc(100vh - 170px);
+  }
+}
+
+.search-bar-text {
+  font-size: 1.2em;
+  line-height: 2em;
+}
+
+.search-bar-result-text:hover {
+  font-weight: 900;
+  color: black;
+  text-decoration: underline;
+}
+
+.search-bar-more {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.search-bar-more:hover {
+  font-weight: 900;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.events-gif {
+  margin-top: 30px;
+}
+
+.artist-loading-gif {
+  background: url(/static/image/loading.gif) 50% 50%;
+  background-repeat: no-repeat;
+  background-size: 50px;
+}
+
+.home {
+  &.headers-3 {
+    div.artist-search-profile-container {
+      &.pad-content {
+        transition: padding-top 0.5s;
+        padding-top: 20px;
+
+      }
+    }
+
+    &.admin-header {
+      div.artist-search-profile-container {
+        &.pad-content {
+          padding: 0;
+          @media(max-width: $screen-md){
+            transition: padding-top 0.5s;
+            padding-top: 54px;
+          }
+        }
+      }
+    }
+  }
+
+  &.headers-4 {
+    div.artist-search-profile-container {
+      &.pad-content {
+        transition: padding-top 0.2s;
+        padding-top: 30px;
+      }
+    }
+  }
+}
+
+.home div.artist-search-profile-container {
+  .content-centered {
+    flex-direction: row;
+
+    @media (max-width: $screen-sm-max) {
+      flex-direction: column;
+    }
+  }
+
+  width: 100%;
+  position: relative;
+
+  .artist-tracks .store-list-item .store-list-item-image img {
+    height: 6.735vw;
+    width: 11.225vw;
+    min-width: auto;
+    min-height: auto;
+  }
+
+  .close-button {
+    margin-right: 40px;
+    top: 0;
+
+    @media (max-width: $screen-md-min) {
+      margin-right: 10px;
+      top: 10px;
+    }
+  }
+}
+
+.mobile-padding {
+  @media (max-width: $screen-sm-max) {
+    padding: 0 20px;
+    width: 100%;
+  }
+  @media (max-width: 415px) {
+    padding: unset;
+  }
+}
+
+.artist-search-profile{
+
+  &__header {
+    display: flex;
+    margin: 0px 20px 0 0;
+
+    @media(max-width: $screen-sm-max){
+      margin-right: 0;
+    }
+
+    @media(max-width: 415px){
+      display: inline-block;
+    }
+
+  }
+
+  &__subtitle{
+      margin: 12px 0;
+  }
+}
+
+.artist-search-profile-resume {
+
+  @media (max-width: $screen-sm-max) {
+    //margin-bottom: 20px;
+    margin-left: 0;
+    padding: 0 20px;
+
+    .mobile-padding {
+      .text1 {
+        margin-top: 15px;
+      }
+      .text4 {
+        font-size: 13px;
+      }
+    }
+
+    .musician-title {
+      padding-bottom: 0;
+    }
+
+    .flex-column.white-line-right {
+      width: 100%;
+      padding: 10px 0;
+      border-right: none;
+    }
+  }
+
+  flex-direction: row;
+  position: relative;
+  display: inline-flex;
+  margin-left: 3.5vw;
+  float: left;
+  vertical-align: top;
+  //width: 34.7vw;
+
+  .artist-details{
+
+    &__container{
+
+      @media(max-width: $screen-sm-max){
+        font-size: 8px;
+      }
+    }
+
+    &-website{
+      a {
+        max-width: 90%;
+        text-overflow: ellipsis;
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: top;
+      }
+    }
+    &-email{
+      a {
+        max-width: 90%;
+        text-overflow: ellipsis;
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: top;
+      }
+    }
+  }
+
+  @media (max-width: $screen-sm-max) {
+    font-size: 1.2em;
+    width: auto;
+    flex-direction: column-reverse;
+
+    > .visible-xs > div {
+      margin: 10px 0;
+    }
+
+    .artist-search-profile-image {
+      width: 100%;
+      height: auto;
+      margin: 20px 0 0 0;
+
+      @media(max-width: $screen-sm-max){
+        margin:13px 0 auto 0;
+        width: 90%;
+        max-width: none;
+      }
+
+      @media(max-width: 600px){
+        width: 100%;
+      }
+
+
+      img {
+        object-fit: cover;
+        object-position: top;
+        height: 30vh;
+        border: none;
+        max-height: 292px;
+
+        @media(max-width: 600px){
+          height: 80%;
+        }
+
+      }
+    }
+
+    .white-line-bottom {
+      margin: 0;
+    }
+
+    .white-line-right {
+      padding: 0;
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.artist-search-profile-bio {
+  line-height: 20px;
+  margin-top: 15px;
+  //max-height: 100vh;
+  padding-right: 4vw;
+  transition: max-height 0.15s ease-out;
+
+  &-container {
+    margin-left: 3.5vw;
+  }
+
+  p {
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    letter-spacing: inherit !important;
+
+    a {
+      background: inherit !important;
+      text-decoration-line: inherit !important;
+      color: inherit !important;
+    }
+  }
+
+  &.collapsed {
+    overflow: hidden;
+    max-height: 270px;
+    transition: max-height 0.15s ease-in;
+  }
+
+  &.text4 {
+    @media (max-width: $screen-sm-max) {
+      font-size: 18px;
+      line-height: auto;
+    }
+  }
+
+  @media (max-width: $screen-sm-max) {
+    width: 100%;
+    height: auto;
+
+    &.collapsed {
+      max-height: 120px;
+    }
+  }
+}
+
+.artist-search-profile-bio-buttons {
+
+  margin-left: auto;
+
+  &__container{
+    display: flex;
+    padding-right: 3.5vw;
+    @media(max-width: $screen-md){
+      display: none;
+    }
+  }
+
+  button {
+    margin: 10px 0;
+  }
+
+  a {
+    line-height: 1.42857;
+    text-align: center;
+
+    &:hover {
+      color: black;
+    }
+
+    &:active {
+      color: black;
+    }
+
+    &:focus {
+      color: black;
+      text-decoration: none;
+      border: 3px solid rgba(255, 255, 255, 0.9);
+    }
+  }
+}
+
+.artist-search-profile-image {
+  @include cross-browser-grayscale;
+  display: flex;
+  width: 27vw;
+  max-width: 300px;
+
+  @media (max-width: $screen-sm-max) {
+    display: block;
+  }
+
+  @media (min-width: $screen-md-min) {
+    display: block;
+    font-size: 15px;
+    height: auto;
+  }
+
+  .no-photo {
+    @media (max-width: $screen-sm-max) {
+      padding: 20px 10px;
+      height: 150px;
+      text-align: center;
+    }
+
+    @media (min-width: $screen-sm-max) {
+      .title1 {
+        font-size: 5vw;
+        position: relative;
+        top: 50%;
+      }
+    }
+  }
+
+  img {
+    width: 100%;
+    border: 4px solid $border-color;
+
+    &:before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-image: url("../image/no-artist-photo-thumbnail.jpg");
+      background-size: cover;
+    }
+  }
+
+  .white-border-button {
+    margin-top: 10px;
+
+    @media (max-width: $screen-sm-max) {
+      margin-bottom: 10px;
+    }
+  }
+
+  @media (max-width: $screen-sm-max) {
+    border: none;
+    height: 250px;
+  }
+}
+
+.white-line-bottom {
+  margin: 20px 0;
+  border-bottom: 5px solid white;
+
+  &.thin {
+    border-bottom-width: 1px;
+  }
+
+  &.medium {
+    border-bottom-width: 3px;
+  }
+
+  &.thick {
+    border-bottom-width: 4px;
+  }
+
+  &.thicker {
+    border-bottom-width: 5px;
+  }
+}
+
+.white-line-right {
+  width: 24vw;
+  padding: 27px 1.5vw;
+  border-right: 3px solid white;
+}
+
+.read-more {
+  float: right;
+  margin-right: 4vw;
+  margin-top: 5px;
+  text-transform: uppercase;
+
+  @media(max-width: $screen-sm-max){
+    margin-bottom: 20px;
+  }
+}
+
+.read-more:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.musicians-results {
+  position: relative;
+
+  .calendar-filters {
+    position: absolute;
+  }
+
+  > .white-border-select {
+    .select-selected {
+      width: 180px;
+      padding: 0;
+    }
+
+    .select-items {
+      top: 58%;
+    }
+  }
+
+  &.white-line-bottom {
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
+}
+
+.musicians-results-title {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.calendar-date-range {
+  &.section-title {
+    left: 0;
+    position: absolute;
+    top: 76px;
+    width: 20vw;
+
+    @media (max-width: $screen-sm-max) {
+      display: none;
+    }
+  }
+}
+
+.shows-results-title {
+  //width: 100%;
+  //text-align: center;
+
+  @media (max-width: $screen-sm-max) {
+    display: none;
+  }
+}
+
+.shows-calendar {
+  position: relative;
+}
+
+.showing-results {
+  position: absolute;
+  right: 0;
+  color: $accent-color;
+  margin-right: 50px;
+  margin-top: 21px;
+}
+
+.archived-shows {
+  .showing-results {
+    position: relative;
+  }
+}
+
+.shows-container {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  position: relative;
+  padding-left: $content-left-padding;
+
+  @media ($screen-sm-max) {
+    padding-left: 0;
+  }
+
+  .event-card-secondary {
+    margin-bottom: 10px;
+  }
+}
+
+.new-archive {
+  .shows-container {
+    display: block;
+
+    .archive-datepicker {
+      float: left;
+      height: 330px;
+      width: 46.5vw;
+
+      .close-button {
+        display: none;
+      }
+
+      @media (min-width: 1366px) {
+        height: 21.5vw;
+        width: 23.25vw;
+
+        .datepicker-container {
+          height: 100%;
+          width: 22.85vw;
+        }
+      }
+
+      @media (min-width: $screen-sm-max) and (max-width: 1365px) {
+        height: 29vw;
+        width: 31vw;
+
+        .datepicker-container {
+          height: 100%;
+          width: 30.6vw;
+        }
+      }
+    }
+  }
+}
+
+.shows-item {
+  margin: 3px;
+  flex: 0 1 calc(100% * (1 / 8) - 6px);
+
+  @media (max-width: $screen-sm-max) {
+    margin: 3px;
+    flex: 0 1 calc(100% * (1 / 6) - 6px);
+  }
+}
+
+.back-search-button {
+  cursor: pointer;
+  width: 160px;
+  margin-left: 100px;
+  display: none;
+}
+
+.shows-item {
+  .event-card {
+    min-height: 0;
+
+    .event-picture-container,
+    .event-picture-container-dashboard {
+      .event-picture {
+        height: auto;
+        width: auto;
+      }
+    }
+  }
+
+  .event-info {
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+}
+
+.datepicker-btn {
+  display: inline-block;
+  width: 290px;
+  padding-top: 10px;
+  margin-left: 20px;
+  align-self: center;
+  text-align: center;
+
+  &.select-arrow-active {
+    border-color: red;
+    border-width: 3px;
+    background: $white-transparent;
+  }
+
+  &.white-border-button {
+    @media (max-width: $screen-sm-max) {
+      width: $mobile-filter-button-width;
+      margin-left: 5px;
+      padding: 0.5em;
+      height: 8vw;
+      line-height: 23px;
+      font-size: 2.5vw;
+      margin-right: 1vw;
+      padding-right: 3vw;
+      vertical-align: top;
+
+      display: flex;
+      align-content: center;
+
+      &.upcoming {
+        display: flex;
+        font-size: 12px;
+        line-height: 50%;
+      }
+
+      &.caret {
+        margin-right: 0;
+      }
+    }
+
+    @media (max-width: 960px) and (min-width: 650px) {
+      font-size: 1.5vw;
+      height: 5vw;
+    }
+
+    @media (max-width: 420px) {
+      &.upcoming {
+        height: calc(8vw + 2px);
+        margin-bottom: 0;
+      }
+      height: 13vw;
+      margin-left: 0;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.datepicker-container {
+  background-color: #f0f0eb;
+  border: solid white;
+  display: none;
+  position: absolute;
+  margin: 0 auto;
+  top: 44px;
+  padding: 0;
+  z-index: 100;
+  height: 375px;
+  align-items: flex-start;
+
+  .datepicker {
+    left: 28px !important;
+    border: none !important;
+  }
+
+  .custom-date-picker {
+    .dropdown-menu {
+      min-width: 256px !important; // inline by bootstrap js.
+      top: 55px !important;
+      padding: 0;
+    }
+
+    input {
+      color: $accent-color;
+      text-align: center;
+
+      &:focus {
+        background-color: $white-transparent;
+        border-radius: 5px;
+        border: 0 transparent;
+        box-shadow: 0 0 1px inset $accent-color;
+      }
+
+      &::-webkit-input-placeholder {
+        color: $gray-light;
+        letter-spacing: 0.05em;
+      }
+
+      &:-moz-placeholder {
+        /* Firefox 18- */
+        color: $gray-light;
+        letter-spacing: 0.05em;
+      }
+
+      &::-moz-placeholder {
+        /* Firefox 19+ */
+        color: $gray-light;
+        letter-spacing: 0.05em;
+      }
+
+      &:-ms-input-placeholder {
+        color: $gray-light;
+        letter-spacing: 0.05em;
+      }
+    }
+
+    &:first-child > input {
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+
+    &:nth-child(2) > input {
+      border-top: none;
+      border-right: none;
+    }
+  }
+
+  .datepicker-reset {
+    bottom: 10px;
+
+    @media(min-width: $screen-sm-max) and (max-width: 1024px) {
+      bottom: 0;
+      font-size: 13px;
+    }
+
+    position: absolute;
+    text-align: center;
+    text-decoration: underline;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .white-border-button {
+    cursor: pointer;
+    border-top: none;
+    border-right: none;
+  }
+
+  #search-date-picker-from::before {
+    content: "From";
+  }
+
+  #search-date-picker-to::before {
+    content: "To";
+    left: 42%; // This is a hack because parent cannot be position: relative.
+  }
+
+  .custom-date-picker::before {
+    @include text2;
+    z-index: 99;
+    font-size: 1em;
+    position: absolute;
+    text-transform: uppercase;
+    top: 2px;
+    left: 4px;
+  }
+}
+
+.accent-color {
+  color: $accent-color;
+}
+
+.musician-title {
+  @include title3;
+  font-size: 2.7vw;
+  letter-spacing: 0.1vw;
+  line-height: 2.7vw;
+  padding-bottom: 3px;
+
+  @media (max-width: $screen-sm-max) {
+    @include title1;
+  }
+}
+
+.musician-instrument {
+  @include title1;
+
+  font-size: 1.5vw;
+  line-height: 1.5vw;
+  margin-top: .5vw;
+
+  @media (max-width: $screen-sm-max) {
+    transform: none;
+    @include text1;
+    margin-top: 15px;
+  }
+
+  @media(max-width: $screen-sm-max){
+    display: flex;
+    margin: unset;
+    line-height: unset;
+    width: 40%;
+  }
+
+}
+
+.show-in-archive {
+  white-space: nowrap;
+  overflow: visible;
+  align-self: flex-end;
+  //margin-bottom: -7px;
+  margin-left: 3.8vw;
+  margin: auto 0 auto auto;
+  padding: 0 20px;
+  text-align: right;
+
+  @media(max-width: $screen-sm-max){
+    margin: auto 0 auto auto;
+    padding: 0 20px;
+    text-align: right;
+  }
+
+  &.text1 {
+    //font-size: 0.7vw;
+    @media(max-width: $screen-sm-max){
+      font-size: unset;
+    }
+  }
+}
+
+.refine {
+  display: none;
+}
+
+.shows-calendar {
+  .datepicker-container.noclick {
+    width: 100% !important;
+    top: 20px !important;
+    left: 0 !important;
+
+    @media (max-width: 1366px) and (min-width: $screen-sm-max) {
+      left: 20px !important;
+    }
+
+    @media (max-width: $screen-sm-max) {
+      top: 0 !important;
+    }
+
+    .custom-date-picker {
+      width: 100%;
+    }
+  }
+}
+
+.calendar-filters {
+  .section-title {
+    &.home {
+      position: absolute;
+      width: 350px;
+    }
+  }
+}
+
+.upcoming-schedule {
+  flex-wrap: wrap;
+  padding: 0 10%;
+  margin-top: 40px;
+  min-height: 440px;
+
+  @media (min-width: 1201px) {
+    > *:nth-last-child(n + 6)::before {
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      width: 167%;
+      border: 2px solid white;
+    }
+  }
+
+  .no-event {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .upcoming-datepicker {
+    position: relative;
+    width: 38%;
+    min-height: 450px;
+    height: auto;
+    margin-right: 2%;
+    margin-bottom: 50px;
+
+    @media (max-width: 1200px) {
+      width: 48%;
+    }
+
+    .datepicker-container.noclick {
+      height: 410px;
+      display: block !important;
+      top: 0 !important;
+      left: 0px !important;
+      width: 80% !important;
+
+      @media (max-width: 1366px) and (min-width: $screen-sm-max) {
+        left: 0 !important;
+      }
+
+      .datepicker-switch {
+        position: relative;
+        padding: 10px 0;
+      }
+
+      .datepicker.datepicker-inline {
+        min-width: calc(90% - 25px) !important;
+        background-color: #f0f0eb;
+        top: 25px !important;
+        padding: 0;
+        left: 2vw !important;
+        border: none !important;
+        position: absolute;
+        z-index: 1000;
+        margin: 2px 0 0;
+        list-style: none;
+        background-clip: padding-box;
+        text-align: left;
+
+        .years-choices {
+          background: white;
+          font-size: 1em;
+          padding: 2px;
+          position: absolute;
+          right: 35px;
+          top: 100%;
+
+          > div {
+            padding: 2px 20px;
+            line-height: 2em;
+            background: #f0f0eb;
+          }
+        }
+
+        .table-condensed > thead > tr > th.datepicker-switch > div:first-child {
+          font-family: "Oswald", sans-serif;
+          font-weight: 400;
+          font-size: 30px;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          transform: scaleY(1.3);
+          line-height: 36px;
+          position: relative;
+        }
+
+        td.day {
+          background-color: #f0f0eb;
+          padding: 25px 2px 2px;
+        }
+      }
+    }
+
+    .custom-date-picker .datepicker.dropdown-menu td.day {
+      padding: 25px 2px 2px;
+    }
+  }
+
+  .day-list,
+  > .white-border-button {
+    position: relative;
+    width: 17%;
+    height: auto;
+    margin-right: 3%;
+    margin-bottom: 50px;
+
+    @media (max-width: 1200px) {
+      width: 20%;
+      margin-right: 5%;
+    }
+    @media (max-width: $screen-sm-max) {
+      width: 28%;
+      margin-right: 5%;
+    }
+    @media (max-width: 680px) {
+      width: 45%;
+      margin-right: 5%;
+    }
+    @media (max-width: 480px) {
+      width: 100%;
+      margin-right: 5%;
+    }
+  }
+
+  .day-list {
+    .day-event {
+      margin-top: 20px;
+
+      a:hover {
+        color: black;
+      }
+
+      .day_event_title {
+        height: auto;
+        max-height: 4em;
+        overflow-y: hidden;
+      }
+
+      .text2 {
+        font-size: 1.75em;
+      }
+    }
+  }
+
+  .white-border-button {
+    margin-right: 0%;
+    margin-left: 3%;
+
+    @media (max-width: 1200px) {
+      margin-left: 5%;
+    }
+  }
+}
+@media (max-width: $screen-sm-max) {
+  .calendar-filters .select-selected {
+    height: 5vw;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 650px) {
+  .calendar-filters .select-selected {
+    height: 8vw;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  .refine {
+    display: block;
+    margin-right: 20px;
+    position: absolute;
+    right: 0;
+  }
+
+  .shows-calendar {
+    .calendar-filters {
+      flex-direction: column-reverse;
+
+      .section-title.home {
+        margin-bottom: 0;
+
+        > .header-sub {
+          margin: 10px auto 0;
+        }
+      }
+
+      .event-section {
+        .event-filter-select {
+          display: none;
+        }
+
+        .select-selected {
+          width: 40vw;
+        }
+
+        .datepicker-btn {
+          width: 40vw;
+
+          @media (max-width: $screen-sm-max) {
+            margin-left: 10.8vw;
+          }
+        }
+
+        .datepicker table {
+          width: 82vw;
+        }
+
+        .datepicker-container {
+          margin: 0;
+
+          &.noclick {
+            width: 100vw !important;
+          }
+        }
+
+        .datepicker-container.noclick {
+          top: 12.6162vw !important;
+          left: -4.5vw !important;
+          right: 0px;
+        }
+      }
+    }
+
+    .musicians-results {
+      display: flex;
+    }
+  }
+
+  .white-line-bottom {
+    margin-top: 60px;
+    border-bottom: 4px solid white;
+
+    &.musicians-result {
+      display: none;
+    }
+  }
+
+  .shows-results-title {
+    font-size: 24px;
+    margin: 0;
+    margin-left: 10px;
+    width: auto;
+  }
+
+  .events-calendar {
+    @include column_events;
+  }
+}
+
+.refine-overlay {
+  display: none;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 30px;
+  background-color: #f0f0eb;
+
+  .white-line-bottom {
+    border-bottom: 2px solid white;
+  }
+}
+
+.refine-overlay-content {
+  position: relative;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  .btngroup {
+    font-size: 0;
+    line-height: 1;
+    white-space: nowrap;
+    display: inline; // ?
+
+    &--btn {
+      // sass bem is cool
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      background: transparent;
+      border: 2px solid $white-transparent;
+      //margin: 0 -1px -1px;
+      border-left-width: 0;
+      display: inline-block;
+      padding: 0.5em 1.25em;
+      outline: 0; // no glow crap
+
+      &:first-child {
+        border-left-width: 2px;
+        border-radius: 2em 0 0 2em;
+      }
+
+      &:last-child {
+        border-radius: 0 2em 2em 0;
+      }
+
+      &:hover {
+        background: $white-transparent;
+        color: black;
+      }
+
+      &:active {
+        background: $white-transparent;
+        color: black;
+      }
+    }
+  }
+}
+
+.refine-overlay-content > p {
+  margin-top: 40px;
+  margin-bottom: 24px;
+}
+
+.closebtn {
+  font-size: 50px;
+  line-height: 0.5;
+}
+
+.refine-overlay-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+
+.calendar-refine-title {
+  font-size: 30px;
+}
+
+.calendar-refine-menu-item {
+  font-size: 20px;
+}
+
+.calendar-duration {
+  .select-selected {
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
+
+  .select-selected:after {
+    content: none !important;
+  }
+
+  .select-items {
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
+}
+
+.refine-datepicker-container {
+  display: flex;
+  justify-content: space-evenly;
+
+  .custom-date-picker {
+    width: 120px;
+
+    .date-picker-text {
+      text-align: center;
+      border-radius: 14px;
+    }
+  }
+}
+
+.reset-all {
+  font-size: 22px;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 50px;
+}
+
+.search-date-picker-from-refine {
+  .datepicker {
+    left: 56px !important;
+  }
+}
+
+.right_arrow {
+  position: absolute;
+  left: 94vw;
+}
+
+body.home.admin-header {
+  @media (max-width: $screen-sm-max) {
+    .search-bar-autocomplete-container {
+      top: 162px;
+    }
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  .home.headers-4.admin-header div.artist-search-profile-container.pad-content {
+    transition: padding-top 0.2s;
+    padding-top: 112pxg;
+  }
+}
+
+#showsUpcomingContent {
+  @media (max-width: $screen-sm-max) {
+    .event-info {
+      font-size: 2.5vw;
+      width: 71%;
+      background: #fff url(/static/image/arrow-right-red.svg);
+      background-repeat: no-repeat;
+      background-position: 95% 50%;
+      background-size: 10px;
+
+      &.new {
+        display: none;
+      }
+    }
+
+    .musicians-results.white-line-bottom {
+      margin-bottom: 15px;
+      border-bottom: 5px solid white;
+
+      .title1.shows-results-title {
+        display: inline-block;
+        padding-left: 3.5vw;
+        font-size: 7vw;
+        line-height: 8.2vw;
+        margin: 0;
+      }
+    }
+  }
+
+  .extend-date {
+    display: none;
+
+    @media (max-width: $screen-sm-max) {
+      display: inline-block;
+    }
+  }
+
+  .event-card-secondary .event-dates {
+    @media (max-width: $screen-sm-max) {
+      display: none;
+    }
+  }
+}
+
+#smallslive-tracks {
+  .all-artist-tracks {
+    margin-bottom: 45px;
+  }
+}
+
+.main-container
+  .calendar
+  .custom-date-picker
+  .datepicker.dropdown-menu
+  .table-condensed
+  > thead
+  > tr
+  > th.datepicker-switch {
+  & > .years-dropdown {
+    display: none;
+  }
+
+  > div:first-of-type::after {
+    content: "";
+  }
+}
+
+.calendar {
+  .section-title.home.flex-row > main {
+    margin: 25px 0;
+  }
+
+  @media (max-width: $screen-sm-max) {
+    .new-calendar {
+    }
+  }
+
+  .old-calendar {
+    display: none;
+  }
+}
+
+.new-archive {
+  .archive-datepicker {
+    &.fixed {
+      &.desktop-hidden {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  .new-archive {
+    .archive-datepicker {
+      &.fixed {
+        display: none;
+        &.active {
+          display: block;
+          left: -3.5vw;
+          margin-top: -85px;
+          width: calc(100% + 3.5vw);
+
+          .close-button {
+            display: block;
+          }
+        }
+        .datepicker-container {
+          width: 100%;
+
+          .close-button  {
+            opacity: 1;
+            top: 45px;
+            z-index: 1010;
+          }
+        }
+      }
+    }
+  }
+}
+
+#musicianContent,
+#search-content {
+  padding: 20px 0;
+  @media(max-width: $screen-md){
+    padding: 2vw 0;
+  }
+}
+
+@media (min-width: $screen-sm-max) {
+  .new-archive {
+    border-bottom: 5px solid white;
+    justify-content: space-evenly;
+    /*margin-top: 30px;*/
+
+    .musicians-result {
+      border: 3px solid white;
+      border-bottom: none;
+      border-radius: 15px 15px 0 0;
+      cursor: pointer;
+      padding: 15px 50px;
+      position: relative;
+
+      &.active {
+        background-color: white;
+      }
+
+      .showing-results {
+        margin-right: 20px;
+      }
+    }
+  }
+
+  #musicianContent {
+    height: 100vh;
+
+    &.search-page {
+      height: auto;
+
+      &.tall {
+        height: 40vw;
+      }
+    }
+  }
+}
+
+@for $i from 1 through 4 {
+  .calendar-hiding-#{$i} {
+    @media (max-width: 1200px) {
+      > .flex-column.day-list:nth-last-of-type(-n + #{$i}) {
+        display: none;
+      }
+    }
+  }
+}

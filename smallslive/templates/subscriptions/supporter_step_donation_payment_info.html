@@ -1,0 +1,221 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load currency_filters %}
+{% load purchase_info_tags %}
+
+<div class="">
+  <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
+    <input type="text" id="hiddenTypeInput" name="type" hidden>
+    <input type="number" id="hiddenAmountInput" name="amount" hidden>
+    {% if error %}
+      <section class="store-error container">
+        <span class="store-error__message">{{ error|safe }}</span>
+      </section>
+    {% endif %}
+    <section class="container">
+      <div class="section-title section-title-no-padded">
+          <div tabindex="0" class="title1">Billing Information</div>
+      </div>
+      <div class="row">
+        <div class="store__form__group clearfix" id="custom-billing-address">
+          <div class="col-xs-12 col-sm-6">
+            <input type="text" id="first_name" name="first_name"
+                   class="address store__form__input" {% if billing_address_form.first_name.value %}value="{{ billing_address_form.first_name.value }}"{% endif %}
+                   placeholder="First Name">
+              {% for error in billing_address_form.first_name.errors %}
+                  <span class="store__form__field-error">{{ error }}</span>
+              {% endfor %}
+            <input type="text" id="last_name" name="last_name"
+                   class="address store__form__input" {% if billing_address_form.last_name.value %}value="{{ billing_address_form.last_name.value }}"{% endif %}
+                   placeholder="Last Name">
+              {% for error in billing_address_form.last_name.errors %}
+                  <span class="store__form__field-error">{{ error }}</span>
+              {% endfor %}
+            <input type="tel" name="phone" id="phone"
+                   class="address store__form__input" {% if billing_address_form.phone_number.value %}value="{{ billing_address_form.phone_number.value }}"{% endif %}
+                   placeholder="Phone">
+              {% for error in billing_address_form.phone_number.errors %}
+                  <span class="store__form__field-error">{{ error }}</span>
+              {% endfor %}
+          </div>
+          <div class="col-xs-12 col-sm-6">
+            <input type="text" name="line1" id="line1"
+                   class="address store__form__input" {% if billing_address_form.line1.value %}value="{{ billing_address_form.line1.value }}"{% endif %}
+                   placeholder="Address Line 1">
+            {% for error in billing_address_form.line1.errors %}
+                    <span class="store__form__field-error">{{ error }}</span>
+                {% endfor %}
+            <input type="text" name="line2" id="line2"
+                   class="address store__form__input" {% if billing_address_form.line2.value %}value="{{ billing_address_form.line2.value }}"{% endif %}
+                   placeholder="Address Line 2">
+            {% for error in billing_address_form.line2.errors %}
+                    <span class="store__form__field-error">{{ error }}</span>
+            {% endfor %}
+            <div class="row">
+                <div class="col-xs-6">
+                    <input type="text" name="line4" id="city"
+                           class="address store__form__input" {% if billing_address_form.line4.value %}value="{{ billing_address_form.line4.value }}"{% endif %}
+                           placeholder="City">
+                    {% for error in billing_address_form.line4.errors %}
+                        <span class="store__form__field-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                  <div class="col-xs-6">
+                    <input type="text" name="postcode" id="postcode"
+                           class="address store__form__input" {% if billing_address_form.postcode.value %}value="{{ billing_address_form.postcode.value }}"{% endif %}
+                           placeholder="Zip Code">
+                    {% for error in billing_address_form.postcode.errors %}
+                        <span class="store__form__field-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="white-border-select">
+              <select name="state" class="address store__form__select">
+                <option value="">Select State</option>
+                {% for val, choice in billing_address_form.fields.state.widget.choices %}
+                  {% if val %}
+                    <option value="{{ val }}" {% if val == billing_address_form.state.value %}selected{% endif %}>{{ choice }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            {% for error in billing_address_form.state.errors %}
+                <span class="store__form__field-error">{{ error }}</span>
+            {% endfor %}
+            <div class="white-border-select">
+              <select name="country" class="address store__form__select">
+                <option value="">Select Country</option>
+                {% for val, choice in billing_address_form.fields.country.choices %}
+                  {% if val and '....' not in val %}
+                    <option value="{{ val }}" {% if val == billing_address_form.country.value %}selected{% endif %}>{{ choice }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              {% for error in billing_address_form.country.errors %}
+                  <span class="store__form__field-error">{{ error }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class="section-title section-title-no-padded">
+          <div tabindex="0" class="title1">Payment Information</div>
+        </div>
+
+        <div id="select-payment-row" class="row" style="margin-bottom: 20px;">
+          <div class="col-xs-12">
+            <div class="button-row button-row-margin">
+              {% if payment_form.can_use_existing %}
+                <div class="store__form__selection__option recurring">
+                  <button class="payment-method-toggle active" data-id="existing-credit-card">Use existing credit card</button>
+                </div>
+              {% endif %}
+              <div class="store__form__selection__option recurring">
+                <button class="payment-method-toggle {% if not payment_form.can_use_existing %}active{% endif %}" data-id="credit-card">Pay with credit card</button>
+              </div>
+              <div class="store__form__selection__option single">
+                <button class="payment-method-toggle" data-id="paypal">Pay with PayPal</button>
+              </div>
+              <div class="store__form__selection__option single">
+                <button class="payment-method-toggle" data-id="bitcoin">Pay with BitCoin</button>
+              </div>
+              <div class="store__form__selection__option single">
+                <button class="payment-method-toggle" data-id="check">Pay with Check</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <input type="hidden" name="payment_method" id="payment-method" value="{% if payment_form.can_use_existing %}existing-credit-card{%  else %}credit-card{% endif %}">
+        <div class="store__form__group clearfix row payment-method-form {% if not payment_form.can_use_existing %}hidden{% endif %}" id="existing-credit-card-form">
+                <p tabindex="0" class="text9">Pay with existing {{ user.customer.card_kind }} credit card ending in {{ user.customer.card_last_4 }}</p>
+              </div>
+        <div class="store__form__group clearfix row payment-method-form hidden" id="paypal-form">
+          <p tabindex="0" class="text9">You will be redirected to PayPal to complete your transaction</p>
+        </div>
+        <div class="store__form__group clearfix row payment-method-form hidden" id="bitcoin-form">
+          <p tabindex="0" class="text9">Cick continue to review your donation. You will recieve further instruction after your confirmation.</p>
+        </div>
+        <div class="store__form__group clearfix row payment-method-form hidden" id="check-form">
+          <p tabindex="0" class="text9">Cick continue to review your donation. You will recieve further instruction after your confirmation.</p>
+        </div>
+        <div class="row">
+          <div class="store__form__group clearfix payment-method-form {% if payment_form.can_use_existing %}hidden{% endif %}" id="credit-card-form">
+            <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+              <div class="signup__payment__card__info">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-xs-6">
+                    <input type="text" class="store__form__input"
+                           id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*"
+                           data-stripe="number"
+                           autocomplete="off"
+                           name="number" {% if payment_form.number.value %}value="{{ payment_form.number.value }}"{% endif %}
+                           placeholder="Credit Card Number">
+                    {% for error in payment_form.number.errors %}
+                        <span class="store__form__field-error">{{ error }}</span>
+                    {% endfor %}
+                  </div>
+
+                  <div class="col-xs-3">
+                    <input type="text" class="store__form__input"
+                           data-stripe="exp-month"
+                           id="expiry-month" placeholder="MM" size="2" pattern="\d*"
+                           autocomplete="off" name="exp_month" {% if payment_form.exp_month.value %}value="{{ payment_form.exp_month.value }}"{% endif %}
+                           placeholder="Valid thru">
+                    {% for error in payment_form.exp_month.errors %}
+                    <span class="store__form__field-error">{{ error }}</span>
+                  {% endfor %}
+                  </div>
+                    <div class="col-xs-3">
+                        <input type="text" class="store__form__input"
+                               data-stripe="exp-year"
+                               id="expiry-year" placeholder="YY" size="2"
+                               pattern="\d*" autocomplete="off"
+                               name="exp_year" {% if payment_form.exp_year.value %}value="{{ payment_form.exp_year.value }}"{% endif %}>
+                        {% for error in payment_form.exp_year.errors %}
+                      <span class="store__form__field-error">{{ error }}</span>
+                  {% endfor %}
+                    </div>
+
+                </div>
+                <div class="row">
+                  <div class="col-xs-9">
+                    <input type="text" class="store__form__input"
+                           id="name-on-card"
+                           placeholder="Name on card"
+                           data-stripe="name"
+                           autocomplete="off"
+                           name="name" {% if payment_form.name.value %}value="{{ payment_form.name.value }}"{% endif %}>
+                  </div>
+                  <div class="col-xs-3">
+                    <input type="text" class="store__form__input"
+                           id="cvc" placeholder="xxx" size="4"
+                           data-stripe="cvc"
+                           pattern="\d*" autocomplete="off"
+                           name="cvc" {% if payment_form.cvc.value %}value="{{ payment_form.cvc.value }}"{% endif %}>
+                    {% for error in payment_form.cvc.errors %}
+                    <span class="store__form__field-error">{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="card-wrapper"></div>
+              <div id="form-general-error" class="accent-color text-center text3"></div>
+            </div>
+          </div>
+        </div>
+    </section>
+  </form>
+</div>
+
+<script>
+  $().ready(function(){
+    if( window.paypalTest ){
+      $('#paypal-option').hide()
+
+    }else{
+      $("#paypal-button-option").hide()
+    }
+  })
+</script>

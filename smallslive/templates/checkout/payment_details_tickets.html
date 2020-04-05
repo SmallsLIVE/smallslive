@@ -1,0 +1,215 @@
+{% extends "store_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load currency_filters %}
+{% load purchase_info_tags %}
+
+{% block store_nav_active %}active{% endblock %}
+
+{% block title %}Payment details{% endblock %}
+
+{% block content %}
+    {% include 'inactive_dialog.html' %}
+
+    <div class="payment-main-container payment-main-container--add-padding">
+        <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
+    {% if error %}
+      <section class="store-error container">
+        <span class="store-error__message">{{ error|safe }}</span>
+      </section>
+    {% endif %}
+    <section class="container">
+
+        <div class="section-title section-title__first section-title-no-padded">
+          <div tabindex="0" class="title1 center">Reservation</div>
+        </div>
+        <div class="flex-row col-xs-12 col-md-4 col-md-offset-4">
+          <input style="margin-right: 15px;" type="text" class="store__form__input"
+          id="guest-name" required placeholder="First name" size="20"
+          autocomplete="off"
+          name="guest_first_name" value="{% if user.first_name %} {{ user.first_name }} {% elif guest.first_name %} {{ guest.first_name }} {% endif %}"
+          placeholder="Credit Card Number">
+          <input type="text" class="store__form__input"
+          id="guest-name" required placeholder="Last name" size="20"
+          autocomplete="off"
+          name="guest_last_name" value="{% if user.last_name %} {{ user.last_name }} {% elif guest.last_name %} {{ guest.last_name }} {% endif %}"
+          placeholder="Credit Card Number">
+        </div>
+        <div class="section-title section-title-no-padded">
+          <div tabindex="0" class="title1 center">Payment information</div>
+        </div>
+        <div id="select-payment-row" class="row" style="margin-bottom: 20px;">
+          <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+            <div class="button-row justify-content-center button-row-margin">
+              {% if bankcard_form.can_use_existing %}
+                <div class="store__form__selection__option">
+                <button class="payment-method-toggle active" data-id="existing-credit-card">Use existing credit card</button>
+                </div>
+              {% endif %}
+              <div class="store__form__selection__option">
+              <button class="payment-method-toggle active" data-id="credit-card">Pay with credit card</button>
+              </div>
+              <div class="store__form__selection__option">
+              <button class="payment-method-toggle" data-id="paypal" >Pay PayPal</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" name="payment_method" id="payment-method" value="{% if bankcard_form.payment_method.value == 'credit-card' %}existing-credit-card{%  else %}credit-card{% endif %}">
+        <div class="store__form__group clearfix row payment-method-form hidden" id="existing-credit-card-form">
+          <p tabindex="0">Pay with existing {{ user.customer.card_kind }} credit card ending in {{ user.customer.card_last_4 }}</p>
+        </div>
+        <div class="store__form__group clearfix row payment-method-form hidden" id="paypal-form">
+          <p class="text9">You will be redirected to PayPal to complete your transaction</p>
+        </div>
+        <div class="row">
+          <div class="store__form__group clearfix payment-method-form" id="credit-card-form">
+            <div class="col-xs-12 col-md-4 col-md-offset-4">
+              <div class="signup__payment__card__info">
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-xs-6">
+                        <input type="text" class="store__form__input"
+                           id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*"
+                           autocomplete="off" name="number" {% if form.number.value %}value="{{ form.number.value }}"{% endif %}
+                           placeholder="Credit Card Number">
+                        {% for error in form.number.errors %}
+                            <span class="store__form__field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+
+                      <div class="col-xs-3">
+                          <input type="text" class="store__form__input"
+                                 id="expiry-month" placeholder="MM" size="2" pattern="\d*"
+                                 autocomplete="off" name="exp_month" {% if form.exp_month.value %}value="{{ form.exp_month.value }}"{% endif %}
+                                 placeholder="Valid thru">
+                          {% for error in form.exp_month.errors %}
+                        <span class="store__form__field-error">{{ error }}</span>
+                      {% endfor %}
+                      </div>
+                        <div class="col-xs-3">
+                            <input type="text" class="store__form__input" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" name="exp_year" {% if form.exp_year.value %}value="{{ form.exp_year.value }}"{% endif %}>
+                            {% for error in form.exp_year.errors %}
+                          <span class="store__form__field-error">{{ error }}</span>
+                      {% endfor %}
+                        </div>
+
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-9">
+                        <input id="name-on-card"
+                               type="text"
+                               class="store__form__input"
+                               placeholder="Name on card"
+                               autocomplete="off"
+                               name="name"
+                               {% if form.name.value %}value="{{ form.name.value }}"{% endif %}>
+                      </div>
+                      <div class="col-xs-3">
+                        <input type="text" class="store__form__input" id="cvc" placeholder="xxx" size="4" pattern="\d*" autocomplete="off" name="cvc" {% if form.cvc.value %}value="{{ form.cvc.value }}"{% endif %}>
+                        {% for error in form.cvc.errors %}
+                        <span class="store__form__field-error">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="payment-errors text1 accent-color"></div>
+                </div>
+              <div class="card-wrapper"></div>
+            </div>
+          </div>
+        </div>
+    </section>
+          <section class="store-cart__footer container">
+              <div class="col-xs-12 col-sm-6 store-cart__footer__left">
+              </div>
+              <div class="col-xs-12 col-sm-6 store-cart__footer__right">
+              </div>
+              <div class="col-xs-12 store-cart__footer__buttons center">
+                  <a href="{% url 'basket:summary' %}" class="white-border-button back-white">Back</a>
+                  <button type='submit'
+                          placeholder='Confirm'
+                          class="white-border-button back-white"
+                          style="display: inline-block; vertical-align: middle;">confirm</button>
+              </div>
+          </section>
+        </form>
+    </div>
+
+{% endblock content %}
+
+
+{% block extra_js %}
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script src="https://js.stripe.com/v2/"></script>
+    <script src="{% static 'js/payment/payment.js' %}"></script>
+    <script src="{% static 'js/store-base.js' %}"></script>
+    <script src="{% static 'js/card.js' %}"></script>
+    <script src="{% static 'js/store-payments.js' %}"></script>
+
+
+  <script>
+
+    $(document).ready(function () {
+
+      function fixMonthSingleDigit(){
+
+        if($('#expiry-month').val() < 10 && !$('#expiry-month').val().startsWith('0')){
+          $('#expiry-month').val('0' + $('#expiry-month').val())
+        }
+      }
+
+      var $yearPlaceholder = $('#expiry-year-placeholder');
+      var $yearInput = $('#expiry-year');
+
+      var $form = $('#payment-form');
+
+      $form.submit(function(){
+        fixMonthSingleDigit()
+      })
+
+
+      $yearPlaceholder.on("input", function() {
+        $yearInput.val('20' + this.value);
+      });
+
+      $('.useless-checkbox').hide();
+
+      var card = new Card({
+        // a selector or DOM element for the form where users will
+        // be entering their information
+        form: '#payment-form', // *required*
+        // a selector or DOM element for the container
+        // where you want the card to appear
+        container: '.card-wrapper', // *required*
+
+        formSelectors: {
+          numberInput: 'input[name="number"]', // optional — default input[name="number"]
+          expiryInput: 'input[name="expiry_month_0"], #expiry-year-placeholder', // optional — default input[name="expiry"]
+          cvcInput: 'input[name="ccv"]', // optional — default input[name="cvc"]
+          nameInput: 'input[name="name"]' // optional - defaults input[name="name"]
+        },
+
+        width: 350, // optional — default 350px
+        formatting: true, // optional - default true
+
+
+        // Default values for rendered fields - optional
+        values: {
+          number: '•••• •••• •••• ••••',
+          name: 'Name',
+          expiry: '••/••',
+          cvc: '•••'
+        },
+
+        // if true, will log helpful messages for setting up Card
+        debug: false // optional - default false
+      });
+    });
+    inactive = {% if user.is_authenticated and show_email_confirmation_dialog %}true{% else %}false{% endif %};
+    console.log(inactive)
+    if (inactive === 'true'){
+      $('#inactive-dialog').modal('show');
+    }
+
+  </script>
+{% endblock %}

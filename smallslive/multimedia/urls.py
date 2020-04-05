@@ -22,5 +22,12 @@ urlpatterns = patterns('multimedia.views',
         name="upload_track", kwargs={'category': 'track'}),
     url(r"^upload_track_preview/$", 'upload_track',
         name="upload_track_preview", kwargs={'category': 'preview'}),
-    url(r"^my-downloads/$", 'my_downloads', name="my-downloads"),
+    url(r'^upload_image_preview/$', 'upload_image_preview',
+        name="upload_image_preview"),
+    url(r"^my-downloads/$", 'new_downloads', name="my-downloads"),
+    url(r"^new-downloads/$", 'new_downloads', name="new-downloads"),
+    url(r'^library/(?P<pk>\d+)$', 'album_view', name='album_view'),
+    url(r'^downloads/(?P<pk>\d+)$', 'download_view', name='download_view'),
+    url(r'^library/add-tracks$', 'add_tracks', name='add_tracks'),
+
 )

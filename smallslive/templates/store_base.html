@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load basket_tags %}
 {% load promotion_tags %}
 {% load category_tags %}
@@ -12,89 +12,31 @@
 {% block title %}SmallsLIVE Tracks{% endblock %}
 
 
-{% block content %}
-    <div class="content-wrapper">
+{% block home_content %}
+  <div class="">
 
-        <div class="store-nav store-nav--category landing-nav col-xs-12 visible-xs">
-            <span class="visible-xs store-nav__title store-nav__title--category expand-toggle" id="store-nav-cat-expand">Store Categories<i class="fa fa-caret-down"></i></span>
-                <ul class="store-nav__categories" id="store-nav-cat">
-                <form method="get" action="{% url 'search:search' %}">
-                    <li class="store-search__container small">
-                        <i class="fa fa-search store-search__small__icon"></i>
-                        <input type="text" class="store-search__small__input" name="q"
-                               placeholder="Search the store...">
-                        <button type="submit" class="store-search__small__button"><i class="fa fa-arrow-circle-right"></i>
-                        </button>
-                    </li>
-                </form>
-                {% category_tree as tree_categories %}
-                {% if tree_categories %}
-                    {% for tree_category, info in tree_categories %}
-                        <li class="store-nav__category {% if tree_category.pk == category.pk %}active{% endif %}">
-                            {% if tree_category.pk == category.pk %}
-                                {{ tree_category.name }}
-                            {% else %}
-                                <a href="{{ tree_category.get_absolute_url }}">{{ tree_category.name }}</a>
-                            {% endif %}
-
-                            {% if info.has_children %}
-                                <ul>{% else %}</li>{% endif %}
-                        {% for n in info.num_to_close %}
-                                </ul></li>
-                            {% endfor %}
-                        {% endfor %}
-                    {% endif %}
-            </ul>
-        </div>
-
-        <section class="store-header container">
-            <div class="store-header__content">
-                <h1 class="store-header__title"><a href="{% url "promotions:home" %}">SmallsLIVE Store</a><span class="store-header__title__divider">|</span>
-                    {% block breadcrumbs %}
-                    {% endblock breadcrumbs %}
-                </h1>
-            </div>
-        </section>
-
-        <section class="store-listing container">
-            <div class="store-nav landing-nav hidden-xs col-sm-4 col-md-3">
-                <ul class="store-nav__categories" id="store-nav-cat">
-                    <form method="get" action="{% url 'search:search' %}">
-                        <li class="store-search__container small">
-                            <i class="fa fa-search store-search__small__icon"></i>
-                            <input type="text" class="store-search__small__input" name="q"
-                                   placeholder="Search the store...">
-                            <button type="submit" class="store-search__small__button"><i class="fa fa-arrow-circle-right"></i>
-                            </button>
-                        </li>
-                    </form>
-                    {% category_tree as tree_categories %}
-                    {% if tree_categories %}
-                        {% for tree_category, info in tree_categories %}
-                            <li class="store-nav__category {% if tree_category.pk == category.pk %}active{% endif %}">
-                                {% if tree_category.pk == category.pk %}
-                                    {{ tree_category.name }}
-                                {% else %}
-                                    <a href="{{ tree_category.get_absolute_url }}">{{ tree_category.name }}</a>
-                                {% endif %}
-
-                                {% if info.has_children %}
-                                    <ul>{% else %}</li>{% endif %}
-                            {% for n in info.num_to_close %}
-                                </ul></li>
-                            {% endfor %}
-                        {% endfor %}
-                    {% endif %}
-                </ul>
-            </div>
-
-            {% block store_content %}{% endblock %}
-
-        </section>
+    <div class="store-banner">
+      {% if is_catalogue_list %}
+        {% include 'home_banners_carousel.html' with active='catalog' %}
+      {% endif %}
     </div>
-{% endblock content %}
+
+    <div id="store-home" class="store-home">
+      {% block store_content %}{% endblock %}
+    </div>
+    <script src="{% static 'js/store-loader.js' %}"></script>
+  </div>
+
+{% endblock home_content %}
 
 {% block extra_js %}
-    <script src="{% static "oscar/js/oscar/ui.js" %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'oscar/js/oscar/ui.js' %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'js/store-base.js' %}"></script>
+
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script src="https://js.stripe.com/v2/"></script>
+    <script src="{% static 'js/card.js' %}"></script>
+    <script src="{% static 'js/payment/payment.js' %}"></script>
+    <script src="{% static 'js/support/support-flow.js' %}"></script>
+
 {% endblock %}

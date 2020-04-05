@@ -13,8 +13,8 @@
   <meta property="og:title" content="{{ event.full_title }}" />
   <meta property="og:description" content="{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}" />
   {% if event.photo %}
-    <meta property="og:image" content="{% thumbor_url event.photo.url|urlencode height=315 width=600 smart=True %}" />
-    <meta itemprop="image" content="{% thumbor_url event.photo.url|urlencode height=315 width=600 smart=True %}">
+    <meta property="og:image" content="{% thumbor_url event.get_photo_url|urlencode height=315 width=600 smart=True %}" />
+    <meta itemprop="image" content="{% thumbor_url event.get_photo_url|urlencode height=315 width=600 smart=True %}">
   {% endif %}
   <meta property="fb:app_id" content="{{ facebook_app_id }}" />
   <meta itemprop="name" content="{{ event.full_title }}">
@@ -60,7 +60,7 @@
               <div class="mini-artist">
                 <div class="mini-artist__image">
                   {% if gig_info.artist.photo %}
-                    <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% thumbor_url gig_info.artist.photo.url|urlencode height=80 width=80 smart=True %}" alt="{{ gig_info.artist.full_name }} photo"/></a>
+                    <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% thumbor_url gig_info.artist.get_photo_url|urlencode height=80 width=80 smart=True %}" alt="{{ gig_info.artist.full_name }} photo"/></a>
                   {% else %}
                     <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
                   {% endif %}
@@ -69,7 +69,7 @@
                   <h2 class="mini-artist-info__title"><a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }}</a></h2>
                   <p class="mini-artist-info__instrument">{{ gig_info.role }}</p>
                   {% if gig_info.artist.biography %}
-                    <p class="mini-artist-info__bio">{{ gig_info.artist.biography|striptags|truncatewords:28 }}</p>
+                    <p class="mini-artist-info__bio">{{ gig_info.artist.biography|striptags|safe|truncatewords:28 }}</p>
                   {% else %}
                     <p class="mini-artist-info__bio unavailable">No artist biography available</p>
                   {% endif %}
@@ -85,9 +85,9 @@
             <div class="row">
                 {% if event.photo %}
                   {% if event.photo_crop_box %}
-                    <img src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=580 %}" alt="" class="event__img img-responsive"/>
+                    <img src="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=580 %}" alt="" class="event__img img-responsive"/>
                   {% else %}
-                    <img src="{% thumbor_url event.photo.url|urlencode height=340 width=580 %}" alt="" class="event__img img-responsive"/>
+                    <img src="{% thumbor_url event.get_photo_url|urlencode height=340 width=580 %}" alt="" class="event__img img-responsive"/>
                   {% endif %}
                 {% endif %}
               </div>
@@ -335,8 +335,9 @@
 
 {% block extra_js %}
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
-    <script>
-      var playsCountSent = [];
+  <script>
+    var playsCountSent = [];
+    {% if count_metrics %}
       function updateViewCount(state) {
         var id = this.getPlaylistItem(this.getPlaylistIndex()).mediaid;
         if (playsCountSent.indexOf(id) === -1) {
@@ -344,12 +345,12 @@
           $.post('/multimedia/update_media_viewcount/', {
             recording_id: id,
             csrfmiddlewaretoken: '{{ csrf_token }}'
-
           });
         }
       }
+    {% endif %}
 
-      {% if user.can_listen_to_audio and event.published_audio %}
+    {% if user.can_listen_to_audio and event.published_audio %}
       jwplayer("player-audio").setup({
         primary: 'html5',
         playlist: [
@@ -375,10 +376,12 @@
         width: "100%",
         height: 120
       });
-      jwplayer('player-audio').onPlay(updateViewCount);
+      {% if count_metrics %}
+        jwplayer('player-audio').onPlay(updateViewCount);
       {% endif %}
+    {% endif %}
 
-      {% if user.can_watch_video and event.published_videos %}
+    {% if user.can_watch_video and event.published_videos %}
       jwplayer("player-video").setup({
         primary: 'html5',
         playlist: [
@@ -404,7 +407,9 @@
         width: "100%",
         height: 450
       });
-      jwplayer('player-video').onPlay(updateViewCount);
+      {% if count_metrics %}
+        jwplayer('player-video').onPlay(updateViewCount);
       {% endif %}
-    </script>
+    {% endif %}
+  </script>
 {% endblock %}

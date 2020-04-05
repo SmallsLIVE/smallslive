@@ -156,6 +156,14 @@
     margin-bottom: 3px;
   }
 
+  &__event-venue {
+    @include lato;
+    font-size: 12px;
+    color: $main-accent-color;
+    //margin-top: 10px;
+    //margin-bottom: 3px;
+  }
+
   &__event-title {
     @include lato-bold;
     font-size: 14px;

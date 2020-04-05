@@ -1,0 +1,42 @@
+<div class="modal fade" id="streamingNotAvailableDialog"
+     tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog medium">
+    <div class="modal-content custom-modal{% if not finished_next_event %} no-cancel{% endif %}">
+      <a href="#" class="close-button"></a>
+
+      <div class="modal-body" style="text-align: center;">
+        <p class="title2 accent-color">
+          This event will be available in the archive approximately on {{ archived_date_estimate|date:"m/d/Y" }}.
+        </p>
+
+        {% if finished_next_event %}
+          <p class="title2 accent-color">
+            Current live show:
+            <span class="title2" style="color: black;">{{ finished_next_event.title }}</span>
+          </p>
+
+          <div>
+            <button class="white-border-button">
+              <a href="{% url 'event_detail' finished_next_event.id finished_next_event.slug %}">
+                Live Now
+              </a>
+            </button>
+            <button class="white-border-button cancel-button">Cancel</button>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    var $streamingDialog = $('#streamingNotAvailableDialog');
+
+    $('#streamingNotAvailableDialog .close-button, \
+       #streamingNotAvailableDialog .cancel-button').click(function () {
+      $streamingDialog.modal('hide');
+    });
+  });
+</script>

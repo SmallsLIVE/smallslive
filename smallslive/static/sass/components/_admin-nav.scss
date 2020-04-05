@@ -72,11 +72,17 @@
   }
 }
 
-@media (max-width: $screen-sm-max) {
+@media (max-width: $screen-md-max) {
   .admin-nav {
-    padding: 5px 0;
-    border-bottom: 1px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
     background-color: #121212;
+
+    .container {
+      padding: 0;
+    }
 
     & .heading {
       display: block;

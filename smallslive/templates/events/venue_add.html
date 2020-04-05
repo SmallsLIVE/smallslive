@@ -1,0 +1,42 @@
+{% extends "home_new.html" %}
+{% load crispy_forms_tags %}
+{% load static from staticfiles %}
+
+{% block extra_head %}
+  <script>
+    var django = {jQuery: jQuery};
+  </script>
+  {{ form.media }}
+  <link href="{% static 'css/selectize.bootstrap3.css' %}" rel="stylesheet">
+{% endblock extra_head %}
+
+{% block title %}{{ action_name|capfirst }} venue{% endblock title %}
+
+{% block content %}
+  <div class="content-wrapper" style="border:none">
+    <section class="admin-interface container">
+      <h1 class="admin-interface__main-title">{{ action_name|capfirst }} venue</h1>
+      <form method="post" class="admin-interface__form" role="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% crispy form %}
+        <div class="buttonHolder">
+          <input type="submit" name="submit"value="{{ action_name|capfirst }} venue"
+                 class="admin-interface__form__button" id="submit-id-submit">
+        </div>
+      </form>
+    </section>
+  </div>
+{% endblock content %}
+
+{% block extra_js %}
+  <script type="text/javascript" src="{% static 'js/selectize.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
+  <script src="{% static "js/venue_form.js" %}"></script>
+  <script>
+    $(document).ready(function() {
+      VenueForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
+      VenueForm.init(true);
+    });
+  </script>
+{% endblock %}

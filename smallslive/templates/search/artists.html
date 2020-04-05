@@ -1,0 +1,55 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load i18n %}
+<div  class="search-artist-box-container">
+  <!--<img src="{% static 'image/search-icon.svg' %}">-->
+  <input id="artist-search"
+         class="search-artist-box"
+         name="q"
+         type="hidden"
+         value="{{ artist_search }}"
+         placeholder="START TYPING AN ARTIST NAME"
+         autocomplete="off">
+  <div class="artist-search-a-z">
+    <div class="white-border-button scroll-left"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
+    <div id="a-z-search">
+      <div id="a-z-refresh" class="white-border-button" style="background-color: rgb(255, 255, 255);">
+        ALL
+      </div>
+      {% for letter in alphabet %}
+        <div tabindex="0" class="white-border-button{% if artist_search == letter %} active{% endif %}">{{ letter }}</div>
+      {% endfor %}
+    </div>
+    <div class="white-border-button scroll-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
+  </div>
+  <br>
+  <div id="select-instrument-btn"
+       class="instrument-btn white-border-button caret" {% if instrument %} data-instrument="{{ instrument }}"{% endif %}>
+      {% if instrument %}{{ instrument }}{% else %}Instrument{% endif %}
+  </div>
+
+</div>
+<div class="instruments-container">
+  <a href="#" class="close-button no-cancel"></a>
+  <div class="instrument text4" data-instrument="">All Instruments</div>
+  {% for instrument in instruments %}
+    <div data-instrument="{{ instrument.name }}" class="instrument text4 text-grey">
+      {{ instrument.name }}
+    </div>
+  {% endfor %}
+</div>
+
+<div class="">
+
+  <main id="artists" style="position: relative;">
+    <div class="slide-btn slider prev"><b class="indicator-icon icon-left-caret"></b></div>
+    <div class="slide-btn slider next" data-callback-name="searchMoreArtists"><b class="indicator-icon icon-right-caret"></b></div>
+    <div id="artist-load-gif" class="loading-image">
+      <img src="{% static 'image/loading.gif' %}" alt="">
+    </div>
+    <div class="event-row wrapped-events artists">
+      {% include 'search/artist_results.html' %}
+    </div>
+  </main>
+
+</div>

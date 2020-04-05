@@ -1,0 +1,108 @@
+{% load static from staticfiles %}
+{% if gigs %}
+  {% for gig_info in gigs %}
+    {% with event=gig_info.event %}
+      <div data-ajax-edit-url="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}" id="artist-event-row-{{ event.pk }}" class="artist-event-row"
+           data-url="{% url 'artist_dashboard:my_past_events_info' pk=event.id %}">
+        <div class="artist-event-info flex-row wrap">
+          <div class="artist-event-picture">
+            {% if event.photo %}
+              {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box height=57 width=57 %}
+            {% else %}
+              {% include 'partials/thumbored_picture.html' %}
+            {% endif %}
+          </div>
+          <div class="artist-event-details">
+            <div class="text2">
+              {{ event.get_date|date:'m/d/Y' }}
+            </div>
+            <div class="text2 title">
+              {{ event.title }}
+            </div>
+            {% if not is_future %}
+            <div class="text2 ">
+              <span class="accent-color">{% if event.is_public_event %} Public {% else %} Private {% endif %}</span>
+              <span class="text-grey" id="event-plays">{{ event.get_play_total }} plays /</span>
+              <span class="text-grey" id="event-time">{{ event.get_seconds_total }}</span>
+            </div>
+            {% else %}
+            <div class="text2 ">
+              <span class="{{ event.venue|lower }}-color">{{ event.venue }}</span>
+            </div>
+            {% endif %}
+          </div>
+          <div class="artist-event-arrow">
+            <img src="/static/image/arrow-right-red.svg" alt="">
+          </div>
+        </div>
+      </div>
+    {% endwith %}
+  {% endfor %}
+{% else %}
+  {% if not is_future %}
+    <div class="white-line-bottom">
+      <div class="title1 center">No archived shows</div>
+    </div>
+  {% else %}
+    <div class="white-line-bottom">
+      <div class="title1 center">No upcoming events</div>
+    </div>
+  {% endif %}
+    
+{% endif %}
+
+{% block extra_js %}
+  <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
+  <script>
+    function loadInfo(infoUrl){
+      if( viewPortLength("width") > 768) {
+        $('#artistEventsInfo').html("");
+        $('#artistEventsInfo').addClass("artist-loading-gif");
+      }
+      $.ajax({
+        url: infoUrl,
+          success: function (data) {
+            var $target;
+              $('#artistEventsInfo').removeClass("artist-loading-gif");
+              $('#event-info-mobile-card').html("")
+              $target = $('#artistEventsInfo');
+              $target.html(data);
+              $target.data('url', infoUrl);
+              $("#artistEventsContainer").show();
+
+              if(infoUrl.split("?")[infoUrl.split("?").length - 1].includes('set_id')){
+                $('.header-metrics-container').removeClass("not-show")
+                $('.edit-event-dashboard').addClass('not-show')
+
+              }
+          }
+      });
+    }
+
+    $('.artist-event-row').on('click', function () {
+      $('.artist-event-row').css("background-color", "")
+      var eventUrl = $(this).data("url");  
+      $(this).css( "background-color", 'white' );
+      loadInfo(eventUrl+"?set_id=0")
+    })
+    $('.eventChanger').on('click', function () {
+      var eventUrl = $(this).data("url");  
+      loadInfo(eventUrl)
+
+    })
+    $(document).ready(function() {
+      var $firstEvent= $('.artist-event-row').first()
+      var eventUrl = $($firstEvent).data("url"); 
+      if (eventUrl === undefined) {
+        $("#artistEventsInfo").html("");
+        return ;
+      }
+      if( viewPortLength("width") > 960){
+        loadInfo(eventUrl+"?set_id=0")
+      }
+
+
+      
+    })
+  </script> 
+{% endblock %}

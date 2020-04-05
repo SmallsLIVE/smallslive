@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load add_get_parameter %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
@@ -9,8 +9,8 @@
 
 {% block content %}
 
-    <div class="content-wrapper">
-        <section class="page-heading container">
+    <div class="content-wrapper" style="border:none">
+        <section class="page-heading container" style="width: 100%;">
             <h1>Artists list:</h1>
         </section>
         <section class="artists-list__search">
@@ -51,7 +51,7 @@
                 </ul>
             </form>
         </section>
-        <section class="artists-list__list container">
+        <section class="artists-list__list container" style="width: 100%;">
             <div class="artists-list__list__header row">
                 <div class="hidden-xs col-sm-2 col-md-1">
                     Image
@@ -80,11 +80,11 @@
                             {% if artist.photo %}
                                 <img src="{% thumbor_url artist.photo.url|urlencode height=40 width=40 smart=True %}" alt="{{ artist.full_name }} photo"/>
                             {% else %}
-                                <img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt="No photo available"/>
+                                <img src="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" alt="{{ artist.full_name }} photo"/>
                             {% endif %}
                         </div>
                         <div class="col-xs-5 col-sm-4 col-md-3 artists-list__list__name">
-                            <span title="{{artist.user.email}}">{{ artist.full_name }}</span>
+                            <span title="{{artist.public_email}}">{{ artist.full_name }}</span>
                         </div>
                         <div class="col-xs-4 col-sm-3 col-md-2 artists-list__list__instrument">
                             {{ artist.instruments.all|join:" , " }}

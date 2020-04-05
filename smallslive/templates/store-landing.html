@@ -1,10 +1,10 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
 {% block store_nav_active %}active{% endblock %}
 
-{% block content %}
+{% block home_content %}
 
     <div class="content-wrapper">
 
@@ -134,7 +134,7 @@
                                 </form>
                             </div>
                             <div class="col-xs-12 col-sm-7 col-md-9">
-                                <h2 class="store-featured-music__single__title hidden-xs">
+                                <h2 class="store-featured-music__single__title">
                                     <a href="#">The Ari Hoenig Quartet 1</a>
                                 </h2>
                                 <!-- tracks table -->
@@ -348,7 +348,7 @@
                                 </form>
                             </div>
                             <div class="col-xs-12 col-sm-7 col-md-9">
-                                <h2 class="store-featured-music__single__title hidden-xs">
+                                <h2 class="store-featured-music__single__title">
                                     <a href="#">The Ari Hoenig Quartet 1</a>
                                 </h2>
                                 <!-- tracks table -->
@@ -562,7 +562,7 @@
                                 </form>
                             </div>
                             <div class="col-xs-12 col-sm-7 col-md-9">
-                                <h2 class="store-featured-music__single__title hidden-xs">
+                                <h2 class="store-featured-music__single__title">
                                     <a href="#">The Ari Hoenig Quartet 1</a>
                                 </h2>
                                 <!-- tracks table -->
@@ -776,7 +776,7 @@
                                 </form>
                             </div>
                             <div class="col-xs-12 col-sm-7 col-md-9">
-                                <h2 class="store-featured-music__single__title hidden-xs">
+                                <h2 class="store-featured-music__single__title">
                                     <a href="#">The Ari Hoenig Quartet 1</a>
                                 </h2>
                                 <!-- tracks table -->
@@ -1053,7 +1053,7 @@
 
     </div>
 
-{% endblock content %}
+{% endblock home_content %}
 
 {% block extra_js %}
   <script src="{% static 'js/store-base.js' %}"></script>

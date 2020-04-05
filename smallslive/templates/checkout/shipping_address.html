@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "store_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 {% load currency_filters %}
@@ -10,112 +10,79 @@
 
 {% block content %}
 
-    <div class="content-wrapper">
-{{ form.errors }}
+    <div class="payment-main-container borderless m0">
         <section class="store-header container">
-            <div class="store-header__content">
-                <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span class="store-header__title__category">Shipping information</span></h1>
-            </div>
+        <div class="section-title section-title-no-padded">
+            <div  tabindex="0"  class="title1">Shipping Information</div>
+        </div>
         </section>
         <form action="{% url 'checkout:shipping-address' %}" method="post" id="new_shipping_address">
             {% csrf_token %}
             <section class="store-shipping container">
-                <h3 class="store__form__heading">Shipping information:</h3>
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
-                        <label for="first_name" class="store__form__label">Name</label>
-                        <input type="text" name="first_name" class="store__form__input" id="first_name" {% if form.first_name.value %}value="{{ form.first_name.value }}"{% endif %}>
+                        <input type="text" name="first_name" class="store__form__input" id="first_name" placeholder="First Name"{% if form.first_name.value %}value="{{ form.first_name.value }}"{% endif %}>
                         {% for error in form.first_name.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
                         {% endfor %}
-                        <label for="last_name" class="store__form__label">Surname</label>
-                        <input type="text" name="last_name" class="store__form__input" id="last_name" {% if form.last_name.value %}value="{{ form.last_name.value }}"{% endif %}>
+                        <input type="text" name="last_name" class="store__form__input" id="last_name" placeholder="Last Name" {% if form.last_name.value %}value="{{ form.last_name.value }}"{% endif %}>
                         {% for error in form.last_name.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
                         {% endfor %}
-                        <label for="line1" class="store__form__label">Address - line 1</label>
-                        <input type="text" name="line1" class="store__form__input" id="line1" {% if form.line1.value %}value="{{ form.line1.value }}"{% endif %}>
+                        <input type="text" name="line1" class="store__form__input" id="line1" placeholder="Address Line 1" {% if form.line1.value %}value="{{ form.line1.value }}"{% endif %}>
                         {% for error in form.line1.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
                         {% endfor %}
-                        <label for="line2" class="store__form__label">Address - line 2</label>
-                        <input type="text" name="line2" class="store__form__input" id="line2" {% if form.line2.value %}value="{{ form.line2.value }}"{% endif %}>
+                        <input type="text" name="line2" class="store__form__input" id="line2" placeholder="Address Line 2" {% if form.line2.value %}value="{{ form.line2.value }}"{% endif %}>
                         {% for error in form.line2.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-12 col-sm-6">
+                   <div class="col-xs-12 col-sm-6">
                         <div class="row">
                             <div class="col-xs-6">
-                                <label for="city" class="store__form__label">City</label>
-                                <input type="text" name="line4" id="city" class="store__form__input" {% if form.line4.value %}value="{{ form.line4.value }}"{% endif %}>
+                                <input type="text" name="line4" id="city" class="store__form__input" placeholder="City" {% if form.line4.value %}value="{{ form.line4.value }}"{% endif %}>
                                 {% for error in form.line4.errors %}
                                     <span class="store__form__field-error">{{ error }}</span>
                                 {% endfor %}
                             </div>
                             <div class="col-xs-6">
-                                <label for="postcode" class="store__form__label">Zip code</label>
-                                <input type="text" name="postcode" id="postcode" class="store__form__input" {% if form.postcode.value %}value="{{ form.postcode.value }}"{% endif %}>
+                                <input type="text" name="postcode" id="postcode" class="store__form__input" placeholder="Zip Code" {% if form.postcode.value %}value="{{ form.postcode.value }}"{% endif %}>
                                 {% for error in form.postcode.errors %}
                                     <span class="store__form__field-error">{{ error }}</span>
                                 {% endfor %}
                             </div>
                         </div>
-                        <label for="state" class="store__form__label">State</label>
-                        <select name="state" id="state" class="store__form__select">
-                            {% for val, choice in form.fields.state.widget.choices %}
-                                <option value="{{ val }}" {% if val == form.state.value %}selected{% endif %}>{{ choice }}</option>
-                            {% endfor %}
-                        </select>
+                        <div class="white-border-select">
+                            <select name="state" id="state" class="store__form__select">
+                                    <option value="">Select State</option>
+                                {% for val, choice in form.fields.state.widget.choices %}
+                                    <option value="{{ val }}" {% if val == form.state.value %}selected{% endif %}>{{ choice }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                         {% for error in form.state.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
                         {% endfor %}
-                        <label for="country" class="store__form__label">Country</label>
-                        <select name="country" id="country" class="store__form__select">
-                            {% for val, choice in form.fields.country.choices %}
-                                <option value="{{ val }}" {% if val == form.country.value %}selected{% endif %}>{{ choice }}</option>
-                            {% endfor %}
-                        </select>
+                        <div class="white-border-select">
+                            <select name="country" id="country" class="store__form__select">
+                                <option value="">Select Country</option>
+                                {% for val, choice in form.fields.country.choices %}
+                                    <option value="{{ val }}" {% if val == form.country.value %}selected{% endif %}>{{ choice }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                         {% for error in form.country.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
                         {% endfor %}
-{#                        <div class="store__form__filler-separator"></div>#}
-{#                        <label for="shipping-option" class="store__form__label">Shipping option</label>#}
-{#                        <select name="shipping-option" class="store__form__select">#}
-{#                            <option>Standard -- $5.00</option>#}
-{#                            <option>Expedited -- $15.00</option>#}
-{#                        </select>#}
+
                     </div>
                 </div>
-                <h3 class="store__form__heading">Digital downloads:</h3>
-                <p class="store-shipping__text">Upon purchase your Digital downloads will be available to you in your <a href="#">My downloads</a> section.<br>From there you’ll be able to download all digital tracks and albums you purchase on SmallsLIVE.</p>
             </section>
             <section class="store-cart__footer container">
-                <div class="col-xs-12 col-sm-6 store-cart__footer__left">
-                    <p class="store-cart__footer__left__text">We accept the following payment options:</p>
-                    <div class="store-cart__footer__card-icons">
-                        <img src="{% static 'image/payment/visa.png' %}" alt="Visa">
-                        <img src="{% static 'image/payment/mastercard.png' %}" alt="MasterCard">
-                        <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
-                        <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
-                        <img src="{% static 'image/payment/paypal.png' %}" alt="Paypal">
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 store-cart__footer__right">
-                    <div class="store-cart__footer__price-container">
-                        <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
-                        <span class="store-cart__footer__price-container__label">Basket total:</span>
-{#                        <span class="store-cart__footer__price-container__value">{{ shipping_charge.excl_tax|currency:basket.currency }}</span>#}
-{#                        <span class="store-cart__footer__price-container__label">Shipping:</span>#}
-                        <div class="store-cart__footer__price-container__total">
-                            <span class="store-cart__footer__price-container__value">{{ order_total.excl_tax|currency:basket.currency }}</span>
-                            <span class="store-cart__footer__price-container__label">Total:</span>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-xs-12 store-cart__footer__buttons">
-                    <a href="{% url 'basket:summary' %}" class="store-cart__footer__button-back"><i class="fa fa-angle-double-left"></i> Back to basket</a>
-                    <button type="submit" class="store-cart__footer__button-next">Continue checkout</button>
+                    <a href="{% url 'basket:summary' %}" class="white-border-button left back-to-payment-btn"> Back to basket</a>
+                    <button type="submit" class="white-border-button checkout-white">Continue</button>
                 </div>
             </section>
         </form>

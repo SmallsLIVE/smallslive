@@ -10,6 +10,7 @@
 // Kill the scroll on the body
 .modal-open {
   overflow: hidden;
+  height: 100vh;
 }
 
 // Container that the modal scrolls within
@@ -33,7 +34,9 @@
     @include translate(0, -25%);
     @include transition-transform(0.3s ease-out);
   }
-  &.in .modal-dialog { @include translate(0, 0) }
+  &.in .modal-dialog {
+    @include translate(0, 0);
+  }
 }
 .modal-open .modal {
   overflow-x: hidden;
@@ -44,7 +47,7 @@
 .modal-dialog {
   position: relative;
   width: auto;
-  margin: 10px;
+  margin: 10px auto;
 }
 
 // Actual modal
@@ -54,10 +57,16 @@
   border: 1px solid $modal-content-fallback-border-color; //old browsers fallback (ie8 etc)
   border: 1px solid $modal-content-border-color;
   border-radius: $border-radius-large;
-  @include box-shadow(0 3px 9px rgba(0,0,0,.5));
+  @include box-shadow(0 3px 9px rgba(0, 0, 0, 0.5));
   background-clip: padding-box;
   // Remove focus outline from opened modal
   outline: 0;
+
+  &.catalog {
+    background: inherit;
+    border: none;
+    box-shadow: none;
+  }
 }
 
 // Modal background
@@ -68,8 +77,12 @@
   left: 0;
   background-color: $modal-backdrop-bg;
   // Fade for backdrop
-  &.fade { @include opacity(0); }
-  &.in { @include opacity($modal-backdrop-opacity); }
+  &.fade {
+    @include opacity(0);
+  }
+  &.in {
+    @include opacity($modal-backdrop-opacity);
+  }
 }
 
 // Modal header
@@ -95,6 +108,9 @@
 .modal-body {
   position: relative;
   padding: $modal-inner-padding;
+  .title1 {
+    font-size: 2.5em;
+  }
 }
 
 // Footer (for actions)
@@ -136,13 +152,31 @@
     margin: 30px auto;
   }
   .modal-content {
-    @include box-shadow(0 5px 15px rgba(0,0,0,.5));
+    @include box-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
   }
 
   // Modal sizes
-  .modal-sm { width: $modal-sm; }
+  .modal-sm {
+    width: $modal-sm;
+  }
 }
 
 @media (min-width: $screen-md-min) {
-  .modal-lg { width: $modal-lg; }
+  .modal-lg {
+    width: $modal-lg;
+  }
+}
+
+#inactive-dialog {
+
+  @media (max-width: 500px) {
+    .title1 {
+      line-height: 1em;
+    }
+
+    p {
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+  }
 }

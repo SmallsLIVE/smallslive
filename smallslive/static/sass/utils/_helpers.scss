@@ -1,0 +1,39 @@
+// Helpers
+@mixin shadow-text {
+  color: black;
+  text-shadow:
+    //-0.05rem -0.05rem 1px #ed2b12,
+    //0.05rem -0.05rem 5px #ed2b12,
+    -0.05rem 0.05rem 5px #ed2b12,
+    0.05rem 0.05rem 5px #ed2b12,
+    0 0 25px #630100,
+    0 0 40px #450100;
+}
+
+.no-spinners {
+  -moz-appearance:textfield;
+}
+
+.no-spinners::-webkit-outer-spin-button,
+.no-spinners::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.big-icon {
+  padding: 0 40px;
+  font-size: 8em;
+  transform: scaleY(1.4);
+};
+
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}

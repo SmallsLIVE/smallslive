@@ -1,0 +1,34 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load thumbnail %}
+{% load currency_filters %}
+{% load i18n %}
+{% load purchase_info_tags %}
+{% load purchase_info_custom_tags %}
+{% load basket_tags %}
+
+{% for product in products %}
+  {% purchase_info_for_track request product as session %}
+    <p>{{ product.title }} {{ session.price.excl_tax|currency:session.price.currency }}</p>
+    <form action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
+      {% if session.availability.is_available_to_buy %}
+        {% basket_form request product 'single' as basket_form %}
+          {% csrf_token %}
+          {{ basket_form.quantity }}
+      {% endif %}
+    </form>
+{% endfor %}
+{% if active_card %}
+  <div class="button-row justify-content-center button-row-margin">
+    <div class="store__form__selection__option">
+      <button class="payment-method-toggle active" data-id="existing-credit-card">Pay with card</button>
+      <div id="credit-card-info">
+        <div class="text9 text-grey">xxxx-xxxx-xxxx-{{ active_card.last4 }}</div>
+        <div class="text9 text-grey">exp: {{ active_card.exp_month }}/{{ active_card.exp_year }}</div>
+      </div>
+    </div>
+    <div class="store__form__selection__option">
+      <button class="payment-method-toggle" data-id="other">Use other payment method</button>
+    </div>
+  </div>
+{%  endif %}

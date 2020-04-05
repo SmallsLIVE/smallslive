@@ -89,7 +89,7 @@ MANDRILL_API_KEY = get_env_variable('MANDRILL_API_KEY')
 # EMAIL_HOST_USER = "smallslive@appsembler.com"
 # EMAIL_HOST_PASSWORD = get_env_variable('MANDRILL_API_KEY')
 DEFAULT_FROM_EMAIL = OSCAR_FROM_EMAIL = 'smallslive@smallslive.com'
-DEFAULT_FROM_REGISTRATION_EMAIL = "smallsliveusers@smallslive.com"
+DEFAULT_FROM_REGISTRATION_EMAIL = "smallslive@smallslive.com"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 

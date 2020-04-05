@@ -1,13 +1,21 @@
 {% load thumbor_tags %}
-<div class="well">
-{% if value.url %}Currently: <a target="_blank" href="{{ value.url }}" class="img-thumbnail"><img src="{% thumbor_url value.url|urlencode width=100 %}" alt="{{ value }}" /></a>
-{% if not required %}
-<div class="checkbox"><label for="{{ checkbox_id }}">
-  <input type="checkbox" name="{{ checkbox_name }}" id="{{ checkbox_id }}">Delete this photo</label>
-</div>
-    {% else %}<br/>
-{% endif %}
-Change:
-{% endif %}
-<input type="{{ type }}" name="{{ name }}"{% if required %} required{% endif %} {% for attr,val in attrs.items %}{{ attr }}={{ val }} {% endfor %} >
+<div>
+    {% if value.url %}<a target="_blank" href="{{ value.url }}">
+        <img
+            src="{% thumbor_url value.url|urlencode width=300 %}" alt="{{ value }}"/></a>
+        {% if not required %}
+            <div class="checkbox">
+                <label for="{{ checkbox_id }}">
+                    <input type="checkbox" name="{{ checkbox_name }}" id="{{ checkbox_id }}">Delete this photo
+                </label>
+            </div>
+        {% else %}
+            <br/>
+        {% endif %}
+    {% endif %}
+    <label class="white-border-button photo" for="id_photo">
+        <input type="{{ type }}" name="{{ name }}" accept="image/*" {% if required %} required{% endif %}
+        {% for attr,val in attrs.items %}{{ attr }}={{ val }} {% endfor %} >
+        <span id="file_name">Choose file</span>
+    </label>
 </div>

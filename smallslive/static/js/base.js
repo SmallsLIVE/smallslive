@@ -32,7 +32,8 @@ $(document).ready(function () {
         dots: false,
         slidesToShow: 1,
         slidesToScroll: 1,
-        arrows: false
+        arrows: false,
+        autoplay: true,
     });
 
     $(".carousel-indicators").on('click', 'li', function(){

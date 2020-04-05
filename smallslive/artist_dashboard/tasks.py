@@ -1,32 +1,74 @@
 import StringIO
 from celery import shared_task
-from django.core.mail import EmailMessage
 from django.core.files.base import ContentFile
 
-from artist_dashboard.utils import generate_payout_sheet, update_current_period_metrics
+from artists.models import PayoutPeriodGeneration
+from artist_dashboard.utils import generate_metrics_payout_sheet, \
+    generate_donations_payout_sheet, update_current_period_metrics, \
+    get_metrics_payout_file_name, end_generate_payout_sheet, \
+    metrics_data_for_date_period, donations_data_for_date_period
 from artists.models import PastPayoutPeriod
 
 
-@shared_task(default_retry_delay=10, rate_limit="4/m", max_retries=2)
-def generate_payout_sheet_task(start, end, revenue, operating_expenses, save_earnings=False):
+def attach_metrics_payout_sheet(metrics, start, end,
+                                revenue, operating_expenses,
+                                save_earnings, process_personal_donations=False):
+
     output = StringIO.StringIO()
-    generate_payout_sheet(output, start, end, revenue, operating_expenses, save_earnings)
+    generate_metrics_payout_sheet(metrics, output, start, end,
+                                  revenue, operating_expenses,
+                                  save_earnings, process_personal_donations)
     output.seek(0)
-    filename = "payments-{}_{}_{}-{}_{}_{}.xlsx".format(
-        start.year, start.month, start.day, end.year, end.month, end.day)
-    email = EmailMessage(
-            "Payment spreadsheet",
-            "Spreadsheet for the period {}/{}/{} - {}/{}/{} is attached.".format(
-                    start.year, start.month, start.day, end.year, end.month, end.day),
-            "smallslive@gmail.com",
-            ["smallsjazzclub@gmail.com", "spikewilner@gmail.com", "nate@appsembler.com"]
-    )
-    email.attach(filename, output.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    email.send()
+    filename = get_metrics_payout_file_name(start, end, personal=process_personal_donations)
+    return output, filename
+
+
+def attach_donations_sheet(donations, start, end):
+
+    output = StringIO.StringIO()
+    generate_donations_payout_sheet(donations, output)
+    output.seek(0)
+    filename = 'donations-admin-{}_{}_{}-{}_{}_{}.xlsx'.format(
+            start.year, start.month, start.day, end.year, end.month, end.day)
+    return output, filename
+
+
+@shared_task(default_retry_delay=10, rate_limit="4/m", max_retries=2)
+def generate_payout_sheet_task(start, end,
+                               revenue, operating_expenses,
+                               save_earnings=False):
+    """ Deprecate email in favor of download. Generate file and upload to s3.
+    Poll to download when ready"""
+
+    # Spreadsheet for admins with personal donations.
+    metrics = metrics_data_for_date_period(start, end)
+    metrics = donations_data_for_date_period(start, end, metrics)
+    output, file_name = attach_metrics_payout_sheet(
+        metrics,
+        start, end,
+        revenue, operating_expenses,
+        save_earnings, process_personal_donations=True)
+    PayoutPeriodGeneration.objects.attach_admin_spreadsheet(start, end, output, file_name)
+
+    # Spreadsheet for musicians does not contain personal
+    # Donations
+    output, file_name = attach_metrics_payout_sheet(
+        metrics,
+        start, end,
+        revenue, operating_expenses,
+        save_earnings, process_personal_donations=False)
+    PayoutPeriodGeneration.objects.attach_musicians_spreadsheet(start, end, output, file_name)
+
+    # Direct donation information
+    output, file_name = attach_donations_sheet(metrics['donations'], start, end)
+    PayoutPeriodGeneration.objects.attach_donations_spreadsheet(start, end, output, file_name)
+
     if save_earnings:
         period = PastPayoutPeriod.objects.first()
         output.seek(0)
-        period.payout_spreadsheet.save(filename, ContentFile(output.read()), save=True)
+        period.payout_spreadsheet.save(file_name, ContentFile(output.read()), save=True)
+
+    end_generate_payout_sheet(start, end, )
 
 
 @shared_task

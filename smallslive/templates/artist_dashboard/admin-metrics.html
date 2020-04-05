@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load add_get_parameter %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
@@ -7,7 +7,7 @@
 
 {% block content %}
 
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="border:none">
         <section class="page-heading container">
             <h1>SmallsLIVE Metrics Admin:</h1>
         </section>
@@ -211,7 +211,7 @@
                   <li class="metrics__event-list__row row">
                       <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
                           {% if event.photo %}
-                            <a href="{{ event.get_absolute_url }}"><img src="{% thumbor_url event.photo.url|urlencode height=68 width=68 smart=True %}" alt=""/></a>
+                            <a href="{{ event.get_absolute_url }}"><img src="{% thumbor_url event.get_photo_url|urlencode height=68 width=68 smart=True %}" alt=""/></a>
                           {% else %}
                             <a href="{{ event.get_absolute_url }}"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/></a>
                           {% endif %}
@@ -244,7 +244,7 @@
                   <li class="metrics__event-list__row row">
                       <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
                           {% if event.photo %}
-                            <a href="{{ event.get_absolute_url }}"><img src="{% thumbor_url event.photo.url|urlencode height=68 width=68 smart=True %}" alt=""/></a>
+                            <a href="{{ event.get_absolute_url }}"><img src="{% thumbor_url event.get_photo_url|urlencode height=68 width=68 smart=True %}" alt=""/></a>
                           {% else %}
                             <a href="{{ event.get_absolute_url }}"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/></a>
                           {% endif %}
@@ -263,10 +263,10 @@
 {% endblock content %}
 
 {% block extra_js %}
+          <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
           <script src="{% static 'js/bootstrap-select.js' %}"></script>
           <script src="{% static 'js/Chart.min.js' %}"></script>
           <script src="{% static 'js/dashboard-base.js' %}"></script>
-
           <!-- Bootstrap datepicker JavaScript -->
           <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
           <script src="{% static 'js/metrics_datepicker.js' %}"></script>
@@ -349,7 +349,7 @@
 
                 window.onload = drawGraph(playsDataArchive, 'plays');
                 $datePicker.on('changeMonth', function (d) {
-                      var countsURL = "{{ metrics_server_url }}/event_counts/";
+                      var countsURL = "{% url 'artist_dashboard:metrics_ajax_display' %}";
                       var data = {
                           month: d.date.getMonth() + 1,
                           year: d.date.getFullYear()

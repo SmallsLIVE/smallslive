@@ -2,6 +2,13 @@
 
 <div class="form-group artist-list-form">
     {% crispy formset %}
-    <button type="button" class="btn btn-success artists-table__button" name="add" id="add_more"><i class="fa fa-plus-circle"></i> Add another </button>
-    {% if wrapper.admin %}<button type="button" class="btn btn-success artists-table__button darker" name="add" onclick="window.open('{% url 'artist_add' %}?popup=1','Add artist', 'width=800,height=800,scrollbars=no');" id="create_artist"><i class="fa fa-edit"></i> Create a new artist </button>{% endif %}
+    <button type="button" class="white-border-button inline separated" name="add" id="add_more_artists">
+            Add another
+    </button>
+    {% if wrapper.admin %}
+        <button type="button" class="white-border-button inline separated" name="add"
+                onclick="window.open('{% url 'artist_add' %}?popup=1','Add artist', 'width=800,height=800,scrollbars=no');"
+                id="create_artist"> Create a new artist
+        </button>
+    {% endif %}
 </div>

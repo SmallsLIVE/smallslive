@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load schemaless_url %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
@@ -12,156 +12,141 @@
   <meta property="og:type" content="profile" />
   <meta property="og:site_name" content="SmallsLIVE" />
   <meta property="og:title" content="{{ artist.full_name }} profile" />
-  <meta property="og:title" content="{{ artist.biography|truncatewords:40|striptags }}" />
+  <meta property="og:title" content="{{ artist.biography|truncatewords:40|striptags|safe }}" />
   {% if artist.photo %}
     <meta property="og:image" content="https:{% thumbor_url artist.photo.url|urlencode height=315 width=600 smart=True %}" />
     <meta itemprop="image" content="https:{% thumbor_url artist.photo.url|urlencode height=315 width=600 smart=True %}">
   {% endif %}
   <meta property="fb:app_id" content="{{ facebook_app_id }}" />
   <meta itemprop="name" content="{{ artist.full_name }} profile">
-  <meta itemprop="description" content="{{ artist.biography|truncatewords:40|striptags }}">
+  <meta itemprop="description" content="{{ artist.biography|truncatewords:40|striptags|safe}}">
 {% endblock %}
 
-{% block content %}
- <div class="content-wrapper">
-      <section class="container">
-        <div class="row">
-            <div class="artist-details">
-              <div class="col-xs-12 col-md-6 hero-image vcenter">
-                <div class="gradient-overlay"></div>
-                {% if artist.photo %}
-                  {% if artist.photo_crop_box %}
-                    <img src="{% thumbor_url artist.photo.url|urlencode  crop=artist.photo_crop_box width=580 %}"
-                         class=" artist-details__image img img-responsive" alt=""/>
-                  {% else %}
-                    <img src="{% thumbor_url artist.photo.url|urlencode height=400 width=580 smart=True %}"
-                         class=" artist-details__image img img-responsive" alt=""/>
-                  {% endif %}
-                {% else %}
-                    <img src="{% static 'image/no-artist-photo.jpg' %}"
-                         class=" artist-details__image img img-responsive" alt=""/>
-                {% endif %}
-              </div><!--
-           --><div class="col-xs-12 col-md-6 artist-details__info vcenter">
-                    <h1 class="artist-details__name">{{ artist.full_name }}</h1>
+{% block home_content %}
+  <main>
+    <div class="flex-row items-flex-stretch artist-header wrap">
+      <div class="artist-picture">
+        {% if artist.photo %}
+          {% include 'partials/thumbored_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
+        {% else %}
+          {% include 'partials/thumbored_picture.html' with photo_url="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" crop_box=artist.photo_crop_box %}
+        {% endif %}
+      </div>
 
-                    <p class="artist-details__instruments">{{ artist.instruments.all|join:" // " }}</p>
-                    <p class="artist-details__stats"><a href="{% url "event_search" %}?artist={{ artist.id }}">{{ artist.events.count }} archived shows</a>{% comment %} //  2 albums in store{% endcomment %}</p>
-                    {% if artist.website %}<a href="{{ artist.website }}" rel="nofollow" class="artist-details__website">{{ artist.website|schemaless_url }}</a>{% endif %}
-              </div>
-            </div>
+      <div class="flex-column content-space-between artist-info">
+        <div>
+          <p class="title4">{{ artist.full_name }}</p>
+          <div class="section-title">
+            <div class="title1">{{ artist.get_main_instrument_name }}</div>
+          </div>
         </div>
-      </section>
-      <div class="artist container">
-        <div class="equal-heights row">
-          <section class="artist-events col-md-6">
-            {% with upcoming_events=artist.upcoming_events|slice:":4" upcoming_count=artist.upcoming_events.count %}
-              <h2 class="artist-events__title">Upcoming shows {% if upcoming_events %} ({{ upcoming_count }}
-                ):{% endif %}</h2>
-              <div class="events">
-                {% for upcoming_event in upcoming_events %}
-                  <div class="mini-event">
-                    <div class="mini-event__image">
-                      {% if upcoming_event.photo %}
-                        <a href="{{ upcoming_event.get_absolute_url }}"><img src="{% thumbor_url upcoming_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/></a>
-                      {% else %}
-                        <a href="{{ upcoming_event.get_absolute_url }}"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/></a>
-                      {% endif %}
-                    </div>
-                    <div class="mini-event-info">
-                      <p class="mini-event-info__date">{{ upcoming_event.listing_date|date:"n/j/Y" }}</p>
-                      <h2 class="mini-event-info__title"><a href="{{ upcoming_event.get_absolute_url }}">{{ upcoming_event.title }} {{ upcoming_event.subtitle }}</a></h2>
-                       <p class="mini-event-info__sidemen">
-                        {% for gig_info in upcoming_event.get_performers %}
-                          <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span class="mini-event-info__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}  // {% endif %}
-                        {% endfor %}
-                      </p>
-                      <a class="mini-event-info__button" href="{{ upcoming_event.get_absolute_url }}">Go to event</a><span
-                            class="arrow"></span>
-                    </div>
-                  </div>
-                {% empty %}
-                  <p class="artist-events__notice">There are no upcoming shows for this artist.</p>
-                {% endfor %}
-                {% if upcoming_count > upcoming_events|length%}
-                    <a href="{% url "event_search" %}?artist={{ artist.id }}" class="artist-events__view-more">View more shows...</a>
-                {% endif %}
-
-              </div>
-            {% endwith %}
-            {% with past_events=artist.past_events|slice:":4" past_count=artist.past_events.count %}
-              <h2 class="artist-events__title">Previous shows {% if past_events %} ({{ past_count }}
-                ):{% endif %}</h2>
-              <div class="events">
-                {% for past_event in past_events %}
-                  <div class="mini-event">
-                    <div class="mini-event__image">
-                      {% if past_event.photo %}
-                        <a href="{{ past_event.get_absolute_url }}"><img src="{% thumbor_url past_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/></a>
-                      {% else %}
-                        <a href="{{ past_event.get_absolute_url }}"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/></a>
-                      {% endif %}
-
-                    </div>
-                    <div class="mini-event-info">
-                      <p class="mini-event-info__date">{{ past_event.listing_date|date:"n/j/Y" }}</p>
-                      <h2 class="mini-event-info__title"><a href="{{ past_event.get_absolute_url }}">{{ past_event.title }} {{ past_event.subtitle }}</a></h2>
-                      <p class="mini-event-info__sidemen">
-                        {% for gig_info in past_event.get_performers %}
-                          <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span class="mini-event-info__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}  // {% endif %}
-                        {% endfor %}
-                      </p>
-                      <a class="mini-event-info__button" href="{{ past_event.get_absolute_url }}">Go to event</a><span
-                            class="arrow"></span>
-                    </div>
-                  </div>
-                {% empty %}
-                  <p class="artist-events__notice">There are no past shows for this artist.</p>
-                {% endfor %}
-                {% if past_count > past_events|length%}
-                    <a href="{% url "event_search" %}?artist={{ artist.id }}" class="artist-events__view-more">View more shows...</a>
-                {% endif %}
-              </div>
-            {% endwith %}
-          </section>
-          <section class="artist-bio col-md-6">
-              {% if user.is_superuser %}
-                <div class="event-description__admin-buttons">
-                    <a href="{% url "artist_edit" pk=artist.id slug=artist.slug %}" class="event-description__admin-buttons__edit">edit artist</a>
-                </div>
-              {% endif %}
-              <div class="artist-bio__text-block">
-                {% comment %}<h1 class="artist-bio__title">Artist biography:</h1>{% endcomment %}
-                {% if artist.biography %}
-                  {{ artist.biography|safe }}
-                {% else %}
-                  <p class="unavailable">This artist does not have a bio yet.</p>
-                {% endif %}
-              </div>
-              <div class="share-social">
-                  <h2 class="share-social__title">Share this artist on:</h2>
-                  <a class="btn social-btn social-btn--facebook" id="shareBtn"><i class="fa fa-facebook"></i></a>
-                  <a href="https://twitter.com/share?url={{ request.build_absolute_uri|urlencode }}&text={{ "Check out "|urlencode }}{{ artist.full_name|urlencode }}{{ "'s profile on SmallsLIVE:"|urlencode }}&hashtags=SmallsLIVE"
-                      class="btn social-btn social-btn--twitter" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-twitter"></i></a>
-                <a href="https://plus.google.com/share?url={{ request.build_absolute_uri|urlencode }}" class="btn social-btn social-btn--google"
-                   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i
-                        class="fa fa-google-plus"></i></a>
-              </div>
-          </section>
+        <div>
+          <div class="button-row button-row-margin nav" role="tablist">
+            <button class="nav-item" data-target="#catalog"
+                    role="tab" data-toggle="tab">Catalog</button>
+            <button class="nav-item" data-target="#upcoming"
+                    role="tab" data-toggle="tab">Upcoming Shows</button>
+            <button class="nav-item" data-target="#bio"
+                    role="tab" data-toggle="tab">Bio</button>
+            <button class="nav-item" data-target="#contact"
+                    role="tab" data-toggle="tab">Contact</button>
+          </div>
         </div>
       </div>
-      {% comment %}
-      <section class="cto cto--subscribe-to-artist container vertical-align-parent">
-        <div class="vertical-align-child">
-            <h1 class="cto__title">Subscribe to this artist</h1>
-
-            <p class="cto__text">Get emailed about new videos or gigs.</p>
-            <a href="" class="cto__button">Subscribe</a>
+    </div>
+    <div class="artist-tabs">
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="catalog">
+          {% if artist.albums %}
+            <section class="event-stripe">
+              <div class="section-title">
+                <div class="title1">
+                  Artist Albums
+                </div>
+              </div>
+              <main>
+                {% include 'artists/album_row.html' with events=artist.albums hide_event_date=False show_event_venue=True %}
+              </main>
+            </section>
+          {% endif %}
+            {% if artist.tracks%}
+              <section class="event-stripe">
+                <div class="section-title">
+                  <div class="title1">
+                    Smallslive tracks
+                  </div>
+                </div>
+                <main>
+                  {% include 'artists/album_row.html' with events=artist.tracks hide_event_date=False show_event_venue=True %}
+                </main>
+              </section>
+            {% endif %}
+          <section class="event-stripe">
+            <div class="section-title">
+              <div class="title1">
+                Recently Added
+              </div>
+            </div>
+            <main>
+              {% include 'events/event_row.html' with events=artist.recently_added hide_event_date=False show_event_venue=True %}
+            </main>
+          </section>
         </div>
-      </section>
-      {% endcomment %}
-</div>
-{% endblock content %}
+        <div role="tabpanel" class="tab-pane" id="upcoming">
+          <div>
+            <section class="event-stripe">
+              <div class="section-title">
+                <div class="title1">
+                  Upcoming Shows
+                </div>
+              </div>
+              <main>
+                {% include 'events/event_row.html' with events=artist.upcoming_events hide_event_date=True show_event_venue=True %}
+              </main>
+            </section>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="bio">
+          <div class="flex-column items-center">
+            <div class="text7 artist-biography">
+              {% if artist.biography %}
+                {{ artist.biography|striptags|safe }}
+              {% else %}
+                <p class="unavailable">This artist does not have a bio yet.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="contact">
+          <div class="flex-column items-center">
+            <div class="artist-contact">
+              {% if artist.public_email %}
+                <div>
+                  <p class="text4 text-uppercase">Email</p>
+                  <p class="text4"><a href="mailto:{{ artist.public_email }}">{{ artist.public_email }}</a></p>
+                </div>
+              {% endif %}
+
+              {% if artist.website %}
+                <div>
+                  <p class="text4 text-uppercase">Website</p>
+                  <p class="text4"><a href="{{ artist.website }}" target="_blank">{{ artist.website }}</a></p>
+                </div>
+              {% endif %}
+
+              {% if artist.facebook %}
+                <div>
+                  <p class="text4 text-uppercase">Facebook</p>
+                  <p class="text4">{{ artist.facebook }}</p>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock home_content %}
 
 {% block extra_js %}
 <script>

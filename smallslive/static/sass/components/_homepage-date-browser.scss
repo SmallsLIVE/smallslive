@@ -3,7 +3,7 @@
   padding: 40px 15px 10px;
   background: #fff;
 
-  &__header {
+  &__header, &__venue_filter {
     @include display(flex);
     @include align-items(center);
     @include justify-content(space-between);
@@ -17,6 +17,26 @@
       @include lato-black;
       font-size: 32px;
       color: $main-accent-color;
+    }
+
+    h2 {
+      margin: 15px;
+      @include lato-black;
+      font-size: 24px;
+    }
+
+    &__venues {
+      margin: 15px;
+      a {
+        margin: 5px;
+        &.active {
+          font-size: larger;
+          font-weight: bold;
+          color: black;
+          text-decoration: underline;
+        }
+      }
+
     }
 
     &__date-picker {

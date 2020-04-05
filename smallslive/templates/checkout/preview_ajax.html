@@ -1,0 +1,241 @@
+
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load thumbnail %}
+
+{% load currency_filters %}
+{% load purchase_info_tags %}
+
+<div>
+    <section class="preview container">
+        <div class="col-xs-12 col-sm-8 store-overview__left-column text1">
+            {% if basket.has_physical_products %}
+                <div class="store-overview__group">
+                <div class="section-title section-title-no-padded">
+                  <div class="title1">Selected Gift</div>
+                </div>
+                <div class="store-overview__group__table">
+                    <!-- table header start -->
+                    <div class="store-overview__group__table__header clearfix">
+                        <div class="col-xs-2 image">
+                            Image
+                        </div>
+                        <div class="col-xs-7 details">
+                            Details
+                        </div>
+                        <div class="col-xs-3 total">
+                            Total
+                        </div>
+                    </div>
+                    <!-- end of table header -->
+                    {% for line in basket.physical_lines %}
+                        {% with product=line.product  %}
+                            <!-- table row start -->
+                            <div class="store-overview__group__table__row clearfix text1">
+                                <div class="col-xs-2 image">
+                                    {% if product.parent_id %}
+                                        {% with image=product.parent.primary_image %}
+                                            {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                                <a class="square-container" href="{{ product.parent.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                          src="{{ thumb.url }}"
+                                                                                          alt="{{ product.get_title }}"></a>
+                                            {% endthumbnail %}
+                                        {% endwith %}
+                                    {% else %}
+                                        {% with image=product.primary_image %}
+                                            {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                                <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                          src="{{ thumb.url }}"
+                                                                                          alt="{{ product.get_title }}"></a>
+                                            {% endthumbnail %}
+                                        {% endwith %}
+                                    {% endif %}
+
+                                </div>
+                                <div class="col-xs-7 details">
+                                    <p class="store-overview__group__table__product-name">
+                                        {% if product.parent_id %}
+                                            {{ product.parent.title }}
+                                        {% else %}
+                                            {{ product.title }}
+                                        {% endif %}
+                                    </p>
+                                    <p class="">
+                                        {% if product.parent_id %}
+                                            {{ product.title }}
+                                        {% endif %}
+                                    </p>
+                                    <p class="">
+                                        {{ line.quantity }} x ${{ line.unit_price_excl_tax }}
+                                    </p>
+                                </div>
+                                <div class="col-xs-3 total">
+                                    ${{ line.price_excl_tax }}
+                                </div>
+                            </div>
+                        {% endwith %}
+                        <!-- end of table row -->
+                    {% endfor %}
+                    <!-- group total -->
+                    <div class="store-overview__group__total clearfix">
+                        <div class="col-xs-9">
+                            Sub-total:
+                        </div>
+                        <div class="col-xs-3">
+                            {{ basket.physical_total_excl_tax|currency:basket.currency }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if basket.has_digital_products %}
+                <div class="store-overview__group">
+                <h4 class="store-overview__group__table__heading">Digital downloads:</h4>
+                <div class="store-overview__group__table">
+                    <!-- table header start -->
+                    <div class="store-overview__group__table__header clearfix">
+                        <div class="col-xs-2 image">
+                            Cover
+                        </div>
+                        <div class="col-xs-7 details">
+                            Details
+                        </div>
+                        <div class="col-xs-3 total">
+                            Total
+                        </div>
+                    </div>
+                    <!-- end of table header -->
+                    {% for line in basket.digital_lines %}
+                        {% with product=line.product  %}
+                            <!-- table row start -->
+                            <div class="store-overview__group__table__row clearfix text1">
+                                <div class="col-xs-2 image">
+                                    {% if product.parent_id %}
+                                        {% with image=product.parent.primary_image %}
+                                            {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                                <a class="square-container" href="{{ product.parent.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                          src="{{ thumb.url }}"
+                                                                                          alt="{{ product.get_title }}"></a>
+                                            {% endthumbnail %}
+                                        {% endwith %}
+                                    {% else %}
+                                        {% with image=product.primary_image %}
+                                            {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                                <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                          src="{{ thumb.url }}"
+                                                                                          alt="{{ product.get_title }}"></a>
+                                            {% endthumbnail %}
+                                        {% endwith %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-xs-7 details">
+                                    <p class="store-overview__group__table__product-name">
+                                        {% if product.parent %}{{ product.parent.title }} - {% endif %}{{ product.title }}
+                                    </p>
+                                    <p class="store-overview__group__table__product-details">
+                                        {{ product.album.title }}
+                                    </p>
+                                    <p class="store-overview__group__table__product-details">
+                                        {% if line.stockrecord.is_hd %}HD{% else %}mp3{% endif %}
+                                    </p>
+                                </div>
+                                <div class="col-xs-3 total">
+                                    ${{ line.price_excl_tax }}
+                                </div>
+                            </div>
+                            <!-- end of table row -->
+                        {% endwith %}
+                    {% endfor %}
+                    <!-- group total -->
+                    <div class="store-overview__group__total clearfix">
+                        <div class="col-xs-9 store-overview__group__total__label">
+                            Sub-total:
+                        </div>
+                        <div class="col-xs-3 store-overview__group__total__value">
+                            {{ basket.digital_total_excl_tax|currency:basket.currency }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-xs-12 col-sm-4 store-overview__right-column text1">
+            <div class="store-overview__group">
+                <div class="section-title section-title-no-padded">
+                  <div tabindex="0" class="title1">Shipping Information</div>
+                </div>
+                {% if shipping_address %}
+                    <div class="store-overview__group__textblock">
+                        <p>{{ shipping_address.name }}</p>
+                        <p>{{ shipping_address.line1 }}</p>
+                        <p>{{ shipping_address.line2 }}</p>
+                        <p>{{ shipping_address.city }}{% if shipping_address.state %},  {{ shipping_address.state }}{% endif %}</p>
+                        <p>{{ shipping_address.country }}</p>
+                    </div>
+                {% endif %}
+
+                {% if shipping_method %}
+                    <div class="store-overview__group__textblock">
+                        <p>Shipping method: {{ shipping_method.name }}</p>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="store-overview__group">
+                <div class="section-title section-title-no-padded">
+                  <div class="title1">Billing Information</div>
+                </div>
+                {% if billing_address %}
+                <div class="store-overview__group__textblock">
+                    <p>{{ billing_address.name }}</p>
+                    <p>{{ billing_address.line1 }}</p>
+                    <p>{{ billing_address.line2 }}</p>
+                    <p>{{ billing_address.city }}{% if billing_address.state %},  {{ billing_address.state }}{% endif %}</p>
+                    <p>{{ billing_address.country }}</p>
+                </div>
+                {% endif %}
+                {% if card_token %}
+                <div class="store-overview__group__textblock">
+                    <p class="small-heading">Credit card:</p>
+                    <p>{{ card_info.name }}</p>
+                    <p>xxxx xxxx xxxx {{ card_info.last_4 }}</p>
+                </div>
+                {% else %}
+                <p class="small-heading">PayPal</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <section class="store-cart__footer container">
+        <div class="col-xs-12 col-sm-12 store-cart__footer__right">
+            <div class="store-cart__footer__price-container">
+                <span class="store-cart__footer__price-container__value accent-color">{{ basket.total_excl_tax|currency:basket.currency }}</span>
+                <span class="store-cart__footer__price-container__label">Total:</span>
+                <span class="store-cart__footer__price-container__value accent-color">{{ shipping_charge.excl_tax|currency:basket.currency }}</span>
+                <span class="store-cart__footer__price-container__label">Shipping:</span>
+                <div class="store-cart__footer__price-container__total">
+                    <span class="store-cart__footer__price-container__value accent-color">{{ order_total.excl_tax|currency:basket.currency }}</span>
+                    <span class="store-cart__footer__price-container__label">Total:</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 store-cart__footer__buttons">
+          {% block place_order %}
+            <form id="place-order" action="{% url 'checkout:preview' %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="place_order"/>
+              <input type="hidden" name="payment_method" value="{{ payment_method }}">
+              {% if card_token %}
+              <input type="hidden" name="card_token" value="{{ card_token }}"/>
+              {% endif %}
+
+            </form>
+            <form method="POST" role="form" id="formSupporter"
+              action="{{ form_action }}">
+              {% csrf_token %}
+            </form>
+          {% endblock %}
+        </div>
+
+    </section>
+</div>
+

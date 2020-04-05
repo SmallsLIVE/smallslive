@@ -1,5 +1,4 @@
 .institutions-list__filters, .institutions-list__search {
-  background-color: #f2f2f2;
   padding: 20px;
   border-top: 1px solid #ddd;
   color: #999;
@@ -142,7 +141,6 @@
     @include display(flex);
     @include align-items(center);
     border-bottom: 1px solid #eee;
-    background-color: #fff;
     padding: 10px;
 
     &--empty {
@@ -272,7 +270,6 @@
 
 .institutions-list__breadcrumbs {
   padding: 30px 20px;
-  background-color: #f2f2f2;
   padding: 20px;
   border-top: 1px solid #ddd;
   color: #999;
@@ -297,7 +294,6 @@
 }
 
 .institutions-list__add-user {
-  background-color: #eee;
   padding: 40px 20px;
   border-top: 1px solid #ddd;
   color: #999;

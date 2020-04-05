@@ -15,7 +15,7 @@
 {% block content %}
     <div class="content-wrapper">
       <section class="mobile-intro container hidden">
-          <a href="/" class="smalls-logo"><img src="{% static 'logo.svg' %}" alt=""/></a>
+          <a href="/" class="smalls-logo"><img src="{% static 'new_logo_transparent.png' %}" alt=""/></a>
       </section>
 
       {% include "blocks/homepage-upcoming-new.html" %}
@@ -34,7 +34,7 @@
 
       <section class="homepage-date-browser container">
         <div class="homepage-date-browser__header">
-          <h1>Upcoming at Smalls:</h1>
+          <h1>Upcosming shows:</h1>
           <a href="{% url "schedule" %}" class="homepage-date-browser__cta">Browse our full calendar</a>
         </div>
         <ul class="bg-image-calendar__container">
@@ -256,7 +256,7 @@
             Become a registered member of SmallsLIVE to watch our Live Stream from either Smalls Jazz Club or Mezzrow at no cost.
           </p>
           <div class="smalls-mezzrow-crosspromo__logo-container">
-            <a href="{% url "live-stream" %}"><img class="smalls-mezzrow-crosspromo__logo smalls" src="{% static 'logo.svg' %}" alt="Smalls"/></a>
+            <a href="{% url "live-stream" %}"><img class="smalls-mezzrow-crosspromo__logo smalls" src="{% static 'new_logo_transparent.png' %}" alt="Smalls"/></a>
             <a href="{% url "live-stream-mezzrow" %}"><img class="smalls-mezzrow-crosspromo__logo mezzrow" src="{% static 'image/mezzrow-logo-negative.svg' %}" alt="Mezzrow"/></a>
           </div>
           <p class="smalls-mezzrow-crosspromo__small-copy">

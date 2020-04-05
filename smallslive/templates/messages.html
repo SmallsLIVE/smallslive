@@ -1,0 +1,33 @@
+{% if messages %}
+    <div class="messages" id="messages">
+            <div class="alert alert-dismissible" role="alert">
+                {% for message in messages %}
+                    <p class="text4 alert-text">{{ message }}</p>
+                {% endfor %}
+            </div>
+    </div>
+{% endif %}
+
+<script>
+    $().ready(function(){
+        $('#messages').click(function(){$(this).hide()})
+
+
+
+        $buttons = $(".alert").find('.alert-buttons')
+        $buttons.each((index, el) => {
+            if(index != $buttons.length - 1){
+                $(el).hide()
+            }
+        })
+        $basketAmmountText = $(".alert").find('.text4')
+        $basketAmmountText.each((index, el) => {
+            if(index != $basketAmmountText.length - 1 && $(el).children('strong').text().charAt(0) == '$'){
+                $(el).hide()
+            }
+        })
+   });
+    
+
+</script>
+

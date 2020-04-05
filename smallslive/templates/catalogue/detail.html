@@ -32,6 +32,7 @@
 {% endblock %}
 
 {% block breadcrumbs %}
+    <span class="store-header__title__divider">|</span>
     {% for category in category.get_ancestors %}
         <span class="store-header__title__category"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></span>
         <span class="store-header__title__divider">|</span>
@@ -47,108 +48,11 @@
 {% endblock %}
 
 {% block store_content %}
-    <div class="col-xs-12 col-sm-8 col-md-9 store-single__content">
-        <div class="row">
-            <div class="store-single__item row">
-                <div class="col-xs-12 col-sm-6 store-single__item__images">
-                    {% with all_images=product.images.all %}
-
-                        <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
-                            {% for image in all_images %}
-                                {% thumbnail image.original "x365" upscale=False as thumb %}
-                                    <a href="{{ thumb.url }}" class="fancybox"><img class="defineImageRatio"
-                                                                                    src="{{ thumb.url }}"
-                                                                                    alt="{{ product.get_title }}"></a>
-                                {% endthumbnail %}
-                            {% endfor %}
-                        </div>
-                        <span class="store-single__item__images__helper">(Click/tap on the image to zoom.)</span>
-                        <ul class="store-single__item__images__thumbnails">
-                            {% for image in all_images %}
-                                {% thumbnail image.original "x75" upscale=False as thumb %}
-                                    <li data-slickPosition="{{ forloop.counter0 }}"
-                                        class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}">
-                                        <img class="defineImageRatio" src="{{ thumb.url }}"
-                                             alt="{{ product.get_title }} thumbnail"></li>
-                                {% endthumbnail %}
-                            {% endfor %}
-                        </ul>
-                    {% endwith %}
-                </div>
-                <div class="col-xs-12 col-sm-6 store-single__item__content">
-                    <h2 class="store-single__item__name">
-                        <a href="#">{{ product.title }}</a>
-                    </h2>
-                    <h3 class="store-single__item__subtitle">
-                        {{ product.subtitle }}
-                    </h3>
-                    <div class="store-single__item__description">
-                        {{ product.short_description|safe }}
-                    </div>
-                    <div class="store-single__item__details">
-                        {% if product.description %}
-                            {{ product.description|safe }}
-                        {% endif %}
-                    </div>
-                    {% purchase_info_for_product request product as session %}
-                        <span class="store-single__item__price">
-                            {% if session.price.exists %}
-                                {% if session.price.excl_tax == 0 %}
-                                    {% trans "Free" %}
-                                {% elif session.price.is_tax_known %}
-                                    {{ session.price.incl_tax|currency:session.price.currency }}
-                                {% else %}
-                                    {{ session.price.excl_tax|currency:session.price.currency }}
-                                {% endif %}
-                            {% else %}
-                                &nbsp;
-                            {% endif %}
-                        </span>
-                    <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk %}" method="post"
-                          class="add-to-basket">
-                        <div class="store-add-large">
-                            {% if session.availability.is_available_to_buy %}
-                                {% basket_form request product 'single' as basket_form %}
-                                <div class="store-add-large">
-                                    {% csrf_token %}
-                                    {{ basket_form.quantity }}
-                                    {% if basket_form.fields.child_id.choices %}
-                                      <select class="store-add-large__options" name="child_id">
-                                          {% for item_value, item_name in basket_form.fields.child_id.choices %}
-                                            <option value="{{ item_value }}">{{ item_name }}</option>
-                                          {% endfor %}
-                                      </select>
-                                      {% if user.is_authenticated %}
-                                        <div class="arrow-button-container"><button type="submit" class="store-add-large__button"><i class="fa fa-plus"></i></button><span class="arrow"></span></div>
-                                      {% else %}
-                                        <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="store-add-large__button"><i class="fa fa-plus"></i></a><span class="arrow"></span></div>
-                                      {% endif %}
-                                    {% else %}
-                                      {{ basket_form.child_id }}
-                                      {% if user.is_authenticated %}
-                                        <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
-                                      {% else %}
-                                        <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="store-add-large__button">Add to cart</a><span class="arrow"></span></div>
-                                      {% endif %}
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include 'partials/detail.html' %}
 {% endblock store_content %}
 
 {% block extra_js %}
     {{ block.super }}
     <script src="{% static 'js/jquery.fancybox.pack.js' %}"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".fancybox").fancybox({
-                preload: 2
-            });
-        });
-    </script>
+
 {% endblock %}

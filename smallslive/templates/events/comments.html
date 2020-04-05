@@ -1,0 +1,7 @@
+<div class="text1">
+    <span>Comments</span>
+    <span class="text-grey text-lowercase">{{ object_list|length }} comment{{ object_list|length|pluralize }}</span>
+    {% include 'events/comment_form.html' %}
+
+</div>
+{% include 'events/comment_list.html' %}

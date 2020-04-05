@@ -1,0 +1,27 @@
+{% if not user.can_watch_videos %}
+  <div class="modal fade in" role="dialog" id="become-a-supporter-dialog" {% if offer_visible %}style="display: block"{% endif %}>
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal no-cancel">
+          <a href="#" class="close-button"></a>
+          <div class="modal-body">
+              <p class="title2 accent-color">ARCHIVE ACCESS</p>
+              <!--
+              <p class="title1">WHY BECOME A SUPPORTING MEMBER?</p>
+              //-->
+              <p class="text9 text-justified">
+                Please become a Supporting Member of The SmallsLIVE Foundation with a tax-deductable donation to access this content. 
+                <br>Supporting Members directly benefit the musicians and the venues.
+              </p>
+              <div class="text4 text-centered button-row margin-top">
+                <button class="white-border-button separated" href="{% url 'contact-and-info' %}#archive">More Info</button>
+                <a class="white-border-button separated" href="{% url 'become_supporter' %}">
+                  Become a Supporting Member
+                </a>
+              </div>
+          </div>
+          <div>
+          </div>
+        </div>
+    </div>
+  </div>
+{% endif %}

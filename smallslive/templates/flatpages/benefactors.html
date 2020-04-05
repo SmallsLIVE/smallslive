@@ -1,12 +1,12 @@
 {% extends "static-page.html" %}
 {% load static from staticfiles %}
 
-{% block benefactors-active %}static-nav__item--active{% endblock %}
+{% block benefactors-active %}active{% endblock %}
 
 {% block title %}Benefactors{% endblock %}
 
 {% block static-content %}
-  <section class="static-content col-sm-9">
+  <section class="static-content">
     <h1 class="static-content__main-title">{{ flatpage.title }}</h1>
 
     {{ flatpage.content }}

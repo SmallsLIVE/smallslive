@@ -1,0 +1,66 @@
+<form class="custom-form" action="{% url 'update_card' %}" method="POST" id="change-card-form">
+        {% csrf_token %}
+          <span class="payment-errors text1 accent-color"></span>
+
+          <div class="form-row">
+              <div class="form-group">
+               <label>card number</label>
+              <input  class="form-control" type="text" size="20" pattern="\d*" autocomplete="off" data-stripe="number" placeholder="xxxx-xxxx-xxxx-{{customer_detail.active_card.last4}}"/>
+            </div>
+          </div>
+
+          <div class="form-row">
+              <div class="form-group">
+              <label>cvc</label>
+              <input class="form-control" type="text" size="4" pattern="\d*" data-stripe="cvc" placeholder="cvc"/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+            <label>month</label>
+              <input class="form-control" type="text" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month" placeholder="{{ customer_detail.active_card.exp_month }}"/>
+            <label>year</label>
+            <input  class="form-control" type="text" size="4" pattern="\d*" autocomplete="off" data-stripe="exp-year" placeholder="{{ customer_detail.active_card.exp_year }}"/>
+            </div>
+          </div>
+
+          <button class="change-card white-border-button"  type="submit">Change Card</button>
+</form>
+
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  // This identifies your website in the createToken call below
+  Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
+  jQuery(function($) {
+    $('#change-card-form').submit(function(event) {
+        var $form = $(this);
+
+        // Disable the submit button to prevent repeated clicks
+        $form.find('button').prop('disabled', true);
+
+        Stripe.card.createToken($form, stripeResponseHandler);
+
+        // Prevent the form from submitting with the default action
+        return false;
+    });
+
+    var stripeResponseHandler = function(status, response) {
+      var $form = $('#change-card-form');
+
+      if (response.error) {
+        // Show the errors on the form
+        $form.find('.payment-errors').text(response.error.message);
+        $form.find('button').prop('disabled', false);
+      } else {
+        // token contains id, last4, and card type
+        var token = response.id;
+        // Insert the token into the form so it gets submitted to the server
+        $form.append($('<input type="hidden" name="stripe_token" />').val(token));
+        // and submit
+        $form.get(0).submit();
+      }
+    };
+});
+</script>

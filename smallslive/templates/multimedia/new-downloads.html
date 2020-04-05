@@ -1,0 +1,342 @@
+{% extends "home_new.html" %}
+{% load static from staticfiles %}
+{% load thumbnail %}
+{% load thumbor_tags %}
+
+{% block title %}Library{% endblock %}
+
+{% block content %}
+
+      <div class="white-line-bottom">
+        <div class="title1 center">Library</div>
+      </div>
+        <section class="my-downloads-album__list container">
+          {% if lines %}
+            {% regroup lines by product.album as album_list %}
+              {% for album in album_list %}
+                {% if not album.grouper %}
+                  {% for record in album.list %}
+                  {% with album=record.product is_hd=record.stockrecord.is_hd %}
+                    <div class="my-downloads-album row big-player">
+                    <div class="my-downloads-album__cover flex-column player-container " data-track=0>
+                    {% with image=album.primary_image %}
+                        {% if album.parent_id %}
+                            {% with image=album.parent.primary_image %}
+                                {% thumbnail image.original "245x245" upscale=False as thumb %}
+                                    <div style="position: relative">
+                                        <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album.get_title }}">
+                                        <div class="purchases-player-button myplay-btn">
+                                            <div class="fa-thin-circle fa" >
+                                            <i class="fas fa-play"></i></div>
+                                        </div>
+                                    </div>
+                                {% endthumbnail %}
+                            {% endwith %}
+                        {% else %}
+                            {% with image=album.primary_image %}
+                                {% thumbnail image.original "245x245" upscale=False as thumb %}
+                                    <div style="position: relative">
+                                        <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album.get_title }}">
+                                         <div class="purchases-player-button myplay-btn">
+                                            <div class="fa-thin-circle fa" >
+                                            <i class="fas fa-play"></i></div>
+                                        </div>
+                                    </div>
+                                {% endthumbnail %}
+                            {% endwith %}
+                        {% endif %}
+                    {% endwith %}
+
+                        <a class="title6" href="{{ album.get_absolute_url }}">{% if album.parent %}{{ album.parent.title }} - {% endif %}{{ album.title }}</a>
+                    </div>
+                    <div class="song-container">
+                        <div class="my-downloads-album__tracks-table">
+                        {% for track in album.parent.get_tracks %}
+                            <!-- tracks table row -->
+                            <div style="position:relative">
+                                <div class="my-downloads-album__tracks-table__row flex-row">
+                                    <div class="progress-bar"></div>
+                                    <div class="hidden my-downloads-album__tracks-table__column audio">
+                                        <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
+                                        {% if is_hd %}
+                                            <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                                        {% else %}
+                                            <source src="{{ track.get_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                                        {% endif %}
+
+                                        </audio>
+                                    </div>
+                                    <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
+                                        <div class="my-downloads-album__tracks-table__column title2">
+                                        {{ track.title }}
+                                        </div>
+                                        <div class="my-downloads-album__tracks-table__column composer text1">
+                                            {{ track.attr.composer }}
+                                        </div>
+                                    </div>
+                                    <div class="my-downloads-album__tracks-table__column duration text1">
+                                        {{ track.attr.duration }}
+                                    </div>
+                                    <div class="my-downloads-album__tracks-table__column buy-track">
+                                        <div class="buy-button-container">
+                                        <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">
+                                                <span>Download</span> <i class="fa fa-caret-down"></i></a>
+                                        <div class="dropdown-menu" role="menu">
+                                            {% if is_hd %}
+                                            <a class="white-border-button no-border flex" href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download
+                                                HD</a>
+                                            {% else %}
+                                            <a class="white-border-button no-border flex" href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download
+                                                mp3</a>
+                                            {% endif %}
+
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                        {% endfor %}
+                        </div>
+                        <!-- end of tracks table -->
+                    </div>
+                    </div>
+                    {% endwith %}
+                  {% endfor %}
+                {% else %}
+                  <div class="my-downloads-album row big-player">
+                    <div class="my-downloads-album__cover flex-column player-container" data-track=0>
+                      {% with image=album.grouper.primary_image %}
+                          {% if not image.is_missing %}
+                            <div style="position: relative">
+                                <img src="{% thumbor_url image.original.url|urlencode height=245 width=245 smart=True %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
+                                <div class="purchases-player-button myplay-btn">
+                                    <div class="fa-thin-circle fa" >
+                                    <i class="fas fa-play"></i></div>
+                                </div>
+                            </div>
+                          {% else %}
+                            <div style="position: relative">
+                                <img src="{% static "image/image_not_found.jpg" %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
+                                <div class="purchases-player-button myplay-btn">
+                                    <div class="fa-thin-circle fa" >
+                                        <i class="fas fa-play"></i></div>
+                                </div>
+                            </div>
+                          {% endif %}
+                      {% endwith %}
+                    <a class="title6" href="{{ album.grouper.get_absolute_url }}">{{ album.grouper.title }}</a>
+                    </div>
+                    <div class="song-container">
+                        <div class="my-downloads-album__tracks-table">
+                            {% regroup album.list by product as track_list %}
+                            <!-- end of tracks table header -->
+                            {% for track in track_list %}
+                              <!-- tracks table row -->
+                              <div style="position:relative">
+                                <div class="my-downloads-album__tracks-table__row flex-row">
+                                    <div class="progress-bar"></div>
+                                    <div class="hidden my-downloads-album__tracks-table__column audio">
+                                        <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{ track.grouper.attr.duration }}">
+                                            {% for line in track.list %}
+                                            <source src="{{ line.stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                                            {% endfor %}
+                                        </audio>
+                                    </div>
+                                    <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
+                                        <div class="my-downloads-album__tracks-table__column title2">
+                                        {{ track.grouper.title }}
+                                        </div>
+                                        <div class="my-downloads-album__tracks-table__column composer text1">
+                                            {{ track.grouper.attr.composer }}
+                                        </div>
+                                    </div>
+                                    <div class="my-downloads-album__tracks-table__column duration text1">
+                                        {{ track.grouper.attr.duration }}
+                                    </div>
+                                    
+                                    <div class="my-downloads-album__tracks-table__column buy-track">
+                                        <div class="buy-button-container">
+                                            <a class="white-border-button no-border flex-button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                            <div class="dropdown-menu" role="menu">
+                                                {% for line in track.list %}
+                                                <a class="white-border-button  no-border flex" href="{{ line.stockrecord.digital_download.get_downloadable_file_url }}" download="{{ line.stockrecord.digital_download.file.name }}">Download {% if line.stockrecord.is_hd %}HD{% else %}mp3{% endif %}</a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                              <!-- end of tracks table row -->
+                            {% endfor %}
+                        </div>
+                        <!-- end of tracks table -->
+                    </div>
+                </div>
+                {% endif %}
+              {% endfor %}
+       
+          {% else %}
+              <div class="my-downloads__nothing-bought row">
+                  <h3>You haven't bought any digital downloads yet. Check out the <a class="my-downloads__nothing-bought__store-link" href="{% url "promotions:home" %}">store</a> and buy some music!</h3>
+              </div>
+          {% endif %}
+        </section>
+
+
+{% endblock content %}
+
+
+{% block extra_js %}
+<script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+<script>
+    var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
+    $(".my-downloads-album__tracks-table__row.flex-row").on("click", function(event){
+        progress = calculateProgress($(this),event)
+        //find audio player, its track number and change the big player track number
+        audioPlayer = $(this).find(".audio audio")[0]
+        audioPlayerTrack = $(audioPlayer).data("track")
+        mainContainer = $(this).closest(".big-player")[0]
+        playerContainer =$(mainContainer).find(".player-container")[0]
+        $(playerContainer).data("track", audioPlayerTrack)
+        //make active track color red, toggles player button and remove previous track color
+        var trackInfo = $(this).find(".track-info")
+        lastPlayerContainerButton = $(lastPlayerContainer).find(".purchases-player-button ")
+        playerContainerButton = $(playerContainer).find(".purchases-player-button")
+        audioProgress = audioPlayer.currentTime / audioPlayer.duration * 100
+        if( $(trackInfo).hasClass("active-track")){
+            if(Math.abs(progress - audioProgress) > 5 ){
+                {% comment %} changeProgress(progress, audioPlayer) {% endcomment %}
+            }else{
+                $(".active-track").removeClass("active-track")
+                play = false
+                $(playerContainerButton).removeClass("mypause-btn")
+                $(playerContainerButton).addClass("myplay-btn")
+                $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
+            }
+        }else{
+            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red" )
+            $(".active-track").removeClass("active-track")
+            $(this).find(".track-info").addClass("active-track")
+            play = true;
+            $(lastPlayerContainerButton).addClass("myplay-btn")
+            $(lastPlayerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("mypause-btn")
+            $(playerContainerButton).removeClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-pause"></i>')
+        }
+        //toggles player
+        if(lastPlayer != undefined){
+            lastPlayer.pause()
+        }
+        togglePlayer(audioPlayer, play)
+        
+        lastPlayerContainer = playerContainer
+        lastPlayer = audioPlayer
+    });
+    function togglePlayer(playerContainer, play){
+        if(play){
+            audioPlayer.play()
+        }else{
+            audioPlayer.pause()
+        }
+    }
+    $(".purchases-player-button").on("click", function(){
+        bigContainer = $(this).closest(".big-player")[0]
+        playerContainer = $(bigContainer).find(".player-container")[0]
+        playerContainerButton = $(playerContainer).find(".purchases-player-button")[0]
+        trackNumber = $(playerContainer).data("track")
+        trackInfo = $(bigContainer).find(".track-info[data-track='" + trackNumber +  "']")[0]
+        audioPlayer = $(bigContainer).find(".audio audio[data-track='" + trackNumber +  "']")[0]
+        lastPlayerContainerButton = $(lastPlayerContainer).find(".purchases-player-button ")
+        if( $(trackInfo).hasClass("active-track")){
+            $(trackInfo).removeClass("active-track")
+            play = false
+            $(playerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
+        }else{
+            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red" )
+            $(".active-track").removeClass("active-track")
+            $(trackInfo).addClass("active-track")
+            play = true
+            $(lastPlayerContainerButton).addClass("myplay-btn")
+            $(lastPlayerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("mypause-btn")
+            $(playerContainerButton).removeClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-pause"></i>')
+
+        }
+        if(lastPlayer != undefined){
+            lastPlayer.pause()
+        }
+        togglePlayer(audioPlayer, play)
+        lastPlayerContainer = playerContainer
+        lastPlayer = audioPlayer
+
+    })
+    var audioPlayers = document.getElementsByClassName("audio-player");
+    Array.prototype.forEach.call(audioPlayers, function(player) {
+        var setTime
+        player.addEventListener("play", function(){
+                setTime = setInterval( t=> {
+                currentTime = Math.floor(player.currentTime)
+                $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red")
+                timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0]
+                progress = player.currentTime / player.duration * 100
+                progressWidth = progress + "%"
+                $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progressWidth )
+                $(timeTracker).html(readableTime(currentTime)) 
+            },1000)
+               
+        });
+        player.addEventListener("pause", function(){
+            clearInterval(setTime)
+            $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "black" )
+        });
+        player.addEventListener("ended", function(){
+            $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "black" );
+            $(player).closest(".big-player").find(".purchases-player-button").removeClass("mypause-btn");
+            $(player).closest(".big-player").find(".purchases-player-button").addClass("myplay-btn");
+            $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
+            $(".active-track").removeClass("active-track");
+            player.currentTime = 0;
+            clearInterval(setTime)
+        });
+    });
+    function readableTime(seconds) {
+        var hr = ~~(seconds / 3600);
+        var min = ~~((seconds % 3600) / 60);
+        var sec = seconds % 60;
+        var sec_min = "";
+        if (hr > 0) {
+            sec_min += "" + hr + ":" + (min < 10 ? "0" : "");
+        }
+        sec_min += "" + min + ":" + (sec < 10 ? "0" : "");
+        sec_min += "" + sec;
+        return sec_min;
+    }
+
+
+    function calculateProgress(element, position) {
+    
+    var mX, mY, distance,
+        $element  = $(element);
+
+    function calculateDistance(elem, mouseX, mouseY) {
+        return Math.floor(mouseX - (elem.offset().left), 2);
+    }
+    
+    mX = position.pageX;
+    mY = position.pageY;
+    distance = Math.floor(calculateDistance($element, mX, mY) / element.width() * 100); 
+    return distance  
+    };
+    function changeProgress(progress, player){
+        newProgress = Math.floor(player.duration) * progress / 100
+        player.currentTime = newProgress;
+    }
+
+</script>
+
+{% endblock %}

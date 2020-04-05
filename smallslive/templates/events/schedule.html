@@ -1,104 +1,42 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load static from staticfiles %}
+{% load addurlparameter %}
 
 {% block schedule_nav_active %}active{% endblock %}
 
-{% block title %}Calendar/Archive{% endblock %}
+{% block title %}Calendar{% endblock %}
 
-{% block content %}
-<div class="content-wrapper">
+{% block extra_head %}
 
-    <section class="schedule-header">
-      <div class="archive-new__date-browser__header">
-        <div class="archive-new__date-browser__header-left">
-          <h1>Calendar</h1>
-          <div class="icons-legend">
-            <span class="helper">Icons legend:</span><i class="fa fa-music"></i><span class="icon-meaning">Audio available</span><i class="fa fa-video-camera"></i><span class="icon-meaning">Video available</span><i class="fa fa-shopping-cart"></i><span class="icon-meaning">Tracks / CD available</span>
-          </div>
-        </div>
-        <div class="archive-new__date-browser__date-picker" id="schedule__date-picker">
-            <input type="text" placeholder="Select a month" readonly>
-            <i class="fa fa-caret-down"></i>
-        </div>
-      </div>
-    </section>
+{% endblock %}
 
-    <!-- flexbox solution -->
-    <section class="schedule flex container">
-        <div class="schedule__nav flex col-xs-6 col-md-3">
-          {% if prev_url %}
-          <a href="{{ prev_url }}">
-            <div class="flex-center">
-                <div class="icon">
-                    <i class="fa fa-angle-left"></i>
-                </div>
-                <div class="text">
-                    {% if month_view %}
-                        <span>View</span> previous<br>month
-                    {% else %}
-                        <span>View</span> previous<br>14 days
-                    {% endif %}
-
-                </div>
-            </div>
-          </a>
-        {% endif %}
-
-        </div>
-        {% for date, events in dates.iteritems %}
-        <div class="day flex col-xs-6 col-md-3"
-             data-position={{ forloop.counter|add:"1" }}>
-          <h2 class="day__date">{{ date|date:"l" }} {{ date|date:"n/j/Y" }}</h2>
-          {% if events %}
-              <dl>
-                {% for event in events %}
-                  <dt class="day__event-time">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</dt>
-                  <dd data-event-id="{{ event.id }}" class="day__event-title {% if event.is_cancelled %}cancelled{% endif %}"><a href="{{ event.get_absolute_url }}">{{ event.title }} {% if request.user.is_staff %}(ID: {{ event.id }}){% endif %}</a> <span class="day__event-features">{% if event.audio_count %}<i class="fa fa-music"></i>{% endif %}{% if event.video_count %}<i class="fa fa-video-camera"></i>{% endif %}{% if event.product_count %}<i class="fa fa-shopping-cart"></i>{% endif %}</span></dd>
-                  {% if event.state == "Draft" %}<span class="day__event-cancelled">(Draft)</span>{% endif %}
-                  {% if event.is_cancelled %}<span class="day__event-cancelled">(cancelled)</span>{% endif %}
-                  {% if user.is_superuser %}
-                    <div class="schedule__admin-buttons">
-                      <a class="schedule__admin-buttons__edit" href="{% url "event_edit" pk=event.id slug=event.slug %}">edit</a>
-                      <form action="{% url "event_clone" pk=event.id slug=event.slug %}" method="post">
-                        {% csrf_token %}
-                        <input class="schedule__admin-buttons__clone" type="submit" value="clone">
-                      </form>
-                    </div>
-                  {% endif %}
-                {% endfor %}
-              </dl>
-          {% else %}
-          <h3>No events today.</h3>
-          {% endif %}
-        </div>
-        {% endfor %}
-        <div class="schedule__nav flex col-xs-6 col-md-3" {% if month_view %}data-position={{ next_month_position }}{% else %}data-position=16{% endif %}>
-          <a href="{{ next_url }}">
-            <div class="flex-center">
-                <div class="text">
-                    {% if month_view %}
-                        <span>View</span> next<br>month
-                    {% else %}
-                        <span>View</span> next<br>14 days
-                    {% endif %}
-                </div>
-                <div class="icon">
-                    <i class="fa fa-angle-right"></i>
-                </div>
-            </div>
-          </a>
-        </div>
-    </section>
-
-</div>
-{% endblock content %}
+{% block home_content %}
+<main class="calendar">
+  <div class="event-stripe">
+    {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
+  </div>
+  {% include 'events/shows.html' with upcoming=True show_extend_date=True show_event_venue=True hide_play=True %}
+</main>{% endblock home_content %}
 
 {% block extra_js %}
-  <!-- Bootstrap datepicker JavaScript -->
-  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-  <script src="{% static 'js/schedule_datepicker.js' %}"></script>
-  <script>
-  var date = new Date({{ year}}, {{ month }}, 1);
-  $datePicker.datepicker("setDate", date);
-  </script>
+<script>
+  $("#club-filter ~ .select-selected").text("Club")
+  var eventOrderFilter = 'oldest';
+  var show_event_venue = true;
+  var show_event_setTime = true;
+  var datePickerInputSelector = '#search-date-picker-calendar > input';
+  var datePickerFromDate = '{{ default_from_date }}';
+  var datePickerToDate = null;
+  var setFromDate = true;
+  var setToDate = false;
+  var datePickerLeft = 222;
+  var datePickerTop = 42;
+  var is_upcoming = true;
+  var upcomingEventDateFrom = new Date();
+  var defaultFromDate = '{{ default_from_date }}';
+  var defaultToDate;
+</script>
+<script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/search/search.js' %}"></script>
 {% endblock extra_js %}

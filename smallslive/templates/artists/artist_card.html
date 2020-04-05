@@ -1,0 +1,18 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+<a href="{{ artist.get_absolute_url }}{% if query_term %}&query_term={{ query_term }}{% endif %}" aria-label="            {% if artist.last_name %}{{ artist.last_name }}{% endif %} {% if artist.last_name and artist.first_name %}, {% endif %}{{ artist.first_name }} , {{ artist.instruments.all.first }}">
+  <div class="event-card-square">
+    <div class="event-picture-container">
+      <div class="picture-border">
+        <div class="event-picture">
+          <div class="img-overlay"></div>
+          {% if artist.photo %}
+            {% include 'partials/thumbored_picture.html' with photo_url=artist.photo.url height="300" width="300" %}
+          {% else %}
+            <img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}"alt="Generic artist image">
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</a>

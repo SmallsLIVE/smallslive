@@ -10,9 +10,9 @@
       <div class="homepage-upcoming__event__image-container"
            {% if event.photo %}
               {% if event.photo_crop_box %}
-                style="background-image: url('{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=600 %}')"
+                style="background-image: url('{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=600 %}')"
               {% else %}
-                style="background-image: url('{% thumbor_url event.photo.url|urlencode height=360 width=600 smart=True %}')"
+                style="background-image: url('{% thumbor_url event.get_photo_url|urlencode height=360 width=600 smart=True %}')"
               {% endif %}
            {% else %}
               style="background-image: url('{% static "image/no-event-image-placeholder.jpg" %}')"
@@ -22,7 +22,10 @@
       <div class="homepage-upcoming__event__gradient">
       </div>
       <div class="homepage-upcoming__event__info">
-        <h1 class="event-title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1>
+        <div>
+          <h1 class="event-title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1>
+          <h4 class="event-venue">{{ event.get_venue_name }}</h4>
+        </div>
         <h3 class="event-timeslot">Today | {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</h3>
         <p class="event-artists">
           {% for gig_info in event.get_performers %} <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist }} <span
@@ -39,7 +42,7 @@
   </div>
   <!-- timeslotslot selector -->
   <div class="homepage-upcoming__footer row">
-    <h2>Today at Smalls:</h2>
+    <h2>Today's shows:</h2>
     <ol class="homepage-upcoming__footer__timeslots carousel-indicators">
         {% for event in events_today %}
           <li data-slickPosition="{{ forloop.counter0 }}" class="timeslot {% if forloop.first %}active{% endif %}">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</li>

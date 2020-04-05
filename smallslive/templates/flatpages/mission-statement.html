@@ -1,14 +1,50 @@
-{% extends "static-page.html" %}
+{% extends "home_new.html" %}
 {% load static from staticfiles %}
 
-{% block mission-statement-active %}static-nav__item--active{% endblock %}
+{% block contact-us-active %}active{% endblock %}
 
-{% block title %}Revenue sharing{% endblock %}
+{% block title %}Terms and conditions{% endblock %}
 
-{% block static-content %}
-  <section class="static-content col-sm-9">
-    <h1 class="static-content__main-title">{{ flatpage.title }}</h1>
 
-    {{ flatpage.content }}
-  </section>
-{% endblock static-content %}
+{% block content %}
+  <div class="main-container pad-content">
+    <div class="flex-row content-centered">
+      <div class="flex-column info-page-container legal-content">
+        <h1>SmallsLIVE Revenue Share Project</h1>
+        <p>
+          The SmallsLIVE Revenue Share Project is an initiative to create the most fair revenue sharing streaming system ever designed.  It has been created by musicians for musicians.  Subscribers to SmallsLIVE will be directly benefitting the artists and clubs.  The goal is to document the work created at Smalls each night, create a revenue stream for the artists and subsidize the operating costs for the venues.
+        </p>
+        <p>
+            The SmallsLIVE Audio/Video Archive is an archive of nearly every show performed at Smalls Jazz Club since 2007.  In 2011 video began to be archived in addition to audio.  With very little gaps, the SmallsLIVE Archive represents the comprehensive work of nearly 2600 musicians at Smalls Jazz CLub with more than 11,000 shows archived and growing each week.
+        </p>
+        <p>
+          All subscription fees are pooled and distributed in the following manner.  1) expenses for operating the website and archive are deducted.  2) the remaining income is split 50/50 divided into an Artists pool and a Company pool.  The revenue in the Company pool is used for the expense of operating the clubs and paying the musician salaries.
+        </p>
+        <p>
+          The revenue in the Artists pool is divided up among all the artists in the Audio/Video Archive based on a system of how much they have been listened to within a 3 month pay period.  Each Artist (either as a Leader of a group or as a side-person in the group) gets credited with minutes as Subscribers listen to or watch their performances in the Audio/Video Archive.  At the end of a 3-month pay period, the Artists total number of minutes is divided by the Archive’s overall total.  This percentage is what the Artist receives from the Artist pool.
+        </p>
+        <p>
+          Each Artist has their account with SmallsLIVE where they can edit their personal information and public profile as well as have access to all of their recorded performances.  Leaders of the show can “tag” artists to the show so that they receive their minutes credited correctly.  The Leader of a show may also download their recordings to do with as they wish.  The Artists own 100% of the recording and 100% of the copyright of the compositions.  Artists may use the material for any purpose they like including selling it to third parties.  SmallsLIVE has the right to retain the show in the Audio/Video Archive for the exclusive usage of subscribing members of SmallsLIVE.
+        </p>
+        <p>
+          Furthermore, Arists may select material from their recorded shows and license them through SmallsLIVE for actual sale through our store, SmallsLIVE TRACKS and iTunes.  Revenue from sales of downloads and licensed albums goes directly to the artist and not to the revenue pool.
+          Leaders of shows have the right to make any performance not available to the public.
+        </p>
+        <h2>MISSION STATEMENT:</h2>
+        <p>
+          The intention and purpose of this website is ultimately dedicated to the betterment of Mankind through the dissemination of this music. Our hope is that the music on this site is studied and enjoyed by people of open minds and clear thoughts. We ask that you research the artists and, if you enjoy their music, to support them by buying their cds or contacting them with positive feedback. We dedicate this site as a resource for musicians and fans to discover each other’s work and to share ideas.
+        </p>
+          Through peaceful interchange we will be able to progress as Artists and as Human Beings.
+        <h2>
+          WE BELIEVE WORLD PEACE IS POSSIBLE THROUGH MUSIC.
+        </h2>
+        <p>
+          Our intention is also to support Smalls Jazz Club and Mezzrow Jazz Club and the Artists that perform there. By supporting this site, you are directly supporting the club and its Artists. We hope that if you are able to, that you come visit us in New York City and experience the clubs in person.
+        </p>
+        <p>
+          We ask that you not steal from this site and that you treat the material here respectfully.
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

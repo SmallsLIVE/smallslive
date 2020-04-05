@@ -1,0 +1,28 @@
+{% load full_static %}
+
+<div class="banners">
+  <div id="banner-container">
+    <div class="banner-border flex-row">
+      <div class="banner-title-button flex-column">
+        <div id="banner-title">SmallsLIVE Foundation</div>
+      </div>
+      <div class="banner-text-container flex-row items-center">
+        <p id="banner-text">Welcome to the Catalogue ¡¡</p>
+      </div>
+      <div>
+        <a href="#" class="close-button"></a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+    inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
+
+    var showBecomeMemberModal = function() {
+      var becomeMember = $('#becomeMemberButton');
+      becomeMember.click();
+    };
+
+  });
+</script>

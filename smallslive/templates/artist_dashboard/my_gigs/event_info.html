@@ -1,0 +1,137 @@
+<div class="button-row controls">
+  <div id="event-info-close-btn" class="go-back">
+    <img src="/static/image/arrow-right-red.svg" alt="">
+  </div>
+  <input id="event-info-event-date" type="hidden" value="{{ event.get_date|date:'m/d/Y' }}">
+  <div class="artist-set-info-mobile">
+    <div class="text2"> {{ event.get_date|date:'m/d/Y' }} </div>
+    <div class="text2"> {{ event.title }} </div>
+    <div class="text2 accent-color"> Live at {{ event.venue }} </div>
+  </div>
+</div>
+{% if not is_future %}
+<div class="button-row controls">
+  <button class="show-gig-info-btn">Info</button>
+  <button class="active show-video-metrics-btn">Video & Metrics</button>
+</div>
+{% endif %}
+
+{% with sets_with_media=event.sets.with_media %}
+  <div id="artist-event-action-{{ event.pk  }}"
+       class="artist-set-actions"
+       data-event-id="{{ event.pk }}">
+    <div class="button-row button-row-margin">
+      <div class="flex-row">
+        {% if sets_with_media.count %}
+          {% if event.has_published_media %}
+            <button class="private-button publish {% if not is_admin %}sidemusician{% endif %}" data-comma-separated-leaders="{{ event.comma_separated_leaders }}">
+              Make Private
+            </button>
+          {% else %}
+            <button class="publish-button publish {% if not is_admin %}sidemusician{% endif %}" data-comma-separated-leaders="{{ event.comma_separated_leaders }}">
+              Publish
+            </button>
+          {% endif %}
+          <button class="download white-border-button separated {% if not is_admin %}sidemusician{% endif %}" data-comma-separated-leaders="{{ event.comma_separated_leaders }}">
+              Download
+          </button>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- This table is hidden and will be copied into the modal if the users selects to download media -->
+    <table id="track-list-tbl" class="download-table hidden">
+      <thead>
+        <tr class="table_row">
+          <th>
+            Media
+          </th>
+          <th>
+            Download
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for set in sets_with_media %}
+        <tr>
+          <td>
+            <span class="text3">{{ set.event.title }} - Set {{ forloop.counter }}</span>
+          </td>
+          <td>
+            {% if set.video_recording.media_file.get_downloadable_sd_video_url %}
+              <a class="link"
+                 href="{{ set.video_recording.media_file.get_downloadable_sd_video_url }}"
+                 download
+                 class="video">Video</a>
+              <span class="separator">/</span>
+            {% endif %}
+            {% if set.audio_recording.media_file.get_downloadable_file_url %}
+              <a class="link"
+                 href="{{ set.audio_recording.media_file.get_downloadable_file_url }}"
+                 download
+                 class="audio">Audio</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <!-- end table -->
+  </div>
+
+  <div class="header-metrics-container">
+    {% include 'artist_dashboard/artist-dashboard-events-metrics.html' with sets_with_media=sets_with_media %}
+  </div>
+{% endwith %}
+
+{% if not event.is_future %}
+  <div class="event-metrics-container">
+    <div class="datepicker-container noclick datepicker-dashboard-container">
+      <a id="dashboard-metrics-datepicker-close" href="#" class="close-button metrics"></a>
+      <div class="custom-date-picker" id="dashboard-metrics-date-picker-from">
+        <input class="date-picker-text close" type="text" placeholder="Select date" readonly>
+      </div>
+      <div class="custom-date-picker" id="dashboard-metrics-date-picker-to">
+        <input class="date-picker-text close" type="text" placeholder="Select date" readonly>
+      </div>
+      <div class="white-border-button" id="metrics-datepicker-apply-button">Apply</div>
+
+      </div>
+  </div>
+  <div class="artist-metrics-header white-underline flex-row">
+    <div id="datepicker-dashboard-btn" class="title1 datepicker-dashboard-btn">Metrics</div>
+    <div class="text2 metrics-datepicker-description" id="metrics-datepicker-description">All Time</div>
+    <div id="datepicker-dashboard-left-panel" class="datepicker-dashboard-left-panel">
+      {% for range in datepicker_default_ranges %}
+          <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>
+      {% endfor %}
+      <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ datepicker_current_range.date }}" data-start="{{ datepicker_current_range.period_start }}" data-end="{% now 'b, d, Y' %}">Current pay period</div>
+      {% for range in datepicker_old_payout_ranges %}
+          <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.period_start }}" data-end="{{ range.period_end }}">{{ range.period_start|date:"m/d/Y" }} - {{ range.period_end|date:"m/d/Y" }}  </div>
+      {% endfor %}
+    </div>
+  </div>
+  <label class="metrics accent-color text4 date-error no-h-padding hidden">
+    Invalid date range selection
+  </label>
+  {% for set in event.sets.with_media %}
+    <div id="set-metrics-{{ set.pk }}"
+         class="event-metrics-container metrics flex-row"
+         data-set-id="{{ set.pk }}"
+         data-set-number="{{ forloop.counter0 }}">
+      {% with metrics=set.get_user_video_metrics_dict %}
+        <div class="event-metrics-container-data set-number">
+          <span class="text3">Set {{ forloop.counter }}</span>
+        </div>
+        <div class="event-metrics-container-plays event-metrics-container-data">
+          <div class="text3">Plays</div>
+          <div class="play-value title1" style="font-size: 28px; line-height: 28px;">{{ metrics.play_count.total }}</div>
+        </div>
+        <div class="event-metrics-container-time event-metrics-container-data metrics-container">
+          <div class="text3">Time Listened</div>
+          <div class="time-value title1" style="font-size: 28px; line-height: 28px;">{{ metrics.seconds_played.formatted }}</div>
+        </div>
+      {% endwith %}
+    </div>
+  {% endfor %}
+{% endif %}

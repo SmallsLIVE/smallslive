@@ -1,0 +1,194 @@
+{% load full_static %}
+{% load static from staticfiles %}
+
+<div class="banners carousel">
+  {% if not active %}
+    <div id="banner-live-box" class="box flex-column live">
+      <div class="banner__inside-container">
+        <div class="banner-logo" >
+          <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
+        </div>
+        <div class="banner-text-container">
+          <p class="title__foundation--bottom title">Foundation</p>
+        </div>
+      </div>
+      <div class="banner-learnmore">
+        <button class="banner-button-info" onclick="showMoreInfoFoundation();">More Info</button>
+        {% if not user.is_authenticated %}
+        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        {% elif not user.has_activated_account %}
+          <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
+        {% elif not user.can_watch_video %}
+          <a href="{% url 'become_supporter' %}">Become a supporter</a>
+        {% elif user.has_active_subscription %}
+          <a class="banner-button-info"
+          {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
+          {% else %} onclick="nextoBecomeSupporter();" {% endif %}>
+            Make a Donation
+          </a>
+        {% else %}
+          <a href="{% url 'become_supporter' %}">Make a Donation</a>
+        {% endif %}
+      </div>
+    </div>
+    <div id="banner-archive-box" class="box flex-column archive">
+      <div class="banner__inside-container">
+          <div class="banner-logo" >
+              <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
+          </div>
+          <div class="banner-text-container">
+            <p class="title">Archive</p>
+          </div>
+      </div>
+      <div class="banner-learnmore">
+        <button class="banner-button-info" onclick="showMoreInfoArchive();">More Info</button>
+        {% if not user.is_authenticated %}
+        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        {% elif not user.has_activated_account %}
+          <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
+        {% elif not user.can_watch_video %}
+          <a href="{% url 'become_supporter' %}">Become a supporter</a>
+        {% elif user.has_active_subscription %}
+          <a class="banner-button-info"
+          {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
+          {% else %} onclick="nextoBecomeSupporter();" {% endif %}>
+            Make a Donation
+          </a>
+        {% else %}
+          <a href="{% url 'become_supporter' %}">Make a Donation</a>
+        {% endif %}
+      </div>
+    </div>
+    <div id="banner-supporting-box" class="box flex-column mission">
+      <div class="banner__inside-container">
+        <div class="banner-logo" >
+          <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
+        </div>
+        <div class="banner-text-container">
+          <p class="title">catalog</p>
+        </div>
+      </div>
+      <div class="banner-learnmore">
+        <button class="banner-button-info" onclick="showMoreInfoCatalog();">More Info</button>
+        {% if not user.is_authenticated %}
+        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        {% elif not user.has_activated_account %}
+          <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
+        {% elif not user.can_watch_video %}
+          <a href="{% url 'become_supporter' %}">Become a supporter</a>
+        {% elif user.has_active_subscription %}
+          <a class="banner-button-info"
+          {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
+          {% else %} onclick="nextoBecomeSupporter();" {% endif %}>
+            Make a Donation
+          </a>
+        {% else %}
+          <a href="{% url 'become_supporter' %}">Make a Donation</a>
+        {% endif %}
+      </div>
+
+    </div>
+    <div id="banner-mission-box" class="box flex-column mission">
+      <div class="banner__inside-container">
+        <div class="banner-logo" >
+          <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
+        </div>
+        <div class="banner-text-container">
+          <p class="title">Live Stream</p>
+        </div>
+      </div>
+      <div class="banner-learnmore">
+        <button class="banner-button-info" onclick="showMoreInfoLiveStream();">More Info</button>
+        {% if not user.is_authenticated %}
+        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        {% elif not user.has_activated_account %}
+          <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
+        {% elif not user.can_watch_video %}
+          <a href="{% url 'become_supporter' %}">Become a supporter</a>
+        {% elif user.has_active_subscription %}
+          <a class="banner-button-info"
+          {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
+          {% else %} onclick="nextoBecomeSupporter();" {% endif %}>
+            Make a Donation
+          </a>
+        {% else %}
+          <a href="{% url 'become_supporter' %}">Make a Donation</a>
+        {% endif %}
+      </div>
+    </div>
+
+  {% elif active = 'catalog' %}
+    <!-- no banner at the moment -->
+  {% else %}
+      <div id="banner-supporting-box" class="box flex-column supporting">
+      <p class="title">WHY BECOME A <span class="bold"> SUPPORTING MEMBER?</span></p>
+      <p class="content">The mission of the <span class="accent-color">SmallsLIVE foundation</span>
+        for jazz arts and education is to <span class="accent-color">disseminate jazz music</span>
+        through recordings and live streams. We sponsor individual jazz projects, tours and educational classes, and subsidize operating
+        expenses for Smalls + Mezzrow jazz clubs. By making a
+        <span class="accent-color">tax deductible donation</span> to the SmallsLIVE Foundation you will get access to our extensive
+        <span class="accent-color">audio/ video archive</span> and directly support the musicians and the clubs.</p>
+      <div class="banner-learnmore">
+        <a href="{% url 'become_supporter' %}">Become a supporter</a>
+        <a href="{% url 'contact-and-info' %}">More Info</a>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+
+
+{% block extra_js %}
+<script>
+
+  function showMoreInfoFoundation() {
+    $("#moreInfoFoundationPopup").modal("show");
+  }
+
+  function showMoreInfoArchive() {
+    $("#moreInfoArchivePopup").modal("show");
+  }
+
+  function showMoreInfoLiveStream() {
+    $("#moreInfoLiveStreamPopup").modal("show");
+  }
+
+  function showMoreInfoCatalog() {
+    $("#moreInfoCatalogPopup").modal("show");
+  }
+
+  function nextoBecomeSupporter(){
+    $('#becomeMemberDialog').modal('show')
+    $('#form-login').attr('action', $('#form-login').attr('action') + "{% url 'become_supporter' %}?flow_type=one_time_donation".substring(1))
+  }
+  function becomeMember() {
+
+      window.location = '{% url 'become_supporter' %}';
+    }
+
+    $(document).ready(function () {
+      $('.banner-button-info').on('click', function() {
+        $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');
+      });
+      $('.banner-button-info').on('mouseenter', function() {
+        $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');
+      });
+      $('.banner-button-info').on('mouseleave', function() {
+        $('.carousel').slick('slickSetOption', 'autoplay', true).slick('slickPlay');
+      });
+      $('#becomeMemberDialog').on('mouseenter', function() {
+        $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');
+      });
+      $('#becomeMemberDialog').on('mouseleave', function() {
+        $('.carousel').slick('slickSetOption', 'autoplay', true).slick('slickPlay');
+      });
+
+      $('.slick-track').on('click', function(){
+        $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');
+      })
+        $('.carousel').slick({ infinite: true, dots: true, arrows: false, autoplay: true, autoplaySpeed: 7000, pauseOnHover: false })
+      $('.slick-initialized').on('swipe', function(event, slick, direction){
+        $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');
+      });
+    });
+</script> {% endblock %}

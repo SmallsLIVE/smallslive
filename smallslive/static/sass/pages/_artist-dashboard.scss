@@ -1,0 +1,2116 @@
+
+$dashboard-mobile: 960px;
+$dashboard-desktop: 1200px;
+
+.artist-event-card {
+  width: 100%;
+}
+
+.artist-header div.section-title > div.title1 {
+  @media (min-width: 1024px) {
+    @media (max-width: 1100px) {
+      font-size: 24px;
+      line-height: 40px;
+    }
+  }
+}
+
+.artist-profile-container {
+  min-height: 80vh;
+  margin-bottom: 40px;
+  padding: 0 3vw;
+
+  @media (max-width: 1360px) {
+    padding: 0 5vw;
+  }
+
+  @media (max-width: 1023px) {
+    padding: 20px 0;
+  }
+
+  @media (max-width: 769px) {
+    padding: 0;
+  }
+
+  .section-title {
+    .title1 {
+
+    }
+  }
+
+  &.metrics-profile-container {
+    .alert {
+      top: 20%;
+      position: fixed;
+      left: 5%;
+      width: 90%;
+    }
+
+    @media (max-width: 1023px) {
+      padding: 20px 15vw;
+
+      .title1 {
+        font-size: 30px;
+        line-height: 36px;
+      }
+    }
+
+    .labeled-select {
+      @media (max-width: 960px) {
+        flex-direction: row;
+      }
+
+      @media (max-width: 650px) {
+        flex-direction: column;
+      }
+    }
+
+    #artist_payout_select ~ {
+      .select-items {
+        width: 100%;
+        border: 3px solid $white-transparent;
+        top: 92%;
+
+        div {
+          padding-left: 38px;
+        }
+      }
+
+      .select-selected {
+        border: 3px solid $white-transparent;
+
+        @media (max-width: 650px) {
+          width: 100%;
+          padding: 0px 20px;
+
+          &::after {
+            @media (min-width: 992px) {
+              right: 9%;
+              top: 17px;
+            }
+          }
+        }
+      }
+    }
+
+    #payout-form {
+      .payout-form {
+        min-width: 220px;
+      }
+
+      .select-items {
+        top: 64%;
+      }
+    }
+  }
+
+  ~ .refine-overlay.dashboard-refine {
+    top: 54px;
+    overflow: scroll;
+
+    .custom-date-picker {
+      width: 160px;
+
+      &::before {
+        position: absolute;
+        z-index: 3;
+        @include text2;
+        font-size: 1.2em;
+      }
+
+      &.search-date-picker-to-refine::before {
+        margin-left: 25px;
+        content: "To";
+      }
+
+      &.search-date-picker-from-refine::before {
+        margin-left: 15px;
+        content: "From";
+      }
+
+      input {
+        &::placeholder {
+          color: grey;
+        }
+
+        font-size: 1.2em;
+        background-color: $background-color;
+        color: $accent-color;
+        border-radius: 12px;
+        padding: 20px 0 20px 40px;
+      }
+
+      .date-picker-text input::after {
+        content: "to";
+        color: black;
+        font-size: 7px;
+      }
+    }
+
+    .refine-datepicker-container .datepicker {
+      left: 0;
+      display: none !important;
+      width: 100vw;
+      top: 80px !important;
+      z-index: 1 !important;
+    }
+  }
+
+  .event-mobile-info {
+    width: 100%;
+    z-index: 102;
+    background-color: $background-color;
+    padding: 0;
+    border: none;
+
+    @media (min-width: 769px) {
+      display: none !important;
+    }
+
+    .header-metrics-container {
+      text-align: center;
+
+      .artist-set-main {
+        padding-right: 0;
+
+        .artist-event-info {
+          padding-left: 0;
+
+          .artist-set-header {
+            padding: 10px;
+
+            .artist-event-arrow {
+              width: 10px;
+              height: auto;
+              display: block;
+              transform: scaleX(-1);
+              margin: auto 0;
+            }
+
+            .artist-set-info-mobile {
+              display: block;
+            }
+
+            .artist-set-info {
+              display: none;
+              font-size: 1em;
+              width: auto;
+            }
+          }
+
+          .artist-event-card {
+            margin: 0;
+          }
+        }
+      }
+    }
+
+    div.set-changer {
+      padding: 0;
+    }
+
+    .text2.flex-column {
+      padding: 10px;
+    }
+  }
+
+  .refine-container {
+    display: none;
+
+    /* TODO: hiding this until a decision is made */
+    @media (max-width: 1px) {
+      display: flex;
+      padding-bottom: 10px;
+    }
+
+    .refine.text1 {
+      text-align: center;
+      padding-left: 30px;
+      display: none;
+
+      @media (max-width: 769px) {
+        position: relative;
+        display: block;
+        margin: 0;
+      }
+    }
+
+    .reset {
+      @media (min-width: 769px) {
+        display: none;
+      }
+    }
+  }
+
+  .payout-info-button {
+    min-width: 100px;
+    width: 20%;
+    height: 30px;
+  }
+
+  .payout-bar {
+    position: relative;
+    width: 25%;
+    flex-direction: row-reverse;
+
+    @media (max-width: 650px) {
+      margin-top: 10px;
+      flex-direction: row;
+      max-width: 335px;
+      min-width: 220px;
+      width: 45%;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 650px) {
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .select-selected {
+      width: 100%;
+    }
+
+    .payout-info-container {
+      background-color: $background-color;
+      position: absolute;
+      margin-top: 38px;
+      border: 2px solid #fff;
+
+      .fa-times {
+        text-align: right;
+        width: 100%;
+        padding-right: 5px;
+      }
+
+      .payout-info-text {
+        line-height: $line-height-small;
+        padding: 10px 20px 20px 20px;
+        text-align: justify;
+      }
+    }
+
+    .labeled-select .white-border-select .select-items {
+      margin-top: 0;
+      left: initial;
+    }
+
+    .artist-dashboard-payout-title {
+      padding-left: 0;
+      display: flex;
+      align-items: flex-end;
+      text-decoration: none;
+      border-bottom: 5px solid #fff;
+      margin-bottom: 30px;
+    }
+
+    .payout-bar-button {
+      font-size: $text-font-size-smaller;
+      padding: 0px 35px;
+
+      @media (max-width: $screen-sm-max) {
+        height: 35px;
+        padding: 0px 20px;
+      }
+
+      @media (min-width: $screen-md-min) {
+        margin-left: 30px;
+      }
+    }
+
+    .payout-bar-button:hover {
+      background-color: $white-transparent;
+    }
+  }
+
+  .payout-form {
+    width: 33%;
+  }
+
+  .labeled-select .white-border-select .select-items {
+    margin-top: 0;
+    left: initial;
+  }
+
+  .artist-dashboard-payout-title {
+    padding-left: 0;
+    display: flex;
+    align-items: flex-end;
+    text-decoration: none;
+    border-bottom: 5px solid #fff;
+    margin-bottom: 30px;
+  }
+
+  .artist-events-container {
+    border-top: none;
+    justify-content: space-between;
+    position: relative;
+
+    @media (min-width: 769px) {
+      display: flex !important;
+    }
+
+    @media (max-width: 1023px) {
+      justify-content: center;
+    }
+    @media (max-width: 769px) {
+      flex-direction: column;
+      justify-content: start;
+      margin-top: 20px;
+    }
+  }
+
+  .artist-event-details {
+    margin-left: 2%;
+    width: 60%;
+
+    @media (min-width: 1450px) {
+      width: 60%;
+    }
+
+    @media (max-width: 1023px) {
+      width: 65%;
+    }
+
+    @media (max-width: 769px) {
+      width: 78%;
+    }
+
+    @media (max-width: 540px) {
+      width: 70%;
+    }
+
+    @media (max-width: 620px) {
+      width: 75%;
+    }
+
+    @media (max-width: 350px) {
+      width: 60%;
+    }
+  }
+
+  .artist-event-arrow {
+    margin: auto;
+    height: 5vh;
+    width: 9px;
+    display: flex;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .artist-event {
+    padding-top: 23px;
+    width: auto;
+
+    .button-row {
+
+      &.controls {
+        margin-bottom: 30px;
+        visibility: hidden;
+
+        @media (max-width: 1200px) {
+          justify-content: center;
+          visibility: visible;
+        }
+
+        button {
+          cursor: pointer;
+        }
+
+        @media (max-width: 960px) {
+          justify-content: center;
+        }
+
+      }
+
+      .artist-set-info-mobile {
+        //margin: 0 auto;
+        text-align: center;
+
+        display: none;
+
+        @media (max-width: 769px) {
+          display: flex;
+          flex-direction: column;
+          margin: auto;
+          padding-right: 26px;
+          max-width: 80%;
+        }
+      }
+
+    }
+
+    @media(max-width: 769px) {
+      padding-top: 0;
+      width: 100%;
+    }
+
+    .close-button {
+      display: none;
+
+      @media(max-width: 960px) {
+        display: block;
+      }
+
+    }
+  }
+
+  .artist-events-list {
+    padding-top: 90px;
+    width: 35%;
+
+    &.future {
+      //padding-left: 25%;
+      padding-top: 75px;
+      width: 50%;
+      max-width: 660px;
+
+      @media(max-width: 769px){
+        width: 100%;
+        max-width: none;
+      }
+
+    }
+
+    .summary-data {
+      min-width: 460px;
+      position: absolute;
+      top: 0;
+
+      @media(max-width: 769px){
+        //font-size: 26px;
+        font-size: 5.3vw;
+      }
+      //@media(max-width: 450px){
+      //  font-size: 5.5vw;
+      //}
+
+      &.section-title {
+        background-size: calc(550px + 3.5vw) 5px;
+        line-height: 30px;
+
+        @media(max-width: 960px){
+          line-height: 2.8vw;
+        }
+
+        @media(max-width: 769px){
+          line-height: 3.7vw;
+        }
+
+        .title1 {
+          @media(max-width: 769px) {
+            font-size: 1.8rem;
+            line-height: 1.8rem;
+          }
+        }
+
+        @media(max-width: 960px) {
+          //width: 100%;
+        }
+
+      }
+
+      @media (max-width: $dashboard-desktop) {
+        margin-top: 20px;
+      }
+    }
+
+    @media (max-width: $dashboard-desktop) {
+      width: 45%;
+    }
+
+    @media (max-width: 769px) {
+      display: none;
+      padding-top: 70px;
+      width: 100%;
+
+      &.active {
+        display: flex;
+      }
+
+    }
+
+    @media (max-width: 769px) {
+      padding-left: 0;
+    }
+
+
+
+
+    .artist-event-picture {
+      @include filter(grayscale(100%));
+      margin: 5px;
+      height: 5.7em;
+      width: 5.7em;
+
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .artist-events-list-info,
+  .event-mobile-info {
+    padding-top: 20px;
+    width: 100%;
+
+    @media (max-width: 1200px) {
+      padding-left: 0;
+      padding-top: 36px;
+    }
+
+    @media (max-width: 769px) {
+      width: 80%;
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+
+    @media (max-width: 769px) {
+      width: 100%;
+      padding: 0;
+    }
+    .artist-set-download {
+      width: 3.8em;
+    }
+
+
+    .edit-event-dashboard {
+
+      padding: 0px 2%;
+
+      width: 50%;
+
+      @media (max-width: $dashboard-desktop) {
+        display: none;
+        width: 100%;
+
+        &.active {
+          display: block;
+        }
+
+        &.future {
+          display: block;
+        }
+
+      }
+
+      .admin-interface__form {
+        .selectize-input {
+          @media (max-width: 960px) {
+            font-size: 11px;
+          }
+        }
+      }
+
+      &.future {
+        width: 100%;
+        padding-right: 3.5vw;
+
+        @media (max-width: 760px) {
+          width: 100%;
+          margin-left: 0;
+        }
+      }
+
+    }
+
+    .set-artist {
+      text-transform: capitalize;
+    }
+
+    .artist-set-main {
+      width: 100%;
+
+      @media (max-width: 1023px) {
+        width: 100%;
+        padding-right: 0px;
+      }
+
+      .artist-set-header {
+        justify-content: space-between;
+        padding: 10px 0;
+
+        .artist-event-arrow,
+        .artist-set-info-mobile {
+          display: none;
+        }
+      }
+
+      .set-picture-container {
+        position: relative;
+        justify-content: center;
+
+        #player-video, #player-audio {
+          .jw-display
+            .jw-reset
+            .jw-display-icon-container.jw-display-icon-display.jw-reset
+            > div {
+            opacity: 1;
+          }
+        }
+
+        .set-icon-overlay {
+          position: absolute;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          z-index: 1;
+          text-align: center;
+
+          i {
+            color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 2.5vw;
+            width: 2.5vw;
+            border-radius: 2.5vw;
+            border: 1px solid #ed1c24;
+          }
+        }
+
+        .jw-preview {
+          background-size: cover;
+          filter: $sepia-filter;
+        }
+      }
+
+      .set-picture {
+        @include filter(grayscale(100%));
+        position: relative;
+
+        img {
+          width: 100%;
+        }
+      }
+    }
+
+    .header-metrics-container {
+      display: flex;
+      flex-direction: column;
+
+      padding: 0 2%;
+      width: 100%;
+
+
+      @media (max-width: 1200px) {
+        padding-left: 2%;
+        padding-right: 2%;
+        width: 100%;
+      }
+      @media (max-width: 960px) {
+        padding-top: 30px;
+      }
+      align-content: center;
+      @media (max-width: 1360px) {
+        flex-direction: column;
+
+        .artist-set-main {
+        }
+      }
+
+      @media (max-width: 1200px) {
+        flex-direction: column;
+
+        .artist-set-main {
+          width: 100%;
+        }
+      }
+    }
+
+    .artist-set-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+
+      @media(max-width: $dashboard-desktop) {
+        margin-bottom: 20px;
+      }
+
+      @media(max-width: 960px) {
+        margin-bottom: 0;
+      }
+
+      .button-row {
+
+        width: 100%;
+        justify-content: space-between;
+
+        .flex-row {
+          padding-left: 2%;
+
+          @media(max-width: 1200px) {
+            padding-left: 2%;
+          }
+
+          button {
+            white-space: nowrap;
+          }
+        }
+
+        input {
+          background: transparent;
+          border-radius: 10px;
+          border: 3px solid white;
+        }
+      }
+    }
+
+    .artist-set-leader {
+      padding: 10px 0;
+
+      @media (max-width: 1023px) {
+        padding: 10px 0 30px 0;
+      }
+
+      @media (max-width: 769px) {
+        padding: 30px 0 30px 0;
+
+        & > .accent-color {
+          margin-bottom: 10px;
+          display: block;
+        }
+      }
+    }
+
+    .set-changer {
+      cursor: pointer;
+
+      &:hover {
+        background-color: $white-transparent;
+      }
+
+      padding: 10px 0;
+      flex-basis: auto;
+      flex-grow: 1;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .artist-set-list {
+      cursor: pointer;
+      justify-content: space-evenly;
+
+      .artist-active-set {
+        border-bottom: 2px solid $accent-color;
+      }
+    }
+
+    .set-button {
+      width: 100px;
+      display: inline-block;
+    }
+
+    .event-metrics-container {
+      margin-bottom: 20px;
+      position: relative;
+      width: 100%;
+
+      .title1.datepicker-dashboard-btn {
+        width: auto;
+
+        &::after {
+          top: 50%;
+          right: -1vw;
+        }
+      }
+
+      .set-number {
+        margin-right: 10px;
+        position: relative;
+        width: 90px;
+
+        span {
+          bottom: 0;
+          font-size: 25px;
+          left: 0;
+          line-height: 25px;
+          position: absolute;
+          text-transform: uppercase;
+        }
+      }
+
+      .event-metrics-container-plays {
+        border-right: 3px solid $accent-color;
+        padding-right: 10px;
+      }
+
+      .event-metrics-container-time {
+        margin-left: 10px;
+      }
+    }
+
+    .mobile-event-menu {
+      display: none;
+
+      @media (max-width: $screen-md-max) {
+        padding-top: 30px;
+        display: block;
+
+        .mobile-event-opt {
+          justify-content: center;
+
+          .white-border-button {
+            width: 33%;
+
+            &.disabled {
+              color: grey;
+            }
+
+            &:first-child {
+              border-radius: 10px 0 0 10px;
+
+              &:not(.upcoming-edit) {
+                border-right: 0;
+              }
+            }
+
+            &:last-child {
+              &:not(.upcoming-edit) {
+                border-left: 0;
+              }
+
+              border-radius: 0 10px 10px 0;
+
+              &.upcoming-edit {
+                border-radius: 10px;
+                width: 100%;
+              }
+            }
+
+            &:not(:last-child, :first-child) {
+              border-left: 0;
+              border-right: 0;
+            }
+          }
+        }
+
+        .mobile-option-container {
+          .mobile-option-metrics {
+            justify-content: center;
+            padding: 10px;
+
+            .refine-datepicker-container {
+              .custom-date-picker {
+                input {
+                  background-color: $background-color;
+                }
+              }
+
+              .search-date-picker-for-mobile-metrics,
+              .search-date-picker-from-mobile-metrics {
+                position: relative;
+              }
+
+              .search-date-picker-for-mobile-metrics {
+                > .datepicker {
+                  top: 24px;
+                  left: -160px !important;
+                  position: absolute;
+                  z-index: 1;
+                }
+              }
+
+              .search-date-picker-from-mobile-metrics {
+                > .datepicker {
+                  top: 24px;
+                  left: -18px !important;
+                  position: absolute;
+                  z-index: 1;
+                }
+              }
+            }
+
+            > * {
+              margin-bottom: 20px;
+            }
+
+            > .text3 {
+              text-align: center;
+            }
+
+            .event-metrics-mobile-container {
+              justify-content: center;
+
+              .mobile-value-metrics {
+                font-size: 3.5em;
+              }
+
+              .event-metrics-mobile-container-plays {
+                border-right: solid red 2px;
+                padding-right: 30px;
+
+                > * {
+                  &:first-child {
+                    padding-bottom: 20px;
+                  }
+
+                  padding-bottom: 10px;
+                }
+              }
+
+              .event-metrics-mobile-container-time {
+                padding-left: 30px;
+
+                > * {
+                  &:first-child {
+                    padding-bottom: 20px;
+                  }
+
+                  padding-bottom: 10px;
+                }
+              }
+
+              @media (min-width: 426px) {
+                @media (max-width: 769px) {
+                  .event-metrics-mobile-container-time {
+                    padding-left: 4vw;
+
+                    > * {
+                      &:first-child {
+                        white-space: nowrap;
+                        padding-bottom: 10px;
+                      }
+                    }
+                  }
+
+                  .event-metrics-mobile-container-plays {
+                    padding-right: 4vw;
+
+                    > * {
+                      &:first-child {
+                        padding-bottom: 10px;
+                      }
+                    }
+                  }
+
+                  div.mobile-value-metrics {
+                    font-size: 4vw;
+                  }
+                }
+              }
+            }
+          }
+
+          #not-authorized-text {
+            padding: 10px;
+
+            .accent-color {
+              margin: 20px 0;
+            }
+          }
+
+          .mobile-option-event-status {
+            padding: 10px;
+
+            .accent-color {
+              margin: 20px 0;
+            }
+
+            .white-border-button {
+              margin: 0 auto;
+              border-radius: 10px;
+            }
+
+            > *:not(.accent-color) {
+              margin-bottom: 20px;
+            }
+          }
+
+          .edit-event-mobile-form {
+            width: 80%;
+            height: 80%;
+
+            @media (max-width: $screen-xs-max) {
+              width: 100%;
+              height: 100%;
+              top: 0;
+            }
+
+            text-align: center;
+            background: $background-color;
+            margin: 0 auto;
+
+            #div_id_description {
+              display: none;
+            }
+
+            #div_id_tickets_url {
+              display: none;
+            }
+
+            .edit-event-mobile-form-body {
+              * {
+                margin-bottom: 30px;
+              }
+            }
+
+            .close-button {
+              padding-top: 20px;
+
+              &:before,
+              &:after {
+                background-color: grey;
+              }
+            }
+
+            .smalls-form-logo {
+              padding-top: 20px;
+              display: block;
+              margin: 0 auto 30px auto;
+            }
+
+            .title1 {
+              font-size: 6vw;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .labeled-select {
+    margin-bottom: 20px;
+    justify-content: space-between;
+    display: flex;
+
+    @media (max-width: $screen-sm-max) {
+      flex-direction: column;
+    }
+
+    .select-items {
+      margin-top: 5px;
+    }
+
+    .white-border-select {
+      font-size: inherit;
+
+      @media (max-width: $screen-sm-max) {
+        max-width: 215px;
+      }
+
+      .white-border-button {
+        font-size: $text-font-size-smaller;
+        border-right: none;
+
+        @media (max-width: 991px) {
+          height: 35px;
+        }
+
+        @media (max-width: $screen-sm-max) {
+          padding: 0 18px;
+        }
+      }
+
+      .select-selected {
+        border-left: none;
+        color: $accent-color;
+        padding: 0px 40px;
+
+        @media (max-width: 991px) {
+          height: 35px;
+        }
+      }
+    }
+  }
+
+  .artist-form {
+    .artist-profile-picture {
+      margin-right: 20px;
+
+      .allow-fullsize {
+        display: none;
+      }
+    }
+
+    .title1 {
+      font-size: 30px;
+    }
+
+    padding: 0 10%;
+    margin-bottom: 40px;
+
+    .profile-first-name {
+      margin-right: 20px;
+    }
+
+    label {
+      &.white-border-button  {
+        width: 200px;
+      }
+    }
+
+    .custom-form {
+      input[type="file"] {
+        position: absolute;
+        top: -1000px;
+        width: auto;
+      }
+    }
+
+    textarea {
+      width: 100%;
+    }
+  }
+
+  .artist-event-row {
+    cursor: pointer;
+    border-bottom: 2px solid $white-transparent;
+    position: relative;
+
+    @media (max-width: 620px) {
+      width: 100%;
+    }
+
+    .artist-event-card {
+      margin-right: 40px;
+    }
+
+    .text2 {
+      font-size: 1.5rem;
+      display: block;
+      height: auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      box-sizing: border-box;
+
+      .text-grey {
+        text-transform: lowercase;
+      }
+    }
+
+    .artist-event-info {
+      padding: 10px 0;
+
+      @media (max-width: 1023px) {
+        padding: 20px 0;
+
+        .button-row {
+          margin-top: 20px;
+        }
+      }
+
+      @media (max-width: 769px) {
+        padding-left: 20px;
+      }
+
+      @media (max-width: 400px) {
+        padding: 10px;
+      }
+    }
+
+    .artist-event-set {
+      margin: 25px 0;
+
+      .artsist-set-info {
+        padding-top: 15px;
+
+        @media (min-width: $screen-md-min) {
+          border-top: $underline-height solid $white-transparent;
+          margin-bottom: 40px;
+        }
+      }
+    }
+
+    &:hover {
+      background-color: $white-transparent;
+    }
+
+    &.active {
+      background-color: $white-transparent;
+    }
+  }
+}
+.title-and-image-container {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: start;
+
+  .form-group {
+    width: 100%;
+  }
+
+  @media (max-width: 620px) {
+    flex-direction: column;
+  }
+}
+.artist-dashboard-event-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 2%;
+  width: 50%;
+
+  @media (max-width: $dashboard-desktop) {
+    display: none;
+
+    &.active {
+      display: flex;
+    }
+
+    &.future {
+      display: flex;
+    }
+
+    width: 100%;
+  }
+
+  &.future {
+    display: none;
+  }
+
+}
+.artist-set-info .text2 {
+  font-size: 1em;
+}
+
+label[for="photo-clear_id"] {
+  display: none;
+}
+
+#allow-fullsize-id_cropping-image {
+  display: none;
+}
+
+#back-to-events-list {
+  border-radius: 10px;
+  margin: 0 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .artist-event-arrow {
+    margin: auto;
+    height: initial;
+    transform: rotate(180deg);
+  }
+
+  @media (min-width: 960px) {
+    display: none;
+  }
+}
+
+.hide-original {
+  img {
+    display: none;
+  }
+}
+
+.header-metrics-container.not-show,
+.edit-event-dashboard.not-show {
+  display: flex;
+  @media (max-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.artist-event {
+  flex: 1;
+
+  &.future{
+    flex: none;
+    width: 50%;
+    max-width: 660px;
+
+    @media(max-width: 769px) {
+      width: 100%;
+      max-width: none;
+    }
+  }
+  .go-back {
+    cursor: pointer;
+    display: none;
+    height: auto;
+    margin-left: 3.5vw;
+    margin-right: 3.5vw;
+    padding-top: 2%;
+    transform: scaleX(-1);
+    width: 1.5vw;
+
+    @media(max-width: 769px) {
+      //display: block;
+      //left: 10px;
+      //position: absolute;
+      //width: 2.5vw;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      width: 26px;
+
+      img{
+        width: 26px;
+      }
+
+    }
+
+
+  }
+
+  @media(max-width: 769px) {
+    display: none;
+
+    &.active {
+      display: flex;
+    }
+  }
+}
+
+.artist-archive-filter {
+
+  padding-left: 3.5vw;
+  position: relative;
+
+  @media(max-width: 960px) {
+    padding: 0 5px;
+  }
+
+  .select-items {
+    top: 100%;
+  }
+
+  .status-filter {
+    width: 120px;
+    display: inline-block;
+
+    @media(max-width: 960px) {
+      width: 130px;
+    }
+
+  }
+
+  .datepicker-dashboard-main-btn {
+    @media(max-width: 960px) {
+      width: 100px;
+    }
+  }
+
+  .datepicker-container.noclick {
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+
+    @media (max-width: 960px) {
+      width: 100%;
+    }
+
+    .close-button {
+      top: 44px;
+    }
+
+    .custom-date-picker {
+      width: 110px;
+
+      @media (min-width: 992px) {
+        input {
+          padding: 0 10px;
+        }
+      }
+
+      @media (max-width: 992px) {
+        width: 130px;
+      }
+
+      input {
+
+        @media (max-width: 960px) {
+          height: 40px;
+          width: 100%;
+        }
+      }
+
+    }
+
+    .close-button {
+      @media (max-width: $dashboard-desktop) {
+        opacity: 1;
+        top: 45px;
+        z-index: 1010;
+      }
+    }
+  }
+
+  .order-filter {
+    display: inline-block;
+    width: 120px;
+  }
+
+  .white-border-select {
+    text-align: center;
+
+    .select-selected {
+      padding: 0;
+      border: 3px solid rgba(255, 255, 255, 0.9);
+
+      @media (max-width: $screen-sm-max) {
+        height: 40px;
+      }
+    }
+  }
+
+  > .white-border-button {
+    &:not(.datepicker-dashboard-main-btn):before {
+      content: "x";
+      color: red;
+      left: 17px;
+      cursor: pointer;
+      pointer-events: inherit;
+      position: absolute;
+      z-index: -1;
+    }
+  }
+
+  .datepicker-dashboard-main-btn {
+    &:after {
+      content: " ";
+      padding-bottom: 3px;
+      height: 0;
+      width: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid black;
+      right: 16px;
+      top: 16px;
+      transition: all 0.3s linear;
+      cursor: pointer;
+      pointer-events: inherit;
+      z-index: -1;
+    }
+  }
+
+  margin-bottom: 30px;
+
+  .white-border-select {
+    float: none;
+
+    &.status-filter {
+      width: 180px;
+    }
+
+  }
+
+  .datepicker-dashboard-main-btn {
+    &::after {
+      margin-left: 10px;
+    }
+  }
+
+  > .white-border-button {
+    padding: 0;
+  }
+
+  > * {
+    width: 145px;
+
+    .select-selected {
+      font-size: 12px;
+    }
+  }
+}
+
+.aritst-event-edit {
+  .controls {
+    font-size: 12px;
+
+    input {
+      @include bordered-input;
+    }
+  }
+
+  .admin-interface__form {
+    .table {
+      thead {
+        background-color: transparent;
+        border: none;
+
+        tr {
+          border: none;
+
+          th {
+            @include title2;
+            color: $text-grey;
+            border: none;
+          }
+        }
+      }
+
+      tbody {
+        tr {
+          td {
+            border: none;
+          }
+
+          border: none;
+        }
+      }
+
+      .selectize-input {
+        @include bordered-input;
+        background-color: $white-transparent;
+      }
+
+      .selectize-dropdown {
+        @include text4;
+      }
+    }
+  }
+}
+.video {
+  background-color: #f0f0eb;
+}
+.artist-event-actions {
+  @media (min-width: $screen-md-min) {
+    margin-left: 40px;
+  }
+
+  .button-row {
+    button {
+      font-size: 0.8em;
+
+      @media (max-width: $screen-sm-max) {
+        height: 30px;
+        font-size: 0.6em;
+        margin-left: 0;
+        margin-bottom: 10px;
+        margin-top: 10px;
+      }
+    }
+  }
+}
+
+.artist-publish-info {
+  min-width: 275px;
+}
+
+.artist-payout-data {
+  margin: 0 0 10px 0;
+
+  .title2 {
+    margin-top: 20px;
+  }
+
+  .artist-payout-data-text {
+    margin-bottom: 20px;
+  }
+
+  > #payoutData .flex-row {
+    @media (max-width: $screen-md-max) {
+      flex-direction: column;
+    }
+  }
+
+  .artist-payout-data-left {
+    @media (min-width: $screen-sm-min) {
+      margin-right: 250px;
+    }
+  }
+}
+.cropping-photo {
+  width: 100%;
+
+  input {
+    position: absolute;
+    top: -1000px; /* make sure input is rendered out of screen so only label is visible */
+  }
+  label {
+    display: inline-flex;
+    margin: 0;
+    margin-right: 20px;
+    width: auto;
+
+    &.disabled {
+      color: grey;
+    }
+
+    &[for="photo-clear_id"] {
+      display: none;
+    }
+  }
+
+}
+.white-border-select {
+  &.engagement-event-select {
+    .select-items > div,
+    .select-selected {
+      padding: 10px;
+      height: auto;
+    }
+
+    .select-items {
+      & > div {
+        & > span:first-child {
+          border-top: 2px solid $white-transparent;
+          padding-top: 10px;
+        }
+      }
+    }
+
+    .select-items {
+      max-height: 400px;
+      overflow: scroll;
+    }
+  }
+}
+
+.graph-container {
+  @media (min-width: $screen-md-min) {
+    padding: 50px;
+  }
+
+  .graph-canvas {
+    border: 4px solid $white-transparent;
+    border-radius: 10px;
+  }
+}
+
+.artist-event-set-info {
+  @media (max-width: $screen-sm-max) {
+    margin-left: 10px;
+  }
+}
+
+.artist-metrics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin: 20px 0;
+  height: 43px;
+
+  &.white-underline{
+    border-bottom: 5px solid white;
+  }
+
+
+}
+
+.datepicker-dashboard-btn {
+  position: relative;
+  display: inline-block;
+  width: 140px;
+  align-self: center;
+  margin-bottom: 2px;
+  cursor: pointer;
+
+  @media(max-width: 769px){
+    font-size: 30px;
+    line-height: 30px;
+
+  }
+
+}
+
+.datepicker-dashboard-btn:after {
+  content: " ";
+  height: 0;
+  width: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid black;
+  position: absolute;
+  right: 0px;
+  top: 12px;
+  transition: all 0.3s linear;
+  cursor: pointer;
+  pointer-events: inherit;
+  z-index: -1;
+}
+
+.metrics-datepicker-description {
+
+  cursor: pointer;
+  padding-right: 20px;
+
+  &:after {
+    content: " ";
+    height: 0;
+    width: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
+    position: absolute;
+    right: 0px;
+    top: 40%;
+    transition: all 0.3s linear;
+    cursor: pointer;
+    pointer-events: inherit;
+    z-index: -1;
+  }
+
+  &.text2 {
+    font-size: 1vw;
+
+    @media(max-width: 1200px)  {
+      font-size: 2vw;
+    }
+
+    @media(max-width: 769px)  {
+      font-size: 13px;
+    }
+  }
+
+}
+
+.datepicker-dashboard-container {
+  top: 80px;
+
+  .close-button {
+    &.metrics {
+      display: block;
+      top: 44px;
+      z-index: 1011;
+    }
+  }
+}
+
+.datepicker-dashboard-left-panel {
+  border: 2px solid white;
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 40px;
+  border-right: solid 2px white;
+  height: auto;
+  z-index: 1010;
+  background-color: #f0f0eb;
+
+  > div:nth-child(-n + 2) {
+    font-weight: bold;
+  }
+}
+
+.datepicker-dashboard-left-panel-item {
+  padding: 5px;
+  padding-left: 12px;
+  cursor: pointer;
+}
+
+#event_edit_modal {
+  .custom-modal {
+    .modal-body {
+      form {
+        width: 100%;
+
+        .logo-container {
+          width: 100%;
+
+          img {
+            margin: 0 auto;
+            display: block;
+          }
+        }
+      }
+
+      table {
+        input[type="checkbox"] {
+          width: 100%;
+          margin: 0 auto;
+        }
+      }
+    }
+  }
+}
+
+.reset {
+  margin-right: 20px;
+}
+
+.artist-event-row {
+  position: relative;
+  border-bottom: 2px solid $white-transparent;
+
+  .artist-event-card {
+    margin-right: 40px;
+  }
+}
+
+.artist-events-container {
+
+  &.future {
+    justify-content: center;
+  }
+
+  @media (max-width: 620px) {
+    flex-direction: row;
+  }
+
+  border-top: 3px solid $white-transparent;
+
+  @media (max-width: 1023px) {
+    justify-content: center;
+    height: auto;
+  }
+}
+
+.artist-events-list {
+  width: 30%;
+
+  @media (max-width: 1023px) {
+    width: 40%;
+  }
+
+  @media (max-width: 769px) {
+    width: 50%;
+    padding-left: 20px;
+  }
+  @media (max-width: 620px) {
+    height: initial;
+    width: 100%;
+  }
+}
+
+.datepicker-dashboard-container {
+  #dashboard-metrics-date-picker-to input{
+    border-top: none;
+    border-right: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  #apply-button {
+    height: 35px;
+  }
+
+  .datepicker-dashboard-container {
+    top: 84px;
+     width: 100%;
+
+      .white-border-button {
+        padding: 0 20px;
+
+        @media (max-width: 960px) {
+          height: 40px;
+        }
+      }
+
+    .custom-date-picker {
+      min-width: 140px;
+      max-width: 350px;
+
+      @media (max-width: 380px) {
+        min-width: 110px;
+      }
+
+      .datepicker.dropdown-menu {
+        left: 0 !important;
+        min-width: auto !important;
+        max-width: initial !important;
+        width: 100%;
+
+        td.day {
+          padding: 0;
+        }
+
+      }
+
+      input {
+        width: 100%;
+      }
+    }
+
+    #dashboard-metrics-date-picker-to input{
+      border-top: none;
+      border-right: none;
+    }
+  }
+
+  .datepicker-dashboard-left-panel {
+    //min-width: 105px;
+    //max-width: 150px;
+    //width: 14.2vw;
+  }
+}
+
+#artistEventsList .white-line-bottom .title1 {
+  font-size: 30px;
+}
+
+#dashboard-desktop-reset {
+  font-size: 12px;
+  position: relative;
+}
+
+.datepicker-dashboard-main-btn {
+  font-size: 12px;
+}
+
+.artist-profile-container.edit {
+  .pull-right.white-border-button {
+    @media (max-width: 960px) {
+      padding: 0 18px;
+    }
+  }
+
+  .title1 {
+    font-size: 30px;
+    line-height: 46px;
+  }
+
+  .section-title {
+    background-size: 50vw 5px;
+
+    @media (max-width: 1023px) {
+      background-size: 70vw 5px;
+      width: auto;
+      padding-bottom: 0px;
+
+      @media (max-width: 550px) {
+        background-size: 48vw 3px;
+
+        .title1 {
+          font-size: 6vw;
+          line-height: 9vw;
+        }
+      }
+    }
+  }
+
+  .artist-form {
+    @media (max-width: 600px) {
+      padding: 0 3%;
+
+      .custom-form {
+        .artist-info-container {
+          flex-direction: column;
+        }
+      }
+    }
+  }
+}
+
+.artist-events-list {
+
+  @media (max-width: 620px) {
+    width: 100vw;
+  }
+
+  .artist-list {
+
+    height: auto;
+    max-height: 55vh;
+    padding-left: 3.5vw;
+    overflow-y: scroll;
+
+    @media (max-width: 769px) {
+      height: auto;
+      overflow-y: auto;
+      padding-left: 0;
+    }
+  }
+}
+
+.legal-page__full-contract {
+  @include reen-kufi-normal;
+  font-size: 16px;
+}
+
+.legal-page__download {
+  @include reen-kufi-normal;
+  font-size: 16px;
+}
+
+.legal-page__bullets {
+  @include reen-kufi-normal;
+  font-size: 16px;
+}
+
+.legal-page__sign__text {
+  @include reen-kufi-normal;
+  font-size: 18px;
+}
+
+.legal-page__button {
+  display: block;
+  margin: 20px auto;
+  width: 200px;
+}
+
+#event_edit_modal {
+  .close-button {
+    margin-top: 20px;
+    margin-right: 20px;
+  }
+
+  .custom-modal {
+    padding: 10px 50px 35px 50px;
+
+    .modal-body {
+      padding: 0px 15px 15px 15px;
+    }
+  }
+
+  .title-container {
+    text-align: center;
+
+    .text2 {
+      font-size: 2.4em;
+      padding-top: 40px;
+    }
+
+    .title1 {
+      font-size: 4.5em;
+      padding: 50px 0;
+      margin-bottom: 0px;
+    }
+  }
+}
+
+#id_cropping-image {
+  width: 100% !important;
+}
+
+.artist_field_span {
+  display: none;
+}
+
+.role_field_span {
+  display: none;
+}
+
+.dashboard-publish  {
+  .modal-body {
+    .title1 {
+      font-size: 1.5vw;
+      line-height: 1.5vw;
+    }
+  }
+}
+
+
+.download-table {
+
+  .table-container {
+    margin-top: 40px;
+    margin-bottom: 50px;
+  }
+
+  tr {
+    vertical-align: middle;
+    background-color: rgba(240, 240, 235, 0.9);
+    border-bottom: 1px solid #dddddd;
+  }
+
+  td, th {
+    padding: 8px;
+    line-height: 1.42857;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+  }
+
+  span {
+    &.separator {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+  }
+  .link {
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: 400;
+    font-size: 2em;
+    color: black;
+    letter-spacing: 0;
+  }
+}

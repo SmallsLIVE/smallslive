@@ -1,0 +1,18 @@
+A donation was received from {{ donation.user.email }}
+
+Donation details:
+
+  Name: {{ donation.user.full_name }}
+  Date: {{ donation.date|date:"M d, Y h:m" }}
+  Amount: ${{ donation.amount|floatformat:2 }}
+  Deductible Amount: ${{ donation.deductable_amount|floatformat:2 }}
+  Payment Source: {{ donation.payment_source }}
+  {% if donation.artist %}Artist: {{ donation.artist.email }} {{ donation.artist.full_name }}{% endif %}
+  {% if donation.product %}Product: {{ donation.product.get_title }} {% if donation.product.get_product_class.requires_shipping %} ** Requires Shipping ** {% endif %} {{ order_url }}  {% endif %}
+  {% if donation.order %}Order: {{ donation.order }}{% endif %}
+  {% if donation.event %}Event: {{ donation.event }}{% endif %}
+  Archive Access Until: {{ donation.archive_access_expiry_date }}
+  Subscription: {{ donation.user.get_subscription_plan.type }}
+
+
+The SmallsLIVE foundation

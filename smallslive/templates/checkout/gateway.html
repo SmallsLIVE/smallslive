@@ -1,0 +1,244 @@
+{% extends "home_new.html" %}
+{% load static from staticfiles %}
+
+{% load i18n %}
+
+{% block title %}
+  {% trans "Checkout gateway" %} | {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+<div id="content_inner" class="gateway">
+    <div class="content-wrapper" style="border:none">
+    <section class="container" style="text-align:center">
+        <div class="store-header__title__container">
+            <span class="title1 title1--reservation">{% trans "Reservation" %}</span>
+        </div>
+        <p class="text4 accent-color" id="already-member" style="display:none; text-align:center">
+            A user with that e-mail address already exists. Please enter your password.
+        </p>
+    </section>
+        <form action="." method="post" class="form-stacked well checkout-gateway">
+            {% csrf_token %}
+            <div class='flex-row' style='margin: 0 auto; justify-content: center'>
+                <div class='white-border-button gateway-option' data-gateway-type="anonymous">checkout as a guest</div>
+                <div class='white-border-button gateway-option' data-gateway-type="existing">checkout as a member</div>
+
+            </div>
+
+
+            <div class="control-group">
+                <div class="controls">
+                    <div class="radio custom-form">
+                        {{ form.options.0 }}
+                        <div class="form-inline form-group" data-type='anonymous'>
+                            {% include "partials/form_field.html" with field=form.first_name %}
+                            {% include "partials/form_field.html" with field=form.last_name %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group user">
+                <div class="controls">
+                    <div class="custom-form">
+                        <div class="form-group" id="username-field">
+
+                            {% include "partials/form_field.html" with field=form.username %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="control-group {% if form.password.errors %}error{% endif %}">
+                {{ form.options.errors }}
+                <div class="controls">
+                    <div class="radio custom-form">
+
+                        {{ form.options.2 }}
+                        <div class="form-inline form-group" data-type='existing'>
+                            {{ form.password }}
+                            <div class="error" style="text-align: center;">
+                                {% for error in form.non_field_errors %}
+                                    <span class="accent-color text4">{{ error }}</span>
+                                {% endfor %}
+                                 {% for error in form.password.errors %}
+                                    <span class="forgot-password text4 accent-color">Password is required</span>
+                                {% endfor %}
+                            </div>
+                            <div class="flex-column items-center" style="width: 220px;     margin-top: 0;">
+                                <a class="forgot-password text4 text-grey"
+                                href="{% url "account_reset_password" %}">
+                                Forgot Your Password?
+                                </a>
+
+                            </div>
+                             <div class="flex-column mt-5 items-center text-center" style="width: 100%">
+                                    <p  class="text4 text-grey">Not Yet a Member?
+                                <a class="accent-color underline"
+                                href="#" id="checkoutAsANewMember">Become a Member</a></p>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <div class="radio custom-form">
+                        {{ form.options.1 }}
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="form-actions" data-type='new'>
+                <div class="row-fluid">
+                    <div class="span3">
+                        <button type="submit" class="btn btn-large btn-block  white-border-button" >{% trans "Continue" %}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="control-group" id="become_member_gateway" style="display:none" >
+            <p class="text4 accent-color" id="existing-member" style="display:none; text-align:center">
+                A user with that e-mail address already exists. Please enter your password.
+            </p>
+            <form action="." method="post" class="form-stacked well register-gateway">
+                {% csrf_token %}
+                <div class="controls">
+                    <div class="custom-form">
+                        <div class="form-inline form-group" data-type='new'>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input name="email" id="id_register_username" max-length placeholder="Email address" type="text" required>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input name="first_name" id="id_register_first_name" max-length placeholder="First name" type="text" required>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input name="last_name" id="id_register_last_name" max-length placeholder="Last name" type="text" required>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input name="password1" id="register_password1" max-length placeholder="Password" type="password" required>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input name="password2" id="register_password2" max-length placeholder="Confirm Password" type="password" required>
+                                </div>
+                            </div>
+                            <input id="id_redirect_url" name="redirect_url" type="hidden" value="/store/checkout/shipping-address/">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions" data-type='new'>
+                    <div class="row-fluid">
+                        <div class="span3">
+                            <button type="submit" class="btn btn-large btn-block  white-border-button" >{% trans "Register" %}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+
+{% block onbodyload %}
+  {{ block.super }}
+  oscar.checkout.gateway.init();
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+    $(".gateway-option").on( "click", function() {
+        $('.gateway-option').css("background-color", "")
+        $(this).css( "background-color", 'white' );
+        let $radioButton = $('input[value="' + $(this).data('gateway-type') + '"]')
+        $($radioButton).prop("checked", true);
+        $('.radio .form-group').hide()
+        console.log($radioButton.val())
+        if($radioButton.val() === "new"){
+            $("#become_member_gateway").show()
+            $(".checkout-gateway .control-group.user").hide()
+            $(".checkout-gateway .form-actions").hide()
+        }else{
+            $("#become_member_gateway").hide()
+            $(".checkout-gateway .control-group.user").show()
+            $(".checkout-gateway .form-actions").show()
+            formGroup = $($radioButton).parents('label').siblings('.form-group')
+            if(formGroup){
+                formGroup.css("display","flex")
+            }
+        }
+	});
+    {% if form.username.errors %}
+        $("#already-member").show()
+        $('input[value="existing"]').click()
+        $('#username-field .error-block').hide()
+    {% endif %}
+    $(document).ready(function(){
+        $('.radio input[type="radio"]').each(function(){
+            if($(this).prop("checked")){
+                $(this).parents('.custom-form').find('.form-group').css("display","flex")
+                $('.gateway-option[data-gateway-type="' + $(this).val() + '"]').css( "background-color", 'white' );
+            }
+
+        })
+        if ($("#id_username").val() != ""){
+            $("#id_register_username").val($("#id_username").val())
+        }
+    });
+    var formAction = "{% url 'customer:register' %}"
+    var next = "{% url 'checkout:shipping-address' %}"
+    var registerId =  $("#id_username")
+    var userGatewayId = $("#id_username")
+    $(document).on( "keyup", "#id_register_username", register_delegate)
+    $(document).on( "keyup", "#id_username", register_delegate)
+    function register_delegate(){
+        var emailTo = $(this)[0] != $("#id_username")[0] ? $("#id_username")[0] : $("#id_register_username")[0]
+        $(emailTo).val($(this).val())
+        $("#become_member_gateway form").attr('action', formAction + '?next=' + next + '&email=' + $(this).val());
+    }
+    $( "#become_member_gateway form" ).on( "submit", function( event ) {
+        event.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr("method"),
+            data : $( this ).serialize(),
+            success: function(data) {
+                window.location = data.url
+            },
+            error: function(err) {
+                $("#existing-member").show()
+            }
+        });
+    });
+
+    $().ready(function(){
+        $('#checkoutAsANewMember').click(() => {
+            $('#becomeMemberDialog').modal();
+            var $form = $('#becomeMemberDialog').find("form");
+            var action = $form.attr("action");
+            action = action + "&tickets=true";
+            $form.attr("action", action);
+            $form.find("[name='email2']").removeClass("hidden").removeAttr("disabled");
+        })
+    })
+    </script>
+{% endblock %}

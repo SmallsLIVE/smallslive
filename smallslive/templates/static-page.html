@@ -1,31 +1,8 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load static from staticfiles %}
 
 {% block info_nav_active %}active{% endblock %}
 
 {% block content %}
-    <div class="content-wrapper">
-      <div class="static-page container">
-        <div class="static-page__content row">
-          <div class="left-content-section col-sm-3 col-md-3 hidden-xs">
-            <ul class="static-nav-menu">
-              <li class="static-nav__item {% block contact-us-active %}{% endblock %}"><a
-                      href="{% url "contact-and-info" %}">Contact & Info</a></li>
-              <li class="static-nav__item {% block about-us-active %}{% endblock %}"><a
-                      href="{% url "about-us" %}">About us</a></li>
-              <li class="static-nav__item {% block mission-statement-active %}{% endblock %}"><a
-                      href="{% url "revenue-share" %}">Revenue Share</a></li>
-              <li class="static-nav__item {% block benefactors-active %}{% endblock %}"><a
-                      href="{% url "institutions" %}">Institutions</a></li>
-              <li class="static-nav__item {% block photo-gallery-active %}{% endblock %}"><a
-                      href="{% url "photo-gallery" %}">Photo Gallery</a></li>
-              <li class="static-nav__item {% block newsletters-active %}{% endblock %}"><a href="{% url "newsletters" %}">Newsletters</a></li>
-              <li class="static-nav__item {% block press-active %}{% endblock %}"><a href="{% url "press" %}">Press</a></li>
-              <li class="static-nav__item {% block mezzrow-active %}{% endblock %}"><a href="{% url "mezzrow" %}">Mezzrow</a></li>
-            </ul>
-          </div>
-          {% block static-content %}{% endblock static-content %}
-        </div>
-      </div>
-    </div>
+
 {% endblock content %}

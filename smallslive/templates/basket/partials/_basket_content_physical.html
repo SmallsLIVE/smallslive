@@ -1,0 +1,111 @@
+{% load static from staticfiles %}
+{% load thumbnail %}
+{% load currency_filters %}
+{% load purchase_info_tags %}
+
+
+<!-- Cart table header -->
+<div class="basket-header clearfix">
+  <div class="col-xs-12 store-cart__table__header__title">
+    <span>Physical products:</span>
+  </div>
+  <div class="hidden-xs hidden-sm col-md-2 col-lg-2 store-cart__table__cell image">
+    Image
+  </div>
+  <div class="hidden-xs hidden-sm col-md-10 col-lg-10 no-padding" style="padding: 0px 30px;">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell">
+    Item Name
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 store-cart__table__cell album" style="padding: 0px 30px;">
+    Quantity
+    </div>
+    <div class="store-cart__mobile-quantity col-md-4 col-lg-3">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell" style="padding-left: 4px;">
+      Price
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell">
+      Total
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of cart table header -->
+{% for form in formset %}
+    {% with line=form.instance product=form.instance.product %}
+        {% if product.is_shipping_required %}
+            {% purchase_info_for_line request line as session %}
+            <!-- Cart table row -->
+            <div class="store-cart__table__row clearfix">
+                <div class="store-cart__table__row__remove ">
+                    <a class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></a>
+                </div>
+                <div class="store-cart__table__row__container">
+                    {{ form.id }}
+                    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 image">
+                          {% if product.parent_id %}
+                              {% with image=product.parent.primary_image %}
+                                  {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                      <a class="square-container" href="{{ product.parent.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                  src="{{ thumb.url }}"
+                                                                                  alt="{{ product.get_title }}"></a>
+                                  {% endthumbnail %}
+                              {% endwith %}
+                          {% else %}
+                              {% with image=product.primary_image %}
+                                  {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                      <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                  src="{{ thumb.url }}"
+                                                                                  alt="{{ product.get_title }}"></a>
+                                  {% endthumbnail %}
+                              {% endwith %}
+                          {% endif %}
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10 no-padding">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell name">
+                          {% if product.parent_id %}
+                              <a href="{{ product.parent.get_absolute_url }}"> {{ product.parent.title }} </a>
+                          {% else %}
+                              <a href="{{ product.parent.get_absolute_url }}"> {{ product.title }} </a>
+                          {% endif %}
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 store-cart__table__cell album physical">
+                          <div class="store-cart__quantity-control">
+                            <button class="store-cart__quantity-control__button control-decrease {% if form.quantity.value <= 1 %}disabled{% endif %}" {% if form.quantity.value <= 1 %}disabled{% endif %} data-behaviour="decrease"><i
+                              class="fa fa-minus-circle"></i></button>
+                              <span class="store-cart__quantity-control__label">{{ form.quantity.value }}</span>
+                              <input type="hidden" name="form-{{ forloop.counter0 }}-quantity"  value="{{ form.quantity.value }}"/>
+                              <div style="display: none;"><input id="id_form-{{ forloop.counter0 }}-DELETE" name="form-{{ forloop.counter0 }}-DELETE" type="checkbox"></div>
+                              <button class="store-cart__quantity-control__button control-increase" data-behaviour="increase"><i
+                              class="fa fa-plus-circle"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="store-cart__mobile-quantity col-md-4 col-lg-3 physical">
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell" style="padding-left: 0px;">
+                                {{ line.unit_price_excl_tax|currency:line.price_currency }}
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell"style="padding-left: 4px;">
+                                  {{ line.line_price_excl_tax|currency:line.price_currency }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1 hidden-md hidden-lg store-cart__table__cell remove">
+                        <a class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endwith %}
+        <!-- End of cart table row -->
+{% endfor %}
+<!-- Cart table footer -->
+<div class="store-cart__table__footer clearfix">
+    <div class="col-xs-offset-4 col-xs-4 col-sm-offset-6 col-sm-3 col-md-offset-8 col-md-2 col-lg-offset-10 col-lg-1 store-cart__table__footer__cell">
+        Sub-total:
+    </div>
+    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 store-cart__table__footer__cell value">
+        {{ basket.physical_total_excl_tax|currency:basket.currency }}
+    </div>
+</div>
+<!-- End of cart table footer -->
+

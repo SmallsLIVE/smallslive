@@ -1,0 +1,41 @@
+{% load venues_dropdown %}
+
+<div class="admin-nav">
+    <div class="container">
+        <button type="button" class="navbar-toggle mobile-nav__button collapsed" data-toggle="collapse" data-target="#admin-navbar">
+            <i class="fa fa-bars"></i>
+        </button>
+        <span class="heading">Smalls admin</span>
+        <div class="collapse navbar-collapse" id="admin-navbar">
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'home' %}">Homepage</a></li>
+                {% venues_dropdown %}
+                <li><a href="{% url 'event_add' %}">Add events</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Artists <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'artist_add' %}">Add artists</a></li>
+                    <li><a href="{% url 'artist_list' %}">Artist list</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Institutions <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'institution_list' %}">Institution list</a></li>
+                    <li><a href="{% url 'institution_add' %}">Add institution</a></li>
+                  </ul>
+                </li>
+                <li><a href="{% url 'dashboard:index' %}">Store dashboard</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Metrics admin <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'artist_dashboard:admin_metrics' %}">Metrics admin</a></li>
+                    <li><a href="{% url 'artist_dashboard:metrics_payout_period' %}">Payout calculator</a></li>
+                    <li><a href="{% url 'artist_dashboard:change_payout_period' %}">Change payout period</a></li>
+                  </ul>
+                </li>
+                <!-- <li><a href="#">Email User</a></li> -->
+            </ul>
+        </div>
+    </div>
+</div>

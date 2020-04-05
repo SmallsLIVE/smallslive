@@ -3,7 +3,6 @@
 var $datePicker = $('#schedule__date-picker input');
 $datePicker.datepicker({
     format: 'MM // yyyy',
-    minViewMode: "months",
     orientation: "top auto",
     autoclose: true
 });

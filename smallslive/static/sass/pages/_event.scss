@@ -1,0 +1,963 @@
+$player-height: 25.3vw;
+
+.modal-dialog {
+  &.donate-dialog {
+    width: 95vw;
+    min-height: 95vh;
+
+    .modal-content {
+      &.custom-modal {
+        padding: 0 45px;
+        min-height: 75vh;
+
+        .donate-setting-container {
+          .supporter-main-container {
+            margin: 0;
+            min-height: 0;
+          }
+        }
+
+        .modal-content {
+          &.custom-modal {
+            min-height: 45vh;
+          }
+        }
+
+        .modal-body {
+          form {
+            width: 100%;
+
+            .form-control:first-child {
+              margin-top: 10px;
+            }
+          }
+        }
+
+        @media (max-width: $screen-md-max) {
+          padding: 0px;
+
+          .close-button {
+            z-index: 3;
+          }
+
+          > .modal-body {
+            padding: 0;
+          }
+
+          .items-wrapper {
+            width: 80vw;
+          }
+
+          .no-spinners {
+            min-width: 0px;
+          }
+
+          .title1 {
+            margin-bottom: 0px;
+          }
+
+          #supporterStep3 {
+            .section-title {
+              margin: 0 auto 20px;
+              min-width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.medium {
+    width: 60%;
+
+    @media (max-width: $screen-md-max) {
+      width: 90%;
+    }
+
+    .title2 {
+      font-size: 15px;
+
+      @media (max-width: $screen-sm-max) {
+        font-size: 11px;
+        text-align: center;
+        white-space: normal;
+      }
+    }
+  }
+}
+
+.event-page-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .live-streaming {
+    .white-border-button {
+      padding-top: 0;
+    }
+  }
+
+  .white-border-button {
+    margin-bottom: 5px;
+    padding: 5px 15px;
+    display: inline;
+    margin-right: 2px;
+
+    &.buy-tickets {
+      white-space: nowrap;
+    }
+
+    &.no-v-padding {
+      padding-bottom: 0;
+      padding-top: 0;
+    }
+  }
+
+
+
+  @media (min-width: $screen-sm-min) and (max-width: $screen-md-max) {
+    justify-content: space-around;
+    .event-side {
+      padding-left: 30px;
+    }
+  }
+  @media (min-width: $screen-md-min) {
+    .event-side {
+      padding-left: 30px;
+    }
+  }
+
+  @media (min-width: $screen-sm-min) and (max-width: $screen-md-max) {
+    padding: 0;
+
+    .event-side {
+      margin-top: 0px;
+      padding: 0px;
+      width: 40%;
+      .section-title {
+        margin-top: 0;
+        padding-left: 0;
+      }
+      .title2 {
+        font-family: "Reem Kufi", sans-serif;
+        font-weight: 400;
+        font-size: 18px;
+        letter-spacing: 2px;
+        line-height: 4vw;
+
+        text-transform: uppercase;
+      }
+      .section-title .date-separator {
+        display: inline;
+      }
+      .title1 {
+        font-family: "Oswald", sans-serif;
+        font-weight: 400;
+        font-size: 22px;
+        letter-spacing: 0.05em;
+        line-height: 30px;
+        text-transform: uppercase;
+        transform: scaleY(1.3);
+      }
+    }
+  }
+  @media (max-width: $screen-xs-min) {
+    .event-side {
+      width: 100%;
+    }
+  }
+  @media (max-width: $screen-md-min) {
+    .event-side {
+      margin-top: 10px;
+      padding: 0;
+    }
+  }
+}
+
+.venue-subtitle {
+  font-size: 24px;
+}
+
+.event-video-info {
+  display: flex;
+  flex-direction: row;
+
+  @media (max-width: $screen-sm-max) {
+    flex-direction: row;
+  }
+
+  .current-event {
+    &.text7 {
+      font-size: 2.4em;
+    }
+  }
+
+  .event-title {
+    margin-bottom: 5px;
+    line-height: 30px;
+
+    @media (max-width: $screen-md-max) {
+      font-size: 2.5em;
+      line-height: 1em;
+    }
+  }
+
+  @media (max-width: $screen-md-max) {
+    flex-direction: column-reverse;
+    width: 100%;
+
+    .event-player-buttons {
+      text-align: left;
+    }
+  }
+
+  .event-set-info {
+    margin-right: 2px;
+    padding-top: 5px;
+  }
+
+  .info-container {
+    /*width: 70%;*/
+    margin-right: 20px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+
+    @media (max-width: $screen-sm-max) {
+      /*margin-top: 15px;*/
+    }
+
+    @media (max-width: 425px) {
+      /*margin-top: 20px;*/
+    }
+
+    .event-overlay-venue {
+      .title5 {
+        font-size: 2.4em;
+      }
+    }
+  }
+
+  .buttons-container {
+    flex-grow: 1;
+    text-align: right;
+    /*width: 50%;*/
+
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+
+    @media (max-width: $screen-md-max) {
+      text-align: left;
+    }
+  }
+
+  .flex-column {
+    @media (max-width: 425px) {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+}
+
+.event-band {
+  margin: 0 0 2em 0;
+
+  & > div {
+    margin-right: 30px;
+  }
+
+  .artist-link {
+    @include text1();
+    cursor: pointer;
+    text-transform: capitalize;
+    font-size: 2em;
+    color: black;
+    letter-spacing: 0;
+  }
+}
+
+#videoContainer,
+#audioContainer {
+  //@media(min-width: $screen-md-min) {
+  //  min-width: 800px;
+  //}
+}
+
+.player-container {
+  color: $white-transparent;
+  margin-bottom: 30px;
+  position: relative;
+  overflow: hidden;
+
+  &:focus{
+    border: 3px solid red !important;
+  }
+
+  &:hover {
+    .jw-display
+      .jw-reset
+      .jw-display-icon-container.jw-display-icon-display.jw-reset
+      > div {
+      opacity: 1;
+      animation-name: play-overlay;
+      animation-duration: 0.3s;
+    }
+  }
+
+  .jwplayer {
+    .jw-preview {
+      background-size: cover;
+      filter: $sepia-filter;
+    }
+  }
+
+  .not-auth-container {
+    .icon-overlay {
+      opacity: 1;
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      z-index: 10;
+      color: red;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      top: 0;
+
+      @media (max-width: $screen-sm-max) {
+        opacity: 1;
+      }
+
+      .fa-thin-circle.fa {
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px red solid;
+        height: 88px;
+        width: 88px;
+        border-radius: 44px;
+
+        &::before {
+          font-size: 40px;
+        }
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      transition: none;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    img {
+      filter: $sepia-filter;
+      width: 100%;
+    }
+
+    .not-streaming {
+      filter: none;
+    }
+  }
+
+  .wrapper {
+    padding-bottom: 56.25%;
+    position: relative;
+    display: block;
+
+    @media (max-width: $screen-sm-max) {
+      //Why was this implemented??? causes issues in the UstreamIframe
+      //width: 90vw;
+    }
+  }
+}
+
+.event-video-placeholder {
+  flex: 1;
+
+  .player-info {
+    color: $white-transparent;
+  }
+}
+
+.overlay-info {
+  @include animated;
+  //position: absolute;
+  top: 54px;
+  left: 41px;
+  padding: 20px 30px;
+}
+.jw-state-playing + .player-info {
+  .event-overlay {
+    padding-bottom: 15%;
+  }
+}
+.jw-state-playing + .player-info.audio {
+  .event-overlay {
+    padding-bottom: 55px;
+  }
+}
+.jw-state-paused + .player-info.audio {
+  .event-overlay {
+    padding-bottom: 8%;
+  }
+}
+.player-info {
+  @include animated;
+  height: 100%;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+
+  &.pointer-events {
+    pointer-events: all;
+  }
+
+  @media (max-width: $screen-sm-max) {
+    font-size: 0.6em;
+  }
+
+  &.paused {
+    background: rgba(0, 0, 0, 0.8);
+    padding-bottom: 54px;
+    background-clip: content-box;
+  }
+
+  .live-now {
+    padding: 2px 8px;
+    background: $accent-color;
+    color: white;
+    text-transform: uppercase;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+  @keyframes play-overlay {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .nested-row {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: auto;
+
+    &--bottom{
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 0;
+    }
+  }
+
+  .event-overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    color: white;
+    height: 100%;
+    padding: 7px;
+    /*padding-top: 14vw;*/
+
+    @media (max-width: $screen-md-max) {
+    }
+
+    .title5 {
+      font-weight: 200;
+      letter-spacing: 0.09em;
+    }
+
+    &:hover {
+      .event-detail {
+        opacity: 1;
+      }
+    }
+  }
+
+  .event-overlay-logo {
+    position: absolute;
+    right: 3px;
+    top: 3px;
+
+    img {
+      height: calc(6.94vw + 8.96px);
+      width: calc(6.94vw + 8.96px);
+    }
+  }
+
+  .event-overlay-title {
+    margin-bottom: 35px;
+  }
+
+  .event-info-title {
+    position: relative;
+    top: 15px;
+    max-height: 97px;
+    line-height: 2.6vw;
+    font-size: 2.5vw;
+    color: white;
+    margin-bottom: 0;
+    width: 80%;
+    font-weight: 400;
+    font-family: "Oswald", sans-serif;
+    text-transform: uppercase;
+    transform: scaleY(1.3);
+    align-self: baseline;
+
+    @media (max-width: $screen-xs-max) {
+      font-size: 6.5vw;
+      line-height: 6.8vw;
+    }
+  }
+
+  .event-venue {
+    font-size: 2vw;
+    font-weight: 200;
+    letter-spacing: 0.09em;
+    line-height: 3vw;
+    margin-top: 10px;
+    text-transform: uppercase;
+    transform: scaleY(1.3);
+
+    @media (max-width: $screen-xs-max) {
+      font-size: 6vw;
+      line-height: 8vw;
+    }
+  }
+
+  .event-date {
+    font-size: 2vw;
+    font-weight: 200;
+    letter-spacing: 0.09em;
+    line-height: 3vw;
+    text-transform: uppercase;
+    transform: scaleY(1.3);
+
+    @media (max-width: $screen-xs-max) {
+      font-size: 6vw;
+      line-height: 8vw;
+    }
+  }
+
+  .event-sets {
+    font-size: 2vw;
+    font-weight: 200;
+    letter-spacing: 0.09em;
+    line-height: 3vw;
+    text-transform: uppercase;
+    transform: scaleY(1.3);
+
+    @media (max-width: $screen-xs-max) {
+      font-size: 6vw;
+      line-height: 8vw;
+    }
+  }
+
+  .event-overlay-artists {
+    height: 65%;
+    column-count: 2;
+    column-fill: auto;
+
+    .title5 {
+      font-size: 1.3vw;
+      line-height: 1.5;
+      white-space: nowrap;
+
+      @media (max-width: $screen-md-max) {
+        width: 47vw;
+        font-size: 3vw;
+      }
+    }
+  }
+
+  .event-overlay-venue {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 0.7vw;
+    font-weight: bold;
+
+    .title5 {
+      line-height: 1.5;
+      text-align: right;
+    }
+  }
+
+  .icon-overlay {
+    @include icon-overlay;
+    opacity: 1;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .event-detail {
+      border-radius: 5vw;
+      height: 5vw;
+      opacity: 1;
+      width: 5vw;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      @media (max-width: $screen-md-max) {
+        border-radius: 9vw;
+        height: 9vw;
+        width: 9vw;
+      }
+    }
+  }
+}
+
+.event-overlay-venue-set:not(:last-child)::after {
+  content: "&";
+}
+
+.event-overlay-venue {
+  .title5 {
+    font-weight: 400;
+    font-size: 23px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transform: scaleY(1.3);
+    line-height: 30px;
+
+    @media (max-width: $screen-md-max) {
+      font-size: 3.5vw;
+    }
+  }
+}
+
+.overlay-info {
+  //height: 100%;
+  //width: 100%;
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 60px 100px;
+}
+
+.event-related-videos {
+  max-height: 530px;
+  overflow: hidden;
+  @media (max-width: $screen-sm-max) {
+    max-height: none;
+  }
+
+  &:first-child {
+    margin-top: 10px;
+    padding-bottom: 40px;
+
+    @media (max-width: $screen-sm-min) {
+      padding-bottom: 0;
+    }
+  }
+
+  .section-title {
+    width: 100%;
+    padding-left: 0;
+  }
+
+  > div:not(.section-title) {
+    overflow-y: auto;
+    max-height: 435px;
+    @media (max-width: $screen-sm-max) {
+      max-height: none;
+    }
+    @media (max-width: 767px) {
+      padding: 0 2vw;
+    }
+  }
+
+  .related-video {
+    background-color: white;
+    margin-bottom: 1em;
+    overflow: hidden;
+    width: 99%;
+
+    &.selected {
+      border: 3px solid $accent-color;
+      border-radius: 10px;
+    }
+
+    .related-info {
+      width: 173px;
+      padding: 1em;
+
+      //TODO Show ellipsis
+      .related-title {
+        max-height: 2.9em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    &:hover {
+      .event-picture {
+        filter: $sepia-filter;
+      }
+
+      .icon-overlay {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.artist-link {
+  @include text4;
+  color: $text-grey;
+
+  &:hover {
+    color: black;
+    text-decoration: underline;
+  }
+}
+
+.event-video-placeholder {
+  .event-video-placeholder-picture {
+    filter: $sepia-filter;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.event-container {
+  @media (min-width: $screen-md-max) {
+    max-width: 45vw;
+  }
+
+  @media (max-width: $screen-sm-min) {
+    max-width: 100%;
+
+    &.flex-column {
+      display: block;
+      //margin-left: 8px;
+      //margin-right: 5px;
+    }
+  }
+  @media (min-width: $screen-sm-min) and (max-width: $screen-md-max) {
+    margin-top: 25px;
+    max-width: 50%;
+  }
+  &__sub{
+    @media(max-width: 768px){
+      margin-left: 8px;
+      margin-right: 5px;
+    }
+  }
+}
+
+.event-video-banner,
+.event-video-placeholder {
+  position: relative;
+  margin-bottom: 15px;
+
+  .event-banner-background {
+    &:not(.dark) {
+      @include background-image-with-overlay(rgba(255, 255, 255, 0.8));
+    }
+
+    &.dark {
+      @include background-image-with-overlay(rgba(0, 0, 0, 0.8));
+    }
+
+    //background: url("/static/image/banners/live.jpg");
+    //background-size: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  .white-border-button {
+    background-color: transparent;
+    padding: 0 40px;
+  }
+}
+
+.event-video-banner {
+  padding: 60px 100px;
+}
+
+.set-buttons {
+  button {
+    margin-right: 30px;
+    width: 200px;
+  }
+}
+
+.jw-display
+  .jw-reset
+  .jw-display-icon-container.jw-display-icon-display.jw-reset
+  > div {
+  border-radius: 44px;
+  border: 1px solid $accent-color;
+  opacity: 0;
+
+  @media (max-width: $screen-md-max) {
+    opacity: 1;
+  }
+
+  .jw-svg-icon {
+    height: 70%;
+    width: 70%;
+    color: $accent-color;
+  }
+}
+
+.event-page-container {
+  .jw-display
+    .jw-reset
+    .jw-display-icon-container.jw-display-icon-display.jw-reset
+    > div {
+
+    opacity: 1;
+  }
+}
+
+.comments-container {
+  border-top: 4px solid white;
+  padding-top: 20px;
+
+  > div > span {
+    font-size: 1.4em;
+
+    &:first-child {
+      padding-right: 5px;
+    }
+  }
+
+  textarea {
+    padding: 20px;
+    resize: none;
+    margin: 10px 0;
+    height: 90px;
+    border: none;
+  }
+}
+
+@media (max-width: $screen-md-min) {
+  .comments-container {
+    padding: 20px;
+    padding-bottom: 0;
+  }
+}
+
+.comment {
+  position: relative;
+  margin-bottom: 10px;
+  border-bottom: 1px solid $white-transparent;
+
+  .remove-comment {
+    background-color: transparent;
+    top: 0;
+
+    &::before,
+    &::after {
+      background-color: gray;
+    }
+  }
+
+  .comment-head {
+    i {
+      color: $background-color;
+      font-size: 1.5em;
+      text-shadow: 0 0 1px black;
+    }
+
+    .comment-head-user {
+      margin-left: 5px;
+      text-transform: capitalize;
+    }
+  }
+
+  .comment-body {
+    padding: 10px 25px;
+    word-wrap: break-word;
+  }
+}
+
+.remove-comment-modal {
+  .custom-modal {
+    min-height: auto;
+
+    .modal-body form {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+      .white-border-button:last-child {
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+.not-streaming {
+  filter: none;
+}
+
+.event-overlay-info {
+  position: absolute;
+  right: 15px;
+  // bottom: 2.9vw;
+  line-height: 1.51em;
+  font-size: 1.6vw;
+
+  @media (max-width: $screen-md-min) {
+    font-size: 3vw;
+  }
+
+  &__label{
+    flex-direction: row;
+    margin-left: auto;
+    align-self: flex-end;
+    font-size: 2vw;
+    position: unset;
+    margin-left: auto;
+
+    @media(max-width: 767px){
+      font-size: 4vw;
+    }
+  }
+}
+
+.flex-column.buttons-container {
+  @media (max-width: 425px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  @media (max-width: $screen-xs-min) {
+    flex-direction: column;
+
+    .text-right {
+      text-align: left;
+    }
+  }
+}
+
+.upcoming-logo {
+  margin-left: auto;
+
+  height: calc(6.94vw + 8.96px);
+  width: calc(6.94vw + 8.96px);
+
+  @media (max-width: 767px) {
+    height: calc(13.94vw + 8.96px);
+    width: calc(13.94vw + 8.96px);
+  }
+}

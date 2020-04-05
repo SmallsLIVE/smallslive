@@ -231,7 +231,7 @@
                 <!-- Cart table header -->
                 <div class="store-cart__table__header clearfix">
                     <div class="col-xs-12 store-cart__table__header__title">
-                        <span>Digital downloads</span> <span class="smaller">Upon purchase your Digital downloads will be available to you in your <a href="#">My downloads</a> section.</span>
+                        <span>Digital downloads</span> <span class="smaller">Upon purchase your Digital downloads will be available to you in your <a href="{% url 'my-downloads' %}">Library</a>.</span>
                     </div>
                     <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-cart__table__cell image">
                         Cover
@@ -360,15 +360,6 @@
             </div>
         </section>
         <section class="store-cart__footer container">
-            <div class="col-xs-12 col-sm-6 store-cart__footer__left">
-                <p class="store-cart__footer__left__text">We accept the following payment options:</p>
-                <div class="store-cart__footer__card-icons">
-                    <img src="{% static 'image/payment/visa.png' %}" alt="Visa">
-                    <img src="{% static 'image/payment/mastercard.png' %}" alt="MasterCard">
-                    <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
-                    <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
-                </div>
-            </div>
             <div class="col-xs-12 col-sm-6 store-cart__footer__right">
                 <div class="store-cart__footer__price-container">
                     <span class="store-cart__footer__price-container__value">$1999.99</span>
@@ -382,7 +373,7 @@
                 </div>
             </div>
             <div class="col-xs-12 store-cart__footer__buttons">
-                <a href="#" class="store-cart__footer__button-next">Continue checkout</a>
+                <a href="#" class="store-cart__footer__button-next">Continue</a>
             </div>
         </section>
     </div>

@@ -5,13 +5,25 @@ from django.template.loader import render_to_string
 
 from oscar.apps.dashboard.catalogue import views as oscar_views
 from oscar.core.loading import get_model
-from .forms import TrackFormSet
+from .forms import TrackFormSet, ArtistMemberFormSet
+from .tables import ProductTable
 
 Product = get_model('catalogue', 'Product')
 ProductClass = get_model('catalogue', 'ProductClass')
 
 
 class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
+
+    artist_formset = ArtistMemberFormSet
+
+    def __init__(self, *args, **kwargs):
+        super(ProductCreateUpdateView, self).__init__(*args, **kwargs)
+        self.formsets = {'category_formset': self.category_formset,
+                         'image_formset': self.image_formset,
+                         'recommended_formset': self.recommendations_formset,
+                         'stockrecord_formset': self.stockrecord_formset,
+                         'artist_formset': self.artist_formset}
+
     def get_context_data(self, **kwargs):
         if self.product_class.slug == 'album':
             self.formsets['track_formset'] = TrackFormSet
@@ -105,7 +117,44 @@ class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
 
 
 class ProductListView(oscar_views.ProductListView):
+
     def get_queryset(self):
-        qs = super(ProductListView, self).get_queryset()
-        qs = qs.exclude(product_class__slug='track')
+        qs = Product.objects.base_queryset()
+        qs = qs.select_related('product_class')
+        qs = self.filter_queryset(qs)
+        qs = self.apply_search(qs)
+
         return qs
+
+    def get_table_class(self):
+
+       return ProductTable
+
+    def apply_search(self, queryset):
+        """
+        Filter the queryset and set the description according to the search
+        parameters given
+        """
+        self.form = self.form_class(self.request.GET)
+
+        if not self.form.is_valid():
+            return queryset
+
+        data = self.form.cleaned_data
+
+        if data.get('upc'):
+            # If there's an exact UPC match, it returns just the matched
+            # product. Otherwise does a broader icontains search.
+            qs_match = queryset.filter(upc=data['upc'])
+            if qs_match.exists():
+                queryset = qs_match
+            else:
+                queryset = queryset.filter(upc__icontains=data['upc'])
+
+        if data.get('title'):
+            queryset = queryset.filter(title__icontains=data['title'])
+
+        if data.get('product_class'):
+            queryset = queryset.filter(product_class=data['product_class'])
+
+        return queryset

@@ -1,10 +1,14 @@
-{% extends "artist_dashboard/base.html" %}
+{% extends "home_new.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
 {% block home-active %}active{% endblock %}
 
 {% block title %}Home{% endblock %}
+
+{% block header %}
+  {% include 'partials/artist_header.html' %}
+{% endblock %}
 
 {% block content %}
 
@@ -174,7 +178,7 @@
             <li class="mini-event flexbox-equal-height flexbox-nowrap">
               <a href="{{ event.get_absolute_url }}" class="mini-event__image col-xs-3 col-lg-2">
                 {% if event.photo %}
-                  <img src="{% thumbor_url event.photo.url|urlencode height=84 width=84 smart=True %}"
+                  <img src="{% thumbor_url event.get_photo_url|urlencode height=84 width=84 smart=True %}"
                        alt=""/>
                 {% else %}
                   <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>

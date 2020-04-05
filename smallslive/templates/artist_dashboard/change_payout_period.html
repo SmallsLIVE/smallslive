@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load add_get_parameter %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
@@ -7,9 +7,9 @@
 
 {% block content %}
 
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="border:none">
         <form method="post" action="{% url "artist_dashboard:change_payout_period" %}">
-            <section class="page-heading container">
+            <section class="page-heading container" style="width: 100%;">
                 <h1>Change payout period:</h1>
             </section>
             <section class="payout-calculator">

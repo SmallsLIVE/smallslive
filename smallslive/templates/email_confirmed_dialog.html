@@ -1,0 +1,47 @@
+<div class="modal fade in" role="dialog" id="email-confirmed-dialog" {% if modal_visible %}style="display: block"{% endif %}>
+  <div class="modal-dialog">
+    <div class="modal-content custom-modal no-cancel">
+      <a href="#" class="close-button"></a>
+      <div class="modal-body">
+        <p class="title2 accent-color">EMAIL CONFIRMED</p>
+        <p class="title1">WHY BECOME A SUPPORTING MEMBER?</p>
+
+        <div class="content">
+          <p class="text9 text-justified">
+            Thank you for becoming a member of The SmallsLIVE Foundation for Jazz Arts and Education.
+            You now have access to our live stream.
+          </p>
+          <p class="text9 text-justified">
+            Please consider becoming a supporting member.
+          </p>
+          <p class="text9 text-justified\">
+            By making a tax deductible donation to The SmallsLIVE Foundation you
+            will be given access to our extensive audio/video archive and directly
+            support the musicians and clubs. The mission of the SmallsLIVE Foundation
+            for Jazz Arts and Education is to disseminate jazz music through recordings
+            and live streams. Also to sponsor individual jazz projects, tours
+            and educational classes and to subsidize operating expenses for Smalls and Mezzrow jazz clubs.
+          </p>
+        </div>
+
+        {% if user.is_authenticated %}
+        <div class="text4 text-centered">
+          <a class="white-border-button" href="{% url 'become_supporter' %}">
+            Become a Supporting Member
+          </a>
+        </div>
+        {% else %}
+          <div class="text4 text-centered">
+            <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
+              Sign in to become a Supporter Member
+            </button>
+          </div>
+        {% endif %}
+      </div>
+      <div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

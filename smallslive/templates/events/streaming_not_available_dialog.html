@@ -1,0 +1,45 @@
+<div class="modal fade" id="streamingNotAvailableDialog"
+     tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog medium">
+    <div class="modal-content custom-modal no-cancel">
+      <a href="#" class="close-button"></a>
+      <div class="modal-body">
+        {% if not event.streamable %}
+          <p class="title2 accent-color nowrap">This event will not be live streamed at the request of the artist</p>
+        {% elif sets and user.is_authenticated %}
+          <p class="title2 accent-color nowrap">This event will be streaming live{% if not event.is_today %} on {{ event.date|date:"m/d/Y" }} {% endif %} at {{ sets.0.start|time:"g:iA" }} EST.</p>
+        {% elif user.is_authenticated %}
+          <p class="title2 accent-color nowrap">Streaming for this event will be available 15 minutes before it begins</p>
+        {% endif %}
+
+        {% if not user.is_authenticated %}
+          <p class="text4">Become a member of the SmallsLIVE Foundation to watch our live stream.</p>
+          <div class="flex-row">
+            <button class="white-border-button">
+              <a href="{% url 'contact-and-info' %}#foundation">More Info</a>
+            </button>
+            <button class="white-border-button" onclick="$('#streamingNotAvailableDialog').modal('hide'); $('#becomeMemberDialog').modal('show');">Become a member</button>
+          </div>
+        {% elif not user.has_activated_account %}
+          <button class="white-border-button" onclick="$('#streamingNotAvailableDialog').modal('hide'); $('#inactive-dialog').modal('show');">Confirm email</button>
+        {% endif %}
+
+        {% if currently_live_event_url %}
+          <a class="white-border-button no-v-padding" href="{{ currently_live_event_url }}">View currently live event</a>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    var $streamingDialog = $('#streamingNotAvailableDialog');
+    var $streamingCloseButton = $($streamingDialog.find('.close-button')[0]);
+    $streamingCloseButton.click(function () {
+      $streamingDialog.modal('hide');
+    });
+  });
+</script>

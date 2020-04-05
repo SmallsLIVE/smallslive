@@ -21,7 +21,7 @@
           <p class="search-artist-info__stats">{{ result.object.instruments.all|join:" // " }} // {{ result.object.events_count }} events <a href="{% url "event_search" %}?artist={{ result.object.id }}" class="search-artist-info__link">(view)</a>
           </p>
 
-          <p class="search-artist-info__bio">{{ result.object.biography|striptags|truncatewords:50|safe }}</p>
+          <p class="search-artist-info__bio">{{ result.object.biography|striptags|safe|truncatewords:50 }}</p>
         </div>
       </div>
     {% empty %}

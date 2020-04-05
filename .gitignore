@@ -21,6 +21,8 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+.vscode/
+docker-compose.yml
 
 # Installer logs
 pip-log.txt
@@ -84,3 +86,4 @@ misc
 
 smallslive/smallslive/settings/yo.py
 smallslive/smallslive/settings/jim_testing.py
+smallslive/smallslive/settings/local*.py

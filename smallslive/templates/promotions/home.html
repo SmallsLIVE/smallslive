@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "store_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 {% load category_tags %}
@@ -12,285 +12,63 @@
 
 {% block title %}SmallsLIVE Tracks{% endblock %}
 
-{% block content %}
-
-    <div class="content-wrapper">
-
-        <section class="store-header__expanded container">
-            <div class="store-header__expanded__content">
-                <h1 class="store-header__expanded__title">SmallsLIVE Store</h1>
-                <p>Search SmallsLIVE Tracks for music or merchandise.</p>
-                <form method="get" action="{% url 'search:search' %}">
-                    <div class="store-search__container">
-                        <i class="fa fa-search store-search__large__icon"></i>
-                        <input type="text" class="store-search__large__input" name="q" placeholder="Search the store...">
-                        <button type="submit" class="store-search__large__button"><i class="fa fa-arrow-circle-right"></i></button>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-        <section class="store-listing container">
-            <div class="store-nav landing-nav col-xs-12 col-sm-4 col-md-3">
-                <span class="hidden-xs store-nav__title">Store Categories</span>
-                <span class="visible-xs store-nav__title expand-toggle" id="store-nav-cat-expand">Store Categories<i class="fa fa-caret-down"></i></span>
-                <ul class="store-nav__categories" id="store-nav-cat">
-                    {% category_tree as tree_categories %}
-                    {% if tree_categories %}
-                        {% for tree_category, info in tree_categories %}
-                            <li class="store-nav__category {% if tree_category.pk == category.pk %}active{% endif %}">
-                                {% if tree_category.pk == category.pk %}
-                                    {{ tree_category.name }}
-                                {% else %}
-                                    <a href="{{ tree_category.get_absolute_url }}">{{ tree_category.name }}</a>
-                                {% endif %}
-
-                                {% if info.has_children %}
-                                    <ul>{% else %}</li>{% endif %}
-                            {% for n in info.num_to_close %}
-                                </ul></li>
-                            {% endfor %}
-                        {% endfor %}
-                    {% endif %}
-                </ul>
-            </div>
-            <div class="col-xs-12 col-sm-8 col-md-9 store-listing__content">
-                <div class="store-subtle-heading">Newest recordings in the store</div>
-                <div class="row">
-                    {% for product in newest_recordings %}
-                        {% include "catalogue/partials/product.html" with product=product %}
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-        {% if featured_recordings %}
-            <section class="store-featured-music">
-                <div style="width: 1px; height: 1px; position: absolute; top: -9999px; left: -9999px;">
-                    <div id="player-audio"></div>
-                </div>
-            <div class="store-featured-music__header">
-                <span class="store-featured-music__title">Featured recordings</span>
-                <a href="/store/catalogue/category/music_1/">View all music in store <i class="fa fa-angle-double-right"></i></a>
-            </div>
-            <div class="store-featured-music__carousel" id="store-featured-music__carousel">
-                {% for album in featured_recordings %}
-                    <!-- single featured item slide -->
-                    {% purchase_info_for_product request album as session %}
-                    <div class="store-featured-music__single">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-5 col-md-3">
-                                <div class="store-featured-music__single__cover">
-                                    {% with image=album.primary_image %}
-                                        {% if not image.is_missing %}
-                                          <img src="{% thumbor_url image.original.url|urlencode height=250 width=250 smart=True %}" alt="{{ album.get_title }}">
-                                        {% else %}
-                                          <img src="{% static "image/image_not_found.jpg" %}" alt="{{ album.get_title }}">
-                                        {% endif %}
-                                    {% endwith %}
-                                </div>
-                                <h2 class="store-featured-music__single__title hidden-sm hidden-md hidden-lg">
-                                    <a href="{{ album.get_absolute_url }}">{{ album.title }}</a>
-                                </h2>
-                                <p class="store-featured-music__single__details">
-                                    This show recording is available both as a physical CD and a digital download.
-                                </p>
-                                {% if session.price.exists %}
-                                    {% if session.price.excl_tax == 0 %}
-                                        <span class="store-featured-music__single__price">{% trans "Free" %}</span>
-                                    {% elif session.price.is_tax_known %}
-                                        <span class="store-featured-music__single__price">{{ session.price.incl_tax|currency:session.price.currency }}</span>
-                                    {% else %}
-                                        <span class="store-featured-music__single__price">{{ session.price.excl_tax|currency:session.price.currency }}</span>
-                                    {% endif %}
-                                {% else %}
-                                    <span class="store-featured-music__single__price">&nbsp; n/a</span>
-                                {% endif %}
-                                <form id="add_to_basket_form" action="{% url 'basket:add' pk=album.pk  %}" method="post" class="add-to-basket">
-                                  {% if session.availability.is_available_to_buy %}
-                                    {% basket_form request album 'single' as basket_form %}
-                                    <div class="store-add-large negative">
-                                        {% csrf_token %}
-                                        {{ basket_form.quantity }}
-                                        {% if basket_form.fields.child_id.choices %}
-                                          <select class="store-add-large__options" name="child_id">
-                                              {% for variant in album.variants.all %}
-                                              {% purchase_info_for_product request variant as variant_session %}
-                                                  {% if session.availability.is_available_to_buy %}
-                                                        <option data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}" value="{{ variant.id }}">{{ variant.title }} ({{ variant_session.price.excl_tax|currency:variant_session.price.currency }})</option>
-                                                  {% endif %}
-                                              {% endfor %}
-                                          </select>
-                                          {% if user.is_authenticated %}
-                                            <div class="arrow-button-container"><button type="submit" class="store-add-large__button"><i class="fa fa-plus"></i></button><span class="arrow"></span></div>
-                                          {% else %}
-                                            <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="store-add-large__button"><i class="fa fa-plus"></i></a><span class="arrow"></span></div>
-                                          {% endif %}
-                                        {% else %}
-                                          {{ basket_form.child_id }}
-                                          {% if user.is_authenticated %}
-                                            <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
-                                          {% else %}
-                                            <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="store-add-large__button">Add to cart</a><span class="arrow"></span></div>
-                                          {% endif %}
-                                        {% endif %}
-                                    </div>
-                                  {% endif %}
-                                </form>
-                            </div>
-                            <div class="col-xs-12 col-sm-7 col-md-9">
-                                <h2 class="store-featured-music__single__title hidden-xs">
-                                    <a href="{{ album.get_absolute_url }}">{{ album.title }}</a>
-                                </h2>
-                                <!-- tracks table -->
-                                <div class="store-featured-music__single__tracks-table hidden-xs">
-                                    <h4 class="store-featured-music__single__tracks-table__title">
-                                        Track listing:
-                                    </h4>
-                                    <!-- tracks table header -->
-                                    <div class="store-featured-music__single__tracks-table__header row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <div class="hidden-xs hidden-sm">Preview</div>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Title
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            Duration
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            Mp3 / HD
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table header -->
-                                    {% for track in album.tracks.all|dictsort:"ordering" %}
-                                        <!-- tracks table row -->
-                                        <div class="store-featured-music__single__tracks-table__row row">
-                                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                                {% if track.preview %}
-                                                    <a href="#" class="playback-control" data-playlist-id="{{ preview_track_id_counter.next }}"><i class="fa fa-play"></i></a>
-                                                {% else %}
-                                                    <!-- {{ preview_track_id_counter.next }} -->
-                                                {% endif %}
-                                            </div>
-                                            <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                                {{ track.title }}
-                                            </div>
-                                            <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                                {{ track.attr.duration }}
-                                            </div>
-                                            <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                                {% if track.get_track_stockrecord %}${{ track.get_track_stockrecord.price_excl_tax }}{% else %}-{% endif %} / {% if track.get_hd_track_stockrecord %}${{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}-{% endif %}
-                                            </div>
-                                            <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                                {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
-                                                    <div class="buy-button-container">
-                                                        {% if user.is_authenticated %}
-                                                            <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                        {% else %}
-                                                            <a class="tracks-table__button" href="#" data-toggle="modal" data-target="#logIn">Buy track <i class="fa fa-caret-down"></i></a>
-                                                        {% endif %}
-                                                          <ul class="dropdown-menu" role="menu">
-                                                            {% if track.get_track_stockrecord %}
-                                                              <li>
-                                                                {% basket_form request track 'single' as basket_form %}
-                                                                <form id="add_to_basket_form" action="{% url 'basket:add' pk=track.pk  %}" method="post" class="add-to-basket">
-                                                                  {% csrf_token %}
-                                                                  {{ basket_form.quantity }}
-                                                                  {{ basket_form.child_id }}
-                                                                  <input type="hidden" name="stockrecord_id" value="{{ track.get_track_stockrecord.id }}"/>
-                                                                  <input type="submit" value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
-                                                                </form>
-                                                              </li>
-                                                            {% endif %}
-                                                            {% if track.get_hd_track_stockrecord %}
-                                                              <li>
-                                                                {% basket_form request track 'single' as basket_form %}
-                                                                <form id="add_to_basket_form" action="{% url 'basket:add' pk=track.pk  %}" method="post" class="add-to-basket">
-                                                                  {% csrf_token %}
-                                                                  {{ basket_form.quantity }}
-                                                                  {{ basket_form.child_id }}
-                                                                  <input type="hidden" name="stockrecord_id" value="{{ track.get_hd_track_stockrecord.id }}"/>
-                                                                  <input type="submit" value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
-                                                                </form>
-                                                              </li>
-                                                            {% endif %}
-                                                          </ul>
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                        <!-- end of tracks table row -->
-                                    {% endfor %}
-                                </div>
-                                <!-- end of tracks table -->
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-                <!-- end of single featured item slide -->
-            </div>
-            <div class="store-featured-music__carousel__controls">
-                <i class="fa fa-caret-left store-featured-music__carousel__control" id="store-featured-music__carousel__control__left" data-slickPrev></i>
-                <ul class="store-featured-music__carousel__indicators" id="store-featured-music__carousel__indicators">
-                    {% for album in featured_recordings %}
-                        <li class="store-featured-music__carousel__indicator {% if forloop.first %}active{% endif %}" data-slickPosition={{ forloop.counter0 }} ></li>
-                    {% endfor %}
-                </ul>
-                <i class="fa fa-caret-right store-featured-music__carousel__control" id="store-featured-music__carousel__control__right" data-slickNext></i>
-            </div>
-        </section>
-        {% endif %}
-        <section class="store-featured-merch container">
-            <div class="store-subtle-heading">Featured merchandise</div>
-                <div class="row">
-                    {% for product in featured_physical_products %}
-                        {% include "catalogue/partials/product.html" with product=product full_width=True  %}
-                    {% endfor %}
-                </div>
-        </section>
-
+{% block store_content %}
+  <div class="store-listing__content">
+    <div class="section-title catalog featured">
+      <div class="title1">featured & newest</div>
     </div>
+    <main class="newest-recordings-container">
+      <div class="slide-btn catalog prev"><b class="indicator-icon icon-left-caret"></b></div>
+      <div class="slide-btn catalog next"><b class="indicator-icon icon-right-caret"></b></div>
+      {% include 'promotions/featured_row.html' with events=newest_recordings extra_events=featured_recordings secondary=False %}
+    </main>
+  </div>
 
-{% endblock content %}
+  <div class="section-title catalog list">
+    <div class="title1 catalog-title">SmallsLIVE Catalog</div>
+  </div>
+
+  <!-- Hiding search as per Aslan's request -->
+
+  <main class="all-recordings-container" id="all-recordings-container" data-page="2" data-url="{% url 'album_list' %}">
+    {% include 'catalogue/album-list.html' with pagenumber=1 album_page=all_recordings %}
+  </main>
+  <div id="event-load-gif" class="loading-image events-gif text-center">
+    <img src="{% static 'image/loading.gif' %}" alt="">
+  </div>
+
+{% endblock store_content %}
 
 {% block extra_js %}
-    <script src="{% static 'js/store-base.js' %}"></script>
-    <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var audioPlayer = jwplayer("player-audio").setup({
-                primary: 'html5',
-                playlist: [
-                    {% for album in featured_recordings %}
-                        {% for track in album.tracks.all|dictsort:"ordering" %}
-                            {
-                                sources: [{
-                                    file: "{{ track.get_track_preview_url|safe }}",
-                                    type: "mp3"
-                                }],
-                                mediaid: {{ track.id }}
-                            }{% if not forloop.last %},{% endif %}
-                        {% endfor %}
-                        {% if not forloop.last %},{% endif %}
-                    {% endfor %}
-                ],
-                skin: "https:{% static "jwplayer-skin/smalls.xml" %}",
-                width: "100%",
-                height: 0
-            });
-            $(".playback-control").on('click', function (e) {
-                e.preventDefault();
-                if (audioPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {
-                    audioPlayer.pause();
-                } else {
-                    audioPlayer.playlistItem($(this).data('playlist-id'));
-                    $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
-                }
-                $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
-            })
-        });
-    </script>
+  <script src="{% static 'js/store-base.js' %}"></script>
+  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+  <script type="text/javascript">
+    var lastScrollTop = 0;
+
+    $(document).ready(function () {
+
+      $(".playback-control").on('click', function (e) {
+        e.preventDefault();
+        if (audioPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {
+            audioPlayer.pause();
+        } else {
+            audioPlayer.playlistItem($(this).data('playlist-id'));
+            $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
+        }
+        $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
+      })
+    });
+
+    $(window).scroll(function () {
+      var st = $(this).scrollTop();
+      if ($(window).scrollTop() >= $(document).height() - $(window).height() - 200) {
+        if (st > lastScrollTop) {
+          loadMoreCatalog();
+        }
+        lastScrollTop = st;
+      };
+    });
+
+  </script>
 {% endblock %}
+

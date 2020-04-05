@@ -1,0 +1,27 @@
+<div class="modal fade" id="ticketsDialog" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content custom-modal no-cancel">
+      <a href="#" class="close-button"></a>
+      <div class="modal-body">
+        <p class="title2 accent-color">Purchase Tickets</p>
+          {% if event.tickets_url %}
+            <p class="title3">Available from {{ event.get_venue_name|capfirst }}</p>
+            <a href="{{ event.tickets_url }}" target="_blank" rel="noreferrer">
+              <button class="white-border-button">Buy from {{ event.get_venue_name|capfirst }}</button>
+            </a>
+          {% else %}
+            <p class="title3">Advance Tickets are not available for this show.</p>
+            <p class="text4">
+                {# {{ event.get_venue_name|default:'smalls'|capfirst }} #}
+                You must purchase tickets for this show directly at the club on the evening of the event.
+                We recommend that you arrive ½ hour before the set that you want to see.
+                Tickets are available on a first come/first served basis.
+            </p>
+            <p class="text4 text-grey">
+                More ticketing information <a class="accent-color underline" href="{% url 'contact-and-info' %}#passes-tickets">here</a>.
+            </p>
+          {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

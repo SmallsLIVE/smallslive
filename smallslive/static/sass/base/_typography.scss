@@ -1,3 +1,53 @@
+$line-height-smaller: 1.25em;
+$line-height-small: 1.84em;
+$line-height-medium: 2.17em;
+$line-height-big: 2.51em;
+$line-height-bigger: 2.68em;
+
+/*$text-font-size-smaller: 1em;*/
+$text-font-size-smaller: 1.25em;
+/*$text-font-size-small: 1.25em;*/
+$text-font-size-small: 1.4em;
+/*text-font-size-medium: 1.2em;*/
+$text-font-size-medium: 1.8em;
+/*$text-font-size-big: 1.4em;*/
+$text-font-size-big: 2em;
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/static/fonts/Oswald/Oswald-ExtraLight.ttf');
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/static/fonts/Oswald/Oswald-Light.ttf');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/static/fonts/Oswald/Oswald-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/static/fonts/Oswald/Oswald-Medium.ttf');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/static/fonts/Oswald/Oswald-SemiBold.ttf');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/static/fonts/Oswald/Oswald-Bold.ttf');
+  font-weight: bold;
+}
+
 @mixin lato-light {
   font-family: 'Lato', $helvetica;
   font-weight: 300;
@@ -28,4 +78,397 @@
 @mixin lato-black {
   font-family: 'Lato', $helvetica;
   font-weight: 900;
+}
+
+// New Look and feel
+
+// Font families mixins
+@mixin semi-bold {
+  font-weight: 600;
+}
+
+@mixin regular {
+  font-weight: 400;
+}
+
+@mixin extra-light {
+  font-weight: 100;
+}
+
+@mixin light {
+  font-weight: 300;
+}
+
+
+@mixin oswald-regular {
+  font-family: 'Oswald', sans-serif;
+  @include regular;
+}
+
+@mixin oswald-semi-bold {
+  font-family: 'Oswald', sans-serif;
+  @include semi-bold;
+}
+
+@mixin oswald-extra-light {
+  font-family: 'Oswald', sans-serif;
+  @include extra-light;
+}
+
+@mixin oswald-light {
+  font-family: 'Oswald', sans-serif;
+  @include light;
+}
+
+@mixin reen-kufi-normal {
+  font-family: 'Reem Kufi', sans-serif;
+  @include regular;
+}
+
+@mixin reen-kufi-light {
+  font-family: 'Reem Kufi', sans-serif;
+  @include light;
+}
+
+.title-big {
+  @include oswald-regular();
+  font-size: 30px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+  line-height: 36px;
+  margin: 30px 0;
+}
+
+// Font sizes
+@mixin title-banner {
+  @include oswald-light();
+  font-size: 1.8vw;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+  line-height: 1em;
+}
+
+// Font sizes
+@mixin title1 {
+  @include oswald-regular();
+  font-size: 30px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+  line-height: 36px;
+}
+
+
+// Font sizes
+@mixin event-overlay-title {
+  @include oswald-regular();
+  font-size: 3.1vw;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+  line-height: 3.1vw;
+
+  @media(max-width: $screen-md-max) {
+    font-size: 5vw;
+    line-height: 5vw;
+  }
+}
+
+
+// Titles
+.title1 {
+  @include title1;
+
+  @media(max-width: $screen-sm-max) {
+    font-size: 3.5vw;
+    line-height: 3.5vw;
+  }
+
+  &.center {
+    text-align: center;
+    width: 100%;
+  }
+}
+
+.event-overlay-title {
+  @include event-overlay-title;
+}
+
+.thiner {
+  font-weight: 100;
+}
+
+@mixin title2 {
+  @include reen-kufi-normal;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+
+  &.nowrap {
+    white-space: nowrap;
+  }
+
+  @media(max-width: $screen-md-min) {
+    font-size: 15px;
+  }
+
+}
+
+.title2 {
+  @include title2;
+}
+
+@mixin title3 {
+  @include oswald-semi-bold;
+  font-size: $text-font-size-medium;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  transform: scaleY(1.2);
+}
+
+.title3 {
+  @include title3;
+}
+
+@mixin title4 {
+  @include oswald-semi-bold;
+  font-size: 6.5vw;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  transform: scaleY(1.2);
+
+  @media(max-width: 1024px) {
+    font-size: 4.5vw;
+  }
+}
+
+.title4 {
+  font-size: 10px;
+  @include title4;
+}
+
+.title5 {
+  @include oswald-regular;
+  font-size: $line-height-small;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+  line-height: $line-height-big;
+}
+
+.title6 {
+  @include reen-kufi-normal;
+  font-size: 1.4em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+}
+
+.justified-text {
+  text-align: justify;
+}
+
+@mixin title7 {
+  @include oswald-light;
+  font-size: 3.35em;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+  line-height: 4.68em;
+}
+
+.title7 {
+  @include title7;
+}
+
+@mixin text1 {
+  @include reen-kufi-normal;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: $text-font-size-small;
+}
+
+// Texts
+.text1 {
+  @include text1;
+}
+
+@mixin text2 {
+  @include reen-kufi-normal;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: $text-font-size-big;
+  //line-height: 1em;
+}
+
+.text2 {
+  @include text2;
+}
+
+.text3 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-size: $text-font-size-small;
+  line-height: $line-height-medium;
+}
+
+@mixin text4 {
+  @include reen-kufi-normal;
+  font-size: $text-font-size-medium;
+  letter-spacing: 0.04em;
+}
+
+.text4 {
+  @include text4;
+}
+
+.text5 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-size: $text-font-size-medium;
+  line-height: $line-height-medium;
+}
+
+.text6 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-size: $text-font-size-big;
+  line-height: $line-height-small;
+}
+
+.text7 {
+  @include reen-kufi-normal;
+  letter-spacing: 0.02em;
+  font-size: $text-font-size-big;
+  line-height: $line-height-big;
+}
+
+.text8 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  font-size: $text-font-size-small;
+  line-height: $line-height-smaller;
+}
+
+.text9 {
+  @include reen-kufi-normal;
+
+  letter-spacing: 0.02em;
+  font-size: $text-font-size-big;
+}
+
+@mixin text10 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-size: $text-font-size-smaller;
+  line-height: $line-height-medium;
+}
+
+.text10 {
+  @include text10;
+}
+
+// Links
+@mixin links1 {
+  @include reen-kufi-normal;
+  letter-spacing: 1px;
+  font-size: 13px;
+  line-height: $line-height-smaller;
+  text-transform: uppercase;
+  text-shadow: 0.001em 0.001em;
+
+  @media(max-width: $screen-sm-max) {
+    font-size: 3.4vw;
+  }
+}
+
+.links1 {
+  @include links1;
+}
+
+.links2 {
+  @include reen-kufi-normal;
+  letter-spacing: 0.04em;
+  font-size: $text-font-size-big;
+  line-height: $line-height-smaller;
+}
+
+.links3 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  font-size: $text-font-size-small;
+  line-height: 1.2em;
+}
+
+.links4 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  font-size: $text-font-size-big;
+  line-height: 2.34em;
+}
+
+.links5 {
+  @include reen-kufi-normal;
+  font-size: $text-font-size-small;
+}
+
+// Header text
+.header {
+  @include reen-kufi-normal;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  line-height: 1.2em;
+  font-size: $text-font-size-small;
+}
+
+// Buttons
+@mixin button1 {
+  @include reen-kufi-normal;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 13px;
+  text-shadow: 0.001em 0.001em;
+  cursor: pointer;
+  width: auto;
+
+  @media (min-width: 1023px) and (max-width: 1366px) {
+    font-size: 12px;
+  }
+
+  @media(max-width: 1023px) {
+    font-size: 10px;
+  }
+}
+
+.text-justified {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.text-centered {
+  text-align: center;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.hover-underline:hover {
+  text-decoration: underline;
+}
+
+.mobile-edit-title {
+  font-family: 'Reem Kufi', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 1.2em;
+  color: #808080;
 }

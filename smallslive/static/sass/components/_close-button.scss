@@ -1,0 +1,40 @@
+
+.close-button, .remove-comment, .reset-search {
+  cursor: pointer;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:before, &:after {
+    position: absolute;
+    left: 16px;
+    content: ' ';
+    height: 30px;
+    width: 2px;
+    background-color: $accent-color;
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+}
+
+/* Hide close on modals with cancel as per Spike's request */
+/* TODO: remove html if this is confirmed */
+.modal-content:not(.no-cancel) {
+  .close-button {
+    display: none;
+  }
+
+}

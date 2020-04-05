@@ -1,0 +1,63 @@
+{% load socialaccount %}
+
+{% providers_media_js %}
+<!-- MODALS -->
+<!-- Log in modal -->
+<div class="modal fade" id="logIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content custom-modal no-cancel">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="col-xs-12">
+          <h1 class="login-modal__title">Sign in</h1>
+          <p class="login-modal__text--heavy">Sign in to access our live stream and audio video archive.</p>
+        </div>
+        <form role="form" id="form-login" method="post" action="{% url "accounts_login" %}?next={{ request.path }}">
+          {% csrf_token %}
+          <div class="col-xs-12">
+            <div class="form-group">
+              <input type="email" class="form-control" name="login" placeholder="Your email">
+              <p class="form-error-text hidden" id="login-error"></p>
+            </div>
+            <input type="password" class="form-control" name="password" placeholder="Your password">
+            <p class="form-error-text hidden" id="password-error"></p>
+          </div>
+          <div class="col-xs-12">
+            <div class="col-sm-6 col-xs-12 vcenter">
+              <input type="checkbox" name="remember"><span class="checkbox-label">Remember me</span>
+            </div><!--
+
+            --><div class="col-sm-6 col-xs-12 vcenter">
+              <a class="forgot-password"  href="{% url "account_reset_password" %}">Forgot password</a>
+            </div>
+          </div>
+          <div class="empty-separator-20"></div>
+          <div class="col-sm-5 col-xs-12">
+            <input class="login-button" value="Sign in" type="submit">
+          </div>
+          <div class="col-sm-7 col-xs-12">
+            <a class="fb-login-button" href="{% provider_login_url "facebook" method="js_sdk" %}">
+              <div class="vcenter"><i class="fa fa-facebook-square"></i></div>
+              <div class="vcenter">Sign in with Facebook</div>
+            </a>
+          </div>
+          <div class="col-xs-12 modal-separator"></div>
+          <div class="col-xs-12">
+            <h2 class="login-modal__subtitle">Not a member of SmallsLIVE?</h2>
+            <a href="{% url "account_signup" %}" class="login-modal__cta-signup">Click here to become a member</a>
+              <p class="login-modal__text attention">Attention: Users from the old site must re-enroll for the new site. Please <a href="{% url "account_signup" %}">click here</a> to enroll.</p>
+              <p class="login-modal__text">Smalls Musicians - if you have not yet been registered please <a href="{% url "contact-and-info" %}">contact us</a> to set up the artist account.</p>
+              {% comment %}
+                  <p class="login-modal__text">Become a member of SmallsLIVE to watch our live stream.
+              Subscribing members get unlimited access to our audio/video archive.
+                  By becoming a subscribing member you are directly supporting the musicians and the venue.</p>
+              {% endcomment %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- /MODALS -->

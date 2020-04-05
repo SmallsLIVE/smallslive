@@ -84,6 +84,7 @@ INSTALLED_APPS = [
     'image_cropping',
     'localflavor',
     'metrics',
+    'wkhtmltopdf',
     #'oscar_stripe',
     'paypal',
     'pipeline',
@@ -102,9 +103,12 @@ INSTALLED_APPS = [
     'newsletters',
     'old_site',
     'static_pages',
+    'subscriptions',
     'users',
     'utils',
+    'custom_stripe',
 ] + get_core_apps([
+    'oscar_apps.customer',
     'oscar_apps.address',
     'oscar_apps.basket',
     'oscar_apps.catalogue',
@@ -112,6 +116,8 @@ INSTALLED_APPS = [
     'oscar_apps.dashboard',
     'oscar_apps.dashboard.catalogue',
     'oscar_apps.dashboard.files',
+    'oscar_apps.dashboard.orders',
+    'oscar_apps.dashboard.reports',
     'oscar_apps.order',
     'oscar_apps.partner',
     'oscar_apps.promotions',
@@ -129,9 +135,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'oscar.apps.basket.middleware.BasketMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    'smallslive.middleware.RedirectMiddleware',
+    'oscar.apps.basket.middleware.BasketMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -150,6 +155,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'oscar.apps.checkout.context_processors.checkout',
     'oscar.apps.customer.notifications.context_processors.notifications',
     'oscar.core.context_processors.metadata',
+    'users.context_processors.check_account_status',
+    'users.context_processors.check_if_event_confirmed_user',
+    'users.context_processors.show_modal',
+    'users.context_processors.clean_messages',
 )
 
 ROOT_URLCONF = 'smallslive.urls'
@@ -171,7 +180,6 @@ AUTHENTICATION_BACKENDS = (
     'oscar.apps.customer.auth_backends.EmailBackend',
 
 )
-
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -237,6 +245,12 @@ DATETIME_INPUT_FORMATS = (
     '%m/%d/%y %H:%M:%S',     # '10/25/06 14:30:59'
     '%m/%d/%y %H:%M:%S.%f',  # '10/25/06 14:30:59.000200'
     '%m/%d/%y %H:%M',        # '10/25/06 14:30'
+    '%m/%d/%y',              # '10/25/06'
+)
+
+DATE_INPUT_FORMATS = (
+    '%Y-%m-%d',              # '2006-10-25'
+    '%m/%d/%Y',              # '10/25/2006'
     '%m/%d/%y',              # '10/25/06'
 )
 
@@ -323,12 +337,21 @@ PIPELINE_JS = {
         'source_filenames': (
           'js/jquery.mobile.custom.min.js',
           'js/jquery-ui.js',
+          'js/jquery.visible.min.js',
           'js/bootstrap.min.js',
           'js/slick/slick.min.js',
           'js/raphael-min.js',
           'js/imgCoverEffect.min.js',
           'js/base.js',
-          'js/signup_form.js'
+          'js/utils.js',
+          'js/signup_form.js',
+          'js/white-border-select.js',
+          'js/owl.carousel.min.js',
+          'js/custom_owl_carousel.js',
+          'js/custom_recently_added_carousel.js',
+          'js/custom_popular_carousel.js',
+          'js/custom_highlights_carousel.js',
+          'js/custom_catalog_carousel.js',
         ),
         'output_filename': 'js/main.js',
     },
@@ -386,12 +409,17 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
-        }
+        },
+
     },
     'loggers': {
         'cron': {
             'handlers': ['console',],
             'level': 'INFO'
+        },
+        'paypal.payflow': {
+            'handlers': ['console',],
+            'level': 'DEBUG'
         }
     }
 }
@@ -408,6 +436,12 @@ AWS_S3_SECURE_URLS = True
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_FILE_OVERWRITE = False
 
+# Django storages / S3 / Mezzrow
+AWS_ACCESS_KEY_ID_MEZZROW = os.environ.get('AWS_ACCESS_KEY_ID_MEZZROW')
+AWS_SECRET_ACCESS_KEY_MEZZROW = os.environ.get('AWS_SECRET_ACCESS_KEY_MEZZROW')
+AWS_STORAGE_BUCKET_NAME_MEZZROW = os.environ.get('AWS_STORAGE_BUCKET_NAME_MEZZROW')
+
+
 # Thumbor server settings
 THUMBOR_MEDIA_URL = os.environ.get('THUMBOR_MEDIA_URL', "")
 THUMBOR_SECURITY_KEY = os.environ.get('THUMBOR_SECURITY_KEY', "")
@@ -416,6 +450,8 @@ AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN', "")
 
 # Allauth config
 ACCOUNT_ADAPTER = 'users.adapter.SmallsLiveAdapter'
+# As per Aslan's request
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_VERIFICATION = "optional"
@@ -426,7 +462,8 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_USER_DISPLAY = lambda u: u.display_name()
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
-ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = reverse_lazy('home')
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = reverse_lazy('email_confirmed')
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = reverse_lazy('email_confirmed')
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 60
 SOCIALACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
@@ -457,6 +494,17 @@ PAYPAL_API_USERNAME = os.environ.get('PAYPAL_API_USERNAME')
 PAYPAL_API_PASSWORD = os.environ.get('PAYPAL_API_PASSWORD')
 PAYPAL_API_SIGNATURE = os.environ.get('PAYPAL_API_SIGNATURE')
 PAYPAL_CURRENCY = 'USD'
+PAYPAL_MODE = os.environ.get('PAYPAL_MODE')
+PAYPAL_MEZZROW_CLIENT_ID = os.environ.get('PAYPAL_MEZZROW_CLIENT_ID')
+PAYPAL_MEZZROW_CLIENT_SECRET = os.environ.get('PAYPAL_MEZZROW_CLIENT_SECRET')
+PAYPAL_CLIENT_ID = os.environ.get('PAYPAL_CLIENT_ID')
+PAYPAL_CLIENT_SECRET = os.environ.get('PAYPAL_CLIENT_SECRET')
+
+PAYPAL_PAYFLOW_VENDOR_ID = os.environ.get('PAYPAL_PAYFLOW_VENDOR_ID')
+PAYPAL_PAYFLOW_USER = os.environ.get('PAYPAL_PAYFLOW_USER')
+PAYPAL_PAYFLOW_PASSWORD = os.environ.get('PAYPAL_PAYFLOW_PASSWORD')
+PAYPAL_PAYFLOW_PRODUCTION_MODE = ast.literal_eval(os.environ.get('PAYPAL_PAYFLOW_PRODUCTION_MODE', 'False'))
+PAYPAL_PAYFLOW_DASHBOARD_FORMS = True
 
 STRIPE_PUBLISHABLE_KEY = STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
@@ -533,7 +581,22 @@ DJSTRIPE_PLANS = {
         "currency": "usd",
         "interval": "yearly"
     },
+    "monthly": {
+        "stripe_plan_id": "plan_D01xMWV5Brx2vm",
+        "name": "Monthly Subscriptions",
+        "type": 'monthly',
+        "description": "Monthly Subscription",
+        "price": 0,  # $1000.00
+        "currency": "usd",
+        "interval": "monthly"
+    },
 }
+
+STRIPE_PRODUCTS = {
+    'month': 'prod_D01wWC6DLGhq3U',
+    'year': 'prod_D0T011J87Uwv2E'
+}
+
 
 SUBSCRIPTION_PLANS = {
     'free': {
@@ -582,6 +645,7 @@ SUBSCRIPTION_PLANS = {
     },
 }
 
+OSCAR_ALLOW_ANON_CHECKOUT = True
 OSCAR_DEFAULT_CURRENCY = 'USD'
 OSCAR_SHOP_NAME = 'SmallsLIVE'
 OSCAR_IMAGE_FOLDER = 'product_images/%Y/%m/'
@@ -624,6 +688,11 @@ OSCAR_DASHBOARD_NAVIGATION += [
 
          ],
     },
+    {
+        'label': 'Tickets',
+        'icon': 'icon-bar-chart',
+        'url_name': 'dashboard:tickets-report-index',
+    },
 ]
 
 OSCAR_DASHBOARD_NAVIGATION.append(
@@ -641,10 +710,13 @@ OSCAR_DASHBOARD_NAVIGATION.append(
 OSCAR_INITIAL_ORDER_STATUS = 'Pending'
 OSCAR_INITIAL_LINE_STATUS = 'Pending'
 OSCAR_ORDER_STATUS_PIPELINE = {
-    'Pending': ('Being processed', 'Shipped',),
-    'Being processed': ('Shipped',),
+    'Pending': ('Refunded', 'Shipped', 'Completed'),  # Completed would be for tickets
+    'Completed': ('Exchanged', 'Cancelled'),
+    'Cancelled': ('Refunded', ),
+    'Exchanged': ('Refunded', ),
     'Shipped': (),
 }
+OSCAR_LINE_STATUS_PIPELINE = OSCAR_ORDER_STATUS_PIPELINE
 
 ELASTICSEARCH_INDEX_SETTINGS = {
     'settings': {
@@ -723,4 +795,10 @@ SHOW_HIJACKUSER_IN_ADMIN = False
 
 # Celery
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+FORCE_S3_SECURE = False
+
+WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'
+
+ADMIN_EMAILS = ast.literal_eval(os.environ.get('ADMIN_EMAILS', '[]'))
+
 REDIRECT_TO_MAINTENANCE = ast.literal_eval(os.environ.get('REDIRECT_TO_MAINTENANCE', 'False'))

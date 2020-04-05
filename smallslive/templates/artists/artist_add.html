@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load crispy_forms_tags %}
 {% load static from staticfiles %}
 
@@ -13,14 +13,14 @@
 {% block title %}{{ action_name|capfirst }} artist{% endblock title %}
 
 {% block content %}
-  <div class="content-wrapper">
+  <div class="content-wrapper" style="border:none">
     <section class="admin-interface container">
       <h1 class="admin-interface__main-title">{{ action_name|capfirst }} artist</h1>
       <form method="post" class="admin-interface__form" role="form" enctype="multipart/form-data">
         {% csrf_token %}
         {% crispy form %}
         {% comment %}{% crispy artist_invite_form %}{% endcomment %}
-        <button type="submit" name="submit" class="admin-interface__form__button">{{ action_name|capfirst }} artist
+        <button type="submit" name="submit" class="white-border-button">{{ action_name|capfirst }} artist
         </button>
       </form>
     </section>
@@ -35,19 +35,19 @@
               invite this artist check the email address below (or enter a new one if one is currently not set) and
               press the "Invite Artist" button.</p>
             <input type="email" class="form-control" name="email" placeholder="Email address">
-            <input type="submit" value="Invite artist">
+            <input class="white-border-button" type="submit" value="Invite artist">
           </div>
         </form>
         {% elif not artist.has_registered %}
           <form action="{% url "invite_artist" artist=artist.id %}" method="post">
             {% csrf_token %}
             <div class="from-group">
-              <h2 class="invite-artist__heading">Artist already invited!</h2>
-              <p class="invite-artist__text">{{ artist.full_name }} has already been invited to SmallsLIVE on
+              <h2 class="text2">Artist already invited!</h2>
+              <p class="text2">{{ artist.full_name }} has already been invited to SmallsLIVE on
                 {{ artist.email_invitation.sent|date:"F j, Y g:i A" }} with e-mail address <strong>{{ artist.user.email }}</strong></p>
             </div>
             <input type="hidden" class="form-control" name="email" value="{{ artist.user.email }}">
-            <input type="submit" value="Resend invite">
+            <button type="submit" class="white-border-button">Resend invite</button>
           </form>
         {% else %}
           <div class="from-group">

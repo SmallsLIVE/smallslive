@@ -1,0 +1,30 @@
+{% for date, events in dates.iteritems %}
+  <div class="schedule-day-column">
+    <p class="title1">{{ date|date:"D n/j" }}</p>
+    <div>
+      {% if events %}
+        <div class="flex flex-column items-flex-stretch">
+          {% for event in events %}
+            <div class="event-info top-border">
+              <div class="event-title">
+                <a href="{{ event.get_absolute_url }}">
+                  {{ event.title }}
+                </a>
+                {% if request.user.is_staff and related.state == "Draft"%}
+                  <p class="accent-color">Draft</p>
+                {% endif %}
+              </div>
+              <div class="accent-color">{{ event.get_venue_name }}</div>
+              <div class="text-grey">{{ event.start|date:"g:i A" }} &
+                {{ event.end|date:"g:i A" }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div>
+          <p class="links1">No events</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endfor %}

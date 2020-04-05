@@ -1,27 +1,61 @@
+from dateutil import parser
 import urllib
 import urlparse
+from oscar.apps.dashboard.catalogue import forms as oscar_forms
+from django import forms
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
-from django import forms
-from django.core.exceptions import ValidationError
-from django.forms import inlineformset_factory
-from oscar.apps.dashboard.catalogue import forms as oscar_forms
-from events.models import Event
+from django.utils.translation import ugettext_lazy as _
+from events.models import Event, EventSet
 from multimedia.models import MediaFile
+from oscar_apps.catalogue.models import Product, ProductClass, ArtistProduct
 from oscar_apps.partner.models import StockRecord, Partner
-from oscar_apps.catalogue.models import Product, ProductClass
 
 
 class ProductForm(oscar_forms.ProductForm):
-    event = forms.IntegerField(required=False)
 
     class Meta(oscar_forms.ProductForm.Meta):
         fields = [
-            'title', 'subtitle', 'upc', 'short_description', 'description', 'is_discountable', 'structure', 'featured', 'event', 'ordering']
+            'title',
+            'subtitle',
+            'upc',
+            'short_description',
+            'description',
+            'is_discountable',
+            'structure',
+            'featured',
+            'gift',
+            'gift_price',
+            'event',
+            'set',
+            'misc_file',
+            'ordering'
+        ]
 
     def __init__(self, product_class, data=None, parent=None, *args, **kwargs):
+
         self.set_initial(product_class, parent, kwargs)
         super(oscar_forms.ProductForm, self).__init__(data, *args, **kwargs)
+        if product_class.slug == 'ticket':
+            del self.fields['subtitle']
+            del self.fields['upc']
+            del self.fields['short_description']
+            del self.fields['description']
+            del self.fields['structure']
+            del self.fields['featured']
+            del self.fields['gift']
+            del self.fields['gift_price']
+            del self.fields['misc_file']
+            del self.fields['ordering']
+            self.fields['event'].widget = forms.TextInput()
+            self.fields['set'].widget.attrs['placeholder'] = 'Set number (i.e. 2) or set time (i.e. 7:30 pm)'
+            self.fields['set_name'] = forms.CharField(required=False)
+            self.fields['set_name'].widget.attrs['placeholder'] = 'Optional: special name for set'
+
+        else:
+            del self.fields['event']
+            del self.fields['set']
+
         if parent:
             self.instance.parent = parent
             # We need to set the correct product structures explicitly to pass
@@ -44,14 +78,54 @@ class ProductForm(oscar_forms.ProductForm):
             self.fields['title'].widget = forms.TextInput(
                 attrs={'autocomplete': 'off'})
 
-    def clean_event(self):
-        event_id = self.cleaned_data['event']
-        if event_id:
+        # Link event set label to a real event set object when cleaning the 'set' field.
+        self.event_set = None
+
+    def clean(self):
+        """Link set number or set time with an EventSet instance"""
+        cleaned_data = super(ProductForm, self).clean()
+
+        set_number = cleaned_data.get('set')
+        event = cleaned_data.get('event')
+
+        if not event and not set_number:
+            # It is not a ticket
+            return
+
+        if set_number.isdigit():
+            set_number = int(set_number)
+            event_sets = EventSet.objects.filter(event=event)
+            event_sets = sorted(event_sets, Event.sets_order)
             try:
-                event = Event.objects.get(id=event_id)
-            except Event.DoesNotExist:
-                raise ValidationError('Event with that ID does not exist')
-            return event
+                self.event_set = event_sets[set_number - 1]
+            except IndexError:
+                raise ValidationError("Set number does not exist")
+        else:
+            try:
+                set_time = parser.parse(set_number).time()
+                self.event_set = EventSet.objects.filter(event=event, start=set_time).first()
+                if not self.event_set:
+                    raise ValidationError("Could not find {} for {}".format(set_time, event))
+            except ValueError:
+                raise ValidationError("Unrecognized set time")
+
+    def save(self, commit=True):
+        product = super(ProductForm, self).save(commit=False)
+
+        if product.get_product_class().slug == 'ticket':
+            # Linked to real object on form clean
+            product.event_set = self.event_set
+            # Make sure it is displayed as time. The user could have entered only the number.
+            product.set = self.event_set.start.strftime('%-I:%M %p')
+            # If the user provided a set name, use that instead of the set time
+            set_name = self.cleaned_data['set_name']
+            if set_name:
+                product.set = set_name
+
+        if commit:
+            product.save()
+
+        return product
 
 
 class TrackForm(forms.ModelForm):
@@ -223,7 +297,7 @@ class TrackForm(forms.ModelForm):
         return track
 
 
-BaseTrackFormSet = inlineformset_factory(
+BaseTrackFormSet = forms.inlineformset_factory(
     Product, Product, form=TrackForm, extra=15, max_num=25, fk_name='album', can_order=True)
 
 
@@ -235,3 +309,35 @@ class TrackFormSet(BaseTrackFormSet):
     def get_queryset(self):
         qs = super(TrackFormSet, self).get_queryset()
         return qs.order_by('ordering')
+
+
+class ProductSearchForm(forms.Form):
+    upc = forms.CharField(max_length=16, required=False, label=_('UPC'))
+    title = forms.CharField(
+        max_length=255, required=False, label=_('Product title'))
+    product_class = forms.ModelChoiceField(queryset=ProductClass.objects.all(),
+                                           required=False)
+
+    def clean(self):
+        cleaned_data = super(ProductSearchForm, self).clean()
+        cleaned_data['upc'] = cleaned_data['upc'].strip()
+        cleaned_data['title'] = cleaned_data['title'].strip()
+        return cleaned_data
+
+
+class ProductArtistClassSelectForm(forms.ModelForm):
+
+    class Meta:
+        model = ArtistProduct
+        fields = ('artist', 'is_leader', 'sort_order')
+        
+
+BaseArtistFormSet = forms.inlineformset_factory(
+    Product, ArtistProduct, form=ProductArtistClassSelectForm, extra=15, max_num=25)
+
+
+class ArtistMemberFormSet(BaseArtistFormSet):
+
+    def __init__(self, product_class, user, *args, **kwargs):
+        # This function just exists to drop the extra arguments
+        super(ArtistMemberFormSet, self).__init__(*args, **kwargs)
