@@ -130,3 +130,6 @@ class ProductMixin(object):
 
             self.downloads_list = Product.objects.filter(
                 misc_file__isnull=False, access__user=self.request.user)
+            self.downloads_list = [x for x in self.downloads_list if x.misc_file.name]
+
+

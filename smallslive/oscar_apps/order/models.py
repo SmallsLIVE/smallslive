@@ -60,7 +60,8 @@ class Order(AbstractOrder):
         return venue
     
     def has_gift(self):
-        gifts_count = self.lines.filter(product__product_class__slug='Gift').count()
+        gifts_count = self.lines.filter(product__categories__name='Gifts').count()
+
         return gifts_count > 0
 
     def get_deductable_total(self):

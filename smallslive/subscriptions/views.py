@@ -14,13 +14,13 @@ from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
 from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView, \
     CancelSubscriptionView as BaseCancelSubscriptionView
+from oscar.apps.payment.models import SourceType, Source
+from oscar.core.loading import get_class
 from oscar_apps.catalogue.mixins import ProductMixin
 from oscar_apps.catalogue.models import Product
 from oscar_apps.checkout.forms import PaymentForm, BillingAddressForm
 from oscar_apps.partner.strategy import Selector
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
-from oscar.apps.payment.models import SourceType, Source
-from oscar.core.loading import get_class
 from artists.models import Artist
 from events.models import Event
 from users.models import SmallsUser
@@ -349,7 +349,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
 
             context['gifts'] = []
             context['costs'] = []
-            for product in Product.objects.filter(product_class__slug='gift'):
+            for product in Product.objects.filter(categories__name='Gifts'):
                 context['gifts'].append(product)
                 if product.variants.count():
                     context['costs'].append(
@@ -571,9 +571,9 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
                     context['album_product'] = album_product
 
             if source.order:
-                file_product = source.order.lines.first().product
-                if file_product.misc_file:
-                    file_product = file_product.misc_file.url
+                prod = source.order.lines.first().product
+                if prod.misc_file:
+                    file_product = prod.misc_file.url
 
             else:
                 source = Source.objects.filter(reference=payment_id).first()
