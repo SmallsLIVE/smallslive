@@ -596,4 +596,13 @@ class MonthlyArchiveView(ArchiveView):
         context['next_url'] = reverse('monthly_archive', kwargs={'year': next_month.year, 'month': next_month.month})
         return context
 
+
 monthly_archive = MonthlyArchiveView.as_view()
+
+
+class MaintenanceView(TemplateView):
+
+    template_name = 'maintenance.html'
+
+
+maintenance_view = MaintenanceView.as_view()

@@ -7,7 +7,6 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import Http404
 from django.shortcuts import render_to_response
 from django.views.generic.base import TemplateView, RedirectView
-from django.template import TemplateDoesNotExist
 from paypal.express.dashboard.app import application as paypal_application
 from oscar.app import application
 from django.contrib.sitemaps import views as sitemaps_views
@@ -104,3 +103,4 @@ if settings.ENABLE_HIJACK:
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

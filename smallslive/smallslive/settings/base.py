@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import ast
 import os
 from django.core.exceptions import ImproperlyConfigured
 from oscar import get_core_apps, OSCAR_MAIN_TEMPLATE_DIR
@@ -130,6 +131,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'smallslive.middleware.RedirectMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -721,3 +723,4 @@ SHOW_HIJACKUSER_IN_ADMIN = False
 
 # Celery
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+REDIRECT_TO_MAINTENANCE = ast.literal_eval(os.environ.get('REDIRECT_TO_MAINTENANCE', 'False'))

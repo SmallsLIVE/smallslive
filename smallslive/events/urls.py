@@ -18,4 +18,5 @@ urlpatterns = patterns('events.views',
     url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/delete/$', 'event_delete', name='event_delete'),
     url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/edit/$', 'event_edit', name='event_edit'),
     url(r'^add/$', 'event_add', name='event_add'),
+    url(r'^maintenance/$', 'maintenance_view', name='maintenance_view'),
 )
