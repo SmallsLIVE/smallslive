@@ -126,7 +126,7 @@ class ProductMixin(object):
                     }
                     self.album_list.append(album_info)
 
-                self.album_list = sorted(self.album_list, key=lambda k: k['parent'].title)
+                self.album_list = sorted(self.album_list, key=lambda k: k['parent'].upc)
 
             self.downloads_list = Product.objects.filter(
                 misc_file__isnull=False, access__user=self.request.user)
