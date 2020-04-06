@@ -27,6 +27,9 @@ def invoice_payment_succeeded(sender, **kwargs):
                 'confirmed': True,
             }
             subscriptions.models.Donation.objects.create(**donation)
+        else:
+            donation.confirmed = True
+            donation.save()
 
 
 # Send email updates to admin only if donation is confirmed
