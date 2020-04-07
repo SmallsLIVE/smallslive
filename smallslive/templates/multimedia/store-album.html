@@ -114,17 +114,17 @@
                 <span class="text2">{{ track.title }}</span>
               </td>
               <td>
-                {% if track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url %}
+                {% if track.get_hd_downloadable_file_url %}
                   <a class="link"
-                     href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}"
-                     download="{{ track.get_track_stockrecord.digital_download.file.name }}"
+                     href="{{ track.get_hd_downloadable_file_url }}"
+                     download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}"
                      class=" hd">hd</a>
                   <span class="separator">/</span>
                 {% endif %}
-                {% if track.get_track_stockrecord.digital_download.get_downloadable_file_url %}
+                {% if track.get_sd_downloadable_file_url %}
                   <a class="link"
-                     href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}"
-                     download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}"
+                     href="{{ track.get_sd_downloadable_file_url }}"
+                     download="{{ track.get_track_stockrecord.digital_download.file.name }}"
                      class=" mp3">mp3</a>
                 {% endif %}
               </td>
