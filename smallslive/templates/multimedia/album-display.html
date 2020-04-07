@@ -6,7 +6,6 @@
 {% load purchase_info_tags %}
 {% load basket_tags %}
 
-{% block store_content %}
 <div class="album big-player {% if library %}album--library{% endif %}"> <!--flex column container for album-->
   <div class="album__header"> <!--header container flex row-->
     <div class="album__header__cover"><!--album cover container-->
@@ -111,17 +110,17 @@
           <span class="text2">{{ track.title }}</span>
         </td>
         <td>
-          {% if track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url %}
+          {% if track.get_hd_downloadable_file_url %}
             <a class="link"
-               href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}"
-               download="{{ track.get_track_stockrecord.digital_download.file.name }}"
+               href="{{ track.get_hd_downloadable_file_url }}"
+               download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}"
                class=" hd">hd</a>
             <span class="separator">/</span>
           {% endif %}
-          {% if track.get_track_stockrecord.digital_download.get_downloadable_file_url %}
+          {% if track.get_sd_downloadable_file_url %}
             <a class="link"
-               href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}"
-               download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}"
+               href="{{ track.get_sd_downloadable_file_url }}"
+               download="{{ track.get_track_stockrecord.digital_download.file.name }}"
                class=" mp3">mp3</a>
           {% endif %}
         </td>
@@ -218,7 +217,5 @@
       </div>
     </div>
   </div>
-
 </div>
 
-{% endblock store_content %}
