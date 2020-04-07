@@ -421,8 +421,13 @@ LOGGING = {
         'paypal.payflow': {
             'handlers': ['console',],
             'level': 'DEBUG'
-        }
-    }
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
 }
 
 # Crispy forms settings
