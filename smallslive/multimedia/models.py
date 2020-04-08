@@ -1,5 +1,4 @@
 import os
-import re
 from django.conf import settings
 from django.db import models
 from model_utils import Choices
@@ -78,14 +77,9 @@ class MediaFile(models.Model):
         return self.file.url
 
     def get_downloadable_file_url(self):
-
-        file_path = self.sd_video_file.name
-        file_name = file_path.split('/')[-1]
-        file_name = ''.join([c for c in file_name if re.match(r'\w|\s', c)])
-
         response_headers = {
             'response-content-type': 'application/force-download',
-            'response-content-disposition':'attachment;filename="%s"' % file_name
+            'response-content-disposition':'attachment;filename="%s"' % self.file.name.split('/')[-1]
         }
         if not settings.DEBUG or settings.FORCE_S3_SECURE:
             if self.media_type == 'audio':
@@ -93,7 +87,7 @@ class MediaFile(models.Model):
             else:
                 storage = VideoS3Storage(bucket=self.video_bucket_name)
 
-            return storage.url(file_path.encode('utf-8'), response_headers=response_headers)
+            return storage.url(self.file.name.encode('utf-8'), response_headers=response_headers)
 
         return self.file.url
 
@@ -109,22 +103,16 @@ class MediaFile(models.Model):
                 return self.sd_video_file.url
 
     def get_downloadable_sd_video_url(self):
-
-        file_path = self.sd_video_file.name
-        file_name = file_path.split('/')[-1]
-        file_name = ''.join([c for c in file_name if re.match(r'\w|\s', c)])
-
         response_headers = {
             'response-content-type': 'application/force-download',
-            'response-content-disposition':'attachment;filename="%s"' % file_name
+            'response-content-disposition':'attachment;filename="%s"'%self.sd_video_file.name.split('/')[-1]
         }
         if not settings.DEBUG or settings.FORCE_S3_SECURE:
             if self.media_type == 'audio':
                 storage = AudioS3Storage(bucket=self.audio_bucket_name)
             else:
                 storage = VideoS3Storage(bucket=self.video_bucket_name)
-            return storage.url(file_path.encode('utf-8'), response_headers=response_headers)
-
+            return storage.url(self.sd_video_file.name.encode('utf-8'), response_headers=response_headers)
         return self.sd_video_file.url
 
 
