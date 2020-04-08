@@ -80,6 +80,26 @@ class Product(AbstractProduct):
         if self.product_class.slug == "track":
             return self.stockrecords.filter(is_hd=True).first()
 
+    def get_hd_downloadable_file_url(self):
+
+        url = None
+
+        if self.get_hd_track_stockrecord:
+            if self.get_hd_track_stockrecord.digital_download:
+                url = self.get_hd_track_stockrecord.digital_download.get_downloadable_file_url()
+
+        return url
+
+    def get_sd_downloadable_file_url(self):
+
+        url = None
+
+        if self.get_track_stockrecord:
+            if self.get_track_stockrecord.digital_download:
+                url = self.get_track_stockrecord.digital_download.get_downloadable_file_url()
+
+        return url
+
     def get_product_class(self):
         if self.is_child and self.parent.product_class.slug != "album":
             return self.parent.product_class

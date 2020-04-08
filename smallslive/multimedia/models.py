@@ -76,26 +76,6 @@ class MediaFile(models.Model):
 
         return self.file.url
 
-    def get_hd_downloadable_file_url(self):
-
-        url = None
-
-        if self.get_hd_track_stockrecord:
-            if self.get_hd_stockrecord.digital_download:
-                url = self.get_hd_track_stockrecord.digital_download.get_downloadable_file_url()
-
-        return url
-
-    def get_sd_downloadable_file_url(self):
-
-        url = None
-
-        if self.get_track_stockrecord:
-            if self.get_stockrecord.digital_download:
-                url = self.get_track_stockrecord.digital_download.get_downloadable_file_url()
-
-        return url
-
     def get_downloadable_file_url(self):
         response_headers = {
             'response-content-type': 'application/force-download',
