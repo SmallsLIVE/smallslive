@@ -86,8 +86,10 @@ class MediaFile(models.Model):
                 storage = AudioS3Storage(bucket=self.audio_bucket_name)
             else:
                 storage = VideoS3Storage(bucket=self.video_bucket_name)
-
-            return storage.url(self.file.name.encode('utf-8'), response_headers=response_headers)
+            try:
+                return storage.url(self.file.name.encode('utf-8'), response_headers=response_headers)
+            except:
+                return ''
 
         return self.file.url
 
@@ -112,7 +114,11 @@ class MediaFile(models.Model):
                 storage = AudioS3Storage(bucket=self.audio_bucket_name)
             else:
                 storage = VideoS3Storage(bucket=self.video_bucket_name)
-            return storage.url(self.sd_video_file.name.encode('utf-8'), response_headers=response_headers)
+
+            try:
+                return storage.url(self.sd_video_file.name.encode('utf-8'), response_headers=response_headers)
+            except:
+                return ''
         return self.sd_video_file.url
 
 
