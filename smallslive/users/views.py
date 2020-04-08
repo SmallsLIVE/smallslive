@@ -264,6 +264,7 @@ def user_settings_view_new(request):
                 plan = stripe.Plan.retrieve(id=plan_id)
             except stripe.error.InvalidRequestError:
                 plan = None
+
         customer_charges = request.user.get_donations().order_by('-date')
         charges_value = 0
         for charge in customer_charges:

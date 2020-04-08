@@ -221,12 +221,6 @@ class Donation(models.Model):
         # Make the last day of the year the last day of access
         new_expiry_date = last_day
 
-        print 'User: ', self.user
-        print 'Last expiry date: ', last_expiry_date
-        print 'Months: ', months
-        print 'Days: ', days
-        print 'New expiry date: ', new_expiry_date
-
         return new_expiry_date
 
     def save(self, *args, **kwargs):

@@ -194,8 +194,7 @@ def subscribe_to_plan(customer, stripe_token, amount, plan_type,
     }
 
     plan = Plan.objects.filter(**plan_data).first()
-    # TODO: move this to settings.
-    plan_data['product'] = 'prod_D01wWC6DLGhq3U'
+    plan_data['product'] = settings.STRIPE_PRODUCT
     plan = plan or CustomPlan.create(**plan_data)
 
     customer.update_card(stripe_token)

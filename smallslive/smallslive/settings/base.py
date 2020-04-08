@@ -516,6 +516,7 @@ STRIPE_PUBLISHABLE_KEY = STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_CURRENCY = 'USD'
 STRIPE_CHARGE_AND_CAPTURE_IN_ONE_STEP = True
+STRIPE_PRODUCT = os.environ.get('STRIPE_PRODUCT')
 
 DJSTRIPE_PRORATION_POLICY_FOR_UPGRADES = True
 
@@ -597,12 +598,6 @@ DJSTRIPE_PLANS = {
         "interval": "monthly"
     },
 }
-
-STRIPE_PRODUCTS = {
-    'month': 'prod_D01wWC6DLGhq3U',
-    'year': 'prod_D0T011J87Uwv2E'
-}
-
 
 SUBSCRIPTION_PLANS = {
     'free': {
