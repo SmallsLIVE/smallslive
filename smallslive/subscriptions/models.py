@@ -163,8 +163,9 @@ class Donation(models.Model):
     objects = DonationManager()
 
     def __unicode__(self):
+        reference = self.reference or ''
         if self.user:
-            return u'{}: {} - {}'.format(self.user.email, self.amount, self.date)
+            return u'{}: {} - {} - {} - confirmed: {}'.format(self.user.email, self.amount, self.date, reference, self.confirmed)
         else:
             return u'anonymous: {} - {}'.format(self.amount, self.date)
 
