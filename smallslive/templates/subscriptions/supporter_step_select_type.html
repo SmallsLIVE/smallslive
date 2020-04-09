@@ -41,9 +41,9 @@
     </div>
     <p tabindex="0" class="text9">Monthly pledges are billed automatically and can be cancelled at any time from your account settings. Monthly pledges are 100% tax deductible. All donations grant access to the SmallsLIVE Archive.</p>
     <div id="monthlyPledge" class="button-row button-row-big donation-container">
-      <button class="donation-button" value=10 style="margin-bottom: 25px;">$10</button>
-      <button class="donation-button" value=20>$20</button>
-      <button class="donation-button" value=50>$50</button>
+      <button class="donation-button donation" value=10 style="margin-bottom: 25px;">$10</button>
+      <button class="donation-button donation" value=20>$20</button>
+      <button class="donation-button donation" value=50>$50</button>
       <div class="flex-column">
         <div class="flex-row custom-out">
           <div class="custom-input text4">
@@ -73,10 +73,10 @@
     <div id="yearlyPledge"
          class="button-row button-row-big donation-container pledge"
          data-dialog-type="supporter">
-      <button class="donation-button" value=10>$10</button>
-      <button class="donation-button" value=50>$50</button>
-      <button class="donation-button" value=100>$100</button>
-      <button class="donation-button" value=500>$500</button>
+      <button class="donation-button donation" value=10>$10</button>
+      <button class="donation-button donation" value=50>$50</button>
+      <button class="donation-button donation" value=100>$100</button>
+      <button class="donation-button donation" value=500>$500</button>
       <div class="flex-column">
         <div class="flex-row custom-out">
           <div class="custom-input text4">
@@ -96,6 +96,8 @@
       <label class="hidden accent-color max">
         If you’d like to make a donation of $100,000 or greater, please contact us directly.
       </label>
+      <label class="text3">Or</label>
+      <button class="donation-button" onclick="$('#select-type-row [data-id=\'gift\']').click()">Select a gift</button>
     </div>
   </div>
 {% endif %}
