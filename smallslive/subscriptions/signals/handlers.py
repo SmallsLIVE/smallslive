@@ -6,7 +6,7 @@ import subscriptions
 from subscriptions.utils import send_admin_donation_notification
 
 
-@receiver(WEBHOOK_SIGNALS['invoice.payment_succeeded'])
+@receiver(WEBHOOK_SIGNALS['charge.succeeded'])
 def invoice_payment_succeeded(sender, **kwargs):
     """Receive notifications from invoice payment (subscriptions)
     and accrue the donation.
@@ -14,16 +14,17 @@ def invoice_payment_succeeded(sender, **kwargs):
     event = kwargs.get('event')
     if event:
         customer = event.customer
-        charge_id = event.message['data']['object']['charge']
-        charge = Charge.objects.get(stripe_id=charge_id)
-        donation = subscriptions.models.Donation.objects.filter(reference=charge.stripe_id).first()
+        charge = event.message['data']['object']
+        charge_id = charge['id']
+        amount = charge['amount']
+        donation = subscriptions.models.Donation.objects.filter(reference=charge_id).first()
         if not donation:
             donation = {
                 'user': customer.subscriber,
                 'currency': 'USD',
                 'payment_source': 'Stripe Subscription',
-                'amount': charge.amount,
-                'reference': charge.stripe_id,
+                'amount': amount,
+                'reference': charge_id,
                 'confirmed': True,
             }
             subscriptions.models.Donation.objects.create(**donation)
