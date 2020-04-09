@@ -507,9 +507,6 @@ class SearchObject(object):
             self.filter_number_of_performers(
                 leader_condition, number_of_performers, names_and_instruments_conditions, names_condition)
 
-        print '************************************************************'
-        print self.sqs.query
-
         # Filter by venue and dates
         self.filter_venue(venue)
         self.filter_dates(start_date, end_date)
