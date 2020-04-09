@@ -43,6 +43,7 @@ def check_admin_update(sender, instance, update_fields=None, **kwargs):
     is_delayed = instance.payment_source == 'Check' or \
                  instance.payment_source == 'BitCoin'
     # Send notification when Donation is created only for check or bitcoin.
+    send_email = False
     if not instance.pk:
         send_email = is_delayed
 
