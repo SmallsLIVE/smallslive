@@ -44,7 +44,6 @@ class PayPalMixin(object):
                 'return_url': payment_execute_url,
                 'cancel_url': payment_cancel_url},
             'transactions': [{
-                'item_list': {'items': item_list},
                 'amount': {
                     'total': self.amount,
                     'currency': currency,
@@ -53,8 +52,10 @@ class PayPalMixin(object):
                         'subtotal': str(subtotal)
                     }
                 },
-                'description': 'SmallsLIVE'}]
+                'description': 'SmallsLIVE Foundation'}]
         }
+        if item_list:
+            data['transactions'][0]['item_list'] = item_list
 
         return data
 

@@ -508,7 +508,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                     "sku": "N/A",
                     'currency': 'USD',
                     'quantity': 1}
-                item_list = [item]
+                item_list = []
                 self.handle_paypal_payment(
                     'USD', item_list,
                     donation=True,
