@@ -157,10 +157,7 @@ class Product(AbstractProduct):
         return unicode(title)
 
     def get_primary_image(self):
-        print 'Get primary image ---> '
         product_image = self.primary_image()
-        print product_image
-        print self.parent
         if getattr(product_image, 'is_missing', True) and self.parent_id:
             product_image = self.parent.primary_image()
 
