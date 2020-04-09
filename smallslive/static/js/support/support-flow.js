@@ -563,7 +563,7 @@ $(document).ready(function() {
     $selectionConfirmationDialog.modal("show");
   });
 
-  $(document).on("click", "#yearlyPledge > button", function() {
+  $(document).on("click", "#yearlyPledge > button.donation", function() {
     $mainContainer.find("#yearlyPledge > button").removeClass("active");
     oneTimeSelected($(this));
   });
@@ -593,7 +593,7 @@ $(document).ready(function() {
   });
 
   // Available when coming from Catalog/Support Artist
-  $(document).on("click", "#supportPledge > button", function() {
+  $(document).on("click", "#supportPledge > button.donation", function() {
     $mainContainer.find("#supportPledge > button").removeClass("active");
     oneTimeSelected($(this));
   });
