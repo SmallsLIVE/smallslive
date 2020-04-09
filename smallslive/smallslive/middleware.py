@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.http import HttpResponsePermanentRedirect
+from django.http import HttpResponseRedirect
 
 
 class RedirectMiddleware(object):
@@ -11,4 +11,4 @@ class RedirectMiddleware(object):
         host = request.get_host()
         if settings.REDIRECT_TO_MAINTENANCE and 'smallslive.com' in host:
             if 'maintenance' not in request.path:
-                return HttpResponsePermanentRedirect(reverse('maintenance_view'))
+                return HttpResponseRedirect(reverse('maintenance_view'))
