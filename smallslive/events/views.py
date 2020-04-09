@@ -1059,3 +1059,11 @@ def remove_comment(request):
     comment.delete()
     messages.info(request, "Comment deleted")
     return HttpResponseRedirect(success_url)
+
+
+class MaintenanceView(TemplateView):
+
+    template_name = 'maintenance.html'
+
+
+maintenance_view = MaintenanceView.as_view()

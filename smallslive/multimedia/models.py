@@ -79,14 +79,18 @@ class MediaFile(models.Model):
     def get_downloadable_file_url(self):
         response_headers = {
             'response-content-type': 'application/force-download',
-            'response-content-disposition':'attachment;filename="%s"'%self.file.name.split('/')[-1]
+            'response-content-disposition':'attachment;filename="%s"' % self.file.name.split('/')[-1]
         }
         if not settings.DEBUG or settings.FORCE_S3_SECURE:
             if self.media_type == 'audio':
                 storage = AudioS3Storage(bucket=self.audio_bucket_name)
             else:
                 storage = VideoS3Storage(bucket=self.video_bucket_name)
-            return storage.url(self.file.name, response_headers=response_headers)
+            try:
+                return storage.url(self.file.name.encode('utf-8'), response_headers=response_headers)
+            except:
+                return ''
+
         return self.file.url
 
     def get_sd_video_url(self):
@@ -110,7 +114,11 @@ class MediaFile(models.Model):
                 storage = AudioS3Storage(bucket=self.audio_bucket_name)
             else:
                 storage = VideoS3Storage(bucket=self.video_bucket_name)
-            return storage.url(self.sd_video_file.name, response_headers=response_headers)
+
+            try:
+                return storage.url(self.sd_video_file.name.encode('utf-8'), response_headers=response_headers)
+            except:
+                return ''
         return self.sd_video_file.url
 
 

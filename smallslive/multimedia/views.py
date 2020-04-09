@@ -317,7 +317,6 @@ class AlbumView(TemplateView):
         strategy = selector.strategy(
             request=self.request, user=self.request.user)
         for product in products:
-            print 'Product: ', product
             context['gifts'].append(product)
             if product.variants.count():
                 stock = product.variants.first().stockrecords.first()

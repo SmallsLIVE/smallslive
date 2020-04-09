@@ -19,7 +19,7 @@
       <div class="slide-btn catalog next"><b class="indicator-icon icon-right-caret"></b></div>
       <div class="event-row catalog-carousel owl-carousel owl-theme">
         {% for item in downloads_list %}
-          <article class="event-display download"
+          <article class="event-display display-download"
                    id="{{ item.pk }}">
             {% include 'promotions/featured_card.html' with event=item redirect=True secondary=secondary hide_play=True%}
             <div class="event-info">
@@ -31,7 +31,7 @@
         {% endfor %}
         {% for album in album_list %}
           {% with image=album.parent %}
-            <article class="event-display album"
+            <article class="event-display display-album"
                      id='{{ album.parent.pk }}'
                      data-parent-pk="{{ album.parent.pk }}"
                      data-type="{{ album.album_type }}"

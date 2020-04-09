@@ -1,0 +1,32 @@
+
+{% load static from staticfiles %}
+{% load i18n %}
+
+
+
+{% block title %}Smalls Jazz Club{% endblock %}
+
+{# TODO Shouldn't be needed here #}
+{% block body_class %}home{% endblock %}
+
+{% block extra_head %}
+  <meta name="description"
+        content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+  <div class="main-container pad-content" style="height: 43vh;">
+    <div class="flex-row content-centered">
+      <div class="flex-column info-page-container legal-content">
+        <h1 class="">SmallsLIVE Foundation</h1>
+        <p class="">We are about to launch our new website for The SmallsLIVE Foundation for Jazz Art and Education.
+          Please be patient and check in again soon.  We will also formally announce the launch of the website.
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock%}

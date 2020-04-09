@@ -6,7 +6,7 @@ import subscriptions
 from subscriptions.utils import send_admin_donation_notification
 
 
-@receiver(WEBHOOK_SIGNALS['invoice.payment_succeeded'])
+@receiver(WEBHOOK_SIGNALS['charge.succeeded'])
 def invoice_payment_succeeded(sender, **kwargs):
     """Receive notifications from invoice payment (subscriptions)
     and accrue the donation.
@@ -14,19 +14,24 @@ def invoice_payment_succeeded(sender, **kwargs):
     event = kwargs.get('event')
     if event:
         customer = event.customer
-        charge_id = event.message['data']['object']['charge']
-        charge = Charge.objects.get(stripe_id=charge_id)
-        donation = subscriptions.models.Donation.objects.filter(reference=charge.stripe_id).first()
-        if not donation:
+        charge = event.message['data']['object']
+        invoice = charge['invoice']
+        charge_id = charge['id']
+        amount = charge['amount'] / 100
+        donation = subscriptions.models.Donation.objects.filter(reference=charge_id).first()
+        if not donation and invoice:
             donation = {
                 'user': customer.subscriber,
                 'currency': 'USD',
                 'payment_source': 'Stripe Subscription',
-                'amount': charge.amount,
-                'reference': charge.stripe_id,
+                'amount': amount,
+                'reference': charge_id,
                 'confirmed': True,
             }
             subscriptions.models.Donation.objects.create(**donation)
+        else:
+            donation.confirmed = True
+            donation.save()
 
 
 # Send email updates to admin only if donation is confirmed
@@ -38,6 +43,7 @@ def check_admin_update(sender, instance, update_fields=None, **kwargs):
     is_delayed = instance.payment_source == 'Check' or \
                  instance.payment_source == 'BitCoin'
     # Send notification when Donation is created only for check or bitcoin.
+    send_email = False
     if not instance.pk:
         send_email = is_delayed
 

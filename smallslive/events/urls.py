@@ -28,4 +28,7 @@ urlpatterns = patterns('events.views',
     # venue
     url(r'^add_venue/$', 'venue_add', name='venue_add'),
     url(r'^edit_venue/(?P<pk>\d+)/$', 'venue_edit', name='venue_edit'),
+
+    # maintenance
+    url(r'^maintenance/$', 'maintenance_view', name='maintenance_view'),
 )

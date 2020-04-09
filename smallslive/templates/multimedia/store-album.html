@@ -1,4 +1,4 @@
-{% extends "store_base.html" %}
+{% extends 'store_base.html' %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 {% load thumbnail %}
@@ -7,10 +7,244 @@
 {% load purchase_info_tags %}
 {% load basket_tags %}
 
-
 {% block store_content %}
   <section id="my-downloads-album__list">
-    {% include 'multimedia/album-display.html' with album_product=album_product if_full=is_full bought_tracks=bought_tracks is_catalogue=is_catalogue mp3_available=mp3_available %}
+
+
+    <div class="album big-player {% if library %}album--library{% endif %}"> <!--flex column container for album-->
+      <div class="album__header"> <!--header container flex row-->
+        <div class="album__header__cover"><!--album cover container-->
+          {% with cover_art=album_product.images.first %}
+            <div class="album__header__cover__artwork"><!--cover art container-->
+              <img src="{% thumbor_url cover_art.original.url|urlencode height=480 width=0 %}"
+                   alt="{{ product.get_title }}"
+                   class="album__header__cover__artwork {% if all_images.count == 1 %} one-image{% else %} more-images{% endif %}">
+            </div>
+
+          {% endwith %}
+          {% if can_preview or not is_catalog %}
+            <div class="purchases-player-button myplay-btn album__header__cover__player-controls"><!--player control container-->
+              <div class="fa-thin-circle fa album__header__cover__player-controls__play"><i class="fas fa-play" ></i></div><!--player control-->
+            </div>
+          {% endif %}
+
+          <div class="album__support-buttons__container--mobile">
+            <!--<div class="sponsor-text text2">Sponsor this {{ text }} artist and project with a tax-deductable donation to the smallslive foundation</div>-->
+            <div>
+              <button id="projectDonationBtnMobile" class="white-border-button buttons-row" style="width: 100%; margin-left: 0; font-size: 12px;">sponsor</button>
+            </div>
+            {% if not is_catalogue %}
+            <div>
+              <button id="tracksDownloadBtnMobile" class="white-border-button buttons-row" style="width: 100%; margin-left: 0; font-size: 12px;">Download Tracks</button>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="album__track-list">
+          {% for track in album_product.tracks.all|dictsort:"ordering" %}
+            <!-- tracks table row -->
+            <div class="track-container" style="position:relative">
+              {% if not is_catalogue %}
+                <div class="progress-holder" id='{{ forloop.counter0 }}' data-progress="0">
+                  <div class="progress-bar paused">
+                    <span class="progress-btn"></span>
+                  </div>
+                </div>
+              {% endif %}
+              <div id="t{{ forloop.counter0 }}"
+                   class="my-downloads-album__tracks-table__row flex-row{% if is_catalogue and is_bought %} play-on-library{% endif %}{% if track.get_track_preview_url == 'blank.mp3' and not is_bought %} no-play{% endif %}"
+                   {% if is_catalogue and is_bought %} data-url="{% url 'my-downloads' %}?album={{ album_product.pk }}"{% endif %}>
+                <!-- attempts to play Library tracks on Catalog must redirect to the Library -->
+                <div class="hidden my-downloads-album__tracks-table__column audio">
+                  {% if is_catalogue %}
+                    {% if track.get_track_preview_url != 'blank.mp3' %}
+                      <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{ track.attr.duration }}">
+                        {% if track.get_track_preview_url %}
+                          <source src="{{ track.get_track_preview_url|safe }}" type="audio/mpeg">
+                        {% endif %}
+                      </audio>
+                    {% endif %}
+                  {% else %}
+                    <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
+                      {% if track.get_hd_track_stockrecord %}
+                        <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                      {% else %}
+                        <source src="{{ track.get_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                      {% endif %}
+                    </audio>
+                  {% endif %}
+                </div>
+
+                <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
+                  <div class="my-downloads-album__tracks-table__column track title2 ">
+                    {{ track.title }}
+                    {% if is_catalogue and track.get_track_preview_url != 'blank.mp3' and not is_bought %}
+                      <span style="font-size: 10px;">(preview)</span>
+                    {% endif %}
+                  </div>
+                  <div class="my-downloads-album__tracks-table__column composer text1">
+                    {{ track.attr.composer }}
+                  </div>
+                </div>
+                <div class="store-buy my-downloads-album__tracks-table__column duration text1 {% if not is_catalogue %} {% if not is_bought %} disabled {% endif %}{% endif %}">
+                  {{ track.attr.duration }}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+          <!-- end of tracks table row -->
+        </div>
+        <!-- end of tracks table -->
+      </div>
+      {% if not is_catalogue %}
+        <!-- This table is hidden and will be copied into the modal if the users selects to download tracks -->
+        <table id="track-list-tbl" class="hidden">
+          <thead>
+            <tr class="table_row">
+              <th>
+                Track
+              </th>
+              <th>
+                Download
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for track in album_product.tracks.all|dictsort:"ordering" %}
+            <tr>
+              <td>
+                <span class="text2">{{ track.title }}</span>
+              </td>
+              <td>
+                {% if track.get_hd_downloadable_file_url %}
+                  <a class="link"
+                     href="{{ track.get_hd_downloadable_file_url }}"
+                     download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}"
+                     class=" hd">hd</a>
+                  <span class="separator">/</span>
+                {% endif %}
+                {% if track.get_sd_downloadable_file_url %}
+                  <a class="link"
+                     href="{{ track.get_sd_downloadable_file_url }}"
+                     download="{{ track.get_track_stockrecord.digital_download.file.name }}"
+                     class=" mp3">mp3</a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <!-- end table -->
+      {% endif %}
+      <!-- hidden donation popup contents. To be copied into the popup  on show-->
+        <div id="donation-confirmation-body"
+             class="hidden">
+          <p class="title2 accent-color title">Sponsorship Donation</p>
+          <p class="text9" style="align-self: normal;">
+            Sponsor this artist with a tax deductible donation to the SmallsLIVE Foundation.
+            Your donation directly supports this artist and this project.
+            You may choose to receive this album as a download or cd for a partially tax-deductible donation.
+          </p>
+          {% if total_donation %}
+            <p class="text9{% if not total_donation %} hidden{% endif %}" style="align-self: normal;">
+              You have made a contribution of <span id="project-total-donation">${{ total_donation }}</span> to this project.
+            </p>
+          {% endif %}
+          {% if is_bought and is_catalogue %}
+            <p class="text9" style="align-self: normal;">
+              If you received access to a digital recording,
+              it can be found in your <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="accent-color underline" style="">Library</a>
+            </p>
+          {% endif %}
+          <p class="gift-content"></p>
+          <div class="text4 text-centered" style="display: flex; justify-content: center;">
+            <button class="white-border-button cancel-button" style="margin-rightt: 5px;">Cancel</button>
+            {% if user.is_authenticated %}
+              {% if user.has_activated_account %}
+                <button id="confirmDonationButton"
+                        class="white-border-button confirm"
+                        data-support-url="{% url 'product_support' product_id=album_product.pk %}"
+                        style="margin-left: 5px;">Continue</button>
+              {% else %}
+                <button id="supportConfirmEmailButton"
+                        class="white-border-button buttons-row"
+                        onclick="$('#supportConfirmationDialog').modal('hide');$('#inactive-dialog').modal('show');"
+                        data-redirect-url="{% url 'product_support' product_id=album_product.pk %}">
+                  Confirm Email
+                </button>
+              {% endif %}
+            {% else %}
+              <button id="supportLogIn"
+                      class="white-border-button sign-in-button"
+                      data-redirect-url="{% url 'product_support' product_id=album_product.pk %}">
+                Sign In
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      <!-- end hidden donation popup contents-->
+      <div>
+        <div class="album__info__container">
+          <div class="album__header__title"><!--album title container (maybe not necessary)-->
+            <div class="album__header__title--no-underline">{% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }} {{ album_product.upc }}</div><!--album title-->
+            <p class="text9 accent-color" style="align-self: normal; font-style: italic; margin-top: 15px; font-size: 1.8em;">
+              You may choose to receive this album as a download or cd for a partially tax-deductible donation.
+              Your sponsorship directly supports this artist and the SmallsLIVE Foundation.
+            </p>
+            <div class="album__musician-list">
+              <ul>
+              {% for artist_product in album_product.artistproduct_set.all %}
+                <li>
+                  <a href="{% url 'search' %}?artist_pk={{ artist_product.artist.pk }}&return_url={{ request.path }}" class="title2">
+                      {{ artist_product.artist }} / {{ artist_product.instrument }}
+                  </a>
+                </li>
+              {% endfor %}
+              </ul>
+            </div>
+          </div>
+          <div class="album__support-buttons__container">
+            <!--<div class="sponsor-text text2">Sponsor this {{ text }} artist and project with a tax-deductable donation to the smallslive foundation</div>-->
+            {% if not is_catalogue %}
+            <div>
+              <button id="tracksDownloadBtn" class="white-border-button buttons-row" style="margin-left: 0;">Download Tracks</button>
+            </div>
+            {% endif %}
+            <div>
+              <button id="projectDonationBtn"
+                          class="white-border-button buttons-row"
+                          style="margin-left: 0;"
+                          data-redirect-url="{% url 'product_support' product_id=album_product.pk %}">sponsor</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="description-container text4">
+            {{ album_product.description|striptags|safe }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   </section>
   {% include 'subscriptions/popups/product_support_confirmation_dialog.html' %}
 {% endblock %}

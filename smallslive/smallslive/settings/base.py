@@ -137,6 +137,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
+    'smallslive.middleware.RedirectMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -420,8 +421,13 @@ LOGGING = {
         'paypal.payflow': {
             'handlers': ['console',],
             'level': 'DEBUG'
-        }
-    }
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
 }
 
 # Crispy forms settings
@@ -510,6 +516,7 @@ STRIPE_PUBLISHABLE_KEY = STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_CURRENCY = 'USD'
 STRIPE_CHARGE_AND_CAPTURE_IN_ONE_STEP = True
+STRIPE_PRODUCT = os.environ.get('STRIPE_PRODUCT')
 
 DJSTRIPE_PRORATION_POLICY_FOR_UPGRADES = True
 
@@ -591,12 +598,6 @@ DJSTRIPE_PLANS = {
         "interval": "monthly"
     },
 }
-
-STRIPE_PRODUCTS = {
-    'month': 'prod_D01wWC6DLGhq3U',
-    'year': 'prod_D0T011J87Uwv2E'
-}
-
 
 SUBSCRIPTION_PLANS = {
     'free': {
@@ -800,3 +801,5 @@ FORCE_S3_SECURE = False
 WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'
 
 ADMIN_EMAILS = ast.literal_eval(os.environ.get('ADMIN_EMAILS', '[]'))
+
+REDIRECT_TO_MAINTENANCE = ast.literal_eval(os.environ.get('REDIRECT_TO_MAINTENANCE', 'False'))

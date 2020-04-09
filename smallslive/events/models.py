@@ -1117,7 +1117,6 @@ class EventSet(models.Model):
                 audio_play_count = audio_play_count[0]
             else:
                 audio_play_count = {}
-            print 'Audio: ', audio_play_count
 
         if self.video_recording:
             video_metrics = UserVideoMetric.objects.filter(recording_id=self.video_recording.pk)
@@ -1127,12 +1126,10 @@ class EventSet(models.Model):
             else:
                 video_seconds_played = {}
             video_play_count = video_metrics.values('recording_id').annotate(play_count=Sum('play_count'))
-            print 'Video play count: ', video_play_count
             if video_play_count:
                 video_play_count = video_play_count[0]
             else:
                 video_play_count = {}
-            print 'Video: ', video_play_count
 
         audio_seconds_played = audio_seconds_played.get('seconds_played', 0)
         video_seconds_played = video_seconds_played.get('seconds_played', 0)

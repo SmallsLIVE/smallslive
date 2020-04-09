@@ -74,9 +74,13 @@
       <div id="user-donation-settings" class="account-settings-view">
         <div class="title5 account-settings-title text-bottom-line">Supporter settings</div>
         <div class="account-settings-info">
-          <div class="text5">Current Monthly Pledge</div>
+          <div class="text5">Current Pledge</div>
           {% if customer_detail.subscription.plan and not cancelled %}
             <div class="text9 accent-color">${{ monthly_pledge_in_dollars }}/{{ customer_detail.subscription.plan.interval }}</div>
+          {% elif plan and plan.active and plan.interval and plan.interval == 'month' %}
+            <div class="text9 accent-color">${{ plan.amount }}/{{ plan.interval }}</div>
+          {% elif plan and plan.active and plan.interval and plan.interval == 'year' %}
+            <div class="text9 accent-color">${{ plan.amount }}/{{ plan.interval }}</div>
           {% else %}
             <div class="text9 accent-color">{% if cancelled %}Subscription canceled{% else %}None{% endif %}</div>
           {% endif %}
@@ -117,7 +121,7 @@
                 </div>
                 </div>
                 <div class="account-settings-info">
-                  <div class="text5">Total donations this year</div>
+                  <div class="text5">Total donations this tax year</div>
                   <div class="text9 accent-color">${{ charges_value }}</div>
                 </div>
                 <br>
@@ -130,7 +134,7 @@
           {% if user.has_activated_account %}
             {% if customer_detail.subscription.plan and not cancelled %}
               <div class="text5">Expiration of archive access</div>
-              <div class="text9 text-grey">There is no expiration date until the monthly pledge is cancelled</div>
+              <div class="text9 text-grey">There is no expiration date until the pledge is cancelled</div>
             {% elif user_archive_access_until %}
               <div class="text5">Expiration of archive access</div>
               <div class="text9 text-grey"> {{ user_archive_access_until|date:"m/d/Y" }}</div>
@@ -191,7 +195,7 @@
               <div class="title5 account-settings-title text-bottom-line" style="text-align: center;">Cancelling pledge</div>
               <div class="account-settings-info cancel-info">
                   <div class="text9">
-                    Your actual monthly pledge is ${{monthly_pledge_in_dollars}} giving you access to the archive until
+                    Your current pledge is ${{monthly_pledge_in_dollars}} giving you access to the archive until
                     {{ user.get_archive_access_expiry_date|date:"n/j/Y" }}.<br>
                     Canceling it will make the access to the archive videos unavailable until the renovation of the pledge or the
                     making of a one time donation.
@@ -199,7 +203,7 @@
                   <div class="custom-settings-form">
                     <form action="{% url 'cancel_subscription' %}" method="post" id="cancel-form" >
                       {% csrf_token %}
-                      <button class="white-border-button" style="margin: 0 auto ; width: 100%;" >Cancel monthly pledge</button>
+                      <button class="white-border-button" style="margin: 0 auto ; width: 100%;" >Cancel pledge</button>
                     </form>
                   </div>
               </div>

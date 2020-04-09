@@ -192,12 +192,15 @@ class AssignProductMixin(object):
             category_list = []
             for category in line.product.get_categories().all():
                 category_list.append(category.name)
-            if 'Full Access' in category_list or line.product.product_class.slug == 'full-access':
+            product_class = line.product.product_class
+            if not product_class:
+                product_class = line.product.parent.product_class
+            if 'Full Access' in category_list or product_class.slug == 'full-access':
                 if UserCatalogue.objects.filter(user=self.request.user).first():
                     UserCatalogue.objects.filter(user=self.request.user).update(has_full_catalogue_access=True)
                 else:
                     UserCatalogue.objects.get_or_create(user=self.request.user, has_full_catalogue_access=True)
-            if line.product.product_class.slug in ['physical-album', 'digital-album', 'track'] or line.product.misc_file:
+            if product_class.slug in ['physical-album', 'digital-album', 'track'] or line.product.misc_file:
                 UserCatalogueProduct.objects.get_or_create(user=self.request.user, product=line.product)
 
 

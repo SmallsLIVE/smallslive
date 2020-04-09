@@ -163,8 +163,9 @@ class Donation(models.Model):
     objects = DonationManager()
 
     def __unicode__(self):
+        reference = self.reference or ''
         if self.user:
-            return u'{}: {} - {}'.format(self.user.email, self.amount, self.date)
+            return u'{}: {} - {} - {} - confirmed: {}'.format(self.user.email, self.amount, self.date, reference, self.confirmed)
         else:
             return u'anonymous: {} - {}'.format(self.amount, self.date)
 
@@ -220,12 +221,6 @@ class Donation(models.Model):
 
         # Make the last day of the year the last day of access
         new_expiry_date = last_day
-
-        print 'User: ', self.user
-        print 'Last expiry date: ', last_expiry_date
-        print 'Months: ', months
-        print 'Days: ', days
-        print 'New expiry date: ', new_expiry_date
 
         return new_expiry_date
 
