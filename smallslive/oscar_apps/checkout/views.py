@@ -436,9 +436,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         if first_name and last_name:
             self.checkout_session.set_reservation_name(first_name, last_name)
 
-        print 'Set reservation name: ', first_name, last_name
-        print self.checkout_session.get_reservation_name()
-
         # We use a custom parameter to indicate if this is an attempt to place
         # an order (normally from the preview page).  Without this, we assume a
         # payment form is being submitted from the payment details view. In
@@ -512,7 +509,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 self.card_token = form.token
                 self.checkout_session._set('payment', 'card_info', {
                     'name': form.cleaned_data['name'],
-                    'last_4': form.cleaned_data['number'][-4:],
+                    'last_4': form.cleaned_data['card_number'][-4:],
                 })
 
                 return self.render_preview(self.request, card_token=form.token, form=form,
@@ -545,7 +542,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 self.card_token = form.token
                 self.checkout_session._set('payment', 'card_info', {
                     'name': form.cleaned_data['name'],
-                    'last_4': form.cleaned_data['number'][-4:],
+                    'last_4': form.cleaned_data['card_number'][-4:],
                 })
                 return self.render_preview(self.request, card_token=form.token, form=form,
                                            payment_method=payment_method,
