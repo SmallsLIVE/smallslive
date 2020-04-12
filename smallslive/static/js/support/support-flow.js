@@ -138,15 +138,50 @@ var showPanel = function(step) {
 var $itemForm;
 
 var checks = {
-  "#card-number": 19, //4444 4444 4444 4444
-  "#expiry-year": 2,
-  "#cvc": 3,
-  "#expiry-month": 2
-};
+    "#card-number":  {
+      "length": { "default": 19, "amex": 17 } // 16 cc numbers + 3 white spaces
+    },
+    "#expiry-month":  {
+      "length": { "default": 2 }
+    },
+    "#expiry-year":  {
+      "length": { "default": 2 }
+    },
+    "#cvc":  {
+      "length": { "default": 3, "amex": 4 }
+    },
+    /* TODO: Bankcard form. Remove for no
+    "#ccv":  {
+      "length": { "default": 3, "amex": 4 }
+    }
+    */
+  };
 
 function checkInput(selector,  value) {
+
+  var $cardInput = $("#card-number");
+
   $input = $(selector);
-  return $input.val().length === value;
+  // look for other check value than default
+
+  var checkValue = null;
+  var classes = $cardInput.attr("class");
+  if (classes) {
+    $.each(classes.split(" "), function (index, item) {
+      if (value.length[item]) {
+        checkValue = value.length[item];
+      }
+    });
+  }
+  if (!checkValue) {
+    checkValue = value.length.default;
+  }
+  var length = 0;
+  if ($input.val()) {
+    length = $input.val().length;
+  }
+
+  return length === checkValue;
 }
 
 function checkCreditCardForm() {
@@ -158,7 +193,6 @@ function checkCreditCardForm() {
           return;
         }
       }
-      console.log("No " + selector);
       check = false;
       return;
     }

@@ -715,74 +715,11 @@ class ProductSupportView(ProductMixin, BecomeSupporterView):
 product_support = ProductSupportView.as_view()
 
 
-class SignupPaymentView(LoginRequiredMixin, FormValidMessageMixin, SubscriptionMixin, FormView):
-    # TODO - needs tests
-
-    form_class = PlanForm
-    template_name = 'account/signup-payment.html'
-    success_url = reverse_lazy("accounts_signup_complete")
-    form_valid_message = "You are now subscribed!"
-
-    def get_form_kwargs(self):
-        kwargs = super(SignupPaymentView, self).get_form_kwargs()
-        kwargs['selected_plan_type'] = self.kwargs.get('plan_name')
-        return kwargs
-
-    def get_context_data(self, **kwargs):
-        context = super(FormView, self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        plan_name = self.kwargs.get('plan_name')
-        plan = settings.SUBSCRIPTION_PLANS.get(plan_name)
-        if not plan:
-            raise Http404
-        context['plan'] = plan
-        return context
-
-    def post(self, request, *args, **kwargs):
-        """
-        Handles POST requests, instantiating a form instance with the passed
-        POST variables and then checked for validity.
-        """
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        if form.is_valid():
-            try:
-                customer, created = Customer.get_or_create(
-                    subscriber=subscriber_request_callback(self.request))
-                customer.update_card(self.request.POST.get("stripe_token"))
-                customer.subscribe(form.cleaned_data["plan"])
-            except stripe.StripeError as e:
-                # add form error here
-                self.error = e.args[0]
-                return self.form_invalid(form)
-
-            # redirect to confirmation page
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-
-signup_payment = SignupPaymentView.as_view()
-
-
 class SyncPaymentHistoryView(SyncHistoryView):
     template_name = 'account/blocks/payment_history.html'
 
 
 sync_payment_history = SyncPaymentHistoryView.as_view()
-
-
-class SubscriptionSettingsView(LoginRequiredMixin, TemplateView):
-    template_name = 'account/subscription-settings.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(SubscriptionSettingsView,
-                        self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        return context
-
-
-subscription_settings = SubscriptionSettingsView.as_view()
 
 
 class UpdateCardView(ChangeCardView):
@@ -796,31 +733,6 @@ class UpdateCardView(ChangeCardView):
 
 
 update_card = UpdateCardView.as_view()
-
-
-class UpgradePlanView(ChangePlanView):
-    form_class = PlanForm
-    success_url = reverse_lazy("subscription_settings")
-    template_name = 'account/upgrade_plan.html'
-
-    def get_form_kwargs(self):
-        kwargs = super(UpgradePlanView, self).get_form_kwargs()
-        kwargs['selected_plan_type'] = self.kwargs.get('plan_name')
-        return kwargs
-
-    def get_context_data(self, **kwargs):
-        context = super(UpgradePlanView, self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        plan_name = self.kwargs.get('plan_name')
-        plan = settings.SUBSCRIPTION_PLANS.get(plan_name)
-        if not plan:
-            raise Http404
-        context['plan'] = plan
-        context['stripe_token'] = self.request.user.customer.card_fingerprint
-        return context
-
-
-upgrade_plan = UpgradePlanView.as_view()
 
 
 class CancelSubscriptionView(BaseCancelSubscriptionView):
