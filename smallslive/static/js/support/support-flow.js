@@ -160,10 +160,13 @@ var checks = {
 function checkInput(selector,  value) {
 
   var $cardInput = $("#card-number");
-
   $input = $(selector);
-  // look for other check value than default
 
+  if ($cardInput.get(0) == $input.get(0)) {
+    return $cardInput.hasClass("jp-card-valid");
+  }
+
+  // look for other check value than default
   var checkValue = null;
   var classes = $cardInput.attr("class");
   if (classes) {
