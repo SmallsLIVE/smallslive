@@ -142,66 +142,7 @@
         <div class="row">
           <div class="store__form__group clearfix payment-method-form {% if payment_form.can_use_existing %}hidden{% endif %}" id="credit-card-form">
             <div class="col-xs-12 col-sm-4 col-sm-offset-4">
-              <div class="signup__payment__card__info">
-                {% csrf_token %}
-                <div class="row">
-                  <div class="col-xs-6">
-                    <input type="text" class="store__form__input"
-                           id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*"
-                           data-stripe="number"
-                           autocomplete="off"
-                           name="number" {% if payment_form.number.value %}value="{{ payment_form.number.value }}"{% endif %}
-                           placeholder="Credit Card Number">
-                    {% for error in payment_form.number.errors %}
-                        <span class="store__form__field-error">{{ error }}</span>
-                    {% endfor %}
-                  </div>
-
-                  <div class="col-xs-3">
-                    <input type="text" class="store__form__input"
-                           data-stripe="exp-month"
-                           id="expiry-month" placeholder="MM" size="2" pattern="\d*"
-                           autocomplete="off" name="exp_month" {% if payment_form.exp_month.value %}value="{{ payment_form.exp_month.value }}"{% endif %}
-                           placeholder="Valid thru">
-                    {% for error in payment_form.exp_month.errors %}
-                    <span class="store__form__field-error">{{ error }}</span>
-                  {% endfor %}
-                  </div>
-                    <div class="col-xs-3">
-                        <input type="text" class="store__form__input"
-                               data-stripe="exp-year"
-                               id="expiry-year" placeholder="YY" size="2"
-                               pattern="\d*" autocomplete="off"
-                               name="exp_year" {% if payment_form.exp_year.value %}value="{{ payment_form.exp_year.value }}"{% endif %}>
-                        {% for error in payment_form.exp_year.errors %}
-                      <span class="store__form__field-error">{{ error }}</span>
-                  {% endfor %}
-                    </div>
-
-                </div>
-                <div class="row">
-                  <div class="col-xs-9">
-                    <input type="text" class="store__form__input"
-                           id="name-on-card"
-                           placeholder="Name on card"
-                           data-stripe="name"
-                           autocomplete="off"
-                           name="name" {% if payment_form.name.value %}value="{{ payment_form.name.value }}"{% endif %}>
-                  </div>
-                  <div class="col-xs-3">
-                    <input type="text" class="store__form__input"
-                           id="cvc" placeholder="xxx" size="4"
-                           data-stripe="cvc"
-                           pattern="\d*" autocomplete="off"
-                           name="cvc" {% if payment_form.cvc.value %}value="{{ payment_form.cvc.value }}"{% endif %}>
-                    {% for error in payment_form.cvc.errors %}
-                    <span class="store__form__field-error">{{ error }}</span>
-                    {% endfor %}
-                  </div>
-                </div>
-              </div>
-              <div class="card-wrapper"></div>
-              <div id="form-general-error" class="accent-color text-center text3"></div>
+              {% include 'subscriptions/credit_card_details.html' %}
             </div>
           </div>
         </div>

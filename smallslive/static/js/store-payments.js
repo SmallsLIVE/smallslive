@@ -4,29 +4,29 @@ $(document).ready(function () {
   // with different ids.
   // This makes it generic.
   var checks = {
-    '#card-number':  {
-      'length': 19, // 16 cc numbers + 3 white spaces
-      'next': ['#expiry-month']
+    "#card-number":  {
+      "length": { "default": 19, "amex": 17 } // 16 cc numbers + 3 white spaces
+      "next": ["#expiry-month"]
     },
-    '#expiry-month':  {
-      'length': 2,
-      'next': ['#expiry-year', '#expiry-year-placeholder'],
+    "#expiry-month":  {
+      "length": 2,
+      "next": ["#expiry-year", "#expiry-year-placeholder"],
     },
-    '#expiry-year':  {
-      'length': parseInt($('#expiry-year').attr('size')),
-      'next': ['#name-on-card']
+    "#expiry-year":  {
+      "length": parseInt($("#expiry-year").attr("size")),
+      "next": ["#name-on-card"]
     },
-    '#expiry-year-placeholder':  {
-      'length': parseInt($('#expiry-year-placeholder').attr('size')),
-      'next': ['#name-on-card']
+    "#expiry-year-placeholder":  {
+      "length": parseInt($("#expiry-year-placeholder").attr("size")),
+      "next": ["#name-on-card"]
     },
-    '#cvc':  {
-      'length': 3,
-      'next': []
+    "#cvc":  {
+      "length": { "default": 3, "amex": 4 },
+      "next": []
     },
-    '#ccv':  {
-      'length': 3,
-      'next': []
+    "#ccv":  {
+      "length": 3,
+      "next": []
     }
   };
   

@@ -1,0 +1,30 @@
+<div class="section-title section-title-no-padded">
+  <div tabindex="0" class="title1">Payment Information</div>
+</div>
+<div class="row">
+  <div class="button-row button-row-margin" style="margin-bottom: 30px;">
+    {% if form.can_use_existing %}
+      <div class="store__form__selection__option">
+      <button class="payment-method-toggle active" data-id="existing-credit-card">Use existing credit card</button>
+      </div>
+    {% endif %}
+    <div class="store__form__selection__option">
+    <button class="payment-method-toggle {% if not form.can_use_existing %}active{% endif %}" data-id="credit-card">Pay with credit card</button>
+    </div>
+    <div class="store__form__selection__option">
+        <button class="payment-method-toggle" data-id="paypal">Pay with PayPal</button>
+    </div>
+  </div>
+</div>
+<input type="hidden" name="payment_method" id="payment-method" value="{% if form.payment_method.value == 'existing-credit-card' %}existing-credit-card{%  else %}credit-card{% endif %}">
+<div class="store__form__group clearfix row payment-method-form {% if not form.can_use_existing %}hidden{% endif %}" id="existing-credit-card-form">
+    <p tabindex="0" class="text9">Pay with existing {{ user.customer.card_kind }} credit card ending in {{ user.customer.card_last_4 }}</p>
+</div>
+<div class="store__form__group clearfix row payment-method-form hidden" id="paypal-form">
+    <p  tabindex="0" class="text9">You will be redirected to PayPal to complete your transaction</p>
+</div>
+<div class="store__form__group clearfix payment-method-form {% if form.can_use_existing %}hidden{% endif %}" id="credit-card-form">
+  <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+    {% include 'subscriptions/credit_card_details.html' %}
+  </div>
+</div>

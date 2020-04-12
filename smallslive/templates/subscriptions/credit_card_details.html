@@ -1,0 +1,56 @@
+<div class="signup__payment__card__info">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-xs-6">
+      <input type="text" class="store__form__input"
+         id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*"
+         data-stripe="number"
+         autocomplete="off" name="number" {% if form.number.value %}value="{{ form.number.value }}"{% endif %}
+         placeholder="Credit Card Number">
+      {% for error in form.number.errors %}
+          <span class="store__form__field-error">{{ error }}</span>
+      {% endfor %}
+    </div>
+    <div class="col-xs-3">
+      <input type="text" class="store__form__input"
+             id="expiry-month" placeholder="MM" size="2" pattern="\d*"
+             data-stripe="exp-month"
+             autocomplete="off" name="exp_month" {% if form.exp_month.value %}value="{{ form.exp_month.value }}"{% endif %}
+             placeholder="Valid thru">
+      {% for error in form.exp_month.errors %}
+        <span class="store__form__field-error">{{ error }}</span>
+      {% endfor %}
+    </div>
+    <div class="col-xs-3">
+      <input type="text" class="store__form__input" id="expiry-year" placeholder="YY" size="2" pattern="\d*"
+             data-stripe="exp-year"
+             autocomplete="off" name="exp_year" {% if form.exp_year.value %}value="{{ form.exp_year.value }}"{% endif %}>
+       {% for error in form.exp_year.errors %}
+        <span class="store__form__field-error">{{ error }}</span>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-9">
+      <input id="name-on-card"
+             type="text"
+             class="store__form__input"
+             placeholder="Name on card"
+             data-stripe="name"
+             autocomplete="off"
+             name="name"
+             {% if form.name.value %}value="{{ form.name.value }}"{% endif %}>
+    </div>
+    <div class="col-xs-3">
+      <input type="text" class="store__form__input" id="cvc" placeholder="xxx" size="4" pattern="\d*"
+             data-stripe="cvc"
+             autocomplete="off" name="cvc" {% if form.cvc.value %}value="{{ form.cvc.value }}"{% endif %}>
+      {% for error in form.cvc.errors %}
+        <span class="store__form__field-error">{{ error }}</span>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="payment-errors text1 accent-color"></div>
+</div>
+<div class="card-wrapper"></div>
+<div id="form-general-error" class="accent-color text-center text3"></div>
