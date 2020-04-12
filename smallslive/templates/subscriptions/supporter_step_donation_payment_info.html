@@ -137,7 +137,7 @@
           <p tabindex="0" class="text9">Cick continue to review your donation. You will recieve further instruction after your confirmation.</p>
         </div>
         <div class="store__form__group clearfix row payment-method-form hidden" id="check-form">
-          <p tabindex="0" class="text9">Cick continue to review your donation. You will recieve further instruction after your confirmation.</p>
+          <p tabindex="0" class="text9">Click continue to review your donation. You will receive further instruction after your confirmation.</p>
         </div>
         <div class="row">
           <div class="store__form__group clearfix payment-method-form {% if payment_form.can_use_existing %}hidden{% endif %}" id="credit-card-form">
@@ -150,7 +150,7 @@
                            id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*"
                            data-stripe="number"
                            autocomplete="off"
-                           name="number" {% if payment_form.number.value %}value="{{ payment_form.number.value }}"{% endif %}
+                           name="card-number" {% if payment_form.number.value %}value="{{ payment_form.number.value }}"{% endif %}
                            placeholder="Credit Card Number">
                     {% for error in payment_form.number.errors %}
                         <span class="store__form__field-error">{{ error }}</span>
