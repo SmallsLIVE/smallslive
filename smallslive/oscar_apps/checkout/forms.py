@@ -31,7 +31,7 @@ class ShippingAddressForm(checkout_forms.ShippingAddressForm):
 class PaymentForm(forms.Form):
     PAYMENT_CHOICES = Choices('paypal', 'credit-card', 'existing-credit-card')
     payment_method = forms.ChoiceField(required=True, choices=PAYMENT_CHOICES, initial='credit-card')
-    number = forms.CharField(required=True, min_length=16, max_length=20)
+    card_number = forms.CharField(required=True, min_length=16, max_length=20)
     exp_month = forms.CharField(required=True, max_length=2)
     exp_year = forms.CharField(required=True, min_length=2, max_length=4)
     cvc = forms.CharField(required=True, min_length=3, max_length=4)
@@ -61,7 +61,7 @@ class PaymentForm(forms.Form):
                 try:
                     card_info = stripe_customer.get('sources', {}).get('data', {})[0]
                     data['name'] = card_info.get('name')
-                    data['number'] = card_info.get('last4')
+                    data['card_number'] = card_info.get('last4')
                 except IndexError:
                     pass
             else:
@@ -69,7 +69,7 @@ class PaymentForm(forms.Form):
                     token = stripe.Token.create(
                         api_key=self.stripe_api_key,
                         card={
-                            'number': data.get('number'),
+                            'number': data.get('card_number'),
                             'exp_month': data.get('exp_month'),
                             'exp_year': data.get('exp_year'),
                             'cvc': data.get('cvc'),

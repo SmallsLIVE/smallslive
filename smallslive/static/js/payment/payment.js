@@ -5,6 +5,7 @@ function renderCardAnimation(selector) {
   var card = new Card({
     form: selector,
     formSelectors: {
+      numberInput: 'input[name="card_number"]', // optional — default input[name="number"]
       expiryInput: "#expiry-month, #expiry-year"
     },
     container: ".card-wrapper"
