@@ -620,9 +620,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         first_name, last_name = self.checkout_session.get_reservation_name()
 
-        print '-------------------'
-        print 'Reservation name: ', first_name, last_name
-
         if first_name and last_name:
             order_kwargs.update({
                 'first_name': first_name,
@@ -825,7 +822,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 return
 
         elif payment_method == 'paypal':
-            item_list = self.get_item_list(basket_lines)
+            item_list = [] # self.get_item_list(basket_lines)
             total_deductable = basket._get_deductable_physical_total()
             self.amount = str(total.incl_tax)
             # Donation will be set to True  if user is selecting gifts
