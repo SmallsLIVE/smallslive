@@ -138,13 +138,18 @@ a {
   input {
     @include bordered-input;
     background-color: transparent;
-    width: 26vw;
+    width: 25.5vw;
     padding-left: 38px;
     text-transform: uppercase;
 
     @media (max-width: 1300px) {
       width: 21vw;
     }
+
+    @media (max-width: 1150px) {
+      width: 16vw;
+    }
+
   }
 }
 
