@@ -20,6 +20,19 @@
     </div>
 
     <div class="button-row">
+
+
+      {% if user.is_authenticated and user.has_activated_account %}
+        {% if not user.can_watch_video %}
+          <a class="white-border-button margin-right"
+             href="{% url 'become_supporter' %}">Donate</a>
+        {% else %}
+          <a class="white-border-button margin-right"
+             href="{% url 'user_settings_new' %}#user-donation-settings">Donate</a>
+        {% endif %}
+      {% endif %}
+
+
       {% include 'partials/header_button.html' with button_url='home' button_text='Home' %}
       {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
       {% include 'partials/header_button.html' with button_url='promotions:home' button_text='Catalog' %}
