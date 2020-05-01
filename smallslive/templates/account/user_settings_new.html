@@ -77,9 +77,9 @@
           <div class="text5">Current Pledge</div>
           {% if customer_detail.subscription.plan and not cancelled %}
             <div class="text9 accent-color">${{ monthly_pledge_in_dollars }}/{{ customer_detail.subscription.plan.interval }}</div>
-          {% elif plan and plan.active and plan.interval and plan.interval == 'month' %}
+          {% elif plan and plan.active and plan.interval and plan.interval == 'month' and not cancelled %}
             <div class="text9 accent-color">${{ plan.amount }}/{{ plan.interval }}</div>
-          {% elif plan and plan.active and plan.interval and plan.interval == 'year' %}
+          {% elif plan and plan.active and plan.interval and plan.interval == 'year' and not cancelled %}
             <div class="text9 accent-color">${{ plan.amount }}/{{ plan.interval }}</div>
           {% else %}
             <div class="text9 accent-color">{% if cancelled %}Subscription canceled{% else %}None{% endif %}</div>
@@ -140,7 +140,7 @@
               <div class="text9 text-grey"> {{ user_archive_access_until|date:"m/d/Y" }}</div>
             {% elif not customer_detail.subscription.plan and not period_end.due  %}
               <div class="text5">Expiration of archive access 3</div>
-              <div class="text9 text-grey">{{ period_end.date }}</div>
+              <div class="text9 text-grey">{{ user_archive_access_until|date:"m/d/Y" }}</div>
             {% else %}
               <div class="text9 text-grey">There is no access to the archive</div>
             {% endif %}

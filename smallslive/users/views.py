@@ -235,7 +235,6 @@ def user_settings_view_new(request):
     plan = None
     period_end = {}
     period_end['date'] = None
-    monthly_pledge_in_dollars = None
 
     customer_detail = None
     customer_charges = None
