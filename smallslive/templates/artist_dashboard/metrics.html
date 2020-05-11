@@ -14,7 +14,7 @@
         <div class="white-border-select white-border-select-left flex-row">
             <select id="artist_payout_select">
                 <option value="current" class="text-grey">
-                    {{ current_payout_period.period_start|date:"b j, Y" }} - Current
+                    {{ current_payout_period.period_start|date:"b j, Y" }} - {{ current_payout_period.period_end|date:"b j, Y" }}
                 </option>
                 {% for earning in user.artist.earnings.all %}
                 <option value="{{ earning.id }}">
@@ -34,25 +34,36 @@
     </div>
     <div class="artist-payout-data">
         <div id="currentPayoutData">
-            <div class="flex-row content-space-between">
-                <div class="flex-row content-space-between">
-                    <div>
-                        <div class="artist-payout-data-text">
-                            <div class="text1">Total archive usage this period</div>
-                            <div class="text9 accent-color" data-seconds='{{ current_payout_period.current_total_seconds }}' id='event-seconds'></div>
-                        </div>
-                        <div class="artist-payout-data-text">
-                            <div class="text1">{{ user.artist.full_name }} this period</div>
-                            <div class="text9 accent-color" data-seconds='{{ user.artist.current_period_seconds_played }}' id='artist-seconds'></div>
-                        </div>
-                        <div class="artist-payout-data-text">
-                            <div class="text1">Ratio</div>
-                            <div class="text9 accent-color">
-                                {{ user.artist.current_period_percentage_ratio|floatformat:"-5" }}% of archive pool
-                            </div>
+            <div class="flex-row">
+                <div class="artist-payout-data-left">
+                    <div class="flex-column content-flex-end">
+
+
+                    <div class="artist-payout-data-text">
+                        <div class="text1">Total archive usage this period</div>
+                        <div class="text9 accent-color" data-seconds='{{ current_payout_period.current_total_seconds }}' id='event-seconds'></div>
+                    </div>
+                    <div class="artist-payout-data-text">
+                        <div class="text1">{{ user.artist.full_name }} this period</div>
+                        <div class="text9 accent-color" data-seconds='{{ user.artist.current_period_seconds_played }}' id='artist-seconds'></div>
+                    </div>
+                    <div class="artist-payout-data-text">
+                        <div class="text1">Ratio</div>
+                        <div class="text9 accent-color">
+                            {{ user.artist.current_period_percentage_ratio|floatformat:"-5" }}% of archive pool
                         </div>
                     </div>
-
+                </div>
+                </div>
+                <div>
+                    <div class="artist-payout-data-text">
+                        <div class="text1">Archive revenue this period</div>
+                        <div class="text9 accent-color">Payout has not been processed yet</div>
+                    </div>
+                    <div class="artist-payout-data-text">
+                        <div class="text1">{{ artist.full_name }}'s share this period</div>
+                        <div class="text9 accent-color">Payout has not been processed yet</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -84,34 +95,36 @@
             </button>
         </div>
     </div>
-      <div class="modal fade" id="payout-info" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content custom-modal">
-                        <i class="close-button"></i>
-                        <div class="modal-body">
-                            <div class="text-grey text4 payout-info-text">
-                                These numbers reflect the total usage of the archive in minutes and seconds for the selected pay period, 
-                                as well as your own personal usage and your payout ratio percentage. The payout ratio percentage is your 
-                                total time divided by the archive total time. This ratio is the percentage of the archive revenue that 
-                                is paid to you as a royalty. If you earned less than $20 in the pay period it is carried over to the next 
-                                pay period and reflected as a previous balance.
-                            </div>
+        <div class="modal fade" id="payout-info" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content custom-modal no-cancel">
+                    <a href="#" class="close-button"></a>
+                    <div class="modal-body">
+                        <div class="text-grey text4 payout-info-text">
+                            <p>These numbers reflect the total usage of the archive in minutes and seconds for the selected pay period,
+                            as well as your own personal usage and your payout ratio percentage. </p>
+                            <p>The payout ratio percentage is your total time divided by the archive total time.
+                                This ratio is the percentage of the archive revenue that
+                            is paid to you as a royalty. </p>
+                            <p>If you earned less than $20 in the pay period it is carried over to the next
+                                pay period and reflected as a previous balance.</p>
                         </div>
                     </div>
                 </div>
             </div>
-      <div class="modal fade" id="succeful-edit" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content custom-modal">
-                        <i class="close-button"></i>
-                        <div class="modal-body">
-                            <div class="text-grey text4 payout-info-text">
-                                You've successfully updated your profile.
-                            </div>
+        </div>
+        <div class="modal fade" id="succeful-edit" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content custom-modal no-cancel">
+                    <a href="#" class="close-button"></a>
+                    <div class="modal-body">
+                        <div class="text-grey text4 payout-info-text">
+                            You've successfully updated your profile.
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 </div>
 {% endblock content %}
 {% block extra_js %}
