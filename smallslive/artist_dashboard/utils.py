@@ -11,6 +11,7 @@ from events.models import Event
 from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import ArtistProduct
 from subscriptions.models import Donation
+from users.models import SmallsUser
 
 logger = logging.getLogger(__name__)
 
@@ -18,12 +19,17 @@ logger = logging.getLogger(__name__)
 def metrics_data_for_date_period(start_date, end_date):
     events = UserVideoMetric.objects.seconds_played_for_all_events(start_date, end_date)
     artists = collections.OrderedDict()
-    for artist in Artist.objects.values('id', 'first_name', 'last_name').order_by('last_name'):
+    for artist in Artist.objects.values('id', 'first_name', 'last_name', 'user').order_by('last_name'):
+        user_id = artist['user']
+        user = None
+        if user_id:
+            user = SmallsUser.objects.filter(pk=user_id).first()
         artists[artist['id']] = {
             'first_name': artist['first_name'],
             'last_name': artist['last_name'],
             'seconds_played': 0,
-            'donations': 0
+            'donations': 0,
+            'user': user,
         }
     total_event_seconds = 0
     total_adjusted_seconds = 0
@@ -95,7 +101,7 @@ def donations_data_for_date_period(start_date, end_date, metrics):
                 'date': donation.date,
                 'amount': donation.amount,
                 'deductible_amount': donation.deductable_amount,
-                'event': donation.event.slug,
+                'event': donation.event.get_absolute_url(),
                 'payment_source': donation.payment_source,
                 'reference': donation.reference,
                 'order_number': order_number,
@@ -159,13 +165,14 @@ def generate_metrics_payout_sheet(metrics, file, start_date, end_date,
     bold = workbook.add_format({'bold': True})
     sheet = workbook.add_worksheet('Payments')
     sheet.set_column(8, 8, 30)
-    sheet.write_row('I1', ('Total event seconds', metrics['total_event_seconds']), bold)
-    sheet.write_row('I2', ('Total adjusted seconds', metrics['total_adjusted_seconds']), bold)
-    sheet.write_row('I4', ('Revenue', revenue), bold)
-    sheet.write_row('I5', ('Operating costs', operating_expenses), bold)
+    sheet.write_row('L1', ('Total event seconds', metrics['total_event_seconds']), bold)
+    sheet.write_row('L2', ('Total adjusted seconds', metrics['total_adjusted_seconds']), bold)
+    sheet.write_row('L4', ('Revenue', revenue), bold)
+    sheet.write_row('L5', ('Operating costs', operating_expenses), bold)
+
     if process_personal_donations:
-        sheet.write_row('I7', ('Total personal donations', metrics['total_donations']), bold)
-        headers = ('Artist ID', 'Last name', 'First name', 'Seconds watched', 'Ratio', 'Payment', 'Personal Donations')
+        sheet.write_row('L7', ('Total personal donations', metrics['total_donations']), bold)
+        headers = ('Artist ID', 'Last name', 'First name', 'Seconds watched', 'Ratio', 'Payment', 'Personal Donations', 'Address', 'PayPal ID', 'Tax Payer ID')
     else:
         headers = ('Artist ID', 'Last name', 'First name', 'Seconds watched', 'Ratio', 'Payment')
     sheet.write_row('A1', headers, bold)
@@ -199,6 +206,11 @@ def generate_metrics_payout_sheet(metrics, file, start_date, end_date,
         if process_personal_donations:
             personal_donations = artist[1]['donations']
             sheet.write(idx, 6, personal_donations)
+            user = artist[1]['user']
+            if user:
+                sheet.write(idx, 7, user.get_formatted_address())
+                sheet.write(idx, 8, user.paypal_email or '')
+                sheet.write(idx, 9, user.taxpayer_id or '')
         if save_earnings and process_personal_donations:
             previous_payout = ArtistEarnings.objects.filter(artist_id=artist[0]).first()
             # balance from previous payout periods carry over only if they exist and they're less than $20

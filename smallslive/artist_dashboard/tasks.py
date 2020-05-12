@@ -50,6 +50,11 @@ def generate_payout_sheet_task(start, end,
         save_earnings, process_personal_donations=True)
     PayoutPeriodGeneration.objects.attach_admin_spreadsheet(start, end, output, file_name)
 
+    if save_earnings:
+        period = PastPayoutPeriod.objects.first()
+        output.seek(0)
+        period.admin_payout_spreadsheet.save(file_name, ContentFile(output.read()), save=True)
+
     # Spreadsheet for musicians does not contain personal
     # Donations
     output, file_name = attach_metrics_payout_sheet(
@@ -59,14 +64,15 @@ def generate_payout_sheet_task(start, end,
         save_earnings, process_personal_donations=False)
     PayoutPeriodGeneration.objects.attach_musicians_spreadsheet(start, end, output, file_name)
 
+    if save_earnings:
+        period = PastPayoutPeriod.objects.first()
+        output.seek(0)
+        period.musicians_payout_spreadsheet.save(file_name, ContentFile(output.read()), save=True)
+
     # Direct donation information
     output, file_name = attach_donations_sheet(metrics['donations'], start, end)
     PayoutPeriodGeneration.objects.attach_donations_spreadsheet(start, end, output, file_name)
 
-    if save_earnings:
-        period = PastPayoutPeriod.objects.first()
-        output.seek(0)
-        period.payout_spreadsheet.save(file_name, ContentFile(output.read()), save=True)
 
     end_generate_payout_sheet(start, end, )
 

@@ -136,13 +136,11 @@ class ArtistInfoForm(forms.ModelForm):
         self.fields['country'].widget.attrs['placeholder'] = self.fields['country'].label
 
     def clean(self):
+
         cleaned_data = super(ArtistInfoForm, self).clean()
-        if cleaned_data.get('payout_method') == User.PAYOUT_CHOICES.PayPal:
-            msg = u"This field is required."
-            if not cleaned_data.get('paypal_email'):
-                self.add_error('paypal_email', msg)
+        if cleaned_data.get('paypal_email'):
             if not cleaned_data.get('paypal_email_again'):
-                self.add_error('paypal_email_again', msg)
+                self.add_error('paypal_email_again', "Please enter your PayPal email address again")
             if cleaned_data.get('paypal_email') != cleaned_data.get('paypal_email_again'):
                 raise forms.ValidationError(u'The two email addresses must match.')
 
@@ -158,6 +156,7 @@ class ArtistInfoForm(forms.ModelForm):
         else:
             cleaned_data['state'] = ''
             cleaned_data['taxpayer_id'] = ''
+
         return cleaned_data
 
 

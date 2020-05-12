@@ -216,6 +216,8 @@ def user_settings_view_new(request):
             messages.success(
                 request, "You've successfully updated your profile.")
             profile_updated = True
+        else:
+            assert False, artist_info_form.errors
     # if a GET (or any other method) we'll create a blank form
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)

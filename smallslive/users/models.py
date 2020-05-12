@@ -158,6 +158,23 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         "Returns the short name for the user."
         return self.first_name
 
+    def get_formatted_address(self):
+        """Concatenate address components"""
+        address_line = self.address_1 or ''
+        if self.address_2:
+            address_line = '{} {}'.format(address_line, self.address_2)
+        formatted_address = address_line
+        if self.city:
+            formatted_address = '{}, {}'.format(formatted_address, self.city)
+        if self.zip:
+            formatted_address = '{} {}'.format(formatted_address, self.zip)
+        if self.state:
+            formatted_address = '{} {}'.format(formatted_address, self.state)
+        if self.country:
+            formatted_address = '{}, {}'.format(formatted_address, self.country)
+
+        return formatted_address
+
     def email_user(self, subject, message, from_email=None):
         """
         Sends an email to this User.
