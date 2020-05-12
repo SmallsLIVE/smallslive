@@ -1,8 +1,8 @@
 from boto.s3.connection import OrdinaryCallingFormat, S3Connection
 from django.conf import settings
+from django.core.files.storage import default_storage, get_storage_class
 from django.utils.deconstruct import deconstructible
 from storages.backends.s3boto import S3BotoStorage
-from django.core.files.storage import default_storage, get_storage_class
 
 
 class OrdinaryConnection(S3Connection):
@@ -44,7 +44,7 @@ class VideoS3Storage(ProtectedS3Storage):
 @deconstructible
 class PayoutsS3Storage(ProtectedS3Storage):
     def __init__(self, *args, **kwargs):
-        kwargs['bucket'] = 'smallslivepayouts'
+        kwargs['bucket'] = settings.AWS_PAYOUTS_BUCKET
         super(PayoutsS3Storage, self).__init__(*args, **kwargs)
 
 

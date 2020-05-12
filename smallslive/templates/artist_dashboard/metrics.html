@@ -61,7 +61,7 @@
                         <div class="text9 accent-color">Payout has not been processed yet</div>
                     </div>
                     <div class="artist-payout-data-text">
-                        <div class="text1">{{ artist.full_name }}'s share this period</div>
+                        <div class="text1">{{ user.artist.full_name }}'s share this period</div>
                         <div class="text9 accent-color">Payout has not been processed yet</div>
                     </div>
                 </div>
@@ -85,9 +85,26 @@
                     <br>
                     <span id="address-2">{{ user.address_2 }}</span>
                     <br>  
-                    <span id="city">{{user.city }}</span>
+                    <span id="city">{{ user.city }}</span>
+                    <span id="zip">{{ user.zip }}</span>
                 {% else %}
                     There is no address assigned
+                {% endif %}
+            </div>
+            <div class="text1 artist-payout-data-text">PayPal Email Address</div>
+            <div class="text9 text-grey artist-payout-data-text">
+                {% if user.paypal_email %}
+                    <span id="paypal">{{ user.paypal_email }}</span>
+                {% else %}
+                    <span>Enter a PayPal account if you wish to be paid through that method</span>
+                {% endif %}
+            </div>
+            <div class="text1 artist-payout-data-text">Tax Payer ID</div>
+            <div class="text9 text-grey artist-payout-data-text">
+                {% if user.taxpayer_id %}
+                    <span id="taxpayer">{{ user.taxpayer_id }}</span>
+                {% else %}
+                    <span>Enter a Tax Payer Id (optional)</span>
                 {% endif %}
             </div>
             <button class="white-border-button payout-info-button" onclick="showForm()">
@@ -113,13 +130,25 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="succeful-edit" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="successful-edit" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content custom-modal no-cancel">
                     <a href="#" class="close-button"></a>
                     <div class="modal-body">
                         <div class="text-grey text4 payout-info-text">
                             You've successfully updated your profile.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="unsuccessful-edit" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content custom-modal no-cancel">
+                    <a href="#" class="close-button"></a>
+                    <div class="modal-body">
+                        <div class="text-grey text4 payout-info-text">
+                            There were errors updating your profile.
                         </div>
                     </div>
                 </div>
@@ -229,16 +258,21 @@
                 url: "{% url 'artist_dashboard:payout_form'%}",
                 data: $(payoutForm).serialize()+"&artist_info=Save",
                 success: function(data) {
-                    $payoutForm = document.getElementById('payout-form')
-                    $payoutAddressInfo = document.getElementById('payout-address-info')
-                    $($payoutAddressInfo).show()
-                    $($payoutForm).hide()
-                    $('#succeful-edit').modal('show')
-                    $("#address-1").html(data['address-1'])
-                    $("#address-2").html(data['address-2'])
-                    $("#city").html(data['city'])
+                    $payoutForm = document.getElementById('payout-form');
+                    $payoutAddressInfo = document.getElementById('payout-address-info');
+                    if (data.success) {
+                        $($payoutAddressInfo).show();
+                        $($payoutForm).hide();
+                        $('#successful-edit').modal('show');
+                        $("#address-1").html(data['address-1']);
+                        $("#address-2").html(data['address-2']);
+                        $("#city").html(data['city']);
+                    } else {
+                        $('#unsuccessful-edit').modal('show');
+                        $($payoutForm).html(data.template);
                     }
-                })
+                }
+            });
         }
     </script> 
 {% endblock %}

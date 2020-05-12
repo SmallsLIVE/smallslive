@@ -8,7 +8,7 @@
 {% block content %}
 
     <div class="content-wrapper" style="border:none">
-        <form method="post" action="{% url "artist_dashboard:change_payout_period" %}">
+        <form method="post" action="{% url 'artist_dashboard:change_payout_period' %}">
             <section class="page-heading container" style="width: 100%;">
                 <h1>Change payout period:</h1>
             </section>
@@ -21,6 +21,38 @@
                 <button type="submit" class="payout-calculator__submit-button">Change</button>
             </section>
         </form>
+        <section class="page-heading container" style="width: 100%;">
+            <h2>Past payout periods:</h2>
+        </section>
+        <section class="payout-calculator">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Seconds</th>
+                        <th>Amount</th>
+                        <th>Admin spreadsheet</th>
+                        <th>Musicians spreadsheet</th>
+                        <th>Donations spreadsheet</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for past_payout_period in past_payout_periods %}
+                        <tr>
+                            <td>{{ past_payout_period.period_start }}</td>
+                            <td>{{ past_payout_period.period_end }}</td>
+                            <td>{{ past_payout_period.total_seconds }}</td>
+                            <td>{{ past_payout_period.total_amount }}</td>
+                            <td><a href="{{ past_payout_period.admin_payout_spreadsheet.url }}" download>Admin Spreadsheet</a></td>
+                            <td><a href="{{ past_payout_period.musicians_payout_spreadsheet.url }}" download>Musicians Spreadsheet</a></td>
+                            <td><a href="{{ past_payout_period.donation_payout_spreadsheet.url }}" download>Donation Spreadsheet</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </section>
     </div>
 {% endblock content %}
 

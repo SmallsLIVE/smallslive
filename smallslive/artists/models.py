@@ -306,11 +306,11 @@ class PayoutPeriodGeneration(models.Model):
     period_end = models.DateField()
     total_seconds = models.BigIntegerField(default=0)
     total_amount = models.DecimalField(max_digits=10, decimal_places=4, default=0)
-    admin_payout_spreadsheet = models.FileField(upload_to='payouts/',
+    admin_payout_spreadsheet = models.FileField(upload_to='payouts_generation/',
                                                 storage=get_payouts_storage_object(), blank=True)
-    musicians_payout_spreadsheet = models.FileField(upload_to='payouts/',
+    musicians_payout_spreadsheet = models.FileField(upload_to='payouts_generation/',
                                                     storage=get_payouts_storage_object(), blank=True)
-    donations_spreadsheet = models.FileField(upload_to='payouts/',
+    donations_spreadsheet = models.FileField(upload_to='payouts_generation/',
                                              storage=get_payouts_storage_object(), blank=True)
     calculation_start = models.DateTimeField(auto_now_add=True)
     calculation_end = models.DateTimeField(blank=True, null=True)

@@ -13,6 +13,7 @@ def env_var(key, default=None):
         val = False
     return val
 
+
 DEBUG = env_var("DEBUG", False)
 TEMPLATE_DEBUG = env_var("DEBUG", False)
 
@@ -137,3 +138,4 @@ CELERY_ALWAYS_EAGER = False
 CELERY_CREATE_MISSING_QUEUES = True
 BROKER_POOL_LIMIT = 1
 BROKER_URL = get_env_variable('CLOUDAMQP_URL')
+

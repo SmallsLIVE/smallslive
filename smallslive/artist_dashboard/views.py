@@ -672,7 +672,7 @@ admin_metrics = AdminMetricsView.as_view()
 
 class ChangePayoutPeriodView(SuperuserRequiredMixin, UpdateView):
     success_url = reverse_lazy('artist_dashboard:change_payout_period')
-    template_name = "artist_dashboard/change_payout_period.html"
+    template_name = 'artist_dashboard/change_payout_period.html'
 
     def get_object(self, queryset=None):
         current_period = CurrentPayoutPeriod.objects.first()
@@ -684,6 +684,12 @@ class ChangePayoutPeriodView(SuperuserRequiredMixin, UpdateView):
                 period_end=end
             )
         return current_period
+
+    def get_context_data(self, **kwargs):
+        context = super(ChangePayoutPeriodView, self).get_context_data(**kwargs)
+        context.update({'past_payout_periods': PastPayoutPeriod.objects.order_by('-period_start')})
+
+        return context
 
     def form_valid(self, form):
         messages.success(self.request, "Payout period dates successfully changed")
@@ -785,7 +791,7 @@ def metrics_payout_poll(request):
 
     template = 'artist_dashboard/payout_generation.html'
 
-    generated_payouts = PayoutPeriodGeneration.objects.all()
+    generated_payouts = PayoutPeriodGeneration.objects.order_by('-pk')
     context = {'generated_payouts': generated_payouts}
 
     tpl = render_to_string(
@@ -924,18 +930,32 @@ def payout_form(request):
         if artist_info_form.is_valid():
             artist_info_form.save(request)
             data = {
-               'address-1':artist_info_form['address_1'].value(),
-               'address-2':artist_info_form['address_2'].value(),
-               'city':artist_info_form['city'].value(),
+                'success': True,
+                'address-1':artist_info_form['address_1'].value(),
+                'address-2':artist_info_form['address_2'].value(),
+                'city':artist_info_form['city'].value(),
+                'zip': artist_info_form['zip'].value(),
+                'paypal-email': artist_info_form['paypal_email'].value(),
+                'taxpayer-id': artist_info_form['taxpayer_id'].value(),
             }
-            return JsonResponse(data)
+        else:
+            tpl = render_to_string(
+                'artist_dashboard/artist-payout-form.html',
+                {'artist_info_form': artist_info_form},
+                context_instance=RequestContext(request)
+            )
+            data = {
+                'success': False,
+                'template': tpl,
+            }
+        return JsonResponse(data)
     # if a GET (or any other method) we'll create a blank form
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)
 
-    return render(request, 'artist_dashboard/artist-payout-form.html', {
-        'artist_info_form': artist_info_form,
-    })
+        return render(request, 'artist_dashboard/artist-payout-form.html', {
+            'artist_info_form': artist_info_form,
+        })
 
 
 @login_required
