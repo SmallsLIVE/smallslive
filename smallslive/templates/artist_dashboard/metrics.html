@@ -14,7 +14,7 @@
         <div class="white-border-select white-border-select-left flex-row">
             <select id="artist_payout_select">
                 <option value="current" class="text-grey">
-                    {{ current_payout_period.period_start|date:"b j, Y" }} - {{ current_payout_period.period_end|date:"b j, Y" }}
+                    {{ current_payout_period.period_start|date:"b j, Y" }} - current
                 </option>
                 {% for earning in user.artist.earnings.all %}
                 <option value="{{ earning.id }}">
