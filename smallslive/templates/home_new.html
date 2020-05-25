@@ -46,8 +46,7 @@
     <main>
       {% include 'home_banners_carousel.html' %}
       <div class="event-stripe">
-
-
+        {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
         <section id="recently-added-section" class="event-stripe">
           <div class="section-title home recently">
             <div class="title1">
