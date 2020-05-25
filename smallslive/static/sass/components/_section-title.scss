@@ -168,6 +168,10 @@
         width: 80%;
       }
 
+      @media (max-width: $screen-md-min) {
+        width: 90%;
+      }
+
     }
   }
 
@@ -235,7 +239,7 @@
     z-index: 99;
 
     @media (max-width: $screen-md-min) {
-      background-size: 75vw 5px;
+      background-size: 65vw 5px;
       margin-bottom: 20px;
       padding-bottom: 3px;
       width: 100vw;
@@ -254,6 +258,18 @@
     position: relative;
     z-index: 99;
     background-size: calc(415px + 3.5vw) 5px;
+
+    &.clubs {
+        background-size: calc(580px + 3.5vw) 5px;
+
+        @media (max-width: $screen-md-min) {
+            background-size: calc(50vw + 3.5vw) 5px;
+        }
+
+        @media (max-width: 420px) {
+            background-size: calc(35vw + 3.5vw) 5px;
+        }
+    }
 
     .white-border-button {
       margin-left: 120px;
