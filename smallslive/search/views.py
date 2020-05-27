@@ -359,7 +359,7 @@ class UpcomingSearchView(SearchMixin):
 
     def get_upcoming_context(self):
         context = {'day_list': []}
-        days = int(self.request.GET.get('days', 12))
+        days = int(self.request.GET.get('days', 30))
         starting_date = self.request.GET.get('starting_date', datetime.datetime.today().strftime('%Y-%m-%d'))
         starting_date = datetime.datetime.strptime(starting_date, '%Y-%m-%d')
         venue = self.request.GET.get('venue', 'all')
