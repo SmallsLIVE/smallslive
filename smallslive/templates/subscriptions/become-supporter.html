@@ -45,10 +45,11 @@
     {% endif %}
   </div>
   {% if not completed %}
-    <div id="supporterStep" class="supporter-step hidden"></div>
-
     {% if not skip_intro %}
-      <div id="supporterStepIntro" class="supporter-step">
+      <div id="supporterStepIntro"
+           data-payment-info-url="{{ payment_info_url }}"
+           data-billing-hidden="hidden"
+           class="supporter-step">
         <div class="supporter-text flex-column">
           <p  tabindex="0" class="title7"><span class="big-letter">T</span>HE <span class='accent-color'>SMALLSLIVE FOUNDATION</span> IS A
           <span class='accent-color'>NOT-FOR-PROFIT</span> ORGANIZED FOR THE PURPOSE OF THE <span class='accent-color'>DISSEMINATION OF JAZZ MUSIC</span>
@@ -58,29 +59,57 @@
       </div>
     {% endif %}
 
-    <div id="supporterStepSelectType" class="supporter-step" {% if not skip_intro %}style="display: none"{% endif %}>
+    <div id="supporterStepSelectType"
+         class="supporter-step {% if not skip_intro %}hidden{% endif %}" >
+      <div tabindex="0" class="text9">You are
+        {% if flow_type = 'update_pledge' %}
+        updating your pledge
+        {% elif flow_type = 'one_time_donation' %}
+        making a one time donation
+        {% else %}
+        making a tax deductible donation
+        {% endif %}
+        to the SmallsLIVE Foundation for Jazz Arts and Education.<br>
+        {% if not flow_type = 'update_pledge' %}All tax information is available from your account settings. {% endif %}Please choose one of the following:
+      </div>
       {% include 'subscriptions/supporter_step_select_type.html' %}
+      {% if not flow_type = "update_pledge" %}
+        {% include 'subscriptions/supporter_gift_selection.html' with hidden=True %}
+      {% endif %}
     </div>
 
-    <div id="supporterStepShipping" class="supporter-step" style="display: none">
+    <div id="supporterStepShipping" class="supporter-step hidden"
+         data-billing-hidden="hidden">
 
     </div>
 
-    <div id="supporterStepBilling" class="supporter-step" style="display: none"
+    <div id="supporterStepPreview" class="supporter-step hidden"
+         data-billing-hidden="hidden"
+         data-donation-preview-url="{{ donation_preview_url }}">
+    </div>
+   <!-- After Spike's request to show payment and amount together, this will show
+   when the user is selecting amount for one time or monthly, and after shipping address
+   when the user is selecting a gift. It's not an isolated step like it was before -->
+    <div id="supporterStepBilling" class="supporter-step hidden"
          data-payment-info-url="{{ payment_info_url }}"
          data-payment-info-complete-url="{% url 'become_supporter' %}"
          data-payment-info-pending-url="{% url 'supporter_pending' %}">
+      <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
+        <input type="text" id="hiddenTypeInput" name="type" hidden>
+        <input type="number" id="hiddenAmountInput" name="amount" hidden>
+        {% if error %}
+          <section class="store-error container">
+            <span class="store-error__message">{{ error|safe }}</span>
+          </section>
+        {% endif %}
+        <section class="container">
+          {% include 'subscriptions/billing_address_details.html' %}
+          {% include 'subscriptions/credit_card_payment_details.html' %}
+        </section>
+      </form>
     </div>
-
-    <div id="supporterStepPreview" class="supporter-step" style="display: none"
-         data-donation-preview-url="{{ donation_preview_url }}">
-    </div>
-
   {% endif %}
 
-{% endblock %}
-
-{% block flow_payment %}
 {% endblock %}
 
 {% block flow_completed %}

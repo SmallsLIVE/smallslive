@@ -1,0 +1,51 @@
+<div id="select-payment-row" class="row" style="margin-bottom: 20px;">
+  <div class="col-xs-12">
+    <div class="button-row button-row-margin">
+      {% if payment_form.can_use_existing %}
+        <div class="store__form__selection__option recurring single gift">
+          <button class="payment-method-toggle active"
+                  data-id="existing-credit-card"
+                  data-show-amount="">Use existing credit card</button>
+        </div>
+      {% endif %}
+      <div class="store__form__selection__option payment_method recurring single gift">
+        <button class="payment-method-toggle {% if not payment_form.can_use_existing %}active{% endif %}"
+                data-id="credit-card"
+                data-show-amount="">Credit card</button>
+      </div>
+      <div class="store__form__selection__option payment_method single gift">
+        <button class="payment-method-toggle"
+                data-id="paypal"
+                data-show-amount="">PayPal</button>
+      </div>
+      <div class="store__form__selection__option payment_method single">
+        <button class="payment-method-toggle"
+                data-id="bitcoin"
+                data-show-amount="hidden">BitCoin</button>
+      </div>
+      <div class="store__form__selection__option payment_method single">
+        <button class="payment-method-toggle"
+                data-id="check"
+                data-show-amount="hidden">Check / Wire</button>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" name="payment_method" id="payment-method" value="{% if payment_form.can_use_existing %}existing-credit-card{%  else %}credit-card{% endif %}">
+<div class="store__form__group clearfix row payment-method-form {% if not payment_form.can_use_existing %}hidden{% endif %}" id="existing-credit-card-form">
+  <p tabindex="0" class="text9">Pay with existing {{ user.customer.card_kind }} credit card ending in {{ user.customer.card_last_4 }}</p>
+</div>
+<div class="store__form__group clearfix row payment-method-form hidden" id="paypal-form">
+  <p tabindex="0" class="text9">You will be redirected to PayPal to complete your transaction</p>
+</div>
+<div class="store__form__group clearfix row payment-method-form hidden" id="bitcoin-form">
+  <p tabindex="0" class="text9">Cick continue to review your donation. You will recieve further instruction after your confirmation.</p>
+</div>
+<div class="store__form__group clearfix row payment-method-form hidden" id="check-form">
+  <p tabindex="0" class="text9">Click continue to review your donation. You will receive further instruction after your confirmation.</p>
+</div>
+<div class="store__form__group clearfix payment-method-form {% if payment_form.can_use_existing %}hidden{% endif %}" id="credit-card-form">
+  <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+    {% include 'subscriptions/credit_card_details.html' %}
+  </div>
+</div>

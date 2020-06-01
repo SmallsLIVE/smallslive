@@ -5,8 +5,7 @@
       <input type="text" class="store__form__input"
          id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*"
          data-stripe="number"
-         autocomplete="off" name="card_number" {% if form.card_number.value %}value="{{ form.card_number.value }}"{% endif %}
-         placeholder="Credit Card Number">
+         autocomplete="off" name="card_number" {% if form.card_number.value %}value="{{ form.card_number.value }}"{% endif %}>
       {% for error in form.card_number.errors %}
           <span class="store__form__field-error">{{ error }}</span>
       {% endfor %}

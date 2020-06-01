@@ -40,11 +40,6 @@
           hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.
           <span class='accent-color'>All donations grant access to the SmallsLIVE Archive.</span>
         </p>
-      {% elif flow_type == 'donate' %}
-        <p tabindex="0" class="title7"><span class="big-letter">T</span>
-          hank you for donating to the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.
-          <span class='accent-color'>All donations grant access to the SmallsLIVE Archive.</span>
-        </p>
       {% elif flow_type == 'product_support' %}
         <p tabindex="0" class="title7"><span class="big-letter">T</span>
           hank you for your support of the smallslive foundation for jazz arts and education as well as {{ comma_separated_leaders }}.
@@ -99,10 +94,6 @@
   {% elif flow_type == 'one_time_donation' %}
     <a href="{% url 'user_settings_new' %}">
       <button>Continue</button>
-    </a>
-  {% elif flow_type == 'donate' %}
-    <a href="{% url 'home' %}">
-      <button>Home</button>
     </a>
   {% elif flow_type == 'product_support' %}
     <a href="{% url 'promotions:home' %}">

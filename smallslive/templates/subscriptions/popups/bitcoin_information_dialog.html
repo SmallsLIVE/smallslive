@@ -1,0 +1,39 @@
+{% load static from staticfiles %}
+{% load full_static %}
+{% load djstripe_tags %}
+{% load reviews_tags %}
+{% load thumbnail %}
+{% load i18n %}
+{% load display_tags %}
+{% load staticfiles %}
+{% load purchase_info_tags %}
+{% load currency_filters %}
+{% load thumbor_tags %}
+{% load basket_tags %}
+
+<div class="modal fade" id="bitCoinInformationDialog" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content custom-modal no-cancel">
+      <a href="#" class="close-button"></a>
+      <div class="modal-body">
+        <p class="title2 accent-color title">Donate by BitCoin</p>
+        <!--
+          <p class="title-big subtitle"></p>
+        //-->
+        <p class="text9 justified-text text">
+          Our SmallsLIVE Foundation, Inc. Bitcoin wallet address is ->
+        </p>
+        <p class="text9 justified-text text">
+          18sxR9WVmCoarUqHQhtHnFJ7yTPkTxtWF8
+        </p>
+        <p class="text9 justified-text text">
+          Please contact foundation@smallslive.com – once we confirm your donation we will credit your donation.
+        </p>
+        <p>
+          <img width="100%" src="{% static 'image/bitcoin.png' %}">
+        </p>
+
+      </div>
+    </div>
+  </div>
+</div>

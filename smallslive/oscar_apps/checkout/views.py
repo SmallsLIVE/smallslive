@@ -222,9 +222,14 @@ class SuccessfulOrderMixin(object):
         if 'artist_id' in self.request.session:
             self.artist_id = self.request.session['artist_id']
 
+        payment_source = 'PayPal Foundation'
+        if self.card_token:
+            payment_source = 'Stripe Foundation'
+
         if not self.tickets_type:
             Donation.objects.create_by_order(
                 self.order,
+                payment_source,
                 artist_id=self.artist_id, event_id=self.event_id, product_id=self.product_id)
 
         if self.tickets_type:
@@ -753,8 +758,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         logger.info("Order #%s: payment successful, placing order",
                     order_number)
 
-        print '----------------------------'
-        print 'Save order', order_kwargs
         try:
             order_kwargs.update({'order_type': basket.get_order_type()})
             response = self.handle_order_placement(
@@ -870,6 +873,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         self.product_id = None
         self.event_id = None
         self.artist_id = None
+        self.card_token = None
 
     def get(self, request, *args, **kwargs):
 
