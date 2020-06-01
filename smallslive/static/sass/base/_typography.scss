@@ -472,3 +472,7 @@ $text-font-size-big: 2em;
   font-size: 1.2em;
   color: #808080;
 }
+
+.break-word {
+    word-break: break-all;
+}
