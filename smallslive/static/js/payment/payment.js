@@ -49,6 +49,10 @@ function startStripePayment($form, action_url, completeSubpage) {
         .prop("disabled", false)
         .removeClass("disabled");
       $mainContainer.find('#confirmButton').prop("disabled", false);
+      showPanel(getPreviousStep());
+      $mainContainer.find(".payment-errors").html(response.error);
+      $mainContainer.find("#sentHint").hide();
+      $mainContainer.find("#confirmButton").prop("disabled", false);
     } else {
       // token contains id, last4, and card type
       var token = response.id;
@@ -65,7 +69,7 @@ function startStripePayment($form, action_url, completeSubpage) {
               .prop("disabled", false)
               .removeClass("disabled");
             $('#confirmButton').prop("disabled", false);
-            $mainContainer.find("#backButton").click();
+            showPanel(getPreviousStep());
             $mainContainer.find(".payment-errors").html(data.error);
             $mainContainer.find("#sentHint").hide();
           } else if (typeof completeSubpage !== "undefined" && completeSubpage) {

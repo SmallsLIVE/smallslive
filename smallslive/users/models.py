@@ -337,6 +337,14 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         return has_verified_email or is_social_account
 
     @property
+    def can_use_existing_cc(self):
+        customer = Customer.objects.get(subscriber=self)
+        if customer and customer.can_charge():
+            return True
+
+        return False
+
+    @property
     def can_watch_video(self):
         return self.has_activated_account and \
                self.has_archive_access

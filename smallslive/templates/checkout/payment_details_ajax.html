@@ -4,17 +4,17 @@
 {% load currency_filters %}
 {% load purchase_info_tags %}
 
-    <div class="">
-        <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
-          {% if error %}
-            <section class="store-error container">
-              <span class="store-error__message">{{ error|safe }}</span>
-            </section>
-          {% endif %}
-          <section class="container">
-            {% include 'subscriptions/billing_address_details.html' %}
-            {% include 'subscriptions/credit_card_payment_details.html' %}
-          </section>
-        </form>
-    </div>
+<div class="">
+    <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
+      {% if error %}
+        <section class="store-error container">
+          <span class="store-error__message">{{ error|safe }}</span>
+        </section>
+      {% endif %}
+      <section class="container">
+        {% include 'subscriptions/billing_address_details.html' %}
+        {% include 'subscriptions/credit_card_payment_details.html' %}
+      </section>
+    </form>
+</div>
     

@@ -85,7 +85,7 @@ class DonationManager(models.Manager):
 
         return donations.aggregate(models.Sum('deductable_amount'))['deductable_amount__sum'] or 0.0
 
-    def create_by_order(self, order, artist_id=None, event_id=None, product_id=None):
+    def create_by_order(self, order, payment_source, artist_id=None, event_id=None, product_id=None):
 
         assert artist_id is None or bool(artist_id)
         assert event_id is None or bool(event_id)
@@ -98,7 +98,7 @@ class DonationManager(models.Manager):
         donation = {
             'user': order.user,
             'order': order,
-            'payment_source': 'PayPal Foundation',
+            'payment_source': payment_source,
             'currency': 'USD',
             'amount': total,
             'reference': source.reference,

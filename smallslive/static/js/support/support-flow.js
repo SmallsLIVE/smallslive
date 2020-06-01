@@ -44,8 +44,7 @@ var getSteps = function() {
 
   if (
     selectedData.flow == "become_supporter" ||
-    selectedData.flow == "one_time_donation" ||
-    selectedData.flow == "donate"
+    selectedData.flow == "one_time_donation"
   ) {
     if (selectedData.type == "store_physical") {
       steps = [
@@ -56,19 +55,21 @@ var getSteps = function() {
         "Preview",
         "ThankYou"
       ];
+    } else if (selectedData.type == "year") {
+      steps = ["Intro", "SelectType", "Preview", "ThankYou"];
     } else {
-      steps = ["Intro", "SelectType", "Billing", "Preview", "ThankYou"];
+      steps = ["Intro", "SelectType", "Preview", "ThankYou"];
     }
   } else if (selectedData.flow == "catalog") {
     if (selectedData.type == "store_physical") {
       steps = ["SelectType", "Shipping", "Billing", "Preview", "ThankYou"];
     } else if (selectedData.type == "store_digital") {
-      steps = ["SelectType", "Billing", "Preview", "ThankYou"];
+      steps = ["SelectType", "Preview", "ThankYou"];
     } else {
-      steps = ["SelectType", "Billing", "Preview", "ThankYou"];
+      steps = ["SelectType", "Preview", "ThankYou"];
     }
   } else if (selectedData.flow == "event_support" || selectedData.flow == "donate_direct") {
-    steps = ["SelectType", "Billing", "Preview", "ThankYou"];
+    steps = ["SelectType", "Preview", "ThankYou"];
   }
 
   /* There needs to be one less dot than steps because the Thank You Page
@@ -127,10 +128,17 @@ var showPanel = function(step) {
   var $previous = $mainContainer.find("#supporterStep" + currentStep);
   var $step = $mainContainer.find("#supporterStep" + step);
 
-  $previous.hide();
-  $step.show();
+  $previous.addClass("hidden");
+  $step.removeClass("hidden");
   activeStep(step);
   currentStep = step;
+
+  var $billing = $mainContainer.find("#supporterStepBilling");
+  $billing.removeClass("hidden");
+  var hidden = $step.data("billing-hidden");
+  if (hidden) {
+    $billing.addClass(hidden);
+  }
 
   checkConfirmButton();
 };
@@ -189,6 +197,11 @@ function checkInput(selector,  value) {
 
 function checkCreditCardForm() {
   var check = true;
+
+  // Bypassing check for now
+
+  return true;
+
   $.each(checks, function(selector, value) {
     if (!checkInput(selector, value)) {
       if (selector == "#expiry-month") {
@@ -228,7 +241,7 @@ var checkConfirmButton = function() {
       $confirmButton.prop("disabled", false);
     } else {
       $confirmButton.prop("disabled", true);
-      $confirmButton.hide();
+      $confirmButton.show();
     }
   } else if (currentStep === 0) {
     $confirmButton.prop("disabled", false);
@@ -316,8 +329,6 @@ var resetCustom = function() {
   $monthlyCustom.removeClass("active");
   $mainContainer.find("#yearly-less").text("");
   $mainContainer.find("#monthly-less").text("");
-  $mainContainer.find("#yearlyCustomConfirm").hide();
-  $mainContainer.find("#monthlyCustomConfirm").hide();
   $mainContainer.find("#set-your-own-lbl").show();
 };
 
@@ -396,18 +407,29 @@ $(document).ready(function() {
     if ($(this).hasClass("active")) {
       return false;
     }
+
+    var recurring = $(this).data("recurring");
     $(this).addClass("active");
     $(".select-supporter-type-toggle")
       .not(this)
       .removeClass("active");
     var supporterType = $(this).data("id");
-    var selector = "#" + supporterType + "-input.supporter-plan-input";
+    var selector = "." + supporterType + "-input.supporter-plan-input";
 
     $mainContainer.find(selector).removeClass("hidden");
     $mainContainer
       .find(".supporter-plan-input")
       .not(selector)
       .addClass("hidden");
+
+    $(".store__form__selection__option.payment_method").addClass("hidden");
+    $(".store__form__selection__option.payment_method." + recurring).removeClass("hidden");
+    var billingHidden = $(this).data("payment-options-hidden");
+    var $billing = $mainContainer.find("#supporterStepBilling");
+    $billing.removeClass("hidden");
+    if (billingHidden) {
+      $billing.addClass(billingHidden);
+    }
 
     return false;
   });
@@ -422,12 +444,8 @@ $(document).ready(function() {
           $.get(data.url, function(data) {
             $.get(data.url, function(data) {
               $.get(data.url, function(data) {
-                $mainContainer.find("#supporterStepBilling").html(data);
                 showPanel("Billing");
-                replaceWhiteSelects(
-                  $mainContainer.find("#supporterStepBilling")[0]
-                );
-                renderCardAnimation("#payment-form");
+                $("#billing-information-wrapper").removeClass("hidden");
               });
             });
           });
@@ -496,6 +514,17 @@ $(document).ready(function() {
     $(".payment-method-form")
       .not(selector)
       .addClass("hidden");
+
+    var showAmountHidden = $(this).data("show-amount");
+    $(".donation-container").removeClass("hidden");
+    if (showAmountHidden) {
+        $(".donation-container").addClass(showAmountHidden);
+    }
+
+    var popup = $(this).data("show-popup");
+    if (popup) {
+        $("#" + popup).modal("show");
+    }
 
     // Set new value to input - payment-method
     $("#payment-method").val(paymentMethod);
@@ -661,10 +690,6 @@ $(document).ready(function() {
   var monthlyCustom = $mainContainer.find("#monthlyCustom");
   var yearlyCustom = $mainContainer.find("#yearlyCustom");
 
-  $(document).on("focusout", ".custom-out", function() {
-    resetCustom();
-  });
-
   function isPositiveInteger(s) {
     return /^\+?[1-9][\d]*$/.test(s);
   }
@@ -686,21 +711,20 @@ $(document).ready(function() {
     yearlyCustom = $("#yearlyCustom");
     var value = $(monthlyCustom).val();
     var $errorLabel = $(this).closest(".button-row").find("label.accent-color");
-
+    var $minLabel = $(this).parent().find("label");
     if (value >= 10) {
-      $mainContainer.find("#monthlyCustomConfirm").data("value", value);
-      $mainContainer.find("#monthlyCustomConfirm").show();
       $mainContainer.find("#set-your-own-lbl").hide();
       if (!$errorLabel.hasClass("hidden")) {
         $errorLabel.addClass("hidden");
       }
     } else {
-      $mainContainer.find("#monthlyCustomConfirm").data("value", "");
-      $mainContainer.find("#monthlyCustomConfirm").hide();
       $mainContainer.find("#set-your-own-lbl").show();
       $errorLabel.removeClass("hidden");
     }
     if (value && isPositiveInteger(value)) {
+      if (!$minLabel.hasClass("hidden")) {
+        $minLabel.addClass("hidden");
+      }
       resetButtons();
       $(yearlyCustom).val("");
       setSelected(selectedData.flow, "month", value);
@@ -721,6 +745,7 @@ $(document).ready(function() {
         }
       }
     } else {
+      $minLabel.removeClass("hidden");
       setSelected(selectedData.flow, "", 0);
       $(monthlyCustom).removeClass("active");
     }
@@ -732,39 +757,32 @@ $(document).ready(function() {
     var value = $yearlyCustom.val();
     var $minErrorLabel = $(this).closest(".button-row").find("label.accent-color.min");
     var $maxErrorLabel = $(this).closest(".button-row").find("label.accent-color.max");
-
+    var $minLabel = $(this).parent().find("label");
     if (value && isPositiveInteger(value)) {
+      if (!$minLabel.hasClass("hidden")) {
+        $minLabel.addClass("hidden");
+      }
       resetButtons();
       $monthlyCustom.val("");
       setSelected(selectedData.flow, "year", value);
       $yearlyCustom.addClass("active");
       $monthlyCustom.removeClass("active");
       if (value >= 10) {
-        $mainContainer.find("#yearlyCustomConfirm").val(value);
-        $mainContainer.find("#yearlyCustomConfirm").show();
         if (!$minErrorLabel.hasClass("hidden")) {
           $minErrorLabel.addClass("hidden");
         }
       } else {
-        $mainContainer.find("#yearlyCustomConfirm").val("");
-        $mainContainer.find("#yearlyCustomConfirm").hide();
         $minErrorLabel.removeClass("hidden");
       }
       if (value > 99999) {
-        $mainContainer.find("#yearlyCustomConfirm").val("");
-        $mainContainer.find("#yearlyCustomConfirm").hide();
         $maxErrorLabel.removeClass("hidden");
       } else {
         if (!$maxErrorLabel.hasClass("hidden")) {
           $maxErrorLabel.addClass("hidden");
         }
       }
-      if (event.keyCode == 13) {
-        if ($mainContainer.find("#yearlyCustomConfirm").val() != "") {
-          oneTimeSelected($yearlyCustom);
-        }
-      }
     } else {
+      $minLabel.removeClass("hidden");
       $yearlyCustom.removeClass("active");
       setSelected(selectedData.flow, "", 0);
     }
@@ -965,25 +983,22 @@ $(document).ready(function() {
       }
     }
   });
-  $(".supporter-card-data .form-control").on("keyup", function() {
+  $(".store__form__input").on("keyup", function() {
     $(this).removeClass("error");
-
-    if ($(".supporter-card-data .form-control.error").length == 0) {
-      $("#form-general-error").text("");
-    }
+    $("#form-general-error").text("");
+    checkConfirmButton();
   });
 
   function getPaymentInfoForm() {
-    var $step = $mainContainer.find("#supporterStepBilling");
-    var url = $step.data("payment-info-url");
+    var $billing = $mainContainer.find("#supporterStepBilling");
+    var url = $billing.data("payment-info-url");
 
     $.ajax({
       url: url,
       type: "get",
       success: function(data) {
-        $step.html(data);
+        $billing.removeClass("hidden");
         updatePaymentInfo();
-        replaceWhiteSelects($("#supporterStepBilling")[0]);
         renderCardAnimation("#payment-form");
         showPanel(getNextStep());
       },
@@ -1165,8 +1180,16 @@ $(document).ready(function() {
         $mainContainer.find("#place-order").submit();
       }
     } else {
-      if (currentStep === "SelectType") {
+      if (currentStep == "Intro") {
         getPaymentInfoForm();
+      } else if (currentStep === "SelectType") {
+        // We're combining CC info and payment for One Time Donations
+        if (selectedData.type != "year") {
+            //showPaymentInfoForm();
+        } else {
+            //getDonationPreviewForm();
+        }
+        getDonationPreviewForm();
       } else if (currentStep === "Billing") {
         getDonationPreviewForm();
       } else if (currentStep == "Preview") {
@@ -1188,6 +1211,10 @@ $(document).ready(function() {
     }
 
     if (currentStep === "Intro") return;
+
+    if (currentStep === "Billing") {
+      //showPaymentInfoForm(true);
+    }
 
     if (!getSteps().indexOf(currentStep) < 1) {
       showPanel(getPreviousStep());

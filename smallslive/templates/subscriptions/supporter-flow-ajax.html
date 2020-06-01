@@ -1,8 +1,6 @@
 {% block home_content %}
 {% if flow_type == 'become_supporter' or flow_type = 'one_time_donation' or flow_type = 'update_pledge' %}
   {% include 'subscriptions/become-supporter.html' %}
-{% elif flow_type == 'donate'%}
-  {% include 'subscriptions/direct_donation.html' %}
 {% endif %}
 {% endblock home_content %}
 

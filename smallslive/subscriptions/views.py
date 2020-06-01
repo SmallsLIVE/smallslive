@@ -337,7 +337,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
             context['can_free_donate'] = False
 
         if not self.request.user.is_authenticated():
-            context['flow_type'] = 'donate'
+            context['flow_type'] = 'one_time_donation'
         else:
             # Whatever the flow type is, it needs to be become a supporter if the user
             # is not a supporter yet. They can't donate or get stuff from the Catalog.
@@ -635,6 +635,7 @@ class DonateView(BecomeSupporterView):
 
         if self.request.GET.get('skip_intro'):
             context['skip_intro'] = True
+        context['flow_type'] = 'one_time_donation'
 
         return context
 

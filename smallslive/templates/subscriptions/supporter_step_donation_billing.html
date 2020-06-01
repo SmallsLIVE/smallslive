@@ -1,0 +1,85 @@
+<div class="section-title section-title-no-padded">
+    <div tabindex="0" class="title1">Billing Information</div>
+</div>
+<div class="row">
+  <div class="store__form__group clearfix" id="custom-billing-address">
+    <div class="col-xs-12 col-sm-6">
+      <input type="text" id="first_name" name="first_name"
+             class="address store__form__input" {% if billing_address_form.first_name.value %}value="{{ billing_address_form.first_name.value }}"{% endif %}
+             placeholder="First Name">
+        {% for error in billing_address_form.first_name.errors %}
+            <span class="store__form__field-error">{{ error }}</span>
+        {% endfor %}
+      <input type="text" id="last_name" name="last_name"
+             class="address store__form__input" {% if billing_address_form.last_name.value %}value="{{ billing_address_form.last_name.value }}"{% endif %}
+             placeholder="Last Name">
+        {% for error in billing_address_form.last_name.errors %}
+            <span class="store__form__field-error">{{ error }}</span>
+        {% endfor %}
+      <input type="tel" name="phone" id="phone"
+             class="address store__form__input" {% if billing_address_form.phone_number.value %}value="{{ billing_address_form.phone_number.value }}"{% endif %}
+             placeholder="Phone">
+        {% for error in billing_address_form.phone_number.errors %}
+            <span class="store__form__field-error">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="col-xs-12 col-sm-6">
+      <input type="text" name="line1" id="line1"
+             class="address store__form__input" {% if billing_address_form.line1.value %}value="{{ billing_address_form.line1.value }}"{% endif %}
+             placeholder="Address Line 1">
+      {% for error in billing_address_form.line1.errors %}
+              <span class="store__form__field-error">{{ error }}</span>
+          {% endfor %}
+      <input type="text" name="line2" id="line2"
+             class="address store__form__input" {% if billing_address_form.line2.value %}value="{{ billing_address_form.line2.value }}"{% endif %}
+             placeholder="Address Line 2">
+      {% for error in billing_address_form.line2.errors %}
+              <span class="store__form__field-error">{{ error }}</span>
+      {% endfor %}
+      <div class="row">
+          <div class="col-xs-6">
+              <input type="text" name="line4" id="city"
+                     class="address store__form__input" {% if billing_address_form.line4.value %}value="{{ billing_address_form.line4.value }}"{% endif %}
+                     placeholder="City">
+              {% for error in billing_address_form.line4.errors %}
+                  <span class="store__form__field-error">{{ error }}</span>
+              {% endfor %}
+          </div>
+            <div class="col-xs-6">
+              <input type="text" name="postcode" id="postcode"
+                     class="address store__form__input" {% if billing_address_form.postcode.value %}value="{{ billing_address_form.postcode.value }}"{% endif %}
+                     placeholder="Zip Code">
+              {% for error in billing_address_form.postcode.errors %}
+                  <span class="store__form__field-error">{{ error }}</span>
+              {% endfor %}
+          </div>
+      </div>
+      <div class="white-border-select">
+        <select name="state" class="address store__form__select">
+          <option value="">Select State</option>
+          {% for val, choice in billing_address_form.fields.state.widget.choices %}
+            {% if val %}
+              <option value="{{ val }}" {% if val == billing_address_form.state.value %}selected{% endif %}>{{ choice }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      {% for error in billing_address_form.state.errors %}
+          <span class="store__form__field-error">{{ error }}</span>
+      {% endfor %}
+      <div class="white-border-select">
+        <select name="country" class="address store__form__select">
+          <option value="">Select Country</option>
+          {% for val, choice in billing_address_form.fields.country.choices %}
+            {% if val and '....' not in val %}
+              <option value="{{ val }}" {% if val == billing_address_form.country.value %}selected{% endif %}>{{ choice }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+        {% for error in billing_address_form.country.errors %}
+            <span class="store__form__field-error">{{ error }}</span>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
