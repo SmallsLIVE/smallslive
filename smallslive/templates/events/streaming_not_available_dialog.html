@@ -21,8 +21,6 @@
             </button>
             <button class="white-border-button" onclick="$('#streamingNotAvailableDialog').modal('hide'); $('#becomeMemberDialog').modal('show');">Become a member</button>
           </div>
-        {% elif not user.has_activated_account %}
-          <button class="white-border-button" onclick="$('#streamingNotAvailableDialog').modal('hide'); $('#inactive-dialog').modal('show');">Confirm email</button>
         {% endif %}
 
         {% if currently_live_event_url %}

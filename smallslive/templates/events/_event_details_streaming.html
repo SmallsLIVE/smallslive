@@ -9,27 +9,14 @@
 {% load crispy_forms_tags %}
 {% block event_content %}
 <div class="player-container">
-  {% if is_event_user_not_confirmed %}
-    <div class="not-auth-container">
-      {% if event.photo %}
-        {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
-      {% else %}
-        {% include 'partials/thumbored_picture.html' %}
-      {% endif %}
-      <div class="icon-overlay">
-        <i class="fa fa-play fa-thin-circle"></i>
-      </div>
-    </div>
-  {% else %}
-    <div class="wrapper">
-      <iframe id="UstreamIframe"
-              width="100%" height="100%"
-              src="{{ event.get_live_stream }}"
-              frameborder="0"
-              style="position:absolute; top:0; left: 0" allowfullscreen allowautoplay
-              webkitallowfullscreen></iframe>
-    </div>
-  {% endif %}
+  <div class="wrapper">
+    <iframe id="UstreamIframe"
+            width="100%" height="100%"
+            src="{{ event.get_live_stream }}"
+            frameborder="0"
+            style="position:absolute; top:0; left: 0" allowfullscreen allowautoplay
+            webkitallowfullscreen></iframe>
+  </div>
 </div>
 {% endblock %}
 {% block extra_js %}
@@ -37,26 +24,6 @@
 <script src="https://developers.video.ibm.com/js/ustream-embedapi.min.js"></script>
 <script>
   $(document).ready(function () {
-
-    {% if is_event_user_not_confirmed %}
-
-      function cannotWatchModalOpen() {
-        var modal = '#becomeMemberDialog';
-        if (smallsConfig.user.isAuthenticated) {
-          modal = '#become-a-supporter-dialog';
-          inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
-          if (inactive === 'true'){
-            modal = '#inactive-dialog';
-          }
-        }
-        $(modal).modal('show');
-      }
-
-      $(document).on('click', '.not-auth-container', function (event) {
-        cannotWatchModalOpen()
-      })
-
-    {% else %}
 
       {% if next_event %}
         var changeTime = moment("{{ next_event.start.isoformat }}");
@@ -153,9 +120,8 @@
             }, {{ metrics_ping_interval }} * 1000);
           }
         }
-      {% endif %}
 
-    {% endif %}
+      {% endif %}
 
   });
 

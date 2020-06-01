@@ -79,18 +79,14 @@
       to the live stream view if the show is about to start. */
 
       if (smallsConfig.user.isAuthenticated) {
-        var inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}');
-        if (inactive === 'true') {
-          modal = '#inactive-dialog';
-          $(modal).modal('show');
+
+        var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
+        if (moment() - allowStreamingTime > 0) {
+          window.location = "{{ streaming.event_url }}";
         } else {
-          var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
-          if (moment() - allowStreamingTime > 0) {
-            window.location = "{{ streaming.event_url }}";
-          } else {
-            $('#streamingNotAvailableDialog').modal('show');
-          }
+          $('#streamingNotAvailableDialog').modal('show');
         }
+
       } else {
         var $modal = $('#becomeMemberDialog');
         $modal.modal('show');

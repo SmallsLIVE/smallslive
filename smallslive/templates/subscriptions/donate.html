@@ -113,9 +113,6 @@
     {% if not user.is_authenticated %}
       <button id="supportBecomeMemberButton"
               class="banner-button-info">Become a member</button>
-    {% elif not user.has_activated_account %}
-      <button id="supportConfirmEmailButton"
-              onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
     {% endif %}
     {% if user.is_authenticated and user.has_activated_account %}
       <button id="confirmButton" class="button-bordered">Confirm</button>

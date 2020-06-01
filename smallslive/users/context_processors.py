@@ -29,7 +29,7 @@ def check_account_status(request):
 
     return {
         'current_user': user,
-        'show_email_confirmation_dialog': show,
+        'show_email_confirmation_dialog': False,
         'check_account_status_url': reverse('check_account_status'),
     }
 
