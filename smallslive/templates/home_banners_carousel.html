@@ -15,11 +15,11 @@
       <div class="banner-learnmore">
         <button class="banner-button-info" onclick="showMoreInfoFoundation();">More Info</button>
         {% if not user.is_authenticated %}
-        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Donate</button>
         {% elif not user.has_activated_account %}
           <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
-          <a href="{% url 'become_supporter' %}">Become a supporter</a>
+          <a href="{% url 'become_supporter' %}">Donate</a>
         {% elif user.has_active_subscription %}
           <a class="banner-button-info"
           {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
@@ -43,11 +43,11 @@
       <div class="banner-learnmore">
         <button class="banner-button-info" onclick="showMoreInfoArchive();">More Info</button>
         {% if not user.is_authenticated %}
-        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Donate</button>
         {% elif not user.has_activated_account %}
           <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
-          <a href="{% url 'become_supporter' %}">Become a supporter</a>
+          <a href="{% url 'become_supporter' %}">Donate</a>
         {% elif user.has_active_subscription %}
           <a class="banner-button-info"
           {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
@@ -71,11 +71,11 @@
       <div class="banner-learnmore">
         <button class="banner-button-info" onclick="showMoreInfoCatalog();">More Info</button>
         {% if not user.is_authenticated %}
-        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Donate</button>
         {% elif not user.has_activated_account %}
           <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
-          <a href="{% url 'become_supporter' %}">Become a supporter</a>
+          <a href="{% url 'become_supporter' %}">Donate</a>
         {% elif user.has_active_subscription %}
           <a class="banner-button-info"
           {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
@@ -100,11 +100,11 @@
       <div class="banner-learnmore">
         <button class="banner-button-info" onclick="showMoreInfoLiveStream();">More Info</button>
         {% if not user.is_authenticated %}
-        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Donate</button>
         {% elif not user.has_activated_account %}
           <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
-          <a href="{% url 'become_supporter' %}">Become a supporter</a>
+          <a href="{% url 'become_supporter' %}">Donate</a>
         {% elif user.has_active_subscription %}
           <a class="banner-button-info"
           {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation"
@@ -129,7 +129,7 @@
         <span class="accent-color">tax deductible donation</span> to the SmallsLIVE Foundation you will get access to our extensive
         <span class="accent-color">audio/ video archive</span> and directly support the musicians and the clubs.</p>
       <div class="banner-learnmore">
-        <a href="{% url 'become_supporter' %}">Become a supporter</a>
+        <a href="{% url 'become_supporter' %}">Donate</a>
         <a href="{% url 'contact-and-info' %}">More Info</a>
       </div>
     </div>
