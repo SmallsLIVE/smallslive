@@ -207,9 +207,6 @@
     });
     inactive = {% if user.is_authenticated and show_email_confirmation_dialog %}true{% else %}false{% endif %};
     console.log(inactive)
-    if (inactive === 'true'){
-      $('#inactive-dialog').modal('show');
-    }
 
   </script>
 {% endblock %}

@@ -346,13 +346,11 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def can_watch_video(self):
-        return self.has_activated_account and \
-               self.has_archive_access
+        return self.has_archive_access
 
     @property
     def can_listen_to_audio(self):
-        return self.has_activated_account and \
-               self.has_archive_access
+        return self.has_archive_access
 
     def get_active_card(self):
 

@@ -165,13 +165,6 @@
                         class="white-border-button confirm"
                         data-support-url="{% url 'product_support' product_id=album_product.pk %}"
                         style="margin-left: 5px;">Continue</button>
-              {% else %}
-                <button id="supportConfirmEmailButton"
-                        class="white-border-button buttons-row"
-                        onclick="$('#supportConfirmationDialog').modal('hide');$('#inactive-dialog').modal('show');"
-                        data-redirect-url="{% url 'product_support' product_id=album_product.pk %}">
-                  Confirm Email
-                </button>
               {% endif %}
             {% else %}
               <button id="supportLogIn"

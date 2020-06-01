@@ -16,8 +16,6 @@
         <button class="banner-button-info" onclick="showMoreInfoFoundation();">More Info</button>
         {% if not user.is_authenticated %}
         <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Donate</button>
-        {% elif not user.has_activated_account %}
-          <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
           <a href="{% url 'become_supporter' %}">Donate</a>
         {% elif user.has_active_subscription %}
@@ -44,8 +42,6 @@
         <button class="banner-button-info" onclick="showMoreInfoArchive();">More Info</button>
         {% if not user.is_authenticated %}
         <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Donate</button>
-        {% elif not user.has_activated_account %}
-          <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
           <a href="{% url 'become_supporter' %}">Donate</a>
         {% elif user.has_active_subscription %}
@@ -72,8 +68,6 @@
         <button class="banner-button-info" onclick="showMoreInfoCatalog();">More Info</button>
         {% if not user.is_authenticated %}
         <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Donate</button>
-        {% elif not user.has_activated_account %}
-          <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
           <a href="{% url 'become_supporter' %}">Donate</a>
         {% elif user.has_active_subscription %}
@@ -101,8 +95,6 @@
         <button class="banner-button-info" onclick="showMoreInfoLiveStream();">More Info</button>
         {% if not user.is_authenticated %}
         <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Donate</button>
-        {% elif not user.has_activated_account %}
-          <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
           <a href="{% url 'become_supporter' %}">Donate</a>
         {% elif user.has_active_subscription %}
