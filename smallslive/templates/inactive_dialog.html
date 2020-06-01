@@ -82,7 +82,7 @@
             if (response.success && response.data.isVerified) {
               window.location.reload();
             } else {
-              setTimeout(checkAccountStatus, 1000);
+              setTimeout(checkAccountStatus, 5000);
             }
           }
         });
