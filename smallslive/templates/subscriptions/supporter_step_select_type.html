@@ -51,7 +51,7 @@
       <div class="flex-column">
         <div class="flex-row custom-out">
           <div class="custom-input text4">
-            <input type="number" pattern="\d*" class="no-spinners transparent" id="monthlyCustom" value="supporter-monthly-pledge">
+            <input type="number" min="10" max="99999" step="1" class="no-spinners transparent" id="monthlyCustom" value="supporter-monthly-pledge">
             <label id="set-your-own-lbl"><div>ENTER YOUR PLEDGE <br> (MIN $10)</div></label>
             <div id="monthly-less" class="text9 accent-color minimum-error"></div>
           </div>
@@ -78,7 +78,7 @@
       <div class="flex-column">
         <div class="flex-row custom-out">
           <div class="custom-input text4">
-            <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" max="99999" value="supporter-yearly-pledge">
+            <input type="number" min="10" step="1" class="no-spinners transparent" id="yearlyCustom" max="99999" value="supporter-yearly-pledge">
             <label><div>ENTER YOUR PLEDGE<br>(MIN  $10)</div></label>
             <div id="yearly-less" class="text9 accent-color minimum-error"></div>
           </div>
