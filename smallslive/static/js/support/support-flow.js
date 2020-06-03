@@ -237,12 +237,8 @@ var checkConfirmButton = function() {
   var $confirmEmailButton = $mainContainer.find("#supportConfirmEmailButton");
 
   if (currentStep === "SelectType") {
-    if (selectedData.amount >= 10) {
-      $confirmButton.prop("disabled", false);
-    } else {
-      $confirmButton.prop("disabled", true);
-      $confirmButton.show();
-    }
+    $confirmButton.prop("disabled", false);
+    $confirmButton.show();
   } else if (currentStep === 0) {
     $confirmButton.prop("disabled", false);
   } else {
@@ -1152,6 +1148,16 @@ $(document).ready(function() {
   }
 
   $(document).on("click", "#confirmButton", function(event) {
+
+    if (currentStep === "SelectType") {
+      // We're combining CC info and payment for One Time Donations
+      var amount = selectedData.amount;
+      if (amount < 10) {
+        alert('Please enter amount greater than 10');
+        return;
+      }
+    }
+
     var $that = $(this);
     $that.prop("disabled", true);
 
@@ -1184,11 +1190,6 @@ $(document).ready(function() {
         getPaymentInfoForm();
       } else if (currentStep === "SelectType") {
         // We're combining CC info and payment for One Time Donations
-        if (selectedData.type != "year") {
-            //showPaymentInfoForm();
-        } else {
-            //getDonationPreviewForm();
-        }
         getDonationPreviewForm();
       } else if (currentStep === "Billing") {
         getDonationPreviewForm();
