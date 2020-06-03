@@ -747,7 +747,15 @@ $(document).ready(function() {
     }
   });
 
+  $(document).on("keydown", "#yearlyCustom, #monthlyCustom", function (event) {
+    if (event.which == 190) {
+      return false;
+    }
+  });
+
   $(document).on("keyup", "#yearlyCustom", function(event) {
+    console.log(event);
+
     $monthlyCustom = $mainContainer.find("#monthlyCustom");
     $yearlyCustom = $(this);
     var value = $yearlyCustom.val();
