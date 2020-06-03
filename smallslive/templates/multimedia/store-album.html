@@ -160,12 +160,10 @@
           <div class="text4 text-centered" style="display: flex; justify-content: center;">
             <button class="white-border-button cancel-button" style="margin-rightt: 5px;">Cancel</button>
             {% if user.is_authenticated %}
-              {% if user.has_activated_account %}
-                <button id="confirmDonationButton"
-                        class="white-border-button confirm"
-                        data-support-url="{% url 'product_support' product_id=album_product.pk %}"
-                        style="margin-left: 5px;">Continue</button>
-              {% endif %}
+              <button id="confirmDonationButton"
+                      class="white-border-button confirm"
+                      data-support-url="{% url 'product_support' product_id=album_product.pk %}"
+                      style="margin-left: 5px;">Continue</button>
             {% else %}
               <button id="supportLogIn"
                       class="white-border-button sign-in-button"
