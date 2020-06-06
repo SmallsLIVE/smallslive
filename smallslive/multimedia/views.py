@@ -286,6 +286,7 @@ class NewMyDownloadsView(LoginRequiredMixin, ProductMixin, ListView):
 
         return context
 
+
 new_downloads = NewMyDownloadsView.as_view()
 
 
@@ -343,6 +344,7 @@ class AlbumView(TemplateView):
             context['active_card'] = customer_detail.active_card
 
         return context
+
 
 album_view = AlbumView.as_view()
 

@@ -114,7 +114,7 @@
       <button id="supportBecomeMemberButton"
               class="banner-button-info">Become a member</button>
     {% endif %}
-    {% if user.is_authenticated and user.has_activated_account %}
+    {% if user.is_authenticated %}
       <button id="confirmButton" class="button-bordered">Confirm</button>
     {% endif %}
   {% else %}
