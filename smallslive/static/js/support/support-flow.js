@@ -1160,7 +1160,8 @@ $(document).ready(function() {
     if (currentStep === "SelectType") {
       // We're combining CC info and payment for One Time Donations
       var amount = selectedData.amount;
-      if (amount < 10) {
+      var donationType = selectedData.type;
+      if (amount < 10 && donationType != "store_physical" && donationType != "store_digital") {
         alert('Please enter amount greater than 10');
         return;
       }

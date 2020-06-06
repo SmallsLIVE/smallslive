@@ -73,6 +73,7 @@
       });
 
       var $inactiveModal = $('#inactive-dialog');
+      var timeOutTime = 1000;
 
       function checkAccountStatus() {
         var url = $inactiveModal.data('check-account-url');
@@ -82,7 +83,11 @@
             if (response.success && response.data.isVerified) {
               window.location.reload();
             } else {
-              setTimeout(checkAccountStatus, 5000);
+              setTimeout(checkAccountStatus, timeOutTime);
+              timeOutTime = timeOutTime * 2;
+              if (timeOutTime > 1800000) {
+                timeOutTime = 1800000;
+              }
             }
           }
         });
