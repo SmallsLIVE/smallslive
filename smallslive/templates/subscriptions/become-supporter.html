@@ -139,9 +139,7 @@
 
   {% if not completed %}
     <button id="backButton" class="button-bordered">Back</button>
-
     <button id="confirmButton" data-hide='true' class="button-bordered">Confirm</button>
-
   {% else %}
     {% if flow_type = "become_supporter" %}
     <a href="{% url 'archive' %}">
@@ -155,6 +153,7 @@
   {% endif %}
 
 {% endblock %}
+
 {% block extra_js %}
   {{ block.super }}
   <script>

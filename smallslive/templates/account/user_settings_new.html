@@ -84,7 +84,6 @@
           {% else %}
             <div class="text9 accent-color">{% if cancelled %}Subscription canceled{% else %}None{% endif %}</div>
           {% endif %}
-
           {% if not user.has_archive_access %}
             <button onclick="becomeSupporter()" class="white-border-button">Become a Supporting Member</button>
           {% elif customer_detail.subscription.plan and not cancelled %}
