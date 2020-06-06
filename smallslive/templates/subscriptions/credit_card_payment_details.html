@@ -1,28 +1,30 @@
 <div class="row">
   <div class="button-row button-row-margin" style="margin-bottom: 30px;">
     {% if user.can_use_existing_cc %}
-      <div class="store__form__selection__option">
+      <div class="store__form__selection__option payment_method single recurring">
         <button class="payment-method-toggle active" data-id="existing-credit-card">Use existing credit card</button>
       </div>
     {% endif %}
-    <div class="store__form__selection__option">
-    <button class="payment-method-toggle {% if not user.can_use_existing_cc %}active{% endif %}" data-id="credit-card">Pay with credit card</button>
+    <div class="store__form__selection__option payment_method single recurring">
+      <button class="payment-method-toggle {% if not user.can_use_existing_cc %}active{% endif %}" data-id="credit-card">Pay with credit card</button>
     </div>
-    <div class="store__form__selection__option">
-        <button class="payment-method-toggle" data-id="paypal">Pay with PayPal</button>
-    </div>
-    <div class="store__form__selection__option payment_method single">
-      <button class="payment-method-toggle"
-              data-id="bitcoin"
-              data-show-popup="bitCoinInformationDialog"
-              data-show-amount="hidden">BitCoin</button>
-    </div>
-    <div class="store__form__selection__option payment_method single">
-      <button class="payment-method-toggle"
-              data-id="check"
-              data-show-popup="checkInformationDialog"
-              data-show-amount="hidden">Check / Wire</button>
-    </div>
+    {% if not flow_type == 'update_pledge' %}
+      <div class="store__form__selection__option payment_method single">
+          <button class="payment-method-toggle" data-id="paypal">Pay with PayPal</button>
+      </div>
+      <div class="store__form__selection__option payment_method single">
+        <button class="payment-method-toggle"
+                data-id="bitcoin"
+                data-show-popup="bitCoinInformationDialog"
+                data-show-amount="hidden">BitCoin</button>
+      </div>
+      <div class="store__form__selection__option payment_method single">
+        <button class="payment-method-toggle"
+                data-id="check"
+                data-show-popup="checkInformationDialog"
+                data-show-amount="hidden">Check / Wire</button>
+      </div>
+    {% endif %}
   </div>
 </div>
 <input type="hidden" name="payment_method" id="payment-method" value="{% if user.can_use_existing_cc %}existing-credit-card{%  else %}credit-card{% endif %}">

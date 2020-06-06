@@ -79,7 +79,7 @@ class SignupView(AllauthSignupView):
         #     verification_method = EmailVerificationMethod.MANDATORY
         # else:
         #     verification_method = EmailVerificationMethod.OPTIONAL
-        verification_method = EmailVerificationMethod.OPTIONAL
+        verification_method = EmailVerificationMethod.NONE
         complete_signup(
             self.request, user, verification_method, self.get_success_url()
         )
@@ -151,6 +151,7 @@ def user_settings_view(request):
 
 @login_required(login_url='home')
 def user_settings_view_new(request):
+
     profile_updated = False
     # if this is a POST request we need to process the form data
     if 'edit_profile' in request.POST:
@@ -247,56 +248,55 @@ def user_settings_view_new(request):
 
     show_email_confirmation = False
 
-    if not request.user.has_activated_account:
-        show_email_confirmation = True
+
+    try:
+        customer = request.user.customer
+    except:
+        customer = None
+
+    user_archive_access_until = None
+    if request.user.has_archive_access:
+        user_archive_access_until = request.user.get_archive_access_expiry_date()
+
+    if customer and customer.has_active_subscription():
+        plan_id = request.user.customer.current_subscription.plan
+        try:
+            plan = stripe.Plan.retrieve(id=plan_id)
+        except stripe.error.InvalidRequestError:
+            plan = None
+
+    customer_charges = request.user.get_donations().order_by('-date')
+    charges_value = 0
+    for charge in customer_charges:
+        if charge.amount:
+            charges_value = charges_value + charge.amount
+
+        artist_info_form = ArtistInfoForm(instance=request.user)
+    customer_detail = CustomerDetail.get(
+        id=request.user.customer.stripe_id)
+
+    if customer_detail and customer_detail.subscription:
+        monthly_pledge_in_dollars = customer_detail.subscription.plan.amount / 100
+
+    if customer_detail and customer_detail.subscription:
+        period_end["date"] = datetime.fromtimestamp(
+            customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
+        period_end["due"] = datetime.fromtimestamp(
+            customer_detail.subscription.current_period_end) <= datetime.now()
+
+    if customer_detail and customer_detail.subscription and customer_detail.subscriptions.data:
+        cancel_at = customer_detail.subscriptions.data[0]['cancel_at_period_end']
     else:
+        cancel_at = False
+
+    try:
+        billing_address = request.user.addresses.get(
+            is_default_for_billing=True)
+    except UserAddress.DoesNotExist:
         try:
-            customer = request.user.customer
-        except:
-            customer = None
-
-        user_archive_access_until = None
-        if request.user.has_archive_access:
-            user_archive_access_until = request.user.get_archive_access_expiry_date()
-
-        if customer and customer.has_active_subscription():
-            plan_id = request.user.customer.current_subscription.plan
-            try:
-                plan = stripe.Plan.retrieve(id=plan_id)
-            except stripe.error.InvalidRequestError:
-                plan = None
-
-        customer_charges = request.user.get_donations().order_by('-date')
-        charges_value = 0
-        for charge in customer_charges:
-            if charge.amount:
-                charges_value = charges_value + charge.amount
-
-            artist_info_form = ArtistInfoForm(instance=request.user)
-        customer_detail = CustomerDetail.get(
-            id=request.user.customer.stripe_id)
-        if customer_detail and customer_detail.subscription:
-            monthly_pledge_in_dollars = customer_detail.subscription.plan.amount / 100
-
-        if customer_detail and customer_detail.subscription:
-            period_end["date"] = datetime.fromtimestamp(
-                customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
-            period_end["due"] = datetime.fromtimestamp(
-                customer_detail.subscription.current_period_end) <= datetime.now()
-
-        if customer_detail and customer_detail.subscription and customer_detail.subscriptions.data:
-            cancel_at = customer_detail.subscriptions.data[0]['cancel_at_period_end']
-        else:
-            cancel_at = False
-
-        try:
-            billing_address = request.user.addresses.get(
-                is_default_for_billing=True)
+            billing_address = request.user.addresses.first()
         except UserAddress.DoesNotExist:
-            try:
-                billing_address = request.user.addresses.first()
-            except UserAddress.DoesNotExist:
-                billing_address = UserAddress()
+            billing_address = UserAddress()
 
     return render(request, 'account/user_settings_new.html', {
         'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
