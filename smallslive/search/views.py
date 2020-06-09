@@ -292,9 +292,11 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
         context.update(instrument_context)
 
         artist_id = context['artist'].pk if context['artist'] else None
+        all_media_status = False or self.request.user.is_staff
         event_blocks, showing_event_results, num_pages, first, last, search_input = self.search(
             Event, query_term, results_per_page=60, artist_pk=artist_id,
-            date_from=date_from, date_to=date_to, search_input=search_input)
+            date_from=date_from, date_to=date_to, search_input=search_input,
+            all_media_status=all_media_status)
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []
