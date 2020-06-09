@@ -435,15 +435,16 @@ class SearchObject(object):
                 .annotate(num_performers=Count('performers', distinct=True)) \
                 .filter(num_performers=number_of_performers)
 
-    def filter_dates(self, start_date, end_date):
+    def filter_dates(self, start_date, end_date, all_media_status=False):
 
         today = timezone.localtime(
             timezone.now().replace(hour=0, minute=0, second=0))
 
         if not start_date or start_date.date() < today.date():
-            self.sqs = self.sqs.filter(
-                recordings__media_file__isnull=False,
-                recordings__state=Recording.STATUS.Published)
+            if not all_media_status:
+                self.sqs = self.sqs.filter(
+                    recordings__media_file__isnull=False,
+                    recordings__state=Recording.STATUS.Published)
 
         if start_date:
             # Force hours to start of day
@@ -464,7 +465,7 @@ class SearchObject(object):
                      artist_pk=None, venue=None, instruments=None, all_sax_instruments=None,
                      number_of_performers=None, first_name=None, last_name=None,
                      partial_name=None, artist_search=None,
-                     leader='all', search_description=False):
+                     leader='all', search_description=False, all_media_status=False):
         """
             number_of_performers: solo, duo, etc. match events by # of performers.
             partial_name: 'john' will match 'john smith' and 'will johnson'
@@ -472,6 +473,7 @@ class SearchObject(object):
             artist_search: first letter of an artist name or family name.
             all_sax_instruments: user entered 'sax' forcing the search for any kind of sax.
             search_description: search for event title and description (icontains is a slow operation).
+            all_media_status: we need to search for events without media as well.
         """
 
         self.sqs = Event.objects.get_queryset()
@@ -509,7 +511,7 @@ class SearchObject(object):
 
         # Filter by venue and dates
         self.filter_venue(venue)
-        self.filter_dates(start_date, end_date)
+        self.filter_dates(start_date, end_date, all_media_status)
         self.sqs = self.sqs.distinct()
 
         # Apply sort order
