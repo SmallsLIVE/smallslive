@@ -21,7 +21,7 @@
 
     <div class="button-row">
 
-      {% if user.is_authenticated and user.has_activated_account %}
+      {% if user.is_authenticated %}
         {% if not user.can_watch_video %}
           <a class="white-border-button margin-right"
              href="{% url 'become_supporter' %}">Donate</a>
@@ -77,7 +77,7 @@
   <div class="mobile-menu-icons flex-row items-center content-space-between">
     <div>
       <i class="fa fa-bars" onclick="toggleSideBar()"></i>
-      {% if user.is_authenticated and user.has_activated_account %}
+      {% if user.is_authenticated %}
         {% if not user.can_watch_video %}
           <a class="white-border-button" style="padding: 0 10px;"
              href="{% url 'become_supporter' %}">Donate</a>
