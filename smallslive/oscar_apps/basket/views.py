@@ -39,6 +39,7 @@ class BasketView(basket_views.BasketView):
 
 class BasketAddView(basket_views.BasketAddView):
 
+
     def _get_stock_record(self, form):
         """ If product is track, user's will have access only to purchase
         mp3s. Since there are 2 stock records per track, we need to make sure
@@ -97,6 +98,8 @@ class BasketAddView(basket_views.BasketAddView):
             sender=self, product=form.product, user=self.request.user,
             request=self.request)
 
+        print 'form_valid: ', self.request.is_ajax()
+
         if self.request.is_ajax():
             # TODO: remove duplicate code
             storage = messages.get_messages(self.request)
@@ -111,4 +114,5 @@ class BasketAddView(basket_views.BasketAddView):
 
             return HttpResponse(status=200)
         else:
+            print 'Return: ', self.get_success_url()
             return HttpResponseRedirect(self.get_success_url())

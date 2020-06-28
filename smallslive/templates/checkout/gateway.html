@@ -22,8 +22,9 @@
         <form action="." method="post" class="form-stacked well checkout-gateway">
             {% csrf_token %}
             <div class='flex-row' style='margin: 0 auto; justify-content: center'>
-                <div class='white-border-button gateway-option' data-gateway-type="anonymous">checkout as a guest</div>
-                <div class='white-border-button gateway-option' data-gateway-type="existing">checkout as a member</div>
+                <!-- Hiden as per Spike's request -->
+                <!--<div class='white-border-button gateway-option' data-gateway-type="anonymous">checkout as a guest</div>-->
+                <div class='white-border-button gateway-option active' data-gateway-type="existing">checkout as a member</div>
 
             </div>
 

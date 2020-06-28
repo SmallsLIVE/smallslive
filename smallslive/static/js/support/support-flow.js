@@ -70,6 +70,8 @@ var getSteps = function() {
     }
   } else if (selectedData.flow == "event_support" || selectedData.flow == "donate_direct") {
     steps = ["SelectType", "Preview", "ThankYou"];
+  } else if (selectedData.flow == "ticket_support") {
+    steps = ["Billing", "Preview", "ThankYou"]
   }
 
   /* There needs to be one less dot than steps because the Thank You Page
@@ -328,6 +330,17 @@ var resetCustom = function() {
   $mainContainer.find("#set-your-own-lbl").show();
 };
 
+var enablePaymentTypes = function (recurring) {
+    $(".store__form__selection__option.payment_method").addClass("hidden");
+    $(".store__form__selection__option.payment_method." + recurring).removeClass("hidden");
+    var billingHidden = $(this).data("payment-options-hidden");
+    var $billing = $mainContainer.find("#supporterStepBilling");
+    $billing.removeClass("hidden");
+    if (billingHidden) {
+      $billing.addClass(billingHidden);
+    }
+  }
+
 $(document).ready(function() {
   if (typeof window.completeSubpage === "undefined") {
     window.completeSubpage = "";
@@ -418,14 +431,7 @@ $(document).ready(function() {
       .not(selector)
       .addClass("hidden");
 
-    $(".store__form__selection__option.payment_method").addClass("hidden");
-    $(".store__form__selection__option.payment_method." + recurring).removeClass("hidden");
-    var billingHidden = $(this).data("payment-options-hidden");
-    var $billing = $mainContainer.find("#supporterStepBilling");
-    $billing.removeClass("hidden");
-    if (billingHidden) {
-      $billing.addClass(billingHidden);
-    }
+    enablePaymentTypes(recurring);
 
     return false;
   });

@@ -1,15 +1,15 @@
 <div class="row">
   <div class="button-row button-row-margin" style="margin-bottom: 30px;">
     {% if user.can_use_existing_cc %}
-      <div class="store__form__selection__option payment_method single recurring">
+      <div class="store__form__selection__option payment_method single recurring ticket">
         <button class="payment-method-toggle active" data-id="existing-credit-card">Use existing credit card</button>
       </div>
     {% endif %}
-    <div class="store__form__selection__option payment_method single recurring">
+    <div class="store__form__selection__option payment_method single recurring ticket">
       <button class="payment-method-toggle {% if not user.can_use_existing_cc %}active{% endif %}" data-id="credit-card">Pay with credit card</button>
     </div>
     {% if not flow_type == 'update_pledge' %}
-      <div class="store__form__selection__option payment_method single">
+      <div class="store__form__selection__option payment_method single ticket">
           <button class="payment-method-toggle" data-id="paypal">Pay with PayPal</button>
       </div>
       <div class="store__form__selection__option payment_method single">
