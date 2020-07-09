@@ -71,7 +71,7 @@ var getSteps = function() {
   } else if (selectedData.flow == "event_support" || selectedData.flow == "donate_direct") {
     steps = ["SelectType", "Preview", "ThankYou"];
   } else if (selectedData.flow == "ticket_support") {
-    steps = ["Billing", "Preview", "ThankYou"]
+    steps = ["Basket", "Billing", "Preview", "ThankYou"]
   }
 
   /* There needs to be one less dot than steps because the Thank You Page
@@ -331,15 +331,102 @@ var resetCustom = function() {
 };
 
 var enablePaymentTypes = function (recurring) {
-    $(".store__form__selection__option.payment_method").addClass("hidden");
-    $(".store__form__selection__option.payment_method." + recurring).removeClass("hidden");
-    var billingHidden = $(this).data("payment-options-hidden");
-    var $billing = $mainContainer.find("#supporterStepBilling");
-    $billing.removeClass("hidden");
-    if (billingHidden) {
-      $billing.addClass(billingHidden);
-    }
+  $(".store__form__selection__option.payment_method").addClass("hidden");
+  $(".store__form__selection__option.payment_method." + recurring).removeClass("hidden");
+  var billingHidden = $(this).data("payment-options-hidden");
+  var $billing = $mainContainer.find("#supporterStepBilling");
+  $billing.removeClass("hidden");
+  if (billingHidden) {
+    $billing.addClass(billingHidden);
   }
+}
+
+var initBasketUi = function () {
+    $("#content_inner").on('click', '.store-cart__quantity-control__button', function(e) {
+      if (! $(this).attr('disabled')) {
+        e.preventDefault();
+        var $quantityInput = $(this).siblings('input[type=hidden]');
+        var $quantityLabel = $(this).siblings('.store-cart__quantity-control__label');
+        var quantity = parseInt($quantityInput.val(), 10);
+        var behaviour = $(this).data('behaviour');
+        if (behaviour === "increase") {
+            quantity += 1;
+        } else if (behaviour === "decrease") {
+            quantity -= 1;
+        }
+
+        $quantityLabel.text(quantity);
+        $quantityInput.val(quantity);
+        oscar.basket.submitBasketForm(e);
+        if (quantity <= 1 && $(this).hasClass('control-decrease')) {
+            $(this).attr('disabled', true).addClass('disabled');
+        } else if (quantity >= 2 && $(this).hasClass('control-decrease')) {
+            $(this).attr('disabled', false).removeClass('disabled');
+        }
+      }
+    });
+}
+
+var showBasket = function (data) {
+    $mainContainer.find("#supporterStepBasket").html(data);
+    showPanel("Basket");
+    replaceWhiteSelects(
+      $mainContainer.find("#supporterStepBasket")[0]
+    );
+    initBasketUi();
+}
+
+var showShipping = function (data) {
+  $mainContainer.find("#supporterStepShipping").html(data);
+  showPanel("Shipping");
+  replaceWhiteSelects(
+    $mainContainer.find("#supporterStepShipping")[0]
+  );
+}
+
+var showBilling = function (data) {
+  if (data) {
+    $mainContainer.find("#supporterStepBilling").html(data);
+  }
+  showPanel("Billing");
+  replaceWhiteSelects(
+    $mainContainer.find("#supporterStepBilling")[0]
+  );
+  renderCardAnimation("#payment-form");
+}
+
+
+var checkout = function () {
+  // TODO: fix hardcoded URL
+  $.get("/catalog/checkout/", function (data) {
+    // data.url  = 'shipping-address' and then 'shipping-method' if item is physical
+    // otherwise go straight to billing.
+    $.get(data.url, function(data) {
+      if (data.url && data.url.indexOf("shipping-method") > -1) {
+        $.get(data.url, function (data) {
+          $.get(data.url, function (data) {
+            $.get(data.url, function (data) {
+              if (selectedData.flow == "ticket_support") {
+                enablePaymentTypes("store");
+                showBilling();
+              } else {
+                showBilling(data);
+              }
+            });
+          });
+        });
+      } else if (data.url && data.url.indexOf("payment-method") > -1) {
+        $.get(data.url, function (data) {
+          $.get(data.url, function (data) {
+            showBilling(data);
+          });
+        });
+      } else {
+        showShipping(data);
+      }
+    });
+  });
+}
 
 $(document).ready(function() {
   if (typeof window.completeSubpage === "undefined") {
@@ -348,51 +435,6 @@ $(document).ready(function() {
 
   $(document).on("submit", ".add-to-basket", function(e) {
     e.preventDefault();
-
-
-    function showShipping(data) {
-      $mainContainer.find("#supporterStepShipping").html(data);
-      showPanel("Shipping");
-      replaceWhiteSelects(
-        $mainContainer.find("#supporterStepShipping")[0]
-      );
-    }
-
-    function showBilling(data) {
-      $mainContainer.find("#supporterStepBilling").html(data);
-      showPanel("Billing");
-      replaceWhiteSelects(
-        $mainContainer.find("#supporterStepBilling")[0]
-      );
-      renderCardAnimation("#payment-form");
-    }
-
-    function checkout() {
-      // TODO: fix hardcoded URL
-      $.get("/catalog/checkout/", function (data) {
-        // data.url  = 'shipping-address' and then 'shipping-method' if item is physical
-        // otherwise go straight to billing.
-        $.get(data.url, function(data) {
-          if (data.url && data.url.indexOf("shipping-method") > -1) {
-            $.get(data.url, function (data) {
-              $.get(data.url, function (data) {
-                $.get(data.url, function (data) {
-                  showBilling(data);
-                });
-              });
-            });
-          } else if (data.url && data.url.indexOf("payment-method") > -1) {
-            $.get(data.url, function (data) {
-              $.get(data.url, function (data) {
-                showBilling(data);
-              });
-            });
-          } else {
-            showShipping(data);
-          }
-        });
-      });
-    }
 
     $.ajax({
       url: $(this).attr("action"),
@@ -448,6 +490,7 @@ $(document).ready(function() {
               $.get(data.url, function(data) {
                 showPanel("Billing");
                 $("#billing-information-wrapper").removeClass("hidden");
+                enablePaymentTypes("store");
               });
             });
           });
@@ -1191,8 +1234,12 @@ $(document).ready(function() {
     }
 
     if (storeItem) {
-      if (currentStep === "SelectType") {
-        $itemForm.submit();
+      if (currentStep === "SelectType" || currentStep == "Basket") {
+        if (currentStep == "Basket") {
+            checkout();
+        } else {
+            $itemForm.submit();
+        }
       } else if (currentStep === "Shipping") {
         $mainContainer.find("#new_shipping_address").submit();
       } else if (currentStep === "Billing") {

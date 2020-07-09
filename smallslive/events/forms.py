@@ -281,11 +281,12 @@ StockRecord = get_class('partner.models', 'StockRecord')
 class TicketAddForm(forms.Form):
     form_enabled = forms.BooleanField(initial=False, required=False)
     price = forms.DecimalField(label="Ticket price ($)", required=False)
+    cost = forms.DecimalField(label="Ticket internal cost ($) - leave emtpy to default to price - $5", required=False)
     seats = forms.IntegerField(label="Number of seats", required=False)
     set_name = forms.CharField(max_length=50, label="Set name (example: Set 1: 9-11 PM)", required=False)
 
     class Meta:
-        fields = ('price', 'seats', 'set_name')
+        fields = ('price', 'cost', 'seats', 'set_name')
 
     def __init__(self, *args, **kwargs):
         number = kwargs.pop('number', 1)
@@ -298,6 +299,7 @@ class TicketAddForm(forms.Form):
             Field('form_enabled', css_class='toggle'),
             Div(
                 Field('price'),
+                Field('cost'),
                 Field('seats'),
                 Field('set_name'),
                 css_class='well'
@@ -312,6 +314,15 @@ class TicketAddForm(forms.Form):
             price = cleaned_data.get('price')
             if not price:
                 self._errors['price'] = self.error_class(["This field is required"])
+
+            if price < 5:
+                self._errors['price'] = self.error_class(["Price must be higher than $5"])
+
+            cost = cleaned_data.get('cost')
+            if not cost:
+                cost = price - 5
+                cleaned_data['cost'] = cost
+
             seats = cleaned_data.get('seats')
             if not seats:
                 self._errors['seats'] = self.error_class(["This field is required"])
@@ -334,7 +345,8 @@ class TicketAddForm(forms.Form):
             product=product,
             category=tickets_category
         )
-        partner_name = event.get_venue_name()
+        # TODO: make this dynamic.
+        partner_name = 'SmallsLIVE' # event.get_venue_name()
         partner, created = Partner.objects.get_or_create(name=partner_name)
         last_stockrecord = StockRecord.objects.order_by('-id').first()
         if last_stockrecord:
@@ -347,6 +359,7 @@ class TicketAddForm(forms.Form):
             partner_sku=last_id + 1,
             num_in_stock=self.cleaned_data.get('seats'),
             price_excl_tax=self.cleaned_data.get('price'),
+            cost_price=self.cleaned_data.get('cost'),
         )
         if event.photo:
             ProductImage.objects.create(

@@ -31,7 +31,14 @@
 
   </div>
 
-  <div id="supporterStepBilling" class="supporter-step"
+  <div id="supporterStepBasket"
+           data-billing-hidden="hidden"
+           class="supporter-step">
+    {% include 'basket/partials/basket_content.html' %}
+
+  </div>
+
+  <div id="supporterStepBilling" class="supporter-step hidden"
        data-payment-info-url="{{ payment_info_url }}"
        data-payment-info-pending-url="{% url 'supporter_pending' %}"
        data-payment-info-complete-url="{% url 'become_supporter' %}">
@@ -45,7 +52,7 @@
       {% endif %}
       <section class="container">
         <div class="section-title section-title__first section-title-no-padded">
-          <div tabindex="0" class="title1 center">Reservation</div>
+          <div tabindex="0" class="title1 center">Reservation Name</div>
         </div>
         <div class="flex-row col-xs-12 col-md-4 col-md-offset-4">
           <input style="margin-right: 15px;" type="text" class="store__form__input"
@@ -83,19 +90,27 @@
 
 {% block extra_js %}
   {{ block.super }}
+  <script src="{% static 'oscar/js/oscar/ui.js' %}" type="text/javascript" charset="utf-8"></script>
   <script>
 
     var flow = "ticket_support";
     var type = "store";
-    var step = "Billing";
+    var step = "Basket";
 
     $(document).ready(function () {
       setSelected(flow, type, 0, step);
       checkConfirmButton();
-      replaceWhiteSelects($('#supporterStepBilling')[0]);
-      renderCardAnimation('#payment-form');
-      enablePaymentTypes("ticket");
+      var basketContentUrl = "{% url 'basket:summary' %}";
+      $.get(basketContentUrl, function (data) {
+        showBasket(data);
+      });
+
     });
+    var options = {
+      'basketURL': '{% url 'basket:summary' %}'
+    };
+    oscar.init();
+    oscar.basket.init(options);
 
   </script>
 {% endblock %}

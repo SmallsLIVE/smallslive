@@ -55,19 +55,42 @@
       $('#ticketsDialog').modal('show');
     });
     var $form;
-    $('.buy-tickets').click(function(e){
+    $('.buy-tickets').click(function(e) {
       e.preventDefault();
-      // Remember form to be submitted
-      $form = $(this).closest('form');
 
-      $('#buy-tickets-dialog').modal('show');
-      $('#ticket-name').text("Tickets for the " + $(this).data('ticket-name') + " set");
-      $('#ticket-price').text("$" +$(this).data('ticket-price'));
-      $('#ticket-availability').text($(this).data('ticket-availability'));
+      {% if user.is_authenticated %}
+
+        // Remember form to be submitted
+        $form = $(this).closest('form');
+
+        $('#buy-tickets-dialog').modal('show');
+        $('#ticket-name').text("Tickets for the " + $(this).data('ticket-name') + " set");
+        $('#ticket-price').text("$" +$(this).data('ticket-price'));
+        $('#ticket-availability').text($(this).data('ticket-availability'));
+
+      {% else %}
+
+        $('#becomeMemberDialog').modal('show');
+
+      {% endif %}
+
+
     })
     $('#confirm-buy-tickets').click(function (e) {
       e.preventDefault();
-      $form.submit();
+      $.ajax({
+        type: "POST",
+        url: $form.attr("action"),
+        data: $form.serialize(),
+        success: function(data) {
+          if (data.error) {
+
+          } else {
+            window.location = "{% url 'ticket_support' %}?flow_type=ticket_support";
+          }
+        },
+        error: function() {}
+      });
     })
     $('#cancel-buy-tickets').click(function (event) {
       event.preventDefault();

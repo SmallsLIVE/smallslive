@@ -7,6 +7,15 @@ from oscar_apps.partner.models import StockRecord
 
 class BasketView(basket_views.BasketView):
 
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            template_name = 'basket/partials/basket_content.html'
+        else:
+            template_name = 'basket/basket.html'
+
+        return [template_name]
+
     def get_context_data(self, **kwargs):
         # We're not allowing gifts here. They live only under supporter flow.
         basket = self.request.basket
@@ -35,6 +44,9 @@ class BasketView(basket_views.BasketView):
             context['event_url'] = event_url
 
         return context
+
+
+basket_content = BasketView.as_view()
 
 
 class BasketAddView(basket_views.BasketAddView):
