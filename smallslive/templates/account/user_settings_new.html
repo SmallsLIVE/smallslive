@@ -185,25 +185,23 @@
       <div class="modal-content custom-modal no-cancel">
         <a href="#" class="close-button"></a>
         <div class="modal-body">
-          {% if user.has_active_subscription %}
-            <section class="account-settings-view">
-              <div class="title5 account-settings-title text-bottom-line" style="text-align: center;">Cancelling pledge</div>
-              <div class="account-settings-info cancel-info">
-                  <div class="text9">
-                    Your current pledge is ${{monthly_pledge_in_dollars}} giving you access to the archive until
-                    {{ user.get_archive_access_expiry_date|date:"n/j/Y" }}.<br>
-                    Canceling it will make the access to the archive videos unavailable until the renovation of the pledge or the
-                    making of a one time donation.
-                  </div>
-                  <div class="custom-settings-form">
-                    <form action="{% url 'cancel_subscription' %}" method="post" id="cancel-form" >
-                      {% csrf_token %}
-                      <button class="white-border-button" style="margin: 0 auto ; width: 100%;" >Cancel pledge</button>
-                    </form>
-                  </div>
-              </div>
-            </section>
-          {% endif %}
+          <section class="account-settings-view">
+            <div class="title5 account-settings-title text-bottom-line" style="text-align: center;">Cancelling pledge</div>
+            <div class="account-settings-info cancel-info">
+                <div class="text9">
+                  Your current pledge is ${{ monthly_pledge_in_dollars }} giving you access to the archive until
+                  {{ user.get_archive_access_expiry_date|date:"n/j/Y" }}.<br>
+                  Canceling it will make the access to the archive videos unavailable until the renovation of the pledge or the
+                  making of a one time donation.
+                </div>
+                <div class="custom-settings-form">
+                  <form action="{% url 'cancel_subscription' %}" method="post" id="cancel-form" >
+                    {% csrf_token %}
+                    <button class="white-border-button" style="margin: 0 auto ; width: 100%;" >Cancel pledge</button>
+                  </form>
+                </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>
