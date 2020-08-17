@@ -341,11 +341,14 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         else:
             # Whatever the flow type is, it needs to be become a supporter if the user
             # is not a supporter yet. They can't donate or get stuff from the Catalog.
-            if not current_user.can_watch_video:
+            # Except if they are getting tickets
+            if not current_user.can_watch_video and not context['flow_type'] == "ticket_support":
                 context['flow_type'] = 'become_supporter'
 
             # We need to clear the basket in case the user has anything in there.
-            self.request.basket.flush()
+            # Except for tickets
+            if not context['flow_type'] == 'ticket_support':
+                self.request.basket.flush()
 
             context['gifts'] = []
             context['costs'] = []
@@ -574,6 +577,7 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
                 prod = source.order.lines.first().product
                 if prod.misc_file:
                     file_product = prod.misc_file.url
+                context['order'] = source.order
 
             else:
                 source = Source.objects.filter(reference=payment_id).first()
@@ -714,6 +718,36 @@ class ProductSupportView(ProductMixin, BecomeSupporterView):
 
 
 product_support = ProductSupportView.as_view()
+
+
+class TicketSupportView(BecomeSupporterView):
+
+    template_name = 'subscriptions/ticket-support.html'
+
+    def get_ticket_info(self):
+        basket = self.request.basket
+        product = None
+        for line in basket.lines.all():
+            product = line.product
+
+        product_info = ''
+        if product:
+            product_info = '{} - {}'.format(product.title, product.set)
+
+        return product_info
+
+    def get_context_data(self, **kwargs):
+
+        context = super(TicketSupportView, self).get_context_data(**kwargs)
+        context['payment_info_url'] = reverse('payment_info')
+        context['donation_preview_url'] = reverse('donation_preview')
+        context['ticket_info'] = self.get_ticket_info()
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+
+        return context
+
+
+ticket_support = TicketSupportView.as_view()
 
 
 class SyncPaymentHistoryView(SyncHistoryView):

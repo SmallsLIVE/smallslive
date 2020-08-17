@@ -71,6 +71,34 @@
           <br>
           <span class='accent-color'>Your support benefits this artist and our mission.</span>
         </p>
+      {% elif flow_type == 'ticket_support' %}
+        <p tabindex="0" class="title7"><span class="big-letter">R</span>
+          eservation confirmed for <span class="{{ order.lines.first.product.event_set.event.get_venue_name|lower }}-color {{ order.lines.first.product.event_set.event.get_venue_name|lower }}-color--thankyou">
+              {{ order.lines.first.product.event_set.event.get_venue_name }} Jazz Club
+            </span>
+        </p>
+
+        <div class="store-done__content disclaimer text4">
+          <p>
+            Your card {% if card_info.last_4 %} ending in {{ card_info.last_4 }}{% endif %} has been charged for ${{ order.total_excl_tax }} and
+            <!--there needs to be a way to get the logged in user's e-mail address also, what of the case where user sends to a different address?-->
+            a copy of the receipt will be sent to {% if order.lines.first.order.guest_email %}{{ order.lines.first.order.guest_email }}
+            {% else %} the e-mail provided.{% endif %}
+          </p>
+          <p>
+            Your name will be with the doorman when you arrive. Please come ½ hour before the scheduled start time ({{ order.lines.first.product.event_set.start }}).
+            The ticket guarantees a seat. Seat assignment is first come first serve so please arrive on time.
+            We reserve the right to release a seat 15 minutes after the beginning of the concert.
+          </p>
+          <p>
+            Ticket sales are generally non-refundable but on a case by case basis.
+            You may exchange your ticket for another show depending on availability.
+          </p>
+          <p>
+            If you have any questions or issues, please feel free to contact us via email at <a href="mailto:ticketing@smallslive.com">ticketing@smallslive.com</a>
+          </p>
+        </div>
+
       {% endif %}
       {% if file_product %}
         <p class="text5 text-center" style="margin-top: 60px;">
@@ -106,6 +134,10 @@
   {% elif flow_type == 'artist_support' %}
     <a href="{% url 'search' %}?artist_pk={{ artist.pk }}">
       <button>Return to artist</button>
+    </a>
+  {% elif flow_type == 'ticket_support' %}
+    <a href="{% url 'home' %}">
+      <button>Home</button>
     </a>
   {% endif %}
 

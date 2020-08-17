@@ -46,6 +46,8 @@
         <div class=" flex-column info-container">
           <div class="event-set-info">
             <div class="current-event event-title title1">{{ event.title }}</div>
+            <div class="current-event event-title title5 accent-color">{{ event.subtitle }}</div>
+            <div class="current-event event-title title2">{{ event.description }}</div>
             {% if event.is_past %}
               <div class="{{ event.get_venue_name|lower}}-color title2 venue-subtitle">{{ event.get_venue_name }}</div>
             {% endif %}
@@ -109,33 +111,30 @@
               {% endif %}
             {% endif %}
             {% if not event.is_live and event.is_future %}
-            {% if products %}
-            {% for product in products %}
-
-            {% purchase_info_for_product request product as session %}
-            {% basket_form request product 'single' as basket_form %}
-            <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
-              {% csrf_token %}
-              {{ basket_form.as_p }}
-              <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
-              {% if session.availability.num_available > 0 %}
-                <button type='submit'
-                        data-ticket-name="{{ product.set }}"
-                        data-ticket-price="{{ session.price.excl_tax }}"
-                        data-ticket-availability="{{ session.availability.num_available }}"
-                        class="buy-tickets white-border-button"
-                        style="display: inline;">Tickets for {{ product.set }}</button>
-                {% include 'events/buy_tickets_dialog.html' %}
-
+              {% if products %}
+                {% for product in products %}
+                  {% purchase_info_for_product request product as session %}
+                    {% basket_form request product 'single' as basket_form %}
+                      <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
+                        {% csrf_token %}
+                        {{ basket_form.as_p }}
+                        <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
+                        {% if session.availability.num_available > 0 %}
+                          <button type='submit'
+                                  data-ticket-name="{{ product.set }}"
+                                  data-ticket-price="{{ session.price.excl_tax }}"
+                                  data-ticket-availability="{{ session.availability.num_available }}"
+                                  class="buy-tickets white-border-button"
+                                  style="display: inline;">Tickets for {{ product.set }}</button>
+                          {% include 'events/buy_tickets_dialog.html' %}
+                        {% else %}
+                        <button id="btn-tickets-sold-out" class="white-border-button" style="display: inline;">Tickets</button>
+                        {% endif %}
+                      </form>
+                {% endfor %}
               {% else %}
-                <button class="white-border-button" disabled style="display: inline;">Tickets sold out)</button>
+                <button id="btn-tickets" class="white-border-button" style="display: inline;">Tickets</button>
               {% endif %}
-            </form>
-
-            {% endfor %}
-            {% else %}
-              <button id="btn-tickets" class="white-border-button" style="display: inline;">Tickets</button>
-            {% endif %}
             {% endif %}
           </div>
         </div>
