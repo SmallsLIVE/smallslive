@@ -94,7 +94,7 @@
                     <option noSelect="1" data-price="0" value="none" class="hidden">Select option</option>
                     {% for variant in product.variants.all %}
                     {% purchase_info_for_product request variant as variant_session %}
-                      {% if session.availability.is_available_to_buy %}
+                      {% if variant_session.availability.is_available_to_buy %}
                         <option class="variant-data"
                                 data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}"
                                 data-cost="{{ variant_session.stockrecord.cost_price }}"

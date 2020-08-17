@@ -162,8 +162,10 @@ class StripeMixin(object):
             customer = self.request.user.customer
         else:
             customer = None
+        # Smalls tickets will be handled by the foundation
         venue = self.request.basket.get_tickets_venue()
-        if not venue and customer:
+        # if not venue and customer:
+        if customer:
             if not self.card_token.startswith('card_'):
                 customer.update_card(self.card_token)
             charge = customer.charge(

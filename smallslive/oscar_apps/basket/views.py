@@ -7,6 +7,15 @@ from oscar_apps.partner.models import StockRecord
 
 class BasketView(basket_views.BasketView):
 
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            template_name = 'basket/partials/basket_content.html'
+        else:
+            template_name = 'basket/basket.html'
+
+        return [template_name]
+
     def get_context_data(self, **kwargs):
         # We're not allowing gifts here. They live only under supporter flow.
         basket = self.request.basket
@@ -37,7 +46,11 @@ class BasketView(basket_views.BasketView):
         return context
 
 
+basket_content = BasketView.as_view()
+
+
 class BasketAddView(basket_views.BasketAddView):
+
 
     def _get_stock_record(self, form):
         """ If product is track, user's will have access only to purchase
@@ -97,6 +110,8 @@ class BasketAddView(basket_views.BasketAddView):
             sender=self, product=form.product, user=self.request.user,
             request=self.request)
 
+        print 'form_valid: ', self.request.is_ajax()
+
         if self.request.is_ajax():
             # TODO: remove duplicate code
             storage = messages.get_messages(self.request)
@@ -111,4 +126,5 @@ class BasketAddView(basket_views.BasketAddView):
 
             return HttpResponse(status=200)
         else:
+            print 'Return: ', self.get_success_url()
             return HttpResponseRedirect(self.get_success_url())

@@ -356,7 +356,10 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                     template_name = 'checkout/payment_details.html'
         else:
             if self.request.is_ajax():
-                template_name = 'checkout/preview_ajax.html'
+                if self.request.basket.has_tickets():
+                    template_name = 'checkout/preview_tickets_ajax.html'
+                else:
+                    template_name = 'checkout/preview_ajax.html'
             else:
                 if self.request.basket.has_tickets():
                     template_name = 'checkout/preview_tickets.html'
@@ -463,8 +466,12 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             billing_address_form = self.handle_billing_address(shipping_address, request.user)
         payment_method = request.POST.get('payment_method')
         if basket.has_tickets():
-            return self.handle_payment_details_submission_for_tickets(
-                billing_address_form, payment_method)
+            # We're now using the same payment system for Smalls tickets and the Foundation.
+            #return self.handle_payment_details_submission_for_tickets(
+            #    billing_address_form, payment_method)
+
+            return self.handle_payment_details_submission_for_basket(
+                shipping_address, billing_address_form, payment_method)
         else:
             return self.handle_payment_details_submission_for_basket(
                 shipping_address, billing_address_form, payment_method)
@@ -535,6 +542,11 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             return self.render_payment_details(self.request, form=form,
                                                billing_address_form=billing_address_form)
 
+        first_name, last_name = self.checkout_session.get_reservation_name()
+        reservation_string = ''
+        if first_name and last_name:
+            reservation_string = '{} {}'.format(first_name, last_name)
+
         if payment_method == 'paypal':
             return self.render_preview(self.request, billing_address_form=billing_address_form,
                                        payment_method='paypal')
@@ -551,11 +563,29 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 })
                 return self.render_preview(self.request, card_token=form.token, form=form,
                                            payment_method=payment_method,
-                                           billing_address_form=billing_address_form)
+                                           billing_address_form=billing_address_form,
+                                           reservation_string=reservation_string)
             else:
                 print(form.errors)
                 return self.render_payment_details(self.request, form=form,
-                                                   billing_address_form=billing_address_form)
+                                                   billing_address_form=billing_address_form,
+                                                   reservation_string=reservation_string)
+
+    def render_to_response(self, context, **response_kwargs):
+        """
+        Returns a response, using the `response_class` for this
+        view, with a template rendered with the given context.
+
+        If any keyword arguments are provided, they will be
+        passed to the constructor of the response class.
+        """
+        response_kwargs.setdefault('content_type', self.content_type)
+        return self.response_class(
+            request=self.request,
+            template=self.get_template_names(),
+            context=context,
+            **response_kwargs
+        )
 
     def handle_place_order_submission(self, request):
 

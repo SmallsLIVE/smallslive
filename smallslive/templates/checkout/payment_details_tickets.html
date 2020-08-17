@@ -73,7 +73,7 @@
                            id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*"
                            autocomplete="off" name="number" {% if form.number.value %}value="{{ form.number.value }}"{% endif %}
                            placeholder="Credit Card Number">
-                        {% for error in form.number.errors %}
+                        {% for error in form.card_number.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
                         {% endfor %}
                       </div>
