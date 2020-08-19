@@ -48,7 +48,6 @@
             <div class="current-event event-title title1">{{ event.title }}</div>
             <div class="current-event event-title title5 accent-color">{{ event.subtitle }}</div>
             <div class="current-event event-title title2" style="margin-top: 20px;">{{ event.description|striptags|safe }}</div>
-            <div class="current-event event-title title2">{{ event.description }}</div>
             {% if event.is_past %}
               <div class="{{ event.get_venue_name|lower}}-color title2 venue-subtitle">{{ event.get_venue_name }}</div>
             {% endif %}
