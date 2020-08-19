@@ -200,6 +200,11 @@ $player-height: 25.3vw;
     @media (max-width: $screen-md-max) {
       font-size: 2.5em;
       line-height: 1em;
+      margin-top: 15px;
+    }
+
+    &.event-subtitle {
+      margin-top: 12px;
     }
   }
 
