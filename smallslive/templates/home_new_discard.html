@@ -12,14 +12,6 @@
 {% block body_class %}home{% endblock %}
 
 {% block extra_head %}
-  <meta property="og:image"
-      content="{% static 'image/foundation.jpg' %}" >
-  <meta property="og:title"
-        content="Jazz Art & Education - SmallsLIVE Foundation">
-  <meta property="og:description"
-        content="The SmallsLIVE Foundation for Jazz Art & Education is a not-for-profit arts organization. Our mission is to subsidize the operation of our venues, recording projects, tours and educational initiatives">
-  <meta name="title"
-        content="Jazz Art & Education - SmallsLIVE Foundation">
   <meta name="description"
         content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
 {% endblock %}
@@ -36,18 +28,11 @@
 {% endblock %}
 
 {% block content %}
-  {% if user.is_authenticated %}
-    {% include 'inactive_dialog.html' %}
-  {% endif %}
+  {% include 'inactive_dialog.html' %}
   {% include 'become_a_supporter_dialog.html' %}
   {% if activation_key %}
     {% include 'artist_registration/set_password_dialog.html' %}
   {% endif %}
-
-  {% include 'more_info_foundation_popup.html' %}
-  {% include 'more_info_archive_popup.html' %}
-  {% include 'more_info_live_stream_popup.html' %}
-  {% include 'more_info_catalog_popup.html' %}
 
   <div class="main-container pad-content {% if calendar %}calendar{% else %}home-new{% endif %}">
     {% block home_content %}
@@ -55,6 +40,7 @@
       {% include 'home_banners_carousel.html' %}
       <div class="event-stripe">
         {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
+
         <section id="recently-added-section" class="event-stripe">
           <div class="section-title home recently">
             <div class="title1">
@@ -65,7 +51,6 @@
               <div class="white-border-select home-filter">
                 <select id="most-popular-filter">
                   <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
-                  <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
                   <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
                   <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
                 </select>
