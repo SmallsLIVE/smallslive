@@ -217,6 +217,14 @@ $player-height: 25.3vw;
     }
   }
 
+  .event-change-buttons {
+    display: flex;
+
+    button {
+      white-space: nowrap;
+    }
+  }
+
   .event-set-info {
     margin-right: 2px;
     padding-top: 5px;

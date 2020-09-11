@@ -372,20 +372,15 @@ class Event(TimeStampedModel):
     state = StatusField(default=STATUS.Draft)
     slug = models.SlugField(blank=True, max_length=500)
     tickets_url = models.URLField(null=True, blank=True)
-
-    objects = EventQuerySet.as_manager()
     date = models.DateField(blank=True, null=True)
-
     # Import information (Mezzrow - possibly other in the future)
     # TODO: make sure this is unique. We won't have an issue with Mezzrow events though.
     original_id = models.CharField(blank=True, max_length=4096, null=True)
     import_date = models.DateTimeField(blank=True, null=True)
-
     # Redundant fields from UserVideoMetrics
     # Otherwise it'd be impossible to resolve search queries.
     seconds_played = models.IntegerField(default=0)
     play_count = models.IntegerField(default=0)
-
     # Streaming info
     streamable = models.BooleanField(default=True)
     #not_streamable_message = models.TextField(
@@ -393,6 +388,8 @@ class Event(TimeStampedModel):
     start_streaming_before_minutes = models.IntegerField(default=15)
     #not_yet_streaming_message = models.TextField(
     #    default='Streaming for this event will be available 15 minutes before it begins')
+
+    objects = EventQuerySet.as_manager()
 
     class Meta:
         ordering = ['-start']

@@ -100,8 +100,12 @@
           <div class="event-player-buttons text-right">
             {% if user.is_admin or user.is_staff %}
               <a href="{% url 'event_edit' pk=event.id slug=event.slug %}" style="display: inline-block;">
-                  <button class="white-border-button">Edit</button>
+                <button class="white-border-button">Edit</button>
               </a>
+             <form method="post" action="{% url 'event_clone' pk=event.id slug=event.slug %}" style="display: inline">
+               {% csrf_token %}
+               <button class="white-border-button">Clone</button>
+             </form>
             {% endif %}
             {% if event.is_live or event.is_past %}
               {% if user.is_authenticated %}
