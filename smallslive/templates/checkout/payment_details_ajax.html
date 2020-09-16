@@ -13,7 +13,7 @@
       {% endif %}
       <section class="container">
         {% include 'subscriptions/billing_address_details.html' %}
-        {% include 'subscriptions/credit_card_payment_details.html' %}
+        {% include 'subscriptions/credit_card_payment_details.html' with can_use_existing=user.can_use_existing %}
       </section>
     </form>
 </div>

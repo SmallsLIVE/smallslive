@@ -70,7 +70,7 @@
           <div tabindex="0" class="title1 center">Payment information</div>
         </div>
         {% include 'subscriptions/billing_address_details.html' %}
-        {% include 'subscriptions/credit_card_payment_details.html' %}
+        {% include 'subscriptions/credit_card_payment_details.html' with can_use_existing_cc=False %}
       </section>
     </form>
   </div>
