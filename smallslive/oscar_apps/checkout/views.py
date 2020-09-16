@@ -466,12 +466,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             billing_address_form = self.handle_billing_address(shipping_address, request.user)
         payment_method = request.POST.get('payment_method')
         if basket.has_tickets():
-            # We're now using the same payment system for Smalls tickets and the Foundation.
-            #return self.handle_payment_details_submission_for_tickets(
-            #    billing_address_form, payment_method)
-
-            return self.handle_payment_details_submission_for_basket(
-                shipping_address, billing_address_form, payment_method)
+            return self.handle_payment_details_submission_for_tickets(
+                billing_address_form, payment_method)
         else:
             return self.handle_payment_details_submission_for_basket(
                 shipping_address, billing_address_form, payment_method)
@@ -498,7 +494,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
     def handle_payment_details_submission_for_tickets(self,
                                                       billing_address_form,
                                                       payment_method):
-        """Customer can pay for Mezzrow tickets with PayPal or Credit Card."""
+        """Customer can pay for Mezzrow or Smalls tickets with PayPal or Credit Card."""
 
         venue = self.request.basket.get_tickets_venue()
         stripe_api_key = venue.get_stripe_secret_key
