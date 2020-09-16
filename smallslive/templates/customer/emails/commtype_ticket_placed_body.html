@@ -16,23 +16,27 @@
     {% with order_number=order.number %}
         {% for line in order.lines.all %}
             <p>
-                Thank you for your purchase of {{ line.quantity }} ticket(s) to {{ line.title }}  at {{ line.product.event_set.event.get_venue_name }} at {{ line.product.event_set.event.time }} on {{ line.product.event_set.event.date }}.
-                Your order number is {{ order_number }}. Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
+                You have successfully made {{ line.quantity }} reservation(s) for the {{ line.product.event_set.start }} seating on {{ line.product.event_set.event.date }} at {{ line.product.event_set.event.get_venue_name }} Jazz Club.
+                Your order number is {{ order_number }}.  Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
             </p>
             <p>
-                The reservation name is {{ order.first_name }} {{ order.last_name }} and will be with the doorman when you arrive. Please come ½ hour before the scheduled start time ({{ line.product.event_set.start }}). This ticket guarantees a seat.
-                Seating is first come/first serve so please arrive on time.  We reserve the right to release a seat 15 minutes after the beginning of the concert.
+                The reservation name is {{ order.first_name }} {{ order.last_name }} and will be with the doorman when you arrive.
+                Please arrive 1/2 hour before the seating.
+                We are mandated to take temperatures at the door and to collect contact tracing information from at least one person in your party.
+                This reservation guarantees your seating.  Your actual space in the venue is first come/first serve so please arrive on time.
+                We reserve the right to release a seat 15 minutes after the seating time.
             </p>
             <p>
-                Ticket sales are generally non-refundable but on a case by case basis. You may exchange your ticket for another show depending on availability.
+                Reservations are generally non-refundable however, you may exchange your reservation for another seating depending on availability.
+                If you have any issues please email us at reservations@smallslive.com.
             </p>
         {% endfor %}
     {% endwith %}
     <p>
-    Thank you for your support,
+        Thank you for your patronage.
     </p>
     <p>
-    The SmallsLIVE Foundation
+        The SmallsLIVE Foundation
     </p>
 {% endblock %}
 {% block footer %}
