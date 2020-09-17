@@ -4,11 +4,9 @@ from .models import Newsletter
 
 
 def newsletter_list(request):
-    if request.user.is_authenticated():
-        user = request.user
-    else:
-        user = None
 
+    user = None
+    
     if request.method == 'POST':
         form = NewsletterSubscribeForm(request.POST, user=user)
         if form.is_valid():
