@@ -24,64 +24,27 @@
               </div>
         </section>
         <section class="store-done container">
-            <div class="row">
-                <div class="col-xs-12 store-done__content">
-                    <ul class="store-done__info-list text4">
-                        {% if order.has_tickets %}
-                        <li>
-                          <span class="store-done__info-list__title">Reservation Name:</span> {{ order.first_name }} {{ order.last_name }}
-                        </li>
-                          <span class="store-done__info-list__title">Number of Tickets:</span> {{ order.lines.first.quantity }}
-                        <li>
-                        </li>
-                        <li>
-                          <span class="store-done__info-list__title">Event:</span> {{ order.lines.first.title }} {{ order.lines.first.product.event_set.start }} set
-                        </li>
-                        <li>
-                          <span class="store-done__info-list__title">Date:</span> {{ order.lines.first.product.event_set.event.date }}
-                        </li>
-                        <li>
-                          <span class="store-done__info-list__title">Venue:</span> {{ order.lines.first.product.event_set.event.get_venue_name }} Jazz Club
-                        </li>
-                        <li>
-                          <span class="store-done__info-list__title">Order Number:</span> {{order.lines.first.order.number}}
-                        </li>
-                        {% if order.has_physical_products %}
-                        <li>
-                          We will attend to shipping your order as quickly as possible.
-                        </li>
-                        {% endif %}
-                        <!--are tickets considered digital products??-->
-                        {% if order.has_digital_products and not order.has_tickets %}
-                        <li>
-                          You can find your downloads under <a href="{% url "my-downloads" %}">my downloads</a>
-                        </li>
-                        {% endif %}
-                        <li></li>
-                    </ul>
-                </div>
-            </div>
             <div class="store-done__content disclaimer text4">
-              <p>
-                Your card {% if card_info.last_4 %} ending in {{ card_info.last_4 }}{% endif %} has been charged for ${{ order.total_excl_tax }} and
-                <!--there needs to be a way to get the logged in user's e-mail address also, what of the case where user sends to a different address?-->
-                a copy of the receipt will be sent to {% if order.lines.first.order.guest_email %}{{ order.lines.first.order.guest_email }}
-                {% else %} the e-mail provided.{% endif %}
-              </p>
-              <p>
-                Your name will be with the doorman when you arrive. Please come ½ hour before the scheduled start time ({{ order.lines.first.product.event_set.start }}).
-                The ticket guarantees a seat. Seat assignment is first come first serve so please arrive on time.
-                We reserve the right to release a seat 15 minutes after the beginning of the concert.
-              </p>
-              <p>
-                Ticket sales are generally non-refundable but on a case by case basis.
-                You may exchange your ticket for another show depending on availability.
-              </p>
-              <p>
-                If you have any questions or issues, please feel free to contact us via email at <a href="mailto:ticketing@smallslive.com">ticketing@smallslive.com</a>
-              </p>
+              {% with order_number=order.number %}
+                  {% for line in order.lines.all %}
+                      <p>
+                          You have successfully made {{ line.quantity }} reservation(s) for the {{ line.product.event_set.start }} seating on {{ line.product.event_set.event.date }} at {{ line.product.event_set.event.get_venue_name }} Jazz Club.
+                          Your order number is {{ order_number }}.  Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
+                      </p>
+                      <p>
+                          The reservation name is {{ order.first_name }} {{ order.last_name }} and will be with the doorman when you arrive.
+                          Please arrive 1/2 hour before the seating.
+                          We are mandated to take temperatures at the door and to collect contact tracing information from at least one person in your party.
+                          This reservation guarantees your seating.  Your actual space in the venue is first come/first serve so please arrive on time.
+                          We reserve the right to release a seat 15 minutes after the seating time.
+                      </p>
+                      <p>
+                          Reservations are generally non-refundable however, you may exchange your reservation for another seating depending on availability.
+                          If you have any issues please email us at reservations@smallslive.com.
+                      </p>
+                  {% endfor %}
+              {% endwith %}
             </div>
-            {% endif %}
         </section>
     </div>
 

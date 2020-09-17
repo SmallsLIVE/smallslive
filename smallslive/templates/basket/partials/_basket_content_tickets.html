@@ -9,17 +9,12 @@
       {% purchase_info_for_line request line as session %}
         {{ form.id }}
         <div class="row clearfix">
-          <div class="col-xs-6 store-cart__table__cell ticket-info">
-            <a href="{{ product.get_absolute_url }}">{{ product.get_title }}</a>
+          <div class="col-xs-9 store-cart__table__cell ticket-info">
             <div tabindex="0" class="{{ product.event_set.event.venue|lower }}-color">
-              {{ product.event_set.event.venue }} Jazz Club
-            </div>
-            <div tabindex="0">
-              <!-- What is product.set? This should not be product.title because the title of the event should not be here... -->
-              The {{ product.set }} Set
+              Reservations for {{ product.event_set.event.venue }} Jazz Club - {{ product.set }}
             </div>
           </div>
-          <div class="col-xs-6 store-cart__table__cell ticket-pricing">
+          <div class="col-xs-3 store-cart__table__cell ticket-pricing">
             <div class="ticket-pricing quantity">
               <div class="store-cart__table__cell quantity">
                 <div class="store-cart__quantity-control">

@@ -8,6 +8,7 @@
 {% load display_tags %}
 {% load staticfiles %}
 {% load thumbor_tags %}
+{% load currency_filters i18n %}
 
 {% block flow_title %}
   {% if comma_separated_leaders %}
@@ -79,24 +80,25 @@
         </p>
 
         <div class="store-done__content disclaimer text4">
-          <p>
-            Your card {% if card_info.last_4 %} ending in {{ card_info.last_4 }}{% endif %} has been charged for ${{ order.total_excl_tax }} and
-            <!--there needs to be a way to get the logged in user's e-mail address also, what of the case where user sends to a different address?-->
-            a copy of the receipt will be sent to {% if order.lines.first.order.guest_email %}{{ order.lines.first.order.guest_email }}
-            {% else %} the e-mail provided.{% endif %}
-          </p>
-          <p>
-            Your name will be with the doorman when you arrive. Please come ½ hour before the scheduled start time ({{ order.lines.first.product.event_set.start }}).
-            The ticket guarantees a seat. Seat assignment is first come first serve so please arrive on time.
-            We reserve the right to release a seat 15 minutes after the beginning of the concert.
-          </p>
-          <p>
-            Ticket sales are generally non-refundable but on a case by case basis.
-            You may exchange your ticket for another show depending on availability.
-          </p>
-          <p>
-            If you have any questions or issues, please feel free to contact us via email at <a href="mailto:ticketing@smallslive.com">ticketing@smallslive.com</a>
-          </p>
+          {% with order_number=order.number %}
+              {% for line in order.lines.all %}
+                  <p>
+                      You have successfully made {{ line.quantity }} reservation(s) for the {{ line.product.event_set.start }} seating on {{ line.product.event_set.event.date }} at {{ line.product.event_set.event.get_venue_name }} Jazz Club.
+                      Your order number is {{ order_number }}.  Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
+                  </p>
+                  <p>
+                      The reservation name is {{ order.first_name }} {{ order.last_name }} and will be with the doorman when you arrive.
+                      Please arrive 1/2 hour before the seating.
+                      We are mandated to take temperatures at the door and to collect contact tracing information from at least one person in your party.
+                      This reservation guarantees your seating.  Your actual space in the venue is first come/first serve so please arrive on time.
+                      We reserve the right to release a seat 15 minutes after the seating time.
+                  </p>
+                  <p>
+                      Reservations are generally non-refundable however, you may exchange your reservation for another seating depending on availability.
+                      If you have any issues please email us at reservations@smallslive.com.
+                  </p>
+              {% endfor %}
+          {% endwith %}
         </div>
 
       {% endif %}
