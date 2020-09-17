@@ -112,7 +112,7 @@
 
                 <button href="{% url 'user_tax_letter' %}" class="white-border-button disabled" disabled>Download tax document</button>
               {% else %}
-                {{ first_charge.created|date:"d/m/Y"  }} ${{ first_charge.amount }}
+                {{ first_charge.date|date:"d/m/Y"  }}: ${{ first_charge.amount }}
                 </div>
                 </div>
                 <div class="account-settings-info">
