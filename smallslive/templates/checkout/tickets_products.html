@@ -11,12 +11,12 @@
         <div class="store-overview__group__table__row clearfix">
             <div class="col-xs-9 details">
                 <div class="{{ product.event_set.event.venue|lower }}-color">
-                  Reservations for {{ product.event_set.event.venue }} Jazz Club - {{ product.set }}
+                  Sponsorship seat
                 </div>
             </div>
             <div class="col-xs-3 details total">
                 <div>${{ line.price_excl_tax }}</div>
-                <div>{{ line.quantity }} {% if line.quantity > 1 %} reserve seats {% else %} reserve seat {% endif %}</div>
+                <div>{{ line.quantity }} {% if line.quantity > 1 %} SPONSOR seats {% else %} SPONSOR seat {% endif %}</div>
             </div>
         </div>
         <!-- end of table row -->

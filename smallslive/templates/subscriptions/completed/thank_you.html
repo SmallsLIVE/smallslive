@@ -73,8 +73,8 @@
           <span class='accent-color'>Your support benefits this artist and our mission.</span>
         </p>
       {% elif flow_type == 'ticket_support' %}
-        <p tabindex="0" class="title7"><span class="big-letter">R</span>
-          eservation confirmed for <span class="{{ order.lines.first.product.event_set.event.get_venue_name|lower }}-color {{ order.lines.first.product.event_set.event.get_venue_name|lower }}-color--thankyou">
+        <p tabindex="0" class="title7"><span class="big-letter">S</span>
+          ponsorship confirmed for <span class="{{ order.lines.first.product.event_set.event.get_venue_name|lower }}-color {{ order.lines.first.product.event_set.event.get_venue_name|lower }}-color--thankyou">
               {{ order.lines.first.product.event_set.event.get_venue_name }} Jazz Club
             </span>
         </p>
@@ -83,18 +83,15 @@
           {% with order_number=order.number %}
               {% for line in order.lines.all %}
                   <p>
-                      You have successfully made {{ line.quantity }} reservation(s) for the {{ line.product.event_set.start }} seating on {{ line.product.event_set.event.date }} at {{ line.product.event_set.event.get_venue_name }} Jazz Club.
-                      Your order number is {{ order_number }}.  Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
+                      You have sponsored {{ line.quantity }} seat(s) for the {{ line.product.event_set.start }} seating on {{ line.product.event_set.event.date }} at {{ line.product.event_set.event.get_venue_name }} Jazz Club.
+                      Your order number is {{ order_number }}.  Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}. 75% of this donation to the SmallsLIVE Foundation is tax-deductible.  All of your tax information is in your account.
                   </p>
                   <p>
-                      The reservation name is {{ order.first_name }} {{ order.last_name }} and will be with the doorman when you arrive.
+                      The party name of {{ order.first_name }} {{ order.last_name }} will be with the doorman when you arrive.
                       Please arrive 1/2 hour before the seating.
-                      We are mandated to take temperatures at the door and to collect contact tracing information from at least one person in your party.
-                      This reservation guarantees your seating.  Your actual space in the venue is first come/first serve so please arrive on time.
-                      We reserve the right to release a seat 15 minutes after the seating time.
+                      We are mandated to take temperatures at the door and to collect contact tracing information from at least one person in your party. Your sponsored seat(s) are guaranteed. Your actual space in the venue is first come/first serve so please arrive on time.
                   </p>
                   <p>
-                      Reservations are generally non-refundable however, you may exchange your reservation for another seating depending on availability.
                       If you have any issues please email us at reservations@smallslive.com.
                   </p>
               {% endfor %}

@@ -129,15 +129,15 @@
                                   data-ticket-price="{{ session.price.excl_tax }}"
                                   data-ticket-availability="{{ session.availability.num_available }}"
                                   class="buy-tickets white-border-button"
-                                  style="display: inline;">Reservations for {{ product.set }}</button>
+                                  style="display: inline;">{{ product.set }}</button>
                           {% include 'events/buy_tickets_dialog.html' %}
                         {% else %}
-                        <button id="btn-tickets-sold-out" class="white-border-button" style="display: inline;">Reservations</button>
+                        <button id="btn-tickets-sold-out" class="white-border-button" style="display: inline;">Sponsorships</button>
                         {% endif %}
                       </form>
                 {% endfor %}
               {% else %}
-                <button id="btn-tickets" class="white-border-button" style="display: inline;">Reservations</button>
+                <button id="btn-tickets" class="white-border-button" style="display: inline;">Sponsorships</button>
               {% endif %}
             {% endif %}
           </div>
@@ -279,7 +279,7 @@
   </script>
 
   {% with album=event.products.first %}
-      {% if album and album.tracks %}
+      {% if not event.is_future and album and album.tracks %}
           <script>
               var tracksPlayer = jwplayer("player-tracks").setup({
                   primary: 'html5',
