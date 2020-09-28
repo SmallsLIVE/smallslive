@@ -162,7 +162,7 @@ class StripeMixin(object):
             customer = self.request.user.customer
         else:
             customer = None
-        # Smalls tickets will are accounted differently
+        # Smalls tickets are accounted according to the venue's account.
         venue = self.request.basket.get_tickets_venue()
         if not venue and customer:
             if not self.card_token.startswith('card_'):

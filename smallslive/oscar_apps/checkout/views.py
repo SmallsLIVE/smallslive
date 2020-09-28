@@ -509,8 +509,11 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             if first_name and last_name:
                 reservation_string = '{} {}'.format(first_name, last_name)
 
-            # Tickets cannot be paid with existing credit card because it's a different
-            # Stripe account.
+            if payment_method == 'existing-credit-card':
+                for field in form.fields:
+                    if field != 'payment_method':
+                        form.fields[field].required = False
+
             if form.is_valid():
                 self.card_token = form.token
                 self.checkout_session._set('payment', 'card_info', {
