@@ -131,13 +131,9 @@
                                   class="buy-tickets white-border-button"
                                   style="display: inline;">{{ product.set }}</button>
                           {% include 'events/buy_tickets_dialog.html' %}
-                        {% else %}
-                        <button id="btn-tickets-sold-out" class="white-border-button" style="display: inline;">Sponsorships</button>
                         {% endif %}
                       </form>
                 {% endfor %}
-              {% else %}
-                <button id="btn-tickets" class="white-border-button" style="display: inline;">Sponsorships</button>
               {% endif %}
             {% endif %}
           </div>
