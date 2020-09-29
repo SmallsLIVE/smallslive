@@ -160,11 +160,12 @@ class StripeMixin(object):
     def handle_stripe_payment(self, order_number, basket_lines, **kwargs):
         if self.request.user.is_authenticated():
             customer = self.request.user.customer
+            print customer
         else:
             customer = None
         # Smalls tickets are accounted according to the venue's account.
         venue = self.request.basket.get_tickets_venue()
-        if not venue and customer:
+        if customer:
             if not self.card_token.startswith('card_'):
                 customer.update_card(self.card_token)
             charge = customer.charge(

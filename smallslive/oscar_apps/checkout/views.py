@@ -498,6 +498,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         venue = self.request.basket.get_tickets_venue()
         stripe_api_key = venue.get_stripe_secret_key
+
         form = PaymentForm(self.request.user, stripe_api_key, self.request.POST)
 
         if payment_method == 'paypal':
