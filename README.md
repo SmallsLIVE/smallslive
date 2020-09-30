@@ -1,4 +1,4 @@
-# SmallsLIVE instructions - Heroku Django Problem
+# SmallsLIVE instructions - Heroku Django Problem Solution
 
 [ ![Codeship Status for SmallsLIVE/smallslive](https://www.codeship.io/projects/fa4ca030-7922-0130-982f-123138094421/status?branch=master)](https://www.codeship.io/projects/2192)
 [![Coverage Status](https://coveralls.io/repos/github/SmallsLIVE/smallslive/badge.svg?branch=HEAD)](https://coveralls.io/github/SmallsLIVE/smallslive?branch=HEAD)
@@ -33,7 +33,7 @@ Now you need to go into the `METRICS_DB_URL` in the smallslive app config vars, 
 First, go here and find the `DATABASE_URL` string (you have to click on the "Reveal config vars" button:
 https://dashboard.heroku.com/apps/smallslive-metrics/settings
 
-Copy the `DATABASE_URL` string.
+Copy the `DATABASE_URL` string and add to the system.
 
 Then, go here and find the `METRICS_DB_URL` config var (again, you have to click the "Reveal config vars" button):
 https://dashboard.heroku.com/apps/smallslive/settings
