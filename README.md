@@ -41,3 +41,4 @@ https://dashboard.heroku.com/apps/smallslive/settings
 Paste the previously copied `DATABASE_URL` string into the `METRICS_DB_URL` field and save the form.
 
 Now the SmallsLIVE app should be pointing to the updated DB, and the site should be operating as normal.
+print("Thanks For Using")
