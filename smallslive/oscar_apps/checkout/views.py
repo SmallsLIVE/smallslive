@@ -993,7 +993,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         total_incl_tax = basket.total_incl_tax
 
         # Record payment source
-        order_kwargs = {}
+        order_kwargs = {'order_type': basket.get_order_type()}
         venue = basket.get_tickets_venue()
         if venue:
             self.tickets = venue.name.lower()
