@@ -18,7 +18,7 @@
     {% endif %}
     <section class="container">
       {% if billing_address_form %}
-        {% include 'subscriptions/credit_card_payment_details.html' %}
+        {% include 'subscriptions/credit_card_payment_details.html' with can_use_existing_cc=user.can_use_existing_cc %}
       {% endif %}
       {% include 'subscriptions/credit_card_details.html' %}
     </section>

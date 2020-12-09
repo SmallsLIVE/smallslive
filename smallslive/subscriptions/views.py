@@ -724,7 +724,7 @@ class TicketSupportView(BecomeSupporterView):
 
     template_name = 'subscriptions/ticket-support.html'
 
-    def get_ticket_info(self):
+    def get_ticket_venue_name(self):
         basket = self.request.basket
         product = None
         for line in basket.lines.all():
@@ -732,7 +732,7 @@ class TicketSupportView(BecomeSupporterView):
 
         product_info = ''
         if product:
-            product_info = '{} - {}'.format(product.title, product.set)
+            product_info = product.event_set.event.get_venue_name()
 
         return product_info
 
@@ -741,7 +741,7 @@ class TicketSupportView(BecomeSupporterView):
         context = super(TicketSupportView, self).get_context_data(**kwargs)
         context['payment_info_url'] = reverse('payment_info')
         context['donation_preview_url'] = reverse('donation_preview')
-        context['ticket_info'] = self.get_ticket_info()
+        context['venue_name'] = self.get_ticket_venue_name()
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
 
         return context

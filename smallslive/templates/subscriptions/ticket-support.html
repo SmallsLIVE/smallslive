@@ -14,7 +14,7 @@
 
 {% block flow_title %}
   <p class="text2 accent-color">
-    Tickets for {{ ticket_info }}
+    Sponsorship seat(s)
   </p>
 {% endblock %}
 
@@ -52,7 +52,7 @@
       {% endif %}
       <section class="container">
         <div class="section-title section-title__first section-title-no-padded">
-          <div tabindex="0" class="title1 center">Reservation Name</div>
+          <div tabindex="0" class="title1 center">Party Name</div>
         </div>
         <div class="flex-row col-xs-12 col-md-4 col-md-offset-4">
           <input style="margin-right: 15px;" type="text" class="store__form__input"
@@ -70,7 +70,7 @@
           <div tabindex="0" class="title1 center">Payment information</div>
         </div>
         {% include 'subscriptions/billing_address_details.html' %}
-        {% include 'subscriptions/credit_card_payment_details.html' %}
+        {% include 'subscriptions/credit_card_payment_details.html' with can_use_existing_cc=user.can_use_existing_cc %}
       </section>
     </form>
   </div>

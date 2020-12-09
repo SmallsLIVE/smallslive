@@ -22,7 +22,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.views.generic import DeleteView, TemplateView, View
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
-from django.views.generic.detail import BaseDetailView
 from django.views.generic import DetailView, FormView
 
 from django_ajax.mixin import AJAXMixin
@@ -502,23 +501,42 @@ class EventDeleteView(StaffuserRequiredMixin, DeleteView):
 event_delete = EventDeleteView.as_view()
 
 
-class EventCloneView(StaffuserRequiredMixin, BaseDetailView):
+class EventCloneView(StaffuserRequiredMixin, DetailView):
     model = Event
 
+    def __init__(self, *args, **kwargs):
+        self.new_object = None
+        self.object = None
+        super(EventCloneView, self).__init__(*args, **kwargs)
+
     def post(self, request, *args, **kwargs):
+
         self.object = self.get_object()
         old_event_id = self.object.id
         gig_info = self.object.get_performers()
+        event_sets = self.object.sets.all()
         new_object = self.object
         new_object.pk = None
         new_object.state = Event.STATUS.Draft
+        new_object.seconds_played = 0
+        new_object.play_count = 0
+        new_object.original_id = None
+        new_object.last_modify_by = None
         new_object.save()
         for info in gig_info:
             info.pk = None
             info.event = new_object
             info.save()
+        for event_set in event_sets:
+            event_set.pk = None
+            event_set.event = new_object
+            event_set.audio_recording = None
+            event_set.video_recording = None
+            event_set.save()
+
         self.extra_event_processing(new_object, old_event_id)
         self.new_object = new_object
+
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):

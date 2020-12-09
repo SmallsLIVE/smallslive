@@ -333,14 +333,27 @@ class SearchObject(object):
                 # contains on the title might be slow.
                 # only way to match "Brooklyn Circle".
                 if search_description:
-                    condition |= Q(title__iucontains=first_name) | \
-                                 Q(description__iucontains=first_name) | \
-                                 Q(title__iucontains=last_name)
+                    title_cond = Q(title__iucontains=first_name) | \
+                                Q(description__iucontains=first_name) | \
+                                Q(title__iucontains=last_name) | \
+                                Q(description__iucontains=last_name)
+
+                    if not condition:
+                        condition = title_cond
+                    else:
+                        condition |= title_cond
                 else:
                     condition = Q(performers__first_name__iexact=first_name,
                                   performers__last_name__iexact=last_name) | \
                                 Q(performers__first_name__iexact=last_name,
                                   performers__last_name__iexact=first_name)
+            elif search_description and partial_name:
+                title_cond = Q(title__iucontains=partial_name) | \
+                             Q(description__iucontains=partial_name)
+                if not condition:
+                    condition = title_cond
+                else:
+                    condition |= title_cond
             elif partial_name or artist_search:
                 performers_first_name_condition = None
                 performers_last_name_condition = None

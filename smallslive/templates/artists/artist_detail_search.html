@@ -54,7 +54,7 @@
         {% else %}
             {% include 'partials/search_artist_profile_picture.html' with photo_url="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" crop_box=artist.photo_crop_box %}
         {% endif %}
-        {% if user.is_authenticated and user.has_activated_account %}
+        {% if user.is_authenticated %}
           <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">sponsor</button>
         {% else %}
           <button onclick="$('#becomeMemberDialog').modal('show');" class="white-border-button" style="display: inline;">sponsor</button>

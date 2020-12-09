@@ -466,12 +466,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             billing_address_form = self.handle_billing_address(shipping_address, request.user)
         payment_method = request.POST.get('payment_method')
         if basket.has_tickets():
-            # We're now using the same payment system for Smalls tickets and the Foundation.
-            #return self.handle_payment_details_submission_for_tickets(
-            #    billing_address_form, payment_method)
-
-            return self.handle_payment_details_submission_for_basket(
-                shipping_address, billing_address_form, payment_method)
+            return self.handle_payment_details_submission_for_tickets(
+                billing_address_form, payment_method)
         else:
             return self.handle_payment_details_submission_for_basket(
                 shipping_address, billing_address_form, payment_method)
@@ -498,10 +494,11 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
     def handle_payment_details_submission_for_tickets(self,
                                                       billing_address_form,
                                                       payment_method):
-        """Customer can pay for Mezzrow tickets with PayPal or Credit Card."""
+        """Customer can pay for Mezzrow or Smalls tickets with PayPal or Credit Card."""
 
         venue = self.request.basket.get_tickets_venue()
         stripe_api_key = venue.get_stripe_secret_key
+
         form = PaymentForm(self.request.user, stripe_api_key, self.request.POST)
 
         if payment_method == 'paypal':
@@ -517,6 +514,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 for field in form.fields:
                     if field != 'payment_method':
                         form.fields[field].required = False
+
             if form.is_valid():
                 self.card_token = form.token
                 self.checkout_session._set('payment', 'card_info', {
@@ -654,9 +652,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             order_kwargs = {}
 
         first_name, last_name = self.checkout_session.get_reservation_name()
-
-        print '-------------------'
-        print 'Reservation name: ', first_name, last_name
 
         if first_name and last_name:
             order_kwargs.update({
@@ -858,7 +853,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 return
 
         elif payment_method == 'paypal':
-            item_list = self.get_item_list(basket_lines)
+            item_list = [] # self.get_item_list(basket_lines)
             total_deductable = basket._get_deductable_physical_total()
             self.amount = str(total.incl_tax)
             # Donation will be set to True  if user is selecting gifts
@@ -998,7 +993,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         total_incl_tax = basket.total_incl_tax
 
         # Record payment source
-        order_kwargs = {}
+        order_kwargs = {'order_type': basket.get_order_type()}
         venue = basket.get_tickets_venue()
         if venue:
             self.tickets = venue.name.lower()

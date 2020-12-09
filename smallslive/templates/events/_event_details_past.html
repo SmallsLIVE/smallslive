@@ -110,7 +110,6 @@
       </button>
   {% endif %}
   {% if event.published_videos %}
-
     <button class="white-border-button video togglePlayer"
             style="display: none;">
         Video player
@@ -322,6 +321,7 @@
             skin: "https:{% static "jwplayer-skin/smalls.xml" %}",
             width: "100%",
             aspectratio: "16:9",
+            cast: {}
         });
         player = videoPlayer;
         videoPlayer.on('play', function () {

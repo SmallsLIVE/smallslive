@@ -46,8 +46,8 @@
         <div class=" flex-column info-container">
           <div class="event-set-info">
             <div class="current-event event-title title1">{{ event.title }}</div>
-            <div class="current-event event-title title5 accent-color">{{ event.subtitle }}</div>
-            <div class="current-event event-title title2">{{ event.description }}</div>
+            <div class="current-event event-title event-subtitle title5 accent-color">{{ event.subtitle }}</div>
+            <div class="current-event event-title title2">{{ event.description|striptags|safe }}</div>
             {% if event.is_past %}
               <div class="{{ event.get_venue_name|lower}}-color title2 venue-subtitle">{{ event.get_venue_name }}</div>
             {% endif %}
@@ -100,11 +100,15 @@
           <div class="event-player-buttons text-right">
             {% if user.is_admin or user.is_staff %}
               <a href="{% url 'event_edit' pk=event.id slug=event.slug %}" style="display: inline-block;">
-                  <button class="white-border-button">Edit</button>
+                <button class="white-border-button">Edit</button>
               </a>
+             <form method="post" action="{% url 'event_clone' pk=event.id slug=event.slug %}" style="display: inline">
+               {% csrf_token %}
+               <button class="white-border-button">Clone</button>
+             </form>
             {% endif %}
             {% if event.is_live or event.is_past %}
-              {% if user.is_authenticated and user.has_activated_account %}
+              {% if user.is_authenticated %}
                 <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">sponsor</button>
               {% else %}
                 <button onclick="$('#becomeMemberDialog').modal('show');" class="white-border-button" style="display: inline;">sponsor</button>
@@ -125,15 +129,11 @@
                                   data-ticket-price="{{ session.price.excl_tax }}"
                                   data-ticket-availability="{{ session.availability.num_available }}"
                                   class="buy-tickets white-border-button"
-                                  style="display: inline;">Tickets for {{ product.set }}</button>
+                                  style="display: inline;">{{ product.set }}</button>
                           {% include 'events/buy_tickets_dialog.html' %}
-                        {% else %}
-                        <button id="btn-tickets-sold-out" class="white-border-button" style="display: inline;">Tickets</button>
                         {% endif %}
                       </form>
                 {% endfor %}
-              {% else %}
-                <button id="btn-tickets" class="white-border-button" style="display: inline;">Tickets</button>
               {% endif %}
             {% endif %}
           </div>
@@ -275,7 +275,7 @@
   </script>
 
   {% with album=event.products.first %}
-      {% if album and album.tracks %}
+      {% if not event.is_future and album and album.tracks %}
           <script>
               var tracksPlayer = jwplayer("player-tracks").setup({
                   primary: 'html5',

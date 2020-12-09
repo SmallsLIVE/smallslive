@@ -213,7 +213,7 @@ a {
     input {
       @include title7;
       line-height: 1em;
-      min-height: 50px;
+      min-height: 1.5em;
 
       &.active {
         border: 1px solid $accent-color;

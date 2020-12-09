@@ -1,5 +1,7 @@
-from django.contrib import messages
+import sys
+import traceback
 from mailchimp import Mailchimp
+from django.contrib import messages
 from django.conf import settings
 
 
@@ -14,6 +16,7 @@ def subscribe_to_newsletter(email, request=None):
         if subscribed:
             messages.success(request, "You've been subscribed to the SmallsLIVE newsletter.")
         else:
+            print >> sys.stderr, traceback.format_exc()
             messages.error(request, "There's been an error while trying to subscribe to the SmallsLIVE newsletter.")
     return subscribed
 

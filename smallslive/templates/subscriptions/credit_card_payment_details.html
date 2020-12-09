@@ -1,12 +1,12 @@
 <div class="row">
   <div class="button-row button-row-margin" style="margin-bottom: 30px;">
-    {% if user.can_use_existing_cc %}
+    {% if can_use_existing_cc %}
       <div class="store__form__selection__option payment_method single recurring store">
         <button class="payment-method-toggle active" data-id="existing-credit-card">Use existing credit card</button>
       </div>
     {% endif %}
     <div class="store__form__selection__option payment_method single recurring store">
-      <button class="payment-method-toggle {% if not user.can_use_existing_cc %}active{% endif %}" data-id="credit-card">Pay with credit card</button>
+      <button class="payment-method-toggle {% if not can_use_existing_cc %}active{% endif %}" data-id="credit-card">Pay with credit card</button>
     </div>
     {% if not flow_type == 'update_pledge' %}
       <div class="store__form__selection__option payment_method single store">
@@ -27,8 +27,8 @@
     {% endif %}
   </div>
 </div>
-<input type="hidden" name="payment_method" id="payment-method" value="{% if user.can_use_existing_cc %}existing-credit-card{%  else %}credit-card{% endif %}">
-<div class="store__form__group clearfix row payment-method-form {% if not user.can_use_existing_cc %}hidden{% endif %}" id="existing-credit-card-form">
+<input type="hidden" name="payment_method" id="payment-method" value="{% if can_use_existing_cc %}existing-credit-card{%  else %}credit-card{% endif %}">
+<div class="store__form__group clearfix row payment-method-form {% if not can_use_existing_cc %}hidden{% endif %}" id="existing-credit-card-form">
     <p tabindex="0" class="text9">Pay with existing {{ user.customer.card_kind }} credit card ending in {{ user.customer.card_last_4 }}</p>
 </div>
 <div class="store__form__group clearfix row payment-method-form hidden" id="paypal-form">
@@ -40,7 +40,7 @@
 <div class="store__form__group clearfix row payment-method-form hidden" id="check-form">
   <p tabindex="0" class="text9">You will receive access after your payment confirmation.</p>
 </div>
-<div class="store__form__group clearfix payment-method-form {% if user.can_use_existing_cc %}hidden{% endif %}" id="credit-card-form">
+<div class="store__form__group clearfix payment-method-form {% if can_use_existing_cc %}hidden{% endif %}" id="credit-card-form">
   <div class="col-xs-12 col-sm-4 col-sm-offset-4">
     {% include 'subscriptions/credit_card_details.html' %}
   </div>

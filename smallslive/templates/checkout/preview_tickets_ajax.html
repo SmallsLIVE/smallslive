@@ -8,7 +8,7 @@
         <div class="col-xs-12 col-sm-8 store-overview__left-column">
          <div class="white-line-bottom">
            {% if not basket.has_physical_products and not basket.has_digital_products %}
-           <div class="title1 center">Tickets</div>
+           <div class="title1 center">Sponsorships</div>
            {% else %}
            <div class="title1 center">Ordered items:</div>
            {% endif %}
@@ -19,7 +19,7 @@
             <div class="store-overview__group">
             {% if shipping_method.name == "No shipping required" %}
             <div class="section-title section-title-no-padded">
-              <div class="title1">Reservation</div>
+              <div class="title1">Party Name</div>
             </div>
             <div class="store-overview__group__textblock text1">
               <p>{{ reservation_string }}</p>

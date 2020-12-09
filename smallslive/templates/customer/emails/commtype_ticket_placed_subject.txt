@@ -1,1 +1,1 @@
-{% load i18n %}{% blocktrans with number=order.number %}Confirmation of Ticket {{ number }}{% endblocktrans %}
+{% load i18n %}{% blocktrans with number=order.number %}Confirmation of Reservation {{ number }}{% endblocktrans %}

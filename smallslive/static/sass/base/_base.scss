@@ -1,17 +1,8 @@
 html {
   overflow: scroll;
   overflow-x: hidden;
-  scrollbar-width: none;
 }
 
-html::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
-}
-
-html::-webkit-scrollbar-thumb {
-  background: #ff0000;
-}
 
 body {
   &.admin-header {

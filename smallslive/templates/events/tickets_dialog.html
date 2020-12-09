@@ -3,14 +3,14 @@
     <div class="modal-content custom-modal no-cancel">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
-        <p class="title2 accent-color">Purchase Tickets</p>
+        <p class="title2 accent-color">Sponsorships</p>
           {% if event.tickets_url %}
             <p class="title3">Available from {{ event.get_venue_name|capfirst }}</p>
             <a href="{{ event.tickets_url }}" target="_blank" rel="noreferrer">
-              <button class="white-border-button">Buy from {{ event.get_venue_name|capfirst }}</button>
+              <button class="white-border-button">Reserve from {{ event.get_venue_name|capfirst }}</button>
             </a>
           {% else %}
-            <p class="title3">Advance Tickets are not available for this show.</p>
+            <p class="title3">Advance reservations are not available for this show.</p>
 
           {% endif %}
       </div>
@@ -22,12 +22,7 @@
     <div class="modal-content custom-modal no-cancel">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
-        <p class="title2 accent-color">Sold Out</p>
-        <p class="title3">All the tickets for this show have been sold out.
-        </p>
-        <p class="text9 justified-text text">
-          There is a limited number of walk-ins available if you would like to get to the venue early and sign up on the list.
-          You can also purchase for another set.
+        <p class="title3">There are no further reservations available for this seating.
         </p>
       </div>
     </div>

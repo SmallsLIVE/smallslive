@@ -160,11 +160,11 @@ class StripeMixin(object):
     def handle_stripe_payment(self, order_number, basket_lines, **kwargs):
         if self.request.user.is_authenticated():
             customer = self.request.user.customer
+            print customer
         else:
             customer = None
-        # Smalls tickets will be handled by the foundation
+        # Smalls tickets are accounted according to the venue's account.
         venue = self.request.basket.get_tickets_venue()
-        # if not venue and customer:
         if customer:
             if not self.card_token.startswith('card_'):
                 customer.update_card(self.card_token)
@@ -175,23 +175,17 @@ class StripeMixin(object):
             stripe_ref = charge.stripe_id
 
         else:
-            print 'stripe.charge ->'
-            print 'Token: ', self.card_token
             resp = stripe.Charge.create(
-                api_key=self.request.basket.get_tickets_venue().get_stripe_secret_key,
+                api_key=venue.get_stripe_secret_key,
                 source=self.card_token,
                 amount=int(self.total.incl_tax * 100),  # Convert dollars into cents
                 currency=settings.STRIPE_CURRENCY,
                 description=self.payment_description(order_number, self.total.incl_tax, **kwargs),
             )
-            print 'Resp: ', resp
             stripe_ref = resp['id']
 
         cost = 0
         for line in basket_lines:
-            print line
-            print dir(line)
-            print line.stockrecord
             if line.stockrecord and line.stockrecord.cost_price:
                 cost += line.stockrecord.cost_price
 

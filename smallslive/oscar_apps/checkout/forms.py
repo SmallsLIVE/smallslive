@@ -79,7 +79,10 @@ class PaymentForm(forms.Form):
                     self.token = token.id
                     print 'Sripe token: ', token
                 except stripe.error.CardError, e:
+                    print 'ERROR !!!!'
+                    print e
                     error = e.json_body['error']
+                    print error
                     self.add_error(error['param'], error['message'])
         return data
 

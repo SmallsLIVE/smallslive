@@ -10,18 +10,13 @@
         <!-- table row start -->
         <div class="store-overview__group__table__row clearfix">
             <div class="col-xs-9 details">
-                <div>{{ product.get_title }}</div>
                 <div class="{{ product.event_set.event.venue|lower }}-color">
-                  {{ product.event_set.event.venue }} Jazz Club
-                </div>
-                <div>
-                  <!-- What is product.set? This should not be product.title because the title of the event should not be here... -->
-                  The {{ product.set }} Set
+                  Sponsorship seat
                 </div>
             </div>
             <div class="col-xs-3 details total">
                 <div>${{ line.price_excl_tax }}</div>
-                <div>{{ line.quantity }} {% if line.quantity > 1 %} tickets {% else %} ticket {% endif %}</div>
+                <div>{{ line.quantity }} {% if line.quantity > 1 %} SPONSOR seats {% else %} SPONSOR seat {% endif %}</div>
             </div>
         </div>
         <!-- end of table row -->
