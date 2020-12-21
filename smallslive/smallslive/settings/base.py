@@ -806,3 +806,4 @@ REDIRECT_TO_MAINTENANCE = ast.literal_eval(os.environ.get('REDIRECT_TO_MAINTENAN
 
 AWS_PAYOUTS_BUCKET = os.environ.get('AWS_PAYOUTS_BUCKET', 'smallslivepayouts')
 
+THUMBNAIL_DEBUG = ast.literal_eval(os.environ.get('THUMBNAIL_DEBUG', 'False'))
