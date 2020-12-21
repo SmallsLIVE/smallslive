@@ -1,15 +1,16 @@
+import csv
 import stripe
 from allauth.account.views import _ajax_response
 from braces.views import FormValidMessageMixin, LoginRequiredMixin, StaffuserRequiredMixin
-
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
+from django_filters.views import FilterView
 from django.forms.models import model_to_dict
-from django.http import HttpResponseRedirect, Http404, JsonResponse
+from django.http import StreamingHttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from django.views.generic import TemplateView, FormView, ListView, View
-from djstripe.mixins import SubscriptionMixin
 from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
 from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView, \
@@ -25,10 +26,10 @@ from artists.models import Artist
 from events.models import Event
 from users.models import SmallsUser
 from users.utils import custom_send_receipt
-from subscriptions.models import Donation
-from .forms import PlanForm, ReactivateSubscriptionForm
+from .filters import SupporterFilter
+from .forms import ReactivateSubscriptionForm
 from .mixins import PayPalMixin, StripeMixin
-
+from .models import Donation
 
 BankcardForm = get_class('payment.forms', 'BankcardForm')
 
@@ -821,3 +822,78 @@ class SubscriberEmailsFilterView(StaffuserRequiredMixin, ListView):
 
 
 subscriber_list_emails = SubscriberEmailsFilterView.as_view()
+
+
+class SupporterFilterQueryMixin(object):
+
+    def get_queryset(self):
+
+        order_by = self.request.GET.get('o', 'email')
+
+        today = timezone.localtime(
+            timezone.now().replace(hour=0, minute=0, second=0)).date()
+        starting_day_of_current_year = today.replace(month=1, day=1)
+        ending_day_of_current_year = today.replace(month=12, day=31)
+
+        return SmallsUser.objects.filter(
+            donations__date__gte=starting_day_of_current_year,
+            donations__date__lte=ending_day_of_current_year,
+            donations__confirmed=True
+        ).distinct().order_by(order_by)
+
+
+class SupporterFilterView(StaffuserRequiredMixin, SupporterFilterQueryMixin, FilterView):
+    context_object_name = 'supporters'
+    filterset_class = SupporterFilter
+    paginate_by = 30
+    template_name = 'subscriptions/supporter_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SupporterFilterView, self).get_context_data(**kwargs)
+        paginator = context['paginator']
+        page = paginator.page(self.request.GET.get('page', 1))
+        adjacent_pages = 2
+        start_page = max(page.number - adjacent_pages, 1)
+        if start_page <= 3:
+            start_page = 1
+        end_page = page.number + adjacent_pages + 1
+        if end_page >= paginator.num_pages - 1:
+            end_page = paginator.num_pages + 1
+        page_numbers = [n for n in xrange(start_page, end_page) if n > 0 and n <= paginator.num_pages]
+        context.update({
+            'page_numbers': page_numbers,
+            'show_first': 1 not in page_numbers,
+            'show_last': paginator.num_pages not in page_numbers,
+        })
+
+        return context
+
+
+supporter_list = SupporterFilterView.as_view()
+
+
+class Echo:
+
+    def write(self, value):
+        return value
+
+class SupporterListExport(StaffuserRequiredMixin, SupporterFilterQueryMixin, View):
+
+    def get(self, request):
+
+        queryset = self.get_queryset().values_list('email', 'first_name', 'last_name')
+        echo_buffer = Echo()
+        csv_writer = csv.writer(echo_buffer)
+
+        rows = (csv_writer.writerow(row) for row in queryset)
+
+        response = StreamingHttpResponse(rows, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="supporters.csv"'
+
+        # The data is hard-coded here, but you could load it from a database or
+        # some other source.
+
+        return response
+
+
+supporter_list_export = SupporterListExport.as_view()

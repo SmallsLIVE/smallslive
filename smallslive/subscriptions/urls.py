@@ -18,4 +18,6 @@ urlpatterns = patterns('subscriptions.views',
     url(r'^supporter/completed/$', 'become_supporter_complete', name='become_supporter_complete'),
     url(r'^donate/$', 'donate', name='donate'),
     url(r'^supporter/pending', 'supporter_pending', name='supporter_pending'),
+    url(r'^supporters-export', 'supporter_list_export', name='supporter_list_export'),
+    url(r'^supporters/$', 'supporter_list', name='supporter_list'),
 )

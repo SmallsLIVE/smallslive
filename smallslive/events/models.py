@@ -78,7 +78,7 @@ class EventQuerySet(models.QuerySet):
     def last_staff_picks(self):
         return self.filter(
             staff_picked__isnull=False
-        ).order_by('-staff_picked__date_picked')
+        ).order_by('-staff_picked__date_picked')[:15]
 
     def get_events_by_performers_and_artist(
             self, number_of_performers_searched, first_name=None, last_name=None, partial_name=None):

@@ -1,0 +1,116 @@
+{% extends "home_new.html" %}
+{% load add_get_parameter %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block title %}Supporter list{% endblock %}
+
+{% block schedule_nav_active %}active{% endblock %}
+
+{% block content %}
+
+    <div class="content-wrapper" style="border:none">
+        <section class="page-heading container" style="width: 100%;">
+            <h1>Supporter list:</h1>
+        </section>
+        <section class="artists-list__search">
+            <form method="get" action="{% url 'supporter_list' %}">
+                <span class="artists-list__search__heading">Search:</span>
+                {{ filter.form.name }}
+                <input class="" type="submit" value="Search">
+            </form>
+        </section>
+        <section class="artists-list__filters">
+            <form method="get" action="{% url 'supporter_list' %}" id="supporter-form">
+                <input type="hidden" name="name" value="{{ request.GET.name }}">
+                <input type="hidden" name="o" id="sort_form_field" value="{{ request.GET.o }}">
+            </form>
+        </section>
+        <section class="artists-list__search">
+            <a class="white-border-button" href="{% url 'supporter_list_export' %}" target="_blank">
+                Export
+            </a>
+        </section>
+        <section class="artists-list__list container" style="width: 100%;">
+            <div class="artists-list__list__header row">
+                <div class="col-xs-4 sort-column" data-sort="email">
+                    Email
+                </div>
+                <div class="col-xs-4 sort-column" data-sort="last_name">
+                    Last Name<i class="fa fa-sort"></i>
+                </div>
+                <div class="col-xs-4 sort-column" data-sort="first_name">
+                    First Name<i class="fa fa-sort"></i>
+                </div>
+            </div>
+            <ul>
+                {% for supporter in supporters %}
+                    <li class="artists-list__list__row row">
+                        <div class="col-xs-4 artists-list__list__name">
+                            <span title="{{ supporter.email }}">{{ supporter.email }}</span>
+                        </div>
+                        <div class="col-xs-4 artists-list__list__name">
+                            <span title="{{ supporter.last_name }}">{{ supporter.last_name }}</span>
+                        </div>
+                        <div class="col-xs-4 artists-list__list__name">
+                            <span title="{{ supporter.last_name }}">{{ supporter.first_name }}</span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+        <section class="page-pagination artists-list__pagination container">
+          <p class="search-pagination-info">Showing results {{ page_obj.start_index }}-{{ page_obj.end_index }}
+            of {{ paginator.count }}</p>
+          {% if page_obj.has_previous or page_obj.has_next %}
+            <div class="search-pagination">
+              {% if page_obj.has_previous %}<a href="{% add_get page=page_obj.previous_page_number %}"><span
+                      class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
+              {% if show_first %}
+                <a href="{% add_get page=1 %}"><span class="search-pagination__page">1</span></a>
+                ...
+              {% endif %}
+              {% for page in page_numbers %}
+                <a href="{% add_get page=page %}"><span
+                        class="search-pagination__page {% if page == page_obj.number %}active{% endif %}">{{ page }}</span></a>
+              {% endfor %}
+              {% if show_last %}
+                ...
+                <a href="{% add_get page=paginator.num_pages %}"><span
+                        class="search-pagination__page">{{ paginator.num_pages }}</span></a>
+              {% endif %}
+              {% if page_obj.has_next %}<a href="{% add_get page=page_obj.next_page_number %}"><span
+                      class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
+
+            </div>
+          {% endif %}
+        </section>
+    </div>
+
+
+{% endblock content %}
+
+{% block extra_js %}
+  <script>
+    $(document).ready(function () {
+
+
+      $(".sort-column").on('click', function () {
+        var sortColumnValue = $(this).attr('data-sort');
+        var $sortField = $("#sort_form_field");
+        var sortFieldValue = $sortField.val();
+        if (sortColumnValue === sortFieldValue) {
+          if (sortFieldValue[0] === '-') {
+            sortFieldValue = sortFieldValue.substring(1);
+          } else {
+            sortFieldValue = "-" + sortColumnValue;
+          }
+          $sortField.val(sortFieldValue);
+        } else {
+          $sortField.val(sortColumnValue);
+        }
+        $("#supporter-form").submit();
+      })
+    })
+  </script>
+{% endblock extra_js %}
