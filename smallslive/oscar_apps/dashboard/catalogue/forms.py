@@ -35,6 +35,17 @@ class ProductForm(oscar_forms.ProductForm):
     def __init__(self, product_class, data=None, parent=None, *args, **kwargs):
 
         self.set_initial(product_class, parent, kwargs)
+        if product_class.slug == 'ticket':
+            # Previously, Ticket products were linked to an event.
+            # As of now, they are linked to a set.
+            # Make sure the event is also linked to the product so it can be edited.
+            instance = kwargs.get('instance')
+            if instance:
+                event_set = instance.event_set
+                if event_set:
+                    event = event_set.event
+                    kwargs['instance'].event = event
+
         super(oscar_forms.ProductForm, self).__init__(data, *args, **kwargs)
         if product_class.slug == 'ticket':
             del self.fields['subtitle']
@@ -48,9 +59,17 @@ class ProductForm(oscar_forms.ProductForm):
             del self.fields['misc_file']
             del self.fields['ordering']
             self.fields['event'].widget = forms.TextInput()
-            self.fields['set'].widget.attrs['placeholder'] = 'Set number (i.e. 2) or set time (i.e. 7:30 pm)'
+            self.fields['set'].widget = forms.HiddenInput()
+            self.fields['set_number'] = forms.CharField()
+            self.fields['set_number'].label = 'Set number (i.e. 2) or Set time (i.e. 7:30 pm)'
+            self.fields['set_number'].widget.attrs['placeholder'] = 'Set number (i.e. 2) or Set time (i.e. 7:30 pm)'
             self.fields['set_name'] = forms.CharField(required=False)
             self.fields['set_name'].widget.attrs['placeholder'] = 'Optional: special name for set'
+            if self.instance:
+                if self.instance.event_set:
+                    self.fields['set_number'].initial = self.instance.event_set.start.strftime('%I:%M %p')
+                if self.instance.set:
+                    self.fields['set_name'].initial = self.instance.set
 
         else:
             del self.fields['event']
@@ -85,7 +104,7 @@ class ProductForm(oscar_forms.ProductForm):
         """Link set number or set time with an EventSet instance"""
         cleaned_data = super(ProductForm, self).clean()
 
-        set_number = cleaned_data.get('set')
+        set_number = cleaned_data.get('set_number')
         event = cleaned_data.get('event')
 
         if not event and not set_number:
@@ -114,6 +133,7 @@ class ProductForm(oscar_forms.ProductForm):
 
         if product.get_product_class().slug == 'ticket':
             # Linked to real object on form clean
+            product.event = self.event_set.event
             product.event_set = self.event_set
             # Make sure it is displayed as time. The user could have entered only the number.
             product.set = self.event_set.start.strftime('%-I:%M %p')
