@@ -35,12 +35,14 @@
         </thead>
         <tbody>
         {% for line in item.tickets %}
-          <tr>
-            <td>{{ line.order.number }}</td>
-            <td><strong>{{ line.order.last_name }}, {{ line.order.first_name }}</strong></td>
-            <td><strong>{{ line.quantity }}</strong></td>
-            <td>${{ line.line_price_incl_tax }}</td>
-          </tr>
+          {% if line.order.status != 'Cancelled' %}
+            <tr>
+              <td>{{ line.order.number }}</td>
+              <td><strong>{{ line.order.last_name }}, {{ line.order.first_name }}</strong></td>
+              <td><strong>{{ line.quantity }}</strong></td>
+              <td>${{ line.line_price_incl_tax }}</td>
+            </tr>
+          {% endif %}
         {% endfor %}
         </tbody>
       </table>
