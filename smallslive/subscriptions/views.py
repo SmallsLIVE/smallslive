@@ -885,13 +885,10 @@ class SupporterListExport(StaffuserRequiredMixin, SupporterFilterQueryMixin, Vie
         echo_buffer = Echo()
         csv_writer = csv.writer(echo_buffer)
 
-        rows = (csv_writer.writerow(row) for row in queryset)
+        rows = (csv_writer.writerow([x.encode('utf-8') for x in row]) for row in queryset)
 
         response = StreamingHttpResponse(rows, content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="supporters.csv"'
-
-        # The data is hard-coded here, but you could load it from a database or
-        # some other source.
 
         return response
 
