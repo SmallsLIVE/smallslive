@@ -222,6 +222,11 @@ class Donation(models.Model):
         # Make the last day of the year the last day of access
         new_expiry_date = last_day
 
+        # New request from Spike: if donation is made after Dec 1, allow access during one whole year
+        today = timezone.now().date()
+        if today.month == 12:
+            new_expiry_date = new_expiry_date + relativedelta(months=11)
+
         return new_expiry_date
 
     def save(self, *args, **kwargs):
