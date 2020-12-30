@@ -119,32 +119,28 @@
                   <div class="text5">Total donations this tax year</div>
                   <div class="text9 accent-color">${{ charges_value }}</div>
                 </div>
-                <br>
-                <br>
                 <a href="{% url 'user_tax_letter' %}"  class="white-border-button">Download tax document</a>
               {% endif %}
           {% endwith %}
 
+
         <div class="account-settings-info ">
-          {% if user.has_activated_account %}
-            {% if customer_detail.subscription.plan and not cancelled %}
-              <div class="text5">Expiration of archive access</div>
-              <div class="text9 text-grey">There is no expiration date until the pledge is cancelled</div>
-            {% elif user_archive_access_until %}
-              <div class="text5">Expiration of archive access</div>
-              <div class="text9 text-grey"> {{ user_archive_access_until|date:"m/d/Y" }}</div>
-            {% elif not customer_detail.subscription.plan and not period_end.due  %}
-              <div class="text5">Expiration of archive access 3</div>
-              <div class="text9 text-grey">{{ user_archive_access_until|date:"m/d/Y" }}</div>
-            {% else %}
-              <div class="text9 text-grey">There is no access to the archive</div>
-            {% endif %}
+          <div class="text5">Expiration of archive access</div>
+          {% if customer_detail.subscription.plan and not cancelled %}
+            <div class="text9 text-grey">There is no expiration date until the pledge is cancelled</div>
+          {% elif user_archive_access_until %}
+            <div class="text9 text-grey"> {{ user_archive_access_until|date:"m/d/Y" }}</div>
+          {% elif customer_detail.subscription.plan and not period_end.due  %}
+            <div class="text9 text-grey">{{ user_archive_access_until|date:"m/d/Y" }}</div>
+          {% else %}
+            <div class="text9 text-grey">There is no access to the archive</div>
           {% endif %}
+
         </div>
       </div>
 
       <div id="user-billing" class="account-settings-view">
-        <div class="title5 account-settings-title text-bottom-lineFin">Billing</div>
+        <div class="title5 account-settings-title text-bottom-line">Billing</div>
           <div class="account-settings-info">
             <div class="text5">Credit card</div>
             {% if not customer_detail.active_card %}

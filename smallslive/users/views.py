@@ -311,7 +311,7 @@ def user_settings_view_new(request):
         'customer_charges': customer_charges or '',
         'charges_value': request.user.get_donation_amount or '0',
         'period_end': period_end,
-        'user_archive_access_until': user_archive_access_until or 'unverified account',
+        'user_archive_access_until': user_archive_access_until,
         'monthly_pledge_in_dollars': monthly_pledge_in_dollars or 'no',
         'cancelled': cancel_at or '',
         'donate_url': reverse('donate'),
