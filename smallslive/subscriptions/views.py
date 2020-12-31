@@ -881,11 +881,22 @@ class SupporterListExport(StaffuserRequiredMixin, SupporterFilterQueryMixin, Vie
 
     def get(self, request):
 
-        queryset = self.get_queryset().values_list('email', 'first_name', 'last_name')
+        def prepare(x):
+            if isinstance(x, unicode):
+                return x.encode('utf8')
+            else:
+                return x
+
+        def add_donation_info(row):
+            user_id = row[0]
+            user = SmallsUser.objects.get(pk=user_id)
+            return row + (user.get_donation_expiry_date, user.get_donation_amount)
+
+        queryset = self.get_queryset().values_list('id', 'email', 'first_name', 'last_name')
         echo_buffer = Echo()
         csv_writer = csv.writer(echo_buffer)
 
-        rows = (csv_writer.writerow([x.encode('utf-8') for x in row]) for row in queryset)
+        rows = (csv_writer.writerow([prepare(x) for idx, x in enumerate(add_donation_info(row)) if idx > 0]) for row in queryset)
 
         response = StreamingHttpResponse(rows, content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="supporters.csv"'
