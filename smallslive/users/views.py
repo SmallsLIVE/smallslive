@@ -265,7 +265,7 @@ def user_settings_view_new(request):
         except stripe.error.InvalidRequestError:
             plan = None
 
-    customer_charges = request.user.get_donations().order_by('-date')
+    customer_charges = request.user.get_donations(this_year=False).order_by('-date')
     charges_value = 0
     for charge in customer_charges:
         if charge.amount:
@@ -306,7 +306,7 @@ def user_settings_view_new(request):
         'current_user': request.user,
         'artist_info_form': artist_info_form,
         'plan': plan,
-        'donations': request.user.get_donations() or None,
+        'donations': request.user.get_donations(this_year=False) or None,
         'customer_detail': customer_detail or '',
         'customer_charges': customer_charges or '',
         'charges_value': request.user.get_donation_amount or '0',

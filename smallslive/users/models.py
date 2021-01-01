@@ -236,7 +236,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     @property
     def get_donation_expiry_date(self):
         """ Get access expiry date """
-        last_donation = self.get_donations().order_by('-date').first()
+        last_donation = self.get_donations(this_year=False).order_by('-date').first()
         if last_donation:
             return last_donation.archive_access_expiry_date
         else:
