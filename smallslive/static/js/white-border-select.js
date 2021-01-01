@@ -29,8 +29,12 @@ function replaceWhiteSelects(divElement) {
         $(a).click();
       }
     });
-
-    for (j = 0; j < selElmnt.length; j++) {
+    var firstIsTitle = currentSelect.classList.contains('firstistitle');
+    var start_j = 0;
+    if (firstIsTitle) {
+        start_j= 1;
+    }
+    for (j = start_j; j < selElmnt.length; j++) {
       /*for each option in the original select element,
           create a new DIV that will act as an option item:*/
       c = document.createElement("DIV");

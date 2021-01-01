@@ -340,7 +340,9 @@ class UserTaxLetterHtml(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserTaxLetterHtml, self).get_context_data(**kwargs)
         customer = self.request.user.customer
-        customer_charges = customer.subscriber.get_donations()
+        year = self.request.GET.get('year', str(timezone.now().year))
+        year = int(year)
+        customer_charges = customer.subscriber.get_donations(year=year)
         charges_value = 0
         deductable_value = 0
         for charge in customer_charges:
@@ -352,7 +354,7 @@ class UserTaxLetterHtml(TemplateView):
         context['customer'] = customer
         context['deductable_value'] = deductable_value
         context['charges_value'] = charges_value
-        context['year'] = timezone.now().year
+        context['year'] = year
 
         return context
 
@@ -368,7 +370,9 @@ class UserTaxLetter(PDFTemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserTaxLetter, self).get_context_data(**kwargs)
         customer = self.request.user.customer
-        customer_charges = self.request.user.get_donations()
+        year = self.request.GET.get('year', str(timezone.now().year))
+        year = int(year)
+        customer_charges = self.request.user.get_donations(year=year)
         charges_value = 0
         deductable_value = 0
         for charge in customer_charges:
@@ -380,7 +384,8 @@ class UserTaxLetter(PDFTemplateView):
         context['customer'] = customer
         context['charges_value'] = charges_value
         context['deductable_value'] = deductable_value
-        context['year'] = timezone.now().year
+        context['year'] = year
+
         return context
 
 

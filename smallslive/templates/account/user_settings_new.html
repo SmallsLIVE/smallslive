@@ -109,8 +109,7 @@
                 You have not yet made a donation
               </div>
                 </div>
-
-                <button href="{% url 'user_tax_letter' %}" class="white-border-button disabled" disabled>Download tax document</button>
+                <button class="white-border-button disabled" disabled>Download tax document</button>
               {% else %}
                 {{ first_charge.date|date:"d/m/Y"  }}: ${{ first_charge.amount }}
                 </div>
@@ -119,6 +118,14 @@
                   <div class="text5">Total donations this tax year</div>
                   <div class="text9 accent-color">${{ charges_value }}</div>
                 </div>
+                <div class="white-border-select spaced firstistitle">
+                  <select id="download-tax-select">
+                    <option value="">Download tax document</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                  </select>
+                </div>
+
                 <a href="{% url 'user_tax_letter' %}"  class="white-border-button">Download tax document</a>
               {% endif %}
           {% endwith %}
@@ -264,6 +271,10 @@
     var $streamingCloseButton = $($streamingDialog.find('.close-button')[0]);
     $streamingCloseButton.click(function () {
       $streamingDialog.modal('hide');
+    });
+
+    $("#download-tax-select").change(function () {
+      window.location = "{% url 'user_tax_letter' %}?year=" + $(this).val();
     });
 
   });

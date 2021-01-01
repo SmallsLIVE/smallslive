@@ -209,13 +209,15 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     def is_first_login(self):
         return self.date_joined == self.last_login
 
-    def get_donations(self, this_year=True):
+    def get_donations(self, this_year=True, year=None):
         # Assume always USD.
         qs = self.donations.filter(user=self, confirmed=True)
-        if this_year:
+        if this_year or year:
             current_date = timezone.now()
             first_day = current_date.replace(month=1, day=1, hour=0,
                                              minute=0, second=0, microsecond=0)
+            if year:
+                first_day = first_day.replace(year=year)
             qs = qs.filter(date__gte=first_day)
 
         return qs
