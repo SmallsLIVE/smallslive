@@ -2,8 +2,8 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import RedirectView
 
 urlpatterns = patterns('events.views',
-    url(r'^live-stream-mezzrow/$', 'live_stream_mezzrow', name='live-stream-mezzrow'),
-    url(r'^live-stream/$', 'live_stream', name='live-stream'),
+    url(r'^live-stream-mezzrow/$', RedirectView.as_view(url='/', permanent=True), name='live-stream-mezzrow'),
+    url(r'^live-stream/$', RedirectView.as_view(url='/', permanent=True), name='live-stream'),
     url(r'^new-popular/(?P<year>\d+)/(?P<month>\d+)/$',
         RedirectView.as_view(permanent=True, pattern_name='monthly_archive', query_string=True),
         name='monthly_archive_old'),
