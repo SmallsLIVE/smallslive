@@ -687,60 +687,6 @@ class HomepageEventCarouselAjaxView(AJAXMixin, ListView):
 event_carousel_ajax = HomepageEventCarouselAjaxView.as_view()
 
 
-class LiveStreamView(ListView):
-    context_object_name = "events"
-    template_name = "events/live-stream.html"
-
-    def get_queryset(self):
-        now = timezone.localtime(timezone.now())
-        tomorrow = now
-        if not now.hour < 6:
-            tomorrow = now + timedelta(days=1)
-        tomorrow = tomorrow.replace(hour=6)
-        events = list(Event.objects.public().filter(end__gte=now,
-                                                    start__lte=tomorrow).order_by('start'))
-        return events
-
-    def get_context_data(self, **kwargs):
-        now = timezone.localtime(timezone.now())
-        context = super(LiveStreamView, self).get_context_data(**kwargs)
-        TRESHOLD = 30
-        # also include todays events that have finished
-        if now.hour < 6:
-            start_range = (now - timedelta(days=1)).replace(hour=6)
-            end_range = now.replace(hour=6)
-
-        else:
-            start_range = now.replace(hour=6)
-            end_range = (now + timedelta(days=1)).replace(hour=6)
-        todays_events = Event.objects.public().filter(start__gte=start_range,
-                                                    start__lte=end_range).order_by('start')
-        # currently playing or future events, showed for displaying "coming up"
-        if context['events'] and context['events'][0].has_started():
-            context['currently_playing'] = context['events'].pop(0)
-
-        context['first_future_show'] = Event.objects.filter(start__gte=timezone.now()).order_by('start').first()
-
-        return context
-
-
-live_stream = LiveStreamView.as_view()
-
-
-class MezzrowLiveStreamView(TemplateView):
-    template_name = 'events/live-stream-mezzrow.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(MezzrowLiveStreamView, self).get_context_data(**kwargs)
-        now = timezone.localtime(timezone.now())
-        stream_turn_off_hour = 2
-        stream_turn_on_hour = 17
-        context['hide_stream'] = stream_turn_off_hour <= now.hour <= stream_turn_on_hour
-        return context
-
-
-live_stream_mezzrow = MezzrowLiveStreamView.as_view()
-
 
 class ArchiveView(ListView):
     template_name = "events/archive.html"
