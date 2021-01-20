@@ -216,9 +216,12 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
             current_date = timezone.now()
             first_day = current_date.replace(month=1, day=1, hour=0,
                                              minute=0, second=0, microsecond=0)
+            last_day = current_date.replace(month=12, day=31, hour=0,
+                                            minute=0, second=0, microsecond=0)
             if year:
                 first_day = first_day.replace(year=year)
-            qs = qs.filter(date__gte=first_day)
+                last_day = last_day.replace(year=year)
+            qs = qs.filter(date__gte=first_day, date__lte=last_day)
 
         return qs
 
