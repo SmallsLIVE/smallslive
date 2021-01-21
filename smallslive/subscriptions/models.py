@@ -1,4 +1,4 @@
-from datetime import date
+import datetime
 from dateutil.relativedelta import relativedelta
 from decimal import Decimal
 from django.db import models
@@ -159,6 +159,9 @@ class Donation(models.Model):
     # Each donation will extend the archive access expiry date.
     # Update: Spike has requested to give access to the full year regardless amount.
     archive_access_expiry_date = models.DateField(blank=True, null=True)
+    # Spike would like to be able to create donations for a specific year
+    # Time is not useful. Queries will change to use this field for the tax year donations.
+    donation_date = models.DateField(default=timezone.now().date())
 
     objects = DonationManager()
 
@@ -197,7 +200,7 @@ class Donation(models.Model):
 
         # Get last donation
         last_donation = Donation.objects.filter(
-            user=self.user).order_by('-date').first()
+            user=self.user).order_by('-donation_date').first()
         if last_donation:
             last_expiry_date = last_donation.archive_access_expiry_date
         else:
@@ -214,7 +217,7 @@ class Donation(models.Model):
             new_expiry_date = new_expiry_date + relativedelta(days=days)
 
         # Limit the date
-        last_day = date(timezone.now().date().year, 12, 31)
+        last_day = datetime.date(timezone.now().date().year, 12, 31)
 
         # Spike deprecated this for the time being.
         # if new_expiry_date > last_day:
@@ -230,6 +233,11 @@ class Donation(models.Model):
         return new_expiry_date
 
     def save(self, *args, **kwargs):
+
+        # We need to create donations for other periods.
+        # donation_date is now the date the donation must be accounted on.
+        if not self.donation_date:
+            self.donation_date = timezone.now().date()
 
         if not self.deductable_amount:
             self.deductable_amount = self.amount
