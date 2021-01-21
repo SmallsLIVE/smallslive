@@ -51,7 +51,7 @@
 
   <div class="main-container pad-content {% if calendar %}calendar{% else %}home-new{% endif %}">
     {% block home_content %}
-    <main>
+    <main style="visibility: hidden;">
       {% include 'home_banners_carousel.html' %}
       <div class="event-stripe">
         {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
