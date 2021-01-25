@@ -111,7 +111,7 @@
                 </div>
                 <button class="white-border-button disabled" disabled>Download tax document</button>
               {% else %}
-                {{ first_charge.date|date:"d/m/Y"  }}: ${{ first_charge.amount }}
+                {{ first_charge.donation_date|date:"d/m/Y"  }}: ${{ first_charge.amount }}
                 </div>
                 </div>
                 <div class="account-settings-info">
