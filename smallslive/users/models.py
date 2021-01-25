@@ -221,7 +221,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
             if year:
                 first_day = first_day.replace(year=year).date()
                 last_day = last_day.replace(year=year).date()
-            qs = qs.filter(donation_date__gte=first_day, donation_date__lte=last_day)
+            qs = qs.filter(donation_date__gte=first_day, donation_date__lte=last_day).order_by('-donation_date')
 
         return qs
 
