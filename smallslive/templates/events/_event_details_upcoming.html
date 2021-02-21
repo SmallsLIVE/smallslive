@@ -66,7 +66,8 @@
 
         // Remember form to be submitted
         $form = $(this).closest('form');
-        $('#ticket-price').text("Sponsorship Seats $" +$(this).data('ticket-price'));
+        $('#ticket-time').text( $(this).data('ticket-time'));
+        $('#ticket-price').text("Sponsorship Seats $" + $(this).data('ticket-price'));
         $('#ticket-availability').text($(this).data('ticket-availability'));
         $('#buy-tickets-dialog').modal('show');
 
