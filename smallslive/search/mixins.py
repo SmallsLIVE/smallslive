@@ -36,7 +36,7 @@ class SearchMixin(object):
     def search(self, entity, search_terms, page=1, order=None,
                instrument=None, date_from=None, date_to=None,
                artist_search=None, artist_pk=None, venue=None, results_per_page=60,
-               leader='all', search_input=None, all_media_status=False):
+               leader='all', search_input=None, all_media_status=False, only_published=True):
 
         search_terms = search_terms.strip()
 
@@ -65,7 +65,8 @@ class SearchMixin(object):
                 instruments=instruments, all_sax_instruments=all_sax_instruments,
                 number_of_performers=number_of_performers,
                 first_name=first_name, last_name=last_name, partial_name=partial_name,
-                artist_search=artist_search, leader=leader, all_media_status=all_media_status)
+                artist_search=artist_search, leader=leader, all_media_status=all_media_status,
+                only_published=only_published)
 
             first = sqs.first()
             last = sqs.last()

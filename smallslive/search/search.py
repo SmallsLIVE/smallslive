@@ -478,7 +478,8 @@ class SearchObject(object):
                      artist_pk=None, venue=None, instruments=None, all_sax_instruments=None,
                      number_of_performers=None, first_name=None, last_name=None,
                      partial_name=None, artist_search=None,
-                     leader='all', search_description=False, all_media_status=False):
+                     leader='all', search_description=False, all_media_status=False,
+                     only_published=True):
         """
             number_of_performers: solo, duo, etc. match events by # of performers.
             partial_name: 'john' will match 'john smith' and 'will johnson'
@@ -490,6 +491,9 @@ class SearchObject(object):
         """
 
         self.sqs = Event.objects.get_queryset()
+
+        if only_published:
+            self.sqs = self.sqs.filter(state=Event.STATUS.Published)
 
         # Musician has to be a leader. This will apply only if an instrument was selected
         leader_condition = self.get_leader_condition(leader)
