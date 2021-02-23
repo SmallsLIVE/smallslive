@@ -286,6 +286,15 @@ class EventDetailView(DetailView):
     queryset = Event.objects.all().select_related('recording', 'recording__media_file')
     context_object_name = 'event'
 
+    def get(self, request, *args, **kwargs):
+
+        result = super(EventDetailView, self).get(request, *args, **kwargs)
+        if self.object.state != Event.STATUS.Published:
+            if not self.request.user.is_authenticated() or not self.request.user.is_staff:
+                return HttpResponseRedirect(reverse('home'))
+
+        return result
+
     def get_context_data(self, **kwargs):
         current_user = self.request.user
         context = super(EventDetailView, self).get_context_data(**kwargs)

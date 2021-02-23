@@ -125,7 +125,6 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
             # Events finish at 5:00 am the next day
             end_date_filter = end_date_filter + timedelta(days=1)
             end_date_filter = end_date_filter.replace(hour=5, minute=0, second=0)
-            print '*** END DATE ***** ', end_date_filter
             queryset = queryset.filter(
                 event__start__lte=end_date_filter
             )
@@ -148,10 +147,20 @@ class MyFutureEventsView(MyEventsView):
     def get_queryset(self):
         artist = self.request.user.artist
         now = timezone.now()
+
+        condition = {
+            'event__start__gte': now
+        }
+
+        if not self.request.user.is_authenticated() or not self.request.user.is_staff:
+            condition['event__state'] = Event.STATUS.Published
+
         queryset = artist.gigs_played.select_related('event').prefetch_related('event__sets').filter(
-            event__start__gte=now
+            **condition
         )
         queryset = self.apply_filters(queryset)
+
+        print queryset.query
 
         return queryset
 
