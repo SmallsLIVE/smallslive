@@ -81,6 +81,8 @@ class MainSearchView(View, SearchMixin):
         first = None
         last = None
 
+        only_published = bool(not self.request.user.is_authenticated() or not self.request.user.is_staff)
+
         if entity == 'artist':
 
             artists_blocks, showing_results, num_pages, search_input = self.search(
@@ -98,7 +100,8 @@ class MainSearchView(View, SearchMixin):
                 Event, main_search,
                 page=page, order=order, date_from=date_from,
                 date_to=date_to, artist_pk=artist_pk, venue=venue,
-                instrument=instrument, artist_search=artist_search, leader=leader)
+                instrument=instrument, artist_search=artist_search, leader=leader,
+                only_published=only_published)
 
             context = {
                 'events': events[0] if events else [],
@@ -162,11 +165,14 @@ class SearchBarView(View):
         events = []
         event_results_per_page = 8
 
+        only_published = bool(not self.request.user.is_authenticated() or not self.request.user.is_staff)
+
         sqs = search.search_event(terms, instruments=instruments,
                                   all_sax_instruments=all_sax_instruments,
                                   first_name=first_name, last_name=last_name,
                                   partial_name=partial_name, artist_search=artist_search,
-                                  number_of_performers=number_of_performers)
+                                  number_of_performers=number_of_performers,
+                                  only_published=only_published)
 
         paginator = Paginator(sqs, event_results_per_page)
         events_results = paginator.count
@@ -252,9 +258,13 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
 
         # Populate upcoming shows as well.
         # We need them for the artist profile
+
+        only_published = bool(not self.request.user.is_authenticated() or not self.request.user.is_staff)
+
         upcoming_event_blocks, showing_event_results, upcoming_num_pages, first, last, search_input = self.search(
             Event, '', results_per_page=60,
-            artist_pk=artist_id, date_from=datetime.datetime.today(), search_input=search_input)
+            artist_pk=artist_id, date_from=datetime.datetime.today(), search_input=search_input,
+            only_published=only_published)
 
         artist_context['upcoming_events'] = upcoming_event_blocks[0] if upcoming_event_blocks else []
         artist_context['showing_artist_results'] = showing_artist_results
