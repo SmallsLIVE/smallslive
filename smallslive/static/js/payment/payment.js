@@ -34,6 +34,11 @@ function startStripePayment($form, action_url, completeSubpage) {
     $('<input type="hidden" name="event_id" />').val(eventId)
   );
 
+  var dedication = $mainContainer.find("#supporterSteps").data("dedication");
+  $form.append(
+    $('<input type="hidden" name="dedication" />').val(dedication)
+  );
+
   var eventSlug = $mainContainer.find("#supporterSteps").data("event-slug");
   $form.append(
     $('<input type="hidden" name="event_slug" />').val(eventSlug)
@@ -90,15 +95,23 @@ function startStripePayment($form, action_url, completeSubpage) {
       url: action_url,
       data: $form.serialize(),
       success: function(data) {
-        if (typeof completeSubpage !== "undefined" && completeSubpage) {
-          window.notCompleteContainer.html("");
-          var flowCompleteSubpage = window.subpages.get(completeSubpage);
-          flowCompleteSubpage.load();
+        if (data.error) {
+            var message = "Please contact support: " + data.message;
+            $("#general-error").text(message);
+            $("#general-error").removeClass("hidden");
         } else {
-          window.location = data.location;
+            if (typeof completeSubpage !== "undefined" && completeSubpage) {
+              window.notCompleteContainer.html("");
+              var flowCompleteSubpage = window.subpages.get(completeSubpage);
+              flowCompleteSubpage.load();
+            } else {
+              window.location = data.location;
+            }
         }
       },
-      error: function() {}
+      error: function(jqXHR, textStatus, errorThrown) {
+
+      }
     });
   } else {
     Stripe.card.createToken($form, stripeResponseHandler);
@@ -132,6 +145,11 @@ function startPayPalPayment($form, action_url, completeSubpage) {
       // Insert the token into the form so it gets submitted to the server
   $form.append(
     $('<input type="hidden" name="event_slug" />').val(eventSlug)
+  );
+
+  var dedication = $mainContainer.find("#supporterSteps").data("dedication");
+  $form.append(
+    $('<input type="hidden" name="dedication" />').val(dedication)
   );
 
   var artistId = $mainContainer.find("#supporterSteps").data("artist-id");

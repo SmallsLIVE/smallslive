@@ -3,7 +3,7 @@
     <article class="event-display"> {% include 'promotions/featured_card.html' with event=event secondary=secondary hide_play=True%}
       <div class="event-info">
         <div>
-          <div class="text-grey">{{ event.get_date|date:'m/d/Y' }}</div>
+          <div class="text-grey">{{ event.get_datec }}</div>
           <div class="event-info-title">{{ event.title }}</div>
           {% if show_event_venue %}
             <div class="{{ event.get_venue_name|lower}}-color">{{ event.get_venue_name }}</div>

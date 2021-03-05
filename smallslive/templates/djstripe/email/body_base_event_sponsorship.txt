@@ -1,0 +1,16 @@
+Dear SmallsLIVE Supporter:
+
+
+Thank you for contributing to the SmallsLIVE Foundation for Jazz Arts and Education.
+
+You have successfully sponsored the live concert of {{ musician }} on {{ event_date }}.
+Your sponsorship will be acknowledged as {{ dedication }} and will be included in our newsletter, website and announced on the live concert.
+You also have two seats available to you at the live show.
+
+This is a tax-deductible contribution and your tax letter is available to you in your accounts page.
+
+If you have any questions or concerns do not hesitate to contact us at foundation@smallslive.com and we will be glad to work with you on your sponsorship.  Please enjoy the music and we gratefully thank you for your support.
+
+
+
+The SmallsLIVE Foundation

@@ -47,6 +47,9 @@
           <div class="event-set-info">
             <div class="current-event event-title title1">{{ event.title }}</div>
             <div class="current-event event-title event-subtitle title5 accent-color">{{ event.subtitle }}</div>
+            {% if event.sponsorship %}
+              <div class="current-event event-title event-subtitle title5 accent-color">Sponsored By: {{ event.sponsorship.sponsored_event_dedication }}</div>
+            {% endif %}
             <div class="current-event event-title title2">{{ event.description|striptags|safe }}</div>
             {% if event.is_past %}
               <div class="{{ event.get_venue_name|lower}}-color title2 venue-subtitle">{{ event.get_venue_name }}</div>
@@ -136,6 +139,15 @@
                       </form>
                 {% endfor %}
               {% endif %}
+              {% if user.is_authenticated  %}
+                  {% if event.sponsorship_enabled and not event.sponsorship %}
+                  <button id="sponsor-concert-donation-btn"
+                          class="white-border-button text-center">Sponsor This Concert
+                  </button>
+                  {% endif %}
+              {% else %}
+                  <button onclick="$('#becomeMemberDialog').modal('show');" class="white-border-button text-center">Sponsor This Concert</button>
+              {% endif %}
             {% endif %}
           </div>
         </div>
@@ -222,6 +234,8 @@
     </div>
   </div>
   {% include 'subscriptions/popups/event_support_confirmation_dialog.html' %}
+  {% include 'subscriptions/popups/event_sponsorship_confirmation_dialog.html' %}
+
 {% endblock %}
 
 {% block extra_js %}
@@ -262,6 +276,31 @@
       if ($liveEvents.length) {
         $(".event-related-videos .live")[0].scrollIntoView(false);
       }
+
+      {% if event.sponsorship_enabled %}
+
+      $("#sponsor-concert-donation-btn").click(function (e) {
+        e.preventDefault();
+        var $dialog = $("#sponsorshipConfirmationDialog");
+        var leaderName = "{{ event.leader_string }}";
+        $("#leader-name").text(leaderName);
+        var sponsorshipDate = "{{ event.get_date }}";
+        $("#sponsorship-date").text(sponsorshipDate);
+        var eventId = "{{ event.id }}";
+        $("#confirmDonationButton").data("event-id", eventId);
+        var dedication = "{{ request.user.full_name }}";
+        $("#dedication").val(dedication);
+        var minDonation = "{{ event.minimum_sponsorship_amount }}";
+        $("#minimum-donation").text(minDonation);
+        $dialog.modal("show");
+      });
+
+      $(document).on("click", "#confirmSponsorshipButton", function () {
+        var dedication = $("#dedication").val();
+        window.location = "{% url 'event_sponsorship' %}?event_id={{ event.id }}" + "&dedication=" + dedication;
+      });
+
+      {% endif %}
 
     });
 

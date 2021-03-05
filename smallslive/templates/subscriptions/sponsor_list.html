@@ -1,0 +1,79 @@
+{% extends "subscriptions/supporter_list.html" %}
+{% load add_get_parameter %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block title %}Sponsor list{% endblock %}
+{% block subtitle %}
+<section class="page-heading container" style="width: 100%;">
+    <h1>Sponsor list:</h1>
+</section>
+{% endblock subtitle %}
+{% block search %}
+<section class="artists-list__search">
+    <form method="get" action="{% url 'sponsor_list' %}">
+        <span class="artists-list__search__heading">Search:</span>
+        {{ filter.form.name }}
+        <input class="" type="submit" value="Search">
+    </form>
+</section>
+<section class="artists-list__filters">
+    <form method="get" action="{% url 'sponsor_list' %}" id="supporter-form">
+        <input type="hidden" name="name" value="{{ request.GET.name }}">
+        <input type="hidden" name="o" id="sort_form_field" value="{{ request.GET.o }}">
+    </form>
+</section>
+<section class="artists-list__search">
+    <a class="white-border-button" href="{% url 'supporter_list_export' %}" target="_blank">
+        Export
+    </a>
+</section>
+{% endblock search %}
+{% block fields %}
+<section class="artists-list__list container" style="width: 100%;">
+    <div class="artists-list__list__header row">
+        <div class="col-xs-2 col-sm-2 sort-column" data-sort="email">
+            Email
+        </div>
+        <div class="hidden-xs col-sm-2 sort-column" data-sort="last_name">
+            Last Name<i class="fa fa-sort"></i>
+        </div>
+        <div class="hidden-xs col-sm-1 sort-column" data-sort="first_name">
+            First Name<i class="fa fa-sort"></i>
+        </div>
+        <div class="col-xs-3 col-sm-2">
+            Date<i class="fa fa-sort"></i>
+        </div>
+        <div class="col-xs-3 col-sm-2">
+            Amount<i class="fa fa-sort"></i>
+        </div>
+        <div class="col-xs-3 col-sm-2">
+            Event<i class="fa fa-sort"></i>
+        </div>
+    </div>
+    <ul>
+        {% for sponsor in sponsors %}
+            <li class="artists-list__list__row row">
+                <div class="col-xs-2 col-sm-2 artists-list__list__name">
+                    <span title="{{ supporter.email }}">{{ sponsor.user.email }}</span>
+                </div>
+                <div class="hidden-xs col-sm-2 artists-list__list__name">
+                    <span title="{{ supporter.last_name }}">{{ sponsor.user.last_name }}</span>
+                </div>
+                <div class="hidden-xs col-sm-1 artists-list__list__name">
+                    <span title="{{ supporter.last_name }}">{{ sponsor.user.first_name }}</span>
+                </div>
+                <div class="col-xs-3 col-sm-2 artists-list__list__name">
+                    <span>{{ sponsor.date }}</span>
+                </div>
+                <div class="col-xs-3 col-sm-2 artists-list__list__name">
+                    <span>${{ sponsor.amount }}</span>
+                </div>
+                <div class="col-xs-3 col-sm-1 artists-list__list__name">
+                    <a href="/events/{{ sponsor.sponsored_event.id }}-{{ sponsor.sponsored_event.slug }}">{{ sponsor.sponsored_event.title }}</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock fields %}

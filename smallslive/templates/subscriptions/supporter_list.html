@@ -10,9 +10,12 @@
 {% block content %}
 
     <div class="content-wrapper" style="border:none">
+        {% block subtitle %}
         <section class="page-heading container" style="width: 100%;">
             <h1>Supporter list:</h1>
         </section>
+        {% endblock subtitle %}
+        {% block search %}
         <section class="artists-list__search">
             <form method="get" action="{% url 'supporter_list' %}">
                 <span class="artists-list__search__heading">Search:</span>
@@ -31,6 +34,8 @@
                 Export
             </a>
         </section>
+        {% endblock search %}
+        {% block fields %}
         <section class="artists-list__list container" style="width: 100%;">
             <div class="artists-list__list__header row">
                 <div class="col-xs-4 col-sm-4 sort-column" data-sort="email">
@@ -71,6 +76,7 @@
                 {% endfor %}
             </ul>
         </section>
+        {% endblock fields %}
         <section class="page-pagination artists-list__pagination container">
           <p class="search-pagination-info">Showing results {{ page_obj.start_index }}-{{ page_obj.end_index }}
             of {{ paginator.count }}</p>

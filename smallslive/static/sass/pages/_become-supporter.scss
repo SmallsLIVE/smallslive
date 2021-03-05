@@ -215,6 +215,12 @@
     text-align: center;
   }
 
+  .supporter-text {
+    .text9 {
+        text-align: left;
+    }
+  }
+
   .step-button {
     margin-right: 20px;
     border-radius: 50%;
@@ -401,6 +407,10 @@
     font-weight: 600;
     transform: none;
     margin-right: -15px;
+  }
+
+  .text9 {
+    text-align: left;
   }
 }
 

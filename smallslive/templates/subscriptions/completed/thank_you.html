@@ -72,6 +72,23 @@
           <br>
           <span class='accent-color'>Your support benefits this artist and our mission.</span>
         </p>
+      {% elif flow_type == 'event_sponsorship' %}
+        <p tabindex="0" class="title7" style="margin-bottom: 40px;"><span class="big-letter">Y</span>
+          ou have successfully sponsored the live concert of {{ event.leader_string }} on {{ event.get_date }}.
+        </p>
+        <p class="text9">
+          Your sponsorship will be acknowledged as {{ dedication }} and will be included in our newsletter, website and announced on the live concert.
+          You also have two seats available to you at the live show.
+        </p>
+        <p class="text9">
+          This is a tax-deductible contribution and your tax letter is available to you in your accounts page.
+        </p>
+        <p class="text9">
+          If you have any questions or concerns do not hesitate to contact us at foundation@smallslive.com and we will be glad to work with you on your sponsorship.  Please enjoy the music and we gratefully thank you for your support.
+        </p>
+        <p class="text-center">
+          <span class='accent-color text9'>Your support benefits this artist and our mission.</span>
+        </p>
       {% elif flow_type == 'ticket_support' %}
         <p tabindex="0" class="title7"><span class="big-letter">S</span>
           ponsorship confirmed for <span class="{{ order.lines.first.product.event_set.event.get_venue_name|lower }}-color {{ order.lines.first.product.event_set.event.get_venue_name|lower }}-color--thankyou">

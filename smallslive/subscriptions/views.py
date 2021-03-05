@@ -1,5 +1,6 @@
 import csv
 import stripe
+import traceback
 from allauth.account.views import _ajax_response
 from braces.views import FormValidMessageMixin, LoginRequiredMixin, StaffuserRequiredMixin
 from django.conf import settings
@@ -26,7 +27,7 @@ from artists.models import Artist
 from events.models import Event
 from users.models import SmallsUser
 from users.utils import custom_send_receipt
-from .filters import SupporterFilter
+from .filters import SponsorFilter, SupporterFilter
 from .forms import ReactivateSubscriptionForm
 from .mixins import PayPalMixin, StripeMixin
 from .models import Donation
@@ -167,17 +168,31 @@ class ExecutePayPalPaymentView(PayPalMixin, View):
         # Check if payment id belongs to a Catalog donation -> product_id is set
         donation = Donation.objects.confirm_by_reference(payment_id)
 
+        flow_type = 'one_time'
         url = reverse('become_supporter_complete') + \
             '?payment_id={}'.format(payment_id)
         if donation.product_id:
-            url += '&flow_type=product_support&product_id=' + \
-                str(donation.product_id)
+            flow_type ='product_support'
+            url += '&flow_type={}&product_id={}'.format(flow_type, donation.product_id)
         if donation.event_id:
-            url += '&flow_type=event_support&event_id=' + \
-                str(donation.event_id)
+            flow_type = 'event_support'
+            url += '&flow_type={}&event_id={}'.format(flow_type, donation.event_id)
+        if donation.artist_id:
+            flow_type = 'artist_support'
+            url += '&flow_type={}&artist_id={}'.format(flow_type, donation.artist_id)
+        if donation.sponsored_event_dedication:
+            flow_type = 'event_sponsorship'
+            url += '&flow_type={}&event_id={}'.format(flow_type, donation.sponsored_event_id)
 
-        custom_send_receipt(receipt_type='one_time',
-                            amount=donation.amount, user=donation.user)
+        if flow_type == 'event_sponsorship':
+            custom_send_receipt(receipt_type=flow_type,
+                                amount=donation.amount, user=donation.user,
+                                dedication=donation.sponsored_event_dedication,
+                                musician=donation.sponsored_event.leader_string(),
+                                event_date=donation.sponsored_event.get_date())
+        else:
+            custom_send_receipt(receipt_type='one_time',
+                                amount=donation.amount, user=donation.user)
 
         return redirect(url)
 
@@ -194,7 +209,10 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         self.deductable_amount = None
         self.bitcoin = False
         self.check = False
+        self.event = None
         self.event_id = None
+        self.sponsored_event_id = None
+        self.sponsored_event_dedication = ''
         self.event_slug = None
         self.event_title = ''
         self.existing_cc = None
@@ -263,6 +281,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
             'comma_separated_artists': event.get_performer_strings()
         }
 
+        self.event = event
         self.event_id = event_id
         self.event_slug = slug
         self.event_title = title
@@ -286,9 +305,16 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         event = Event.objects.get(pk=event_id)
         title = event.title
         slug = event.slug
+        self.event = event
         self.event_id = event_id
         self.event_slug = slug
         self.event_title = title
+
+    def set_sponsorship(self):
+        if self.flow_type == 'event_sponsorship':
+            self.sponsored_event_id = self.event_id
+            self.sponsored_event_dedication = self.request.POST.get('dedication')
+            self.event_id = None
 
     def set_attributes(self):
 
@@ -323,7 +349,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         context['payment_info_url'] = reverse('payment_info')
         context['donation_preview_url'] = reverse('donation_preview')
         context['form_action'] = reverse('become_supporter')
-        context['flow_type'] = self.request.GET.get(
+        context['flow_type'] = self.flow_type or self.request.GET.get(
             'flow_type', "become_supporter")
         artist_context = self.get_artist_context()
         context.update(artist_context)
@@ -382,6 +408,8 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         if not (current_user.is_authenticated() and not current_user.has_activated_account):
             context['skip_intro'] = self.request.GET.get('skip_intro')
 
+        context['min_donation'] = 10
+
         return context
 
     def execute_bitcoin_payment(self):
@@ -428,35 +456,66 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
             'artist_id': self.artist_id,
             'product_id': self.product_id,
             'event_id': self.event_id,
+            'sponsored_event_id': self.sponsored_event_id,
+            'sponsored_event_dedication': self.sponsored_event_dedication,
         }
 
         return Donation.objects.create(**donation_data)
 
     def post(self, request, *args, **kwargs):
 
-        self.set_attributes()
-        self.set_artist()
-        self.set_product()
-        self.set_event()
-        self.set_billing_address()
+        try:
 
-        if self.existing_cc:
-            stripe_customer = self.request.user.customer.stripe_customer
-            self.stripe_token = stripe_customer.get('default_source')
+            self.set_attributes()
+            self.set_artist()
+            self.set_product()
+            self.set_event()
+            self.set_sponsorship()
+            self.set_billing_address()
 
-        if self.amount:
-            self.amount = int(self.amount)
+            if self.existing_cc:
+                stripe_customer = self.request.user.customer.stripe_customer
+                self.stripe_token = stripe_customer.get('default_source')
 
-        if self.stripe_token:
-            try:
-                # If no reference returned, then the user is subscribing to a plan
-                # Donation will come through the webhook instead.
-                reference = self.execute_stripe_payment()
-                if reference:
-                    self.create_donation(payment_source='Stripe Foundation',
-                                         reference=reference)
-                url = reverse('become_supporter_complete') + \
-                    "?flow_type=" + self.flow_type
+            if self.amount:
+                self.amount = int(self.amount)
+
+            if self.stripe_token:
+                try:
+                    # If no reference returned, then the user is subscribing to a plan
+                    # Donation will come through the webhook instead.
+                    reference = self.execute_stripe_payment()
+                    if reference:
+                        self.create_donation(payment_source='Stripe Foundation',
+                                             reference=reference)
+                    url = reverse('become_supporter_complete') + \
+                        "?flow_type=" + self.flow_type
+                    if self.product_id:
+                        url += '&product_id=' + self.product_id
+                    if self.event_id:
+                        url += '&event_id=' + self.event_id
+                        url += '&event_slug=' + self.event_slug
+                    if self.sponsored_event_id:
+                        url += '&sponsored_event_id=' + self.sponsored_event_id
+                        url += '&event_slug=' + self.event_slug
+                        url += '&dedication=' + self.sponsored_event_dedication
+                    if self.artist_id:
+                        url += '&artist_id=' + self.artist_id
+
+                    return _ajax_response(
+                        self.request, redirect(url)
+                    )
+                except stripe.StripeError as e:
+                    # add form error here
+                    print traceback.format_exc()
+                    return JsonResponse({'error': str(e)})
+                except Exception as e:
+                    print traceback.format_exc()
+                    return JsonResponse({'error': str(e)})
+            elif self.bitcoin:
+                self.execute_bitcoin_payment()
+                url = reverse('supporter_pending') + \
+                    "?pending_payment_type=bitcoin"
                 if self.product_id:
                     url += '&product_id=' + self.product_id
                 if self.event_id:
@@ -468,61 +527,45 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                 return _ajax_response(
                     self.request, redirect(url)
                 )
-            except stripe.StripeError as e:
-                # add form error here
-                print e
-                return JsonResponse({'error': str(e)})
-        elif self.bitcoin:
-            self.execute_bitcoin_payment()
-            url = reverse('supporter_pending') + \
-                "?pending_payment_type=bitcoin"
-            if self.product_id:
-                url += '&product_id=' + self.product_id
-            if self.event_id:
-                url += '&event_id=' + self.event_id
-                url += '&event_slug=' + self.event_slug
-            if self.artist_id:
-                url += '&artist_id=' + self.artist_id
+            elif self.check:
+                self.execute_check_payment()
+                url = reverse('supporter_pending') + \
+                    "?pending_payment_type=check"
+                if self.product_id:
+                    url += '&product_id=' + self.product_id
+                if self.event_id:
+                    url += '&event_id=' + self.event_id
+                    url += '&event_slug=' + self.event_slug
 
-            return _ajax_response(
-                self.request, redirect(url)
-            )
-        elif self.check:
-            self.execute_check_payment()
-            url = reverse('supporter_pending') + \
-                "?pending_payment_type=check"
-            if self.product_id:
-                url += '&product_id=' + self.product_id
-            if self.event_id:
-                url += '&event_id=' + self.event_id
-                url += '&event_slug=' + self.event_slug
-
-            return _ajax_response(
-                self.request, redirect(url)
-            )
-        else:
-            try:
-                payment_execute_url = self.request.build_absolute_uri(
-                    reverse('supporter_paypal_execute'))
-                payment_cancel_url = self.request.build_absolute_uri(
-                    reverse('become_supporter'))
-                item = {
-                    'name': 'One Time Donation',
-                    'price': self.amount,
-                    "sku": "N/A",
-                    'currency': 'USD',
-                    'quantity': 1}
-                item_list = []
-                self.handle_paypal_payment(
-                    'USD', item_list,
-                    donation=True,
-                    execute_uri=payment_execute_url,
-                    cancel_uri=payment_cancel_url
+                return _ajax_response(
+                    self.request, redirect(url)
                 )
-            except RedirectRequiredAjax as e:
-                self.create_donation(payment_source='PayPal Foundation',
-                                     reference=e.reference, confirmed=False)
-                return JsonResponse({'payment_url': e.url})
+            else:
+                try:
+                    payment_execute_url = self.request.build_absolute_uri(
+                        reverse('supporter_paypal_execute'))
+                    payment_cancel_url = self.request.build_absolute_uri(
+                        reverse('become_supporter'))
+                    item = {
+                        'name': 'One Time Donation',
+                        'price': self.amount,
+                        "sku": "N/A",
+                        'currency': 'USD',
+                        'quantity': 1}
+                    item_list = []
+                    self.handle_paypal_payment(
+                        'USD', item_list,
+                        donation=True,
+                        execute_uri=payment_execute_url,
+                        cancel_uri=payment_cancel_url
+                    )
+                except RedirectRequiredAjax as e:
+                    self.create_donation(payment_source='PayPal Foundation',
+                                         reference=e.reference, confirmed=False)
+                    return JsonResponse({'payment_url': e.url})
+        except Exception as e:
+            message = str(e)
+            return JsonResponse({'error': True, 'message': message})
 
 
 become_supporter = BecomeSupporterView.as_view()
@@ -608,6 +651,12 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
 
         context['file_product'] = file_product
 
+        sponsored_event_id = self.request.GET.get('sponsored_event_id')
+        if sponsored_event_id:
+            event = Event.objects.get(pk=sponsored_event_id)
+            context['event'] = event
+            context['dedication'] = event.sponsorship.sponsored_event_dedication
+
         return context
 
 
@@ -685,6 +734,27 @@ class EventSupportView(BecomeSupporterView):
 
 
 event_support = EventSupportView.as_view()
+
+
+class EventSponsorshipView(BecomeSupporterView):
+
+    template_name = 'subscriptions/event-sponsorship.html'
+
+    def get_context_data(self, **kwargs):
+
+        context = super(EventSponsorshipView, self).get_context_data(**kwargs)
+        context['flow_type'] = 'event_sponsorship'
+        context['dedication'] = self.request.GET.get('dedication')
+        context['payment_info_url'] = reverse('payment_info')
+        context['donation_preview_url'] = reverse('donation_preview')
+        context['product_id'] = self.product_id
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['min_donation'] = context['event'].minimum_sponsorship_amount
+
+        return context
+
+
+event_sponsorship = EventSponsorshipView.as_view()
 
 
 class ProductSupportView(ProductMixin, BecomeSupporterView):
@@ -870,6 +940,47 @@ class SupporterFilterView(StaffuserRequiredMixin, SupporterFilterQueryMixin, Fil
 
 
 supporter_list = SupporterFilterView.as_view()
+
+
+class SponsorFilterQueryMixin(object):
+
+    def get_queryset(self):
+
+        order_by = self.request.GET.get('o', 'date')
+
+        return Donation.objects.filter(
+            confirmed=True,
+            sponsored_event__isnull=False
+        ).select_related('user', 'event').order_by(order_by)
+
+
+class SponsorFilterView(StaffuserRequiredMixin, SponsorFilterQueryMixin, FilterView):
+    context_object_name = 'sponsors'
+    filterset_class = SponsorFilter
+    paginate_by = 30
+    template_name = 'subscriptions/sponsor_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SponsorFilterView, self).get_context_data(**kwargs)
+        paginator = context['paginator']
+        page = paginator.page(self.request.GET.get('page', 1))
+        adjacent_pages = 2
+        start_page = max(page.number - adjacent_pages, 1)
+        if start_page <= 3:
+            start_page = 1
+        end_page = page.number + adjacent_pages + 1
+        if end_page >= paginator.num_pages - 1:
+            end_page = paginator.num_pages + 1
+        page_numbers = [n for n in xrange(start_page, end_page) if n > 0 and n <= paginator.num_pages]
+        context.update({
+            'page_numbers': page_numbers,
+            'show_first': 1 not in page_numbers,
+            'show_last': paginator.num_pages not in page_numbers,
+        })
+
+        return context
+
+sponsor_list = SponsorFilterView.as_view()
 
 
 class Echo:

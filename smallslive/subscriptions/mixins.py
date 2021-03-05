@@ -149,8 +149,19 @@ class StripeMixin(object):
             subscribe_to_plan(customer, self.stripe_token,
                               self.amount, self.plan_type, self.flow_type)
         else:
+            dedication = ''
+            event_date = None
+            musician = ''
+            donation_type = 'one_time'
+            if self.flow_type == 'event_sponsorship':
+                dedication = self.sponsored_event_dedication
+                musician = self.event.leader_string()
+                event_date = self.event.get_date()
+                donation_type = 'event_sponsorship'
+
             stripe_ref = one_time_donation(
-                customer, self.stripe_token, self.amount)
+                customer, self.stripe_token, self.amount, donation_type=donation_type,
+                dedication=dedication, event_date=event_date, musician=musician)
             if self.product_id:
                 # We need to record the product id if donation comes from the Catalog.
                 pass

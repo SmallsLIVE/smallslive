@@ -1,0 +1,57 @@
+{% load static from staticfiles %}
+{% load full_static %}
+{% load djstripe_tags %}
+{% load reviews_tags %}
+{% load thumbnail %}
+{% load i18n %}
+{% load display_tags %}
+{% load staticfiles %}
+{% load purchase_info_tags %}
+{% load currency_filters %}
+{% load thumbor_tags %}
+{% load basket_tags %}
+
+<div class="modal fade" id="sponsorshipConfirmationDialog" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content custom-modal">
+      <a href="#" class="close-button"></a>
+      <div class="modal-body">
+        <p class="title2 accent-color title">Sponsorship Donation</p>
+        <!--
+          <p class="title-big subtitle"></p>
+        //-->
+
+        <p class="text9 justified-text text">
+          You have chosen to sponsor the live show of <span id="leader-name"></span> on <span id="sponsorship-date"></span>.
+          This is a tax deductible donation to the SmallsLIVE Foundation.
+        </p>
+        <p class="text9 justified-text text">
+          The minimum donation amount is $<span id="minimum-donation"></span>, all of which is paid to the musicians on this show.
+          You may choose to donate more. Anything donated over the minimum is divided by the musicians and the foundation.
+        </p>
+        <p class="text9 justified-text text">
+          Your name or dedication will be included on our site, in our newsletter and announced at the live concert.
+          You may also choose to make this sponsorship anonymously.
+        </p>
+
+        <div class="text9" style="width: 100%">
+          <label>Your dedication (leave blank for an anonymous donation):</label>
+          <form style="width: 100%">
+            <input id="dedication" type="text" class="store__form__input" style="width: 100%">
+          </form>
+        </div>
+
+        <p class="text9 text">
+          If you prefer to sponsor a band with a check or transfer, please contact us directly, foundation@smallslive.com
+        </p>
+
+        <div class="text4 text-centered" style="display: flex; justify-content: center;">
+          <button class="white-border-button cancel-button" style="margin-left: 5px;">Cancel</button>
+          <button id="confirmSponsorshipButton"
+                  class="white-border-button confirm"
+                  style="margin-left: 5px;">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

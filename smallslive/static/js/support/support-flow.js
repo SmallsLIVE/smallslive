@@ -68,7 +68,7 @@ var getSteps = function() {
     } else {
       steps = ["SelectType", "Preview", "ThankYou"];
     }
-  } else if (selectedData.flow == "event_support" || selectedData.flow == "donate_direct") {
+  } else if (selectedData.flow == "event_support" || selectedData.flow == "event_sponsorship" || selectedData.flow == "donate_direct") {
     steps = ["SelectType", "Preview", "ThankYou"];
   } else if (selectedData.flow == "ticket_support") {
     steps = ["Basket", "Billing", "Preview", "ThankYou"]
@@ -808,6 +808,12 @@ $(document).ready(function() {
     $monthlyCustom = $mainContainer.find("#monthlyCustom");
     $yearlyCustom = $(this);
     var value = $yearlyCustom.val();
+    var min = $yearlyCustom.data("min-donation");
+    if (!min) {
+        min = 10;
+    } else {
+        min = parseInt(min);
+    }
     var $minErrorLabel = $(this).closest(".button-row").find("label.accent-color.min");
     var $maxErrorLabel = $(this).closest(".button-row").find("label.accent-color.max");
     var $minLabel = $(this).parent().find("label");
@@ -820,7 +826,7 @@ $(document).ready(function() {
       setSelected(selectedData.flow, "year", value);
       $yearlyCustom.addClass("active");
       $monthlyCustom.removeClass("active");
-      if (value >= 10) {
+      if (value >= min) {
         if (!$minErrorLabel.hasClass("hidden")) {
           $minErrorLabel.addClass("hidden");
         }
@@ -1206,12 +1212,18 @@ $(document).ready(function() {
 
   $(document).on("click", "#confirmButton", function(event) {
 
+    var min = $(this).data("min-donation");
+    if (min) {
+        min = parseInt(min);
+    } else {
+        min = 10;
+    }
     if (currentStep === "SelectType") {
       // We're combining CC info and payment for One Time Donations
       var amount = selectedData.amount;
       var donationType = selectedData.type;
-      if (amount < 10 && donationType != "store_physical" && donationType != "store_digital") {
-        alert('Please enter amount greater than 10');
+      if (amount < min && donationType != "store_physical" && donationType != "store_digital") {
+        alert('Please enter amount greater than $' + min);
         return;
       }
     }
@@ -1268,7 +1280,8 @@ $(document).ready(function() {
     if (currentStep == "SelectType" &&
         (window.location.href.indexOf("event-support") > -1 ||
           window.location.href.indexOf("artist-support") > -1 ||
-            window.location.href.indexOf("product-support") > -1)) {
+            window.location.href.indexOf("product-support") > -1 ||
+              window.location.href.indexOf("event-sponsorship") > -1)) {
       window.history.back();
       return;
     }

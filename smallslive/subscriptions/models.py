@@ -154,6 +154,9 @@ class Donation(models.Model):
                               related_name='donations')
     event = models.ForeignKey(Event, blank=True, null=True,
                               related_name='donations')
+    sponsored_event = models.OneToOneField(Event, blank=True, null=True,
+                                           related_name='sponsorship')
+    sponsored_event_dedication = models.TextField(default='')
     # We're having a $10 minimum donation instead of $100 for the whole year
     # We'll need to accrue donations as archive access in days.
     # Each donation will extend the archive access expiry date.

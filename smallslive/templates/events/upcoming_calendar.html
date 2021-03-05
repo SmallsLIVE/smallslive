@@ -41,6 +41,8 @@
 
 </section>
 
+{% include 'subscriptions/popups/event_sponsorship_confirmation_dialog.html' %}
+
 <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
 <script>
 
@@ -179,6 +181,28 @@
     venue = $(this).find("option:selected").val();
     nextDate = startDate;
     getCalendarAjax(12, true);
+  });
+
+  $(".sponsor-concert-donation-btn").click(function (e) {
+    e.preventDefault();
+    var $dialog = $("#sponsorshipConfirmationDialog");
+    var leaderName = $(this).data("leader-name");
+    $("#leader-name").text(leaderName);
+    var sponsorshipDate = $(this).data("sponsorship-date");
+    $("#sponsorship-date").text(sponsorshipDate);
+    var eventId = $(this).data("event-id");
+    $("#confirmSponsorshipButton").data("event-id", eventId);
+    var dedication = "{{ request.user.full_name }}";
+    $("#dedication").val(dedication);
+    var minDonation = $(this).data("min-donation");
+    $("#minimum-donation").text(minDonation);
+    $dialog.modal("show");
+  });
+
+  $(document).on("click", "#confirmSponsorshipButton", function () {
+    var eventId = $(this).data("event-id");
+    var dedication = $("#dedication").val();
+    window.location = "{% url 'event_sponsorship' %}?event_id=" + eventId + "&dedication=" + dedication;
   });
 
 </script>

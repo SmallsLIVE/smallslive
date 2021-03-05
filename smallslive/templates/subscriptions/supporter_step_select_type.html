@@ -1,4 +1,4 @@
-{% if not flow_type == 'update_pledge' %}
+{% if not flow_type == 'update_pledge' and not flow_type == 'event_sponsorship' %}
   <div id="select-type-row" class="row" style="margin-top: 20px;">
     <div class="button-row button-row-margin supporter-type-select">
       <div class="store__form__selection__option">
@@ -78,14 +78,14 @@
       <div class="flex-column">
         <div class="flex-row custom-out">
           <div class="custom-input text4">
-            <input type="number" min="10" step="1" class="no-spinners transparent" id="yearlyCustom" max="99999" value="supporter-yearly-pledge">
-            <label><div>ENTER YOUR PLEDGE<br>(MIN  $10)</div></label>
+            <input type="number" data-min-donation="{{ min_donation }}" min="{{ min_donation }}" step="1" class="no-spinners transparent" id="yearlyCustom" max="99999" value="supporter-yearly-pledge">
+            <label><div>ENTER YOUR PLEDGE<br>(MIN  ${{ min_donation }})</div></label>
             <div id="yearly-less" class="text9 accent-color minimum-error"></div>
           </div>
         </div>
       </div>
       <label class="hidden accent-color min">
-        $10 is the minimum donation
+        ${{ min_donation }} is the minimum donation
       </label>
       <label class="hidden accent-color max">
         If you’d like to make a donation of $100,000 or greater, please contact us directly.

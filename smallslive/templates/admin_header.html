@@ -25,7 +25,13 @@
                     <li><a href="{% url 'institution_add' %}">Add institution</a></li>
                   </ul>
                 </li>
-                <li><a href="{% url 'supporter_list' %}">Supporter list</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Supporters <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'supporter_list' %}">Supporter list</a></li>
+                    <li><a href="{% url 'sponsor_list' %}">Sponsors list</a></li>
+                  </ul>
+                </li>
                 <li><a href="{% url 'dashboard:index' %}">Store dashboard</a></li>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Metrics admin <span class="caret"></span></a>

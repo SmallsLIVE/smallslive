@@ -167,16 +167,18 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
             assert email_address
 
 
-def one_time_donation(customer, stripe_token, amount):
+def one_time_donation(customer, stripe_token, amount, donation_type='one_time',
+                      dedication='', musician='', event_date=''):
 
     customer.update_card(stripe_token)
     charge_object = charge(customer, amount, send_receipt=False)
     custom_receipt = {
         'customer': customer,
         'amount': amount,
-        'type': 'one_time',
+        'type': donation_type,
     }
-    custom_send_receipt(receipt_info=custom_receipt)
+    custom_send_receipt(receipt_info=custom_receipt, dedication=dedication,
+                        musician=musician, event_date=event_date, user=customer.subscriber)
 
     return charge_object.stripe_id
 
@@ -247,7 +249,8 @@ def charge(customer, amount, currency='USD', description='',
 
 
 def custom_send_receipt(receipt_info={},
-                        receipt_type=None, user=None, amount=None):
+                        receipt_type=None, user=None, amount=None,
+                        dedication=None, musician=None, event_date=None):
 
     site = Site.objects.get_current()
     protocol = getattr(settings, 'DEFAULT_HTTP_PROTOCOL', 'http')
@@ -276,11 +279,25 @@ def custom_send_receipt(receipt_info={},
         message = render_to_string('djstripe/email/body_base_onetime.txt', ctx)
     elif receipt_type == 'gift':
         pass
+    elif receipt_type == 'event_sponsorship':
+        ctx = {
+            'dedication': dedication,
+            'musician': musician,
+            'event_date': event_date.strftime('%-m/%-d/%y'),
+            'user': user,
+            'site': site,
+            'protocol': protocol,
+        }
+        subject = render_to_string('djstripe/email/subject.txt', ctx)
+        message = render_to_string('djstripe/email/body_base_event_sponsorship.txt', ctx)
+
+    email_to = [user.email]
     subject = subject.strip()
     num_sent = EmailMessage(
         subject,
         message,
-        to=[user.email],
+        to=email_to,
+        bcc=['foundation@smallslive.com'],
         from_email=INVOICE_FROM_EMAIL).send()
 
     if receipt_info.get('customer'):

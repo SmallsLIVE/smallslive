@@ -388,6 +388,9 @@ class Event(TimeStampedModel):
     start_streaming_before_minutes = models.IntegerField(default=15)
     #not_yet_streaming_message = models.TextField(
     #    default='Streaming for this event will be available 15 minutes before it begins')
+    # minimum amount to sponsor
+    minimum_sponsorship_amount = models.IntegerField(default=600)
+    sponsorship_enabled = models.BooleanField(default=False)
 
     objects = EventQuerySet.as_manager()
 
