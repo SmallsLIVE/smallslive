@@ -349,8 +349,8 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         context['payment_info_url'] = reverse('payment_info')
         context['donation_preview_url'] = reverse('donation_preview')
         context['form_action'] = reverse('become_supporter')
-        context['flow_type'] = self.flow_type or self.request.GET.get(
-            'flow_type', "become_supporter")
+        context['flow_type'] = self.request.POST.get('flow_type') or self.request.GET.get(
+            'flow_type', 'become_supporter')
         artist_context = self.get_artist_context()
         context.update(artist_context)
         product_context = self.get_product_context()
