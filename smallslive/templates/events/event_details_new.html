@@ -145,7 +145,7 @@
                           class="white-border-button text-center">Sponsor This Concert
                   </button>
                   {% endif %}
-              {% else %}
+              {% elif event.sponsorship_enabled %}
                   <button onclick="$('#becomeMemberDialog').modal('show');" class="white-border-button text-center">Sponsor This Concert</button>
               {% endif %}
             {% endif %}
