@@ -44,7 +44,7 @@
 {% endblock %}
 
 {% block flow_title %}
-  <p class="text2 accent-color">You are Sponsoring {{ full_name }}</p>
+  <p class="text2 accent-color">You are Supporting {{ full_name }}</p>
 {% endblock %}
 
 {% block flow_steps %}
@@ -60,15 +60,10 @@
   </div>
   {% if not completed %}
     <div id="supporterStepSelectType" class="supporter-step">
-      <p class="text9" style="padding: 0 10%">This is a 100% tax-deductable donation to the SmallsLIVE Foundation.
+      <p class="text9" style="padding: 0 10%">This is a 100% tax-deductible donation to the SmallsLIVE Foundation.
         Your donation will be given to {{ full_name }}.
       </p>
-      <div class="text9">
-        Please choose one of the following:
-      </div>
-
-      {% include 'subscriptions/supporter_step_select_type.html' %}
-      {% include 'subscriptions/supporter_gift_selection.html' with hidden=True no_description=True %}
+      {% include 'subscriptions/supporter_step_select_type.html' with no_description=True only_one_time=True %}
     </div>
 
     <div id="supporterStepShipping"

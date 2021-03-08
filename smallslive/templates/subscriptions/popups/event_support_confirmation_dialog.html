@@ -16,16 +16,13 @@
     <div class="modal-content custom-modal">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
-        <p class="title2 accent-color title">Sponsorship Donation</p>
+        <p class="title2 accent-color title">Gratuity</p>
         <!--
           <p class="title-big subtitle"></p>
         //-->
           <p class="text9 justified-text text">
-            Sponsorships are tax-deductable donations that directly support the musicians in this band. You are sponsoring
-            {{ comma_separated_artists }}.
-
-
-
+            Gratuities are tax-deductible donations that are applied directly to the musicians on this show.
+            This is for {{ event.title }} show on {{ event.get_date|date:"n/j/Y" }} with the following musicians: {{ comma_separated_artists }}.
           </p>
           <p class="gift-content"></p>
         <div class="text4 text-centered" style="display: flex; justify-content: center;">

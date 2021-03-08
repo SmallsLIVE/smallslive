@@ -70,7 +70,8 @@
         making a tax deductible donation
         {% endif %}
         to the SmallsLIVE Foundation for Jazz Arts and Education.<br>
-        {% if not flow_type = 'update_pledge' %}All tax information is available from your account settings. {% endif %}Please choose one of the following:
+        {% if not flow_type = 'update_pledge' %}All tax information is available from your account settings. {% endif %}
+        {% if not flow_type = 'update_pledge' %}Please choose one of the following:{% endif %}
       </div>
       {% include 'subscriptions/supporter_step_select_type.html' %}
       {% if not flow_type = "update_pledge" %}

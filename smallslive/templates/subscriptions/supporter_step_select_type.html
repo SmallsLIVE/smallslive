@@ -1,4 +1,4 @@
-{% if not flow_type == 'update_pledge' and not flow_type == 'event_sponsorship' %}
+{% if not flow_type == 'update_pledge' and not flow_type == 'event_sponsorship' and not only_one_time %}
   <div id="select-type-row" class="row" style="margin-top: 20px;">
     <div class="button-row button-row-margin supporter-type-select">
       <div class="store__form__selection__option">
@@ -35,8 +35,11 @@
   <div class="section-title section-title-no-padded">
     <div tabindex="0" class="title1">One Time Donation</div>
   </div>
-  <p tabindex="0" class="text9">This is a one time, 100% tax deductible donation to The SmallsLIVE Foundation. All donations grant access to the SmallsLIVE Archive.<br>
-    If you would like to customize your donation please contact us at foundation@smallslive.com</p>
+  {% if not no_description %}
+    <p tabindex="0" class="text9">This is a one time, 100% tax deductible donation to The SmallsLIVE Foundation. All donations grant access to the SmallsLIVE Archive.<br>
+      If you would like to customize your donation please contact us at foundation@smallslive.com
+    </p>
+  {% endif %}
 </div>
 
 <div class="flex-column items-center monthly-input supporter-plan-input{% if not flow_type == 'update_pledge' %} hidden{% endif %}">

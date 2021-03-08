@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block flow_title %}
-  <p class="text2 accent-color">You are sponsoring
+  <p class="text2 accent-color">You are supporting
 
     {{ comma_separated_leaders }}
 
@@ -47,7 +47,7 @@
       Please choose one of the following:
     </div>
 
-    {% include 'subscriptions/supporter_step_select_type.html' %}
+    {% include 'subscriptions/supporter_step_select_type.html' with no_description=True %}
     {% include 'subscriptions/catalog_gift_selection.html' with hidden=False %}
   </div>
 

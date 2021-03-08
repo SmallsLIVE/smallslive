@@ -44,7 +44,7 @@
 {% endblock %}
 
 {% block flow_title %}
-  <p class="text2 accent-color">You are Sponsoring "{{ event.title }}" {{ event.get_date|date:'m/d/Y' }}</p>
+  <p class="text2 accent-color">You are Supporting "{{ event.title }}" {{ event.get_date|date:'n/j/Y' }}</p>
 {% endblock %}
 
 {% block flow_steps %}
@@ -62,15 +62,12 @@
   {% if not completed %}
 
     <div id="supporterStepSelectType" class="supporter-step">
-      <p class="text9" style="padding: 0 10%">This is a 100% tax-deductible donation to the SmallsLIVE Foundation.
-        Your donation will be given to the following musicians:
-        {{ comma_separated_artists }}.
+      <p class="text9" style="padding: 0 10%">
+        This one-time donation is 100% tax-deductible and will awarded to the following musicians: {{ comma_separated_artists }}.
+        All donations grant access to our SmallsLIVE Archive.
+        Tax letters are available in your accounts page. For a customized donation, please contact us at foundation@smallslive.com
       </p>
-      <div class="text9">
-        Please choose one of the following:
-      </div>
-      {% include 'subscriptions/supporter_step_select_type.html' %}
-      {% include 'subscriptions/supporter_gift_selection.html' with hidden=True no_description=True %}
+      {% include 'subscriptions/supporter_step_select_type.html' with no_description=True only_one_time=True %}
     </div>
 
     <div id="supporterStepShipping"
