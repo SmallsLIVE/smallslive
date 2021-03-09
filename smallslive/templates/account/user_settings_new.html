@@ -75,7 +75,7 @@
         <div class="title5 account-settings-title text-bottom-line">Supporter settings</div>
         <div class="account-settings-info">
           <div class="text5">Current Pledge</div>
-          {% if customer_detail.subscription.plan and not cancelled %}
+          {% if customer_detail.subscription and customer_detail.subscription.plan and not cancelled %}
             <div class="text9 accent-color">${{ monthly_pledge_in_dollars }}/{{ customer_detail.subscription.plan.interval }}</div>
           {% elif plan and plan.active and plan.interval and plan.interval == 'month' and not cancelled %}
             <div class="text9 accent-color">${{ plan.amount }}/{{ plan.interval }}</div>
