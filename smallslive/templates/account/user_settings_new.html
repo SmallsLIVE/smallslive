@@ -76,11 +76,11 @@
         <div class="account-settings-info">
           <div class="text5">Current Pledge</div>
           {% if customer_detail.subscription and customer_detail.subscription.plan and not cancelled %}
-            <div class="text9 accent-color">${{ monthly_pledge_in_dollars }}/{{ customer_detail.subscription.plan.interval }}</div>
+            <div class="text9 accent-color" data-number="1">${{ monthly_pledge_in_dollars }}/{{ customer_detail.subscription.plan.interval }}</div>
           {% elif plan and plan.active and plan.interval and plan.interval == 'month' and not cancelled %}
-            <div class="text9 accent-color">${{ plan.amount }}/{{ plan.interval }}</div>
+            <div class="text9 accent-color" data-number="2">${{ plan.amount }}/{{ plan.interval }}</div>
           {% elif plan and plan.active and plan.interval and plan.interval == 'year' and not cancelled %}
-            <div class="text9 accent-color">${{ plan.amount }}/{{ plan.interval }}</div>
+            <div class="text9 accent-color" data-number="3">${{ plan.amount }}/{{ plan.interval }}</div>
           {% else %}
             <div class="text9 accent-color">{% if cancelled %}Subscription canceled{% else %}None{% endif %}</div>
           {% endif %}
