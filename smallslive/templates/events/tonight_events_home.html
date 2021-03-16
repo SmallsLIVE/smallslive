@@ -2,6 +2,7 @@
 
 <div class="event-row tonight-events upcoming-carousel owl-carousel owl-theme">
   {% for event in events %}
+    {% if not event.only_streamable %}
     <article class="event-display-today-and-tomorrow item {% if event.all_events_completed %}past{% endif %}">
       {% include 'events/tonight_event_card.html' with event=event secondary=secondary hide_play=True %}
       <div class="event-info" style="position: absolute;">
@@ -33,6 +34,12 @@
         {% endwith %}
       </div>
     </article>
+    {% endif %}
+    {% if event.only_streamable and event.is_live %}
+    <article>
+      <a href="{{ event.get_absolute_url }}" class="white-border-button" style="height: auto; width: fit-content">View Live Streaming</a>
+    </article>
+    {% endif %}
   {% endfor %}
   <!-- Placeholder empty articles so that the slider can be positioned anywhere -->
   <div class="placeholder item">

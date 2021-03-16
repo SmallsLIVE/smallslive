@@ -381,6 +381,8 @@ class Event(TimeStampedModel):
     # Otherwise it'd be impossible to resolve search queries.
     seconds_played = models.IntegerField(default=0)
     play_count = models.IntegerField(default=0)
+    # If enabled, event will be streamable but will not show up on Calendar or Home.
+    only_streamable = models.BooleanField(default=False)
     # Streaming info
     streamable = models.BooleanField(default=True)
     #not_streamable_message = models.TextField(

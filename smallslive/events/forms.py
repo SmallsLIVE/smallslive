@@ -153,6 +153,7 @@ class EventAddForm(forms.ModelForm):
             'venue', 'date', 'start', 'end', 'id', 'title', 'subtitle', 'photo',
             'image_id', 'cropping', 'description', 'state', 'staff_pick', 'streamable',
             'tickets_url', 'minimum_sponsorship_amount', 'sponsorship_enabled',
+            'only_streamable'
         )
         widgets = {
             'state': EventStatusWidget,
@@ -232,7 +233,7 @@ class EventEditForm(EventAddForm):
             'venue', 'title', 'subtitle', 'date', 'start', 'end',
             'start_streaming_before_minutes', 'photo', 'image_id', 'cropping',
             'description', 'state', 'staff_pick', 'streamable', 'tickets_url',
-            'minimum_sponsorship_amount', 'sponsorship_enabled',)
+            'minimum_sponsorship_amount', 'sponsorship_enabled', 'only_streamable')
 
 
 class EventSearchForm(SearchForm):
