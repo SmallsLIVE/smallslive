@@ -842,10 +842,13 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             self.add_payment_event('Purchase', total.incl_tax, reference=self.payment_id)
             # Set an ongoing donation, finished when payment is confirmed
             self.total_deductable = basket._get_deductable_physical_total()
-            venue = self.request.basket.get_tickets_venue()
+            event = self.request.basket.get_tickets_event()
+            if event:
+                venue = event.venue
 
-            #  Do not register a donation if the Venue is not part of the foundation.
-            if venue and not venue.foundation:
+            #  Do not register a donation if the Venue is not part of the foundation
+            #  or the event is not assigned to the foundation.
+            if event and venue and not venue.foundation and not event.is_foundation:
                 return
 
             # Anonymous donation or purchase
@@ -970,9 +973,9 @@ class ExecutePayPalPaymentView(AssignProductMixin,
 
         # request.basket doesn't work b/c the basket is frozen
         basket = self.get_submitted_basket()
-        venue = basket.get_tickets_venue()
+        event = basket.get_tickets_event()
 
-        self.payment_id = self.execute_payment(venue)
+        self.payment_id = self.execute_payment(event)
 
         # TODO: check that the strategy is correct for Tracks (right stock record).
         # If basket has tracks, it's probably to use custom strategy.

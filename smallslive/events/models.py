@@ -392,6 +392,10 @@ class Event(TimeStampedModel):
     minimum_sponsorship_amount = models.IntegerField(default=600)
     sponsorship_enabled = models.BooleanField(default=False)
 
+    # Events tickets can be assigned to the Foundation or the venue account
+    # Different Stripe or PayPal account will be selected for collect payments.
+    is_foundation = models.BooleanField(default=False)
+
     objects = EventQuerySet.as_manager()
 
     class Meta:

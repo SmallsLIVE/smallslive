@@ -8,10 +8,15 @@
     {% if not product.is_shipping_required %}
       {% purchase_info_for_line request line as session %}
         {{ form.id }}
+        {% with event=product.event_set.event %}
         <div class="row clearfix">
           <div class="col-xs-9 store-cart__table__cell ticket-info">
-            <div tabindex="0" class="{{ product.event_set.event.venue|lower }}-color">
-              Sponsorship seat
+            <div tabindex="0" class="{{ event.venue|lower }}-color">
+              {% if event.is_foundation %}
+                Sponsorship seat
+              {% else %}
+                Seat
+              {% endif %}
             </div>
           </div>
           <div class="col-xs-3 store-cart__table__cell ticket-pricing">
@@ -33,10 +38,10 @@
             </div>
           </div>
         </div>
-      {% endif %}
-    {% endwith %}
-    <!-- End of cart table row -->
-  {% endfor %}
+        {% endwith %}
+    {% endif %}
+  {% endwith %}<!-- End of cart table row -->
+{% endfor %}
   <!-- Cart table footer -->
   <div class="row clearfix">
     <div class="col-sm-12 store-cart__table__cell ticket-pricing store-cart__table__cell__sub-total">
