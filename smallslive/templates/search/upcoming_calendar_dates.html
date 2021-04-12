@@ -18,7 +18,7 @@
                                 data-sponsorship-date="{{ event.get_date }}"
                                 data-event-id="{{ event.pk }}">Sponsor This Concert</button>
                         {% endif %}
-                    {% elif event.sponsorship_enabled %}
+                    {% elif event.sponsorship_enabled and not event.sponsorship %}
                         <button onclick="$('#becomeMemberDialog').modal('show'); return false;" class="white-border-button text-center">Sponsor This Concert</button>
                     {% endif %}
                 </a>
