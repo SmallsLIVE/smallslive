@@ -7,19 +7,29 @@
    <div class="store-overview__group__table">
         {% for line in basket.digital_lines %}
         {% with product=line.product  %}
+        {% with event=product.event_set.event %}
         <!-- table row start -->
         <div class="store-overview__group__table__row clearfix">
             <div class="col-xs-9 details">
-                <div class="{{ product.event_set.event.venue|lower }}-color">
-                  Sponsorship seat
+                <div class="{{ event.venue|lower }}-color">
+                  {% if event.is_foundation %}
+                    Sponsorship seat
+                  {% else %}
+                    Seat
+                  {% endif %}
                 </div>
             </div>
             <div class="col-xs-3 details total">
                 <div>${{ line.price_excl_tax }}</div>
-                <div>{{ line.quantity }} {% if line.quantity > 1 %} SPONSOR seats {% else %} SPONSOR seat {% endif %}</div>
+                {% if event.is_foundation %}
+                  <div>{{ line.quantity }} {% if line.quantity > 1 %} SPONSOR seats {% else %} SPONSOR seat {% endif %}</div>
+                {% else %}
+                  <div>{{ line.quantity }} {% if line.quantity > 1 %} seats {% else %} seat {% endif %}</div>
+                {% endif %}
             </div>
         </div>
         <!-- end of table row -->
+        {% endwith %}
         {% endwith %}
         {% endfor %}
         <!-- group total -->
