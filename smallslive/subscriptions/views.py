@@ -617,25 +617,27 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
                     context['comma_separated_leaders'] = album_product.get_leader_strings()
                     context['album_product'] = album_product
 
-            if source.order:
+            if source and source.order:
                 prod = source.order.lines.first().product
                 if prod.misc_file:
                     file_product = prod.misc_file.url
                 context['order'] = source.order
-
             else:
                 source = Source.objects.filter(reference=payment_id).first()
                 if source and user.is_authenticated():
-                    # Create Donation
-                    donation = {
-                        'user': user,
-                        'order': source.order,
-                        'currency': source.currency,
-                        'amount': source.amount_allocated,
-                        'reference': payment_id,
-                        'confirmed': True,
-                    }
-                    Donation.objects.create(**donation)
+                    context['order'] = source.order
+                    event = source.order.get_tickets_event()
+                    if not event or event and event.is_foundation:
+                        # Create Donation
+                        donation = {
+                            'user': user,
+                            'order': source.order,
+                            'currency': source.currency,
+                            'amount': source.amount_allocated,
+                            'reference': payment_id,
+                            'confirmed': True,
+                        }
+                        Donation.objects.create(**donation)
         product_id = self.request.GET.get('product_id')
         if product_id:
             product = Product.objects.get(pk=product_id)
@@ -814,7 +816,8 @@ class TicketSupportView(BecomeSupporterView):
         context['payment_info_url'] = reverse('payment_info')
         context['donation_preview_url'] = reverse('donation_preview')
         event = self.get_event()
-        context['venue_name'] = event.get_venue_name()
+        if event:
+            context['venue_name'] = event.get_venue_name()
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['can_use_existing_cc'] = self.request.user.can_use_existing_cc and event.is_foundation
 

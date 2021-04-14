@@ -226,6 +226,10 @@ class SuccessfulOrderMixin(object):
         if self.card_token:
             payment_source = 'Stripe Foundation'
 
+        event = self.order.get_tickets_event()
+        if event:
+            self.tickets_type = event.venue.name.lower()
+
         if not self.tickets_type:
             Donation.objects.create_by_order(
                 self.order,
@@ -233,7 +237,6 @@ class SuccessfulOrderMixin(object):
                 artist_id=self.artist_id, event_id=self.event_id, product_id=self.product_id)
 
         if self.tickets_type:
-            event = self.order.get_tickets_event()
             if event and event.is_foundation:
                 payment_source = 'PayPal'
                 if self.card_token:
@@ -507,6 +510,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         """Customer can pay for Mezzrow or Smalls tickets with PayPal or Credit Card."""
 
         venue = self.request.basket.get_tickets_venue()
+        self.tickets_type = venue.name.lower()
         stripe_api_key = venue.get_stripe_secret_key
 
         form = PaymentForm(self.request.user, stripe_api_key, self.request.POST)

@@ -5,7 +5,7 @@
         {% if event.is_foundation %}
           <p class="title2 accent-color" tabindex="0">Sponsor Seats - SmallsLIVE Foundation</p>
         {% else %}
-          <p class="title2 accent-color" tabindex="0">Reservations for {{ event.get_venue_name }} jazz club </p>
+          <p class="title2 {{ event.get_venue_name|lower}}-color" tabindex="0">Reservations for {{ event.get_venue_name }} jazz club </p>
         {% endif %}
         <p class="title2" tabindex="0">{{ event.date | date:"D, M d" }} <span id="ticket-time"></span></p>
         <p id="ticket-name" class="title2" tabindex="0"></p>
