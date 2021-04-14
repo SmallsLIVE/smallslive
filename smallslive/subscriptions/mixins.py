@@ -59,8 +59,9 @@ class PayPalMixin(object):
 
         return data
 
-    def configure_paypal(self, venue=None):
-        if venue:
+    def configure_paypal(self, event=None):
+        if event and not event.is_foundation:
+            venue = event.venue
             client_id = venue.get_paypal_client_id
             client_secret = venue.get_paypal_client_secret
         else:
@@ -80,8 +81,8 @@ class PayPalMixin(object):
                               execute_uri=None,
                               cancel_uri=None):
 
-        venue = self.request.basket.get_tickets_venue()
-        self.configure_paypal(venue)
+        event = self.request.basket.get_tickets_event()
+        self.configure_paypal(event)
 
         payment_data = self.get_payment_data(item_list, currency, shipping_charge,
                                              execute_uri=execute_uri, cancel_uri=cancel_uri)
@@ -102,8 +103,8 @@ class PayPalMixin(object):
         else:
             raise UnableToTakePayment(payment.error)
 
-    def execute_payment(self, venue=None):
-        self.configure_paypal(venue)
+    def execute_payment(self, event=None):
+        self.configure_paypal(event)
         payment_id = self.request.GET.get('paymentId')
         payer_id = self.request.GET.get('PayerID')
         payment = paypalrestsdk.Payment.find(payment_id)
@@ -114,8 +115,8 @@ class PayPalMixin(object):
 
         return payment_id
 
-    def refund_paypal_payment(self, payment_id, total, currency, venue=None):
-        self.configure_paypal(venue)
+    def refund_paypal_payment(self, payment_id, total, currency, event=None):
+        self.configure_paypal(event)
         payment = paypalrestsdk.Payment.find(payment_id)
         sale_id = payment.transactions[0].related_resources[0].sale.id
         sale = paypalrestsdk.Sale.find(sale_id)
@@ -125,7 +126,6 @@ class PayPalMixin(object):
                 'currency': currency
             }
         }
-        print refund_data
         refund = sale.refund(refund_data)
         if refund.success():
             refund_id = refund.id
@@ -171,12 +171,13 @@ class StripeMixin(object):
     def handle_stripe_payment(self, order_number, basket_lines, **kwargs):
         if self.request.user.is_authenticated():
             customer = self.request.user.customer
-            print customer
         else:
             customer = None
         # Smalls tickets are accounted according to the venue's account.
-        venue = self.request.basket.get_tickets_venue()
-        if customer:
+        event = self.request.basket.get_tickets_event()
+        if event:
+            venue = event.venue
+        if customer and event and event.is_foundation:
             if not self.card_token.startswith('card_'):
                 customer.update_card(self.card_token)
             charge = customer.charge(
@@ -186,12 +187,26 @@ class StripeMixin(object):
             stripe_ref = charge.stripe_id
 
         else:
+            metadata = {
+                'isFoundation': True
+            }
+            if event:
+                if event.is_foundation:
+                    stripe_secret_key = settings.STRIPE_SECRET_KEY
+                else:
+                    stripe_secret_key = venue.get_stripe_secret_key
+                    metadata = {
+                        'isFoundation': False
+                    }
+            else:
+                stripe_secret_key = settings.STRIPE_SECRET_KEY
             resp = stripe.Charge.create(
-                api_key=venue.get_stripe_secret_key,
+                api_key=stripe_secret_key,
                 source=self.card_token,
                 amount=int(self.total.incl_tax * 100),  # Convert dollars into cents
                 currency=settings.STRIPE_CURRENCY,
                 description=self.payment_description(order_number, self.total.incl_tax, **kwargs),
+                metadata=metadata
             )
             stripe_ref = resp['id']
 
@@ -202,9 +217,9 @@ class StripeMixin(object):
 
         return stripe_ref
 
-    def refund_stripe_payment(self, charge_id, venue=None):
-        if venue:
-            api_key = venue.get_stripe_secret_key
+    def refund_stripe_payment(self, charge_id, event=None):
+        if event and not event.is_foundation:
+            api_key = event.venue.get_stripe_secret_key
         else:
             api_key = settings.STRIPE_SECRET_KEY
         charge = stripe.Charge.retrieve(api_key=api_key, id=charge_id)

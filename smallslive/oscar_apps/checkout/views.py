@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 import logging
-from paypal.payflow import facade
 from django import http
 from django.conf import settings
 from django.contrib import messages
@@ -21,6 +20,7 @@ from oscar.apps.payment.models import SourceType, Source
 from oscar.core.loading import get_class
 from oscar_apps.catalogue.models import UserCatalogue, UserCatalogueProduct
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
+from events.models import Event
 from subscriptions.mixins import PayPalMixin, StripeMixin
 from subscriptions.models import Donation
 from utils import utils as sl_utils
@@ -226,6 +226,10 @@ class SuccessfulOrderMixin(object):
         if self.card_token:
             payment_source = 'Stripe Foundation'
 
+        event = self.order.get_tickets_event()
+        if event:
+            self.tickets_type = event.venue.name.lower()
+
         if not self.tickets_type:
             Donation.objects.create_by_order(
                 self.order,
@@ -233,6 +237,15 @@ class SuccessfulOrderMixin(object):
                 artist_id=self.artist_id, event_id=self.event_id, product_id=self.product_id)
 
         if self.tickets_type:
+            if event and event.is_foundation:
+                payment_source = 'PayPal'
+                if self.card_token:
+                    payment_source = 'Stripe'
+                Donation.objects.create_by_order(
+                    self.order,
+                    payment_source,
+                    artist_id=self.artist_id, event_id=self.event_id, product_id=self.product_id)
+
             # Set status to completed for lines if it's a ticket.
             # 'create_lines_models' method is not passed the order status unfortunately.
             lines = self.order.lines.all()
@@ -497,6 +510,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         """Customer can pay for Mezzrow or Smalls tickets with PayPal or Credit Card."""
 
         venue = self.request.basket.get_tickets_venue()
+        self.tickets_type = venue.name.lower()
         stripe_api_key = venue.get_stripe_secret_key
 
         form = PaymentForm(self.request.user, stripe_api_key, self.request.POST)
@@ -842,10 +856,13 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             self.add_payment_event('Purchase', total.incl_tax, reference=self.payment_id)
             # Set an ongoing donation, finished when payment is confirmed
             self.total_deductable = basket._get_deductable_physical_total()
-            venue = self.request.basket.get_tickets_venue()
+            event = self.request.basket.get_tickets_event()
+            if event:
+                venue = event.venue
 
-            #  Do not register a donation if the Venue is not part of the foundation.
-            if venue and not venue.foundation:
+            #  Do not register a donation if the Venue is not part of the foundation
+            #  or the event is not assigned to the foundation.
+            if event and venue and not venue.foundation and not event.is_foundation:
                 return
 
             # Anonymous donation or purchase
@@ -896,7 +913,6 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         super(ExecutePayPalPaymentView, self).__init__(*args, **kwargs)
         self.order = None
         self.payment_id = None
-        self.tickets = None
         self.tickets_type = None
         self.product_id = None
         self.event_id = None
@@ -970,9 +986,9 @@ class ExecutePayPalPaymentView(AssignProductMixin,
 
         # request.basket doesn't work b/c the basket is frozen
         basket = self.get_submitted_basket()
-        venue = basket.get_tickets_venue()
+        event = basket.get_tickets_event()
 
-        self.payment_id = self.execute_payment(venue)
+        self.payment_id = self.execute_payment(event)
 
         # TODO: check that the strategy is correct for Tracks (right stock record).
         # If basket has tracks, it's probably to use custom strategy.
@@ -994,9 +1010,9 @@ class ExecutePayPalPaymentView(AssignProductMixin,
 
         # Record payment source
         order_kwargs = {'order_type': basket.get_order_type()}
-        venue = basket.get_tickets_venue()
-        if venue:
-            self.tickets = venue.name.lower()
+        if event:
+            venue = event.venue
+            self.tickets_type = venue.name.lower()
             order_kwargs['status'] = 'Completed'
             payment_source = '{} PayPal'.format(venue.name)
             payment_event = 'Sold'

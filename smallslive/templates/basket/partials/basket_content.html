@@ -9,9 +9,15 @@
         <section class="store-header container">
             <div class="store-header__content ">
                 {% if basket.has_tickets %}
-                  <div class="store-header__title__container">
-                    <div tabindex="0" class="title1">SmallsLIVE Foundation</div>
-                 </div>
+                    {% if basket.get_tickets_event.is_foundation %}
+                      <div class="store-header__title__container">
+                        <div tabindex="0" class="title1">SmallsLIVE Foundation</div>
+                      </div>
+                    {% else %}
+                      <div class="store-header__title__container">
+                        <div tabindex="0" class="title1">{{ basket.get_tickets_event.venue.name }} Jazz Club</div>
+                      </div>
+                    {% endif %}
                 {% endif %}
             </div>
         </section>

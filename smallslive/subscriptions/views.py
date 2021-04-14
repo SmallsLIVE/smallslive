@@ -617,25 +617,27 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
                     context['comma_separated_leaders'] = album_product.get_leader_strings()
                     context['album_product'] = album_product
 
-            if source.order:
+            if source and source.order:
                 prod = source.order.lines.first().product
                 if prod.misc_file:
                     file_product = prod.misc_file.url
                 context['order'] = source.order
-
             else:
                 source = Source.objects.filter(reference=payment_id).first()
                 if source and user.is_authenticated():
-                    # Create Donation
-                    donation = {
-                        'user': user,
-                        'order': source.order,
-                        'currency': source.currency,
-                        'amount': source.amount_allocated,
-                        'reference': payment_id,
-                        'confirmed': True,
-                    }
-                    Donation.objects.create(**donation)
+                    context['order'] = source.order
+                    event = source.order.get_tickets_event()
+                    if not event or event and event.is_foundation:
+                        # Create Donation
+                        donation = {
+                            'user': user,
+                            'order': source.order,
+                            'currency': source.currency,
+                            'amount': source.amount_allocated,
+                            'reference': payment_id,
+                            'confirmed': True,
+                        }
+                        Donation.objects.create(**donation)
         product_id = self.request.GET.get('product_id')
         if product_id:
             product = Product.objects.get(pk=product_id)
@@ -795,25 +797,29 @@ class TicketSupportView(BecomeSupporterView):
 
     template_name = 'subscriptions/ticket-support.html'
 
-    def get_ticket_venue_name(self):
+    def get_event(self):
+
         basket = self.request.basket
         product = None
         for line in basket.lines.all():
             product = line.product
 
-        product_info = ''
         if product:
-            product_info = product.event_set.event.get_venue_name()
+            return product.event_set.event
 
-        return product_info
+    def can_use_existing_cc(self):
+        return
 
     def get_context_data(self, **kwargs):
 
         context = super(TicketSupportView, self).get_context_data(**kwargs)
         context['payment_info_url'] = reverse('payment_info')
         context['donation_preview_url'] = reverse('donation_preview')
-        context['venue_name'] = self.get_ticket_venue_name()
+        event = self.get_event()
+        if event:
+            context['venue_name'] = event.get_venue_name()
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['can_use_existing_cc'] = self.request.user.can_use_existing_cc and event.is_foundation
 
         return context
 
