@@ -15,6 +15,10 @@ def invoice_payment_succeeded(sender, **kwargs):
     if event:
         customer = event.customer
         charge = event.message['data']['object']
+        metadata = charge['metadata']
+        if 'isFoundation' in metadata and not metadata['isFoundation']:
+            return
+
         invoice = charge['invoice']
         charge_id = charge['id']
         amount = charge['amount'] / 100

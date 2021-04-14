@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 import logging
-from paypal.payflow import facade
 from django import http
 from django.conf import settings
 from django.contrib import messages
@@ -21,6 +20,7 @@ from oscar.apps.payment.models import SourceType, Source
 from oscar.core.loading import get_class
 from oscar_apps.catalogue.models import UserCatalogue, UserCatalogueProduct
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
+from events.models import Event
 from subscriptions.mixins import PayPalMixin, StripeMixin
 from subscriptions.models import Donation
 from utils import utils as sl_utils
@@ -233,6 +233,16 @@ class SuccessfulOrderMixin(object):
                 artist_id=self.artist_id, event_id=self.event_id, product_id=self.product_id)
 
         if self.tickets_type:
+            event = self.order.get_tickets_event()
+            if event and event.is_foundation:
+                payment_source = 'PayPal'
+                if self.card_token:
+                    payment_source = 'Stripe'
+                Donation.objects.create_by_order(
+                    self.order,
+                    payment_source,
+                    artist_id=self.artist_id, event_id=self.event_id, product_id=self.product_id)
+
             # Set status to completed for lines if it's a ticket.
             # 'create_lines_models' method is not passed the order status unfortunately.
             lines = self.order.lines.all()
@@ -899,7 +909,6 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         super(ExecutePayPalPaymentView, self).__init__(*args, **kwargs)
         self.order = None
         self.payment_id = None
-        self.tickets = None
         self.tickets_type = None
         self.product_id = None
         self.event_id = None
@@ -997,9 +1006,9 @@ class ExecutePayPalPaymentView(AssignProductMixin,
 
         # Record payment source
         order_kwargs = {'order_type': basket.get_order_type()}
-        venue = basket.get_tickets_venue()
-        if venue:
-            self.tickets = venue.name.lower()
+        if event:
+            venue = event.venue
+            self.tickets_type = venue.name.lower()
             order_kwargs['status'] = 'Completed'
             payment_source = '{} PayPal'.format(venue.name)
             payment_event = 'Sold'
