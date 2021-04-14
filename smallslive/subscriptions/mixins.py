@@ -187,16 +187,26 @@ class StripeMixin(object):
             stripe_ref = charge.stripe_id
 
         else:
-            if event and event.is_foundation:
-                stripe_secret_key = settings.STRIPE_SECRET_KEY
+            metadata = {
+                'isFoundation': True
+            }
+            if event:
+                if event.is_foundation:
+                    stripe_secret_key = settings.STRIPE_SECRET_KEY
+                else:
+                    stripe_secret_key = venue.get_stripe_secret_key
+                    metadata = {
+                        'isFoundation': False
+                    }
             else:
-                stripe_secret_key = venue.get_stripe_secret_key
+                stripe_secret_key = settings.STRIPE_SECRET_KEY
             resp = stripe.Charge.create(
                 api_key=stripe_secret_key,
                 source=self.card_token,
                 amount=int(self.total.incl_tax * 100),  # Convert dollars into cents
                 currency=settings.STRIPE_CURRENCY,
                 description=self.payment_description(order_number, self.total.incl_tax, **kwargs),
+                metadata=metadata
             )
             stripe_ref = resp['id']
 
