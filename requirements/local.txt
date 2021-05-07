@@ -1,6 +1,6 @@
 -r base.txt # Include the base requirements file
 
-Jinja2==2.7.3
+Jinja2==2.11.3
 Mako==1.0.0
 MarkupSafe==0.23
 PyYAML==3.11
