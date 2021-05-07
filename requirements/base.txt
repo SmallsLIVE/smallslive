@@ -65,7 +65,7 @@ jsonfield==2.0.2
 kombu==3.0.30
 libsass==0.7.0
 libthumbor==1.0.1
-lxml==3.3.4
+lxml==4.6.3
 mailchimp==2.0.9
 mock==1.0.1
 natsort==3.5.0
