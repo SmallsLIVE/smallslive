@@ -83,6 +83,8 @@ class PaymentForm(forms.Form):
                     print e
                     error = e.json_body['error']
                     print error
+                    if error['param'] == 'number':
+                        error['param'] = 'card_number'
                     self.add_error(error['param'], error['message'])
         return data
 
