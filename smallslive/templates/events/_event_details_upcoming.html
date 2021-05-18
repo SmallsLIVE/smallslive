@@ -76,9 +76,8 @@
         $('#becomeMemberDialog').modal('show');
 
       {% endif %}
+    });
 
-
-    })
     $('#confirm-buy-tickets').click(function (e) {
       e.preventDefault();
       $.ajax({
@@ -94,12 +93,19 @@
         },
         error: function() {}
       });
-    })
+    });
+
     $('#cancel-buy-tickets').click(function (event) {
       event.preventDefault();
       $form = null;
       $('#buy-tickets-dialog').modal('toggle');
-    })
+    });
+
+    $('.tickets-sold-out').click(function(e) {
+      e.preventDefault();
+      $('#tickets-sold-out-dialog').modal('show');
+    });
+
     $('#btn-play-event, .event-overlay').click(function () {
       /* Show 'sign in' modal if user is not logged in. Otherwise, redirect
       to the live stream view if the show is about to start. */

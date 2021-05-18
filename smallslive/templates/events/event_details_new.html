@@ -136,6 +136,12 @@
                                   style="display: inline;">{{ product.set }}</button>
                           {% include 'events/buy_tickets_dialog.html' %}
                         {% endif %}
+                        {% if session.availability.num_available == 0 %}
+                          <button type='submit'
+                                  class="tickets-sold-out white-border-button"
+                                  style="display: inline;">Tickets</button>
+                          {% include 'events/tickets_sold_out_dialog.html' %}
+                        {% endif %}
                       </form>
                 {% endfor %}
               {% endif %}
