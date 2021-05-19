@@ -20,7 +20,6 @@ from oscar.apps.payment.models import SourceType, Source
 from oscar.core.loading import get_class
 from oscar_apps.catalogue.models import UserCatalogue, UserCatalogueProduct
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
-from events.models import Event
 from subscriptions.mixins import PayPalMixin, StripeMixin
 from subscriptions.models import Donation
 from utils import utils as sl_utils
@@ -541,9 +540,17 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                                            reservation_string=reservation_string)
             else:
                 print(form.errors)
-                return self.render_payment_details(self.request, form=form,
-                                                   payment_method=payment_method,
-                                                   reservation_string=reservation_string)
+                if self.request.is_ajax:
+                    print 'ERROR ITEMS'
+                    print form.errors.items()
+                    print 'ERROR ITEMS'
+                    error_message = "<br>".join(["* {} * {}".format(field.replace('_', ' ').title(), errors[0]) for field, errors in form.errors.items()])
+                    print  error_message
+                    return http.JsonResponse({'success': False, 'message': error_message})
+                else:
+                    return self.render_payment_details(self.request, form=form,
+                                                       payment_method=payment_method,
+                                                       reservation_string=reservation_string)
 
     def handle_payment_details_submission_for_basket(
             self, shipping_address, billing_address_form, payment_method):
@@ -785,7 +792,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             self.restore_frozen_basket()
             error_msg = str(e).format("")
             print '******************'
-            print 'Unhandled Exception: '
             print error_msg
 
             if self.request.is_ajax():

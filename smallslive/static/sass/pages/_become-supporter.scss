@@ -25,6 +25,11 @@
 
   .store-overview {
     background: transparent;
+
+    @media(max-width: $screen-sm-max) {
+        padding: 0;
+    }
+
   }
 
   .store-overview__group__table__header {
@@ -296,6 +301,10 @@
 
   .confirm-button {
     margin-top: 50px;
+
+    @media  (max-width: $screen-md-max) {
+        margin-top: 0;
+    }
 
     .button-bordered {
       padding: 0 30px;

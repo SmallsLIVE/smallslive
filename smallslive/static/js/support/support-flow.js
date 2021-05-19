@@ -514,9 +514,15 @@ $(document).ready(function() {
       type: $(this).attr("method"),
       data: $(this).serialize(),
       success: function(data) {
-        $mainContainer.find("#supporterStepPreview").html(data);
-        showPanel("Preview");
-        $mainContainer.find("#confirmButton").text("Confirm");
+        if (typeof data.success !== "undefined") {
+          if (!data.success) {
+            $mainContainer.find(".payment-errors").html(data.message);
+          }
+        } else {
+          $mainContainer.find("#supporterStepPreview").html(data);
+          showPanel("Preview");
+          $mainContainer.find("#confirmButton").text("Confirm");
+        }
       },
       error: function(xhr, err) {
         console.log(err);

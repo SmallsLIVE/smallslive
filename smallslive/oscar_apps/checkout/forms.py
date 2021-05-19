@@ -79,13 +79,17 @@ class PaymentForm(forms.Form):
                     self.token = token.id
                     print 'Sripe token: ', token
                 except stripe.error.CardError, e:
-                    print 'ERROR !!!!'
+                    print 'VALIDATION ERROR !!!!'
                     print e
                     error = e.json_body['error']
                     print error
                     if error['param'] == 'number':
                         error['param'] = 'card_number'
                     self.add_error(error['param'], error['message'])
+                    data = {
+                        error['param']: error['message']
+                    }
+                    raise forms.ValidationError(data)
         return data
 
     def _post_clean(self):
