@@ -522,6 +522,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             first_name, last_name = self.checkout_session.get_reservation_name()
             if first_name and last_name:
                 reservation_string = '{} {}'.format(first_name, last_name)
+            else:
+                return http.JsonResponse({'success': False, 'message': "Please enter a name for your reservation under PARTY NAME above"})
 
             if payment_method == 'existing-credit-card':
                 for field in form.fields:
@@ -539,13 +541,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                                            payment_method=payment_method,
                                            reservation_string=reservation_string)
             else:
-                print(form.errors)
                 if self.request.is_ajax:
-                    print 'ERROR ITEMS'
-                    print form.errors.items()
-                    print 'ERROR ITEMS'
                     error_message = "<br>".join(["* {} * {}".format(field.replace('_', ' ').title(), errors[0]) for field, errors in form.errors.items()])
-                    print  error_message
                     return http.JsonResponse({'success': False, 'message': error_message})
                 else:
                     return self.render_payment_details(self.request, form=form,
