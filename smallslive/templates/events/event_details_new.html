@@ -139,7 +139,7 @@
                         {% if session.availability.num_available == 0 %}
                           <button type='submit'
                                   class="tickets-sold-out white-border-button"
-                                  style="display: inline;">Tickets</button>
+                                  style="display: inline;">{{ product.set }}</button>
                           {% include 'events/tickets_sold_out_dialog.html' %}
                         {% endif %}
                       </form>
