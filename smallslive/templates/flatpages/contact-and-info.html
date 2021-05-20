@@ -12,6 +12,10 @@
       <div class="flex-row content-centered">
         <ul id="contact-and-info-index" class="static-nav-menu">
           <li class="white-border-button no-border
+                  {% block venues-location-active %}{% endblock %}" id="venues-location">
+            <a tabindex="-1" href="#" style="color: rgb(255, 0, 0);">Venues/Tickets</a>
+          </li>
+          <li class="white-border-button no-border
                   {% block foundation-active %}{% endblock %}"  id="foundation"><a
                   tabindex="-1" href="#">Foundation</a>
           </li>
@@ -21,15 +25,11 @@
           </li>
           <li class="white-border-button no-border
                   {% block catalog-active %}{% endblock %}" id="catalog"><a
-                  tabindex="-1" href="#">SmallsLIVE Catalog</a>
+                  tabindex="-1" href="#">Catalog</a>
           </li>
           <li class="white-border-button no-border
                   {% block live-stream-active %}{% endblock %}" id="streaming"><a
                   tabindex="-1" href="#">Live Stream</a>
-          </li>
-          <li class="white-border-button no-border
-                  {% block venues-location-active %}{% endblock %}" id="venues-location">
-            <a tabindex="-1" href="#" style="color: rgb(255, 0, 0);">Venues/Location</a>
           </li>
           <li class="white-border-button no-border
                   {% block about-us-active %}{% endblock %}" id="about-us">
@@ -37,11 +37,11 @@
           </li>
         </ul>
         <div class="flex-column info-page-container">
+           {% include "flatpages/venues-location.html" %}
            {% include "flatpages/foundation.html" %}
            {% include "flatpages/archive.html" %}
            {% include "flatpages/catalog.html" %}
            {% include "flatpages/streaming.html" %}
-           {% include "flatpages/venues-location.html" %}
            {% include "flatpages/about-us.html" %}
         </div>
       </div>

@@ -231,6 +231,14 @@
     margin-bottom: 10px;
     width: 20%;
 
+    &.big {
+        width: 40%;
+
+        @media(max-width: $screen-md-min) {
+            width: 90%
+        }
+    }
+
     &.logo {
       display: block;
       margin: 0 auto;

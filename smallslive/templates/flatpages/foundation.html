@@ -1,21 +1,8 @@
+{% load static from staticfiles %}
 <article class="static-content static-tab active closed" id="foundation-tab">
   <div class="flex-row">
     <div class="flatpage-content">
       <h1 id="mobile-foundation" class="main-title expand" tabindex="0">Foundation </h1>
-      <p class="overview">
-        The SmallsLIVE Foundation subsidizes the operation of the venues.
-        We support recording projects, tours, and educational initiatives.
-        We offer emergency aid for jazz musicians in need.
-      </p>
-      <p tabindex="0">
-        There is no charge to become a member of the
-        <span class="smalls-color">SmallsLIVE</span> Foundation. Supporting
-        Members are members who make a tax-deductible donation to the
-        <span class="smalls-color">SmallsLIVE</span> Foundation. Both free
-        and Supporting members have access to our live-streamed shows.
-        Supporting Members have access to our extensive Audio/Video Archive,
-        which pays royalties to the artists involved.
-      </p>
       <div class="d-flex venues-static">
         <div class="d-flex flex-column">
           <p tabindex="0">
@@ -35,14 +22,18 @@
           <li tabindex="0">
             Live performances from
             <span class="smalls-color">Smalls Jazz Club</span> and
-            <span class="mezzrow-color">Mezzrow Jazz Club</span>
-            and subsidizing these venues.
+            <span class="mezzrow-color">Mezzrow</span>.
           </li>
           <li tabindex="0">
-            Emergency funds for Jazz musicians in need and supporting the Jazz
-            Musician Community.
+            Emergency funds for Jazz musicians in need and supporting the Jazz Musician Community, particularly of New York City, but ultimately world-wide.
           </li>
           <li tabindex="0">Fulfilling our mission of World Peace Through Music.</li>
+          <br>
+          <p>
+            There is no charge to become a member of the SmallsLIVE Foundation.
+            All Members have access to our Live-Streams.
+            By making a tax-deductible donation to the SmallsLIVE Foundation you can have access to our extensive Audio/Video Archive for the remainder of the tax year.
+          </p>
           <p tabindex="0">
             <br/>
             
@@ -52,9 +43,12 @@
             New York, N.Y 10014<br />
             <br/>
             <br/>
-            To make a donation directly, please contact us at:<br/>
-            foundation@smallslive.com
+            Please consider sponsoring a live group for a club performance.  Contact us at  foundation@smallslive.com for more information. Donate directly through our site or PayPal: foundation@smallslive.com or Venmo @SmallsLIVE.
           </p>
+          <p class="text-center">
+            <img class="big" src="{% static 'image/bitcoin_donate.png' %}" alt="BitCoin donation QR Code">
+          </p>
+
         </div>
       </div>
       <div class="text-right">
