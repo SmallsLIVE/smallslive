@@ -172,8 +172,7 @@
       <div class="album__header__title"><!--album title container (maybe not necessary)-->
         <div class="album__header__title--no-underline">{% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }} {{ album_product.upc }}</div><!--album title-->
         <p class="text9 accent-color" style="align-self: normal; font-style: italic; margin-top: 15px; font-size: 1.8em;">
-          You may choose to receive this album as a download or cd for a partially tax-deductible donation.
-          Your sponsorship directly supports this artist and the SmallsLIVE Foundation.
+          You may choose to receive this album as a download or cd.
         </p>
         <div class="album__musician-list">
           <ul>
@@ -198,7 +197,7 @@
           <button id="projectDonationBtn"
                       class="white-border-button buttons-row"
                       style="margin-left: 0;"
-                      data-redirect-url="{% url 'product_support' product_id=album_product.pk %}">Support this project</button>
+                      data-redirect-url="{% url 'product_support' product_id=album_product.pk %}">Purchase this project</button>
         </div>
       </div>
     </div>

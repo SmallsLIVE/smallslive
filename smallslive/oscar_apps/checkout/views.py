@@ -202,15 +202,17 @@ class AssignProductMixin(object):
             if product_class.slug in ['physical-album', 'digital-album', 'track'] or line.product.misc_file:
                 UserCatalogueProduct.objects.get_or_create(user=self.request.user, product=line.product)
 
+            # Set status to completed for lines if it doesn't require shipping
+            if not line.product.get_product_class().requires_shipping:
+                line.set_status('Completed')
+
+        if self.order.lines.count() == self.order.digital_lines().count():
+            self.order.set_status('Completed')
+
 
 class SuccessfulOrderMixin(object):
 
-    def handle(self):
-        """
-        Handle the various steps required after an order has been successfully
-        placed.
-        """
-
+    def set_payment_target(self):
         if 'product_id' in self.request.session:
             self.product_id = self.request.session['product_id']
 
@@ -221,42 +223,30 @@ class SuccessfulOrderMixin(object):
         if 'artist_id' in self.request.session:
             self.artist_id = self.request.session['artist_id']
 
-        payment_source = 'PayPal Foundation'
-        if self.card_token:
-            payment_source = 'Stripe Foundation'
-
+    def is_foundation(self):
         event = self.order.get_tickets_event()
-        if event:
-            self.tickets_type = event.venue.name.lower()
+        if event and not event.is_foundation:
+            is_foundation = False
+        elif self.order.has_catalog():
+            is_foundation = False
+        else:
+            is_foundation = True
 
-        if not self.tickets_type:
+        print 'Is Foundation'
+
+        return is_foundation
+
+    def create_donation(self):
+        if self.is_foundation():
+            payment_source = 'PayPal Foundation'
+            if self.card_token:
+                payment_source = 'Stripe Foundation'
             Donation.objects.create_by_order(
                 self.order,
                 payment_source,
                 artist_id=self.artist_id, event_id=self.event_id, product_id=self.product_id)
 
-        if self.tickets_type:
-            if event and event.is_foundation:
-                payment_source = 'PayPal'
-                if self.card_token:
-                    payment_source = 'Stripe'
-                Donation.objects.create_by_order(
-                    self.order,
-                    payment_source,
-                    artist_id=self.artist_id, event_id=self.event_id, product_id=self.product_id)
-
-            # Set status to completed for lines if it's a ticket.
-            # 'create_lines_models' method is not passed the order status unfortunately.
-            lines = self.order.lines.all()
-            for line in lines:
-                line.set_status('Completed')
-        else:
-            # Assign product to Library
-            self.assign()
-
-        #  Save order id in session so thank-you page can load
-        self.request.session['checkout_order_id'] = self.order.id
-
+    def send_confirmation(self):
         order_type_code = 'ORDER_PLACED'
         if self.order.has_tickets():
             order_type_code = 'TICKET_PLACED'
@@ -266,9 +256,54 @@ class SuccessfulOrderMixin(object):
         # Send confirmation message (normally an email)
         self.send_confirmation_message(self.order, order_type_code)
 
-        self.order.set_status('Completed')
-        for line in self.order.lines.all():
-            line.set_status('Completed')
+    def get_success_url(self, flow_type):
+        success_url = reverse('become_supporter_complete')
+        if flow_type:
+            success_url += '?flow_type=' + flow_type
+            # remove flow_type from session
+            del self.request.session['flow_type']
+
+            if 'product_id' in self.request.session:
+                del self.request.session['product_id']
+
+            if 'event_id' in self.request.session:
+                del self.request.session['event_id']
+                del self.request.session['event_slug']
+
+            if 'artist_id' in self.request.session:
+                del self.request.session['artist_id']
+
+            sl_utils.clean_messages(self.request)
+
+            if self.payment_id:
+                success_url += '&payment_id=' + self.payment_id
+
+            if self.event_id:
+                success_url += '&event_id=' + self.event_id
+                success_url += '&event_slug=' + self.event_slug
+
+            if self.artist_id:
+                success_url += '&artist_id=' + self.artist_id
+
+        return success_url
+
+    def handle(self):
+        """
+        Handle the various steps required after an order has been successfully
+        placed.
+        """
+
+        # Donating or paying for a product, event, artist, etc.
+        self.set_payment_target()
+
+        print 'Create donation'
+        self.create_donation()
+
+        # Assign product to Library if applies and set order and line status.
+        self.assign()
+
+        #  Save order id in session so thank-you page can load
+        self.request.session['checkout_order_id'] = self.order.id
 
         # Flush all session data
         self.checkout_session.flush()
@@ -279,34 +314,7 @@ class SuccessfulOrderMixin(object):
         if flow_type == 'catalog_selection':
             response = http.JsonResponse({'success_url': self.get_success_url()})
         elif self.request.is_ajax():
-            success_url = reverse('become_supporter_complete')
-            if flow_type:
-                success_url += '?flow_type=' + flow_type
-                # remove flow_type from session
-                del self.request.session['flow_type']
-
-                if 'product_id' in self.request.session:
-                    del self.request.session['product_id']
-
-                if 'event_id' in self.request.session:
-                    del self.request.session['event_id']
-                    del self.request.session['event_slug']
-
-                if 'artist_id' in self.request.session:
-                    del self.request.session['artist_id']
-
-                sl_utils.clean_messages(self.request)
-
-                if self.payment_id:
-                    success_url += '&payment_id=' + self.payment_id
-
-                if self.event_id:
-                    success_url += '&event_id=' + self.event_id
-                    success_url += '&event_slug=' + self.event_slug
-
-                if self.artist_id:
-                    success_url += '&artist_id=' + self.artist_id
-
+            success_url = self.get_success_url(flow_type)
             response = http.JsonResponse({'success_url': success_url})
         else:
             response = http.HttpResponseRedirect(self.get_success_url())
@@ -503,14 +511,30 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         return billing_address_form
 
+    def get_stripe_secret_key(self):
+        basket = self.request.basket
+        if basket.has_catalog():
+            stripe_secret_key = settings.STRIPE_FOR_PROFIT_SECRET_KEY
+        else:
+            event = basket.get_tickets_event()
+            if event:
+                if event.is_foundation:
+                    stripe_secret_key = settings.STRIPE_SECRET_KEY
+                else:
+                    stripe_secret_key = event.venue.get_stripe_secret_key
+            else:
+                stripe_secret_key = settings.STRIPE_SECRET_KEY
+
+        return stripe_secret_key
+
+
     def handle_payment_details_submission_for_tickets(self,
                                                       billing_address_form,
                                                       payment_method):
         """Customer can pay for Mezzrow or Smalls tickets with PayPal or Credit Card."""
 
-        venue = self.request.basket.get_tickets_venue()
-        self.tickets_type = venue.name.lower()
-        stripe_api_key = venue.get_stripe_secret_key
+
+        stripe_api_key = self.get_stripe_secret_key()
 
         form = PaymentForm(self.request.user, stripe_api_key, self.request.POST)
 
@@ -551,7 +575,9 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
     def handle_payment_details_submission_for_basket(
             self, shipping_address, billing_address_form, payment_method):
-        form = PaymentForm(self.request.user, settings.STRIPE_SECRET_KEY, self.request.POST)
+
+        stripe_api_key = self.get_stripe_secret_key()
+        form = PaymentForm(self.request.user, stripe_api_key, self.request.POST)
 
         if billing_address_form and not billing_address_form.is_valid():
             print '*** error ****'
@@ -582,10 +608,15 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                                            billing_address_form=billing_address_form,
                                            reservation_string=reservation_string)
             else:
-                print(form.errors)
-                return self.render_payment_details(self.request, form=form,
-                                                   billing_address_form=billing_address_form,
-                                                   reservation_string=reservation_string)
+                if self.request.is_ajax:
+                    error_message = "<br>".join(
+                        ["* {} * {}".format(field.replace('_', ' ').title(), errors[0]) for field, errors in
+                         form.errors.items()])
+                    return http.JsonResponse({'success': False, 'message': error_message})
+                else:
+                    return self.render_payment_details(self.request, form=form,
+                                                       billing_address_form=billing_address_form,
+                                                       reservation_string=reservation_string)
 
     def render_to_response(self, context, **response_kwargs):
         """
@@ -846,6 +877,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         currency = total.currency
         if self.card_token:
             self.total = total
+            self.total_deductable = basket._get_deductable_physical_total()
             self.payment_id = self.handle_stripe_payment(order_number, basket_lines, **kwargs)
             source_name = 'Stripe Credit Card'
             source_type, __ = SourceType.objects.get_or_create(name=source_name)
@@ -857,33 +889,15 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 reference=self.payment_id)
             self.add_payment_source(source)
             self.add_payment_event('Purchase', total.incl_tax, reference=self.payment_id)
-            # Set an ongoing donation, finished when payment is confirmed
-            self.total_deductable = basket._get_deductable_physical_total()
-            event = self.request.basket.get_tickets_event()
-            if event:
-                venue = event.venue
 
-            #  Do not register a donation if the Venue is not part of the foundation
-            #  or the event is not assigned to the foundation.
-            if event and venue and not venue.foundation and not event.is_foundation:
-                return
-
-            # Anonymous donation or purchase
-            if not self.request.user.is_authenticated():
-                return
 
         elif payment_method == 'paypal':
             item_list = [] # self.get_item_list(basket_lines)
-            total_deductable = basket._get_deductable_physical_total()
             self.amount = str(total.incl_tax)
-            # Donation will be set to True  if user is selecting gifts
-            # For Tickets and  other goods, there will  be no donation.
             # 'handle_paypal_payment' returns a RedirectRequiredException
             # and the flow will be completed in ExecutePaypalPayment
             self.handle_paypal_payment(
                 currency, item_list,
-                donation=bool(not basket_lines.first().basket.has_tickets()),
-                deductable_total=total_deductable,
                 shipping_charge=shipping_charge)
 
     def payment_description(self, order_number, total, **kwargs):
@@ -1047,10 +1061,16 @@ class ExecutePayPalPaymentView(AssignProductMixin,
                 'last_name': last_name
             })
 
-        self.handle_order_placement(order_number, user, basket,
-                                    shipping_address, shipping_method,
-                                    shipping_charge, billing_address, order_total,
-                                    **order_kwargs)
+        try:
+            self.handle_order_placement(order_number, user, basket,
+                                        shipping_address, shipping_method,
+                                        shipping_charge, billing_address, order_total,
+                                        **order_kwargs)
+        except ValueError as e:
+            # Probably order is already  placed because of a reload
+            logging.error(str(e))
+            print e
+            pass
 
     def handle_successful_order(self, order):
         self.order = order

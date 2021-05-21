@@ -897,7 +897,7 @@ $(document).ready(function() {
       $(this).data("variants") && $(this).data("variants") != "0";
     $selectionConfirmationDialog
       .find(".subtitle")
-      .text("One Time Donation of " + $(this).find(".price-tag").text());
+      .text($(this).find(".price-tag").text());
     var price = $(this)
       .children(".price-tag")
       .text();

@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block flow_title %}
-  <p class="text2 accent-color">You are supporting
+  <p class="text2 accent-color">Purchase project
 
     {{ comma_separated_leaders }}
 
@@ -39,15 +39,10 @@
   </div>
 
   <div id="supporterStepSelectType" class="supporter-step">
-    <p class="text9">This is a 100% tax-deductible donation to the SmallsLIVE Foundation.
-      Your donation will go to
+    <p class="text9">
       {{ album_product.get_leader_strings }}.
     </p>
-    <div class="text9">
-      Please choose one of the following:
-    </div>
 
-    {% include 'subscriptions/supporter_step_select_type.html' with no_description=True %}
     {% include 'subscriptions/catalog_gift_selection.html' with hidden=False %}
   </div>
 

@@ -34,6 +34,9 @@ class Order(AbstractOrder):
     def has_digital_products(self):
         digital_count = self.lines.filter(product__product_class__requires_shipping=False).count()
         return digital_count > 0
+
+    def digital_lines(self):
+        return self.lines.select_related('product').filter(product__product_class__requires_shipping=False)
     
     def has_tickets(self):
         tickets_count = self.lines.filter(product__product_class__name='Ticket').count()
@@ -73,6 +76,11 @@ class Order(AbstractOrder):
         gifts_count = self.lines.filter(product__categories__name='Gifts').count()
 
         return gifts_count > 0
+
+    def has_catalog(self):
+        count = self.lines.filter(product__categories__name='Music').count()
+
+        return count > 0
 
     def get_deductable_total(self):
         total = D('0.00')

@@ -479,15 +479,12 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
 
             if self.amount:
                 self.amount = int(self.amount)
+                self.deductable_amount = self.amount
 
             if self.stripe_token:
                 try:
-                    # If no reference returned, then the user is subscribing to a plan
-                    # Donation will come through the webhook instead.
-                    reference = self.execute_stripe_payment()
-                    if reference:
-                        self.create_donation(payment_source='Stripe Foundation',
-                                             reference=reference)
+                    # Donation will come through the webhook.
+                    self.execute_stripe_payment()
                     url = reverse('become_supporter_complete') + \
                         "?flow_type=" + self.flow_type
                     if self.product_id:
@@ -555,7 +552,6 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                     item_list = []
                     self.handle_paypal_payment(
                         'USD', item_list,
-                        donation=True,
                         execute_uri=payment_execute_url,
                         cancel_uri=payment_cancel_url
                     )
@@ -594,9 +590,29 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
 
     template_name = 'subscriptions/completed/thank_you.html'
 
+    def set_context(self, context, payment_id):
+        user = self.request.user
+
+        source = Source.objects.filter(reference=payment_id).first()
+        if source:
+            order = source.order
+            if order:
+                # Orders have only one line always
+                product = order.lines.first().product
+                if product.misc_file:
+                    file_product = product.misc_file.url
+                    context['file_product'] = file_product
+                if product.is_child:
+                    product = product.parent
+                    context['comma_separated_leaders'] = product.get_leader_strings()
+                    context['album_product'] = product
+
+                context['order'] = order
+
+        return context
+
     def get_context_data(self, **kwargs):
 
-        user = self.request.user
         context = super(
             BecomeSupporterCompleteView, self
         ).get_context_data(**kwargs)
@@ -604,56 +620,17 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
         context['flow_type'] = self.request.GET.get('flow_type') or context.get('flow_type')
 
         payment_id = self.request.GET.get('payment_id')
-        file_product = None
-        if payment_id:
-            # Donated directly by PayPal or Stripe
-            source = Donation.objects.filter(reference=payment_id).first()
-            if source:
-                # confirmation will be set on order successful so we can set the order.
-                if source.product_id:
-                    album_product = Product.objects.get(pk=source.product_id)
-                    if album_product.is_child:
-                        album_product = album_product.parent
-                    context['comma_separated_leaders'] = album_product.get_leader_strings()
-                    context['album_product'] = album_product
-
-            if source and source.order:
-                prod = source.order.lines.first().product
-                if prod.misc_file:
-                    file_product = prod.misc_file.url
-                context['order'] = source.order
-            else:
-                source = Source.objects.filter(reference=payment_id).first()
-                if source and user.is_authenticated():
-                    context['order'] = source.order
-                    event = source.order.get_tickets_event()
-                    if not event or event and event.is_foundation:
-                        # Create Donation
-                        donation = {
-                            'user': user,
-                            'order': source.order,
-                            'currency': source.currency,
-                            'amount': source.amount_allocated,
-                            'reference': payment_id,
-                            'confirmed': True,
-                        }
-                        Donation.objects.create(**donation)
         product_id = self.request.GET.get('product_id')
-        if product_id:
-            product = Product.objects.get(pk=product_id)
-            context['comma_separated_leaders'] = product.get_leader_strings()
-            context['album_product'] = product
-
         artist_id = self.request.GET.get('artist_id')
+        sponsored_event_id = self.request.GET.get('sponsored_event_id')
+        if payment_id:
+            context = self.set_context(context, payment_id)
+        elif product_id:
+            product = Product.objects.get(pk=product_id)
+            context['album_product'] = product
         if artist_id:
             context['artist'] = Artist.objects.get(pk=artist_id)
 
-        if not payment_id or not source:
-            context['error'] = 'We could not find your payment reference. Contact our support'
-
-        context['file_product'] = file_product
-
-        sponsored_event_id = self.request.GET.get('sponsored_event_id')
         if sponsored_event_id:
             event = Event.objects.get(pk=sponsored_event_id)
             context['event'] = event

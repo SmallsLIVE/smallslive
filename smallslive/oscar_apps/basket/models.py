@@ -56,6 +56,11 @@ class Basket(AbstractBasket):
             event = line.product.event_set.event
 
         return event
+
+    def has_catalog(self):
+        count = self.all_lines().filter(product__categories__name='Music').count()
+
+        return count > 0
     
     def has_gifts(self):
         gifts_count = self.all_lines().filter(product__categories__name='Gifts').count()

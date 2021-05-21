@@ -43,16 +43,15 @@
         </p>
       {% elif flow_type == 'product_support' %}
         <p tabindex="0" class="title7"><span class="big-letter">T</span>
-          hank you for your support of the smallslive foundation for jazz arts and education as well as {{ comma_separated_leaders }}.
-          <br>
-          {% if album_product.get_leaders.count > 1 %}
-          <span class='accent-color'>Your support benefits these artists and our mission.</span>
-          {% else %}
-          <span class='accent-color'>Your support benefits this artist and our mission.</span>
-          {% endif %}
+          hank you for your purchase of {{ album_product }}.
         </p>
         {% if album_product %}
-          <p class="text5 text-center" style="margin-top: 60px;">
+          <br>
+          <br>
+          <p class="text5 text-center">
+            CD it will be in the mail to your shipping address
+          </p>
+          <p class="text5 text-center">
             Your digital recordings can be found in your <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="accent-color underline" style="">Library</a>
           </p>
         {%  endif %}

@@ -1,21 +1,40 @@
 from decimal import *
 import paypalrestsdk
-from paypal.payflow import facade
 import stripe
 from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
-from oscar_stripe.facade import Facade
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from oscar.apps.payment.exceptions import RedirectRequired, \
     UnableToTakePayment, PaymentError
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
-from subscriptions.models import Donation
 from users.utils import charge, one_time_donation, \
     subscribe_to_plan, update_active_card
 
 
 class PayPalMixin(object):
+
+    def get_payment_accounts(self):
+
+        is_foundation =  not self.event or self.event.is_foundation
+
+        if is_foundation:
+            client_id = settings.PAYPAL_CLIENT_ID
+            client_secret = settings.PAYPAL_CLIENT_SECRET
+        else:
+            basket = self.request.basket
+            if basket.has_catalog():
+                is_foundation = False
+                client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID
+                client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET
+            else:
+                if self.event:
+                    is_foundation = False
+                    venue = self.event.venue
+                    client_id = venue.get_paypal_client_id
+                    client_secret = venue.get_paypal_client_secret
+
+        return is_foundation, client_id, client_secret
 
     def get_payment_data(self, item_list, currency, shipping_charge=0.00,
                          execute_uri=None, cancel_uri=None):
@@ -60,14 +79,8 @@ class PayPalMixin(object):
         return data
 
     def configure_paypal(self, event=None):
-        if event and not event.is_foundation:
-            venue = event.venue
-            client_id = venue.get_paypal_client_id
-            client_secret = venue.get_paypal_client_secret
-        else:
-            # Assume foundation
-            client_id = settings.PAYPAL_CLIENT_ID
-            client_secret = settings.PAYPAL_CLIENT_SECRET
+        self.event = event
+        is_foundation, client_id, client_secret = self.get_payment_accounts()
 
         paypalrestsdk.configure({
             'mode': settings.PAYPAL_MODE,  # sandbox or live
@@ -75,8 +88,6 @@ class PayPalMixin(object):
             'client_secret': client_secret})
 
     def handle_paypal_payment(self, currency, item_list,
-                              donation=False,
-                              deductable_total=0.00,
                               shipping_charge=0.00,
                               execute_uri=None,
                               cancel_uri=None):
@@ -140,7 +151,7 @@ class StripeMixin(object):
 
     def execute_stripe_payment(self):
         # As per Aslan's request
-        # Yearly donations will no longer exist. They are One Time Donations  now.
+        # Yearly donations will no longer exist. They are One Time Donations now.
 
         stripe_ref = None
         customer, created = Customer.get_or_create(
@@ -187,9 +198,7 @@ class StripeMixin(object):
             stripe_ref = charge.stripe_id
 
         else:
-            metadata = {
-                'isFoundation': True
-            }
+            metadata = {}
             if event:
                 if event.is_foundation:
                     stripe_secret_key = settings.STRIPE_SECRET_KEY

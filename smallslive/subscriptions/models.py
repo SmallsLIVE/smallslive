@@ -236,7 +236,6 @@ class Donation(models.Model):
         return new_expiry_date
 
     def save(self, *args, **kwargs):
-
         # We need to create donations for other periods.
         # donation_date is now the date the donation must be accounted on.
         if not self.donation_date:

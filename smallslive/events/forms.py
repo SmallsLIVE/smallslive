@@ -348,7 +348,7 @@ class TicketAddForm(forms.Form):
             category=tickets_category
         )
         # TODO: make this dynamic.
-        partner_name = 'SmallsLIVE' # event.get_venue_name()
+        partner_name = event.get_venue_name()
         partner, created = Partner.objects.get_or_create(name=partner_name)
         last_stockrecord = StockRecord.objects.order_by('-id').first()
         if last_stockrecord:
