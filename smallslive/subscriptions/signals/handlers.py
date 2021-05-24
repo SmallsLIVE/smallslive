@@ -19,11 +19,10 @@ def invoice_payment_succeeded(sender, **kwargs):
         if 'isFoundation' in metadata and not metadata['isFoundation']:
             return
 
-        invoice = charge['invoice']
         charge_id = charge['id']
         amount = charge['amount'] / 100
         donation = subscriptions.models.Donation.objects.filter(reference=charge_id).first()
-        if not donation and invoice:
+        if not donation:
             donation = {
                 'user': customer.subscriber,
                 'currency': 'USD',
