@@ -2,8 +2,6 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
-{% include 'subscriptions/popups/artist_support_confirmation_dialog.html' %}
-
 <div  class="content-centered clearfix" style="width: 100%;">
   <div class="artist-search-profile-bio-buttons__container hidden-xs hidden-sm">
     <div class="artist-search-profile-bio-buttons flex-row">
@@ -53,11 +51,6 @@
             {% include 'partials/search_artist_profile_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
         {% else %}
             {% include 'partials/search_artist_profile_picture.html' with photo_url="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" crop_box=artist.photo_crop_box %}
-        {% endif %}
-        {% if user.is_authenticated %}
-          <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">Support</button>
-        {% else %}
-          <button onclick="$('#becomeMemberDialog').modal('show');" class="white-border-button" style="display: inline;">Support</button>
         {% endif %}
       </div>
       <div class="flex-column white-line-right">
@@ -166,17 +159,6 @@
         $bio.addClass('collapsed');
         $(this).text('read more');
       }
-    });
-
-
-    $(document).on("click", "#confirmDonationButton", function () {
-      var artisId = {{ artist.pk }};
-      window.location = "{% url 'artist_support' %}?artist_id={{ artist.pk }}";
-    });
-
-    var $donationConfirmationDialog = $("#supportConfirmationDialog");
-    $('#one-time-donation-btn').on('click', function () {
-      $donationConfirmationDialog.modal("show");
     });
    });
 </script>

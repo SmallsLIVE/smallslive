@@ -68,7 +68,7 @@ var getSteps = function() {
     } else {
       steps = ["SelectType", "Preview", "ThankYou"];
     }
-  } else if (selectedData.flow == "event_support" || selectedData.flow == "event_sponsorship" || selectedData.flow == "donate_direct") {
+  } else if (selectedData.flow == "event_sponsorship" || selectedData.flow == "donate_direct") {
     steps = ["SelectType", "Preview", "ThankYou"];
   } else if (selectedData.flow == "ticket_support") {
     steps = ["Basket", "Billing", "Preview", "ThankYou"]

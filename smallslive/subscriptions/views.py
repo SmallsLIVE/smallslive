@@ -174,12 +174,6 @@ class ExecutePayPalPaymentView(PayPalMixin, View):
         if donation.product_id:
             flow_type ='product_support'
             url += '&flow_type={}&product_id={}'.format(flow_type, donation.product_id)
-        if donation.event_id:
-            flow_type = 'event_support'
-            url += '&flow_type={}&event_id={}'.format(flow_type, donation.event_id)
-        if donation.artist_id:
-            flow_type = 'artist_support'
-            url += '&flow_type={}&artist_id={}'.format(flow_type, donation.artist_id)
         if donation.sponsored_event_dedication:
             flow_type = 'event_sponsorship'
             url += '&flow_type={}&event_id={}'.format(flow_type, donation.sponsored_event_id)
@@ -673,46 +667,6 @@ class DonateView(BecomeSupporterView):
         return context
 
 donate = DonateView.as_view()
-
-
-class ArtistSupportView(BecomeSupporterView):
-
-    template_name = 'subscriptions/artist-support.html'
-
-    def get_context_data(self, **kwargs):
-
-        context = super(ArtistSupportView, self).get_context_data(**kwargs)
-        context['flow_type'] = 'artist_support'
-
-        context['payment_info_url'] = reverse('payment_info')
-        context['donation_preview_url'] = reverse('donation_preview')
-        context['artist_id'] = self.artist_id
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-
-        return context
-
-
-artist_support = ArtistSupportView.as_view()
-
-
-class EventSupportView(BecomeSupporterView):
-
-    template_name = 'subscriptions/event-support.html'
-
-    def get_context_data(self, **kwargs):
-
-        context = super(EventSupportView, self).get_context_data(**kwargs)
-        context['flow_type'] = 'event_support'
-
-        context['payment_info_url'] = reverse('payment_info')
-        context['donation_preview_url'] = reverse('donation_preview')
-        context['product_id'] = self.product_id
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-
-        return context
-
-
-event_support = EventSupportView.as_view()
 
 
 class EventSponsorshipView(BecomeSupporterView):

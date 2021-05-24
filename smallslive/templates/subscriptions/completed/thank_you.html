@@ -55,22 +55,6 @@
             Your digital recordings can be found in your <a href="{% url 'my-downloads' %}?album={{ album_product.pk }}" class="accent-color underline" style="">Library</a>
           </p>
         {%  endif %}
-      {% elif flow_type == 'event_support' %}
-        <p tabindex="0" class="title7"><span class="big-letter">T</span>
-          hank you for your support of {{ comma_separated_artists }} as well as the smallslive foundation for jazz arts and education.
-          <br>
-          {% if event.performers.count > 1 %}
-          <span class='accent-color'>Your support benefits these artists and our mission.</span>
-          {% else %}
-          <span class='accent-color'>Your support benefits this artist and our mission.</span>
-          {% endif %}
-        </p>
-      {% elif flow_type == 'artist_support' %}
-        <p tabindex="0" class="title7"><span class="big-letter">T</span>
-          hank you for your support of {{ artist.full_name }} as well as the smallslive foundation for jazz arts and education.
-          <br>
-          <span class='accent-color'>Your support benefits this artist and our mission.</span>
-        </p>
       {% elif flow_type == 'event_sponsorship' %}
         <p tabindex="0" class="title7" style="margin-bottom: 40px;"><span class="big-letter">Y</span>
           ou have successfully sponsored the live concert of {{ event.leader_string }} on {{ event.get_date }}.
@@ -174,14 +158,6 @@
   {% elif flow_type == 'product_support' %}
     <a href="{% url 'promotions:home' %}">
       <button>Continue browsing the Catalog</button>
-    </a>
-  {% elif flow_type == 'event_support' %}
-    <a href="{% url 'event_detail' event.id event.slug %}">
-      <button>Return to Event</button>
-    </a>
-  {% elif flow_type == 'artist_support' %}
-    <a href="{% url 'search' %}?artist_pk={{ artist.pk }}">
-      <button>Return to artist</button>
     </a>
   {% elif flow_type == 'ticket_support' %}
     <a href="{% url 'home' %}">

@@ -110,13 +110,6 @@
                <button class="white-border-button">Clone</button>
              </form>
             {% endif %}
-            {% if event.is_live or event.is_past %}
-              {% if user.is_authenticated %}
-                <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">Gratuities</button>
-              {% else %}
-                <button onclick="$('#becomeMemberDialog').modal('show');" class="white-border-button" style="display: inline;">sponsor</button>
-              {% endif %}
-            {% endif %}
             {% if not event.is_live and event.is_future %}
               {% if products %}
                 {% for product in products %}
@@ -239,7 +232,6 @@
       </div>
     </div>
   </div>
-  {% include 'subscriptions/popups/event_support_confirmation_dialog.html' %}
   {% include 'subscriptions/popups/event_sponsorship_confirmation_dialog.html' %}
 
 {% endblock %}
@@ -266,16 +258,6 @@
         $('#remove-comment').modal('show',true)
         $('#remove-comment button').val($(this).data("value"))
       })
-
-      $(document).on("click", "#confirmDonationButton", function () {
-        var eventId = {{ event.pk }};
-        window.location = "{% url 'event_support' %}?event_id=" + eventId;
-      });
-
-      var $donationConfirmationDialog = $("#supportConfirmationDialog");
-      $('#one-time-donation-btn').on('click', function () {
-        $donationConfirmationDialog.modal("show");
-      });
 
       // Scroll related events until live is visible
       var $liveEvents = $(".event-related-videos .live");
