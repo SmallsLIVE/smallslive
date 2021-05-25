@@ -31,6 +31,9 @@ def invoice_payment_succeeded(sender, **kwargs):
                 'reference': charge_id,
                 'confirmed': True,
             }
+            if 'sponsored_event_id' in metadata:
+                donation['sponsored_event_id'] = metadata['sponsored_event_id']
+                donation['sponsored_event_dedication'] = metadata['sponsored_event_dedication']
             subscriptions.models.Donation.objects.create(**donation)
         else:
             donation.confirmed = True

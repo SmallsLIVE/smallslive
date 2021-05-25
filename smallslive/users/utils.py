@@ -1,5 +1,6 @@
 import decimal
 from datetime import date, timedelta
+import stripe
 from allauth.account import signals
 from allauth.account.adapter import get_adapter
 from allauth.account.app_settings import EmailVerificationMethod
@@ -168,10 +169,17 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
 
 
 def one_time_donation(customer, stripe_token, amount, donation_type='one_time',
-                      dedication='', musician='', event_date=''):
+                      event_id=None, dedication='', musician='', event_date=''):
 
     customer.update_card(stripe_token)
-    charge_object = charge(customer, amount, send_receipt=False)
+    if event_id:
+        metadata = {
+            'sponsored_event_id': event_id,
+            'sponsored_event_dedication': dedication
+        }
+    else:
+        metadata = {}
+    charge_object = charge(customer, amount, send_receipt=False, metadata=metadata)
     custom_receipt = {
         'customer': customer,
         'amount': amount,
@@ -238,14 +246,22 @@ def subscribe(customer, plan, flow):
 
 
 def charge(customer, amount, currency='USD', description='',
-           send_receipt=True):
+           send_receipt=True, metadata={}):
     """Just charge the customer
     The web hook will take care of updating donations if necessary"""
 
-    charge = customer.charge(
-        decimal.Decimal(amount), currency, description, send_receipt)
+    resp = stripe.Charge.create(
+        amount=int(decimal.Decimal(amount) * 100),  # Convert dollars into cents
+        currency=currency,
+        customer=customer.stripe_id,
+        description=description,
+        metadata=metadata
+    )
+    obj = customer.record_charge(resp["id"])
+    if send_receipt:
+        obj.send_receipt()
 
-    return charge
+    return obj
 
 
 def custom_send_receipt(receipt_info={},

@@ -620,6 +620,7 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
         product_id = self.request.GET.get('product_id')
         artist_id = self.request.GET.get('artist_id')
         sponsored_event_id = self.request.GET.get('sponsored_event_id')
+        dedication = self.request.GET.get('dedication')
         if payment_id:
             context = self.set_context(context, payment_id)
         elif product_id:
@@ -631,7 +632,7 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
         if sponsored_event_id:
             event = Event.objects.get(pk=sponsored_event_id)
             context['event'] = event
-            context['dedication'] = event.sponsorship.sponsored_event_dedication
+            context['dedication'] = dedication
 
         return context
 

@@ -137,6 +137,8 @@ var showPanel = function(step) {
 
   var $billing = $mainContainer.find("#supporterStepBilling");
   $billing.removeClass("hidden");
+  $("#yearlyCustom").val("");
+  $(".custom-input label.hidden").removeClass("hidden");
   var hidden = $step.data("billing-hidden");
   if (hidden) {
     $billing.addClass(hidden);
@@ -416,7 +418,7 @@ var checkout = function () {
               }
             });
           });
-        });
+        });$billing.removeClass("hidden");
       } else if (data.url && data.url.indexOf("payment-method") > -1) {
         $.get(data.url, function (data) {
           $.get(data.url, function (data) {
@@ -1332,7 +1334,6 @@ $(document).ready(function() {
 
     if (currentStep === "SelectType") {
       setSelected(selectedData.flow, null, null)
-      $mainContainer.find("#confirmButton").hide();
       $itemForm = null;
     } else {
       $mainContainer.find("#confirmButton").show();
