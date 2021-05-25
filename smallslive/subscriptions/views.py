@@ -154,6 +154,8 @@ class ExecutePayPalPaymentView(PayPalMixin, View):
     """
 
     def __init__(self):
+        self.event = None
+        self.order = None
         self.tickets_type = None
 
     def get(self, request, *args, **kwargs):
@@ -544,6 +546,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                         'currency': 'USD',
                         'quantity': 1}
                     item_list = []
+                    print 'call handle_paypal_payment ->'
                     self.handle_paypal_payment(
                         'USD', item_list,
                         execute_uri=payment_execute_url,

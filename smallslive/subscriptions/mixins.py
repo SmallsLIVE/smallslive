@@ -1,10 +1,10 @@
 from decimal import *
 import paypalrestsdk
 import stripe
-from djstripe.models import Customer, Charge, Plan
-from djstripe.settings import subscriber_request_callback
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from djstripe.models import Customer, Charge, Plan
+from djstripe.settings import subscriber_request_callback
 from oscar.apps.payment.exceptions import RedirectRequired, \
     UnableToTakePayment, PaymentError
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
@@ -12,29 +12,61 @@ from users.utils import charge, one_time_donation, \
     subscribe_to_plan, update_active_card
 
 
-class PayPalMixin(object):
+class PaymentCredentialsMixin(object):
 
     def get_payment_accounts(self):
 
-        is_foundation =  not self.event or self.event.is_foundation
+        print 'event: ', self.event
+        print 'order: ', self.order
+        is_foundation =  not self.event or self.event and self.event.is_foundation
+        print 'is foundation: ', is_foundation
 
         if is_foundation:
-            client_id = settings.PAYPAL_CLIENT_ID
-            client_secret = settings.PAYPAL_CLIENT_SECRET
+
+            print 'settings: ', settings
+            stripe_client_id = settings.STRIPE_PUBLISHABLE_KEY
+            stripe_client_secret = settings.STRIPE_SECRET_KEY
+            paypal_client_id = settings.PAYPAL_CLIENT_ID
+            paypal_client_secret = settings.PAYPAL_CLIENT_SECRET
+            print 'secrets set'
         else:
-            basket = self.request.basket
-            if basket.has_catalog():
+            if self.order:
+                item = self.order
+            else:
+                item = self.request.basket
+            if item.has_catalog():
                 is_foundation = False
-                client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID
-                client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET
+                stripe_client_id = settings.STRIPE_FOR_PROFIT_PUBLISHABLE_KEY
+                stripe_client_secret = settings.STRIPE_FOR_PROFIT_SECRET_KEY
+                paypal_client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID
+                paypal_client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET
             else:
                 if self.event:
                     is_foundation = False
                     venue = self.event.venue
-                    client_id = venue.get_paypal_client_id
-                    client_secret = venue.get_paypal_client_secret
+                    stripe_client_id = venue.get_stripe_client_id
+                    stripe_client_secret = venue.get_stripe_client_secret
+                    paypal_client_id = venue.get_paypal_client_id
+                    paypal_client_secret = venue.get_paypal_client_secret
 
-        return is_foundation, client_id, client_secret
+        print 'return: ', is_foundation
+
+        return is_foundation, stripe_client_id, stripe_client_secret, \
+               paypal_client_id, paypal_client_secret
+
+    def get_stripe_payment_credentials(self):
+        data = self.get_payment_accounts()
+        return data[0], data[1], data[2]
+
+    def get_paypal_payment_credentials(self):
+        print 'call get_payment_accounts'
+        data = self.get_payment_accounts()
+        print 'data: ', data
+        return data[0], data[3], data[4]
+
+
+class PayPalMixin(PaymentCredentialsMixin):
+
 
     def get_payment_data(self, item_list, currency, shipping_charge=0.00,
                          execute_uri=None, cancel_uri=None):
@@ -78,22 +110,23 @@ class PayPalMixin(object):
 
         return data
 
-    def configure_paypal(self, event=None):
-        self.event = event
-        is_foundation, client_id, client_secret = self.get_payment_accounts()
-
-        paypalrestsdk.configure({
+    def configure_paypal(self):
+        print 'call get_paypal_payment_credentials'
+        is_foundation, client_id, client_secret = self.get_paypal_payment_credentials()
+        data = {
             'mode': settings.PAYPAL_MODE,  # sandbox or live
             'client_id': client_id,
-            'client_secret': client_secret})
+            'client_secret': client_secret
+        }
+        print 'Data: ', data
+        paypalrestsdk.configure(data)
 
     def handle_paypal_payment(self, currency, item_list,
                               shipping_charge=0.00,
                               execute_uri=None,
                               cancel_uri=None):
-
-        event = self.request.basket.get_tickets_event()
-        self.configure_paypal(event)
+        print 'call configure paypal'
+        self.configure_paypal()
 
         payment_data = self.get_payment_data(item_list, currency, shipping_charge,
                                              execute_uri=execute_uri, cancel_uri=cancel_uri)
@@ -112,10 +145,11 @@ class PayPalMixin(object):
             else:
                 raise RedirectRequired(approval_url)
         else:
+            print payment.error
             raise UnableToTakePayment(payment.error)
 
-    def execute_payment(self, event=None):
-        self.configure_paypal(event)
+    def execute_payment(self):
+        self.configure_paypal()
         payment_id = self.request.GET.get('paymentId')
         payer_id = self.request.GET.get('PayerID')
         payment = paypalrestsdk.Payment.find(payment_id)
@@ -126,8 +160,8 @@ class PayPalMixin(object):
 
         return payment_id
 
-    def refund_paypal_payment(self, payment_id, total, currency, event=None):
-        self.configure_paypal(event)
+    def refund_paypal_payment(self, payment_id, total, currency, order=None):
+        self.configure_paypal()
         payment = paypalrestsdk.Payment.find(payment_id)
         sale_id = payment.transactions[0].related_resources[0].sale.id
         sale = paypalrestsdk.Sale.find(sale_id)
@@ -147,7 +181,7 @@ class PayPalMixin(object):
         return refund_id
 
 
-class StripeMixin(object):
+class StripeMixin(PaymentCredentialsMixin):
 
     def execute_stripe_payment(self):
         # As per Aslan's request
@@ -180,15 +214,18 @@ class StripeMixin(object):
         return stripe_ref
 
     def handle_stripe_payment(self, order_number, basket_lines, **kwargs):
+
         if self.request.user.is_authenticated():
             customer = self.request.user.customer
         else:
             customer = None
+
+        data = self.get_stripe_payment_credentials()
+        is_foundation = data[0]
+        stripe_secret_key = data[2]
+
         # Smalls tickets are accounted according to the venue's account.
-        event = self.request.basket.get_tickets_event()
-        if event:
-            venue = event.venue
-        if customer and event and event.is_foundation:
+        if customer and is_foundation:
             if not self.card_token.startswith('card_'):
                 customer.update_card(self.card_token)
             charge = customer.charge(
@@ -199,16 +236,10 @@ class StripeMixin(object):
 
         else:
             metadata = {}
-            if event:
-                if event.is_foundation:
-                    stripe_secret_key = settings.STRIPE_SECRET_KEY
-                else:
-                    stripe_secret_key = venue.get_stripe_secret_key
-                    metadata = {
-                        'isFoundation': False
-                    }
-            else:
-                stripe_secret_key = settings.STRIPE_SECRET_KEY
+            if not is_foundation:
+                metadata = {
+                    'isFoundation': False
+                }
             resp = stripe.Charge.create(
                 api_key=stripe_secret_key,
                 source=self.card_token,
@@ -226,11 +257,8 @@ class StripeMixin(object):
 
         return stripe_ref
 
-    def refund_stripe_payment(self, charge_id, event=None):
-        if event and not event.is_foundation:
-            api_key = event.venue.get_stripe_secret_key
-        else:
-            api_key = settings.STRIPE_SECRET_KEY
+    def refund_stripe_payment(self, charge_id):
+        api_key = self.get_stripe_payment_credentials()[2]
         charge = stripe.Charge.retrieve(api_key=api_key, id=charge_id)
         refund = charge.refund()
 

@@ -351,6 +351,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         self.amount = None
         self.card_token = None
         self.artist_id = None
+        self.event = None
         self.event_id = None
         self.event_slug = None
         self.product_id = None
@@ -436,6 +437,9 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             kwargs['stripe_token'] = self.token
 
         kwargs['card_info'] = self.checkout_session._get('payment', 'card_info')
+        user = self.request.user
+        if user.is_authenticated():
+            kwargs['can_use_existing_cc'] = user.can_use_existing_cc and not basket.has_catalog()
 
         return kwargs
 

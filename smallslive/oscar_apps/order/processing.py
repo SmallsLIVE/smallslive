@@ -19,16 +19,15 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
             reference = payment_source.reference
             amount = payment_source.amount_allocated
             currency = payment_source.currency
-            event = order.get_tickets_event()
             if 'paypal' in payment_source.source_type.name.lower():
                 refund_reference = self.refund_paypal_payment(
                     reference,
                     amount,
                     currency,
-                    event)
+                    order)
             elif 'stripe' in payment_source.source_type.name.lower():
                 refund_reference = self.refund_stripe_payment(
-                    reference, event)
+                    reference, order)
 
             lines = order.lines.all()
             line_quantities = lines.values_list('quantity', flat=True)

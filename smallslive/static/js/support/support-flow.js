@@ -409,8 +409,10 @@ var checkout = function () {
               if (selectedData.flow == "ticket_support") {
                 enablePaymentTypes("store");
                 showBilling();
+                $(".deferred").addClass("hidden");
               } else {
                 showBilling(data);
+                $(".deferred").addClass("hidden");
               }
             });
           });
@@ -419,6 +421,7 @@ var checkout = function () {
         $.get(data.url, function (data) {
           $.get(data.url, function (data) {
             showBilling(data);
+            $(".deferred").addClass("hidden");
           });
         });
       } else {
@@ -473,6 +476,16 @@ $(document).ready(function() {
       .not(selector)
       .addClass("hidden");
 
+    if (!$(".gift-input.supporter-plan-input").hasClass("hidden")) {
+        $("#payment-form").addClass("hidden");
+        $(".deferred").addClass("hidden");
+
+    } else {
+        $("#payment-form").removeClass("hidden");
+        $(".deferred").removeClass("hidden");
+
+    }
+
     enablePaymentTypes(recurring);
 
     return false;
@@ -489,6 +502,7 @@ $(document).ready(function() {
             $.get(data.url, function(data) {
               $.get(data.url, function(data) {
                 showPanel("Billing");
+                $(".deferred").addClass("hidden");
                 $("#billing-information-wrapper").removeClass("hidden");
                 enablePaymentTypes("store");
               });
@@ -1295,7 +1309,16 @@ $(document).ready(function() {
     if (currentStep === "Intro") return;
 
     if (currentStep === "Billing") {
-      //showPaymentInfoForm(true);
+      if (currentStep === "Billing") {
+        if (!$(".gift-input.supporter-plan-input").hasClass("hidden")) {
+          $("#payment-form").addClass("hidden");
+          $(".deferred").addClass("hidden");
+        } else {
+          $("#payment-form").removeClass("hidden");
+          $(".deferred").addClass("hidden");
+
+        }
+      }
     }
 
     if (!getSteps().indexOf(currentStep) < 1) {
