@@ -308,7 +308,8 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
 
     def set_sponsorship(self):
         if self.flow_type == 'event_sponsorship':
-            self.sponsored_event_id = self.event_id
+            event_id = self.request.POST.get('sponsored_event_id')
+            self.sponsored_event_id = event_id
             self.sponsored_event_dedication = self.request.POST.get('dedication')
             self.event_id = None
 

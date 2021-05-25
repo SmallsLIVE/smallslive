@@ -34,6 +34,11 @@ function startStripePayment($form, action_url, completeSubpage) {
     $('<input type="hidden" name="event_id" />').val(eventId)
   );
 
+  var eventId = $mainContainer.find("#supporterSteps").data("sponsored-event-id");
+  $form.append(
+    $('<input type="hidden" name="sponsored_event_id" />').val(eventId)
+  );
+
   var dedication = $mainContainer.find("#supporterSteps").data("dedication");
   $form.append(
     $('<input type="hidden" name="dedication" />').val(dedication)
@@ -145,6 +150,11 @@ function startPayPalPayment($form, action_url, completeSubpage) {
       // Insert the token into the form so it gets submitted to the server
   $form.append(
     $('<input type="hidden" name="event_slug" />').val(eventSlug)
+  );
+
+  var eventId = $mainContainer.find("#supporterSteps").data("sponsored-event-id");
+  $form.append(
+    $('<input type="hidden" name="sponsored_event_id" />').val(eventId)
   );
 
   var dedication = $mainContainer.find("#supporterSteps").data("dedication");

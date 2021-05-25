@@ -16,19 +16,12 @@ class PaymentCredentialsMixin(object):
 
     def get_payment_accounts(self):
 
-        print 'event: ', self.event
-        print 'order: ', self.order
         is_foundation =  not self.event or self.event and self.event.is_foundation
-        print 'is foundation: ', is_foundation
-
         if is_foundation:
-
-            print 'settings: ', settings
             stripe_client_id = settings.STRIPE_PUBLISHABLE_KEY
             stripe_client_secret = settings.STRIPE_SECRET_KEY
             paypal_client_id = settings.PAYPAL_CLIENT_ID
             paypal_client_secret = settings.PAYPAL_CLIENT_SECRET
-            print 'secrets set'
         else:
             if self.order:
                 item = self.order
@@ -49,8 +42,6 @@ class PaymentCredentialsMixin(object):
                     paypal_client_id = venue.get_paypal_client_id
                     paypal_client_secret = venue.get_paypal_client_secret
 
-        print 'return: ', is_foundation
-
         return is_foundation, stripe_client_id, stripe_client_secret, \
                paypal_client_id, paypal_client_secret
 
@@ -59,9 +50,7 @@ class PaymentCredentialsMixin(object):
         return data[0], data[1], data[2]
 
     def get_paypal_payment_credentials(self):
-        print 'call get_payment_accounts'
         data = self.get_payment_accounts()
-        print 'data: ', data
         return data[0], data[3], data[4]
 
 
@@ -111,21 +100,18 @@ class PayPalMixin(PaymentCredentialsMixin):
         return data
 
     def configure_paypal(self):
-        print 'call get_paypal_payment_credentials'
         is_foundation, client_id, client_secret = self.get_paypal_payment_credentials()
         data = {
             'mode': settings.PAYPAL_MODE,  # sandbox or live
             'client_id': client_id,
             'client_secret': client_secret
         }
-        print 'Data: ', data
         paypalrestsdk.configure(data)
 
     def handle_paypal_payment(self, currency, item_list,
                               shipping_charge=0.00,
                               execute_uri=None,
                               cancel_uri=None):
-        print 'call configure paypal'
         self.configure_paypal()
 
         payment_data = self.get_payment_data(item_list, currency, shipping_charge,
