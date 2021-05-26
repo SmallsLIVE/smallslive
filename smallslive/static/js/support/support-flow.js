@@ -418,7 +418,8 @@ var checkout = function () {
               }
             });
           });
-        });$billing.removeClass("hidden");
+        });
+        $billing.removeClass("hidden");
       } else if (data.url && data.url.indexOf("payment-method") > -1) {
         $.get(data.url, function (data) {
           $.get(data.url, function (data) {
@@ -478,15 +479,8 @@ $(document).ready(function() {
       .not(selector)
       .addClass("hidden");
 
-    if (!$(".gift-input.supporter-plan-input").hasClass("hidden")) {
-        $("#payment-form").addClass("hidden");
-        $(".deferred").addClass("hidden");
-
-    } else {
-        $("#payment-form").removeClass("hidden");
-        $(".deferred").removeClass("hidden");
-
-    }
+    $("#payment-form").removeClass("hidden");
+    $(".deferred").removeClass("hidden");
 
     enablePaymentTypes(recurring);
 
