@@ -419,7 +419,6 @@ var checkout = function () {
             });
           });
         });
-        $billing.removeClass("hidden");
       } else if (data.url && data.url.indexOf("payment-method") > -1) {
         $.get(data.url, function (data) {
           $.get(data.url, function (data) {
