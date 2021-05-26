@@ -848,6 +848,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         basket_line = basket_lines.first()
         basket = basket_line.basket
         self.card_token = self.request.POST.get('card_token')
+        self.event = basket.get_tickets_event()
         payment_method = kwargs.get('payment_method')
 
         currency = total.currency
