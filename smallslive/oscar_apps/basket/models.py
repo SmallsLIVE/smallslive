@@ -58,7 +58,18 @@ class Basket(AbstractBasket):
         return event
 
     def has_catalog(self):
+
+
         count = self.all_lines().filter(product__categories__name='Music').count()
+        if count > 0:
+            return count
+
+        count = self.all_lines().filter(product__parent__categories__name='Music').count()
+
+        if count > 0:
+            return count
+
+        count = self.all_lines().filter(product__parent__categories__name='SmallsLIVE Catalog').count()
 
         return count > 0
     

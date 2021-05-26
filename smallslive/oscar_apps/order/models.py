@@ -31,6 +31,9 @@ class Order(AbstractOrder):
         physical_count = self.lines.filter(product__product_class__requires_shipping=True).count()
         return physical_count > 0
 
+    def physical_lines(self):
+        return self.lines.select_related('product').filter(product__product_class__requires_shipping=True)
+
     def has_digital_products(self):
         digital_count = self.lines.filter(product__product_class__requires_shipping=False).count()
         return digital_count > 0
@@ -78,7 +81,17 @@ class Order(AbstractOrder):
         return gifts_count > 0
 
     def has_catalog(self):
+
         count = self.lines.filter(product__categories__name='Music').count()
+        if count > 0:
+            return count
+
+        count = self.lines.filter(product__parent__categories__name='Music').count()
+
+        if count > 0:
+            return count
+
+        count = self.lines.filter(product__parent__categories__name='SmallsLIVE Catalog').count()
 
         return count > 0
 

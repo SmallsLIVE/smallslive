@@ -207,6 +207,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         self.check = False
         self.event = None
         self.event_id = None
+        self.sponsored_event = None
         self.sponsored_event_id = None
         self.sponsored_event_dedication = ''
         self.event_slug = None
@@ -216,6 +217,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         self.plan_type = None
         self.artist_id = None
         self.artist_full_name = None
+        self.order = None
         self.product_id = None
         self.product_title = ''
         self.stripe_token = None
@@ -309,6 +311,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
     def set_sponsorship(self):
         if self.flow_type == 'event_sponsorship':
             event_id = self.request.POST.get('sponsored_event_id')
+            self.sponsored_event = Event.objects.get(pk=event_id)
             self.sponsored_event_id = event_id
             self.sponsored_event_dedication = self.request.POST.get('dedication')
             self.event_id = None
@@ -491,7 +494,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                         url += '&event_slug=' + self.event_slug
                     if self.sponsored_event_id:
                         url += '&sponsored_event_id=' + self.sponsored_event_id
-                        url += '&event_slug=' + self.event_slug
+                        url += '&event_slug=' + self.sponsored_event.slug
                         url += '&dedication=' + self.sponsored_event_dedication
                     if self.artist_id:
                         url += '&artist_id=' + self.artist_id
@@ -547,7 +550,6 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                         'currency': 'USD',
                         'quantity': 1}
                     item_list = []
-                    print 'call handle_paypal_payment ->'
                     self.handle_paypal_payment(
                         'USD', item_list,
                         execute_uri=payment_execute_url,

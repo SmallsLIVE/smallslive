@@ -20,7 +20,7 @@ from oscar.apps.payment.models import SourceType, Source
 from oscar.core.loading import get_class
 from oscar_apps.catalogue.models import UserCatalogue, UserCatalogueProduct
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
-from subscriptions.mixins import PayPalMixin, StripeMixin
+from subscriptions.mixins import PayPalMixin, StripeMixin, PaymentCredentialsMixin
 from subscriptions.models import Donation
 from utils import utils as sl_utils
 from .forms import PaymentForm, BillingAddressForm
@@ -210,7 +210,7 @@ class AssignProductMixin(object):
             self.order.set_status('Completed')
 
 
-class SuccessfulOrderMixin(object):
+class SuccessfulOrderMixin(PaymentCredentialsMixin):
 
     def set_payment_target(self):
         if 'product_id' in self.request.session:
@@ -223,21 +223,9 @@ class SuccessfulOrderMixin(object):
         if 'artist_id' in self.request.session:
             self.artist_id = self.request.session['artist_id']
 
-    def is_foundation(self):
-        event = self.order.get_tickets_event()
-        if event and not event.is_foundation:
-            is_foundation = False
-        elif self.order.has_catalog():
-            is_foundation = False
-        else:
-            is_foundation = True
-
-        print 'Is Foundation'
-
-        return is_foundation
-
     def create_donation(self):
-        if self.is_foundation():
+        is_foundation = self.get_payment_accounts()[0]
+        if is_foundation:
             payment_source = 'PayPal Foundation'
             if self.card_token:
                 payment_source = 'Stripe Foundation'
@@ -515,22 +503,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         return billing_address_form
 
-    def get_stripe_secret_key(self):
-        basket = self.request.basket
-        if basket.has_catalog():
-            stripe_secret_key = settings.STRIPE_FOR_PROFIT_SECRET_KEY
-        else:
-            event = basket.get_tickets_event()
-            if event:
-                if event.is_foundation:
-                    stripe_secret_key = settings.STRIPE_SECRET_KEY
-                else:
-                    stripe_secret_key = event.venue.get_stripe_secret_key
-            else:
-                stripe_secret_key = settings.STRIPE_SECRET_KEY
-
-        return stripe_secret_key
-
 
     def handle_payment_details_submission_for_tickets(self,
                                                       billing_address_form,
@@ -538,7 +510,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         """Customer can pay for Mezzrow or Smalls tickets with PayPal or Credit Card."""
 
 
-        stripe_api_key = self.get_stripe_secret_key()
+        stripe_api_key = self.get_stripe_payment_credentials()[2]
 
         form = PaymentForm(self.request.user, stripe_api_key, self.request.POST)
 
@@ -580,7 +552,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
     def handle_payment_details_submission_for_basket(
             self, shipping_address, billing_address_form, payment_method):
 
-        stripe_api_key = self.get_stripe_secret_key()
+        stripe_api_key = self.get_stripe_payment_credentials()[2]
         form = PaymentForm(self.request.user, stripe_api_key, self.request.POST)
 
         if billing_address_form and not billing_address_form.is_valid():
@@ -1007,9 +979,8 @@ class ExecutePayPalPaymentView(AssignProductMixin,
 
         # request.basket doesn't work b/c the basket is frozen
         basket = self.get_submitted_basket()
-        event = basket.get_tickets_event()
-
-        self.payment_id = self.execute_payment(event)
+        self.event = basket.get_tickets_event()
+        self.payment_id = self.execute_payment()
 
         # TODO: check that the strategy is correct for Tracks (right stock record).
         # If basket has tracks, it's probably to use custom strategy.
@@ -1031,8 +1002,8 @@ class ExecutePayPalPaymentView(AssignProductMixin,
 
         # Record payment source
         order_kwargs = {'order_type': basket.get_order_type()}
-        if event:
-            venue = event.venue
+        if self.event:
+            venue = self.event.venue
             self.tickets_type = venue.name.lower()
             order_kwargs['status'] = 'Completed'
             payment_source = '{} PayPal'.format(venue.name)

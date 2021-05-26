@@ -16,12 +16,16 @@ class PaymentCredentialsMixin(object):
 
     def get_payment_accounts(self):
 
-        is_foundation =  not self.event or self.event and self.event.is_foundation
-        if is_foundation:
-            stripe_client_id = settings.STRIPE_PUBLISHABLE_KEY
-            stripe_client_secret = settings.STRIPE_SECRET_KEY
-            paypal_client_id = settings.PAYPAL_CLIENT_ID
-            paypal_client_secret = settings.PAYPAL_CLIENT_SECRET
+        if self.event:
+            if self.event.is_foundation:
+                is_foundation = True
+            else:
+                is_foundation = False
+                venue = self.event.venue
+                stripe_client_id = venue.get_stripe_publishable_key
+                stripe_client_secret = venue.get_stripe_secret_key
+                paypal_client_id = venue.get_paypal_client_id
+                paypal_client_secret = venue.get_paypal_client_secret
         else:
             if self.order:
                 item = self.order
@@ -34,13 +38,13 @@ class PaymentCredentialsMixin(object):
                 paypal_client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID
                 paypal_client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET
             else:
-                if self.event:
-                    is_foundation = False
-                    venue = self.event.venue
-                    stripe_client_id = venue.get_stripe_client_id
-                    stripe_client_secret = venue.get_stripe_client_secret
-                    paypal_client_id = venue.get_paypal_client_id
-                    paypal_client_secret = venue.get_paypal_client_secret
+                is_foundation = True
+
+        if is_foundation:
+            stripe_client_id = settings.STRIPE_PUBLISHABLE_KEY
+            stripe_client_secret = settings.STRIPE_SECRET_KEY
+            paypal_client_id = settings.PAYPAL_CLIENT_ID
+            paypal_client_secret = settings.PAYPAL_CLIENT_SECRET
 
         return is_foundation, stripe_client_id, stripe_client_secret, \
                paypal_client_id, paypal_client_secret
@@ -147,6 +151,8 @@ class PayPalMixin(PaymentCredentialsMixin):
         return payment_id
 
     def refund_paypal_payment(self, payment_id, total, currency, order=None):
+        self.order = order
+        self.event = order.get_tickets_event()
         self.configure_paypal()
         payment = paypalrestsdk.Payment.find(payment_id)
         sale_id = payment.transactions[0].related_resources[0].sale.id
@@ -186,10 +192,10 @@ class StripeMixin(PaymentCredentialsMixin):
             musician = ''
             donation_type = 'one_time'
             if self.flow_type == 'event_sponsorship':
-                event_id = self.event.pk
+                event_id = self.sponsored_event_id
                 dedication = self.sponsored_event_dedication
-                musician = self.event.leader_string()
-                event_date = self.event.get_date()
+                musician = self.sponsored_event.leader_string()
+                event_date = self.sponsored_event.get_date()
                 donation_type = 'event_sponsorship'
 
             stripe_ref = one_time_donation(
@@ -245,7 +251,9 @@ class StripeMixin(PaymentCredentialsMixin):
 
         return stripe_ref
 
-    def refund_stripe_payment(self, charge_id):
+    def refund_stripe_payment(self, charge_id, order=None):
+        self.order = order
+        self.event = order.get_tickets_event()
         api_key = self.get_stripe_payment_credentials()[2]
         charge = stripe.Charge.retrieve(api_key=api_key, id=charge_id)
         refund = charge.refund()

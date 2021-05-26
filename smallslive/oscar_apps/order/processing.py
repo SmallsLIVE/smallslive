@@ -19,17 +19,18 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
             reference = payment_source.reference
             amount = payment_source.amount_allocated
             currency = payment_source.currency
-            if 'paypal' in payment_source.source_type.name.lower():
+            payment_type_name = payment_source.source_type.name.lower()
+            if 'paypal' in payment_type_name:
                 refund_reference = self.refund_paypal_payment(
                     reference,
                     amount,
                     currency,
                     order)
-            elif 'stripe' in payment_source.source_type.name.lower():
+            elif 'stripe' in payment_type_name:
                 refund_reference = self.refund_stripe_payment(
                     reference, order)
 
-            lines = order.lines.all()
+            lines = order.physical_lines()
             line_quantities = lines.values_list('quantity', flat=True)
             refund_event_type, _ = PaymentEventType.objects.get_or_create(name="Refunded")
             self.handle_payment_event(order, refund_event_type,
@@ -37,4 +38,5 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
                                       line_quantities, reference=refund_reference)
             self.cancel_stock_allocations(order, lines, line_quantities)
         order.set_status(new_status)
+        # TODO: undo donations and library if necessary
 
