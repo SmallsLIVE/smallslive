@@ -73,9 +73,15 @@
         {% if not flow_type = 'update_pledge' %}All tax information is available from your account settings. {% endif %}
         {% if not flow_type = 'update_pledge' %}Please choose one of the following:{% endif %}
       </div>
+      {% if not flow_type == 'gift_support' %}
       {% include 'subscriptions/supporter_step_select_type.html' %}
+      {% endif %}
       {% if not flow_type = "update_pledge" %}
-        {% include 'subscriptions/supporter_gift_selection.html' with hidden=True %}
+        {% if flow_type == "gift_support" %}
+          {% include 'subscriptions/supporter_gift_selection.html' with hidden=False %}
+        {% else %}
+          {% include 'subscriptions/supporter_gift_selection.html' with hidden=True %}
+        {% endif %}
       {% endif %}
     </div>
 
@@ -164,6 +170,9 @@
     var step = "Intro";
     {% if skip_intro %}
       step = "SelectType";
+    {% endif %}
+    {% if flow_type == 'gift_support' %}
+      flow = "gift_support";
     {% endif %}
 
     $(document).ready(function () {

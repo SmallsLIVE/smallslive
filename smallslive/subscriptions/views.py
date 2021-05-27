@@ -767,6 +767,35 @@ class TicketSupportView(BecomeSupporterView):
 ticket_support = TicketSupportView.as_view()
 
 
+class GiftSupportView(BecomeSupporterView):
+
+    def get_event(self):
+
+        basket = self.request.basket
+        product = None
+        for line in basket.lines.all():
+            product = line.product
+
+        if product:
+            return product.event_set.event
+
+    def can_use_existing_cc(self):
+        return
+
+    def get_context_data(self, **kwargs):
+
+        context = super(GiftSupportView, self).get_context_data(**kwargs)
+        context['payment_info_url'] = reverse('payment_info')
+        context['donation_preview_url'] = reverse('donation_preview')
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['flow_type'] = 'gift_support'
+        context['skip_intro'] = True
+        return context
+
+
+gift_support = GiftSupportView.as_view()
+
+
 class SyncPaymentHistoryView(SyncHistoryView):
     template_name = 'account/blocks/payment_history.html'
 

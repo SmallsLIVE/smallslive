@@ -72,6 +72,8 @@ var getSteps = function() {
     steps = ["SelectType", "Preview", "ThankYou"];
   } else if (selectedData.flow == "ticket_support") {
     steps = ["Basket", "Billing", "Preview", "ThankYou"]
+  } else if (selectedData.flow == "gift_support") {
+    steps = ["SelectType", "Billing", "Preview", "ThankYou"]
   }
 
   /* There needs to be one less dot than steps because the Thank You Page
