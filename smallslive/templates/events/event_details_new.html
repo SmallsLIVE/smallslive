@@ -110,7 +110,7 @@
                <button class="white-border-button">Clone</button>
              </form>
             {% endif %}
-            {% if not event.is_live and event.is_future %}
+            {% if event.is_live or event.is_future %}
               {% if products %}
                 {% for product in products %}
                   {% purchase_info_for_product request product as session %}
