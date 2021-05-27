@@ -321,3 +321,15 @@ def custom_send_receipt(receipt_info={},
         receipt_info['customer'].save()
 
 
+def send_admin_notification(order_number):
+
+    subject = "Order with shipping required received {}".format(order_number)
+    message = "Order {} was received and requires shipping".format(order_number)
+
+    email_to = ['foundation@smallslive.com']
+    subject = subject.strip()
+    EmailMessage(
+        subject,
+        message,
+        to=email_to,
+        from_email=INVOICE_FROM_EMAIL).send()

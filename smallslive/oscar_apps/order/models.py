@@ -29,6 +29,9 @@ class Order(AbstractOrder):
 
     def has_physical_products(self):
         physical_count = self.lines.filter(product__product_class__requires_shipping=True).count()
+        if physical_count > 0:
+            return True
+        physical_count = self.lines.filter(product__parent__product_class__requires_shipping=True).count()
         return physical_count > 0
 
     def physical_lines(self):

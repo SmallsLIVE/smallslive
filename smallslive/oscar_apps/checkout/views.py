@@ -22,6 +22,7 @@ from oscar_apps.catalogue.models import UserCatalogue, UserCatalogueProduct
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.mixins import PayPalMixin, StripeMixin, PaymentCredentialsMixin
 from subscriptions.models import Donation
+from users.utils import send_admin_notification as util_send_admin_notification
 from utils import utils as sl_utils
 from .forms import PaymentForm, BillingAddressForm
 
@@ -244,6 +245,10 @@ class SuccessfulOrderMixin(PaymentCredentialsMixin):
         # Send confirmation message (normally an email)
         self.send_confirmation_message(self.order, order_type_code)
 
+    def send_admin_notification(self):
+        if self.order.has_physical_products():
+            util_send_admin_notification(self.order.number)
+
     def get_success_url(self, flow_type):
         success_url = reverse('become_supporter_complete')
         if flow_type:
@@ -284,7 +289,6 @@ class SuccessfulOrderMixin(PaymentCredentialsMixin):
         # Donating or paying for a product, event, artist, etc.
         self.set_payment_target()
 
-        print 'Create donation'
         self.create_donation()
 
         # Assign product to Library if applies and set order and line status.
@@ -309,6 +313,7 @@ class SuccessfulOrderMixin(PaymentCredentialsMixin):
 
         if self.order:
             self.send_signal(self.request, response, self.order)
+            self.send_admin_notification()
 
         return response
 
