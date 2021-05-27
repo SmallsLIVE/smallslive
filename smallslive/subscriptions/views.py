@@ -719,7 +719,7 @@ class ProductSupportView(ProductMixin, BecomeSupporterView):
         context['payment_info_url'] = reverse('payment_info')
         context['donation_preview_url'] = reverse('donation_preview')
         context['product_id'] = self.object.pk
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_FOR_PROFIT_PUBLIC_KEY
 
         context['child_product'] = self.child_product
         context['gifts'] = self.gifts
@@ -754,9 +754,11 @@ class TicketSupportView(BecomeSupporterView):
         context['payment_info_url'] = reverse('payment_info')
         context['donation_preview_url'] = reverse('donation_preview')
         event = self.get_event()
-        if event:
-            context['venue_name'] = event.get_venue_name()
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['venue_name'] = event.get_venue_name()
+        if event.is_foundation:
+            context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        else:
+            context['STRIPE_PUBLIC_KEY'] = event.venue.get_stripe_publishable_key
         context['can_use_existing_cc'] = self.request.user.can_use_existing_cc and event.is_foundation
 
         return context
