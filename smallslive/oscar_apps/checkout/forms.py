@@ -77,7 +77,6 @@ class PaymentForm(forms.Form):
                         },
                     )
                     self.token = token.id
-                    print 'Sripe token: ', token
                 except stripe.error.CardError, e:
                     print 'VALIDATION ERROR !!!!'
                     print e

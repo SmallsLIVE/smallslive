@@ -514,7 +514,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                                                       payment_method):
         """Customer can pay for Mezzrow or Smalls tickets with PayPal or Credit Card."""
 
-
+        self.event = self.request.basket.get_tickets_event()
         stripe_api_key = self.get_stripe_payment_credentials()[2]
 
         form = PaymentForm(self.request.user, stripe_api_key, self.request.POST)
