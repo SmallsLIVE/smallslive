@@ -71,9 +71,18 @@ var getSteps = function() {
   } else if (selectedData.flow == "event_sponsorship" || selectedData.flow == "donate_direct") {
     steps = ["SelectType", "Preview", "ThankYou"];
   } else if (selectedData.flow == "ticket_support") {
-    steps = ["Basket", "Billing", "Preview", "ThankYou"]
+    steps = ["Basket", "Billing", "Preview", "ThankYou"];
   } else if (selectedData.flow == "gift_support") {
-    steps = ["SelectType", "Billing", "Preview", "ThankYou"]
+      steps = ["SelectType", "Billing", "Preview", "ThankYou"];
+      if (selectedData.type == "store_physical") {
+        steps = [
+          "SelectType",
+          "Shipping",
+          "Billing",
+          "Preview",
+          "ThankYou"
+        ];
+      }
   }
 
   /* There needs to be one less dot than steps because the Thank You Page
