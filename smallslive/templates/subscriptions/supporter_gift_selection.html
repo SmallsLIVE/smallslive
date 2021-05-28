@@ -21,6 +21,7 @@
       {% purchase_info_for_product request product as session %}
         {% if session.availability.is_available_to_buy %}
           <div>
+            {% if request.user.is_authenticated %}
             <form action="{% url 'basket:add' pk=product.pk  %}"
                method="post"
                class="add-to-basket hidden"
@@ -42,6 +43,7 @@
 
             <!-- Single store item -->
             <div class="gifts-container">
+
               {% if session.price.excl_tax == 0 %}
                 <div class="button-row button-row-big button-row-margin gift-button">
                   <button class="select-gift">Free</button>
@@ -71,6 +73,7 @@
                    </button>
                 </div>
               {% endif %}
+
 
               <!-- html to be loaded into selection popup -->
               <div class="modal-content hidden">
@@ -109,6 +112,32 @@
                 </div>
               </div>
             </div>
+            {% else %}
+              <!-- Single store item -->
+            <div class="gifts-container">
+
+              {% if session.price.excl_tax == 0 %}
+                <div class="button-row button-row-big button-row-margin gift-button">
+                  <button class="select-gift" onclick="$('#becomeMemberDialog').modal('show');">Free</button>
+                </div>
+              {% elif session.price.is_tax_known %}
+                <div class="button-row button-row-big button-row-margin gift-button">
+                  <button class="white-border-button"
+                          onclick="$('#becomeMemberDialog').modal('show');">
+                    <span class="price-tag">{{ session.price.incl_tax|currency:session.price.currency }} </span>
+                    <span class="gift-title">{{ product.get_title }}</span>
+                  </button>
+                </div>
+              {% else %}
+                <div class="button-row button-row-big button-row-margin gift-button">
+                   <button class="white-border-button"
+                           onclick="$('#becomeMemberDialog').modal('show');">
+                     <span class="price-tag">{{ session.price.excl_tax|currency:session.price.currency }} </span>
+                     <span class="gift-title">{{ product.get_title }}</span>
+                   </button>
+                </div>
+              {% endif %}
+            {% endif %}
           </div>
         {% endif %}
         <!-- End of single store item -->

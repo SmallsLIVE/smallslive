@@ -363,45 +363,43 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         else:
             context['can_free_donate'] = False
 
-        if not self.request.user.is_authenticated():
-            context['flow_type'] = 'one_time_donation'
-        else:
-            # Whatever the flow type is, it needs to be become a supporter if the user
-            # is not a supporter yet. They can't donate or get stuff from the Catalog.
-            # Except if they are getting tickets
-            if not current_user.can_watch_video and not context['flow_type'] == "ticket_support":
-                context['flow_type'] = 'become_supporter'
 
-            # We need to clear the basket in case the user has anything in there.
-            # Except for tickets
-            if not context['flow_type'] == 'ticket_support':
-                self.request.basket.flush()
+        # Whatever the flow type is, it needs to be become a supporter if the user
+        # is not a supporter yet. They can't donate or get stuff from the Catalog.
+        # Except if they are getting tickets
+        if current_user.is_authenticated() and not current_user.can_watch_video and not context['flow_type'] == 'ticket_support':
+            context['flow_type'] = 'become_supporter'
 
-            context['gifts'] = []
-            context['costs'] = []
-            for product in Product.objects.filter(categories__name='Gifts'):
-                context['gifts'].append(product)
-                if product.variants.count():
-                    context['costs'].append(
-                        product.variants.first().stockrecords.first().cost_price)
-                else:
-                    context['costs'].append(
-                        product.stockrecords.first().cost_price)
+        # We need to clear the basket in case the user has anything in there.
+        # Except for tickets
+        if not context['flow_type'] == 'ticket_support':
+            self.request.basket.flush()
 
-            def get_product_price(x):
-                selector = Selector()
-                strategy = selector.strategy(
-                    request=self.request, user=self.request.user)
+        context['gifts'] = []
+        context['costs'] = []
+        for product in Product.objects.filter(categories__name='Gifts'):
+            context['gifts'].append(product)
+            if product.variants.count():
+                context['costs'].append(
+                    product.variants.first().stockrecords.first().cost_price)
+            else:
+                context['costs'].append(
+                    product.stockrecords.first().cost_price)
 
-                if x.variants.count():
-                    price = strategy.fetch_for_product(product=x.variants.first()).price.incl_tax
-                else:
-                    price = strategy.fetch_for_product(product=x).price.incl_tax
+        def get_product_price(x):
+            selector = Selector()
+            strategy = selector.strategy(
+                request=self.request, user=self.request.user)
 
-                return price
+            if x.variants.count():
+                price = strategy.fetch_for_product(product=x.variants.first()).price.incl_tax
+            else:
+                price = strategy.fetch_for_product(product=x).price.incl_tax
 
-            context['gifts'].sort(
-                key=lambda x: get_product_price(x))
+            return price
+
+        context['gifts'].sort(
+            key=lambda x: get_product_price(x))
 
         # Don't skip intro if user is not active. We need to force them to stay
         # on the Intro page with the "Confirm Email" button.
