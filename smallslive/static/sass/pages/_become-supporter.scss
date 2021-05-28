@@ -105,6 +105,12 @@
     height: auto;
   }
 
+  .select-gift-placeholder {
+    margin-bottom: 10px;
+    min-width: 300px;
+    height: auto;
+  }
+
   input {
     @include bordered-input;
     background-color: white;

@@ -44,11 +44,7 @@
             <!-- Single store item -->
             <div class="gifts-container">
 
-              {% if session.price.excl_tax == 0 %}
-                <div class="button-row button-row-big button-row-margin gift-button">
-                  <button class="select-gift">Free</button>
-                </div>
-              {% elif session.price.is_tax_known %}
+              {% if session.price.is_tax_known %}
                 <div class="button-row button-row-big button-row-margin gift-button">
                   <button class="select-gift white-border-button"
                           data-cost="{{ session.stockrecord.cost_price }}"
@@ -116,13 +112,9 @@
               <!-- Single store item -->
             <div class="gifts-container">
 
-              {% if session.price.excl_tax == 0 %}
+              {% if session.price.is_tax_known %}
                 <div class="button-row button-row-big button-row-margin gift-button">
-                  <button class="select-gift" onclick="$('#becomeMemberDialog').modal('show');">Free</button>
-                </div>
-              {% elif session.price.is_tax_known %}
-                <div class="button-row button-row-big button-row-margin gift-button">
-                  <button class="white-border-button"
+                  <button class="white-border-button select-gift-placeholder"
                           onclick="$('#becomeMemberDialog').modal('show');">
                     <span class="price-tag">{{ session.price.incl_tax|currency:session.price.currency }} </span>
                     <span class="gift-title">{{ product.get_title }}</span>
@@ -130,7 +122,7 @@
                 </div>
               {% else %}
                 <div class="button-row button-row-big button-row-margin gift-button">
-                   <button class="white-border-button"
+                   <button class="white-border-button select-gift-placeholder"
                            onclick="$('#becomeMemberDialog').modal('show');">
                      <span class="price-tag">{{ session.price.excl_tax|currency:session.price.currency }} </span>
                      <span class="gift-title">{{ product.get_title }}</span>
