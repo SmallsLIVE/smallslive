@@ -244,6 +244,7 @@ class SuccessfulOrderMixin(PaymentCredentialsMixin):
 
         # Send confirmation message (normally an email)
         self.send_confirmation_message(self.order, order_type_code)
+        self.send_admin_notification()
 
     def send_admin_notification(self):
         if self.order.has_physical_products():
@@ -313,7 +314,7 @@ class SuccessfulOrderMixin(PaymentCredentialsMixin):
 
         if self.order:
             self.send_signal(self.request, response, self.order)
-            self.send_admin_notification()
+            self.send_confirmation()
 
         return response
 
