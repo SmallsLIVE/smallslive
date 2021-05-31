@@ -13,22 +13,22 @@
           <div class="col-xs-9 store-cart__table__cell ticket-info">
             <div tabindex="0" class="{{ event.venue|lower }}-color">
               {% if event.is_foundation %}
-                Sponsorship seat
+                Sponsorship seats
               {% else %}
-                Seat
-              {% endif %}
+                Seats
+              {% endif %} <span>({{ session.availability.num_available }} available)</span>
             </div>
           </div>
           <div class="col-xs-3 store-cart__table__cell ticket-pricing">
             <div class="ticket-pricing quantity">
               <div class="store-cart__table__cell quantity">
                 <div class="store-cart__quantity-control">
-                  <button class="store-cart__quantity-control__button control-decrease {% if form.quantity.value <= 1 %}disabled{% endif %}" {% if form.quantity.value <= 1 %}disabled{% endif %} data-behaviour="decrease"><i
-                  class="fa fa-minus-circle"></i></button>
+                  <button class="store-cart__quantity-control__button control-decrease {% if form.quantity.value <= 1 %}disabled{% endif %}" {% if form.quantity.value <= 1 %}disabled{% endif %} data-behaviour="decrease">
+                  <i class="fa fa-minus-circle"></i></button>
                   <span class="store-cart__quantity-control__label">{{ form.quantity.value }}</span>
                   <input type="hidden" name="form-{{ forloop.counter0 }}-quantity"  value="{{ form.quantity.value }}"/>
                   <div style="display: none;"><input id="id_form-{{ forloop.counter0 }}-DELETE" name="form-{{ forloop.counter0 }}-DELETE" type="checkbox"></div>
-                  <button class="store-cart__quantity-control__button control-increase"  data-behaviour="increase"><i
+                  <button class="store-cart__quantity-control__button control-increase {% if form.quantity.value >= session.availability.num_available %}disabled{% endif %}"  data-behaviour="increase" data-max="{{ session.availability.num_available }}"  {% if form.quantity.value >= session.availability.num_available %}disabled{% endif %}><i
                   class="fa fa-plus-circle"></i></button>
                 </div>
               </div>

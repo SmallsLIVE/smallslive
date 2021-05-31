@@ -1,15 +1,19 @@
 
 function renderCardAnimation(selector) {
   var selector = selector || "#formSupporter";
+  var container = ".card-wrapper";
 
-  var card = new Card({
-    form: selector,
-    formSelectors: {
-      numberInput: 'input[name="card_number"]', // optional — default input[name="number"]
-      expiryInput: "#expiry-month, #expiry-year"
-    },
-    container: ".card-wrapper"
-  });
+  if ($(container).children().length == 0) {
+
+    var card = new Card({
+      form: selector,
+      formSelectors: {
+        numberInput: 'input[name="card_number"]', // optional — default input[name="number"]
+        expiryInput: "#expiry-month, #expiry-year"
+      },
+      container: container
+    });
+  }
 }
 
 function startStripePayment($form, action_url, completeSubpage) {

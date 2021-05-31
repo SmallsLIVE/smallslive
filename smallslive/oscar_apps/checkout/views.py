@@ -81,7 +81,6 @@ class IndexView(checkout_views.IndexView):
 class ShippingMethodView(checkout_views.ShippingMethodView):
 
     def get_success_response(self):
-        print 'Shipping method  success response'
         url = reverse('checkout:payment-method')
         if self.request.is_ajax():
             return http.JsonResponse({'url': url})

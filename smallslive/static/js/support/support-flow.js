@@ -354,6 +354,27 @@ var enablePaymentTypes = function (recurring) {
   }
 }
 
+var submitFormSuccess = function (data) {
+   $('#content_inner').html(data.content_html);
+
+    // Show any flash messages
+    oscar.messages.clear();
+    for (var level in data.messages) {
+        for (var i=0; i<data.messages[level].length; i++) {
+            oscar.messages[level](data.messages[level][i]);
+        }
+    }
+    oscar.basket.is_form_being_submitted = false;
+}
+
+var submitBasketForm = function (event) {
+    var payload = $('#basket_formset').serializeArray();
+    $.post(oscar.basket.url, payload, submitFormSuccess, 'json');
+    if (event) {
+        event.preventDefault();
+    }
+}
+
 var initBasketUi = function () {
     $("#content_inner").on('click', '.store-cart__quantity-control__button', function(e) {
       if (! $(this).attr('disabled')) {
@@ -364,13 +385,19 @@ var initBasketUi = function () {
         var behaviour = $(this).data('behaviour');
         if (behaviour === "increase") {
             quantity += 1;
+            var max = parseInt($(this).data("max"));
+            if (max === quantity) {
+                $(this).attr('disabled', true).addClass('disabled');
+                $("#content_inner .store-cart__quantity-control__button.control-decrease").attr("disabled", false).removeClass("disabled");
+            }
         } else if (behaviour === "decrease") {
             quantity -= 1;
+            $("#content_inner .store-cart__quantity-control__button.control-increase").attr("disabled", false).removeClass("disabled");
         }
 
         $quantityLabel.text(quantity);
         $quantityInput.val(quantity);
-        oscar.basket.submitBasketForm(e);
+        submitBasketForm(e);
         if (quantity <= 1 && $(this).hasClass('control-decrease')) {
             $(this).attr('disabled', true).addClass('disabled');
         } else if (quantity >= 2 && $(this).hasClass('control-decrease')) {
@@ -406,8 +433,9 @@ var showBilling = function (data) {
     $mainContainer.find("#supporterStepBilling")[0]
   );
   renderCardAnimation("#payment-form");
-}
+  $("#payment-form").removeClass("hidden");
 
+}
 
 var checkout = function () {
   // TODO: fix hardcoded URL
