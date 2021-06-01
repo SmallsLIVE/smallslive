@@ -1088,8 +1088,11 @@ class EventSet(models.Model):
 
     @property
     def is_past(self):
-        event_date = self.event.date
-        ny_end = datetime.combine(event_date, self.end)
+        end_date = self.event.date
+        # i. e. starts at 23:00 and ends at 1:00 (ends on the next day)
+        if self.start.hour > self.end.hour:
+            end_date = end_date + timedelta(days=1)
+        ny_end = datetime.combine(end_date, self.end)
         ny_end = timezone.make_aware(ny_end, timezone=(timezone.get_current_timezone()))
     
         return ny_end <= timezone.now()
