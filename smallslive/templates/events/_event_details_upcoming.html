@@ -51,60 +51,6 @@
 {{ block.super }}
 <script>
   $(document).ready(function () {
-    $('#btn-tickets').click(function () {
-      $('#ticketsDialog').modal('show');
-    });
-    $('#btn-tickets-sold-out').click(function (e) {
-      e.preventDefault();
-      $('#ticketsSoldOutDialog').modal('show');
-    });
-    var $form;
-    $('.buy-tickets').click(function(e) {
-      e.preventDefault();
-
-      {% if user.is_authenticated %}
-
-        // Remember form to be submitted
-        $form = $(this).closest('form');
-        $('#ticket-time').text( $(this).data('ticket-time'));
-        $('#ticket-price').text($(this).data('ticket-price'));
-        $('#ticket-availability').text($(this).data('ticket-availability'));
-        $('#buy-tickets-dialog').modal('show');
-
-      {% else %}
-
-        $('#becomeMemberDialog').modal('show');
-
-      {% endif %}
-    });
-
-    $('#confirm-buy-tickets').click(function (e) {
-      e.preventDefault();
-      $.ajax({
-        type: "POST",
-        url: $form.attr("action"),
-        data: $form.serialize(),
-        success: function(data) {
-          if (data.error) {
-
-          } else {
-            window.location = "{% url 'ticket_support' %}?flow_type=ticket_support";
-          }
-        },
-        error: function() {}
-      });
-    });
-
-    $('#cancel-buy-tickets').click(function (event) {
-      event.preventDefault();
-      $form = null;
-      $('#buy-tickets-dialog').modal('toggle');
-    });
-
-    $('.tickets-sold-out').click(function(e) {
-      e.preventDefault();
-      $('#tickets-sold-out-dialog').modal('show');
-    });
 
     $('#btn-play-event, .event-overlay').click(function () {
       /* Show 'sign in' modal if user is not logged in. Otherwise, redirect

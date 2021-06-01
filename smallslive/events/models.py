@@ -1087,6 +1087,14 @@ class EventSet(models.Model):
         return self.video_recording or self.audio_recording
 
     @property
+    def is_past(self):
+        event_date = self.event.date
+        ny_end = datetime.combine(event_date, self.end)
+        ny_end = timezone.make_aware(ny_end, timezone=(timezone.get_current_timezone()))
+    
+        return ny_end <= timezone.now()
+
+    @property
     def utc_start(self):
         real_date = self.event.date
         if 0 <= self.start.hour < 5:

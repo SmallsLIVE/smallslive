@@ -113,29 +113,31 @@
             {% if event.is_live or event.is_future %}
               {% if products %}
                 {% for product in products %}
-                  {% purchase_info_for_product request product as session %}
-                    {% basket_form request product 'single' as basket_form %}
-                      <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
-                        {% csrf_token %}
-                        {{ basket_form.as_p }}
-                        <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
-                        {% if session.availability.num_available > 0 %}
-                          <button type='submit'
-                                  data-ticket-name="{{ product.set }}"
-                                  data-ticket-time="{{ product.event_set.start|time:'g:i A' }}"
-                                  data-ticket-price="{{ session.price.excl_tax }}"
-                                  data-ticket-availability="{{ session.availability.num_available }}"
-                                  class="buy-tickets white-border-button"
-                                  style="display: inline;">{{ product.set }}</button>
-                          {% include 'events/buy_tickets_dialog.html' %}
-                        {% endif %}
-                        {% if session.availability.num_available == 0 %}
-                          <button type='submit'
-                                  class="tickets-sold-out white-border-button"
-                                  style="display: inline;">{{ product.set }}</button>
-                          {% include 'events/tickets_sold_out_dialog.html' %}
-                        {% endif %}
-                      </form>
+                  {% if not product.event_set.is_past %}
+                    {% purchase_info_for_product request product as session %}
+                      {% basket_form request product 'single' as basket_form %}
+                        <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
+                          {% csrf_token %}
+                          {{ basket_form.as_p }}
+                          <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
+                          {% if session.availability.num_available > 0 %}
+                            <button type='submit'
+                                    data-ticket-name="{{ product.set }}"
+                                    data-ticket-time="{{ product.event_set.start|time:'g:i A' }}"
+                                    data-ticket-price="{{ session.price.excl_tax }}"
+                                    data-ticket-availability="{{ session.availability.num_available }}"
+                                    class="buy-tickets white-border-button"
+                                    style="display: inline;">{{ product.set }}</button>
+                            {% include 'events/buy_tickets_dialog.html' %}
+                          {% endif %}
+                          {% if session.availability.num_available == 0 %}
+                            <button type='submit'
+                                    class="tickets-sold-out white-border-button"
+                                    style="display: inline;">{{ product.set }}</button>
+                            {% include 'events/tickets_sold_out_dialog.html' %}
+                          {% endif %}
+                        </form>
+                  {% endif %}
                 {% endfor %}
               {% endif %}
               {% if user.is_authenticated  %}
@@ -249,6 +251,61 @@
   <script>
 
     $(document).ready(function () {
+
+      $('#btn-tickets').click(function () {
+        $('#ticketsDialog').modal('show');
+      });
+      $('#btn-tickets-sold-out').click(function (e) {
+        e.preventDefault();
+        $('#ticketsSoldOutDialog').modal('show');
+      });
+      var $form;
+      $('.buy-tickets').click(function(e) {
+        e.preventDefault();
+
+        {% if user.is_authenticated %}
+
+          // Remember form to be submitted
+          $form = $(this).closest('form');
+          $('#ticket-time').text( $(this).data('ticket-time'));
+          $('#ticket-price').text($(this).data('ticket-price'));
+          $('#ticket-availability').text($(this).data('ticket-availability'));
+          $('#buy-tickets-dialog').modal('show');
+
+        {% else %}
+
+          $('#becomeMemberDialog').modal('show');
+
+        {% endif %}
+      });
+
+      $('#confirm-buy-tickets').click(function (e) {
+        e.preventDefault();
+        $.ajax({
+          type: "POST",
+          url: $form.attr("action"),
+          data: $form.serialize(),
+          success: function(data) {
+            if (data.error) {
+
+            } else {
+              window.location = "{% url 'ticket_support' %}?flow_type=ticket_support";
+            }
+          },
+          error: function() {}
+        });
+      });
+
+      $('#cancel-buy-tickets').click(function (event) {
+        event.preventDefault();
+        $form = null;
+        $('#buy-tickets-dialog').modal('toggle');
+      });
+
+      $('.tickets-sold-out').click(function(e) {
+        e.preventDefault();
+        $('#tickets-sold-out-dialog').modal('show');
+      });
 
       var subpages = window.subpages;
       subpages.register();

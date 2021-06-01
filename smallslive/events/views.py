@@ -354,7 +354,7 @@ class EventDetailView(DetailView):
             if live_events:
                 context['currently_live_event_url'] = live_events[0].get_absolute_url()
 
-        if event.is_future:
+        if event.is_future or event.is_live:
             event_url = event.get_absolute_url()
             start = event.get_actual_start_end()[0] - timedelta(
                 minutes=event.start_streaming_before_minutes)
