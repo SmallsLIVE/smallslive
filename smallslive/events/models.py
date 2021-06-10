@@ -940,7 +940,9 @@ class Event(TimeStampedModel):
 
     def get_tickets(self):
         tickets = []
-        for event_set in self.sets.all():
+        sets = list(self.sets.all())
+        sets = sorted(sets, Event.sets_order)
+        for event_set in sets:
             tickets += list(event_set.tickets.all())
 
         return tickets
