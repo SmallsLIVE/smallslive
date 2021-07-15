@@ -126,6 +126,7 @@
                                     data-ticket-time="{{ product.event_set.start|time:'g:i A' }}"
                                     data-ticket-price="{{ session.price.excl_tax }}"
                                     data-ticket-availability="{{ session.availability.num_available }}"
+                                    data-walk-in-price="{{ product.event_set.walk_in_price }}"
                                     class="buy-tickets white-border-button"
                                     style="display: inline;">{{ product.set }}</button>
                             {% include 'events/buy_tickets_dialog.html' %}
@@ -270,6 +271,7 @@
           $('#ticket-time').text( $(this).data('ticket-time'));
           $('#ticket-price').text($(this).data('ticket-price'));
           $('#ticket-availability').text($(this).data('ticket-availability'));
+          $('#walk-in-price').text($(this).data('walk-in-price'));
           $('#buy-tickets-dialog').modal('show');
 
         {% else %}

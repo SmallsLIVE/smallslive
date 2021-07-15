@@ -1067,6 +1067,7 @@ class EventSet(models.Model):
     event = models.ForeignKey('events.Event', related_name='sets')
     video_recording = models.OneToOneField('events.Recording', related_name='set_is_video', blank=True, null=True)
     audio_recording = models.OneToOneField('events.Recording', related_name='set_is_audio', blank=True, null=True)
+    walk_in_price = models.IntegerField(default=25)
 
     objects = EventSetManager()
 
