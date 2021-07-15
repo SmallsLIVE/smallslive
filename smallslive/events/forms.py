@@ -103,8 +103,9 @@ class GigPlayedInlineFormSetHelper(FormHelper):
 
 class EventSetInlineFormset(InlineFormSet):
     model = EventSet
-    fields = ('start', 'end')
+    fields = ('start', 'end', 'walk_in_price')
     extra = 1
+
 
     def construct_formset(self):
         if self.object and self.object.sets.count() > 0:
@@ -120,6 +121,7 @@ class EventSetInlineFormset(InlineFormSet):
             form.fields['end'].widget = forms.TimeInput(format='%I:%M %p')
             form.fields['end'].initial = now
             form.fields['end'].input_formats = ['%I:%M %p']
+            form.fields['walk_in_price'].widget.attrs['data-clone-value'] = 'True'
 
         return formset
 
