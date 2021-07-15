@@ -24,6 +24,10 @@ EventForm = {
           .val("")
           .removeAttr("checked");
       }
+      // Clone value if 'data-clone-value' = True. Set default value for walk in price.
+      if ($(this).data("clone-value") == "True") {
+        $(this).val($(this).attr("value"));
+      }
     });
     newElement.find(".sort_order_field").val(total);
     total++;
