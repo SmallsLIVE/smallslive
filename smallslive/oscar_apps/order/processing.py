@@ -30,7 +30,7 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
                 refund_reference = self.refund_stripe_payment(
                     reference, order)
 
-            lines = order.physical_lines()
+            lines = order.stock_lines()
             line_quantities = lines.values_list('quantity', flat=True)
             refund_event_type, _ = PaymentEventType.objects.get_or_create(name="Refunded")
             self.handle_payment_event(order, refund_event_type,

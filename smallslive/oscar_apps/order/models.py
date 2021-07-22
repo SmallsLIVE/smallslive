@@ -37,6 +37,9 @@ class Order(AbstractOrder):
     def physical_lines(self):
         return self.lines.select_related('product').filter(product__product_class__requires_shipping=True)
 
+    def stock_lines(self):
+        return self.lines.select_related('product').filter(product__product_class__track_stock=True)
+
     def has_digital_products(self):
         digital_count = self.lines.filter(product__product_class__requires_shipping=False).count()
         return digital_count > 0
