@@ -26,6 +26,7 @@ class TicketExchangeView(SingleObjectMixin, BaseFormView):
         response = super(TicketExchangeView, self).post(request, *args, **kwargs)
         old_ticket = Line.objects.get(id=self.old_ticket_id)
         # https://github.com/django-oscar/django-oscar/blob/0.7.2/oscar/apps/catalogue/abstract_models.py#L397
+        # TODO: if no stocks, no error is shown to the user. Exchange will not work.
         if self.new_ticket.stockrecords.first().net_stock_level >= old_ticket.quantity:
             exchange_event, created = PaymentEventType.objects.get_or_create(name="Exchanged")
             sold_event, created = PaymentEventType.objects.get_or_create(name="Sold")
