@@ -5,7 +5,7 @@ from models import Event, Recording, Venue, Comment, ShowDefaultTime
 
 class EventAdmin(admin.ModelAdmin):
     date_hierarchy = 'start'
-    list_display = ('start', 'venue', 'title', 'subtitle', 'link',
+    list_display = ('start', 'state', 'venue', 'title', 'subtitle', 'link',
                     'date_freeform', 'description')
     list_display_links = ('title', 'subtitle')
     search_fields = ('title', 'subtitle')
