@@ -343,8 +343,8 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def can_use_existing_cc(self):
-        customer = Customer.objects.get(subscriber=self)
-        if customer and customer.can_charge():
+        customer = Customer.objects.filter(subscriber=self)
+        if customer and customer[0].can_charge():
             return True
 
         return False
