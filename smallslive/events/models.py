@@ -1094,8 +1094,8 @@ class EventSet(models.Model):
         if self.start.hour > self.end.hour or self.start.hour == 0:
             end_date = end_date + timedelta(days=1)
         ny_end = datetime.combine(end_date, self.end)
-        ny_end = timezone.make_aware(ny_end, timezone=(timezone.get_current_timezone()))
-    
+        ny_end = timezone.get_current_timezone().localize(ny_end, is_dst=False)
+
         return ny_end <= timezone.now()
 
     @property
