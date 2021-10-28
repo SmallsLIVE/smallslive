@@ -73,29 +73,6 @@
       });
 
       var $inactiveModal = $('#inactive-dialog');
-      var timeOutTime = 1000;
-
-      function checkAccountStatus() {
-        var url = $inactiveModal.data('check-account-url');
-        $.ajax({
-          url: url,
-          success: function (response) {
-            if (response.success && response.data.isVerified) {
-              window.location.reload();
-            } else {
-              setTimeout(checkAccountStatus, timeOutTime);
-              timeOutTime = timeOutTime * 2;
-              if (timeOutTime > 1800000) {
-                timeOutTime = 1800000;
-              }
-            }
-          }
-        });
-      }
-
-      // We need now to poll for a change in the email confirmation status so we
-      // Can reload the page to get the player functionality.
-      checkAccountStatus();
 
       {% if user.is_authenticated and show_email_confirmation_dialog %}
         $inactiveModal.modal('show');
