@@ -110,19 +110,24 @@
                     {% else %}
 
                       <p>
-                          You have successfully made {{ line.quantity }} reservation(s) for the {{ event_set.start }} seating on {{ event.date }} at {{ event.get_venue_name }} Jazz Club.
-                          Your order number is {{ order_number }}.  Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
+                        You have successfully made {{ line.quantity }} reservation(s) for the {{ event_set.start }} seating on {{ event.date }} at {{ event.get_venue_name }} Jazz Club.
+                        Your order number is {{ order_number }}.  Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
                       </p>
                       <p>
-                          The reservation name is {{ order.first_name }} {{ order.last_name }} and will be with the doorman when you arrive.
-                          Please arrive 1/2 hour before the seating.
-                          We are mandated to take temperatures at the door and to collect contact tracing information from at least one person in your party.
-                          This reservation guarantees your seating.  Your actual space in the venue is first come/first serve so please arrive on time.
-                          We reserve the right to release a seat 15 minutes after the seating time.
+                          The reservation name is {{ order.first_name }} {{ order.last_name }} and will be with the manager when you arrive.
                       </p>
                       <p>
-                          Reservations are generally non-refundable however, you may exchange your reservation for another seating depending on availability.
-                          If you have any issues please email us at reservations@smallslive.com.
+                          We ask you take a moment to review the following -
+                          <ol>
+                            <li>All Sales are final, we do not offer refunds or exchanges.</li>
+                            <li>All reserved seating is first come/first serve for seating choice.  Please come early if you want to choose your seat.</li>
+                            <li>Please arrive at least 30 minutes before show start time. Be advised that due to space limitation we reserve the right to release your seat if you fail to arrive on time.</li>
+                            <li>Entry will only be permitted upon presentation of proof of vaccination for COVID 19. Please prepare your vaccine card and valid ID prior to your entry.</li>
+
+                          </ol>
+                      </p>
+                      <p>
+                          For questions please email reservations@smallslive.com.
                       </p>
                     {% endif %}
                   {% endwith %}
