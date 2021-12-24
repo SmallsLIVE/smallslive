@@ -5,7 +5,7 @@
         {% if event.is_foundation %}
           <p class="title2 accent-color" tabindex="0">Sponsor Seats - SmallsLIVE Foundation</p>
         {% else %}
-          <p class="title2 {{ event.get_venue_name|lower}}-color" tabindex="0">Reserved Seating for {{ event.get_venue_name }} Jazz Club </p>
+          <p class="title2 {{ event.get_venue_name|lower}}-color text-center" tabindex="0">Reserved Seating for {{ event.get_venue_name }} Jazz Club </p>
         {% endif %}
         <p class="title2" tabindex="0">{{ event.date | date:"D, M d" }} <span id="ticket-time"></span> Show</p>
         <p id="ticket-name" class="title2" tabindex="0"></p>
@@ -23,7 +23,13 @@
             A reservation guarantees your seat for this show.
           </p>
           <p class="text4 text-center">
-            Please arrive 30 minutes before your show to ensure the best choice of seats.  Your name and reservation number will be at the door.  Late comers will be seated at the discretion of the management and risk losing their seats for a refund or another show.
+           Your name and reservation number will be at the door. All Sales are final, we do not offer refunds or exchanges.
+All reserved seating is first come/first serve for seating choice. Please arrive at least 30 minutes before show start time.
+
+          </p>
+          <p class="text4 text-center">
+            We reserve the right to release your seat if you fail to arrive on time.
+Entry will only be permitted upon presentation of proof of vaccination for COVID 19.
           </p>
           <p class="text4 text-center">
             The walk-in price for this show is $<span id="walk-in-price"></span> but space is limited. Please arrive early if you plan to walk-in without a reservation.
