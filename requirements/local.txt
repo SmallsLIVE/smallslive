@@ -4,7 +4,7 @@ Jinja2==2.7.3
 Mako==1.0.0
 MarkupSafe==0.23
 PyYAML==3.11
-Scrapy==0.24.5
+Scrapy==1.8.2
 Werkzeug==0.9.6
 ansible==1.8.2
 arrow==0.5.4
