@@ -528,7 +528,7 @@ class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
     inlines_names = ['artists']
 
     def get_template_names(self):
-        return 'artist_dashboard/event_edit.html'
+        return ['artist_dashboard/event_edit.html']
 
     def get_context_data(self, **kwargs):
         context = super(EventEditView, self).get_context_data(**kwargs)
@@ -542,7 +542,7 @@ event_edit = EventEditView.as_view()
 
 
 class EventEditAjaxView(EventEditView):
-
+    context_object_name = 'event'
     form_class = EventAjaxEditForm
     inlines = [ArtistGigPlayedEditLazyInlineFormSet]
     inlines_names = ['artists']
@@ -560,7 +560,7 @@ class EventEditAjaxView(EventEditView):
         return context
 
     def get_template_names(self):
-        return 'artist_dashboard/my_gigs/event_edit_form.html'
+        return ['artist_dashboard/my_gigs/event_edit_form.html']
 
     def post(self, *args, **kwargs):
         response = super(EventEditAjaxView, self).post(*args, **kwargs)
@@ -579,6 +579,7 @@ class EventEditAjaxView(EventEditView):
                 response = JsonResponse(data)
 
         return response
+
 
 event_edit_ajax = EventEditAjaxView.as_view()
 

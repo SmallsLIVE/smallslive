@@ -421,6 +421,9 @@ class Event(TimeStampedModel):
 
     def get_date(self):
 
+        if not self.start:
+            raise Exception("self.start not set")
+
         start_hour = timezone.localtime(self.start).hour
 
         if start_hour <= 1:
@@ -434,6 +437,9 @@ class Event(TimeStampedModel):
 
         self.start = start or self.start
         self.end = end or self.end
+
+        if not self.start or not self.end:
+            raise Exception("start and end dates not set")
 
         if not self.slug:
             self.slug = slugify(self.title)
