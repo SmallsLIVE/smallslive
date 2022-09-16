@@ -1,7 +1,7 @@
 -r base.txt # Include the base requirements file
 
 Jinja2==2.7.3
-Mako==1.0.0
+Mako==1.2.2
 MarkupSafe==0.23
 PyYAML==3.11
 Scrapy==0.24.5
