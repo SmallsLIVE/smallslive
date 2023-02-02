@@ -5,7 +5,7 @@ Mako==1.0.0
 MarkupSafe==0.23
 PyYAML==3.11
 Scrapy==0.24.5
-Werkzeug==0.9.6
+Werkzeug==0.15.5
 ansible==1.8.2
 arrow==0.5.4
 cov-core==1.15.0
