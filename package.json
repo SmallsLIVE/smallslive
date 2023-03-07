@@ -5,6 +5,7 @@
 		"gulp-changed": "^3.2.0",
 		"gulp-sass": "^4.0.2",
 		"gulp-sourcemaps": "^2.6.4",
-		"natives": "^1.1.6"
+		"natives": "^1.1.6",
+		"sass": "^1.32.13"
 	}
 }
