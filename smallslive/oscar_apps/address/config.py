@@ -1,5 +1,6 @@
-from oscar.apps.address import config
+#from oscar.apps.address import config
+from oscar.apps.address import apps
 
 
-class AddressConfig(config.AddressConfig):
+class AddressConfig(apps.AddressConfig):
     name = 'oscar_apps.address'

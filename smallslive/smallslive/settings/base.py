@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import ast
 import os
 from django.core.exceptions import ImproperlyConfigured
-from oscar import get_core_apps, OSCAR_MAIN_TEMPLATE_DIR
 from oscar.defaults import *
 
 
@@ -106,7 +105,7 @@ INSTALLED_APPS = [
     'users',
     'utils',
     'custom_stripe',
-] + get_core_apps([
+    # Oscar apps
     'oscar_apps.customer',
     'oscar_apps.address',
     'oscar_apps.basket',
@@ -119,10 +118,11 @@ INSTALLED_APPS = [
     'oscar_apps.dashboard.reports',
     'oscar_apps.order',
     'oscar_apps.partner',
-    'oscar_apps.promotions',
+    # oscar_promotion is now a separate app, need to install later.
+    #'oscar_apps.promotions',
     'oscar_apps.search',
     'oscar_apps.shipping',
-]) + [
+] + [
     'easy_thumbnails',  # needs to go after the oscar import to avoid template tag clashes
 ]
 
@@ -376,7 +376,6 @@ PIPELINE_DISABLE_WRAPPER = True
 # Templates
 TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, 'templates'),
-    OSCAR_MAIN_TEMPLATE_DIR,
 ]
 
 # Messages

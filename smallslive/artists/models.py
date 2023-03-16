@@ -88,7 +88,7 @@ class ArtistManager(models.Manager):
                     # artist has a possible match, but another was found too.
                     'Print: parsed: ', artist_found, 'but found: ', artist, 'too.'
 
-                print 'Possible match: ', artist
+                print('Possible match: ', artist)
         if not artist_found:
             artists_qs = self.filter(last_name__istartswith=last_name)
             artist_found = None
@@ -101,7 +101,7 @@ class ArtistManager(models.Manager):
                         'Print: parsed: ', artist_found, 'but found: ', artist, 'too.'
 
         if not artist_found:
-            print 'Error!!!, ', content
+            print ('Error!!!, ', content)
 
         return  artist_found
 

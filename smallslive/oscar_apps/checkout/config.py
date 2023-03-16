@@ -1,5 +1,5 @@
-from oscar.apps.checkout import config
+#from oscar.apps.checkout import config
+from oscar.apps.checkout import apps
 
-
-class CheckoutConfig(config.CheckoutConfig):
+class CheckoutConfig(apps.CheckoutConfig):
     name = 'oscar_apps.checkout'
