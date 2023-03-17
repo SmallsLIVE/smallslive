@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.views.generic import FormView, View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import BaseFormView

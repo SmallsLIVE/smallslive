@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponse
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.detail import DetailView

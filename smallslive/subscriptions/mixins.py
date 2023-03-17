@@ -2,7 +2,7 @@ from decimal import *
 import paypalrestsdk
 import stripe
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
 from oscar.apps.payment.exceptions import RedirectRequired, \
@@ -135,7 +135,7 @@ class PayPalMixin(PaymentCredentialsMixin):
             else:
                 raise RedirectRequired(approval_url)
         else:
-            print payment.error
+            print(payment.error)
             raise UnableToTakePayment(payment.error)
 
     def execute_payment(self):
@@ -167,7 +167,7 @@ class PayPalMixin(PaymentCredentialsMixin):
         if refund.success():
             refund_id = refund.id
         else:
-            print refund.error
+            print(refund.error)
             refund_id = 'Error: {}'.format(refund.error)[:64]
 
         return refund_id

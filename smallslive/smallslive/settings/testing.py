@@ -40,4 +40,7 @@ MIGRATION_MODULES = {'address': 'address.notmigrations',
                      'twitter': 'twitter.notmigrations',
                      'users': 'users.notmigrations',
                      'voucher': 'voucher.notmigrations',
-                     'wishlists': 'wishlists.notmigrations'}
+                     # Only for upgrade purpose @TODO : Fix later
+                    # 'wishlists': 'wishlists.notmigrations'
+
+                     }

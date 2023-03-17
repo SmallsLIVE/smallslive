@@ -1,6 +1,6 @@
 from django.contrib.sitemaps import Sitemap
-from django.contrib.sitemaps import FlatPageSitemap, GenericSitemap
-from django.core.urlresolvers import reverse
+from django.contrib.sitemaps import GenericSitemap
+from django.urls import reverse
 from artists.models import Artist
 from events.models import Event
 from oscar_apps.catalogue.models import Product

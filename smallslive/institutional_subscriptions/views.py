@@ -1,5 +1,5 @@
 from braces.views import StaffuserRequiredMixin
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q
 from django.views.decorators.http import require_POST

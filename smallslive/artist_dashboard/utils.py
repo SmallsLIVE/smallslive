@@ -55,7 +55,6 @@ def metrics_data_for_date_period(start_date, end_date):
 
 def donations_data_for_date_period(start_date, end_date, metrics):
 
-    print 'Processing donations ...'
 
     total_donations = 0
     donation_data=[]
@@ -122,7 +121,7 @@ def donations_data_for_date_period(start_date, end_date, metrics):
             for product_donation in products_donations:
                 metrics['metrics_info'][product_donation.artist_id]['donations'] += amount
         else:
-            print 'Warning: no leaders for product {}'.format(donation.product.title)
+            print('Warning: no leaders for product {}'.format(donation.product.title))
         order_number = donation.order.number if donation.order else ''
         item = {
             'user': donation.user.email,
@@ -295,7 +294,7 @@ def get_payout_bucket():
     try:
         bucket_name = 'payout-sheets'
         bucket = conn.create_bucket(bucket_name, location=boto.s3.connection.Location.DEFAULT)
-    except boto.exception.S3CreateError, e:
+    except boto.exception.S3CreateError as e:
         if 'BucketAlreadyExists' in str(e):
             bucket = conn.get_bucket(bucket_name)
 

@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import logout
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.urls import reverse_lazy, reverse
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.utils import timezone

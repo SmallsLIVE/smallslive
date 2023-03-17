@@ -11,7 +11,7 @@ from django.db.models import Count, F, Q, Sum
 import monthdelta
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.db import connection
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.http.response import Http404
@@ -24,7 +24,7 @@ from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, FormView
 
-from django_ajax.mixin import AJAXMixin
+# from django_ajax.mixin import AJAXMixin
 from braces.views import StaffuserRequiredMixin
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
 from haystack.query import RelatedSearchQuerySet
@@ -164,7 +164,7 @@ class OldHomeView(HomepageView):
 old_home = OldHomeView.as_view()
 
 
-class MostPopularEventsAjaxView(AJAXMixin, ListView):
+class MostPopularEventsAjaxView(ListView):
     context_object_name = 'events'
     model = Event
     template_name = "events/event_row.html"
@@ -268,7 +268,6 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
 
     def forms_invalid(self, form, inlines):
         response = super(EventAddView, self).forms_invalid(form, inlines)
-        print form
         return response
 
     def construct_ticket_forms(self, data=None):
@@ -660,7 +659,7 @@ class GenericScheduleView(TemplateView, UpcomingSearchView):
 schedule = GenericScheduleView.as_view()
 
 
-class ScheduleCarouselAjaxView(AJAXMixin, DetailView):
+class ScheduleCarouselAjaxView(DetailView):
     context_object_name = 'event'
     model = Event
     template_name = "blocks/schedule-event-details-carousel.html"
@@ -669,7 +668,7 @@ class ScheduleCarouselAjaxView(AJAXMixin, DetailView):
 schedule_carousel_ajax = ScheduleCarouselAjaxView.as_view()
 
 
-class HomepageEventCarouselAjaxView(AJAXMixin, ListView):
+class HomepageEventCarouselAjaxView(ListView):
     context_object_name = 'events'
     template_name = "blocks/homepage-upcoming-events-carousel.html"
 

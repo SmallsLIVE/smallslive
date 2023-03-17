@@ -1,7 +1,7 @@
 from allauth.account.adapter import DefaultAccountAdapter
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, EmailMessage
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
 

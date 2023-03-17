@@ -1,7 +1,7 @@
 from crispy_forms.layout import Layout, Div, Field
 from django import forms
 from django.db.models import Count
-from django.forms.util import ErrorList
+# from django.forms.util import ErrorList
 import floppyforms
 from crispy_forms.helper import FormHelper
 from model_utils import Choices
@@ -76,9 +76,11 @@ class ArtistInviteForm(forms.Form):
         email = cleaned_data.get('email')
         invite_text = cleaned_data.get('invite_text')
         if invite_type != self.INVITE_TYPE.no_invite and not email:
-            self._errors['email'] = ErrorList(['You have to enter the email address to send an invite'])
+            #self._errors['email'] = ErrorList(['You have to enter the email address to send an invite'])
+            self._errors['email'] = ['You have to enter the email address to send an invite']
         if invite_type == self.INVITE_TYPE.custom_invite and not invite_text:
-            self._errors['invite_text'] = ErrorList(['You have to enter custom invite text'])
+            #self._errors['invite_text'] = ErrorList(['You have to enter custom invite text'])
+            self._errors['invite_text'] = ['You have to enter custom invite text']
         return cleaned_data
 
 

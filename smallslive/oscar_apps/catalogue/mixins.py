@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from artists.models import Artist
 from oscar_apps.partner.strategy import Selector
 from .models import Product, UserCatalogue, UserCatalogueProduct

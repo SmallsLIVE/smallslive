@@ -1,6 +1,6 @@
 from dateutil import parser
 import urllib
-import urlparse
+from urllib.parse import urlparse
 from oscar.apps.dashboard.catalogue import forms as oscar_forms
 from django import forms
 from django.core.validators import URLValidator

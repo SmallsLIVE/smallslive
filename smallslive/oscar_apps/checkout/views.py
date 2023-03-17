@@ -4,7 +4,7 @@ from django import http
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.forms.models import model_to_dict
 from django.shortcuts import redirect
 from django.utils import six
@@ -500,8 +500,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                         address = billing_address_form.save()
                         self.checkout_session.bill_to_user_address(address)
             else:
-                print '** billing address form invalid **'
-                print billing_address_form.errors
+                print('** billing address form invalid **')
+                print(billing_address_form.errors)
                 billing_address_form = None
         else:
             billing_address_form = None
@@ -561,7 +561,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         form = PaymentForm(self.request.user, stripe_api_key, self.request.POST)
 
         if billing_address_form and not billing_address_form.is_valid():
-            print '*** error ****'
+            print('*** error ****')
             return self.render_payment_details(self.request, form=form,
                                                billing_address_form=billing_address_form)
 
@@ -731,26 +731,26 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         except RedirectRequiredAjax as e:
             # Redirect required (eg PayPal, 3DS)
             logger.info("Order #%s: redirecting to %s", order_number, e.url)
-            print '****************************'
-            print 'JsonResponse: Basket: ', self.request.basket, ' ', self.request.basket.pk
-            print 'Basket: ', basket, ' ', basket.pk
-            print 'Submitted basket: ', self.checkout_session.get_submitted_basket_id()
+            print('****************************')
+            print('JsonResponse: Basket: ', self.request.basket, ' ', self.request.basket.pk)
+            print('Basket: ', basket, ' ', basket.pk)
+            print('Submitted basket: ', self.checkout_session.get_submitted_basket_id())
             return http.JsonResponse({'payment_url': e.url})
         except UnableToTakePayment as e:
-            print 'Exception ===>'
+            print('Exception ===>')
             import sys, traceback
             ex_type, ex, tb = sys.exc_info()
             traceback.print_tb(tb)
-            print str(e)
+            print(str(e))
             # Something went wrong with payment but in an anticipated way.  Eg
             # their bankcard has expired, wrong card number - that kind of
             # thing. This type of exception is supposed to set a friendly error
             # message that makes sense to the customer.
             msg = six.text_type(e) + "."
             error_msg = error_msg.format(msg)
-            print '******************'
-            print 'UnableToTakePayment: '
-            print error_msg
+            print('******************')
+            print('UnableToTakePayment: ')
+            print(error_msg)
             logger.warning(
                 "Order #%s: unable to take payment (%s) - restoring basket",
                 order_number, msg)
@@ -771,15 +771,15 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             # It makes sense to configure the checkout logger to
             # mail admins on an error as this issue warrants some further
             # investigation.
-            print str(e)
+            print(str(e))
             msg = six.text_type(e) + "."
             logger.error("Order #%s: payment error (%s)", order_number, msg,
                          exc_info=True)
             self.restore_frozen_basket()
             error_msg = error_msg.format(msg)
-            print '******************'
-            print 'PaymentError: '
-            print error_msg
+            print('******************')
+            print('PaymentError: ')
+            print(error_msg)
 
             if self.request.is_ajax():
                 return http.JsonResponse({'error': error_msg})
@@ -789,19 +789,19 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         except Exception as e:
             # Unhandled exception - hopefully, you will only ever see this in
             # development...
-            print 'Exception ===>'
+            print('Exception ===>')
             import sys, traceback
             ex_type, ex, tb = sys.exc_info()
             traceback.print_tb(tb)
-            print str(e)
+            print(str(e))
 
             logger.error(
                 "Order #%s: unhandled exception while taking payment (%s)",
                 order_number, e, exc_info=True)
             self.restore_frozen_basket()
             error_msg = str(e).format("")
-            print '******************'
-            print error_msg
+            print('******************')
+            print(error_msg)
 
             if self.request.is_ajax():
                 return http.JsonResponse({'error': error_msg})
@@ -1050,7 +1050,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         except ValueError as e:
             # Probably order is already  placed because of a reload
             logging.error(str(e))
-            print e
+            print(e)
             pass
 
     def handle_successful_order(self, order):

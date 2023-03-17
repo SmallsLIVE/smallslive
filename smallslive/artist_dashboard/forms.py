@@ -8,7 +8,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.models import Site
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django_countries import countries
 import floppyforms
 import allauth.account.forms as allauth_forms
@@ -96,7 +96,6 @@ class EventAjaxEditForm(EventEditForm):
                 class_names = self.fields[field].widget.attrs['class'].split(' ')
                 if 'form-control' not in class_names:
                     class_names.append('form-control')
-                    print class_names
                     self.fields[field].widget.attrs['class'] = ' '.join(class_names)
             else:
                 self.fields[field].widget.attrs['class'] = 'form-control'

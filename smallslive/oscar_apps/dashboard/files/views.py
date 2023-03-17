@@ -1,7 +1,7 @@
 import sys
 
 from django.contrib import messages
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.views import generic
 from django.views.generic import View
 from django_tables2 import SingleTableMixin

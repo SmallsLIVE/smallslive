@@ -4,7 +4,7 @@ import traceback
 from allauth.account.views import _ajax_response
 from braces.views import FormValidMessageMixin, LoginRequiredMixin, StaffuserRequiredMixin
 from django.conf import settings
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django_filters.views import FilterView
 from django.forms.models import model_to_dict
@@ -502,10 +502,8 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                     )
                 except stripe.StripeError as e:
                     # add form error here
-                    print traceback.format_exc()
                     return JsonResponse({'error': str(e)})
                 except Exception as e:
-                    print traceback.format_exc()
                     return JsonResponse({'error': str(e)})
             elif self.bitcoin:
                 self.execute_bitcoin_payment()

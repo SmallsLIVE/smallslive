@@ -9,7 +9,7 @@ def resend_email_confirmation_to_user(user):
     req.META['SERVER_NAME'] = 'www.smallslive.com'
     req.META['SERVER_PORT'] = '443'
     req.META['HTTP_X_FORWARDED_PROTO'] = 'https'
-    print "Sending {0}".format(user.email)
+    print("Sending {0}".format(user.email))
     email = SmallsEmailAddress.objects.get(user=user, email=user.email)
     if user.artist:
         email.send_confirmation(req, signup=True, activate_view="artist_registration_confirm_email")

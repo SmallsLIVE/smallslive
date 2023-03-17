@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from oscar.apps.basket import views as basket_views
-from oscar.apps.basket.views import apply_messages
 from oscar_apps.partner.models import StockRecord
 
 
@@ -110,13 +109,13 @@ class BasketAddView(basket_views.BasketAddView):
             sender=self, product=form.product, user=self.request.user,
             request=self.request)
 
-        print 'form_valid: ', self.request.is_ajax()
+        print('form_valid: ', self.request.is_ajax())
 
         if self.request.is_ajax():
             # TODO: remove duplicate code
             storage = messages.get_messages(self.request)
             if storage:
-                print 'Cleaning storage'
+                print('Cleaning storage')
                 for _ in storage:
                     pass
                     storage.used = True
@@ -126,5 +125,5 @@ class BasketAddView(basket_views.BasketAddView):
 
             return HttpResponse(status=200)
         else:
-            print 'Return: ', self.get_success_url()
+            print('Return: ', self.get_success_url())
             return HttpResponseRedirect(self.get_success_url())

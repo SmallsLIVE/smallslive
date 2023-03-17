@@ -5,17 +5,17 @@ from allauth.account import signals
 from allauth.account.adapter import get_adapter
 from allauth.account.app_settings import EmailVerificationMethod
 from allauth.account.utils import get_login_redirect_url, user_email
-from djstripe.models import Customer, Charge, CurrentSubscription, convert_tstamp, Plan
-from djstripe.settings import PAYMENTS_PLANS, INVOICE_FROM_EMAIL, SEND_INVOICE_RECEIPT_EMAILS
+from djstripe.models import Customer, Charge, Plan
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMessage
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.utils import timezone
 from custom_stripe.models import CustomPlan
 
+INVOICE_FROM_EMAIL = '' # @TODO Fix later after upgrade dj-stripe 1.2.0 or later
 
 def add_years(d, years):
     """Return a date that's `years` years after the date (or datetime)
@@ -227,22 +227,24 @@ def subscribe(customer, plan, flow):
         current_subscription.plan = plan.stripe_id
         current_subscription.amount = plan.amount
         current_subscription.save()
-    except CurrentSubscription.DoesNotExist:
+    except Object.DoesNotExist:
         sub = cu.subscription
 
-        cs = CurrentSubscription.objects.create(
-            customer=customer,
-            plan=plan.stripe_id,
-            current_period_start=convert_tstamp(sub.current_period_start),
-            current_period_end=convert_tstamp(sub.current_period_end),
-            amount=sub.plan.amount,
-            status=sub.status,
-            cancel_at_period_end=sub.cancel_at_period_end,
-            canceled_at=convert_tstamp(sub, 'canceled_at'),
-            start=convert_tstamp(sub.start),
-            quantity=sub.quantity)
-
-        return cs
+        # @TODO - FIX this after migrate to dj-stripe 1.20 or later
+        # cs = CurrentSubscription.objects.create(
+        #     customer=customer,
+        #     plan=plan.stripe_id,
+        #     current_period_start=convert_tstamp(sub.current_period_start),
+        #     current_period_end=convert_tstamp(sub.current_period_end),
+        #     amount=sub.plan.amount,
+        #     status=sub.status,
+        #     cancel_at_period_end=sub.cancel_at_period_end,
+        #     canceled_at=convert_tstamp(sub, 'canceled_at'),
+        #     start=convert_tstamp(sub.start),
+        #     quantity=sub.quantity)
+        #
+        # return cs
+        return sub
 
 
 def charge(customer, amount, currency='USD', description='',

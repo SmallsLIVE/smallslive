@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 def show_modal(request):
@@ -46,7 +46,6 @@ def check_if_event_confirmed_user(request):
     try:
         return {'is_event_user_not_confirmed': not user_activated}
     except Exception as e:
-        print 'Exception!!!'
         return {'is_event_user_not_confirmed': False}
 
 

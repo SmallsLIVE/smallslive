@@ -63,9 +63,9 @@ class PaymentForm(forms.Form):
                     data['name'] = card_info.get('name')
                     data['card_number'] = card_info.get('last4')
                 except IndexError:
-                    print '======== Index Error ======='
-                    print card_info
-                    print '============================'
+                    print('======== Index Error =======')
+                    print(card_info)
+                    print('============================')
                     pass
             else:
                 try:
@@ -80,19 +80,19 @@ class PaymentForm(forms.Form):
                         },
                     )
                     self.token = token.id
-                except stripe.error.CardError, e:
-                    print 'VALIDATION ERROR !!!!'
-                    print e
+                except stripe.error.CardError as e:
+                    print('VALIDATION ERROR !!!!')
+                    print(e)
                     error = e.json_body['error']
-                    print error
+                    print(error)
                     if error['param'] == 'number' or not error['param'] or not error['param'] in self.declared_fields.keys():
                         error['param'] = 'card_number'
                     self.add_error(error['param'], error['message'])
                     data = {
                         error['param']: error['message']
                     }
-                    print 'data ->'
-                    print data
+                    print('data ->')
+                    print(data)
                     raise forms.ValidationError(data)
         return data
 
