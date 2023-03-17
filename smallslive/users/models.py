@@ -8,7 +8,7 @@ from rest_framework.authtoken.models import Token
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.db.models import Q, Sum
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
@@ -71,7 +71,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         help_text='Designates whether this user should be treated as active. '
                   'Unselect this instead of deleting accounts.'
     )
-    artist = models.OneToOneField('artists.Artist', related_name='user', blank=True, null=True)
+    artist = models.OneToOneField('artists.Artist', related_name='user', blank=True, null=True, on_delete=models.CASCADE)
     date_joined = models.DateTimeField(default=timezone.now)
     photo = models.ImageField(upload_to='user_photos', blank=True)
     access_level = models.CharField(choices=ACCESS_LEVELS, default='', max_length=30, blank=True)
@@ -95,7 +95,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     paypal_email = models.EmailField(max_length=100, blank=True)
     taxpayer_id = models.CharField(max_length=15, blank=True)
     institution = models.ForeignKey('institutional_subscriptions.Institution',
-                                    blank=True, null=True, related_name='members')
+                                    blank=True, null=True, related_name='members', on_delete=models.CASCADE)
 
     objects = SmallsUserManager()
 
@@ -426,7 +426,7 @@ class SmallsEmailAddress(EmailAddress):
 
 
 class LegalAgreementAcceptance(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='legal_agreement_acceptance')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='legal_agreement_acceptance', on_delete=models.CASCADE,)
     date = models.DateTimeField(auto_now_add=True)
 
 

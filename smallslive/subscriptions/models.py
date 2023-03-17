@@ -129,7 +129,7 @@ class Donation(models.Model):
     """
 
     # Initially donations would be not anonymous but now they can be
-    user = models.ForeignKey(SmallsUser, related_name='donations', blank=True, null=True)
+    user = models.ForeignKey(SmallsUser, related_name='donations', blank=True, null=True, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     currency = models.CharField(max_length=12, default='USD')
     amount = models.DecimalField(
@@ -146,16 +146,16 @@ class Donation(models.Model):
     confirmed = models.BooleanField(default=False)
     # Donations can be applied to a product, event or artist.
     artist = models.ForeignKey(Artist, blank=True, null=True,
-                                related_name='donations')
+                                related_name='donations', on_delete=models.CASCADE)
 
     product = models.ForeignKey(Product, blank=True, null=True,
-                                related_name='donations')
+                                related_name='donations', on_delete=models.CASCADE)
     order = models.ForeignKey(Order, blank=True, null=True,
-                              related_name='donations')
+                              related_name='donations', on_delete=models.CASCADE)
     event = models.ForeignKey(Event, blank=True, null=True,
-                              related_name='donations')
+                              related_name='donations', on_delete=models.CASCADE)
     sponsored_event = models.OneToOneField(Event, blank=True, null=True,
-                                           related_name='sponsorship')
+                                           related_name='sponsorship', on_delete=models.CASCADE)
     sponsored_event_dedication = models.TextField(default='')
     # We're having a $10 minimum donation instead of $100 for the whole year
     # We'll need to accrue donations as archive access in days.

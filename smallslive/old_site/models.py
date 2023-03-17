@@ -20,8 +20,8 @@ class Joineventeventtype(models.Model):
         db_table = 'joinEventEventType'
 
 class Joinmediaevent(models.Model):
-    media = models.ForeignKey('OldMedia', primary_key=True,  db_column='mediaId') # Field name made lowercase.
-    event = models.ForeignKey('OldEvent', db_column='eventId') # Field name made lowercase.
+    media = models.ForeignKey('OldMedia', primary_key=True,  db_column='mediaId', on_delete=models.CASCADE) # Field name made lowercase.
+    event = models.ForeignKey('OldEvent', db_column='eventId', on_delete=models.CASCADE) # Field name made lowercase.
     sortorder = models.CharField(db_column='sortOrder', max_length=255, blank=True) # Field name made lowercase.
     class Meta:
         managed = False
@@ -35,7 +35,7 @@ class Joinmediamediatype(models.Model):
         db_table = 'joinMediaMediaType'
 
 class Joinmediaperson(models.Model):
-    media = models.ForeignKey('OldMedia', primary_key=True, db_column='mediaId') # Field name made lowercase.
+    media = models.ForeignKey('OldMedia', primary_key=True, db_column='mediaId', on_delete=models.CASCADE) # Field name made lowercase.
     person_id = models.IntegerField(db_column='personId') # Field name made lowercase.
     sortorder = models.CharField(db_column='sortOrder', max_length=255, blank=True) # Field name made lowercase.
     class Meta:
@@ -43,9 +43,9 @@ class Joinmediaperson(models.Model):
         db_table = 'joinMediaPerson'
 
 class Joinpersonevent(models.Model):
-    event = models.ForeignKey('OldEvent', primary_key=True, db_column='eventId') # Field name made lowercase.
-    person = models.ForeignKey('OldPerson', db_column='personId') # Field name made lowercase.
-    persontype = models.ForeignKey('OldPersonType', db_column='personTypeId') # Field name made lowercase.
+    event = models.ForeignKey('OldEvent', primary_key=True, db_column='eventId', on_delete=models.CASCADE) # Field name made lowercase.
+    person = models.ForeignKey('OldPerson', db_column='personId', on_delete=models.CASCADE) # Field name made lowercase.
+    persontype = models.ForeignKey('OldPersonType', db_column='personTypeId', on_delete=models.CASCADE) # Field name made lowercase.
     sortorder = models.CharField(db_column='sortOrder', max_length=255, blank=True) # Field name made lowercase.
     class Meta:
         managed = False
@@ -74,7 +74,7 @@ class OldEvent(models.Model):
     zip = models.CharField(max_length=255, blank=True)
     phone = models.CharField(max_length=255, blank=True)
     email = models.CharField(max_length=255, blank=True)
-    eventtype = models.ForeignKey('OldEventTypes', db_column='eventType', blank=True, null=True) # Field name made lowercase.
+    eventtype = models.ForeignKey('OldEventTypes', db_column='eventType', blank=True, null=True, on_delete=models.CASCADE) # Field name made lowercase.
     country = models.CharField(max_length=255, blank=True)
     link = models.CharField(max_length=255, blank=True)
     displaytitle = models.TextField(db_column='displayTitle', blank=True) # Field name made lowercase.
@@ -123,7 +123,8 @@ class OldPerson(models.Model):
     firstname = models.CharField(db_column='firstName', max_length=255, blank=True) # Field name made lowercase.
     lastname = models.CharField(db_column='lastName', max_length=255, blank=True) # Field name made lowercase.
     salutation = models.CharField(max_length=255, blank=True)
-    persontypeid = models.ForeignKey('OldPersonType', db_column='personTypeId', blank=True, null=True) # Field name made lowercase.
+    persontypeid = models.ForeignKey('OldPersonType', db_column='personTypeId', blank=True, null=True,
+                                     on_delete=models.CASCADE) # Field name made lowercase.
     biography = models.TextField(blank=True)
     templateid = models.IntegerField(db_column='templateId', blank=True, null=True) # Field name made lowercase.
     website = models.CharField(max_length=255, blank=True)

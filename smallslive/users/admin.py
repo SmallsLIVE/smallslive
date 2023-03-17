@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from hijack.admin import HijackUserAdminMixin
+#from hijack.admin import HijackUserAdminMixin
 
 from .models import SmallsUser
 
@@ -82,7 +82,7 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-class SmallsUserAdmin(UserAdmin, HijackUserAdminMixin):
+class SmallsUserAdmin(UserAdmin):
     add_form_template = 'admin/auth/user/add_form.html'
     date_hierarchy = 'last_login'
     fieldsets = (

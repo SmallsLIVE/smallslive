@@ -106,9 +106,10 @@ INSTALLED_APPS = [
     'utils',
     'custom_stripe',
     # Oscar apps
-    'oscar_apps.customer',
+    'oscar_apps.customer.config.CustomerConfig',
     'oscar_apps.address',
-    'oscar_apps.basket',
+    'oscar.apps.offer.apps.OfferConfig',
+    'oscar_apps.basket.config.BasketConfig',
     'oscar_apps.catalogue',
     'oscar_apps.checkout',
     'oscar_apps.dashboard',

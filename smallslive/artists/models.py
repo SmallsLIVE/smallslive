@@ -2,7 +2,7 @@ import os
 from allauth.account.models import EmailAddress, EmailConfirmation
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.db.models import Count, Lookup, Q, Sum
 from django.db.models.fields import Field
@@ -343,8 +343,8 @@ class PastPayoutPeriod(models.Model):
 
 
 class ArtistEarnings(models.Model):
-    artist = models.ForeignKey(Artist, related_name='earnings')
-    payout_period = models.ForeignKey(PastPayoutPeriod, related_name='artist_earnings')
+    artist = models.ForeignKey(Artist, related_name='earnings', on_delete=models.CASCADE)
+    payout_period = models.ForeignKey(PastPayoutPeriod, related_name='artist_earnings', on_delete=models.CASCADE)
     artist_seconds = models.BigIntegerField(default=0)
     artist_ratio = models.DecimalField(max_digits=11, decimal_places=10, default=0)
     amount = models.DecimalField(max_digits=10, decimal_places=4, default=0)

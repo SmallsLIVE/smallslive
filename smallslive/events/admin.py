@@ -1,6 +1,6 @@
 from django.contrib import admin
-from django.core import urlresolvers
-from models import Event, Recording, Venue, Comment, ShowDefaultTime
+from django.urls import reverse
+from .models import Event, Recording, Venue, Comment, ShowDefaultTime
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -43,12 +43,12 @@ class RecordingAdmin(admin.ModelAdmin):
     )
 
     def link_to_event(self, obj):
-        link = urlresolvers.reverse('admin:events_event_change', args=[obj.event.id])
+        link = reverse('admin:events_event_change', args=[obj.event.id])
         return u'<a href="%s">%s</a>' % (link, obj.event.title)
     link_to_event.allow_tags = True
 
     def link_to_media_file(self, obj):
-        link = urlresolvers.reverse('admin:multimedia_media_file_change', args=[obj.media_file.id])
+        link = reverse('admin:multimedia_media_file_change', args=[obj.media_file.id])
         return u'<a href="%s">%s</a>' % (link, obj.media_file.file)
     link_to_media_file.allow_tags = True
 

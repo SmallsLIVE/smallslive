@@ -13,8 +13,8 @@ class CustomPlan(models.Model):
     def create(cls, metadata={}, **kwargs):
         """Create and then return a Plan (both in Stripe, and in our db)."""
 
-        print 'CustomPlan:create ->'
-        print kwargs
+        print('CustomPlan:create ->')
+        print(kwargs)
 
         plan = stripe.Plan.create(
             amount=int(kwargs['amount'] * 100),

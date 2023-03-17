@@ -19,18 +19,18 @@ class ProductManager(CoreProductManager):
 class Product(AbstractProduct):
     subtitle = models.CharField(max_length=50, blank=True)
     short_description = models.TextField(blank=True)
-    event = models.ForeignKey('events.Event', blank=True, null=True, related_name='products')
-    album = models.ForeignKey('self', blank=True, null=True, related_name='tracks')  # used for album/track
+    event = models.ForeignKey('events.Event', blank=True, null=True, related_name='products', on_delete=models.CASCADE)
+    album = models.ForeignKey('self', blank=True, null=True, related_name='tracks', on_delete=models.CASCADE)  # used for album/track
     ordering = models.PositiveIntegerField(help_text="Product ordering number, lower numbers come first when ordering",
                                            default=1000)  # explicit ordering, usually for tracks on an album
-    preview = models.OneToOneField('multimedia.MediaFile', blank=True, null=True, related_name='product')
+    preview = models.OneToOneField('multimedia.MediaFile', blank=True, null=True, related_name='product', on_delete=models.CASCADE)
     featured = models.BooleanField(default=False, help_text="Make this product featured in the store")
 
     gift = models.BooleanField(default=False, help_text="Make this product a gift in the store")
     gift_price = models.DecimalField(help_text="Set the gift price",
                                      decimal_places=2, max_digits=12, blank=True, null=True)
 
-    event_set = models.ForeignKey('events.EventSet', related_name='tickets', null=True)
+    event_set = models.ForeignKey('events.EventSet', related_name='tickets', null=True, on_delete=models.CASCADE)
     artists = models.ManyToManyField('artists.Artist', through='ArtistProduct', verbose_name=("Attributes"), blank=True, null=True)
 
     set = models.CharField(max_length=50, blank=True)
@@ -189,7 +189,7 @@ class Product(AbstractProduct):
 class ArtistProduct(models.Model):
     artist = models.ForeignKey('artists.Artist', verbose_name='', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, verbose_name='', on_delete=models.CASCADE)
-    instrument = models.ForeignKey('artists.Instrument', blank=True, null=True)
+    instrument = models.ForeignKey('artists.Instrument', blank=True, null=True, on_delete=models.CASCADE)
     sort_order = models.CharField(max_length=30, blank=True)
     is_leader = models.BooleanField(default=False)
 
@@ -204,7 +204,7 @@ class ArtistProduct(models.Model):
 
 class UserCatalogue(models.Model):
 
-    user = models.ForeignKey(SmallsUser, related_name='catalogue_access', unique=True)
+    user = models.ForeignKey(SmallsUser, related_name='catalogue_access', unique=True, on_delete=models.CASCADE)
     has_full_catalogue_access = models.BooleanField(default=False)
 
     class Meta:
@@ -213,8 +213,8 @@ class UserCatalogue(models.Model):
 
 class UserCatalogueProduct(models.Model):
 
-    user = models.ForeignKey(SmallsUser, related_name='product_access')
-    product = models.ForeignKey(Product, related_name='access')
+    user = models.ForeignKey(SmallsUser, related_name='product_access', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='access', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Product access user'

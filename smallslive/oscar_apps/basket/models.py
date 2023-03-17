@@ -119,7 +119,7 @@ class Basket(AbstractBasket):
         total = D('0.00')
         for line in self.physical_lines():
             try:
-                print dir(line)
+                print(dir(line))
                 total += getattr(line, 'line_price_excl_tax_incl_discounts')
                 total -= line.stockrecord.cost_price
             except ObjectDoesNotExist:

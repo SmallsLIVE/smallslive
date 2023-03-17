@@ -5,7 +5,7 @@ from django.core.cache import cache
 from django.db.models import Count, Max, Q, Sum
 from django.conf import settings
 from django.core.files.base import File
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.utils.encoding import force_bytes
 from django.utils.text import slugify
@@ -361,14 +361,14 @@ class Event(TimeStampedModel):
     set = models.CharField(choices=SETS, blank=True, max_length=10)
     description = tinymce_models.HTMLField(blank=True)
     subtitle = models.CharField(max_length=255, blank=True)
-    event_type = models.ForeignKey('EventType', blank=True, null=True)
+    event_type = models.ForeignKey('EventType', blank=True, null=True, on_delete=models.CASCADE,)
     link = models.CharField(max_length=255, blank=True)
     active = models.BooleanField(default=False)
     date_freeform = models.TextField(blank=True)
     photo = CustomImageField(upload_to='event_images', storage=get_event_media_storage, max_length=150, blank=True)
     cropping = ImageRatioField('photo', '600x360', help_text="Enable cropping", allow_fullsize=True)
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed', related_name='events')
-    last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
+    last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE,)
     state = StatusField(default=STATUS.Draft)
     slug = models.SlugField(blank=True, max_length=500)
     tickets_url = models.URLField(null=True, blank=True)
@@ -1021,8 +1021,8 @@ class Recording(models.Model):
     STATUS = Choices('Published', 'Hidden')
     FILTER_STATUS = STATUS + ['None']
 
-    media_file = models.OneToOneField('multimedia.MediaFile', related_name='recording')
-    event = models.ForeignKey(Event, related_name='recordings')
+    media_file = models.OneToOneField('multimedia.MediaFile', related_name='recording', on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, related_name='recordings', on_delete=models.CASCADE)
     title = models.CharField(max_length=150, blank=True)
     set_number = models.IntegerField(default=1)
     state = StatusField(default=STATUS.Published)
@@ -1072,9 +1072,11 @@ class EventSetManager(models.Manager):
 class EventSet(models.Model):
     start = models.TimeField()
     end = models.TimeField(blank=True, null=True)
-    event = models.ForeignKey('events.Event', related_name='sets')
-    video_recording = models.OneToOneField('events.Recording', related_name='set_is_video', blank=True, null=True)
-    audio_recording = models.OneToOneField('events.Recording', related_name='set_is_audio', blank=True, null=True)
+    event = models.ForeignKey('events.Event', related_name='sets', on_delete=models.CASCADE)
+    video_recording = models.OneToOneField('events.Recording', related_name='set_is_video', blank=True, null=True,
+                                           on_delete=models.CASCADE,)
+    audio_recording = models.OneToOneField('events.Recording', related_name='set_is_audio', blank=True, null=True,
+                                           on_delete=models.CASCADE,)
     walk_in_price = models.IntegerField(default=25)
 
     objects = EventSetManager()
@@ -1185,9 +1187,9 @@ class GigPlayedQuerySet(models.QuerySet):
 
 
 class GigPlayed(models.Model):
-    artist = models.ForeignKey('artists.Artist', related_name='gigs_played')
-    event = models.ForeignKey('events.Event', related_name='artists_gig_info')
-    role = models.ForeignKey('artists.Instrument')
+    artist = models.ForeignKey('artists.Artist', related_name='gigs_played', on_delete=models.CASCADE)
+    event = models.ForeignKey('events.Event', related_name='artists_gig_info', on_delete=models.CASCADE)
+    role = models.ForeignKey('artists.Instrument', on_delete=models.CASCADE)
     is_leader = models.BooleanField(default=False)
     sort_order = models.CharField(max_length=30, blank=True)
     is_admin = models.BooleanField(default=False)
@@ -1340,7 +1342,7 @@ class ShowDefaultTime(models.Model):
 
 
 class StaffPick(models.Model):
-    event = models.OneToOneField('events.Event', related_name='staff_picked')
+    event = models.OneToOneField('events.Event', related_name='staff_picked', on_delete=models.CASCADE)
     date_picked = models.DateTimeField()
 
 
@@ -1369,10 +1371,10 @@ class Comment(models.Model):
 
     status = models.CharField(choices=STATUS, default=STATUS_APPROVED,
                               max_length=2)
-    event_set = models.ForeignKey(EventSet, related_name='comments')
+    event_set = models.ForeignKey(EventSet, related_name='comments', on_delete=models.CASCADE)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        related_name='comments')
+        related_name='comments', on_delete=models.CASCADE)
     created_at = models.DateTimeField()
     content = models.TextField(max_length=500, null=True, blank=False)
 
