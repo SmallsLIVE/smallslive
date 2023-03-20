@@ -3,7 +3,7 @@ from django.conf import settings
 from django.apps import apps
 from django.conf.urls.static import static
 from django.conf.urls import  include, url
-from django.urls import path, re_path,include
+from django.urls import path, re_path, include
 from django.contrib import admin
 from django.urls import reverse_lazy
 from django.http import Http404
@@ -17,6 +17,7 @@ from django.views.decorators.cache import cache_page
 from oscar_apps.catalogue.views import ArtistCatalogue, get_album_catalog
 from utils.views import OldSiteRedirectView
 from .sitemaps import sitemaps
+from newsletters.views import *
 
 # uncomment these lines to enable the Djrill admin interface 
 # from djrill import DjrillAdminSite
@@ -56,11 +57,13 @@ urlpatterns = re_path('',
     url(r'^events/', include('events.urls')),
     url(r'^search/', include('search.urls')),
     url(r'^static_page/(?P<template_name>[A-Za-z_-]*)/$', StaticPageView.as_view(), name="static_page"),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^about-us/$', 'static_pages.views.about_view', name="about-us"),
-    url(r'^photo-gallery/$', 'static_pages.views.gallery_view', name="photo-gallery"),
-    url(r'^press/$', 'static_pages.views.press_view', name="press"),
-    url(r'^newsletters/$', 'newsletters.views.newsletter_list', name="newsletters"),
+    path('admin/', admin.site.urls),
+    # @TODO figure out this pages later
+    # url(r'^about-us/$', static_pages.views.about_view, name="about-us"),
+    # url(r'^photo-gallery/$', 'static_pages.views.gallery_view', name="photo-gallery"),
+    # url(r'^press/$', 'static_pages.views.press_view', name="press"),
+
+    url(r'^newsletters/$', newsletter_list, name="newsletters"),
 
     url(r'^accounts/', include('users.urls')),
     url(r'^subscriptions/', include('subscriptions.urls')),
