@@ -104,7 +104,7 @@ class SmallsUserAdmin(UserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
     list_display = ('email', 'artist', 'access_level', 'login_count', 'subscription_price',
-                    'date_joined', 'renewal_date',  'is_active', 'hijack_field')
+                    'date_joined', 'renewal_date',  'is_active') # Removed hijack_field @TODO : Check later 
     list_filter = ('access_level', 'is_active')
     search_fields = ('email',)
     save_on_top = True

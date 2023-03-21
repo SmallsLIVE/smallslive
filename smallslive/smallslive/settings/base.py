@@ -231,7 +231,8 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ['smallslive.db_router.MetricsRouter']
+# @TODO : Check later about db_router
+#DATABASE_ROUTERS = ['smallslive.db_router.MetricsRouter']
 
 
 # Internationalization

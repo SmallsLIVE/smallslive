@@ -18,6 +18,9 @@ from oscar_apps.catalogue.views import ArtistCatalogue, get_album_catalog
 from utils.views import OldSiteRedirectView
 from .sitemaps import sitemaps
 from newsletters.views import *
+from artists.views import *
+from events.views import *
+from django.contrib.flatpages.views import flatpage
 
 # uncomment these lines to enable the Djrill admin interface 
 # from djrill import DjrillAdminSite
@@ -47,7 +50,7 @@ def static_file_view(request, **kwargs):
     return response
 
 
-urlpatterns = re_path('',
+urlpatterns = [
     url(r'^dashboard/', include('artist_dashboard.urls')),
     url(r'^artist-registration/', include('artist_registration.urls')),
     url(r'^artists/', include('artists.urls')),
@@ -72,9 +75,9 @@ urlpatterns = re_path('',
                                                   )),
 
     url(r'^tinymce/', include('tinymce.urls')),
-    url(r'^search/artist/', 'artists.views.artist_search', name='artist_search'),
-    url(r'^search/event/', 'events.views.event_search', name='event_search'),
-    url(r'^search/instrument/', 'artists.views.instrument_search', name='instrument_search'),
+    url(r'^search/artist/', artist_search, name='artist_search'),
+    url(r'^search/event/', event_search, name='event_search'),
+    url(r'^search/instrument/', instrument_search, name='instrument_search'),
     (r'^checkout/paypal/', include('paypal.express.urls')),
     #(r'^dashboard/paypal/express/', include(paypal_application.urls)), ## @TODO Fix later after upgrade
     url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
@@ -89,30 +92,30 @@ urlpatterns = re_path('',
         {'sitemaps': sitemaps}, name='sitemaps'),
     url(r'^robots\.txt', static_file_view, kwargs={'file_name': 'robots.txt'}),
     url(r'^crossdomain\.xml', static_file_view, kwargs={'file_name': 'crossdomain.xml'}),
-    url(r'^$', 'events.views.homepage', name="home"),
-    url(r'^old/$', 'events.views.old_home', name="old_home"),
-    url(r'^styles/$', 'events.views.styleguide', name="styles"),
+    url(r'^$', homepage, name="home"),
+    url(r'^old/$', old_home, name="old_home"),
+    url(r'^styles/$', styleguide, name="styles"),
     url(r'^donate/$', RedirectView.as_view(url=reverse_lazy('donate'), permanent=True)),
-)
+]
 
-urlpatterns += re_path('django.contrib.flatpages.views',
-    url(r'^terms-and-conditions/$', 'flatpage', {'url': '/terms-and-conditions/'}, name='terms-and-conditions'),
-    url(r'^revenue-share/$', 'flatpage', {'url': '/revenue-share/'}, name='revenue-share'),
-    url(r'^institutions/$', 'flatpage', {'url': '/institutions/'}, name='institutions'),
-    url(r'^mezzrow/$', 'flatpage', {'url': '/mezzrow/'}, name='mezzrow'),
-    url(r'^contact-and-info/$', 'flatpage', {'url': '/contact-and-info/'}, name='contact-and-info'),
-    url(r'^education/$', 'flatpage', {'url': '/education/'}, name='education'),
-    url(r'^venues-and-location/$', 'flatpage', {'url': '/venues-location/'}, name='venues-location'),
-)
+urlpatterns += [
+    url(r'^terms-and-conditions/$', flatpage, {'url': '/terms-and-conditions/'}, name='terms-and-conditions'),
+    url(r'^revenue-share/$', flatpage, {'url': '/revenue-share/'}, name='revenue-share'),
+    url(r'^institutions/$', flatpage, {'url': '/institutions/'}, name='institutions'),
+    url(r'^mezzrow/$', flatpage, {'url': '/mezzrow/'}, name='mezzrow'),
+    url(r'^contact-and-info/$', flatpage, {'url': '/contact-and-info/'}, name='contact-and-info'),
+    url(r'^education/$', flatpage, {'url': '/education/'}, name='education'),
+    url(r'^venues-and-location/$', flatpage, {'url': '/venues-location/'}, name='venues-location'),
+]
 
-urlpatterns += re_path('',
+urlpatterns += [
     url(r'^join\.cfm$', RedirectView.as_view(url=reverse_lazy('signup_landing'), permanent=True)),
     url(r'^joinaudio\.cfm$', RedirectView.as_view(url=reverse_lazy('signup_landing'), permanent=True)),
     url(r'^musiccatalog\.cfm$', RedirectView.as_view(url=reverse_lazy('promotions:home'), permanent=True)),
     url(r'^indexnew\.cfm$', OldSiteRedirectView.as_view()),
     url(r'^innerclearback\.cfm$', OldSiteRedirectView.as_view()),
     url(r'^.*\.cfm$', OldSiteRedirectView.as_view()),
-)
+]
 
 if settings.ENABLE_HIJACK:
     urlpatterns += url(r'^hijack/', include('hijack.urls')),

@@ -1,21 +1,21 @@
-from django.conf.urls import patterns, include, url
+from django.urls import path, re_path, include
+from institutional_subscriptions import views
 
-
-urlpatterns = patterns('institutional_subscriptions.views',
-    url(r"^(?P<pk>\d+)/invite-members/$", 'institution_invite_members',
+urlpatterns = [
+    path(r"^(?P<pk>\d+)/invite-members/$", views.institution_invite_members,
         name="institution_invite_members"),
-    url(r"^(?P<institution_id>\d+)/uninvite-member/(?P<member_id>\d+)/$", 'institution_member_delete',
+    path(r"^(?P<institution_id>\d+)/uninvite-member/(?P<member_id>\d+)/$", views.institution_member_delete,
         name="institution_uninvite_member"),
-    url(r"^(?P<pk>\d+)/edit/$", 'institution_edit',
+    path(r"^(?P<pk>\d+)/edit/$", views.institution_edit,
         name="institution_edit"),
-    url(r"^(?P<pk>\d+)/members/$", 'institution_members',
+    path(r"^(?P<pk>\d+)/members/$", views.institution_members,
         name="institution_members"),
-    url(r"^(?P<pk>\d+)/delete/$", 'institution_delete',
+    path(r"^(?P<pk>\d+)/delete/$", views.institution_delete,
         name="institution_delete"),
-    url(r"^add/$", 'institution_add',
+    path(r"^add/$", views.institution_add,
         name="institution_add"),
-    url(r'^activate-account/(?P<key>\w+)/$', 'institution_member_activate',
+    path(r'^activate-account/(?P<key>\w+)/$', views.institution_member_activate,
         name='institution_member_confirm_email'),
-    url(r"^$", 'institution_list',
+    path(r"^$", views.institution_list,
         name="institution_list"),
-)
+]

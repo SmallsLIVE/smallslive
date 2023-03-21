@@ -1,33 +1,32 @@
-from django.conf.urls import patterns, include, url
+from django.urls import path, re_path, include
+from multimedia import views
 
-
-urlpatterns = patterns('multimedia.views',
-    url(r"^media-redirect/(?P<recording_id>\d+)/$", 'media_redirect',
+urlpatterns = [
+    path(r"^media-redirect/(?P<recording_id>\d+)/$", views.media_redirect,
         name="media_redirect"),
-    url(r"^update_media_viewcount/$", 'update_media_viewcount',
+    path(r"^update_media_viewcount/$", views.update_media_viewcount,
         name="update_media_viewcount"),
-    url(r"^most-popular-videos/$", 'most_popular_videos',
+    path(r"^most-popular-videos/$", views.most_popular_videos,
         name="most_popular_videos"),
-    url(r"^most-popular-weekly-videos/$", 'most_popular_weekly_videos',
+    path(r"^most-popular-weekly-videos/$", views.most_popular_weekly_videos,
         name="most_popular_weekly_videos"),
-    url(r"^most-recent-videos/$", 'most_recent_videos',
+    path(r"^most-recent-videos/$", views.most_recent_videos,
         name="most_recent_videos"),
-    url(r"^most-popular-audio/$", 'most_popular_audio',
+    path(r"^most-popular-audio/$", views.most_popular_audio,
         name="most_popular_audio"),
-    url(r"^most-popular-weekly-audio/$", 'most_popular_weekly_audio',
+    path(r"^most-popular-weekly-audio/$", views.most_popular_weekly_audio,
         name="most_popular_weekly_audio"),
-    url(r"^most-recent-audio/$", 'most_recent_audio',
+    path(r"^most-recent-audio/$", views.most_recent_audio,
         name="most_recent_audio"),
-    url(r"^upload_track/$", 'upload_track',
+    path(r"^upload_track/$", views.upload_track,
         name="upload_track", kwargs={'category': 'track'}),
-    url(r"^upload_track_preview/$", 'upload_track',
+    path(r"^upload_track_preview/$", views.upload_track,
         name="upload_track_preview", kwargs={'category': 'preview'}),
-    url(r'^upload_image_preview/$', 'upload_image_preview',
+    path(r'^upload_image_preview/$', views.upload_image_preview,
         name="upload_image_preview"),
-    url(r"^my-downloads/$", 'new_downloads', name="my-downloads"),
-    url(r"^new-downloads/$", 'new_downloads', name="new-downloads"),
-    url(r'^library/(?P<pk>\d+)$', 'album_view', name='album_view'),
-    url(r'^downloads/(?P<pk>\d+)$', 'download_view', name='download_view'),
-    url(r'^library/add-tracks$', 'add_tracks', name='add_tracks'),
-
-)
+    path(r"^my-downloads/$", views.new_downloads, name="my-downloads"),
+    path(r"^new-downloads/$", views.new_downloads, name="new-downloads"),
+    path(r'^library/(?P<pk>\d+)$', views.album_view, name='album_view'),
+    path(r'^downloads/(?P<pk>\d+)$', views.download_view, name='download_view'),
+    path(r'^library/add-tracks$', views.add_tracks, name='add_tracks'),
+]

@@ -11,7 +11,7 @@ from users.models import SmallsUser
 
 @shared_task(default_retry_delay=10, rate_limit="120/m", max_retries=3)
 def send_email_confirmation_task(user_id, signup=True, activate_view='institution_member_confirm_email'):
-    print "OVO JE USER {}".format(user_id)
+    print("OVO JE USER {}".format(user_id))
     req = HttpRequest()
     req.session = {}
     req.META['SERVER_NAME'] = 'www.smallslive.com'

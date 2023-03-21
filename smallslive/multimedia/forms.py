@@ -7,7 +7,7 @@ class TrackFileForm(forms.ModelForm):
 
     class Meta:
         model = MediaFile
-        fields = ('file', 'category')
+        fields = ('file',)  # Removed category field for upgrade
 
     def __init__(self, *args, **kwargs):
         self.category = kwargs.pop('category')
