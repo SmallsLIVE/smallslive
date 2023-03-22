@@ -25,7 +25,7 @@ django-braces==1.12.0
 django-cacheops==5.0.1
 django-celery==3.3.1
 django-compat==1.0.15
-django-compressor==1.4
+django-compressor==4.3.1
 django-countries==7.5.1
 django-crispy-forms==1.11.0
 django-extensions==1.5.2
@@ -45,7 +45,7 @@ django-oscar==2.0
 django-oscar-paypal==2.0.0
 django-oscar-stripe-sca==0.1
 django-phonenumber-field==2.0.1
-django-pipeline==1.5.0
+django-pipeline==2.1.0
 django-polymorphic==3.1.0
 django-redis-cache==1.6.3
 django-sortedm2m==3.0.2
@@ -74,12 +74,14 @@ humanfriendly==1.32
 idna==3.4
 importlib-resources==5.4.0
 ipython==3.1.0
+Jinja2==3.1.2
 jsonfield==2.0.2
 kombu==3.0.30
 libsass==0.7.0
 libthumbor==1.0.1
 lxml==4.9.2
 mailchimp==2.0.9
+MarkupSafe==2.1.2
 metrics==0.3.3
 mock==1.0.1
 MonthDelta==1.0b0
@@ -105,10 +107,12 @@ python-dateutil==2.4.2
 python3-openid==3.2.0
 pytz==2015.2
 raven==5.7.2
+rcssmin==1.1.1
 redis==2.10.6
 reportlab==3.6.12
 requests==2.27.1
 requests-oauthlib==0.4.2
+rjsmin==1.2.1
 signals==0.0.2
 simplejson==3.18.4
 six==1.16.0

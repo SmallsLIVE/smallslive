@@ -4,7 +4,7 @@ from oscar_apps.partner.strategy import Selector
 register = template.Library()
 
 
-@register.assignment_tag
+@register.simple_tag
 def purchase_info_for_track(request, product):
 
     stock_record = product.get_track_stockrecord

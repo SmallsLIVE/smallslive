@@ -78,7 +78,7 @@ urlpatterns = [
     url(r'^search/artist/', artist_search, name='artist_search'),
     url(r'^search/event/', event_search, name='event_search'),
     url(r'^search/instrument/', instrument_search, name='instrument_search'),
-    (r'^checkout/paypal/', include('paypal.express.urls')),
+    url(r'^checkout/paypal/', include('paypal.express.urls')),
     #(r'^dashboard/paypal/express/', include(paypal_application.urls)), ## @TODO Fix later after upgrade
     url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
     url(r'^catalog/accounts/login/$', RedirectView.as_view(url=reverse_lazy('accounts_login'))),

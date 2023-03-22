@@ -145,7 +145,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',  # needs to go after the oscar import to avoid template tag clashes
 ]
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'pipeline.middleware.MinifyHTMLMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -179,6 +179,38 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'users.context_processors.show_modal',
     'users.context_processors.clean_messages',
 )
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.core.context_processors.request',
+                'django.core.context_processors.debug',
+                'django.core.context_processors.i18n',
+                'django.core.context_processors.media',
+                'django.core.context_processors.static',
+                'django.core.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'allauth.account.context_processors.account',
+                'allauth.socialaccount.context_processors.socialaccount',
+                'oscar.apps.search.context_processors.search_form',
+                'oscar.apps.promotions.context_processors.promotions',
+                'oscar.apps.checkout.context_processors.checkout',
+                'oscar.apps.customer.notifications.context_processors.notifications',
+                'oscar.core.context_processors.metadata',
+                'users.context_processors.check_account_status',
+                'users.context_processors.check_if_event_confirmed_user',
+                'users.context_processors.show_modal',
+                'users.context_processors.clean_messages',
+            ],
+        },
+    },
+]
 
 ROOT_URLCONF = 'smallslive.urls'
 
@@ -332,6 +364,51 @@ STATICFILES_FINDERS = (
 )
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+PIPELINE = {
+    'PIPELINE_ENABLED': True,
+    'JAVASCRIPT': {
+        'js': {
+            'source_filenames': (
+                'js/jquery.mobile.custom.min.js',
+                'js/jquery-ui.js',
+                'js/jquery.visible.min.js',
+                'js/bootstrap.min.js',
+                'js/slick/slick.min.js',
+                'js/raphael-min.js',
+                'js/imgCoverEffect.min.js',
+                'js/base.js',
+                'js/utils.js',
+                'js/signup_form.js',
+                'js/white-border-select.js',
+                'js/owl.carousel.min.js',
+                'js/custom_owl_carousel.js',
+                'js/custom_recently_added_carousel.js',
+                'js/custom_popular_carousel.js',
+                'js/custom_highlights_carousel.js',
+                'js/custom_catalog_carousel.js',
+            ),
+            'output_filename': 'js/main.js',
+        },
+
+        'dashboard_js': {
+            'source_filenames': (
+                'js/jquery.mobile.custom.min.js',
+                'js/jquery-ui.js',
+                'js/bootstrap.min.js',
+                'js/slick/slick.min.js',
+                'js/raphael-min.js',
+                'js/base.js',
+                'js/imgCoverEffect.min.js',
+                'js/bootstrap-select.js',
+                'js/Chart.min.js',
+                'js/dashboard-base.js'
+            ),
+            'output_filename': 'js/dashboard_main.js',
+        }
+    }
+}
+
 PIPELINE_COMPILERS = (
     'pipeline.compilers.sass.SASSCompiler',
 )
