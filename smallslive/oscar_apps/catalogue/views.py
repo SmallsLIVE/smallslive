@@ -64,10 +64,11 @@ def get_album_catalog(request):
     return JsonResponse(data)
 
 
-class CatalogueView(catalogue_views.CatalogueView):
-
-    def get(self, request, *args, **kwargs):
-        return redirect('promotions:home')
+# @TODO : Fix later 
+# class CatalogueView(catalogue_views.CatalogueView):
+#
+#     def get(self, request, *args, **kwargs):
+#         return redirect('promotions:home')
 
 
 class ProductDetailView(catalogue_views.ProductDetailView, ProductMixin):
