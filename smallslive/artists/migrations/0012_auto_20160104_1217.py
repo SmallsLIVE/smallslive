@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('period_start', models.DateField()),
                 ('period_end', models.DateField()),
                 ('amount', models.DecimalField(default=0, max_digits=10, decimal_places=4)),
-                ('artist', models.ForeignKey(related_name='earnings', to='artists.Artist')),
+                ('artist', models.ForeignKey(related_name='earnings', on_delete=models.SET_NULL,  to='artists.Artist')),
             ],
             options={
             },

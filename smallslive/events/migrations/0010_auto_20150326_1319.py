@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recording',
             name='event',
-            field=models.ForeignKey(related_name='recordings_info', to='events.Event'),
+            field=models.ForeignKey(related_name='recordings_info', on_delete=models.SET_NULL, to='events.Event'),
             preserve_default=True,
         ),
     ]

@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='donation',
             name='sponsored_event',
-            field=models.OneToOneField(related_name='sponsorship', null=True, blank=True, to='events.Event'),
+            field=models.OneToOneField(related_name='sponsorship',  on_delete=models.SET_NULL, null=True, blank=True, to='events.Event'),
             preserve_default=True,
         ),
     ]

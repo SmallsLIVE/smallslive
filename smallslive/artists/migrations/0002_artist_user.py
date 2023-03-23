@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='artist',
             name='user',
-            field=models.OneToOneField(related_name='artist', null=True, blank=True, to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(related_name='artist', on_delete=models.SET_NULL, null=True, blank=True, to=settings.AUTH_USER_MODEL),
             preserve_default=True,
         ),
     ]

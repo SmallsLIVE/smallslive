@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='usercatalogue',
             name='user',
-            field=models.ForeignKey(related_name='catalogue_access', to=settings.AUTH_USER_MODEL, unique=True),
+            field=models.ForeignKey(related_name='catalogue_access', on_delete=models.SET_NULL, to=settings.AUTH_USER_MODEL, unique=True),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(

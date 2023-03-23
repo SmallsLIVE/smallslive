@@ -31,10 +31,10 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField()),
                 ('content', models.TextField(max_length=500, null=True)),
                 ('author', models.ForeignKey(
-                    related_name='comments',
+                    related_name='comments', on_delete=models.SET_NULL,
                     to=settings.AUTH_USER_MODEL)),
                 ('event_set', models.ForeignKey(
-                    related_name='comments',
+                    related_name='comments', on_delete=models.SET_NULL,
                     to='events.EventSet')),
             ],
             options={

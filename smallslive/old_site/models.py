@@ -20,7 +20,7 @@ class Joineventeventtype(models.Model):
         db_table = 'joinEventEventType'
 
 class Joinmediaevent(models.Model):
-    media = models.ForeignKey('OldMedia', primary_key=True,  db_column='mediaId', on_delete=models.CASCADE) # Field name made lowercase.
+    media = models.ForeignKey('OldMedia', db_column='mediaId', on_delete=models.CASCADE) # Field name made lowercase.
     event = models.ForeignKey('OldEvent', db_column='eventId', on_delete=models.CASCADE) # Field name made lowercase.
     sortorder = models.CharField(db_column='sortOrder', max_length=255, blank=True) # Field name made lowercase.
     class Meta:
@@ -35,7 +35,7 @@ class Joinmediamediatype(models.Model):
         db_table = 'joinMediaMediaType'
 
 class Joinmediaperson(models.Model):
-    media = models.ForeignKey('OldMedia', primary_key=True, db_column='mediaId', on_delete=models.CASCADE) # Field name made lowercase.
+    media = models.ForeignKey('OldMedia', db_column='mediaId', on_delete=models.CASCADE) # Field name made lowercase.
     person_id = models.IntegerField(db_column='personId') # Field name made lowercase.
     sortorder = models.CharField(db_column='sortOrder', max_length=255, blank=True) # Field name made lowercase.
     class Meta:
@@ -43,7 +43,7 @@ class Joinmediaperson(models.Model):
         db_table = 'joinMediaPerson'
 
 class Joinpersonevent(models.Model):
-    event = models.ForeignKey('OldEvent', primary_key=True, db_column='eventId', on_delete=models.CASCADE) # Field name made lowercase.
+    event = models.ForeignKey('OldEvent', db_column='eventId', on_delete=models.CASCADE) # Field name made lowercase.
     person = models.ForeignKey('OldPerson', db_column='personId', on_delete=models.CASCADE) # Field name made lowercase.
     persontype = models.ForeignKey('OldPersonType', db_column='personTypeId', on_delete=models.CASCADE) # Field name made lowercase.
     sortorder = models.CharField(db_column='sortOrder', max_length=255, blank=True) # Field name made lowercase.

@@ -20,11 +20,11 @@ def migrate_lines(apps, schema_editor):
     UserCatalogueProduct.objects.all().delete()
     for line in Line.objects.all().select_related('order__user', 'product__product_class'):
         if not line.product:
-            print 'Not product: ', line.id
+            print('Not product: ', line.id)
         elif not line.product.product_class:
-            print 'Not product class: ', line.product.id, line.product.title
+            print('Not product class: ', line.product.id, line.product.title)
         elif not line.order.user:
-            print 'Not order user: ', line.order.id
+            print('Not order user: ', line.order.id)
         elif line.product.product_class.name in ['Album', 'Track', 'CD']:
             UserCatalogueProduct.objects.get_or_create(user=line.order.user, product=line.product)
 

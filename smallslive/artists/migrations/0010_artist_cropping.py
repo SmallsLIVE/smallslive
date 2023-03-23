@@ -14,8 +14,8 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='artist',
-            name=b'cropping',
-            field=image_cropping.fields.ImageRatioField(b'photo', '580x400', hide_image_field=False, size_warning=False, allow_fullsize=False, free_crop=False, adapt_rotation=False, help_text=None, verbose_name='cropping'),
+            name='cropping',
+            field=image_cropping.fields.ImageRatioField('photo', '580x400', hide_image_field=False, size_warning=False, allow_fullsize=False, free_crop=False, adapt_rotation=False, help_text=None, verbose_name='cropping'),
             preserve_default=True,
         ),
     ]

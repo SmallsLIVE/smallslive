@@ -16,8 +16,8 @@ class Migration(migrations.Migration):
             name='ArtistProduct',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('artist', models.ForeignKey(verbose_name=b'', to='artists.Artist')),
-                ('product', models.ForeignKey(verbose_name=b'', to='catalogue.Product')),
+                ('artist', models.ForeignKey(verbose_name=b'', on_delete=models.SET_NULL, to='artists.Artist')),
+                ('product', models.ForeignKey(verbose_name=b'', on_delete=models.SET_NULL, to='catalogue.Product')),
             ],
             options={
                 'ordering': ['product', 'artist'],

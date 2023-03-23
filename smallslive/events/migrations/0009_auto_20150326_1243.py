@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recording',
             name='media_file',
-            field=models.ForeignKey(related_name='recording', to='multimedia.MediaFile', primary_key=False),
+            field=models.ForeignKey(related_name='recording',on_delete=models.SET_NULL, to='multimedia.MediaFile', primary_key=False),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recording',
             name='event',
-            field=models.ForeignKey(to='events.Event'),
+            field=models.ForeignKey(to='events.Event', on_delete=models.SET_NULL),
             preserve_default=True,
         ),
 

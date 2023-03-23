@@ -1,5 +1,6 @@
 import datetime
 from dateutil.relativedelta import relativedelta
+from django.utils.timezone import now
 from decimal import Decimal
 from django.db import models
 from django.utils import timezone
@@ -9,6 +10,7 @@ from events.models import Event
 from oscar_apps.catalogue.models import Product
 from oscar_apps.order.models import Order
 from users.models import SmallsUser
+
 
 
 class DonationManager(models.Manager):
@@ -164,7 +166,7 @@ class Donation(models.Model):
     archive_access_expiry_date = models.DateField(blank=True, null=True)
     # Spike would like to be able to create donations for a specific year
     # Time is not useful. Queries will change to use this field for the tax year donations.
-    donation_date = models.DateField(default=timezone.now().date())
+    donation_date = models.DateField(default=now)
 
     objects = DonationManager()
 

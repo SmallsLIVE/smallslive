@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='stockrecord',
             name='digital_download',
-            field=models.OneToOneField(related_name='stock_record', null=True, blank=True, to='multimedia.MediaFile'),
+            field=models.OneToOneField(related_name='stock_record', on_delete=models.SET_NULL, null=True, blank=True, to='multimedia.MediaFile'),
             preserve_default=True,
         ),
     ]

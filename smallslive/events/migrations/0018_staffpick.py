@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('date_picked', models.DateTimeField()),
-                ('event', models.OneToOneField(related_name='staff_picked', to='events.Event')),
+                ('event', models.OneToOneField(related_name='staff_picked', on_delete=models.SET_NULL, to='events.Event')),
             ],
             options={
             },

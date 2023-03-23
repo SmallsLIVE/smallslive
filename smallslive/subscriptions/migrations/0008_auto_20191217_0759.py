@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='donation',
             name='user',
-            field=models.ForeignKey(related_name='donations', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='donations',  on_delete=models.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True),
             preserve_default=True,
         ),
     ]

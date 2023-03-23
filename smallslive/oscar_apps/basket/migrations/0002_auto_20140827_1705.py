@@ -18,25 +18,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='lineattribute',
             name='option',
-            field=models.ForeignKey(verbose_name='Option', to='catalogue.Option'),
+            field=models.ForeignKey(verbose_name='Option',  on_delete=models.SET_NULL, to='catalogue.Option'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='line',
             name='basket',
-            field=models.ForeignKey(verbose_name='Basket', related_name='lines', to='basket.Basket'),
+            field=models.ForeignKey(verbose_name='Basket',  on_delete=models.SET_NULL, related_name='lines', to='basket.Basket'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='line',
             name='product',
-            field=models.ForeignKey(verbose_name='Product', related_name='basket_lines', to='catalogue.Product'),
+            field=models.ForeignKey(verbose_name='Product',  on_delete=models.SET_NULL, related_name='basket_lines', to='catalogue.Product'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='line',
             name='stockrecord',
-            field=models.ForeignKey(related_name='basket_lines', to='partner.StockRecord'),
+            field=models.ForeignKey(related_name='basket_lines',  on_delete=models.SET_NULL, to='partner.StockRecord'),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='basket',
             name='owner',
-            field=models.ForeignKey(verbose_name='Owner', related_name='baskets', to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(verbose_name='Owner',  on_delete=models.SET_NULL, related_name='baskets', to=settings.AUTH_USER_MODEL, null=True),
             preserve_default=True,
         ),
     ]

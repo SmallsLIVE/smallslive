@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('has_full_catalogue_access', models.BooleanField(default=False)),
-                ('user', models.ForeignKey(related_name='catalogue_access', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(related_name='catalogue_access',  on_delete=models.SET_NULL, to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },
@@ -28,8 +28,8 @@ class Migration(migrations.Migration):
             name='UserCatalogueProduct',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('product', models.ForeignKey(related_name='access', to='catalogue.Product')),
-                ('user', models.ForeignKey(related_name='product_access', to=settings.AUTH_USER_MODEL)),
+                ('product', models.ForeignKey(related_name='access',  on_delete=models.SET_NULL, to='catalogue.Product')),
+                ('user', models.ForeignKey(related_name='product_access',  on_delete=models.SET_NULL, to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },

@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='showdefaulttime',
             name='venue',
-            field=models.ForeignKey(related_name='default_times', to='events.Venue'),
+            field=models.ForeignKey(related_name='default_times', on_delete=models.SET_NULL, to='events.Venue'),
             preserve_default=True,
         ),
     ]

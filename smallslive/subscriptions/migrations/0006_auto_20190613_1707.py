@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='donation',
             name='event',
-            field=models.ForeignKey(related_name='donations', blank=True, to='events.Event', null=True),
+            field=models.ForeignKey(related_name='donations',  on_delete=models.SET_NULL, blank=True, to='events.Event', null=True),
             preserve_default=True,
         ),
     ]

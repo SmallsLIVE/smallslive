@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='product',
             name='event_set',
-            field=models.ForeignKey(related_name='tickets', to='events.EventSet', null=True),
+            field=models.ForeignKey(related_name='tickets',  on_delete=models.SET_NULL, to='events.EventSet', null=True),
             preserve_default=True,
         ),
     ]

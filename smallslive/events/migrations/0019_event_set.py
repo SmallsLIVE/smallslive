@@ -23,15 +23,15 @@ def convert_to_event_set(apps, schema_editor):
             video_recording=video, audio_recording=audio
         )
 
-        print 'Created Set: ', event_set.start, event_set.end
+        print('Created Set: ', event_set.start, event_set.end)
 
     process_count = 0
     for event in Event.objects.order_by('-id'):
         process_count += 1
-        print 'Processing event: ', event.pk, process_count
+        print('Processing event: ', event.pk, process_count)
         default_timezone = timezone.get_default_timezone()
         ny_start = timezone.make_naive(event.start, default_timezone)
-        print 'Start: ', ny_start
+        print('Start: ', ny_start)
         event.date = ny_start.date()
         event.save()
 
@@ -68,9 +68,9 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('start', models.TimeField()),
                 ('end', models.TimeField(null=True, blank=True)),
-                ('audio_recording', models.OneToOneField(related_name='set_is_audio', null=True, blank=True, to='events.Recording')),
-                ('event', models.ForeignKey(related_name='sets', to='events.Event')),
-                ('video_recording', models.OneToOneField(related_name='set_is_video', null=True, blank=True, to='events.Recording')),
+                ('audio_recording', models.OneToOneField(related_name='set_is_audio',  on_delete=models.SET_NULL, null=True, blank=True, to='events.Recording')),
+                ('event', models.ForeignKey(related_name='sets', on_delete=models.SET_NULL, to='events.Event')),
+                ('video_recording', models.OneToOneField(related_name='set_is_video',  on_delete=models.SET_NULL, null=True, blank=True, to='events.Recording')),
             ],
             options={
             },

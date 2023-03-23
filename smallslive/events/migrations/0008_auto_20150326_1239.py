@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recording',
             name='media_file',
-            field=models.ForeignKey(related_name='set', primary_key=True, serialize=False, to='multimedia.MediaFile'),
+            field=models.ForeignKey(related_name='set', on_delete=models.SET_NULL, primary_key=True, serialize=False, to='multimedia.MediaFile'),
             preserve_default=True,
         ),
     ]

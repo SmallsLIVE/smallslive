@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='donation',
             name='order',
-            field=models.ForeignKey(related_name='donations', blank=True, to='order.Order', null=True),
+            field=models.ForeignKey(related_name='donations',  on_delete=models.SET_NULL, blank=True, to='order.Order', null=True),
             preserve_default=True,
         ),
     ]

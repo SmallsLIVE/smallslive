@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='event',
             name='last_modified_by',
-            field=models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(blank=True, on_delete=models.SET_NULL, to=settings.AUTH_USER_MODEL, null=True),
             preserve_default=True,
         ),
         migrations.AddField(

@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('date', models.DateTimeField(auto_now_add=True)),
-                ('user', models.OneToOneField(related_name='legal_agreement_acceptance', to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(related_name='legal_agreement_acceptance',  on_delete=models.SET_NULL, to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },

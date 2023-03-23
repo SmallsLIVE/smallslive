@@ -15,13 +15,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='product',
             name='event_set',
-            field=models.ForeignKey(related_name='products', to='events.EventSet', null=True),
+            field=models.ForeignKey(related_name='products', on_delete=models.SET_NULL, to='events.EventSet', null=True),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='product',
             name='event',
-            field=models.ForeignKey(related_name='products', blank=True, to='events.Event', null=True),
+            field=models.ForeignKey(related_name='products', on_delete=models.SET_NULL, blank=True, to='events.Event', null=True),
             preserve_default=True,
         ),
     ]

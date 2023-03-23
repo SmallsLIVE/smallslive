@@ -31,7 +31,7 @@ class Product(AbstractProduct):
                                      decimal_places=2, max_digits=12, blank=True, null=True)
 
     event_set = models.ForeignKey('events.EventSet', related_name='tickets', null=True, on_delete=models.CASCADE)
-    artists = models.ManyToManyField('artists.Artist', through='ArtistProduct', verbose_name=("Attributes"), blank=True, null=True)
+    artists = models.ManyToManyField('artists.Artist', through='ArtistProduct', verbose_name=("Attributes"), blank=True)
 
     set = models.CharField(max_length=50, blank=True)
 
@@ -204,7 +204,7 @@ class ArtistProduct(models.Model):
 
 class UserCatalogue(models.Model):
 
-    user = models.ForeignKey(SmallsUser, related_name='catalogue_access', unique=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(SmallsUser, related_name='catalogue_access', on_delete=models.CASCADE)
     has_full_catalogue_access = models.BooleanField(default=False)
 
     class Meta:

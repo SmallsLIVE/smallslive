@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='event',
             name='venue',
-            field=models.ForeignKey(blank=True, to='events.Venue', null=True),
+            field=models.ForeignKey(blank=True, on_delete=models.SET_NULL,to='events.Venue', null=True),
             preserve_default=True,
         ),
         migrations.RunPython(fill_smalls_venue, noop)

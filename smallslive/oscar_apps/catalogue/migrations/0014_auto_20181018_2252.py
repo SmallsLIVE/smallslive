@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='product',
             name='event',
-            field=models.ForeignKey(related_name='products', to='events.Event', null=True),
+            field=models.ForeignKey(related_name='products', on_delete=models.SET_NULL, to='events.Event', null=True),
             preserve_default=True,
         ),
     ]

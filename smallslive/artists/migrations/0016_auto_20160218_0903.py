@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='artistearnings',
             name='payout_period',
-            field=models.ForeignKey(related_name='artist_earnings', default=0, to='artists.PastPayoutPeriod'),
+            field=models.ForeignKey(related_name='artist_earnings', on_delete=models.SET_NULL, default=0, to='artists.PastPayoutPeriod'),
             preserve_default=False,
         ),
     ]

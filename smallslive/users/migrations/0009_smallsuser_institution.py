@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='smallsuser',
             name='institution',
-            field=models.ForeignKey(related_name='members', blank=True, to='institutional_subscriptions.Institution', null=True),
+            field=models.ForeignKey(related_name='members',  on_delete=models.SET_NULL, blank=True, to='institutional_subscriptions.Institution', null=True),
             preserve_default=True,
         ),
     ]

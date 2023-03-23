@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('second_set', models.TimeField()),
                 ('set_duration', models.IntegerField(default=1)),
                 ('title', models.CharField(default=b'Set duration', max_length=100)),
-                ('venue', models.ForeignKey(to='events.Venue')),
+                ('venue', models.ForeignKey(to='events.Venue',  on_delete=models.SET_NULL)),
             ],
             options={
             },

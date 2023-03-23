@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('payment_source', models.CharField(max_length=64)),
                 ('reference', models.CharField(max_length=128, blank=True)),
                 ('label', models.CharField(max_length=128, blank=True)),
-                ('user', models.ForeignKey(related_name='donations', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(related_name='donations',  on_delete=models.SET_NULL, to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },

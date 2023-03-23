@@ -49,7 +49,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='media',
             name='media_type',
-            field=models.ForeignKey(blank=True, to='multimedia.MediaType', null=True),
+            field=models.ForeignKey(blank=True,  on_delete=models.SET_NULL, to='multimedia.MediaType', null=True),
             preserve_default=True,
         ),
     ]

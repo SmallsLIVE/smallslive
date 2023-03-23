@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='donation',
             name='artist',
-            field=models.ForeignKey(related_name='donations', blank=True, to='artists.Artist', null=True),
+            field=models.ForeignKey(related_name='donations',  on_delete=models.SET_NULL, blank=True, to='artists.Artist', null=True),
             preserve_default=True,
         ),
     ]

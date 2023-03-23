@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='artistproduct',
             name='instrument',
-            field=models.ForeignKey(blank=True, to='artists.Instrument', null=True),
+            field=models.ForeignKey(blank=True, on_delete=models.SET_NULL, to='artists.Instrument', null=True),
             preserve_default=True,
         ),
     ]

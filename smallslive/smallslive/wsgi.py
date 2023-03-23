@@ -11,7 +11,16 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "smallslive.settings")
 
 from django.core.wsgi import get_wsgi_application
-from whitenoise.django import DjangoWhiteNoise
+from whitenoise import WhiteNoise
 
-application = DjangoWhiteNoise(get_wsgi_application())
+application = WhiteNoise(get_wsgi_application())
 application.add_files('media', prefix='media/')
+
+
+# import os
+#
+# from django.core.wsgi import get_wsgi_application
+#
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'testmama.settings')
+#
+# application = get_wsgi_application()

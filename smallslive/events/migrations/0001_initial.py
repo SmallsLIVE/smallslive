@@ -55,9 +55,9 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('is_leader', models.BooleanField(default=False)),
                 ('sort_order', models.CharField(max_length=30, blank=True)),
-                ('artist', models.ForeignKey(related_name='gigs_played', to='artists.Artist')),
-                ('event', models.ForeignKey(related_name='artists_gig_info', to='events.Event')),
-                ('role', models.ForeignKey(to='artists.Instrument')),
+                ('artist', models.ForeignKey(related_name='gigs_played',  on_delete=models.SET_NULL, to='artists.Artist')),
+                ('event', models.ForeignKey(related_name='artists_gig_info',  on_delete=models.SET_NULL, to='events.Event')),
+                ('role', models.ForeignKey(to='artists.Instrument',  on_delete=models.SET_NULL)),
             ],
             options={
                 'ordering': ['event', 'sort_order', 'is_leader'],
@@ -67,9 +67,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Set',
             fields=[
-                ('media_file', models.OneToOneField(related_name='set', primary_key=True, serialize=False, to='multimedia.MediaFile')),
+                ('media_file', models.OneToOneField(related_name='set',  on_delete=models.SET_NULL, primary_key=True, serialize=False, to='multimedia.MediaFile')),
                 ('set_number', models.IntegerField(default=1)),
-                ('event', models.ForeignKey(related_name='sets', to='events.Event')),
+                ('event', models.ForeignKey(related_name='sets',  on_delete=models.SET_NULL, to='events.Event')),
             ],
             options={
                 'ordering': ['set_number'],
@@ -79,7 +79,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='event',
             name='event_type',
-            field=models.ForeignKey(blank=True, to='events.EventType', null=True),
+            field=models.ForeignKey(blank=True,  on_delete=models.SET_NULL, to='events.EventType', null=True),
             preserve_default=True,
         ),
     ]
