@@ -38,7 +38,7 @@ django-hijack==2.1.10
 django-image-cropping==1.7
 django-js-asset==2.0.0
 django-localflavor==1.1
-django-model-utils==4.0.0
+django-model-utils==4.1.1
 django-mptt==0.14.0
 django-multi-email-field==0.3.1
 django-oscar==2.0
@@ -64,7 +64,6 @@ docopt==0.4.0
 easy-thumbnails==2.8.5
 elasticsearch==1.7.0
 email-validator==1.0.1
-ez-setup==0.9
 factory-boy==2.12.0
 Faker==14.2.1
 funcy==1.18
@@ -96,7 +95,7 @@ phonenumbers==8.13.7
 Pillow==9.4.0
 psycopg2-binary==2.8.6
 purl==1.0.3
-pycountry==1.10
+pycountry==22.3.5
 pycparser==2.21
 pycrypto==2.6.1
 pycurl==7.45.2
