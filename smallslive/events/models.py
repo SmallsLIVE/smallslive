@@ -1,5 +1,6 @@
 import pytz
 import time
+import functools
 from cryptography.fernet import Fernet
 from django.core.cache import cache
 from django.db.models import Count, Max, Q, Sum
@@ -301,7 +302,7 @@ class CustomFileDescriptor(models.fields.files.FileDescriptor):
             file = instance.__dict__[self.field.name]
         else:
             instance.refresh_from_db(fields=[self.field.name])
-            file = getattr(instance, self.field.name)
+            file = getattr(instance, str(self.field.name))
 
         if isinstance(file, six.string_types) or file is None:
             attr = self.field.attr_class(instance, self.field, file)
@@ -369,7 +370,7 @@ class Event(TimeStampedModel):
     cropping = ImageRatioField('photo', '600x360', help_text="Enable cropping", allow_fullsize=True)
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed', related_name='events')
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE,)
-    state = StatusField(default=STATUS.Draft)
+    state = StatusField(choices=STATUS, default=STATUS.Draft)
     slug = models.SlugField(blank=True, max_length=500)
     tickets_url = models.URLField(null=True, blank=True)
     date = models.DateField(blank=True, null=True)
@@ -405,14 +406,16 @@ class Event(TimeStampedModel):
         return u'{} - {} - {}:{}'.format(self.title, self.date, self.start, self.end)
 
     def get_venue_name(self):
+        venue_name = None
         cache_key = 'venue_{}'.format(self.venue_id)
         cached_venue_info = cache.get(cache_key)
         if cached_venue_info:
             venue_name = cached_venue_info['venue_name']
         else:
-            venue_name = self.venue.name
-            venue_info = {'venue_name': venue_name}
-            cache.set(cache_key, venue_info)
+            if self.venue:
+                venue_name = self.venue.name
+                venue_info = {'venue_name': venue_name}
+                cache.set(cache_key, venue_info)
 
         return venue_name
 
@@ -448,9 +451,9 @@ class Event(TimeStampedModel):
     def get_actual_start_end(self):
         """ Return real NY time start and end for the event.
         """
-
         sets = list(self.sets.all())
-        sets = sorted(sets, Event.sets_order)
+        # sets = sorted(sets, Event.sets_order)
+        sets = sorted(sets, key=functools.cmp_to_key(Event.sets_order))
 
         current_timezone = timezone.get_current_timezone()
 
@@ -485,7 +488,8 @@ class Event(TimeStampedModel):
 
     def get_set_start(self, set_number):
         sets = list(self.sets.all())
-        sets = sorted(sets, Event.sets_order)
+        #sets = sorted(sets, Event.sets_order)
+        sets = sorted(sets,  key=functools.cmp_to_key(Event.sets_order))
         return sets[set_number].start
 
     def get_play_total(self):
@@ -521,7 +525,8 @@ class Event(TimeStampedModel):
             return '{} - {}'.format(event_set.start.strftime(time_format),
                                     event_set.end.strftime(time_format))
 
-        sorted_sets = sorted(list(all_sets), Event.sets_order)
+        #sorted_sets = sorted(list(all_sets), Event.sets_order)
+        sets = sorted(list(all_sets), key=functools.cmp_to_key(Event.sets_order))
 
         sets_display = ' & '.join(
             [d.start.strftime(time_format) for d in sorted_sets])
@@ -658,10 +663,12 @@ class Event(TimeStampedModel):
             return 1
         else:
             sets1 = list(event1.sets.all())
-            sets1 = sorted(sets1, Event.sets_order)
+            #sets1 = sorted(sets1, Event.sets_order)
+            sets1 = sorted(sets1, key=functools.cmp_to_key(Event.sets_order))
             start1 = sets1[0].start
             sets2 = list(event2.sets.all())
-            sets2 = sorted(sets2, Event.sets_order)
+            #sets2 = sorted(sets2, Event.sets_order)
+            sets2 = sorted(sets2, key=functools.cmp_to_key(Event.sets_order))
             start2 = sets2[0].start
             if start1.hour <= 5 and start2.hour <= 5 or start1.hour >= 5 and start2.hour >= 5:
                 if start1.hour < start2.hour:
@@ -681,7 +688,8 @@ class Event(TimeStampedModel):
 
     def get_range(self):
         sets = list(self.sets.all())
-        sets = sorted(sets, Event.sets_order)
+        #sets = sorted(sets, Event.sets_order)
+        sets = sorted(sets, key=functools.cmp_to_key(Event.sets_order))
         if sets:
             start = sets[0].start
             end = sets[-1].end
@@ -750,7 +758,8 @@ class Event(TimeStampedModel):
 
     def get_live_set(self):
         sets = list(self.sets.all())
-        sets = sorted(sets, Event.sets_order)
+        #sets = sorted(sets, Event.sets_order)
+        sets = sorted(sets, key=functools.cmp_to_key(Event.sets_order))
 
         local_datetime = timezone.localtime(timezone.now())
         local_date = local_datetime.date()
@@ -923,7 +932,9 @@ class Event(TimeStampedModel):
 
     def get_sets_info_dict(self):
         sets_info = []
-        for item in sorted(list(self.sets.all()), Event.sets_order):
+        #for item in sorted(list(self.sets.all()), Event.sets_order):
+        sets = sorted(list(self.sets.all()), key=functools.cmp_to_key(Event.sets_order))
+        for item in sets:
             info = {
                 'start': item.start,
                 'has_media': bool(item.audio_recording or item.video_recording)
@@ -947,7 +958,8 @@ class Event(TimeStampedModel):
     def get_tickets(self):
         tickets = []
         sets = list(self.sets.all())
-        sets = sorted(sets, Event.sets_order)
+        # sets = sorted(sets, Event.sets_order)
+        sets = sorted(sets, key=functools.cmp_to_key(Event.sets_order))
         for event_set in sets:
             tickets += list(event_set.tickets.all())
 
@@ -960,35 +972,41 @@ class Event(TimeStampedModel):
         return is_public
 
     def get_aws_access_key_id(self):
+        aws_access_key_id = None
         cache_key = 'venue_{}_aws_access_key_id'.format(self.venue_id)
         cached_venue_aws_access_key_id = cache.get(cache_key)
         if cached_venue_aws_access_key_id:
             aws_access_key_id = cached_venue_aws_access_key_id
         else:
-            aws_access_key_id = self.venue.get_aws_access_key_id
-            cache.set(cache_key, aws_access_key_id)
+            if self.venue:
+                aws_access_key_id = self.venue.get_aws_access_key_id
+                cache.set(cache_key, aws_access_key_id)
 
         return aws_access_key_id
 
     def get_aws_secret_access_key(self):
+        aws_secret_access_key = None
         cache_key = 'venue_{}_aws_secret_access_key'.format(self.venue_id)
         cached_venue_aws_secret_access_key = cache.get(cache_key)
         if cached_venue_aws_secret_access_key:
             aws_secret_access_key = cached_venue_aws_secret_access_key
         else:
-            aws_secret_access_key = self.venue.get_aws_secret_access_key
-            cache.set(cache_key, aws_secret_access_key)
+            if self.venue:
+                aws_secret_access_key = self.venue.get_aws_secret_access_key
+                cache.set(cache_key, aws_secret_access_key)
 
         return aws_secret_access_key
 
     def get_aws_storage_bucket_name(self):
+        aws_storage_bucket_name = None
         cache_key = 'venue_{}_aws_storage_bucket_name'.format(self.venue_id)
         cached_venue_aws_storage_bucket_name = cache.get(cache_key)
         if cached_venue_aws_storage_bucket_name:
             aws_storage_bucket_name = cached_venue_aws_storage_bucket_name
         else:
-            aws_storage_bucket_name = self.venue.get_aws_storage_bucket_name
-            cache.set(cache_key, aws_storage_bucket_name)
+            if self.venue:
+                aws_storage_bucket_name = self.venue.get_aws_storage_bucket_name
+                cache.set(cache_key, aws_storage_bucket_name)
 
         return aws_storage_bucket_name
 
@@ -1025,7 +1043,7 @@ class Recording(models.Model):
     event = models.ForeignKey(Event, related_name='recordings', on_delete=models.CASCADE)
     title = models.CharField(max_length=150, blank=True)
     set_number = models.IntegerField(default=1)
-    state = StatusField(default=STATUS.Published)
+    state = StatusField(choices=STATUS, default=STATUS.Published)
     date_added = models.DateTimeField(auto_now_add=True)
     view_count = models.PositiveIntegerField(default=0)
 

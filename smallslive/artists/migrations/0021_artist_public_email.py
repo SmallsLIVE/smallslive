@@ -17,8 +17,9 @@ class Migration(migrations.Migration):
             field=models.EmailField(max_length=75, null=True, blank=True),
             preserve_default=True,
         ),
-        migrations.RunSQL(
-            'UPDATE artists_artist AS A SET public_email=U.email FROM users_smallsuser as U WHERE U.artist_id=A.id;',
-            'UPDATE artists_artist set public_email=null;'
-        )
+        # migrations.RunSQL(
+        #     # @TODO : Fix later
+        #     # 'UPDATE artists_artist AS A SET public_email=U.email FROM users_smallsuser as U WHERE U.artist_id=A.id;',
+        #     # 'UPDATE artists_artist set public_email=null;'
+        # )
     ]

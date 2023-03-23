@@ -105,6 +105,7 @@ INSTALLED_APPS = [
     'users',
     'utils',
     'custom_stripe',
+    'treebeard',
     ## Dependent oscar packages
     'oscar',
     'oscar.apps.wishlists.apps.WishlistsConfig',
@@ -155,31 +156,8 @@ MIDDLEWARE = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
-    'smallslive.middleware.RedirectMiddleware',
+    #'smallslive.middleware.RedirectMiddleware',
 )
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.request',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.core.context_processors.tz',
-    'django.contrib.messages.context_processors.messages',
-    'allauth.account.context_processors.account',
-    'allauth.socialaccount.context_processors.socialaccount',
-    'oscar.apps.search.context_processors.search_form',
-    'oscar.apps.promotions.context_processors.promotions',
-    'oscar.apps.checkout.context_processors.checkout',
-    'oscar.apps.customer.notifications.context_processors.notifications',
-    'oscar.core.context_processors.metadata',
-    'users.context_processors.check_account_status',
-    'users.context_processors.check_if_event_confirmed_user',
-    'users.context_processors.show_modal',
-    'users.context_processors.clean_messages',
-)
-
 
 TEMPLATES = [
     {
@@ -189,17 +167,15 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
-                'django.core.context_processors.request',
-                'django.core.context_processors.debug',
-                'django.core.context_processors.i18n',
-                'django.core.context_processors.media',
-                'django.core.context_processors.static',
-                'django.core.context_processors.tz',
+                'django.template.context_processors.request',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                'allauth.account.context_processors.account',
-                'allauth.socialaccount.context_processors.socialaccount',
                 'oscar.apps.search.context_processors.search_form',
-                'oscar.apps.promotions.context_processors.promotions',
+                # 'oscar.apps.promotions.context_processors.promotions',
                 'oscar.apps.checkout.context_processors.checkout',
                 'oscar.apps.customer.notifications.context_processors.notifications',
                 'oscar.core.context_processors.metadata',
@@ -611,7 +587,9 @@ PAYPAL_PAYFLOW_DASHBOARD_FORMS = True
 
 # Stripe account for for profit
 STRIPE_PUBLISHABLE_KEY = STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+#STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_SECRET_KEY = 'sk_live_skajfqlajdlfjsddssajdlkfjalsdh'
+STRIPE_TEST_SECRET_KEY = 'sk_test_skajfqlajdlfjsddsasdfassadfsajdlkfjalsdh'
 STRIPE_CURRENCY = 'USD'
 STRIPE_CHARGE_AND_CAPTURE_IN_ONE_STEP = True
 STRIPE_PRODUCT = os.environ.get('STRIPE_PRODUCT')
@@ -905,7 +883,8 @@ WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'
 
 ADMIN_EMAILS = ast.literal_eval(os.environ.get('ADMIN_EMAILS', '[]'))
 
-REDIRECT_TO_MAINTENANCE = ast.literal_eval(os.environ.get('REDIRECT_TO_MAINTENANCE', 'False'))
+# @TODO : Fix later
+#REDIRECT_TO_MAINTENANCE = ast.literal_eval(os.environ.get('REDIRECT_TO_MAINTENANCE', 'False'))
 
 AWS_PAYOUTS_BUCKET = os.environ.get('AWS_PAYOUTS_BUCKET', 'smallslivepayouts')
 

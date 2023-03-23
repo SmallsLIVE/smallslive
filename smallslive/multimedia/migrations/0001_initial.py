@@ -15,8 +15,8 @@ class Migration(migrations.Migration):
             name='Media',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=255, db_column=b'mediaName', blank=True)),
-                ('path', models.CharField(max_length=255, db_column=b'mediaPath', blank=True)),
+                ('name', models.CharField(max_length=255, db_column='mediaName', blank=True)),
+                ('path', models.CharField(max_length=255, db_column='mediaPath', blank=True)),
                 ('filename', models.CharField(max_length=255, blank=True)),
                 ('description', models.TextField(blank=True)),
             ],
@@ -28,9 +28,9 @@ class Migration(migrations.Migration):
             name='MediaFile',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('media_type', models.CharField(max_length=10, editable=False, choices=[(b'video', b'video'), (b'audio', b'audio')])),
-                ('format', models.CharField(max_length=4, editable=False, choices=[(b'mp3', b'mp3'), (b'flac', b'flac'), (b'wav', b'wav'), (b'mp4', b'mp4'), (b'mpg', b'mpg'), (b'avi', b'avi'), (b'mkv', b'mkv'), (b'mov', b'mov'), (b'mpeg', b'mpeg'), (b'flv', b'flv'), (b'm4v', b'm4v')])),
-                ('file', multimedia.fields.DynamicBucketFileField(upload_to=b'/')),
+                ('media_type', models.CharField(max_length=10, editable=False, choices=[('video', 'video'), ('audio', 'audio')])),
+                ('format', models.CharField(max_length=4, editable=False, choices=[('mp3', 'mp3'), ('flac', 'flac'), ('wav', 'wav'), ('mp4', 'mp4'), ('mpg', 'mpg'), ('avi', 'avi'), ('mkv', 'mkv'), ('mov', 'mov'), ('mpeg', 'mpeg'), ('flv', 'flv'), ('m4v', 'm4v')])),
+                ('file', multimedia.fields.DynamicBucketFileField(upload_to='/')),
             ],
             options={
             },
@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
             name='MediaType',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('type', models.CharField(max_length=255, db_column=b'mediaType')),
+                ('type', models.CharField(max_length=255, db_column='mediaType')),
             ],
             options={
             },

@@ -16,5 +16,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(load_instruments),
+       migrations.RunPython(load_instruments),
     ]

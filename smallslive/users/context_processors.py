@@ -8,10 +8,9 @@ def show_modal(request):
 
 def check_account_status(request):
     """Show email confirmation dialog only once after authentication"""
-
     user = request.user
 
-    if not user.is_authenticated():
+    if not user.is_authenticated:
         return {
             'current_user': user,
             'check_account_status_url': reverse('check_account_status'),
@@ -38,7 +37,7 @@ def check_if_event_confirmed_user(request):
     """ Needed for showing email confirmation dialog when
     user tries to view a live event"""
 
-    if request.user.is_anonymous():
+    if request.user.is_anonymous:
         user_activated = False
     else:
         user_activated = request.user.has_activated_account

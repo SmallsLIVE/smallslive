@@ -14,8 +14,8 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='event',
-            name=b'cropping',
-            field=image_cropping.fields.ImageRatioField('photo', '600x360', hide_image_field=False, size_warning=False, allow_fullsize=True, free_crop=False, adapt_rotation=False, help_text=b'Enable cropping', verbose_name='cropping'),
+            name='cropping',
+            field=image_cropping.fields.ImageRatioField('photo', '600x360', hide_image_field=False, size_warning=False, allow_fullsize=True, free_crop=False, adapt_rotation=False, help_text='Enable cropping', verbose_name='cropping'),
             preserve_default=True,
         ),
     ]
