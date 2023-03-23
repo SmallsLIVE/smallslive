@@ -28,7 +28,7 @@ django-compat==1.0.15
 django-compressor==4.3.1
 django-countries==7.5.1
 django-crispy-forms==1.11.0
-django-extensions==1.5.2
+django-extensions==3.0.0
 django-extra-views==0.11.0
 django-filer==2.2.4
 django-filter==2.3.0
@@ -38,7 +38,7 @@ django-hijack==2.1.10
 django-image-cropping==1.7
 django-js-asset==2.0.0
 django-localflavor==1.1
-django-model-utils==2.0
+django-model-utils==4.0.0
 django-mptt==0.14.0
 django-multi-email-field==0.3.1
 django-oscar==2.0
@@ -64,6 +64,7 @@ docopt==0.4.0
 easy-thumbnails==2.8.5
 elasticsearch==1.7.0
 email-validator==1.0.1
+ez-setup==0.9
 factory-boy==2.12.0
 Faker==14.2.1
 funcy==1.18
@@ -130,7 +131,7 @@ typing_extensions==4.1.1
 Unidecode==0.4.17
 urllib3==1.26.15
 webencodings==0.5.1
-whitenoise==2.0.4
+whitenoise==5.0
 wkhtmltopdf-pack-ng==0.12.3.0
 XlsxWriter==0.7.3
 zipp==3.6.0
