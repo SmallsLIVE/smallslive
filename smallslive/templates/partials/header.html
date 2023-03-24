@@ -32,7 +32,7 @@
 
       {% include 'partials/header_button.html' with button_url='schedule' button_text='Calendar' %}
       {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
-      {% include 'partials/header_button.html' with button_url='promotions:home' button_text='Catalog' %}
+      {% comment %}{% include 'partials/header_button.html' with button_url='promotions:home' button_text='Catalog' %}{% endcomment %}
       {% include 'partials/header_button.html' with button_url='gift_support' button_text='Gifts' %}
       {% include 'partials/header_button.html' with button_url='contact-and-info' button_text='Info' %}
 
@@ -134,7 +134,7 @@
     <div class="flex-column text2">
       <a href="{% url 'schedule' %}" class="{% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">Calendar</a>
       <a href="{% url 'search' %}" class="{% if request.resolver_match.url_name == 'search' %}active{% endif %}">Archive</a>
-      <a href="{% url 'promotions:home' %}">Catalog</a>
+      {% comment %}<a href="{% url 'promotions:home' %}">Catalog</a>{% endcomment %}
       <a href="{% url 'gift_support' %}">Gifts</a>
       <a href="{% url 'contact-and-info' %}" class="{% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</a>
     </div>

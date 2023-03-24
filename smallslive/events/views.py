@@ -114,6 +114,7 @@ def calculate_query_range(range_size, weekly=None):
 
 
 class HomepageView(ListView, UpcomingEventMixin):
+    print('here we go ..')
     template_name = 'home_new.html'
 
     def get_queryset(self):
@@ -128,7 +129,7 @@ class HomepageView(ListView, UpcomingEventMixin):
         context = super(HomepageView, self).get_context_data(**kwargs)
         context = self.get_upcoming_events_context_data(context)
 
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             a = datetime.datetime.strftime(self.request.user.date_joined, '%Y-%m-%d')
             b = datetime.datetime.strftime(timezone.now(), '%Y-%m-%d')
             context['email_sent'] = a == b

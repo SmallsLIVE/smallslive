@@ -107,7 +107,7 @@ INSTALLED_APPS = [
     'custom_stripe',
     'treebeard',
     ## Dependent oscar packages
-    'oscar',
+    'oscar.config.Shop',
     'oscar.apps.wishlists.apps.WishlistsConfig',
     'oscar_apps.basket.config.BasketConfig',
     'oscar.apps.voucher.apps.VoucherConfig',
@@ -139,7 +139,7 @@ INSTALLED_APPS = [
     'oscar_apps.order',
     'oscar_apps.partner',
     # oscar_promotion is now a separate app, need to install later.
-    #'oscar_apps.promotions',
+    # 'oscar_apps.promotions',
     'oscar_apps.search',
     'oscar_apps.shipping',
 ] + [
@@ -156,13 +156,13 @@ MIDDLEWARE = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
-    #'smallslive.middleware.RedirectMiddleware',
+    # 'smallslive.middleware.RedirectMiddleware',
 )
-
+TEMPLATE_DIRS = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIRS],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -328,11 +328,12 @@ SHOW_TIMES = {
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'staticfiles'),
 ]
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+#STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+PIPELINE_STORAGE = STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -382,68 +383,84 @@ PIPELINE = {
             ),
             'output_filename': 'js/dashboard_main.js',
         }
+    },
+
+    'STYLESHEETS': {
+        'css': {
+            'source_filenames': (
+                'sass/main.scss',
+            ),
+            'output_filename': 'css/application.css',
+        },
+        'dashboard_css': {
+            'source_filenames': (
+                'sass/dashboard.scss',
+            ),
+            'output_filename': 'css/dashboard.css',
+        },
     }
 }
 
 PIPELINE_COMPILERS = (
     'pipeline.compilers.sass.SASSCompiler',
 )
+PIPELINE_SASS_BINARY = '/usr/bin/env sass'
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
 PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
 PIPELINE_SASS_ARGUMENTS = '--precision 10'
-PIPELINE_CSS = {
-    'css': {
-        'source_filenames': (
-            'sass/main.scss',
-        ),
-        'output_filename': 'css/application.css',
-    },
-    'dashboard_css': {
-        'source_filenames': (
-            'sass/dashboard.scss',
-        ),
-        'output_filename': 'css/dashboard.css',
-    },
-}
-PIPELINE_JS = {
-    'js': {
-        'source_filenames': (
-          'js/jquery.mobile.custom.min.js',
-          'js/jquery-ui.js',
-          'js/jquery.visible.min.js',
-          'js/bootstrap.min.js',
-          'js/slick/slick.min.js',
-          'js/raphael-min.js',
-          'js/imgCoverEffect.min.js',
-          'js/base.js',
-          'js/utils.js',
-          'js/signup_form.js',
-          'js/white-border-select.js',
-          'js/owl.carousel.min.js',
-          'js/custom_owl_carousel.js',
-          'js/custom_recently_added_carousel.js',
-          'js/custom_popular_carousel.js',
-          'js/custom_highlights_carousel.js',
-          'js/custom_catalog_carousel.js',
-        ),
-        'output_filename': 'js/main.js',
-    },
-    'dashboard_js': {
-        'source_filenames': (
-          'js/jquery.mobile.custom.min.js',
-          'js/jquery-ui.js',
-          'js/bootstrap.min.js',
-          'js/slick/slick.min.js',
-          'js/raphael-min.js',
-          'js/base.js',
-          'js/imgCoverEffect.min.js',
-          'js/bootstrap-select.js',
-          'js/Chart.min.js',
-          'js/dashboard-base.js'
-        ),
-        'output_filename': 'js/dashboard_main.js',
-    }
-}
+# PIPELINE_CSS = {
+#     'css': {
+#         'source_filenames': (
+#             'sass/main.scss',
+#         ),
+#         'output_filename': 'css/application.css',
+#     },
+#     'dashboard_css': {
+#         'source_filenames': (
+#             'sass/dashboard.scss',
+#         ),
+#         'output_filename': 'css/dashboard.css',
+#     },
+# }
+# PIPELINE_JS = {
+#     'js': {
+#         'source_filenames': (
+#           'js/jquery.mobile.custom.min.js',
+#           'js/jquery-ui.js',
+#           'js/jquery.visible.min.js',
+#           'js/bootstrap.min.js',
+#           'js/slick/slick.min.js',
+#           'js/raphael-min.js',
+#           'js/imgCoverEffect.min.js',
+#           'js/base.js',
+#           'js/utils.js',
+#           'js/signup_form.js',
+#           'js/white-border-select.js',
+#           'js/owl.carousel.min.js',
+#           'js/custom_owl_carousel.js',
+#           'js/custom_recently_added_carousel.js',
+#           'js/custom_popular_carousel.js',
+#           'js/custom_highlights_carousel.js',
+#           'js/custom_catalog_carousel.js',
+#         ),
+#         'output_filename': 'js/main.js',
+#     },
+#     'dashboard_js': {
+#         'source_filenames': (
+#           'js/jquery.mobile.custom.min.js',
+#           'js/jquery-ui.js',
+#           'js/bootstrap.min.js',
+#           'js/slick/slick.min.js',
+#           'js/raphael-min.js',
+#           'js/base.js',
+#           'js/imgCoverEffect.min.js',
+#           'js/bootstrap-select.js',
+#           'js/Chart.min.js',
+#           'js/dashboard-base.js'
+#         ),
+#         'output_filename': 'js/dashboard_main.js',
+#     }
+# }
 PIPELINE_DISABLE_WRAPPER = True
 
 # Templates
@@ -731,7 +748,7 @@ OSCAR_ALLOW_ANON_CHECKOUT = True
 OSCAR_DEFAULT_CURRENCY = 'USD'
 OSCAR_SHOP_NAME = 'SmallsLIVE'
 OSCAR_IMAGE_FOLDER = 'product_images/%Y/%m/'
-OSCAR_HOMEPAGE = '/'
+OSCAR_HOMEPAGE = '/home/'
 OSCAR_PRODUCTS_PER_PAGE = 12
 
 OSCAR_DASHBOARD_NAVIGATION += [

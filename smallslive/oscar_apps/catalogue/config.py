@@ -1,4 +1,3 @@
-#from oscar.apps.catalogue import config
 from oscar.apps.catalogue import apps
 
 

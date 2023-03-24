@@ -2,7 +2,7 @@
 {% load static from staticfiles %}
 
 <div class="banners carousel">
-  {% if not active %}
+  {%if not active%}
     <div id="banner-live-box" class="box flex-column live">
       <div class="banner__inside-container">
         <div class="banner-logo" >
@@ -109,7 +109,7 @@
       </div>
     </div>
 
-  {% elif active = 'catalog' %}
+  {% elif active == 'catalog' %}
     <!-- no banner at the moment -->
   {% else %}
       <div id="banner-supporting-box" class="box flex-column supporting">
