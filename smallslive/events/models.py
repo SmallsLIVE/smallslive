@@ -526,7 +526,7 @@ class Event(TimeStampedModel):
                                     event_set.end.strftime(time_format))
 
         #sorted_sets = sorted(list(all_sets), Event.sets_order)
-        sets = sorted(list(all_sets), key=functools.cmp_to_key(Event.sets_order))
+        sorted_sets = sorted(list(all_sets), key=functools.cmp_to_key(Event.sets_order))
 
         sets_display = ' & '.join(
             [d.start.strftime(time_format) for d in sorted_sets])

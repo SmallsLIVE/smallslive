@@ -51,7 +51,7 @@ def static_file_view(request, **kwargs):
 
 
 urlpatterns = [
-    url(r'^dashboard/', include('artist_dashboard.urls')),
+    path(r'^dashboard/', include('artist_dashboard.urls')),
     url(r'^artist-registration/', include('artist_registration.urls')),
     url(r'^artists/', include('artists.urls')),
     url(r'^archive/(?P<year>\d+)/(?P<month>\d+)/$', RedirectView.as_view(permanent=True, pattern_name='search'),
@@ -61,6 +61,7 @@ urlpatterns = [
     url(r'^search/', include('search.urls')),
     url(r'^static_page/(?P<template_name>[A-Za-z_-]*)/$', StaticPageView.as_view(), name="static_page"),
     path('admin/', admin.site.urls),
+    path('', include(apps.get_app_config('oscar').urls[0])),
     # @TODO figure out this pages later
     # url(r'^about-us/$', static_pages.views.about_view, name="about-us"),
     # url(r'^photo-gallery/$', 'static_pages.views.gallery_view', name="photo-gallery"),
@@ -92,7 +93,7 @@ urlpatterns = [
         {'sitemaps': sitemaps}, name='sitemaps'),
     url(r'^robots\.txt', static_file_view, kwargs={'file_name': 'robots.txt'}),
     url(r'^crossdomain\.xml', static_file_view, kwargs={'file_name': 'crossdomain.xml'}),
-    url(r'^$', homepage, name="home"),
+    url(r'^home/$', homepage, name="home"),
     url(r'^old/$', old_home, name="old_home"),
     url(r'^styles/$', styleguide, name="styles"),
     url(r'^donate/$', RedirectView.as_view(url=reverse_lazy('donate'), permanent=True)),
@@ -122,3 +123,4 @@ if settings.ENABLE_HIJACK:
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
