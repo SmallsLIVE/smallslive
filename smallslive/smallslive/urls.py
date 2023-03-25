@@ -61,7 +61,6 @@ urlpatterns = [
     url(r'^search/', include('search.urls')),
     url(r'^static_page/(?P<template_name>[A-Za-z_-]*)/$', StaticPageView.as_view(), name="static_page"),
     path('admin/', admin.site.urls),
-    path('', include(apps.get_app_config('oscar').urls[0])),
     # @TODO figure out this pages later
     # url(r'^about-us/$', static_pages.views.about_view, name="about-us"),
     # url(r'^photo-gallery/$', 'static_pages.views.gallery_view', name="photo-gallery"),
@@ -84,7 +83,7 @@ urlpatterns = [
     url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
     url(r'^catalog/accounts/login/$', RedirectView.as_view(url=reverse_lazy('accounts_login'))),
     #url(r'^catalog/', include(application.urls)),
-    path('', include(apps.get_app_config('oscar').urls[0])),
+    path('', include(apps.get_app_config('smallslive').urls[0])),
     url(r'^catalog/artist-catalogue/', ArtistCatalogue.as_view(), name='artist_store'),
     url(r'^catalog/album-list/', get_album_catalog , name='album_list'),
     url(r'^sitemap\.xml$', cache_page(86400)(sitemaps_views.index),

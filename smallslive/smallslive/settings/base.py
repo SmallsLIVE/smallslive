@@ -107,29 +107,32 @@ INSTALLED_APPS = [
     'custom_stripe',
     'treebeard',
     ## Dependent oscar packages
-    'oscar.config.Shop',
-    'oscar.apps.wishlists.apps.WishlistsConfig',
-    'oscar_apps.basket.config.BasketConfig',
-    'oscar.apps.voucher.apps.VoucherConfig',
-    'oscar.apps.catalogue.reviews.apps.CatalogueReviewsConfig',
-    'oscar.apps.payment.apps.PaymentConfig',
-    'oscar.apps.dashboard.reports.apps.ReportsDashboardConfig',
-    'oscar.apps.dashboard.users.apps.UsersDashboardConfig',
-    'oscar.apps.dashboard.orders.apps.OrdersDashboardConfig',
-    'oscar.apps.dashboard.offers.apps.OffersDashboardConfig',
-    'oscar.apps.dashboard.partners.apps.PartnersDashboardConfig',
-    'oscar.apps.dashboard.pages.apps.PagesDashboardConfig',
-    'oscar.apps.dashboard.ranges.apps.RangesDashboardConfig',
-    'oscar.apps.dashboard.reviews.apps.ReviewsDashboardConfig',
-    'oscar.apps.dashboard.vouchers.apps.VouchersDashboardConfig',
-    'oscar.apps.dashboard.communications.apps.CommunicationsDashboardConfig',
-    'oscar.apps.dashboard.shipping.apps.ShippingDashboardConfig',
-    'oscar.apps.analytics.apps.AnalyticsConfig',
+    # # 'oscar.config.Shop',
+    # 'oscar.apps.wishlists.apps.WishlistsConfig',
+    # 'oscar_apps.basket.config.BasketConfig',
+    # 'oscar.apps.voucher.apps.VoucherConfig',
+    # 'oscar.apps.catalogue.reviews.apps.CatalogueReviewsConfig',
+    # 'oscar.apps.payment.apps.PaymentConfig',
+    # 'oscar.apps.dashboard.reports.apps.ReportsDashboardConfig',
+    # 'oscar.apps.dashboard.users.apps.UsersDashboardConfig',
+    # 'oscar.apps.dashboard.orders.apps.OrdersDashboardConfig',
+    # 'oscar.apps.dashboard.offers.apps.OffersDashboardConfig',
+    # 'oscar.apps.dashboard.partners.apps.PartnersDashboardConfig',
+    # 'oscar.apps.dashboard.pages.apps.PagesDashboardConfig',
+    # 'oscar.apps.dashboard.ranges.apps.RangesDashboardConfig',
+    # 'oscar.apps.dashboard.reviews.apps.ReviewsDashboardConfig',
+    # 'oscar.apps.dashboard.vouchers.apps.VouchersDashboardConfig',
+    # 'oscar.apps.dashboard.communications.apps.CommunicationsDashboardConfig',
+    # 'oscar.apps.dashboard.shipping.apps.ShippingDashboardConfig',
+    # 'oscar.apps.analytics.apps.AnalyticsConfig',
+
+
     # Oscar custom apps
+    'oscar_apps.config.SmallsLiveShop',
     'oscar_apps.customer.config.CustomerConfig',
     'oscar_apps.address',
     'oscar.apps.offer.apps.OfferConfig',
-    'oscar_apps.catalogue',
+    'oscar_apps.catalogue.apps.CatalogueConfig',
     'oscar_apps.checkout',
     'oscar_apps.dashboard',
     'oscar_apps.dashboard.catalogue',
@@ -332,8 +335,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'staticfiles'),
 ]
-#STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
-PIPELINE_STORAGE = STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+PIPELINE_STORAGE = STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
