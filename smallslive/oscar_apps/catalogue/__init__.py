@@ -1,1 +1,1 @@
-default_app_config = 'oscar_apps.catalogue.config.CatalogueConfig'
+default_app_config = 'oscar_apps.catalogue.apps.CatalogueConfig'

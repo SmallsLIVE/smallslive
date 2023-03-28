@@ -1,1 +1,1 @@
-default_app_config = 'oscar_apps.order.config.OrderConfig'
+default_app_config = 'oscar_apps.order.apps.OrderConfig'

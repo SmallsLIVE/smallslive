@@ -1,1 +1,1 @@
-default_app_config = 'oscar_apps.address.config.AddressConfig'
+default_app_config = 'oscar_apps.address.apps.AddressConfig'

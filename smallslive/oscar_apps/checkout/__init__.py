@@ -1,1 +1,1 @@
-default_app_config = 'oscar_apps.checkout.config.CheckoutConfig'
+default_app_config = 'oscar_apps.checkout.apps.CheckoutConfig'

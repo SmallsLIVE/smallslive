@@ -1,1 +1,1 @@
-default_app_config = 'oscar_apps.basket.config.BasketConfig'
+default_app_config = 'oscar_apps.basket.apps.BasketConfig'
