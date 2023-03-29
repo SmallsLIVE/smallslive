@@ -144,6 +144,7 @@ INSTALLED_APPS = [
     'oscar_apps.shipping.apps.ShippingConfig',
 ] + [
     'easy_thumbnails',  # needs to go after the oscar import to avoid template tag clashes
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = (
