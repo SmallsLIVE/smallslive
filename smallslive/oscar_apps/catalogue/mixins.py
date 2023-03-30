@@ -80,7 +80,7 @@ class ProductMixin(object):
 
         """
         current_user = self.request.user
-        if not current_user.is_authenticated():
+        if not current_user.is_authenticated:
             self.album_list = []
             self.downloads_list = []
         else:
