@@ -359,7 +359,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         event_context = self.get_event_context()
         context.update(event_context)
 
-        if not current_user.is_anonymous():
+        if not current_user.is_anonymous:
             context['can_free_donate'] = current_user.get_donation_amount >= 100
         else:
             context['can_free_donate'] = False
@@ -368,7 +368,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         # Whatever the flow type is, it needs to be become a supporter if the user
         # is not a supporter yet. They can't donate or get stuff from the Catalog.
         # Except if they are getting tickets
-        if current_user.is_authenticated() and not current_user.can_watch_video and not context['flow_type'] == 'ticket_support':
+        if current_user.is_authenticated and not current_user.can_watch_video and not context['flow_type'] == 'ticket_support':
             context['flow_type'] = 'become_supporter'
 
         # We need to clear the basket in case the user has anything in there.
@@ -380,9 +380,9 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         context['costs'] = []
         for product in Product.objects.filter(categories__name='Gifts'):
             context['gifts'].append(product)
-            if product.variants.count():
+            if product.children.count():
                 context['costs'].append(
-                    product.variants.first().stockrecords.first().cost_price)
+                    product.children.first().stockrecords.first().cost_price)
             else:
                 context['costs'].append(
                     product.stockrecords.first().cost_price)
@@ -392,8 +392,8 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
             strategy = selector.strategy(
                 request=self.request, user=self.request.user)
 
-            if x.variants.count():
-                price = strategy.fetch_for_product(product=x.variants.first()).price.incl_tax
+            if x.children.count():
+                price = strategy.fetch_for_product(product=x.children.first()).price.incl_tax
             else:
                 price = strategy.fetch_for_product(product=x).price.incl_tax
 
@@ -404,7 +404,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
 
         # Don't skip intro if user is not active. We need to force them to stay
         # on the Intro page with the "Confirm Email" button.
-        if not (current_user.is_authenticated() and not current_user.has_activated_account):
+        if not (current_user.is_authenticated and not current_user.has_activated_account):
             context['skip_intro'] = self.request.GET.get('skip_intro')
 
         context['min_donation'] = 10

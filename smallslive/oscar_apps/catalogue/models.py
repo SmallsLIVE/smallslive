@@ -136,7 +136,7 @@ class Product(AbstractProduct):
                 title = self.parent.title
             else:
                 title = u"{0} ({1})".format(self.parent.title, self.title)
-        return unicode(title)
+        return str(title)
 
     def get_description(self):
         """
@@ -154,7 +154,7 @@ class Product(AbstractProduct):
         if self.parent_id:
             if not self.title:
                 title = self.parent.title
-        return unicode(title)
+        return str(title)
 
     def get_primary_image(self):
         product_image = self.primary_image()
