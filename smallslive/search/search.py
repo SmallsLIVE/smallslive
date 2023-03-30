@@ -52,7 +52,7 @@ class SearchObject(object):
 
     def get_instruments(self):
 
-        return map(unicode.upper, Instrument.objects.values_list('name', flat=True))
+        return map(str.upper, Instrument.objects.values_list('name', flat=True))
     
     def filter_sax(self, search_term):
         """Extract SAX, XXX SAX or XXX SAXOPHONE from search_terms"""

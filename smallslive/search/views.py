@@ -259,7 +259,7 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
         # Populate upcoming shows as well.
         # We need them for the artist profile
 
-        only_published = bool(not self.request.user.is_authenticated() or not self.request.user.is_staff)
+        only_published = bool(not self.request.user.is_authenticated or not self.request.user.is_staff)
 
         upcoming_event_blocks, showing_event_results, upcoming_num_pages, first, last, search_input = self.search(
             Event, '', results_per_page=60,
@@ -312,8 +312,8 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
         context['event_results'] = event_blocks[0] if event_blocks else []
         context['current_page'] = page = 1
         context['last_page'] = num_pages
-        context['range'] = range(
-            1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2]
+        context['range'] = [range(
+            1, num_pages + 1)][:page][-3:] + [range(1, num_pages + 1)][page:][:2]
         context['has_last_page'] = (num_pages - page) >= 3
 
         if event_blocks and event_blocks[0] and event_blocks[0][0].date:
