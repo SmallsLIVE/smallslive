@@ -2,6 +2,7 @@ from django.urls import re_path, include
 from django.conf.urls import  include, url
 from artist_dashboard.views import *
 
+app_name = 'artist_dashboard'
 
 urlpatterns = [
     re_path(r'^toggle_recording_state/(?P<pk>\d+)/$', toggle_recording_state, name='recording_toggle'),

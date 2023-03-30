@@ -442,7 +442,7 @@ class LoginView(CoreLoginView):
         # that might have been left over.
         # The only case when a user is not authenticated and they add
         # items to the basket, and then they can log in, is tickets purchases.
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             basket = self.request.basket
             basket.lines.exclude(product__product_class__name='Ticket').delete()
 

@@ -7,9 +7,9 @@
       <div class="picture-border">
         <div class="event-picture">
           {% if album.primary_image %}
-            {% include 'partials/thumbored_picture.html' with photo_url=album.primary_image.original.url height=photo_height width=photo_width %}
+            {% comment %}{% include 'partials/thumbored_picture.html' with photo_url=album.primary_image.original.url height=photo_height width=photo_width %}{% endcomment %}
           {% else %}
-            {% include 'partials/thumbored_picture.html' %}
+            {% comment %}{% include 'partials/thumbored_picture.html' %}{% endcomment %}
           {% endif %}
         </div>
         <div class="icon-overlay">

@@ -7,7 +7,7 @@
         <div class="event-picture">
           <div class="img-overlay"></div>
           {% if artist.photo %}
-            {% include 'partials/thumbored_picture.html' with photo_url=artist.photo.url height="300" width="300" %}
+            {% comment %}{% include 'partials/thumbored_picture.html' with photo_url=artist.photo.url height="300" width="300" %}{% endcomment %}
           {% else %}
             <img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}"alt="Generic artist image">
           {% endif %}
