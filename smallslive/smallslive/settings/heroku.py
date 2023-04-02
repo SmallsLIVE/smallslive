@@ -1,5 +1,5 @@
 import os
-import urlparse
+from urllib.parse import urlparse
 from .base import *
 import dj_database_url
 
@@ -25,7 +25,7 @@ DATABASES['metrics'] = dj_database_url.config('METRICS_DB_URL')
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-MIDDLEWARE_CLASSES = ('sslify.middleware.SSLifyMiddleware',) + MIDDLEWARE_CLASSES
+MIDDLEWARE = ('sslify.middleware.SSLifyMiddleware',) + MIDDLEWARE
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
@@ -99,8 +99,8 @@ METRICS_SERVER_URL = "https://metrics.smallslive.com"  # no trailing slash
 # Cache
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
-redis_url = urlparse.urlparse(get_env_variable('REDISCLOUD_URL'))
-redis_cacheops_url = urlparse.urlparse(get_env_variable('REDISCLOUD_CACHEOPS_URL'))
+redis_url = urlparse(get_env_variable('REDISCLOUD_URL'))
+redis_cacheops_url = urlparse(get_env_variable('REDISCLOUD_CACHEOPS_URL'))
 
 CACHES = {
     "default": {

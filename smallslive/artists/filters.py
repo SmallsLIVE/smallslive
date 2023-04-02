@@ -62,12 +62,12 @@ def has_signed(qs, val):
 
 
 class ArtistFilter(django_filters.FilterSet):
-    name = django_filters.CharFilter(action=search_name)
+    name = django_filters.CharFilter()
     instruments = django_filters.ModelChoiceFilter(queryset=Instrument.objects.all())
-    is_invited = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, action=is_invited)
-    has_registered = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, action=has_registered)
-    has_photo = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, name="photo", action=has_photo)
-    signed_legal_agreement = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, action=has_signed)
+    is_invited = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES)
+    has_registered = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES)
+    has_photo = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES)
+    signed_legal_agreement = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES)
 
     class Meta:
         fields = ['name', 'is_invited', 'has_registered', 'has_photo', 'signed_legal_agreement', 'instruments']
@@ -88,11 +88,11 @@ class ArtistFilter(django_filters.FilterSet):
         self.filters['has_photo'].label = 'Has photo'
         self.filters['signed_legal_agreement'].label = 'Signed'
 
-    @property
-    def form(self):
-        form = super(ArtistFilter, self).form  # it's a property, so there's no method call
-        for field in self.Meta.fields:
-            form.fields[field].widget.attrs['class'] = 'form-control selectpicker'
-        form.fields['name'].widget.attrs['class'] = 'form-control search'
-        form.fields['name'].widget.attrs['placeholder'] = 'Search by name'
-        return form
+    # @property
+    # def form(self):
+    #     form = super(ArtistFilter, self).form  # it's a property, so there's no method call
+    #     for field in self.Meta.fields:
+    #         form.fields[field].widget.attrs['class'] = 'form-control selectpicker'
+    #     form.fields['name'].widget.attrs['class'] = 'form-control search'
+    #     form.fields['name'].widget.attrs['placeholder'] = 'Search by name'
+    #     return form

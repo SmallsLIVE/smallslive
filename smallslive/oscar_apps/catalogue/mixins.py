@@ -30,7 +30,7 @@ class ProductMixin(object):
 
         self.get_purchased_products()
         self.artists_with_media = Artist.objects.exclude(artistproduct=None)
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             self.active_card = self.request.user.get_active_card()
 
         # Clean basket

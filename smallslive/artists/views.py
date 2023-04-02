@@ -81,7 +81,7 @@ class ArtistFilterView(StaffuserRequiredMixin, FilterView):
         endPage = page.number + adjacent_pages + 1
         if endPage >= paginator.num_pages - 1:
             endPage = paginator.num_pages + 1
-        page_numbers = [n for n in xrange(startPage, endPage) if n > 0 and n <= paginator.num_pages]
+        page_numbers = [n for n in range(startPage, endPage) if n > 0 and n <= paginator.num_pages]
         context.update({
             'page_numbers': page_numbers,
             'show_first': 1 not in page_numbers,

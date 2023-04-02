@@ -1,6 +1,6 @@
 from pipeline.storage import PipelineMixin, PipelineStorage, PipelineCachedStorage
-from whitenoise.django import GzipStaticFilesMixin, GzipManifestStaticFilesStorage
+from whitenoise.storage import CompressedManifestStaticFilesStorage
 
 
-class GzipManifestPipelineStorage(PipelineMixin, GzipManifestStaticFilesStorage):
+class GzipManifestPipelineStorage(PipelineMixin, CompressedManifestStaticFilesStorage):
     pass

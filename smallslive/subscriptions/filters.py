@@ -17,7 +17,7 @@ def search_user_name(qs, val):
 
 
 class SupporterFilter(django_filters.FilterSet):
-    name = django_filters.CharFilter(action=search_name)
+    name = django_filters.CharFilter()
 
     class Meta:
         fields = ['name']
@@ -46,7 +46,7 @@ class SupporterFilter(django_filters.FilterSet):
 
 
 class SponsorFilter(SupporterFilter):
-    name = django_filters.CharFilter(action=search_user_name)
+    name = django_filters.CharFilter()
     class Meta:
         fields = ['name']
         model = Donation

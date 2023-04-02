@@ -34,7 +34,7 @@ class AddGetParameter(Node):
 
     def render(self, context):
         # req = resolve_variable('request', context)
-        req = Variable('request'). resolve_variable(context)
+        req = Variable('request'). resolve(context)
         params = req.GET.copy()
         for key, value in self.values.items():
             val = value.resolve(context)

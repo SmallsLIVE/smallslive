@@ -903,7 +903,7 @@ class SupporterFilterView(StaffuserRequiredMixin, SupporterFilterQueryMixin, Fil
         end_page = page.number + adjacent_pages + 1
         if end_page >= paginator.num_pages - 1:
             end_page = paginator.num_pages + 1
-        page_numbers = [n for n in xrange(start_page, end_page) if n > 0 and n <= paginator.num_pages]
+        page_numbers = [n for n in range(start_page, end_page) if n > 0 and n <= paginator.num_pages]
         context.update({
             'page_numbers': page_numbers,
             'show_first': 1 not in page_numbers,
@@ -945,7 +945,7 @@ class SponsorFilterView(StaffuserRequiredMixin, SponsorFilterQueryMixin, FilterV
         end_page = page.number + adjacent_pages + 1
         if end_page >= paginator.num_pages - 1:
             end_page = paginator.num_pages + 1
-        page_numbers = [n for n in xrange(start_page, end_page) if n > 0 and n <= paginator.num_pages]
+        page_numbers = [n for n in range(start_page, end_page) if n > 0 and n <= paginator.num_pages]
         context.update({
             'page_numbers': page_numbers,
             'show_first': 1 not in page_numbers,
