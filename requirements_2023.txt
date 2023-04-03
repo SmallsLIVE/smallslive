@@ -1,5 +1,6 @@
+setuptools==45.2.0
 amqp==1.4.8
-#anyjson==0.3.3
+anyjson==0.3.3
 asgiref==3.6.0
 asn1crypto==1.5.1
 Babel==1.3
