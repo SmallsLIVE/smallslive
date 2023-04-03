@@ -121,8 +121,7 @@ class MainSearchView(View, SearchMixin):
 
         temp = render_to_string(
             template,
-            context,
-            context_instance=RequestContext(request)
+            context
         )
 
         data = {
@@ -165,7 +164,7 @@ class SearchBarView(View):
         events = []
         event_results_per_page = 8
 
-        only_published = bool(not self.request.user.is_authenticated() or not self.request.user.is_staff)
+        only_published = bool(not self.request.user.is_authenticated or not self.request.user.is_staff)
 
         sqs = search.search_event(terms, instruments=instruments,
                                   all_sax_instruments=all_sax_instruments,
@@ -199,8 +198,7 @@ class SearchBarView(View):
         template = 'search/search_bar_results.html'
 
         temp = render_to_string(template,
-                                context,
-                                context_instance=RequestContext(request)
+                                context
                                 )
 
         data = {
@@ -349,8 +347,7 @@ class ArtistInfo(View):
         template = 'artists/artist_detail_search.html'
 
         temp = render_to_string(template,
-                                context,
-                                context_instance=RequestContext(request)
+                                context
                                 )
 
         data = {
@@ -423,8 +420,7 @@ class UpcomingSearchViewAjax(TemplateView, UpcomingSearchView):
         context.update(self.get_upcoming_context())
         data = {
             'template': render_to_string(
-                'search/upcoming_calendar_dates.html', context,
-                context_instance=RequestContext(request)
+                'search/upcoming_calendar_dates.html', context
             ),
             'new_date':  context['new_date'],
         }
