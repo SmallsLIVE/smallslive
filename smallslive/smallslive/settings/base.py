@@ -333,10 +333,11 @@ SHOW_TIMES = {
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'staticfiles'),
 ]
-PIPELINE_STORAGE = STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+PIPELINE_STORAGE = STATICFILES_STORAGE =  'pipeline.storage.PipelineCachedStorage'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -346,7 +347,9 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 PIPELINE = {
-    'PIPELINE_ENABLED': True,
+    'COMPILERS': (
+        'pipeline.compilers.sass.SASSCompiler',
+    ),
     'JAVASCRIPT': {
         'js': {
             'source_filenames': (
@@ -404,9 +407,6 @@ PIPELINE = {
     }
 }
 
-PIPELINE_COMPILERS = (
-    'pipeline.compilers.sass.SASSCompiler',
-)
 PIPELINE_SASS_BINARY = '/usr/bin/env sass'
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
 PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
