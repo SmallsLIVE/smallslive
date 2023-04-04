@@ -1,5 +1,5 @@
 import os
-import urlparse
+from urllib.parse import urlparse
 from .base import *
 import dj_database_url
 
@@ -26,11 +26,11 @@ DATABASES['metrics'] = dj_database_url.config('METRICS_DB_URL')
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-MIDDLEWARE_CLASSES = ('sslify.middleware.SSLifyMiddleware',) + MIDDLEWARE_CLASSES
+# MIDDLEWARE = ('sslify.middleware.SSLifyMiddleware',) + MIDDLEWARE
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-REDIS_URL = urlparse.urlparse(get_env_variable('REDISCLOUD_URL'))
+REDIS_URL = urlparse(get_env_variable('REDISCLOUD_URL'))
 
 CACHEOPS_REDIS = {
     'host': REDIS_URL.hostname ,
@@ -68,7 +68,8 @@ ALLOWED_HOSTS = [
     'smallslive-staging.herokuapp.com',
     'smallslive-staging.herokuapp.com.',
     '.herokuapp.com',
-    '.herokuapp.com.'
+    '.herokuapp.com.',
+    '127.0.0.1'
 ]
 
 # Static asset configuration
