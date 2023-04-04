@@ -81,7 +81,7 @@ class MainSearchView(View, SearchMixin):
         first = None
         last = None
 
-        only_published = bool(not self.request.user.is_authenticated() or not self.request.user.is_staff)
+        only_published = bool(not self.request.user.is_authenticated or not self.request.user.is_staff)
 
         if entity == 'artist':
 
