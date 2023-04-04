@@ -8,7 +8,7 @@ beautifulsoup4==4.3.2
 billiard==3.3.0.22
 bleach==1.4
 boto==2.38.0
-celery==3.1.19
+#celery==3.1.19
 certifi==2022.12.7
 cffi==1.15.1
 charset-normalizer==2.0.12
@@ -23,7 +23,7 @@ django-allauth==0.40.0
 django-appconf==1.0.5
 django-braces==1.12.0
 django-cacheops==5.0.1
-django-celery==3.3.1
+#django-celery==3.3.1
 django-compat==1.0.15
 django-compressor==4.3.1
 django-countries==7.5.1
