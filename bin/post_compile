@@ -12,7 +12,7 @@ pip install smallslive-metrics-app@git+https://github.com/SmallsLIVE/smallslive-
 pip install django==2.2.8
 pip install djangorestframework==3.13.0
 pip install django-filter==2.3.0
-pip uninstall celery && pip install celery==3.1.19
+pip install celery==3.1.19
 
 # Install nodejs related packages i.e gulp, sass
-npm install
+#npm install
