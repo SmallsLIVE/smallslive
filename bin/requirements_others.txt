@@ -1,0 +1,15 @@
+celery==3.1.19
+django-celery==3.3.1
+dj-stripe==1.1.0
+django-ajax==0.3.0
+django-cacheops==5.0.1
+django-celery==3.3.1
+django-haystack==2.8.1
+django-js-asset==2.0.0
+django-model-utils==4.1.1
+django-phonenumber-field==2.0.1
+django-polymorphic==3.1.0
+django-polymorphic==3.1.0
+django-thumbor==0.5.3
+djrill==2.1.0
+jsonfield==2.0.2

@@ -6,3 +6,5 @@ then
   python smallslive/manage.py migrate --noinput
 fi
 #pip install --no-deps --upgrade git+https://github.com/SmallsLIVE/smallslive-metrics-djangoapp.git@develop#egg=package-0.1.41
+
+pip install -r requirements_others.txt

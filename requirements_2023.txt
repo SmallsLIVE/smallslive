@@ -117,7 +117,7 @@ rjsmin==1.2.1
 signals==0.0.2
 simplejson==3.18.4
 six==1.16.0
-#smallslive-metrics-app @ git+https://github.com/SmallsLIVE/smallslive-metrics-djangoapp.git@e5b4b537a4356ea4e2ba1e9a20409d33c8fef544
+#smallslive-metrics-app@git+https://github.com/SmallsLIVE/smallslive-metrics-djangoapp.git@e5b4b537a4356ea4e2ba1e9a20409d33c8fef544
 sorl-thumbnail==12.9.0
 sqlparse==0.4.3
 static==1.1.1
