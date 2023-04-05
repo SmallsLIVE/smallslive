@@ -14,9 +14,6 @@ import os
 from django.core.exceptions import ImproperlyConfigured
 from oscar.defaults import *
 
-print('======== ENV ==========')
-print(os.environ)
-
 def get_env_variable(var_name):
     """ Get the environment variable or return exception """
     try:
