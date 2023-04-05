@@ -11,3 +11,4 @@ pip install celery==3.1.19 django-celery==3.3.1 dj-stripe==1.1.0 django-ajax==0.
 pip install smallslive-metrics-app@git+https://github.com/SmallsLIVE/smallslive-metrics-djangoapp.git@e5b4b537a4356ea4e2ba1e9a20409d33c8fef544
 pip install django==2.2.8
 pip install djangorestframework==3.13.0
+pip install django-filter==2.3.0
