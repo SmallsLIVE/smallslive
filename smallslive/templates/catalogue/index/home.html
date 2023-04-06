@@ -1,0 +1,74 @@
+{% extends "store_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load category_tags %}
+{% load product_tags %}
+{% load purchase_info_tags %}
+{% load i18n %}
+{% load currency_filters %}
+{% load basket_tags %}
+
+{% block store_nav_active %}active{% endblock %}
+
+{% block title %}SmallsLIVE Tracks{% endblock %}
+
+{% block store_content %}
+  <div class="store-listing__content">
+    <div class="section-title catalog featured">
+      <div class="title1">featured & newest</div>
+    </div>
+    <main class="newest-recordings-container">
+      <div class="slide-btn catalog prev"><b class="indicator-icon icon-left-caret"></b></div>
+      <div class="slide-btn catalog next"><b class="indicator-icon icon-right-caret"></b></div>
+      {% include 'catalogue/index/featured_row.html' with events=newest_recordings extra_events=featured_recordings secondary=False %}
+    </main>
+  </div>
+
+  <div class="section-title catalog list">
+    <div class="title1 catalog-title">SmallsLIVE Catalog</div>
+  </div>
+
+  <!-- Hiding search as per Aslan's request -->
+
+  <main class="all-recordings-container" id="all-recordings-container" data-page="2" data-url="{% url 'album_list' %}">
+    {% include 'catalogue/album-list.html' with pagenumber=1 album_page=all_recordings %}
+  </main>
+  <div id="event-load-gif" class="loading-image events-gif text-center">
+    <img src="{% static 'image/loading.gif' %}" alt="">
+  </div>
+
+{% endblock store_content %}
+
+{% block extra_js %}
+  <script src="{% static 'js/store-base.js' %}"></script>
+  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+  <script type="text/javascript">
+    var lastScrollTop = 0;
+
+    $(document).ready(function () {
+
+      $(".playback-control").on('click', function (e) {
+        e.preventDefault();
+        if (audioPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {
+            audioPlayer.pause();
+        } else {
+            audioPlayer.playlistItem($(this).data('playlist-id'));
+            $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
+        }
+        $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
+      })
+    });
+
+    $(window).scroll(function () {
+      var st = $(this).scrollTop();
+      if ($(window).scrollTop() >= $(document).height() - $(window).height() - 200) {
+        if (st > lastScrollTop) {
+          loadMoreCatalog();
+        }
+        lastScrollTop = st;
+      };
+    });
+
+  </script>
+{% endblock %}
+
