@@ -27,8 +27,7 @@ class ArtistCatalogue(ProductCategoryView):
         template = 'catalogue/artist-category.html'
 
         temp = render_to_string(template,
-                                context,
-                                context_instance=RequestContext(request)
+                                context
                                 )
 
         data = {
@@ -54,8 +53,7 @@ def get_album_catalog(request):
     album_page = paginator.page(page)
     temp = render_to_string(
         template,
-        {'album_page': album_page, 'pagenumber': page, 'artist_page': artist_page},
-        context_instance=RequestContext(request))
+        {'album_page': album_page, 'pagenumber': page, 'artist_page': artist_page})
 
     data = {
         'template': temp, 'last_page': paginator.num_pages == page
@@ -65,10 +63,10 @@ def get_album_catalog(request):
 
 
 # @TODO : Fix later 
-# class CatalogueView(catalogue_views.CatalogueView):
-#
-#     def get(self, request, *args, **kwargs):
-#         return redirect('promotions:home')
+class CatalogueView(catalogue_views.CatalogueView):
+
+    def get(self, request, *args, **kwargs):
+        return redirect('promotions:home')
 
 
 class ProductDetailView(catalogue_views.ProductDetailView, ProductMixin):
