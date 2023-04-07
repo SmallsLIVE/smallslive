@@ -56,7 +56,7 @@ def get_album_catalog(request):
     album_page = paginator.page(page)
     temp = render_to_string(
         template,
-        {'album_page': album_page, 'pagenumber': page, 'artist_page': artist_page})
+        {'album_page': album_page, 'pagenumber': page, 'artist_page': artist_page},  request=request)
 
     data = {
         'template': temp, 'last_page': paginator.num_pages == page
@@ -114,7 +114,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, ProductMixin):
         total_donation = 0
         ctx['album_product'] = self.album_product
         if self.object.get_product_class().slug == 'album':
-            if self.request.user.is_authenticated():
+            if self.request.user.is_authenticated:
                 total_donation = self.request.user.get_project_donation_amount(self.album_product.pk)
             ctx['total_donation'] = total_donation
             track_album = next((item for item in self.album_list if item['parent'] == self.object), None)

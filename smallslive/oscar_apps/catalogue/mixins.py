@@ -19,8 +19,8 @@ class ProductMixin(object):
         strategy = selector.strategy(
             request=self.request, user=self.request.user)
 
-        if x.variants.count():
-            price = strategy.fetch_for_product(product=x.variants.first()).price.incl_tax
+        if x.children.count():
+            price = strategy.fetch_for_product(product=x.children.first()).price.incl_tax
         else:
             price = strategy.fetch_for_product(product=x).price.incl_tax
 
@@ -50,8 +50,8 @@ class ProductMixin(object):
         ])
         for product in products:
             self.gifts.append(product)
-            if product.variants.count():
-                stock = product.variants.first().stockrecords.first()
+            if product.children.count():
+                stock = product.children.first().stockrecords.first()
                 self.costs.append(
                     stock.cost_price)
             else:
