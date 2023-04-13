@@ -127,7 +127,7 @@ class Artist(models.Model):
     class Meta:
         ordering = ['last_name']
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{0} {1}".format(self.first_name, self.last_name)
 
     def get_absolute_url(self):
@@ -265,7 +265,7 @@ class Instrument(models.Model):
     class Meta:
         ordering = ['name']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):

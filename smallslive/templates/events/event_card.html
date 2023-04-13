@@ -15,13 +15,11 @@
       <div class="picture-border">
         <div class="event-picture">
         <div class="img-overlay"></div>
-          {% comment %}
           {% if event.get_photo_url %}
             {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
           {% else %}
             {% include 'partials/thumbored_picture.html' %}
           {% endif %}
-          {% endcomment %}
         </div>
       </div>
     </div>
