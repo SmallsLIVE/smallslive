@@ -19,7 +19,7 @@
   <meta property="og:site_name" content="SmallsLIVE"/>
   <meta property="og:title" content="{{ event.full_title }}"/>
   <meta property="og:description"
-        content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.get_date|date:'g:i A' }} - {{ event.get_date|date:'g:i A' }}"/>
+        content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.get_date|date:'D d M Y' }} - {{ event.get_date|date:'D d M Y' }}"/>
   {% if event.photo %}
     <meta property="og:image" content="https:{% thumbor_url event.get_photo_url|urlencode height=315 width=600 smart=True %}"/>
     <meta itemprop="image" content="https:{% thumbor_url event.get_photo_url|urlencode height=315 width=600 smart=True %}">
@@ -27,7 +27,7 @@
   <meta property="fb:app_id" content="{{ facebook_app_id }}"/>
   <meta itemprop="name" content="{{ event.full_title }}">
   <meta itemprop="description"
-        content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.get_date|date:'g:i A' }} - {{ event.get_date|date:'g:i A' }}">
+        content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.get_date|date:'D d M Y' }} - {{ event.get_date|date:'D d M Y' }}"">
 {% endblock %}
 
 {% block home_content %}

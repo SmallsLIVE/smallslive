@@ -114,7 +114,6 @@ def calculate_query_range(range_size, weekly=None):
 
 
 class HomepageView(ListView, UpcomingEventMixin):
-    print('here we go ..')
     template_name = 'home_new.html'
 
     def get_queryset(self):
@@ -283,14 +282,14 @@ event_add = EventAddView.as_view()
 
 
 class EventDetailView(DetailView):
-    queryset = Event.objects.all().select_related('recording', 'recording__media_file')
+    queryset = Event.objects.all()
     context_object_name = 'event'
 
     def get(self, request, *args, **kwargs):
 
         result = super(EventDetailView, self).get(request, *args, **kwargs)
         if self.object.state != Event.STATUS.Published:
-            if not self.request.user.is_authenticated() or not self.request.user.is_staff:
+            if not self.request.user.is_authenticated or not self.request.user.is_staff:
                 return HttpResponseRedirect(reverse('home'))
 
         return result
@@ -310,7 +309,7 @@ class EventDetailView(DetailView):
         context['event_metrics_update_url'] = reverse('event_update_metrics', kwargs={'pk': event.pk})
         # In case the user selects a ticket
         context['flow_type'] = "ticket_selection"
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             context['user_token'] = Token.objects.get(user=self.request.user)
             user_is_artist = (
                 current_user.is_artist and
@@ -387,16 +386,17 @@ class EventDetailView(DetailView):
         event = self.object
 
         if event.show_streaming:
-            if self.request.user.is_authenticated():
+            if self.request.user.is_authenticated:
                 return ['events/_event_details_streaming.html']
             else:
+                print('here 2')
                 return ['events/_event_details_upcoming.html']
         elif event.is_past:
             return ['events/_event_details_past.html']
         if event.is_future or not event.streamable:
             return ['events/_event_details_upcoming.html']
         else:  # Not sure if there will be another option.
-            if self.request.user.is_authenticated():
+            if self.request.user.is_authenticated:
                 return ['events/_event_details_streaming.html']
             else:
                 return ['events/_event_details_upcoming.html']
