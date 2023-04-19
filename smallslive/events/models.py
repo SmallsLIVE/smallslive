@@ -928,7 +928,7 @@ class Event(TimeStampedModel):
         if not self.cropping or '-' in self.cropping:
             return
         top_x, top_y, bottom_x, bottom_y = self.cropping.split(',')
-        return ((top_x, top_y), (bottom_x, bottom_y))
+        return ((int(top_x), int(top_y)), (int(bottom_x), int(bottom_y)))
 
     def get_sets_info_dict(self):
         sets_info = []
@@ -1262,19 +1262,19 @@ class Venue(models.Model):
     @property
     def get_aws_access_key_id(self):
         if self.aws_access_key_id:
-            return self.fernet.decrypt(force_bytes(self.aws_access_key_id))
+            return self.fernet.decrypt(force_bytes(self.aws_access_key_id)).decode('utf-8')
         return None
 
     @property
     def get_aws_secret_access_key(self):
         if self.aws_secret_access_key:
-            return self.fernet.decrypt(force_bytes(self.aws_secret_access_key))
+            return self.fernet.decrypt(force_bytes(self.aws_secret_access_key)).decode('utf-8')
         return None
 
     @property
     def get_aws_storage_bucket_name(self):
         if self.aws_storage_bucket_name:
-            return self.fernet.decrypt(force_bytes(self.aws_storage_bucket_name))
+            return self.fernet.decrypt(force_bytes(self.aws_storage_bucket_name)).decode('utf-8')
         return None
 
     @property
