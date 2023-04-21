@@ -272,6 +272,7 @@ def user_settings_view_new(request):
             charges_value = charges_value + charge.amount
 
         artist_info_form = ArtistInfoForm(instance=request.user)
+        # @TODO : Fix later with djstripe
     customer_detail = CustomerDetail.get(
         id=request.user.customer.stripe_id)
 

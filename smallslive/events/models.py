@@ -1241,7 +1241,7 @@ class Venue(models.Model):
     # Higher number shows first.
     sort_order = models.PositiveIntegerField(default=0)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     @cached_property

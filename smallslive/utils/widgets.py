@@ -13,7 +13,7 @@ class ImageSelectWidget(floppyforms.Select):
 
 class ImageCropWidget(ImageThumbnailWidget, CropWidget):
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if not attrs:
             attrs = {}
         if value:

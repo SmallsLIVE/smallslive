@@ -47,8 +47,8 @@ class Formset(LayoutObject):
     def render(self, form, form_style, context, template_pack=TEMPLATE_PACK):
         formset = context[self.formset_name_in_context]
 
-        return render_to_string(self.template, Context({'wrapper': self,
-            'formset': formset}))
+        return render_to_string(self.template, {'wrapper': self,
+            'formset': formset})
 
 
 class EventStatusWidget(floppyforms.RadioSelect):
@@ -58,8 +58,6 @@ class EventStatusWidget(floppyforms.RadioSelect):
 class GigPlayedAddInlineFormSet(InlineFormSet):
     model = GigPlayed
     fields = ('artist', 'role', 'is_leader', 'is_admin', 'sort_order')
-    extra = 1
-    can_delete = False
 
     def construct_formset(self):
         formset = super(GigPlayedAddInlineFormSet, self).construct_formset()
@@ -79,13 +77,13 @@ class GigPlayedAddInlineFormSet(InlineFormSet):
 
 
 class GigPlayedEditInlineFormset(GigPlayedAddInlineFormSet):
-    extra = 1
     can_delete = True
 
     def construct_formset(self):
         # don't automatically show extra rows if there are artists already playing
-        if self.object.performers.count() > 0:
-            self.extra = 0
+        # @TODO : Fix later
+        # if self.object.performers.count() > 0:
+        #     self.extra = 0
         formset = super(GigPlayedEditInlineFormset, self).construct_formset()
         for num, form in enumerate(formset):
             form.fields['DELETE'].widget = forms.HiddenInput()
@@ -104,12 +102,12 @@ class GigPlayedInlineFormSetHelper(FormHelper):
 class EventSetInlineFormset(InlineFormSet):
     model = EventSet
     fields = ('start', 'end', 'walk_in_price')
-    extra = 1
 
 
     def construct_formset(self):
-        if self.object and self.object.sets.count() > 0:
-            self.extra = 0
+        # @TODO : Fix later
+        # if self.object and self.object.sets.count() > 0:
+        #     self.extra = 0
         formset = super(EventSetInlineFormset, self).construct_formset()
         for num, form in enumerate(formset):
             form.fields['DELETE'].widget = forms.HiddenInput()
@@ -375,11 +373,12 @@ class TicketAddForm(forms.Form):
 class ShowDefaultTimeInlineFormset(InlineFormSet):
     model = ShowDefaultTime
     fields = ('first_set', 'second_set', 'set_duration')
-    extra = 1
+    # extra = 1
 
     def construct_formset(self):
-        if self.object and self.object.default_times.count() > 0:
-            self.extra = 0
+        # @TODO Fix later
+        # if self.object and self.object.default_times.count() > 0:
+        #     # self.extra = 0
 
         formset = super(ShowDefaultTimeInlineFormset, self).construct_formset()
         for num, form in enumerate(formset):
