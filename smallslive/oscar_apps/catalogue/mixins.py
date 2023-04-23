@@ -23,7 +23,6 @@ class ProductMixin(object):
             price = strategy.fetch_for_product(product=x.children.first()).price.incl_tax
         else:
             price = strategy.fetch_for_product(product=x).price.incl_tax
-
         return price
 
     def get_products(self):
@@ -66,9 +65,8 @@ class ProductMixin(object):
         ]).first()
 
         self.child_product = variant
-
-        self.gifts.sort(
-            key=lambda x: self.get_product_price(x))
+        # self.gifts.sort(
+        #     key=lambda x: self.get_product_price(x))
 
         self.comma_separated_leaders = self.album_product.get_leader_strings()
 
