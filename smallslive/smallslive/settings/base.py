@@ -89,6 +89,8 @@ INSTALLED_APPS = [
     'sortedm2m',
     'storages',
     'tinymce',
+    'django_tables2',
+    'widget_tweaks',
 
     # project apps
     'artist_dashboard',
