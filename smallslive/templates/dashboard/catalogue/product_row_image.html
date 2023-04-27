@@ -1,0 +1,15 @@
+{% load image_tags %}
+{% load thumbor_tags %}
+{% if record.primary_image.original.url %}
+    {% with image=record.primary_image %}
+        {% if image %}
+          {% if image.original.url %}
+            {% include 'partials/thumbored_picture.html' with photo_url=image.original.url crop_box=event.photo_crop_box %}
+          {% else %}
+            {% include 'partials/thumbored_picture.html' %}
+          {% endif %}
+        {% endif %}
+    {% endwith %}
+{% else %}
+    —
+{% endif %}
