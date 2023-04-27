@@ -10,8 +10,7 @@ from django.http import Http404
 from django.shortcuts import render_to_response
 from django.views.generic.base import TemplateView, RedirectView
 from django.template import TemplateDoesNotExist
-#from paypal.express.dashboard.app import application as paypal_application
-#from oscar.app import application
+# from paypal.express.dashboard.app import application as paypal_application
 from django.contrib.sitemaps import views as sitemaps_views
 from django.views.decorators.cache import cache_page
 from oscar_apps.catalogue.views import ArtistCatalogue, get_album_catalog
@@ -79,10 +78,9 @@ urlpatterns = [
     url(r'^search/event/', event_search, name='event_search'),
     url(r'^search/instrument/', instrument_search, name='instrument_search'),
     url(r'^checkout/paypal/', include('paypal.express.urls')),
-    #(r'^dashboard/paypal/express/', include(paypal_application.urls)), ## @TODO Fix later after upgrade
+   # url(r'^dashboard/paypal/express/', include(paypal_application.urls)), ## @TODO Fix later after upgrade
     url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
     url(r'^catalog/accounts/login/$', RedirectView.as_view(url=reverse_lazy('accounts_login'))),
-    #url(r'^catalog/', include(application.urls)),
     path('', include(apps.get_app_config('smallslive').urls[0])),
     url(r'^catalog/artist-catalogue/', ArtistCatalogue.as_view(), name='artist_store'),
     url(r'^catalog/album-list/', get_album_catalog , name='album_list'),
