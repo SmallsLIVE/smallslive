@@ -3,7 +3,7 @@ from collections import OrderedDict
 from django.views.generic.detail import DetailView
 from natsort import natsorted
 from oscar.core.loading import get_class
-from oscar.apps.dashboard.reports.views import IndexView
+from oscar.apps.dashboard.reports import views as oscar_views
 from events.models import Event, EventSet
 
 
@@ -19,7 +19,7 @@ GeneratorRepository = get_class('dashboard.reports.utils',
                                 'GeneratorRepository')
 
 
-class TicketsIndexView(IndexView):
+class TicketsIndexView(oscar_views.IndexView):
     template_name = 'dashboard/reports/tickets_index.html'
     paginate_by = 25
     context_object_name = 'objects'
@@ -85,7 +85,7 @@ class TicketDetailsView(DetailView):
 
         # Populate products corresponding to each set of the event
         event = self.object.event
-        event_sets = sorted(list(event.sets.all()), Event.sets_order)
+        event_sets = list(event.sets.all())
         products = []
         for event_set in event_sets:
             for ticket in event_set.tickets.all():

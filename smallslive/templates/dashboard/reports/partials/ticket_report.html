@@ -25,6 +25,7 @@
                     <td>{{ event.get_range.0 }}</td>
                     <td>{{ event.get_venue_name }}</td>
                     <td>
+                        {% comment %}@TODO : Fix later <a class="btn btn-info" href="{% url 'dashboard:ticket_details' pk=event.sets.first.id %}">Report</a>{% endcomment %}
                         <a class="btn btn-info" href="{% url 'dashboard:ticket_details' pk=event.sets.first.id %}">Report</a>
                     </td>
                 </tr>
@@ -33,5 +34,5 @@
             <tr><td>{% trans "No results found." %}</td></tr>
         {% endif %}
     </table>
-    {% include "partials/pagination.html" %}
+    {% include "dashboard/partials/pagination.html" %}
 {% endblock %}
