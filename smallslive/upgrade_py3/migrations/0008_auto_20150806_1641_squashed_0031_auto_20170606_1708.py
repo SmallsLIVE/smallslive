@@ -2143,23 +2143,23 @@ class Migration(migrations.Migration):
             field=djstripe.fields.StripeCharField(choices=[('canceled', 'Canceled'), ('failed', 'Failed'), ('in_transit', 'In transit'), ('paid', 'Paid'), ('pending', 'Pending')], help_text='The current status of the transfer. A transfer will be pending until it is submitted to the bank, at which point it becomes in_transit. It will then change to paid if the transaction goes through. If it does not go through successfully, its status will change to failed or canceled.', max_length=10),
         ),
 
-        migrations.RunPython(
-            code=resync_subscriptions,
-        ),
-        migrations.RunPython(
-            code=resync_invoiceitems,
-        ),
-        migrations.RunPython(
-            code=sync_charges,
-        ),
-        migrations.RunPython(
-            code=sync_invoices,
-        ),
-        migrations.RunPython(
-            code=sync_transfers,
-        ),
-        migrations.RunPython(
-            code=sync_customers,
-        ),
+        # migrations.RunPython(
+        #     code=resync_subscriptions,
+        # ),
+        # migrations.RunPython(
+        #     code=resync_invoiceitems,
+        # ),
+        # migrations.RunPython(
+        #     code=sync_charges,
+        # ),
+        # migrations.RunPython(
+        #     code=sync_invoices,
+        # ),
+        # migrations.RunPython(
+        #     code=sync_transfers,
+        # ),
+        # migrations.RunPython(
+        #     code=sync_customers,
+        # ),
         migrations.RunSQL('SET CONSTRAINTS ALL DEFERRED', reverse_sql='SET CONSTRAINTS ALL IMMEDIATE'),
     ]
