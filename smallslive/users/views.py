@@ -272,9 +272,11 @@ def user_settings_view_new(request):
             charges_value = charges_value + charge.amount
 
         artist_info_form = ArtistInfoForm(instance=request.user)
-        # @TODO : Fix later with djstripe
-    customer_detail = CustomerDetail.get(
-        id=request.user.customer.stripe_id)
+
+    customer_detail = None
+    # @TODO : Fix later with djstripe
+    # customer_detail = CustomerDetail.get(
+    #     id=request.user.customer.stripe_id)
 
     if customer_detail and customer_detail.subscription:
         monthly_pledge_in_dollars = customer_detail.subscription.plan.amount / 100

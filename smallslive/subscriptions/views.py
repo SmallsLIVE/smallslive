@@ -15,8 +15,8 @@ from django.views.generic import TemplateView, FormView, ListView, View
 from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
 ## @TODO : Fix later after djstripe upgrade
-# from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView, \
-#     CancelSubscriptionView as BaseCancelSubscriptionView
+from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView, \
+    CancelSubscriptionView as BaseCancelSubscriptionView
 from oscar.apps.payment.models import SourceType, Source
 from oscar.core.loading import get_class
 from oscar_apps.catalogue.mixins import ProductMixin
@@ -795,31 +795,31 @@ gift_support = GiftSupportView.as_view()
 
 
 ## @TODO : Fix later after djstripe upgrade
-# class SyncPaymentHistoryView(SyncHistoryView):
-#     template_name = 'account/blocks/payment_history.html'
+class SyncPaymentHistoryView(SyncHistoryView):
+    template_name = 'account/blocks/payment_history.html'
 
 ## @TODO : Fix later after djstripe upgrade
-#sync_payment_history = SyncPaymentHistoryView.as_view()
+sync_payment_history = SyncPaymentHistoryView.as_view()
 
 
-# class UpdateCardView(ChangeCardView):
-#
-#     def get_post_success_url(self):
-#         return reverse('user_settings_new')
-#
-#     def get(self, request, *args, **kwargs):
-#         # only POST
-#         return redirect(self.get_post_success_url())
-#
-#
-# update_card = UpdateCardView.as_view()
+class UpdateCardView(ChangeCardView):
+
+    def get_post_success_url(self):
+        return reverse('user_settings_new')
+
+    def get(self, request, *args, **kwargs):
+        # only POST
+        return redirect(self.get_post_success_url())
 
 
-# class CancelSubscriptionView(BaseCancelSubscriptionView):
-#     success_url = reverse_lazy("user_settings_new")
+update_card = UpdateCardView.as_view()
 
 
-# cancel_subscription = CancelSubscriptionView.as_view()
+class CancelSubscriptionView(BaseCancelSubscriptionView):
+    success_url = reverse_lazy("user_settings_new")
+
+
+cancel_subscription = CancelSubscriptionView.as_view()
 
 
 class UpdatePledgeView(BecomeSupporterView):
