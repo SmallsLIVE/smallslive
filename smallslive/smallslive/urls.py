@@ -20,6 +20,7 @@ from newsletters.views import *
 from artists.views import *
 from events.views import *
 from django.contrib.flatpages.views import flatpage
+from static_pages.views import *
 
 # uncomment these lines to enable the Djrill admin interface 
 # from djrill import DjrillAdminSite
@@ -60,10 +61,9 @@ urlpatterns = [
     url(r'^search/', include('search.urls')),
     url(r'^static_page/(?P<template_name>[A-Za-z_-]*)/$', StaticPageView.as_view(), name="static_page"),
     path('admin/', admin.site.urls),
-    # @TODO figure out this pages later
-    # url(r'^about-us/$', static_pages.views.about_view, name="about-us"),
-    # url(r'^photo-gallery/$', 'static_pages.views.gallery_view', name="photo-gallery"),
-    # url(r'^press/$', 'static_pages.views.press_view', name="press"),
+    url(r'^about-us/$', about_view, name="about-us"),
+    url(r'^photo-gallery/$', gallery_view, name="photo-gallery"),
+    url(r'^press/$', press_view, name="press"),
 
     url(r'^newsletters/$', newsletter_list, name="newsletters"),
 
@@ -109,7 +109,7 @@ urlpatterns += [
 urlpatterns += [
     url(r'^join\.cfm$', RedirectView.as_view(url=reverse_lazy('signup_landing'), permanent=True)),
     url(r'^joinaudio\.cfm$', RedirectView.as_view(url=reverse_lazy('signup_landing'), permanent=True)),
-    url(r'^musiccatalog\.cfm$', RedirectView.as_view(url=reverse_lazy('promotions:home'), permanent=True)),
+    url(r'^musiccatalog\.cfm$', RedirectView.as_view(url=reverse_lazy('catalogue:index'), permanent=True)),
     url(r'^indexnew\.cfm$', OldSiteRedirectView.as_view()),
     url(r'^innerclearback\.cfm$', OldSiteRedirectView.as_view()),
     url(r'^.*\.cfm$', OldSiteRedirectView.as_view()),

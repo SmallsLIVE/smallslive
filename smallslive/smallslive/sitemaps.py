@@ -53,7 +53,7 @@ class DailyChangingSitemap(Sitemap):
             'live-stream',
             'schedule',
             'archive',
-            'promotions:home'
+            'catalogue:index'
         ]
 
     def location(self, item):
