@@ -3,8 +3,8 @@ from subscriptions import views
 
 urlpatterns = [
     ## @TODO : Fix later after djstripe upgrade
-    path(r'^sync-payment-history/', views.sync_payment_history, name='sync_payment_history'),
-    path(r'^update-card/', views.update_card, name='update_card'),
+    # path(r'^sync-payment-history/', sync_payment_history, name='sync_payment_history'),
+    #path(r'^update-card/', views.update_card, name='update_card'),
     path(r'^cancel/subscription/$', views.cancel_subscription, name='cancel_subscription'),
     re_path(r'^email-list/', views.subscriber_list_emails, name='subscriber_list_emails'),
 
