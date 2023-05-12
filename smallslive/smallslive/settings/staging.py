@@ -27,8 +27,8 @@ DATABASES['metrics'] = dj_database_url.config('METRICS_DB_URL')
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # MIDDLEWARE = ('sslify.middleware.SSLifyMiddleware',) + MIDDLEWARE
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 REDIS_URL = urlparse(get_env_variable('REDISCLOUD_URL'))
 
