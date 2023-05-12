@@ -17,18 +17,18 @@ function getAjaxSubmitForForm(form, formFields) {
       error: function (jqXHR, textStatus, errorThrown) {
         var response = jqXHR.responseJSON;
         formFields.forEach(function (fieldName) {
-          if (response.form_errors[fieldName]) {
+          if (response.form.fields[fieldName].errors.length) {
             $(form).find("input[name=" + fieldName + "]").parent().addClass('has-error');
             $(form).find("#" + fieldName + "-error")
               .removeClass('hidden')
-              .text(response.form_errors[fieldName][0]);
+              .text(response.form.fields[fieldName].errors[0]);
           }
         });
 
-        if (response.form_errors.__all__) {
+        if (response.form.errors.length) {
           $(form).find("#all-errors").parent().addClass('has-error');
           $(form).find("#all-errors")
-            .removeClass('hidden').text(response.form_errors.__all__[0]);
+            .removeClass('hidden').text(response.form.errors[0]);
         }
       }
     });
