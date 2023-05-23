@@ -90,7 +90,8 @@ urlpatterns = [
         {'sitemaps': sitemaps}, name='sitemaps'),
     url(r'^robots\.txt', static_file_view, kwargs={'file_name': 'robots.txt'}),
     url(r'^crossdomain\.xml', static_file_view, kwargs={'file_name': 'crossdomain.xml'}),
-    url(r'^$', homepage, name="home"),
+    # url(r'^$', homepage, name="home"), # Old home Route/URL.
+    url(r'^$', schedule, name="home"),
     url(r'^old/$', old_home, name="old_home"),
     url(r'^styles/$', styleguide, name="styles"),
     url(r'^donate/$', RedirectView.as_view(url=reverse_lazy('donate'), permanent=True)),
