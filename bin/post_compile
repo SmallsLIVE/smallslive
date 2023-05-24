@@ -13,5 +13,5 @@ python smallslive/manage.py migrate catalogue --noinput
 python smallslive/manage.py migrate voucher --noinput
 
 # Sync djstripe data
-python smallslive/manage.py resync_subscriptions --noinput
-python smallslive/manage.py sync_customers --noinput
+python smallslive/manage.py resync_subscriptions
+python smallslive/manage.py sync_customers
