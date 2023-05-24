@@ -606,9 +606,8 @@ PAYPAL_PAYFLOW_DASHBOARD_FORMS = True
 
 # Stripe account for for profit
 STRIPE_PUBLISHABLE_KEY = STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
-#STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
-STRIPE_SECRET_KEY = 'sk_live_skajfqlajdlfjsddssajdlkfjalsdh'
-STRIPE_TEST_SECRET_KEY = 'sk_test_skajfqlajdlfjsddsasdfassadfsajdlkfjalsdh'
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')
 STRIPE_CURRENCY = 'USD'
 STRIPE_CHARGE_AND_CAPTURE_IN_ONE_STEP = True
 STRIPE_PRODUCT = os.environ.get('STRIPE_PRODUCT')
