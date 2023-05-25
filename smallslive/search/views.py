@@ -333,6 +333,15 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
         if instruments:
             context['instrument'] = instruments[0]
 
+        context['popular_in_archive'] = Event.objects.get_most_popular_uploaded()
+        most_recent = Event.objects.recently_added()[:20]
+        if len(most_recent):
+            context['new_in_archive'] = most_recent
+        else:
+            context['new_in_archive'] = Event.objects.exclude(
+                state=Event.STATUS.Draft
+            ).order_by('-start')[:20]
+
         return context
 
 

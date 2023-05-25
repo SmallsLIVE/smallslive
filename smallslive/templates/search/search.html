@@ -27,18 +27,54 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
-  {% include 'inactive_dialog.html' %}
-{% endif %}
-{% include 'become_a_supporter_dialog.html' %}
+  <section id="recently-added-section" class="event-stripe">
+    <div class="section-title home recently">
+      <div class="title1">
+        <span id="ra-recently-added-toggle" class="accent-color no-link"> Recently Added</span>  \
+        <span id="ra-most-popular-toggle" class="no-link">Most Popular</span>
+      </div>
+      <span id="most-popular-filter-container" class="select-container hidden">
+        <div class="white-border-select home-filter">
+          <select id="most-popular-filter">
+            <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
+            <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
+            <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
+            <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
+          </select>
+        </div>
+      </span>
+    </div>
+    <main id="recently-added-container">
+      <div class="slide-btn recently prev"><b class="indicator-icon icon-left-caret"></b></div>
+      <div class="slide-btn recently next"><b class="indicator-icon icon-right-caret"></b></div>
+      {% include 'events/event_row.html' with events=new_in_archive secondary=True carousel='recently-carousel' %}
+    </main>
+    <main id="most-popular-container" class="hidden">
+      <div class="slide-btn popular prev"><b class="indicator-icon icon-left-caret"></b></div>
+      <div class="slide-btn popular next"><b class="indicator-icon icon-right-caret"></b></div>
+      {% include 'events/event_row.html' with events=popular_in_archive secondary=True carousel='popular-carousel' %}
+    </main>
+  </section>
+  <section id="most-popular-section" class="event-stripe hidden">
+    <div class="section-title home archive">
+      <div class="title1">
+        <a href="#" id="mp-recently-added-toggle"> Recently Added</a>  \ <a href="#" id="mp-most-popular-toggle" class="accent-color">Most Popular</a>
+      </div>
+    </div>
+  </section>
 
-{% if artist_profile %}
-  <div class="artist-search-profile-container pad-content">
-    {% include 'artists/artist_detail_search.html' with archived=event_results upcoming=upcoming_events %}
-  </div>
-{% endif %}
+  {% if user.is_authenticated %}
+    {% include 'inactive_dialog.html' %}
+  {% endif %}
+  {% include 'become_a_supporter_dialog.html' %}
 
-<div class="search-container pad-content new-archive{% if user.is_superuser %} admin{% endif %}{% if artist_profile%} artist-profile{% endif %}">
+  {% if artist_profile %}
+    <div class="artist-search-profile-container pad-content">
+      {% include 'artists/artist_detail_search.html' with archived=event_results upcoming=upcoming_events %}
+    </div>
+  {% endif %}
+
+  <div class="search-container pad-content new-archive{% if user.is_superuser %} admin{% endif %}{% if artist_profile%} artist-profile{% endif %}">
 
     {% if not artist_profile %}
       <section id="musicianContent"
@@ -82,6 +118,83 @@
 {% endblock %}
 
 {% block extra_js %}
+  <script>
+    $(document).ready(function () {
+
+      /* Functionality for switching between recently added and most popular
+         This has been changed many times. Leaving the code here for convenience
+         until there is a final decision */
+
+      initializeRecentlyCarousel();
+
+      function setTextEllipsisClass(tabName) {
+        /* The unselected tab text will be trimmed on mobile */
+
+        var $recentlyAdded = $("#ra-recently-added-toggle");
+        var $section = $recentlyAdded.closest(".section-title");
+        var $mostPopular = $("#ra-most-popular-toggle");
+        if (tabName == "popular") {
+          if (!$recentlyAdded.hasClass("trim")) {
+            $recentlyAdded.addClass("trim");
+            if (!$section.hasClass("trim")) {
+              $section.addClass("trim");
+            }
+          }
+        } else {
+          $recentlyAdded.removeClass("trim");
+          $section.removeClass("trim");
+        }
+
+      }
+
+      $('#ra-most-popular-toggle').click(function (event) {
+        if (!$(this).hasClass("accent-color")) {
+          $(this).addClass("accent-color");
+        }
+        $('#ra-recently-added-toggle').removeClass("accent-color");
+        $('#recently-added-container').addClass('hidden');
+        $('#most-popular-container').removeClass('hidden');
+        $('#most-popular-filter-container').removeClass('hidden');
+        initializePopularCarousel();
+        setTextEllipsisClass("popular");
+      });
+
+      $('#ra-recently-added-toggle').click(function (event) {
+        event.preventDefault();
+        if (!$(this).hasClass("accent-color")) {
+          $(this).addClass("accent-color");
+        }
+        $('#ra-most-popular-toggle').removeClass("accent-color");
+        $('#recently-added-container').removeClass('hidden');
+        $('#most-popular-container').addClass('hidden');
+        $('#most-popular-filter-container').addClass('hidden');
+        initializeRecentlyCarousel();
+        setTextEllipsisClass("recently");
+      });
+
+      var popularFilterDefaultValue = "{{ popular_select }}";
+      var popularQueryUrl = "{% url 'event_popular_ajax' %}";
+
+      var $filter = $("#most-popular-filter");
+
+      var setMostPopular = function(value) {
+        var mostPopularFilter = $("#most-popular-container").find(".event-row");
+        $.get(popularQueryUrl + "?range=" + value, function(data) {
+          mostPopularFilter.hide()
+          mostPopularFilter.replaceWith(data);
+          initializePopularCarousel();
+          mostPopularFilter.show();
+        });
+      };
+
+      $filter.on("change", function() {
+        setMostPopular($filter.val());
+        console.log('ko mama!');
+      });
+
+    });
+  </script>
+
   <script>
     var defaultFromDate = new Date("{{  first_event_date }}");
     var defaultToDate = new Date("{{ last_event_date }}");
