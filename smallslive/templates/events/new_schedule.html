@@ -12,6 +12,11 @@
 
 {% block home_content %}
 <main class="calendar">
+  <div class="container home-about">
+    <div class="title1">About Smallslive</div>
+    <p class="text2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+    <p class="text2">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+  </div>
   <div class="event-stripe">
     {% include 'events/today_and_tomorrow.html' with custom_venue_style=True calendar_page=True%}
   </div>

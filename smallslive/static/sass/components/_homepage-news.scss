@@ -51,6 +51,19 @@
   }
 }
 
+.home-about {
+    margin: 100px auto;
+    text-align: center;
+
+    .title1 {
+        margin-bottom: 30px;
+    }
+
+    .text2 {
+        text-transform: inherit;
+    }
+}
+
 @media (max-width: 700px) {
   .homepage-news {
     text-align: center;
