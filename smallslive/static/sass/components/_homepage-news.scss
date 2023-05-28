@@ -51,16 +51,27 @@
   }
 }
 
-.home-about {
-    margin: 100px auto;
+.home-banner-wrapper {
+    margin: 70px auto;
     text-align: center;
 
-    .title1 {
-        margin-bottom: 30px;
+    img {
+        width: 100%;
     }
 
-    .text2 {
-        text-transform: inherit;
+    .home-banner-inner {
+
+        &.two-col {
+            align-items: center;
+            display: flex;
+            gap: 30px;
+            margin-bottom: 70px;
+
+            img,
+             p{
+                width: calc(50% - 15px);
+            }
+        }
     }
 }
 

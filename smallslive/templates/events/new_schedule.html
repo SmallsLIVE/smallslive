@@ -12,10 +12,16 @@
 
 {% block home_content %}
 <main class="calendar">
-  <div class="container home-about">
-    <div class="title1">About Smallslive</div>
-    <p class="text2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-    <p class="text2">It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+  <div class="container home-banner-wrapper">
+    <div class="home-banner-inner" style="display: none;">
+      <img src="{% static 'Smalls-and-Mezzrow-Logo.jpg' %}" alt="Smalls and Mezzrow">
+      <p class="text2">Smalls Jazz Club and Mezzrow, 183 & 163 West 10th Street, Greenwich Village, New York City</p>
+    </div>
+    <div class="home-banner-inner two-col">
+      <img src="{% static 'jazz-club-black.png' %}" alt="Jazz Club">
+      <p class="text2">Smalls Jazz Club and Mezzrow, 183 & 163 West 10th Street, Greenwich Village, New York City</p>
+    </div>
+    <img src="{% static 'Mezzrow-logo-transparent.png' %}" alt="Smalls and Mezzrow">
   </div>
   <div class="event-stripe">
     {% include 'events/today_and_tomorrow.html' with custom_venue_style=True calendar_page=True%}
