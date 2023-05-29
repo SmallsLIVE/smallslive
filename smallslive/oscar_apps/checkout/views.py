@@ -385,7 +385,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
     def get_context_data(self, **kwargs):
 
         reservation_name = self.checkout_session.get_reservation_name()
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             kwargs['guest'] = {
                 'first_name': reservation_name[0],
                 'last_name': reservation_name[1]
@@ -404,7 +404,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
     def get_tickets_context(self, **kwargs):
         reservation_name = self.checkout_session.get_reservation_name()
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             kwargs['guest'] = {
                 'first_name': reservation_name[0],
                 'last_name': reservation_name[1]
@@ -419,7 +419,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
     def get_basket_context(self, basket):
         kwargs = {}
         kwargs['form'] = kwargs.get('form', PaymentForm(self.request.user, settings.STRIPE_SECRET_KEY))
-        if 'billing_address_form' not in kwargs and self.request.user.is_authenticated():
+        if 'billing_address_form' not in kwargs and self.request.user.is_authenticated:
             shipping_address = self.get_shipping_address(basket)
             billing_initial = self.get_billing_initial()
             kwargs['billing_address_form'] = BillingAddressForm(
@@ -431,7 +431,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         kwargs['card_info'] = self.checkout_session._get('payment', 'card_info')
         user = self.request.user
-        if user.is_authenticated():
+        if user.is_authenticated:
             kwargs['can_use_existing_cc'] = user.can_use_existing_cc and not basket.has_catalog()
 
         return kwargs
@@ -490,7 +490,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 shipping_address, billing_address_form, payment_method)
 
     def handle_billing_address(self, shipping_address, user):
-        if user.is_authenticated():
+        if user.is_authenticated:
             billing_address_form = BillingAddressForm(shipping_address, user, self.request.POST)
             if billing_address_form.is_valid():
                 if billing_address_form.cleaned_data.get('billing_option') == 'same-address':

@@ -325,7 +325,7 @@ def user_settings_view_new(request):
 
 def check_account_status(request):
     user = request.user
-    is_authenticated = user.is_authenticated()
+    is_authenticated = user.is_authenticated
     data = {
         'isAuthenticated': is_authenticated,
         'isVerified': is_authenticated and user.has_activated_account,
@@ -480,7 +480,7 @@ email_confirm_resend_ajax = EmailConfirmResendAjaxView.as_view()
 class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):
 
     def test_func(self, user):
-        self.logged_in = user.is_authenticated()
+        self.logged_in = user.is_authenticated
         if not self.logged_in:
             return False
         self.has_artist = user.artist_id is not None
@@ -498,7 +498,7 @@ class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):
 class HasArtistAssignedOrIsSuperuserMixin(HasArtistAssignedMixin):
 
     def test_func(self, user):
-        self.logged_in = user.is_authenticated()
+        self.logged_in = user.is_authenticated
         if not self.logged_in:
             return False
         self.has_artist = user.artist_id is not None

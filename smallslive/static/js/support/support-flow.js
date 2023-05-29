@@ -439,7 +439,7 @@ var showBilling = function (data) {
 
 var checkout = function () {
   // TODO: fix hardcoded URL
-  $.get("/catalog/checkout/", function (data) {
+  $.get("/checkout/", function (data) {
     // data.url  = 'shipping-address' and then 'shipping-method' if item is physical
     // otherwise go straight to billing.
     $.get(data.url, function(data) {
@@ -1265,6 +1265,9 @@ $(document).ready(function() {
   }
 
   $(document).on("click", "#confirmButton", function(event) {
+
+//    alert('as dfasdfasd');
+    console.log(currentStep);
 
     var min = $(this).data("min-donation");
     if (min) {

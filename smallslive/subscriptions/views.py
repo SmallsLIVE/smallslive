@@ -43,7 +43,7 @@ class PaymentInfoView(TemplateView):
 
     def get_template_names(self):
         if self.request.is_ajax():
-            if self.request.user.is_authenticated():
+            if self.request.user.is_authenticated:
                 template_name = 'subscriptions/supporter_step_donation_payment_info.html'
             else:
                 template_name = 'subscriptions/supporter_step_anonymous_donation_payment_info.html'
@@ -74,7 +74,7 @@ class PaymentInfoView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PaymentInfoView, self).get_context_data(**kwargs)
 
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             context.update(self.get_authenticated_context())
         else:
             context.update(self.get_anonymous_context())
@@ -93,7 +93,7 @@ class PaymentInfoView(TemplateView):
             return None
 
     def get_default_billing_address(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return None
         try:
             return self.request.user.addresses.get(is_default_for_billing=True)
@@ -440,7 +440,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                         reference=None, confirmed=True):
 
         user = None
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             user = self.request.user
 
         donation_data = {

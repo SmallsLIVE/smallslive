@@ -41,7 +41,7 @@ class PaymentForm(forms.Form):
         self.stripe_api_key = stripe_api_key
         super(PaymentForm, self).__init__(*args, **kwargs)
         self.user = user
-        if user.is_authenticated():
+        if user.is_authenticated:
             try:
                 customer = Customer.objects.get(subscriber=user)
                 if customer and customer.can_charge():

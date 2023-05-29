@@ -152,7 +152,7 @@ class MyFutureEventsView(MyEventsView):
             'event__start__gte': now
         }
 
-        if not self.request.user.is_authenticated() or not self.request.user.is_staff:
+        if not self.request.user.is_authenticated or not self.request.user.is_staff:
             condition['event__state'] = Event.STATUS.Published
 
         queryset = artist.gigs_played.select_related('event').prefetch_related('event__sets').filter(
