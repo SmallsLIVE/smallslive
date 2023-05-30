@@ -181,7 +181,7 @@ $player-height: 25.3vw;
 
 .event-video-info {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 
   @media (max-width: $screen-sm-max) {
     flex-direction: row;
@@ -252,7 +252,9 @@ $player-height: 25.3vw;
   }
 
   .buttons-container {
+    align-items: flex-start;
     flex-grow: 1;
+    margin: 30px 0;
     text-align: right;
     /*width: 50%;*/
 
@@ -262,6 +264,18 @@ $player-height: 25.3vw;
 
     @media (max-width: $screen-md-max) {
       text-align: left;
+    }
+  }
+
+  .event-player-buttons {
+    display: flex;
+    gap: 30px;
+
+    .buy-tickets {
+        border-color: $smallslive;
+        color: $smallslive;
+        height: auto;
+        padding: 20px 40px;
     }
   }
 
