@@ -1,0 +1,50 @@
+{% load static from staticfiles %}
+
+<header class="main-header new-home-header">
+  <div class="flex-row items-center new-home-header-top">
+    <div class="flex-row items-center new-header-img-wrapper">
+      <div class="new-header-img">
+        <img src="{% static 'jazz-club-black.png' %}" alt="Jazz Club">
+      </div>
+      <div class="new-header-img">
+        <img src="{% static 'Mezzrow-logo-transparent.png' %}" alt="Smalls and Mezzrow">
+      </div>
+    </div>
+    <div class="new-header-user-menu">
+      {% if not request.user.is_authenticated %}
+        <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
+          Sign In
+        </button>
+      {% else %}
+        <div class="user-menu white-border-select no-arrow">
+          <select id="userMenu">
+            <option value="current" noSelect="1" selected="selected" title="{{ request.user.email }}">
+              {% if request.user.first_name or request.user.last_name%}
+                {% if request.user.first_name %}{{ request.user.first_name }}{% endif %}
+                {% if request.user.last_name %} {{ request.user.last_name }}{% endif %}
+              {% else %}
+                {{ request.user.email }}
+              {% endif %}
+            </option>
+            {% if request.user.artist %}
+              <option value="artist_dashboard">Dashboard</option>
+            {% endif %}
+            <option value="my_downloads">Library</option>
+            <option value="account_info">Account</option>
+            <option value="logout">Sign Out</option>
+          </select>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="flex-row items-center wrap content-space-around">
+    <div class="button-row">
+      {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
+      {% include 'partials/header_button.html' with button_url='contact-and-info' button_text='Info' %}
+      {% if request.user.is_authenticated %}
+        {% include 'partials/header_button.html' with button_url='livestream' button_text='Livestream' %}
+      {% endif %}
+    </div>
+
+  </div>
+</header>

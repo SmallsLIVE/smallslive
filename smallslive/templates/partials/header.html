@@ -35,6 +35,9 @@
       {% include 'partials/header_button.html' with button_url='catalogue:index' button_text='Catalog' %}
       {% include 'partials/header_button.html' with button_url='gift_support' button_text='Gifts' %}
       {% include 'partials/header_button.html' with button_url='contact-and-info' button_text='Info' %}
+      {% if request.user.is_authenticated %}
+        {% include 'partials/header_button.html' with button_url='livestream' button_text='Livestream' %}
+      {% endif %}
 
       {% if not request.user.is_authenticated %}
         <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">

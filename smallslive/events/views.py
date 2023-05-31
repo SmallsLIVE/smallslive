@@ -386,19 +386,25 @@ class EventDetailView(DetailView):
         event = self.object
 
         if event.show_streaming:
+            print('here 1')
             if self.request.user.is_authenticated:
+                print('here 2')
                 return ['events/_event_details_streaming.html']
             else:
-                print('here 2')
+                print('here 3')
                 return ['events/_event_details_upcoming.html']
         elif event.is_past:
+            print('here 4')
             return ['events/_event_details_past.html']
         if event.is_future or not event.streamable:
+            print('here 5')
             return ['events/_event_details_upcoming.html']
         else:  # Not sure if there will be another option.
             if self.request.user.is_authenticated:
+                print('here 6')
                 return ['events/_event_details_streaming.html']
             else:
+                print('here 7')
                 return ['events/_event_details_upcoming.html']
 
     def _generate_metrics_data(self):
@@ -659,6 +665,15 @@ class GenericScheduleView(TemplateView, UpcomingSearchView):
 
 schedule = GenericScheduleView.as_view()
 
+class LivestreamView(TemplateView, UpcomingSearchView):
+    template_name = 'events/livestream.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(LivestreamView, self).get_context_data(**kwargs)
+
+        return context
+
+livestream = LivestreamView.as_view()
 
 class ScheduleCarouselAjaxView(DetailView):
     context_object_name = 'event'

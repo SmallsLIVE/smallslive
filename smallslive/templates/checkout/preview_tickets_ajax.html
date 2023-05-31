@@ -47,7 +47,7 @@
             </div>
             <div class="store-overview__return-button__container">
 
-                {% if not shipping_method.name = "No shipping required" %}
+                {% if not shipping_method.name == "No shipping required" %}
                     <a href="{% url 'checkout:shipping-address' %}" class="white-border-button">Edit </a>
                 {% endif %}
             </div>
