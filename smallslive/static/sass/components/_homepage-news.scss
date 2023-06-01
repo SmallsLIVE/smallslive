@@ -59,25 +59,21 @@
 
     .new-home-header-top {
         margin-bottom: 20px;
-    }
+        position: relative;
 
-    .new-header-img-wrapper {
-        gap: 10px;
-        max-width: 600px;
-        margin-left: auto;
+        .new-header-img-wrapper {
+            gap: 80px;
+            max-width: 1000px;
+            margin: 0 auto;
 
-        .new-header-img {
-            flex: 1;
+            .new-header-img {
+                flex: 1;
+            }
         }
-    }
 
-    .new-header-user-menu {
-        margin-left: calc(50% - (300px + 160px));
-        width: 160px;
-
-        .user-menu,
-        .sign-in-button {
-            margin-left: auto;
+        .new-header-user-menu {
+            position: absolute;
+            right: 0;
         }
     }
 
