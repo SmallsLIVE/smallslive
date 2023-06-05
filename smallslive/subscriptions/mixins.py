@@ -23,8 +23,8 @@ class PaymentCredentialsMixin(object):
                 print('kljasjdfljasdlfaddssdsad')
                 is_foundation = False
                 venue = self.event.venue
-                stripe_client_id = settings.STRIPE_PUBLISHABLE_KEY #venue.get_stripe_publishable_key
-                stripe_client_secret = settings.STRIPE_SECRET_KEY #venue.get_stripe_secret_key
+                stripe_client_id = venue.get_stripe_publishable_key
+                stripe_client_secret = venue.get_stripe_secret_key
                 paypal_client_id = venue.get_paypal_client_id
                 paypal_client_secret = venue.get_paypal_client_secret
         else:
@@ -210,19 +210,10 @@ class StripeMixin(PaymentCredentialsMixin):
 
     def handle_stripe_payment(self, order_number, basket_lines, **kwargs):
 
-        # if self.request.user.is_authenticated:
-        #     print('=========================')
-        #     print(dir(self.request.user))
-        #     print('=========================')
-        #     customer = self.request.user.customer
-        # else:
-        #     customer = None
-
-        try:
+        if self.request.user.is_authenticated:
             customer = self.request.user.customer
-        except:
-            customer=None
-
+        else:
+            customer = None
 
         data = self.get_stripe_payment_credentials()
         is_foundation = data[0]

@@ -1,3 +1,4 @@
+import functools
 from collections import OrderedDict
 from itertools import groupby
 import calendar
@@ -255,7 +256,7 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
         check_staff_picked(self.object, self.request.POST.get('staff_pick', 'off') == 'on')
         ticket_forms = self.construct_ticket_forms(data=self.request.POST)
         event_sets = self.object.sets.all()
-        event_sets = sorted(event_sets, Event.sets_order)
+        event_sets = sorted(event_sets, key=functools.cmp_to_key(Event.sets_order))
         count = 0
         for event_set in event_sets:
             ticket_form = ticket_forms[count]
@@ -473,7 +474,7 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
         ticket_forms = self.construct_ticket_forms(data=self.request.POST)
 
         event_sets = self.object.sets.all()
-        event_sets = sorted(event_sets, Event.sets_order)
+        event_sets = sorted(event_sets, key=functools.cmp_to_key(Event.sets_order))
         count = 0
         for event_set in event_sets:
             # Ignore creating a ticket for the set if there's one already
@@ -665,6 +666,7 @@ class GenericScheduleView(TemplateView, UpcomingSearchView):
 
 schedule = GenericScheduleView.as_view()
 
+
 class LivestreamView(TemplateView, UpcomingSearchView):
     template_name = 'events/livestream.html'
 
@@ -673,7 +675,67 @@ class LivestreamView(TemplateView, UpcomingSearchView):
 
         return context
 
+
 livestream = LivestreamView.as_view()
+
+
+class TicketingView(TemplateView, UpcomingSearchView):
+    template_name = 'basic_pages/ticketing.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(TicketingView, self).get_context_data(**kwargs)
+
+        return context
+
+
+ticketing = TicketingView.as_view()
+
+
+class FoundationView(TemplateView, UpcomingSearchView):
+    template_name = 'basic_pages/foundation.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(FoundationView, self).get_context_data(**kwargs)
+
+        return context
+
+
+foundation = FoundationView.as_view()
+
+
+class StoreView(TemplateView, UpcomingSearchView):
+    template_name = 'basic_pages/store.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(StoreView, self).get_context_data(**kwargs)
+
+        return context
+
+
+store = StoreView.as_view()
+
+class AboutView(TemplateView, UpcomingSearchView):
+    template_name = 'basic_pages/about.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(AboutView, self).get_context_data(**kwargs)
+        return context
+
+
+about = AboutView.as_view()
+
+class ContactView(TemplateView, UpcomingSearchView):
+    template_name = 'basic_pages/contact.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ContactView, self).get_context_data(**kwargs)
+        return context
+
+
+contact = ContactView.as_view()
+
+
+
 
 class ScheduleCarouselAjaxView(DetailView):
     context_object_name = 'event'

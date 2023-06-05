@@ -37,7 +37,7 @@ class ArtistGigPlayedAddInlineFormSet(InlineFormSet):
     model = GigPlayed
     fields = ('artist', 'role', 'is_leader', 'sort_order')
     extra = 0
-    can_delete = False
+    factory_kwargs = {'can_delete': False}
 
     def construct_formset(self):
         formset = super(ArtistGigPlayedAddInlineFormSet, self).construct_formset()
@@ -61,7 +61,7 @@ class ArtistGigPlayedEditLazyInlineFormSet(ArtistGigPlayedAddInlineFormSet):
     of loading the full artist list.
     """
 
-    can_delete = True
+    factory_kwargs = {'can_delete': True}
 
 
 class EventEditForm(event_forms.EventEditForm):

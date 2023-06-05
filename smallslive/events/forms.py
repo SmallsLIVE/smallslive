@@ -77,7 +77,7 @@ class GigPlayedAddInlineFormSet(InlineFormSet):
 
 
 class GigPlayedEditInlineFormset(GigPlayedAddInlineFormSet):
-    can_delete = True
+    factory_kwargs = {'can_delete': True}
 
     def construct_formset(self):
         # don't automatically show extra rows if there are artists already playing

@@ -93,7 +93,11 @@ urlpatterns = [
     # url(r'^$', homepage, name="home"), # Old home Route/URL.
     url(r'^$', schedule, name="home"),
     url(r'^livestream/$', livestream, name="livestream"),
-
+    url(r'^tickets/$', ticketing, name="tickets"),
+    url(r'^foundation/$', foundation, name="foundation"),
+    url(r'^store/$', store, name="store"),
+    url(r'^about/$', about, name="about"),
+    url(r'^contact/$', contact, name="contact"),
     url(r'^old/$', old_home, name="old_home"),
     url(r'^styles/$', styleguide, name="styles"),
     url(r'^donate/$', RedirectView.as_view(url=reverse_lazy('donate'), permanent=True)),
