@@ -1,0 +1,36 @@
+.new-header {
+
+    .new-header-img-wrapper {
+        gap: 30px;
+        max-width: 575px;
+
+        .new-header-img {
+            flex: 1;
+        }
+    }
+
+    .button-row {
+
+        p {
+            position: relative;
+
+            &:after {
+                background: $smallslive;
+                bottom: 0;
+                content: '';
+                display: inline-block;
+                height: 3px;
+                position: absolute;
+                transition: 0.5s;
+                width: 15px;
+            }
+
+            &:hover {
+
+                &:after {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
