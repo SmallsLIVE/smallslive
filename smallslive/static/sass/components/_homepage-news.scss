@@ -51,58 +51,6 @@
   }
 }
 
-.new-home-header {
-
-    img {
-        max-width: 100%;
-    }
-
-    .new-home-header-top {
-        margin-bottom: 20px;
-        position: relative;
-
-        .new-header-img-wrapper {
-            gap: 80px;
-            max-width: 1000px;
-            margin: 0 auto;
-
-            .new-header-img {
-                flex: 1;
-            }
-        }
-
-        .new-header-user-menu {
-            position: absolute;
-            right: 0;
-        }
-    }
-
-    .button-row {
-
-        p {
-            position: relative;
-
-            &:after {
-                background: $smallslive;
-                bottom: 0;
-                content: '';
-                display: inline-block;
-                height: 3px;
-                position: absolute;
-                transition: 0.5s;
-                width: 15px;
-            }
-
-            &:hover {
-
-                &:after {
-                    width: 100%;
-                }
-            }
-        }
-    }
-}
-
 @media (max-width: 700px) {
   .homepage-news {
     text-align: center;

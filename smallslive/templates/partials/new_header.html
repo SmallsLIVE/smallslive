@@ -1,0 +1,211 @@
+{% load static from staticfiles %}
+
+<header class="main-header new-header">
+  <div class="flex-row items-center content-space-between">
+    <div class="flex-row items-center new-header-img-wrapper">
+      <div class="new-header-img">
+        <img src="{% static 'jazz-club-black.png' %}" alt="Jazz Club">
+      </div>
+      <div class="new-header-img">
+        <img src="{% static 'Mezzrow-logo-transparent.png' %}" alt="Smalls and Mezzrow">
+      </div>
+    </div>
+
+    <div class="button-row">
+      {% include 'partials/header_button.html' with button_url='tickets' button_text='Tickets' %}
+      {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
+      {% include 'partials/header_button.html' with button_url='foundation' button_text='Foundation' %}
+      {% include 'partials/header_button.html' with button_url='livestream' button_text='Livestream' %}
+      {% include 'partials/header_button.html' with button_url='contact' button_text='Contact' %}
+      {% include 'partials/header_button.html' with button_url='about' button_text='About' %}
+      {% include 'partials/header_button.html' with button_url='store' button_text='Store' %}
+    </div>
+
+    <div class="user-menu white-border-select no-arrow">
+      {% if not request.user.is_authenticated %}
+        <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
+          Sign In
+        </button>
+      {% else %}
+        <select id="userMenu">
+          <option value="current" noSelect="1" selected="selected" title="{{ request.user.email }}">
+            {% if request.user.first_name or request.user.last_name%}
+              {% if request.user.first_name %}{{ request.user.first_name }}{% endif %}
+              {% if request.user.last_name %} {{ request.user.last_name }}{% endif %}
+            {% else %}
+              {{ request.user.email }}
+            {% endif %}
+          </option>
+          {% if request.user.artist %}
+            <option value="artist_dashboard">Dashboard</option>
+          {% endif %}
+          <option value="my_downloads">Library</option>
+          <option value="account_info">Account</option>
+          <option value="logout">Sign Out</option>
+        </select>
+      {% endif %}
+    </div>
+
+  </div>
+</header>
+
+
+<header class="mobile-header">
+  <div class="mobile-logo-container">
+    <a href="/" class="smalls-logo">
+      <img src="{% static 'new_logo_transparent_black.svg' %}"  alt=""/>
+    </a>
+  </div>
+  <div class="mobile-menu-icons flex-row items-center content-space-between">
+    <div>
+      <i class="fa fa-bars" onclick="toggleSideBar()"></i>
+      {% if user.is_authenticated %}
+        {% if not user.can_watch_video %}
+          <a class="white-border-button" style="padding: 0 10px;"
+             href="{% url 'become_supporter' %}">Donate</a>
+        {% else %}
+          <a class="white-border-button" style="padding: 0 10px;"
+             href="{% url 'user_settings_new' %}#user-donation-settings">Donate</a>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div>
+      <i class="fa fa-search"></i>
+      <i class="fa fa-user" onclick="toggleAdmin()"></i>
+    </div>
+  </div>
+  <div id="mobile-user-option-menu" hidden class="mobile-user-option flex-column">
+    {% if not request.user.is_authenticated %}
+      <button class="text2 sign-in-button" href="#logIn" data-toggle="modal">
+        Sign In
+      </button>
+    {% else %}
+      {% if request.user.artist %}
+        {% if is_dashboard %}
+          <div class="text2"><a href="{% url 'home' %}">Home</a></div>
+        {% else %}
+          <div class="text2"><a href="{% url 'artist_dashboard:my_past_events' %}">Dashboard</a></div>
+        {% endif %}
+      {% endif %}
+      <div class="text2"><a href="{% url 'my-downloads' %}">Library</a></div>
+      <div class="text2"><a href="{% url 'user_settings_new' %}">Account</a></div>
+      <div class="text2"><a href="{% url 'account_logout' %}">Sign Out</a></div>
+    {% endif %}
+  </div>
+</header>
+
+<div id="search-bar" class="mobile-search-header">
+  <div class="mobile-search-container flex-row items-center">
+    <form id="headerSearchForm" action="{% url 'search' %}">
+      <input name="q"
+             type="text"
+             autocomplete="off"
+             {% if query_term %} value="{{ query_term }}" {% endif %}>
+    </form>
+    <i id="searchArrow" class="fa fa-arrow-right"></i>
+  </div>
+</div>
+<div class="search-bar-autocomplete-container mobile-search-container"></div>
+
+<div id="side-navigation" class="side-bar-container visible-sm visible-xs visible-md side-bar-hidden">
+  <div class="side-navigation-overlay" onclick="toggleSideBar()"></div>
+  <div class="side-bar">
+    <div class="side-bar-header flex-row">
+      <a href="/">
+        <img src="{% static 'new_logo_transparent_black.svg' %}" alt=""/>
+      </a>
+    </div>
+    <div class="flex-column text2">
+      <a href="{% url 'schedule' %}" class="{% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">Calendar</a>
+      <a href="{% url 'search' %}" class="{% if request.resolver_match.url_name == 'search' %}active{% endif %}">Archive</a>
+      <a href="{% url 'catalogue:index' %}">Catalog</a>
+      <a href="{% url 'gift_support' %}">Gifts</a>
+      <a href="{% url 'contact-and-info' %}" class="{% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</a>
+    </div>
+  </div>
+</div>
+<script>
+  var $side_navigation = $('#side-navigation');
+
+  function toggleSideBar() {
+    $side_navigation.toggleClass('side-bar-hidden');
+
+    if (!$side_navigation.hasClass('side-bar-hidden')) {
+      $('.today-left').hide();
+      $('.today-right').hide();
+    } else {
+      $('.today-left').show();
+      $('.today-right').show();
+    }
+  }
+
+  function toggleAdmin(){
+    if ($("#mobile-user-option-menu").is(":hidden")) {
+      $("#mobile-user-option-menu").slideDown("fast");
+    } else {
+      $("#mobile-user-option-menu").slideUp("fast");
+    }
+  }
+
+  $("#mobile-user-option-menu .sign-in-button").on("click", function(){
+    $("#mobile-user-option-menu").hide();
+  })
+
+  function toggleSearch() {
+    if(!($('#search-bar').hasClass('mobile-search-header-shown'))){
+      $(".search-bar-autocomplete-container").css("display", "none");
+    }
+  }
+
+  $('.mobile-menu-icons .fa-search').click(function () {
+      var headerCount = getHeaderCount();
+      if ($('#search-bar').hasClass('mobile-search-header-shown')) {
+          $('body').removeClass('headers-' + (headerCount))
+          $('body').addClass('headers-' + (headerCount - 1))
+      } else {
+          $('body').removeClass('headers-' + (headerCount))
+          $('body').addClass('headers-' + (headerCount + 1))
+      }
+
+      $('#search-bar').toggleClass('mobile-search-header-shown');
+      $('.search-container.pad-content').toggleClass('mobile-search-header-shown');
+      toggleSearch();
+  });
+
+  $(document).ready(function () {
+    $('#searchArrow').on('click', function () {
+      $('#headerSearchForm').submit();
+    });
+
+    $("#headerSearchForm").on("submit", function (e) {
+      e.preventDefault();
+      var currentTab = $(".search-tabs [data-toggle-tab-group='search-results'].active").data("toggle-tab-target");
+      localStorage.setItem("activeSearchTab", currentTab);
+      $(this).off("submit").submit();
+    });
+
+    var searchTerm = getUrlParameter("q");
+    if (searchTerm) {
+      searchTerm = searchTerm.replace(/\+/g, ' ');
+    } else {
+      searchTerm = '';
+    }
+    if ($('.mobile-menu-icons .fa-search').visible()) {
+      if (searchTerm) {
+        $('.mobile-menu-icons .fa-search').click();
+      }
+    }
+
+    if (!searchTerm) {
+      localStorage.removeItem("activeSearchTab");
+    }
+
+    var previousSelectedTab = localStorage.getItem("activeSearchTab");
+    if (previousSelectedTab == "archived-shows") {
+      $(".search-tabs [data-toggle-tab-target='archived-shows']").click();
+    }
+  })
+
+</script>
+<script type="text/javascript" src="{% static 'js/search/search-bar.js' %}"></script>
+<script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>

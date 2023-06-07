@@ -668,7 +668,7 @@ schedule = GenericScheduleView.as_view()
 
 
 class LivestreamView(TemplateView, UpcomingSearchView):
-    template_name = 'events/livestream.html'
+    template_name = 'basic_pages/livestream.html'
 
     def get_context_data(self, **kwargs):
         context = super(LivestreamView, self).get_context_data(**kwargs)

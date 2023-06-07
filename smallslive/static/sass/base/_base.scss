@@ -38,6 +38,10 @@ body {
   }
 }
 
+img {
+  max-width: 100%;
+}
+
 .hidden-body {
   overflow: hidden;
   height: 100vh;
