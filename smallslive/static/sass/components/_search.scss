@@ -1,0 +1,70 @@
+.seaction-title-with-search {
+    align-items: center;
+    display: flex;
+    gap: 30px;
+    margin: 0 0 20px;
+
+    .section-title {
+        margin: 0;
+        padding-right: 50px;
+        width: auto;
+    }
+
+    .event-section {
+        margin: 0;
+    }
+}
+
+.artist-result-wrapper {
+    text-align: center;
+
+    .slide-btn.next.slider {
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 0;
+        color: #fff;
+        height: auto !important;
+        margin: 15px 0;
+        position: initial;
+        visibility: visible !important;
+        width: auto;
+    }
+
+    .loading-image {
+        position: initial !important;
+    }
+
+//     .artist-result-load-more {
+//         padding: 0 3.5vw;
+//         position: relative;
+//         text-align: center;
+//
+//
+//     }
+
+    .artist-result {
+        display: grid !important;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 0.4vw;
+        margin: 0 !important;
+        padding: 0 3.5vw;
+
+        .event-display {
+            margin: 0;
+
+            .event-card-square {
+                min-height: unset;
+            }
+
+            .event-picture {
+                height: 6.735vw !important;
+                width: auto !important;
+
+                img {
+                    max-height: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+}
+

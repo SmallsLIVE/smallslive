@@ -85,20 +85,34 @@
           <!-- removed pagination because of update to autoscroll
           <div id="artist-subheader" class="showing-results text1" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
           //-->
-          <div class="section-title title1 musicians-results-title">
-            {% if artists_blocks %} <span id="total-artist" class="accent-color">{{ showing_artist_results }} </span>
-              {% if showing_artist_results > 1 %}
-                &nbsp;Musicians
-              {% else %}
-                Musician
-              {% endif %}
-            {% else %} No musicians found
-            {% endif%}
-            <span class="quotation" style="display: {% if not query_term %}none;{% else %}inline{% endif %}">&nbsp;"</span>
-            <span class="accent-color" id="musician-search-title">
-              {{ query_term }}
-            </span>
-            <span class="quotation" style="display: {% if not query_term %}none;{% else %}inline{% endif %}">"</span>
+          <div class="seaction-title-with-search">
+            <div class="section-title title1 musicians-results-title">
+              {% if artists_blocks %} <span id="total-artist" class="accent-color">{{ showing_artist_results }} </span>
+                {% if showing_artist_results > 1 %}
+                  &nbsp;Musicians
+                {% else %}
+                  Musician
+                {% endif %}
+              {% else %} No musicians found
+              {% endif%}
+              <span class="quotation" style="display: {% if not query_term %}none;{% else %}inline{% endif %}">&nbsp;"</span>
+              <span class="accent-color" id="musician-search-title">
+                {{ query_term }}
+              </span>
+              <span class="quotation" style="display: {% if not query_term %}none;{% else %}inline{% endif %}">"</span>
+            </div>
+
+            <form class="search-input" action="{% url 'search' %}">
+              <input id="desktop-search-bar" name="q" type="text" placeholder="SEARCH BY NAME, INSTRUMENT, EVENT, DATE" autocomplete="off" {% if query_term %} value="{{ query_term }}" {% endif %}>
+            </form>
+            <div class="search-bar-autocomplete-container"></div>
+            <div id="select-instrument-btn" class="instrument-btn white-border-button caret" {% if instrument %} data-instrument="{{ instrument }}"{% endif %}>
+                {% if instrument %}{{ instrument }}{% else %}Instrument{% endif %}
+            </div>
+
+            {% if event_results %}
+              {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
+            {% endif %}
           </div>
         </div>
         {% if artists_blocks %}

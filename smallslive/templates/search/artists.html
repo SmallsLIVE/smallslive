@@ -1,6 +1,8 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 {% load i18n %}
+
+{% comment %}
 <div  class="search-artist-box-container">
   <!--<img src="{% static 'image/search-icon.svg' %}">-->
   <input id="artist-search"
@@ -27,8 +29,9 @@
        class="instrument-btn white-border-button caret" {% if instrument %} data-instrument="{{ instrument }}"{% endif %}>
       {% if instrument %}{{ instrument }}{% else %}Instrument{% endif %}
   </div>
-
 </div>
+{% endcomment %}
+
 <div class="instruments-container">
   <a href="#" class="close-button no-cancel"></a>
   <div class="instrument text4" data-instrument="">All Instruments</div>
@@ -38,9 +41,12 @@
     </div>
   {% endfor %}
 </div>
+{% comment %}
+<div class="artist-result">
+  {% include 'search/artist_results.html' %}
+</div>
 
 <div class="">
-
   <main id="artists" style="position: relative;">
     <div class="slide-btn slider prev"><b class="indicator-icon icon-left-caret"></b></div>
     <div class="slide-btn slider next" data-callback-name="searchMoreArtists"><b class="indicator-icon icon-right-caret"></b></div>
@@ -51,5 +57,15 @@
       {% include 'search/artist_results.html' %}
     </div>
   </main>
+</div>
+{% endcomment %}
 
+<div id="artists" class="artist-result-wrapper">
+  <div class="event-row artist-result">
+    {% include 'search/artist_results.html' %}
+  </div>
+  <div class="slide-btn slider next btn" data-callback-name="searchMoreArtists">Load more</div>
+  <div id="artist-load-gif" class="loading-image">
+    <img src="{% static 'image/loading.gif' %}" alt="">
+  </div>
 </div>
