@@ -42,10 +42,6 @@
   {% endfor %}
 </div>
 {% comment %}
-<div class="artist-result">
-  {% include 'search/artist_results.html' %}
-</div>
-
 <div class="">
   <main id="artists" style="position: relative;">
     <div class="slide-btn slider prev"><b class="indicator-icon icon-left-caret"></b></div>
@@ -64,7 +60,7 @@
   <div class="event-row artist-result">
     {% include 'search/artist_results.html' %}
   </div>
-  <div class="slide-btn slider next btn" data-callback-name="searchMoreArtists">Load more</div>
+  <div class="slide-btn slider next btn text4" data-callback-name="searchMoreArtists">Show more</div>
   <div id="artist-load-gif" class="loading-image">
     <img src="{% static 'image/loading.gif' %}" alt="">
   </div>

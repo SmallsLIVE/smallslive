@@ -103,7 +103,7 @@
             </div>
 
             <form class="search-input" action="{% url 'search' %}">
-              <input id="desktop-search-bar" name="q" type="text" placeholder="SEARCH BY NAME, INSTRUMENT, EVENT, DATE" autocomplete="off" {% if query_term %} value="{{ query_term }}" {% endif %}>
+              <input id="desktop-search-bar" name="q" type="text" placeholder="SEARCH BY NAME, INSTRUMENT, EVENT" autocomplete="off" {% if query_term %} value="{{ query_term }}" {% endif %}>
             </form>
             <div class="search-bar-autocomplete-container"></div>
             <div id="select-instrument-btn" class="instrument-btn white-border-button caret" {% if instrument %} data-instrument="{{ instrument }}"{% endif %}>

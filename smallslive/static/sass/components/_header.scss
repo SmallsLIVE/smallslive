@@ -1,8 +1,12 @@
 .new-header {
 
+    > .flex-row {
+        gap: 15px;
+    }
+
     .new-header-img-wrapper {
-        gap: 30px;
-        max-width: 575px;
+        gap: 15px;
+        max-width: 475px;
 
         .new-header-img {
             flex: 1;
@@ -12,6 +16,7 @@
     .button-row {
 
         p {
+            padding: 0 15px;
             position: relative;
 
             &:after {
@@ -30,6 +35,67 @@
                 &:after {
                     width: 100%;
                 }
+            }
+        }
+    }
+
+    .user-menu {
+        margin: 0;
+    }
+}
+
+@media (max-width: 1599px) {
+    .new-header {
+
+        .new-header-img-wrapper {
+            max-width: 350px;
+        }
+
+        .button-row {
+
+            p {
+                padding: 0 12px;
+            }
+        }
+    }
+}
+
+@media (max-width: 1399px) {
+    .new-header {
+
+        .new-header-img-wrapper {
+            max-width: 300px;
+        }
+
+        .button-row {
+
+            p {
+                padding: 0 8px;
+            }
+        }
+
+        .user-menu {
+
+            .select-selected {
+                width: 120px;
+            }
+        }
+    }
+}
+
+@media (max-width: 1199px) {
+
+    .new-header {
+
+        .new-header-img-wrapper {
+            max-width: 240px;
+        }
+
+        .button-row {
+
+            p {
+                font-size: 9px;
+                padding: 0 5px;
             }
         }
     }
