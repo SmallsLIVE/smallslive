@@ -19,15 +19,15 @@ body {
 
   @include background-image(url("../image/header_bg.jpg"),
   url("../image/background-tile.png"));
-  background-position: center top,
-  0 0;
-  background-repeat: no-repeat,
-  repeat;
-  background-size: 100% 404px,
-  10px 10px;
   background-color: $background-color;
-  text-rendering: optimizeLegibility;
+  background-position: center top, 0 0;
+  background-repeat: no-repeat, repeat;
+  background-size: 100% 404px, 10px 10px;
   color: $black;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
 
   @media (max-width: $screen-md-max) {
     padding-top: 54px;

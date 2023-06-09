@@ -1,6 +1,12 @@
 footer {
-  margin-top: 27px;
+  background: $light-gray-color;
   font-size: 12px;
+  margin-top: auto;
+  padding: 15px 50px;
+
+  .footer-inner {
+    margin-top: 30px;
+  }
 }
 
 footer a {
@@ -8,7 +14,6 @@ footer a {
 }
 
 .footer-info {
-  margin-bottom: 50px;
   display: none;
 
   &.active {

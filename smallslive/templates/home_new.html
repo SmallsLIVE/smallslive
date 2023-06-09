@@ -109,28 +109,7 @@
 {% endblock%}
 
 {% block footer %}
-  <!-- Removed mobile footer as per Spike's request -->
-  <div style="margin: 10px 50px;">
-    <footer class="footer-info flex-column items-center active" style="margin-bottom: unset;">
-      <img class="footer-logo" style="margin-bottom: 5px;" src="{% static 'logo-black.svg' %}" alt="SmallsLIVE Foundation logo" width="100">
-      <div class="text-grey">Copyright ®{% now 'Y' %} SmallsLIVE All rights reserved.</div>
-      <div>
-        <a href="{% url 'static_page' 'privacy' %}">Privacy Policy</a> |
-        <a href="{% url 'terms-and-conditions' %}">Terms and Conditions</a> |
-        <a href="{% url 'contact-and-info' %}">Contact + Info</a>
-      </div>
-      {% if not current_user.newsletter %}
-        <div class="newsletter">
-          <p class="text4">subscribe to our newsletter</p>
-          <form class="admin-interface__form flex-row" action="{% url 'newsletters' %}" method="post">
-              {% csrf_token %}
-              <input class="form-control" type="email" required name="email" placeholder="email address" value="{% if current_user.is_authenticated %}{{ current_user.email }}{% endif %}"/>
-              <input class="white-border-button" type="submit" value="SUBSCRIBE" class="homepage-news__button"/>
-          </form>
-        </div>
-      {% endif %}
-    </footer>
-  </div>
+  {% include 'partials/footer.html' %}
 {% endblock %}
 
 {% block extra_js %}

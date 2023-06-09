@@ -245,6 +245,13 @@
       margin-bottom: 40px;
       width: 80%;
     }
+
+    &.full {
+      display: block;
+      margin: 0 auto;
+      margin-bottom: 40px;
+      width: 100%;
+    }
   }
 
   p {
