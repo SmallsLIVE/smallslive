@@ -246,16 +246,21 @@
       width: 80%;
     }
 
-    &.full {
+    &.centered {
       display: block;
-      margin: 0 auto;
-      margin-bottom: 40px;
-      width: 100%;
+      margin: 0 auto 30px;
     }
   }
 
   p {
     margin-bottom: 40px;
+  }
+
+  &.basic-page {
+
+    p {
+        text-align: center;
+    }
   }
 
   @media(max-width: $screen-md-min) {
