@@ -61,48 +61,51 @@
 }
 
 .mobile-header {
-  margin-top: 0;
   background-color: $background-grey;
+  display: none;
+  height: 65px;
+  margin-top: 0;
   position: relative;
   top: 0;
   width: 100%;
-  height: $mobile-bar-height;
-  &.mobile-artist-header{
+
+  &.mobile-artist-header {
     position: absolute;
   }
-  display: none;
-  @media(max-width: $screen-sm-max) {
-    display: block;
-  }
-  @media(max-width: $screen-sm-max) {
-    height: $mobile-bar-height;
-  }
-  .mobile-user-option{
+
+  .mobile-user-option {
     z-index: 9999;
     display: none;
     position: absolute;
     right: 0;
-    >*{
+    >* {
       text-align: center;
       width: 240px;
       padding: 1em;
       background-color: $background-grey;
     }
-    a{
+
+    a {
       color:black;
     }
   }
 
   .mobile-logo-container {
-    width: 100%;
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    max-height: 100%;
+    pointer-events: none;
     position: absolute;
     top: 0;
+    width: 100%;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    pointer-events: none;
-    max-height: 100%;
+    .new-header-img-wrapper {
+        gap: 10px;
+        max-width: calc(100% - 100px);
+        width: 220px;
+    }
 
     .smalls-logo {
       pointer-events: all;
@@ -119,8 +122,11 @@
 
     i {
       font-size: 20px;
-      margin: 10px 20px 10px 10px;
     }
+  }
+
+  @media(max-width: $screen-sm-max) {
+    display: block;
   }
 }
 
@@ -222,9 +228,9 @@
 
     .side-bar-header {
       margin-bottom: 40px;
-      img {
-        height: 75px;
-        width: 75px;
+
+      .new-header-img-wrapper {
+        gap: 10px;
       }
     }
 

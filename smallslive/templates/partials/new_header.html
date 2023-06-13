@@ -53,9 +53,14 @@
 
 <header class="mobile-header">
   <div class="mobile-logo-container">
-    <a href="/" class="smalls-logo">
-      <img src="{% static 'new_logo_transparent_black.svg' %}"  alt=""/>
-    </a>
+    <div class="flex-row items-center new-header-img-wrapper">
+      <div class="new-header-img">
+        <img src="{% static 'jazz-club-black.png' %}" alt="Jazz Club">
+      </div>
+      <div class="new-header-img">
+        <img src="{% static 'Mezzrow-logo-transparent.png' %}" alt="Smalls and Mezzrow">
+      </div>
+    </div>
   </div>
   <div class="mobile-menu-icons flex-row items-center content-space-between">
     <div>
@@ -71,7 +76,8 @@
       {% endif %}
     </div>
     <div>
-      <i class="fa fa-search"></i>
+      <!--Hiding search icon-->
+      <!--<i class="fa fa-search"></i>-->
       <i class="fa fa-user" onclick="toggleAdmin()"></i>
     </div>
   </div>
@@ -112,16 +118,24 @@
   <div class="side-navigation-overlay" onclick="toggleSideBar()"></div>
   <div class="side-bar">
     <div class="side-bar-header flex-row">
-      <a href="/">
-        <img src="{% static 'new_logo_transparent_black.svg' %}" alt=""/>
-      </a>
+      <div class="flex-row items-center new-header-img-wrapper">
+        <div class="new-header-img">
+          <img src="{% static 'jazz-club-black.png' %}" alt="Jazz Club">
+        </div>
+        <div class="new-header-img">
+          <img src="{% static 'Mezzrow-logo-transparent.png' %}" alt="Smalls and Mezzrow">
+        </div>
+      </div>
     </div>
     <div class="flex-column text2">
-      <a href="{% url 'schedule' %}" class="{% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">Calendar</a>
-      <a href="{% url 'search' %}" class="{% if request.resolver_match.url_name == 'search' %}active{% endif %}">Archive</a>
-      <a href="{% url 'catalogue:index' %}">Catalog</a>
-      <a href="{% url 'gift_support' %}">Gifts</a>
-      <a href="{% url 'contact-and-info' %}" class="{% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</a>
+      {% include 'partials/header_button.html' with button_url='home' button_text='Calendar' %}
+      {% include 'partials/header_button.html' with button_url='tickets' button_text='Tickets' %}
+      {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
+      {% include 'partials/header_button.html' with button_url='foundation' button_text='Foundation' %}
+      {% include 'partials/header_button.html' with button_url='livestream' button_text='Livestream' %}
+      {% include 'partials/header_button.html' with button_url='contact' button_text='Contact' %}
+      {% include 'partials/header_button.html' with button_url='about' button_text='About' %}
+      {% include 'partials/header_button.html' with button_url='store' button_text='Store' %}
     </div>
   </div>
 </div>
