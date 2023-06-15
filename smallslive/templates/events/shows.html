@@ -2,10 +2,7 @@
 {% load thumbor_tags %}
 {% load i18n %}
 
-<section id="shows{% if archived %}Archived{% else %}Upcoming{% endif %}Content"
-         class="archived-shows old-calendar search-tab-content{% if archived %} archived{% else %} upcoming{% endif %}{% if artist_profile %} active{% endif %} {{ archived|yesno:',shows-calendar' }} "
-         data-toggle-tab="{% if archived %}archived{% else %}upcoming{% endif %}-shows"
-         data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
+<section id="shows{% if archived %}Archived{% else %}Upcoming{% endif %}Content" class="archived-shows old-calendar search-tab-content{% if archived %} archived{% else %} upcoming{% endif %}{% if artist_profile %} active{% endif %} {{ archived|yesno:',shows-calendar' }} " data-toggle-tab="{% if archived %}archived{% else %}upcoming{% endif %}-shows" data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
   {% if archived or upcoming %}
     {% if archived %}
       <div class="section-title__container">
@@ -26,9 +23,6 @@
           <span class="accent-color title1">This artist has no archived shows</span>
         {% endif %}
         </div>
-      {% if events %}
-        {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
-      {% endif %}
       </div>
       <label class="accent-color text2 date-error  hidden">
         Invalid date range selection
@@ -43,7 +37,7 @@
     {% endif %}
   {% endif %}
   <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
-    {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming show_event_venue=show_event_venue secondary=True hide_play=hide_play with_date_picker=True %}
+    {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming show_event_venue=show_event_venue secondary=True hide_play=hide_play with_date_picker=False %}
   </main>
 
   <div id="event-load-gif" class="loading-image events-gif text-center">

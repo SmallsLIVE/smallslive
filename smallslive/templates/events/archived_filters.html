@@ -3,14 +3,14 @@
     <div class="datepicker-btn white-border-button caret hover-fade archived{% if showing_event_results <= 30 %} hidden{% endif %}">Filter by date
     </div>
     <div class="white-border-select event-filter-select spaced">
-      <select id="events-filter">
+      <select id="events-filter" class="white-border-button">
         <option value="newest">Newest</option>
         <option value="oldest">Oldest</option>
         <option value="popular">Popular</option>
       </select>
     </div>
     <div class="white-border-select leader-filter-select{% if not artist_profile and not instrument %} hidden{% endif %}">
-      <select id="leader-filter">
+      <select id="leader-filter" class="white-border-button">
         <option value="all">Leader or Band</option>
         <option value="leader">Leader</option>
         <option value="sideman">Band</option>

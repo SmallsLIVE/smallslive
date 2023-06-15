@@ -2294,3 +2294,92 @@ body.home.admin-header {
     }
   }
 }
+
+// New Search container design for tabs
+.search-container-with-tabs {
+
+  .search-wrapper {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    padding: 0 50px;
+
+    > div {
+      margin: 0;
+    }
+
+    .archive-datepicker {
+      position: relative;
+
+      .datepicker-top {
+        width: 375px;
+      }
+
+      .datepicker-container {
+        top: 0;
+
+        &.active {
+          display: block;
+        }
+      }
+    }
+
+    #select-instrument-btn {
+      padding: 8px 30px;
+
+      &:after {
+        z-index: 1;
+      }
+    }
+
+    .white-border-select {
+      margin: 0;
+
+      select {
+        display: block;
+      }
+    }
+  }
+
+  .search-tabs {
+    background: no-repeat;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    max-width: fit-content;
+    margin: 50px auto;
+
+    .title1 {
+      padding: 0 30px;
+
+      &:hover {
+        border-bottom: 2px solid $smallslive;
+        color: $smallslive;
+      }
+    }
+
+    .active {
+
+      .title1 {
+        border-bottom: 2px solid $smallslive;
+        color: $smallslive;
+      }
+    }
+  }
+
+  .search-tab-content {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+
+  .search-content {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+}
