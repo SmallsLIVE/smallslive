@@ -88,7 +88,6 @@
 
       <div class="archive-datepicker-wrapper">
         <div class="archive-datepicker fixed{% if showing_event_results <= 30 %} hidden{% endif %}">
-          <div class="datepicker-top white-border-button">Date range</div>
           <div class="datepicker-container">
             <div style="display: flex;">
               <div class="custom-date-picker from">
@@ -256,7 +255,7 @@
     {% endif %}
 
     $(document).ready(function () {
-    
+
       setTimeout(function() {
         $('.search-wrapper .datepicker-container').removeClass('active');
       }, 100);
@@ -290,7 +289,10 @@
           /* if events are visible always load */
           if ($("#search-content").is(":visible") && moreEvents && !loadingEvents) {
             loadingEvents = true;
-            loadMoreEvents('Archived');
+            //loadMoreEvents('Archived');
+            $('.shows-show-more').click(function() {
+              loadMoreEvents('Archived');
+            });
           }
         };
       });

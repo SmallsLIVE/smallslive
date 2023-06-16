@@ -39,7 +39,9 @@
   <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
     {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming show_event_venue=show_event_venue secondary=True hide_play=hide_play with_date_picker=False %}
   </main>
-
+  <div class="shows-show-more-wrapper">
+    <div class="shows-show-more btn text4">Show more</div>
+  </div>
   <div id="event-load-gif" class="loading-image events-gif text-center">
       <img src="{% static 'image/loading.gif' %}" alt="">
   </div>

@@ -2311,15 +2311,59 @@ body.home.admin-header {
     .archive-datepicker {
       position: relative;
 
-      .datepicker-top {
-        width: 375px;
-      }
-
       .datepicker-container {
+        display: block;
+        height: auto;
+        position: relative;
         top: 0;
+        width: 375px;
+
+        .custom-date-picker {
+
+          input {
+            border: 0;
+            height: 34px;
+          }
+        }
+
+        .datepicker-dropdown {
+          border: 3px solid #fff !important;
+          border-top: 0 !important;
+          display: none !important;
+          height: 340px;
+          left: 0 !important;
+          margin: 0;
+          padding: 0 15% 50px;
+          top: 37px !important;
+          width: 100%;
+
+          .years-dropdown {
+
+            .years-choices {
+              max-height: 235px !important;
+            }
+          }
+        }
+        .datepicker-reset {
+          display: none !important;
+          height: 30px;
+          left: 0 !important;
+          padding: 0 15%;
+          top: 340px;
+          width: 100%;
+          z-index: 111;
+        }
 
         &.active {
-          display: block;
+
+          .datepicker-dropdown {
+            display: block !important;
+          }
+
+          .datepicker-reset{
+            display: block !important;
+          }
+
         }
       }
     }
@@ -2380,6 +2424,17 @@ body.home.admin-header {
 
     &.active {
       display: block;
+    }
+  }
+
+  .shows-show-more-wrapper {
+    margin: 30px 0;
+    text-align: center;
+
+    .shows-show-more {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 0;
+      color: #fff;
     }
   }
 }
