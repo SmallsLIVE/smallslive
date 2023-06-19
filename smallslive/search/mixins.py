@@ -35,7 +35,7 @@ class SearchMixin(object):
 
     def search(self, entity, search_terms, page=1, order=None,
                instrument=None, date_from=None, date_to=None,
-               artist_search=None, artist_pk=None, venue=None, results_per_page=60,
+               artist_search=None, artist_pk=None, venue=None, results_per_page=20,
                leader='all', search_input=None, all_media_status=False, only_published=True):
 
         # Checking if search_terms is not None.

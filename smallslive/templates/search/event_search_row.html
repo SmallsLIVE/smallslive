@@ -1,32 +1,6 @@
 {% for event in events %}
   <article class="event-display" onclick="window.location='{{ event.get_absolute_url }}';">
-   {% include 'events/event_card.html' with event=event secondary=secondary hide_play=hide_play %}
-    <div class="event-info new {% if upcoming %}{% endif %}">
-      <div>
-        <div class="{% if not show_event_venue %} margin-bottom{% endif %}">{{ event.get_date|date:'m/d/Y' }}</div>
-          {% if show_event_venue %}
-            <div class="{{ event.get_venue_name|lower}}-color ">{{ event.get_venue_name }}</div>
-          {% endif %}
-        <div class="event-info-title">{{ event.title }} </div>
-              {% if request.user.is_staff and event.state == "Draft" %}
-        <div class="{{ event.get_venue_name|lower}}-color event-venue">{{ event.state }}</div>
-      {% endif %}
-      </div>
-    </div>
-    {% if upcoming %}
-      <div class="event-info calendar">
-        <div>
-          {% if not hidde_event_date %}
-            <div class="text-grey">{{ event.get_date|date:'m/d/Y' }}</div>
-          {% endif %}
-          <div class="event-info-title">{{ event.title }} ssss</div>
-          {% if show_event_venue %}
-            <div class="{{ event.get_venue_name|lower}}-color">{{ event.get_venue_name }} {% if show_extend_date %} <span class="text-grey extend-date">{{ event.get_set_hours_display }}</span> {% endif %}{% if request.user.is_staff and event.state == "Draft"%} - Draft {% endif %}}</div>
-          {% endif %}
-       </div>
-      </div>
-    {% endif %}
-
+   {% include 'events/search_event_card.html' with event=event secondary=secondary hide_play=hide_play %}
   </article>
 {% endfor %}
 

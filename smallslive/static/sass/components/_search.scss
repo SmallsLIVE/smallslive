@@ -15,6 +15,149 @@
     }
 }
 
+.search-container-with-tabs {
+
+  .search-wrapper {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    padding: 0 50px;
+
+    > div {
+      margin: 0;
+    }
+
+    .archive-datepicker {
+      position: relative;
+
+      .datepicker-container {
+        display: block;
+        height: auto;
+        position: relative;
+        top: 0;
+        width: 375px;
+
+        .custom-date-picker {
+
+          input {
+            border: 0;
+            height: 34px;
+          }
+        }
+
+        .datepicker-dropdown {
+          border: 3px solid #fff !important;
+          border-top: 0 !important;
+          display: none !important;
+          height: 340px;
+          left: 0 !important;
+          margin: 0;
+          padding: 0 15% 50px;
+          top: 37px !important;
+          width: 100%;
+
+          .years-dropdown {
+
+            .years-choices {
+              max-height: 235px !important;
+            }
+          }
+        }
+        .datepicker-reset {
+          display: none !important;
+          height: 30px;
+          left: 0 !important;
+          padding: 0 15%;
+          top: 340px;
+          width: 100%;
+          z-index: 111;
+        }
+
+        &.active {
+
+          .datepicker-dropdown {
+            display: block !important;
+          }
+
+          .datepicker-reset{
+            display: block !important;
+          }
+
+        }
+      }
+    }
+
+    #select-instrument-btn {
+      padding: 8px 30px;
+
+      &:after {
+        z-index: 1;
+      }
+    }
+
+    .white-border-select {
+      margin: 0;
+
+      select {
+        display: block;
+      }
+    }
+  }
+
+  .search-tabs {
+    background: no-repeat;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    max-width: fit-content;
+    margin: 50px auto;
+
+    .title1 {
+      padding: 0 30px;
+
+      &:hover {
+        border-bottom: 2px solid $smallslive;
+        color: $smallslive;
+      }
+    }
+
+    .active {
+
+      .title1 {
+        border-bottom: 2px solid $smallslive;
+        color: $smallslive;
+      }
+    }
+  }
+
+  .search-tab-content {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+
+  .search-content {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+
+  .shows-show-more-wrapper {
+    margin: 30px 0;
+    text-align: center;
+
+    .shows-show-more {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 0;
+      color: #fff;
+    }
+  }
+}
+
 .artist-result-wrapper {
     text-align: center;
 
@@ -35,28 +178,113 @@
 
     .artist-result {
         display: grid !important;
-        grid-template-columns: repeat(8, 1fr);
-        gap: 0.4vw;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
         margin: 0 !important;
         padding: 0 3.5vw;
 
         .event-display {
             margin: 0;
 
-            .event-card-square {
-                min-height: unset;
-            }
+            > a {
+                align-items: center;
+                border: 2px solid #fff;
+                display: flex;
+                gap: 15px;
 
-            .event-picture {
-                height: 6.735vw !important;
-                width: auto !important;
+                .event-info {
+                    color: $black;
+                    flex-basis: calc(100% - 100px);
+                    height: auto;
+                    padding: 5px 0;
+                    position: initial;
+                    text-align: left;
+                }
 
-                img {
-                    max-height: 100%;
-                    object-fit: cover;
+                .event-card-square {
+                    flex-basis: 85px;
+                    min-height: unset;
+
+                    .event-picture-container {
+                        border-radius: 0;
+                    }
+                }
+
+                .event-picture {
+                    height: 85px;
+                    width: auto !important;
+
+                    img {
+                        max-height: 100%;
+                        object-fit: cover;
+                    }
+                }
+
+                &:hover {
+
+                    .event-picture {
+                        filter: none;
+                    }
                 }
             }
         }
     }
 }
 
+.shows-container-wrapper {
+
+    .wrapped-events {
+        display: grid !important;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
+        margin: 0 !important;
+        padding: 0 3.5vw;
+
+        .event-display {
+            margin: 0;
+
+            > a {
+                align-items: center;
+                border: 2px solid #fff;
+                display: flex;
+                gap: 15px;
+
+                .event-info {
+                    color: $black;
+                    flex-basis: calc(100% - 100px);
+                    height: auto;
+                    padding: 5px 0;
+                    position: initial;
+                    text-align: left;
+                }
+
+                .event-card-secondary {
+                    flex-basis: 85px;
+                    margin: 0;
+                    min-height: unset;
+
+                    .event-picture-container {
+                        border-radius: 0;
+                    }
+                }
+
+                .event-picture {
+                    height: 85px;
+                    width: auto !important;
+
+                    img {
+                        max-height: 100%;
+                        object-fit: cover;
+                    }
+                }
+
+                &:hover {
+
+                    .event-picture {
+                        filter: none;
+                    }
+                }
+            }
+        }
+    }
+}
