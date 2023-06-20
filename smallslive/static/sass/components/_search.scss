@@ -27,6 +27,15 @@
       margin: 0;
     }
 
+    .search-input-wrapper {
+      position: relative;
+
+      .search-bar-autocomplete-container {
+        left: 0;
+        width: 100%;
+      }
+    }
+
     .archive-datepicker {
       position: relative;
 
@@ -287,4 +296,161 @@
             }
         }
     }
+}
+
+
+@media (max-width: 960px) {
+
+  //hide top search result div
+  .mobile-search-container {
+    display: none !important;
+  }
+
+  .search-container-with-tabs {
+    padding-top: 30px !important;
+
+    .search-tabs {
+      padding-top: 0;
+      margin-top: 0;
+      margin-bottom: 30px;
+
+      .title1 {
+        font-size: 3.5vw;
+        border-bottom: none !important;
+      }
+    }
+
+    .search-content {
+
+      .section-title {
+        margin: 20px 0;
+      }
+    }
+
+    //hide datepicker btns
+    .datepicker-btn {
+      display: none;
+    }
+    
+
+    .search-wrapper {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 20px;
+
+      .search-input-wrapper {
+
+        input {
+          min-width: 360px;
+        }
+
+        .search-bar-autocomplete-container {
+          top: 50px;
+        }
+      }
+
+      .instrument-btn {
+        min-width: 360px;
+
+        &:after {
+          z-index: 1;
+        }
+      }
+
+      .archive-datepicker {
+        display: block;
+
+        .datepicker-container {
+          width: 360px;
+        }
+      }
+      
+      //hide custom date picker apply btn
+      .custom-date-picker-apply {
+        display: none;
+      }
+
+      .white-border-select {
+  
+        select {
+          min-width: 360px;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .artist-result-wrapper {
+
+    .slide-btn.next.slider {
+      display: block !important;
+      margin: 30px auto 15px;
+      width: max-content;
+    }
+
+    .artist-result {
+      grid-template-columns: repeat(2, 1fr);
+
+      .event-display {
+
+        .event-info {
+          font-size: 12px;
+        }
+
+        .event-info-title {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .shows-container-wrapper {
+    padding-left: 0;
+
+    .wrapped-events {
+      grid-template-columns: repeat(2, 1fr);
+
+      .event-display {
+        
+        .event-info {
+          font-size: 12px;
+        }
+
+        .event-info-title {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+
+  .search-container-with-tabs {
+
+    .search-wrapper {
+
+      .caret {
+
+        &::after {
+          display: block;
+        }
+      }
+    }
+  }
+
+  .artist-result-wrapper {
+
+    .artist-result {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+  
+  .shows-container-wrapper {
+
+    .wrapped-events {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
 }

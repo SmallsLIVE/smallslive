@@ -293,9 +293,17 @@
             $('.shows-show-more').click(function() {
               loadMoreEvents('Archived');
             });
+            $('.shows-show-more-wrapper').show();
           }
         };
       });
+
+      console.log(loadingEvents);
+      if(loadingEvents) {
+        $('.shows-show-more-wrapper').show();
+      } else {
+        $('.shows-show-more-wrapper').hide();
+      }
 
     });
 
