@@ -318,6 +318,17 @@
       position: unset;
     }
 
+    .shows-filter-container {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .all-options {
+      column-count: 2;
+    }
+
     .search-tabs {
       padding-top: 0;
       margin-top: 0;
