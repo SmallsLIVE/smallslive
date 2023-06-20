@@ -100,6 +100,11 @@
       padding: 8px 30px;
 
       &:after {
+        border: 0;
+        content: "⌄";
+        font-size: 20px;
+        top: 0;
+        right: 18px;
         z-index: 1;
       }
     }
@@ -309,6 +314,10 @@
   .search-container-with-tabs {
     padding-top: 30px !important;
 
+    .search-tab-content {
+      position: unset;
+    }
+
     .search-tabs {
       padding-top: 0;
       margin-top: 0;
@@ -355,6 +364,7 @@
 
         &:after {
           z-index: 1;
+          right: 5px;
         }
       }
 
@@ -377,6 +387,18 @@
           min-width: 360px;
           text-align: center;
         }
+      }
+    }
+
+    .instruments-container {
+      height: auto;
+      width: 100%;
+      padding: 20px 0;
+      top: 530px;
+
+      .instrument {
+        font-size: 16px;
+        width: 150px;
       }
     }
   }
