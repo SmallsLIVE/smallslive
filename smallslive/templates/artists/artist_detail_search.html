@@ -3,18 +3,6 @@
 {% load thumbor_tags %}
 
 <div  class="content-centered clearfix" style="width: 100%;">
-  <div class="artist-search-profile-bio-buttons__container hidden-xs hidden-sm">
-    <div class="artist-search-profile-bio-buttons flex-row">
-      {% if archived and upcoming or archived and artist.albums %}
-        <button data-toggle-tab-group="search-results" data-toggle-tab-target="archived-shows" id="archive-shows-button" class="white-border-button hover-fade active">Archived Shows</button>
-      {% endif %}
-      {% if upcoming and archived or upcoming and artist.albums %}
-        <button data-toggle-tab-group="search-results" data-toggle-tab-target="upcoming-shows" id="upcoming-shows-button" class="white-border-button hover-fade">Upcoming Shows</button>
-      {% endif %}
-      <button data-toggle-tab-group="search-results" data-toggle-tab-target="smallslive-tracks" id="smallslive-tracks-button" class="white-border-button hover-fade {% if not artist.albums %} hidden {% endif %}">Smallslive Tracks</button>
-    </div>
-    <!-- <a href="#" class="close-button" onclick="window.history.back()"></a> -->
-  </div>
   <div class="artist-search-profile-resume">
     <input id="artist-profile-artist-pk" type="hidden" value="{{ artist.pk }}">
 
