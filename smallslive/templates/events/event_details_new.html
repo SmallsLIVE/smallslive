@@ -249,7 +249,7 @@
     $(document).ready(function() {
       if($('.event-page-container .tonight').length){
         var referrer =  document.referrer;
-        if(referrer.includes('/search/archive/')){
+        if(referrer.includes('/search/archive/') || referrer.includes('/search/')){
           $('.event-page-container .tonight').hide();
         }
         
