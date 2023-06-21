@@ -150,6 +150,10 @@
     &.active {
       display: block;
     }
+
+    .static-text {
+      margin-left: 5px;
+    }
   }
 
   .search-content {
@@ -170,6 +174,20 @@
       color: #fff;
     }
   }
+
+  .all-options {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    width: 100%;
+  }
+
+  .shows-container-wrapper{
+
+    .wrapped-events {
+      padding-left: 0;
+    }
+  }
+  
 }
 
 .artist-result-wrapper {
@@ -313,9 +331,36 @@
 
   .search-container-with-tabs {
     padding-top: 30px !important;
+    position: relative;
 
     .search-tab-content {
       position: unset;
+
+      &.instrument-btn {
+        min-height: auto;
+        position: relative;
+      }
+
+      &.archive-datepicker-wrapper,
+      &.event-section {
+        min-height: auto;
+        overflow: visible;
+      }
+
+      &.active {
+
+        .archive-datepicker {
+          display: block !important;
+        }
+      }
+
+      .musicians-results-title {
+        display: block;
+        margin-bottom: 10px;
+        line-height: 20px;
+        text-align: left;
+        padding-left: 20px;
+      }
     }
 
     .shows-filter-container {
@@ -327,6 +372,7 @@
 
     .all-options {
       column-count: 2;
+      display: block;
     }
 
     .search-tabs {
@@ -405,7 +451,7 @@
       height: auto;
       width: 100%;
       padding: 20px 0;
-      top: 530px;
+      top: 220px;
 
       .instrument {
         font-size: 16px;
