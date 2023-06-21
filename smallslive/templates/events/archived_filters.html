@@ -1,4 +1,4 @@
-<div class="event-section search-tab-content"  data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
+<div class="event-section search-tab-content {% if is_artist_bio %}active{% endif %}"  data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
   <div class="shows-filter-container">
     <div class="datepicker-btn white-border-button caret hover-fade archived{% if showing_event_results <= 30 %} hidden{% endif %}">Filter by date
     </div>
@@ -9,7 +9,7 @@
         <option value="popular">Popular</option>
       </select>
     </div>
-    <div class="white-border-select leader-filter-select{% if not artist_profile and not instrument %} hidden{% endif %}">
+    <div class="white-border-select leader-filter-select">
       <select id="leader-filter" class="white-border-button">
         <option value="all">Leader or Band</option>
         <option value="leader">Leader</option>

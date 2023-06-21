@@ -20,41 +20,43 @@
 
 {% block content %}
 
-  <section id="recently-added-section" class="event-stripe">
-    <div class="section-title home recently">
-      <div class="title1">
-        <span id="ra-recently-added-toggle" class="accent-color no-link"> Recently Added</span>  \
-        <span id="ra-most-popular-toggle" class="no-link">Most Popular</span>
-      </div>
-      <span id="most-popular-filter-container" class="select-container hidden">
-        <div class="white-border-select home-filter">
-          <select id="most-popular-filter">
-            <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
-            <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
-            <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
-            <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
-          </select>
+  {% if not is_artist_bio %}
+    <section id="recently-added-section" class="event-stripe">
+      <div class="section-title home recently">
+        <div class="title1">
+          <span id="ra-recently-added-toggle" class="accent-color no-link"> Recently Added</span>  \
+          <span id="ra-most-popular-toggle" class="no-link">Most Popular</span>
         </div>
-      </span>
-    </div>
-    <main id="recently-added-container">
-      <div class="slide-btn recently prev"><b class="indicator-icon icon-left-caret"></b></div>
-      <div class="slide-btn recently next"><b class="indicator-icon icon-right-caret"></b></div>
-      {% include 'events/event_row.html' with events=new_in_archive secondary=True carousel='recently-carousel' %}
-    </main>
-    <main id="most-popular-container" class="hidden">
-      <div class="slide-btn popular prev"><b class="indicator-icon icon-left-caret"></b></div>
-      <div class="slide-btn popular next"><b class="indicator-icon icon-right-caret"></b></div>
-      {% include 'events/event_row.html' with events=popular_in_archive secondary=True carousel='popular-carousel' %}
-    </main>
-  </section>
-  <section id="most-popular-section" class="event-stripe hidden">
-    <div class="section-title home archive">
-      <div class="title1">
-        <a href="#" id="mp-recently-added-toggle"> Recently Added</a>  \ <a href="#" id="mp-most-popular-toggle" class="accent-color">Most Popular</a>
+        <span id="most-popular-filter-container" class="select-container hidden">
+          <div class="white-border-select home-filter">
+            <select id="most-popular-filter">
+              <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
+              <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
+              <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
+              <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
+            </select>
+          </div>
+        </span>
       </div>
-    </div>
-  </section>
+      <main id="recently-added-container">
+        <div class="slide-btn recently prev"><b class="indicator-icon icon-left-caret"></b></div>
+        <div class="slide-btn recently next"><b class="indicator-icon icon-right-caret"></b></div>
+        {% include 'events/event_row.html' with events=new_in_archive secondary=True carousel='recently-carousel' %}
+      </main>
+      <main id="most-popular-container" class="hidden">
+        <div class="slide-btn popular prev"><b class="indicator-icon icon-left-caret"></b></div>
+        <div class="slide-btn popular next"><b class="indicator-icon icon-right-caret"></b></div>
+        {% include 'events/event_row.html' with events=popular_in_archive secondary=True carousel='popular-carousel' %}
+      </main>
+    </section>
+    <section id="most-popular-section" class="event-stripe hidden">
+      <div class="section-title home archive">
+        <div class="title1">
+          <a href="#" id="mp-recently-added-toggle"> Recently Added</a>  \ <a href="#" id="mp-most-popular-toggle" class="accent-color">Most Popular</a>
+        </div>
+      </div>
+    </section>
+  {% endif %}
 
   {% if user.is_authenticated %}
     {% include 'inactive_dialog.html' %}
@@ -70,10 +72,12 @@
   <div class="search-container search-container-with-tabs pad-content new-archive{% if user.is_superuser %} admin{% endif %}{% if artist_profile%} artist-profile{% endif %}">
     <!-- Tabs for Musicians and Shows -->
     <div class="search-tabs tabs{% if artist_profile %} artist-profile {% endif %}">
-      <div class="active" data-toggle-tab-target="musicians" data-toggle-tab-group="search-results" data-toggle-hide="no">
-        <span class="title1">Musicians</span>
-      </div>
-      <div data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results" data-toggle-hide="no">
+      {% if not is_artist_bio %}
+        <div class="{% if not is_artist_bio %} active {% endif %}" data-toggle-tab-target="musicians" data-toggle-tab-group="search-results" data-toggle-hide="no">
+          <span class="title1">Musicians</span>
+        </div>
+      {% endif %}
+      <div data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results" data-toggle-hide="no" class="{% if is_artist_bio %}active{% endif %}">
         <span class="title1">Shows</span>
       </div>
     </div>
@@ -86,8 +90,8 @@
         <div class="search-bar-autocomplete-container"></div>
       </div>
 
-      <div class="archive-datepicker-wrapper search-tab-content" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
-        <div class="archive-datepicker fixed{% if showing_event_results <= 30 %} hidden{% endif %}">
+      <div class="archive-datepicker-wrapper search-tab-content {% if is_artist_bio %}active{% endif %}" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
+        <div class="archive-datepicker fixed">
           <div class="datepicker-container hidden">
             <div style="display: flex;">
               <div class="custom-date-picker from">
@@ -105,46 +109,49 @@
         </div>
       </div>
 
-      <div id="select-instrument-btn" data-toggle-tab="musicians" data-toggle-tab-group="search-results" class="instrument-btn white-border-button caret search-tab-content active" {% if instrument %} data-instrument="{{ instrument }}"{% endif %}>
-          {% if instrument %}{{ instrument }}{% else %}Instrument{% endif %}
-      </div>
-      {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
+      {% if not is_artist_bio %}
+        <div id="select-instrument-btn" data-toggle-tab="musicians" data-toggle-tab-group="search-results" class="instrument-btn white-border-button caret search-tab-content active" {% if instrument %} data-instrument="{{ instrument }}"{% endif %}>
+            {% if instrument %}{{ instrument }}{% else %}Instrument{% endif %}
+        </div>
+      {% endif %}
+      {% include 'events/archived_filters.html' with default_to_date=default_to_date is_artist_bio=is_artist_bio %}
     </div>
 
     <!-- Musicians Container -->
-    <section id="musicianContent" data-toggle-tab="musicians" class="search-tab-content active search-page" data-toggle-tab-group="search-results">
-      <div class="musicians-results">
-        <div class="seaction-title-with-search">
-          <div class="section-title title1 musicians-results-title">
-            {% if artists_blocks %}
-              <span id="total-artist" class="accent-color">{{ showing_artist_results }} </span>
-              {% if showing_artist_results > 1 %}
-                <span class="static-text">Musicians in the archive</span>
+    {% if not is_artist_bio %}
+      <section id="musicianContent" data-toggle-tab="musicians" class="search-tab-content active search-page" data-toggle-tab-group="search-results">
+        <div class="musicians-results">
+          <div class="seaction-title-with-search">
+            <div class="section-title title1 musicians-results-title">
+              {% if artists_blocks %}
+                <span id="total-artist" class="accent-color">{{ showing_artist_results }} </span>
+                {% if showing_artist_results > 1 %}
+                  <span class="static-text">Musicians in the archive</span>
+                {% else %}
+                  Musician
+                {% endif %}
               {% else %}
-                Musician
-              {% endif %}
-            {% else %}
-              No musicians found
-            {% endif%}
-            <span class="quotation" style="display: {% if not query_term %}none;{% else %}inline{% endif %}">&nbsp;"</span>
-            <span class="accent-color" id="musician-search-title">
-              {{ query_term }}
-            </span>
-            <span class="quotation" style="display: {% if not query_term %}none;{% else %}inline{% endif %}">"</span>
+                No musicians found
+              {% endif%}
+              <span class="quotation" style="display: {% if not query_term %}none;{% else %}inline{% endif %}">&nbsp;"</span>
+              <span class="accent-color" id="musician-search-title">
+                {{ query_term }}
+              </span>
+              <span class="quotation" style="display: {% if not query_term %}none;{% else %}inline{% endif %}">"</span>
+            </div>
+
+            {% if event_results %}
+              {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
+            {% endif %}
           </div>
-
-          {% if event_results %}
-            {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
-          {% endif %}
         </div>
-      </div>
-      {% if artists_blocks %}
-        {% include 'search/artists.html' %}
-      {% endif %}
-    </section>
-
+        {% if artists_blocks %}
+          {% include 'search/artists.html' %}
+        {% endif %}
+      </section>
+    {% endif %}
     <!-- Shows Container -->
-    <section id="search-content" class="search-content" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
+    <section id="search-content" class="search-content {% if is_artist_bio %}active{% endif %}" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
       {% include 'events/shows.html' with events=event_results archived=True default_to_date=default_to_date secondary=True %}
     </section>
   </div>

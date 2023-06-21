@@ -2201,15 +2201,15 @@ body.home.admin-header {
   }
 }
 
-.new-archive {
-  .archive-datepicker {
-    &.fixed {
-      &.desktop-hidden {
-        display: none;
-      }
-    }
-  }
-}
+// .new-archive {
+//   .archive-datepicker {
+//     &.fixed {
+//       &.desktop-hidden {
+//         display: none;
+//       }
+//     }
+//   }
+// }
 
 @media (max-width: $screen-sm-max) {
   .new-archive {

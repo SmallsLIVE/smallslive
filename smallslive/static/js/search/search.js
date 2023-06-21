@@ -155,7 +155,7 @@ function toggleEventFilters(filters) {
 
   if (!filters.main_search && !filters.artist_search && !filters.instrument) {
     if (!$filter.hasClass("hidden")) {
-      $filter.addClass("hidden");
+      // $filter.addClass("hidden");
     }
   } else {
     $filter.removeClass("hidden");
@@ -758,18 +758,18 @@ $(document).on(
 );
 
 
-$(document).ready(function() {
-  artistPk = getUrlParameter("artist_pk");
-  artistPk = artistPk ? artistPk : "";
-  if (artistPk) {
-    $(".search-tabs div[data-toggle-tab-target='archived-shows']").removeClass(
-      "active"
-    );
-    $(".search-tabs div[data-toggle-tab-target='musicians']").addClass(
-      "active"
-    );
-  }
-});
+// $(document).ready(function() {
+//   artistPk = getUrlParameter("artist_pk");
+//   artistPk = artistPk ? artistPk : "";
+//   if (artistPk) {
+//     $(".search-tabs div[data-toggle-tab-target='archived-shows']").removeClass(
+//       "active"
+//     );
+//     $(".search-tabs div[data-toggle-tab-target='musicians']").addClass(
+//       "active"
+//     );
+//   }
+// });
 
 $("#archive-date-picker").datepicker({
   onSelect: function(dateText, inst) {

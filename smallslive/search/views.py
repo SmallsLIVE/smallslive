@@ -248,6 +248,7 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
         artist_context = {
             'artist_profile': bool(artist),
             'artist': artist,
+            'is_artist_bio': True if artist else False,
             'artist_search': artist_search,
         }
 

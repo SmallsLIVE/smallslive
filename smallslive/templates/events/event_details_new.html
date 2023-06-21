@@ -242,9 +242,19 @@
 {% block extra_js %}
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script>
-  var showRegister = function() {
-    $('#becomeMemberDialog').modal('show');
-  };
+    var showRegister = function() {
+      $('#becomeMemberDialog').modal('show');
+    };
+    
+    $(document).ready(function() {
+      if($('.event-page-container .tonight').length){
+        var referrer =  document.referrer;
+        if(referrer.includes('/search/archive/')){
+          $('.event-page-container .tonight').hide();
+        }
+        
+      }
+    });
   </script>
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>

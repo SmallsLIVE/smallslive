@@ -179,6 +179,10 @@
     display: grid;
     grid-template-columns: repeat(3,1fr);
     width: 100%;
+
+    .instrument {
+      width: 100%;
+    }
   }
 
   .shows-container-wrapper{
@@ -186,6 +190,14 @@
     .wrapped-events {
       padding-left: 0;
     }
+  }
+
+  .instruments-container {
+    top: 5px;
+  }
+
+  .shows-filter-container {
+    gap: 30px;
   }
   
 }
@@ -367,7 +379,6 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 30px;
     }
 
     .all-options {
@@ -390,6 +401,7 @@
 
       .section-title {
         margin: 20px 0;
+        padding-left: 13px;
       }
     }
 
@@ -451,11 +463,19 @@
       height: auto;
       width: 100%;
       padding: 20px 0;
-      top: 220px;
+      top: 205px;
 
       .instrument {
         font-size: 16px;
-        width: 150px;
+        padding-bottom: 10px;
+        width: 100%;
+      }
+    }
+
+    .shows-container-wrapper{
+
+      .wrapped-events {
+        padding-left: 10px;
       }
     }
   }
