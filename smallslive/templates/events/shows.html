@@ -9,9 +9,9 @@
         <div class="section-title archive">
         {% if first and last %}
           <div class="title1">
-            <span id="date-from-label">{{ last.get_date|date:'m/d/Y' }}</span>
+            <span id="date-from-label">{{ first.get_date|date:'m/d/Y' }}</span>
             <span style="margin: 0 5px;">-</span>
-            <span id="date-to-label">{{ first.get_date|date:'m/d/Y' }}</span>
+            <span id="date-to-label">{{ last.get_date|date:'m/d/Y' }}</span>
           </div>
           <span class="title1" style="margin: 0 5px;"> / </span>
         {% endif %}

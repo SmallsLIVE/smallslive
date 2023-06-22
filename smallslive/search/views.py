@@ -131,8 +131,8 @@ class MainSearchView(View, SearchMixin):
         }
 
         if last and first:
-            data['firstEventDate'] = last.get_date().strftime('%m/%d/%Y'),
-            data['lastEventDate'] = first.get_date().strftime('%m/%d/%Y')
+            data['firstEventDate'] = first.get_date().strftime('%m/%d/%Y'),
+            data['lastEventDate'] = last.get_date().strftime('%m/%d/%Y')
 
         return JsonResponse(data)
 
