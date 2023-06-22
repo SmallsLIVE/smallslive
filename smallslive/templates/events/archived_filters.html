@@ -9,12 +9,14 @@
         <option value="popular">Popular</option>
       </select>
     </div>
-    <div class="white-border-select leader-filter-select">
-      <select id="leader-filter" class="white-border-button">
-        <option value="all">Leader or Band</option>
-        <option value="leader">Leader</option>
-        <option value="sideman">Band</option>
-      </select>
-    </div>
+    {% if is_artist_bio %}
+      <div class="white-border-select leader-filter-select">
+        <select id="leader-filter" class="white-border-button">
+          <option value="all">Leader or Band</option>
+          <option value="leader">Leader</option>
+          <option value="sideman">Band</option>
+        </select>
+      </div>
+    {% endif %}
   </div>
  </div>
