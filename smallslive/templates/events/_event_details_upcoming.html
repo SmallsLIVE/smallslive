@@ -29,7 +29,10 @@
     <div class="event-overlay upcoming">
       <div class="nested-row">
         <p class="event-title-ajax event-info-title">{{ event.title }}{% if request.user.is_staff and event.state == "Draft"%} - Draft {% endif %}</p>
-        <img class="upcoming-logo" src="{% static 'new_logo_transparent.png' %}" alt="Smalls"
+<!--        <img class="upcoming-logo" src="{% static 'new_logo_transparent.png' %}" alt="Smalls"-->
+<!--                        class="img-circle"/>-->
+
+                <img class="upcoming-logo" src="{% static 'jazz-club-black.png' %}" alt="Smalls"
                         class="img-circle"/>
       </div>
       <div class="{{ event.get_venue_name|lower}}-color event-venue title5">Live at {{ event.get_venue_name }}</div>
