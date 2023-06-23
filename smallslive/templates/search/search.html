@@ -113,6 +113,12 @@
         <div id="select-instrument-btn" data-toggle-tab="musicians" data-toggle-tab-group="search-results" class="instrument-btn white-border-button caret search-tab-content active" {% if instrument %} data-instrument="{{ instrument }}"{% endif %}>
             {% if instrument %}{{ instrument }}{% else %}Instrument{% endif %}
         </div>
+          <div class="white-border-select artist-sort-select spaced">
+            <select id="artists-sort" class="white-border-button">
+              <option value="a2z">A-Z</option>
+              <option value="z2a">Z-A</option>
+            </select>
+          </div>
       {% endif %}
       {% include 'events/archived_filters.html' with default_to_date=default_to_date is_artist_bio=is_artist_bio %}
     </div>
