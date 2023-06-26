@@ -273,19 +273,26 @@
       var $form;
       $('.buy-tickets').click(function(e) {
         e.preventDefault();
-
-        {% if user.is_authenticated %}
-
-          // Remember form to be submitted
           $form = $(this).closest('form');
           $('#ticket-time').text( $(this).data('ticket-time'));
           $('#ticket-price').text($(this).data('ticket-price'));
           $('#walk-in-price').text($(this).data('walk-in-price'));
           $('#buy-tickets-dialog').modal('show');
 
+        {% if user.is_authenticated %}
+
+          // Remember form to be submitted
+          /*
+          $form = $(this).closest('form');
+          $('#ticket-time').text( $(this).data('ticket-time'));
+          $('#ticket-price').text($(this).data('ticket-price'));
+          $('#walk-in-price').text($(this).data('walk-in-price'));
+          $('#buy-tickets-dialog').modal('show');
+          */
+
         {% else %}
 
-          $('#becomeMemberDialog').modal('show');
+          //$('#becomeMemberDialog').modal('show');
 
         {% endif %}
       });
