@@ -168,6 +168,7 @@ function sendArtistRequest(callback, callbackParam) {
   var artistInstrument = $("#select-instrument-btn").data("instrument");
   var artistSearchTerm = $("#artist-search").val();
   var searchTerm = $("#desktop-search-bar").val();
+  var artistSort = $("#artists-sort").val();
 
   // Remember search input value;
   localStorage.setItem("search_input", searchTerm);
@@ -176,6 +177,7 @@ function sendArtistRequest(callback, callbackParam) {
     main_search: searchTerm,
     artist_search: artistSearchTerm,
     instrument: artistInstrument,
+    artist_sort: artistSort,
     page: artistPageNum
   };
 
@@ -510,7 +512,6 @@ $(document).ready(function () {
   }
 
   $(".instrument").click(function() {
-
     var instrument = $(this).data("instrument");
     $("#select-instrument-btn").data("instrument", instrument);
     $(".instrument-btn").text(instrument || "Instrument");
@@ -534,6 +535,12 @@ $(document).ready(function () {
       updateArchiveShows
     );
     $(".instruments-container").css("display", "none");
+  });
+
+  // Sort artist by a2z or z2a
+  $("#artists-sort").change(function() {
+    $("#artists .event-row").html("");
+    sendArtistRequest(updateArtistsHtml, true);
   });
 
   ////////////////

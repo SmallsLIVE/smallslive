@@ -36,7 +36,7 @@ class SearchMixin(object):
     def search(self, entity, search_terms, page=1, order=None,
                instrument=None, date_from=None, date_to=None,
                artist_search=None, artist_pk=None, venue=None, results_per_page=20,
-               leader='all', search_input=None, all_media_status=False, only_published=True):
+               leader='all', search_input=None, all_media_status=False, only_published=True, artist_sort=None):
 
         # Checking if search_terms is not None.
         if not search_terms is None:
@@ -58,7 +58,7 @@ class SearchMixin(object):
             results_per_page = 24
             sqs = search.search_artist(
                 terms, instruments, all_sax_instruments, partial_instruments,
-                first_name, last_name, partial_name, artist_search, term_for_artist)
+                first_name, last_name, partial_name, artist_search, term_for_artist, artist_sort=artist_sort)
 
         elif entity == Event:
             sqs = search.search_event(

@@ -63,6 +63,7 @@ class MainSearchView(View, SearchMixin):
 
         # TODO: Why
         main_search = request.GET.get('main_search', None)
+        artist_sort = request.GET.get('artist_sort', None)
         artist_search = request.GET.get('artist_search', None)
         page = int(request.GET.get('page', 1))
         entity = self.kwargs.get('entity', None)
@@ -86,7 +87,7 @@ class MainSearchView(View, SearchMixin):
         if entity == 'artist':
 
             artists_blocks, showing_results, num_pages, search_input = self.search(
-                Artist, main_search, page, instrument=instrument, artist_search=artist_search)
+                Artist, main_search, page, instrument=instrument, artist_search=artist_search, artist_sort=artist_sort)
 
             context = {
                 'artists_blocks': artists_blocks,

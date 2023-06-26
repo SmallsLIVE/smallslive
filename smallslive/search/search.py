@@ -273,12 +273,16 @@ class SearchObject(object):
     def search_artist(self, terms=None,
                       instruments=None, all_sax_instruments=None, partial_instruments=None,
                       first_name=None, last_name=None, partial_name=None, artist_search=None,
-                      term_for_artist=None):
+                      term_for_artist=None, artist_sort=None):
 
         self.sqs = Artist.objects.all().prefetch_related('instruments')
         self.filter_artist_instruments(instruments, all_sax_instruments)
         self.filter_artist_names(first_name, last_name, partial_name,
                                  artist_search, partial_instruments, terms, term_for_artist)
+        if artist_sort == 'a2z':
+            self.sqs = self.sqs.order_by('last_name')
+        elif artist_sort == 'z2a':
+            self.sqs = self.sqs.order_by('-last_name')
 
         return self.sqs
 
