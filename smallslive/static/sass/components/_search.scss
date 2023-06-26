@@ -346,6 +346,7 @@
     position: relative;
 
     .search-tab-content {
+      min-height: unset;
       position: unset;
 
       &.instrument-btn {
