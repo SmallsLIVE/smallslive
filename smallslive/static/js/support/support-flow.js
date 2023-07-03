@@ -410,18 +410,19 @@ var initBasketUi = function () {
 var showBasket = function (data) {
     $mainContainer.find("#supporterStepBasket").html(data);
     showPanel("Basket");
-    replaceWhiteSelects(
-      $mainContainer.find("#supporterStepBasket")[0]
-    );
+//    replaceWhiteSelects(
+//      $mainContainer.find("#supporterStepBasket")[0]
+//    );
     initBasketUi();
 }
 
 var showShipping = function (data) {
+console.log(data)
   $mainContainer.find("#supporterStepShipping").html(data);
   showPanel("Shipping");
-  replaceWhiteSelects(
-    $mainContainer.find("#supporterStepShipping")[0]
-  );
+//  replaceWhiteSelects(
+//    $mainContainer.find("#supporterStepShipping")[0]
+//  );
 }
 
 var showBilling = function (data) {
@@ -429,9 +430,9 @@ var showBilling = function (data) {
     $mainContainer.find("#supporterStepBilling").html(data);
   }
   showPanel("Billing");
-  replaceWhiteSelects(
-    $mainContainer.find("#supporterStepBilling")[0]
-  );
+//  replaceWhiteSelects(
+//    $mainContainer.find("#supporterStepBilling")[0]
+//  );
   renderCardAnimation("#payment-form");
   $("#payment-form").removeClass("hidden");
 
@@ -442,8 +443,12 @@ var checkout = function () {
   $.get("/checkout/", function (data) {
     // data.url  = 'shipping-address' and then 'shipping-method' if item is physical
     // otherwise go straight to billing.
+    console.log(data.url)
     $.get(data.url, function(data) {
+    console.log('here before 001');
+    console.log(data.url)
       if (data.url && data.url.indexOf("shipping-method") > -1) {
+      console.log('here 001');
         $.get(data.url, function (data) {
           $.get(data.url, function (data) {
             $.get(data.url, function (data) {
@@ -459,6 +464,7 @@ var checkout = function () {
           });
         });
       } else if (data.url && data.url.indexOf("payment-method") > -1) {
+      console.log('here 002');
         $.get(data.url, function (data) {
           $.get(data.url, function (data) {
             showBilling(data);
@@ -466,7 +472,10 @@ var checkout = function () {
           });
         });
       } else {
-        showShipping(data);
+      console.log('here 003');
+       $.get("/checkout/", function (data) {
+            showShipping(data);
+        });
       }
     });
   });
@@ -545,7 +554,7 @@ $(document).ready(function() {
         } else {
           $mainContainer.find("#supporterStepShipping").html(data);
           $mainContainer.find("#confirmButton").prop("disabled", false);
-          replaceWhiteSelects($mainContainer.find("#supporterStepShipping")[0]);
+          //replaceWhiteSelects($mainContainer.find("#supporterStepShipping")[0]);
         }
       },
       error: function(xhr, err) {
@@ -990,7 +999,7 @@ $(document).ready(function() {
     $selectionConfirmationDialog
       .find(".select")
       .addClass("white-border-select");
-    replaceWhiteSelects($giftContent[0]);
+    //replaceWhiteSelects($giftContent[0]);
     var $select = $selectionConfirmationDialog.find(".select-items");
     var $confirmSelectionButton = $("#confirmGiftSelectionButton");
     $confirmSelectionButton.prop("disabled", $select.length == 1);
@@ -1255,7 +1264,7 @@ $(document).ready(function() {
       type: "get",
       success: function(data) {
         $step.html(data);
-        replaceWhiteSelects($("#supporterStepPreview")[0]);
+//        replaceWhiteSelects($("#supporterStepPreview")[0]);
         showPanel(getNextStep());
       },
       error: function(xhr, err) {
@@ -1269,6 +1278,8 @@ $(document).ready(function() {
 //    alert('as dfasdfasd');
     console.log(currentStep);
 
+    console.log('here 1');
+
     var min = $(this).data("min-donation");
     if (min) {
         min = parseInt(min);
@@ -1276,6 +1287,7 @@ $(document).ready(function() {
         min = 10;
     }
     if (currentStep === "SelectType") {
+    console.log('here 2');
       // We're combining CC info and payment for One Time Donations
       var amount = selectedData.amount;
       var donationType = selectedData.type;
@@ -1289,44 +1301,60 @@ $(document).ready(function() {
     $that.prop("disabled", true);
 
     if (selectedData.flow == "store") {
+    console.log('here 3');
       event.preventDefault();
       event.stopPropagation();
     }
 
     if (currentStep == "Intro") {
+    console.log('here 4');
       $(this).hide();
     }
 
     var storeItem = null;
     if (selectedData.type) {
+    console.log('here 5');
       storeItem = selectedData.type.indexOf("store") === 0;
     }
 
     if (storeItem) {
+    console.log('here 6');
       if (currentStep === "SelectType" || currentStep == "Basket") {
+      console.log('here 7');
         if (currentStep == "Basket") {
+        console.log('here 8');
             checkout();
         } else {
+        console.log('here 9');
             $itemForm.submit();
         }
       } else if (currentStep === "Shipping") {
+      console.log('here 10');
         $mainContainer.find("#new_shipping_address").submit();
       } else if (currentStep === "Billing") {
+      console.log('here 11');
         $mainContainer.find("#payment-form").submit();
       } else if (currentStep === "Preview") {
+      console.log('here 12');
         $mainContainer.find("#place-order").submit();
       }
     } else {
+    console.log('here 13');
       if (currentStep == "Intro") {
+      console.log('here 14');
         getPaymentInfoForm();
       } else if (currentStep === "SelectType") {
+      console.log('here 15');
         // We're combining CC info and payment for One Time Donations
         getDonationPreviewForm();
       } else if (currentStep === "Billing") {
+      console.log('here 16');
         getDonationPreviewForm();
       } else if (currentStep == "Preview") {
+      console.log('here 17');
         processPaymentInfoStep();
       } else {
+      console.log('here 18');
         showPanel(getNextStep());
       }
     }
