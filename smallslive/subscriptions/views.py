@@ -745,17 +745,17 @@ class TicketSupportView(BecomeSupporterView):
         return
 
     def get_context_data(self, **kwargs):
-
+        is_user_authenticated = self.request.user.is_authenticated if self.request.user.is_authenticated else False
         context = super(TicketSupportView, self).get_context_data(**kwargs)
         can_use_existing_cc = False
         context['payment_info_url'] = reverse('payment_info')
         context['donation_preview_url'] = reverse('donation_preview')
         event = self.get_event()
-        context['venue_name'] = event.get_venue_name()
-        if event.is_foundation:
+        context['venue_name'] = event.get_venue_name() if event else None
+        if event and event.is_foundation:
             context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         else:
-            context['STRIPE_PUBLIC_KEY'] = event.venue.get_stripe_publishable_key
+            context['STRIPE_PUBLIC_KEY'] = event.venue.get_stripe_publishable_key if event else None
         if self.request.user.is_authenticated:
             can_use_existing_cc = self.request.user.can_use_existing_cc and event.is_foundation
         context['can_use_existing_cc'] = can_use_existing_cc
