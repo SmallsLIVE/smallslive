@@ -64,6 +64,12 @@
 
     $(document).ready(function () {
 
+        setTimeout(function() {
+            $('#payment-form .card-wrapper .jp-card-container').next().remove('.jp-card-container');
+        }, 100);
+        renderCardAnimation("#payment-form");
+
+
       function fixMonthSingleDigit(){
 
         if($('#expiry-month').val() < 10 && !$('#expiry-month').val().startsWith('0')){
