@@ -718,3 +718,56 @@
     display: none;
   }
 }
+
+//new checkout-gateway page design
+.checkout-gateway {
+  margin-top: 80px;
+
+  label {
+    font-family: 'Reem Kufi', sans-serif;
+    font-size: 15px;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    font-size: 13px;
+  }
+
+  .form-element-wraper {
+    align-items: center;
+    display: flex;
+    margin: 0;
+
+    input[type="radio"] {
+      margin: 0;
+      position: unset;
+    }
+
+    label {
+      padding-left: 10px;
+    }
+  }
+
+  .password-remainder {
+    font-size: 12px;
+    font-family: 'Reem Kufi', sans-serif;
+    padding-left: 10px;
+  }
+
+  .continue-btn {
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    border-radius: 0;
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 13px;
+    text-shadow: 0.001em 0.001em;
+    cursor: pointer;
+    width: auto;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+  }
+}

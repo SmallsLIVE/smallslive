@@ -11,7 +11,126 @@
 {% block title %}Preview your order{% endblock %}
 
 {% block content %}
+<div class="content-wrapper borderless text1">
+    <section class="store-overview container">
+        <div class="col-xs-12 col-sm-8 store-overview__left-column">
+         <div class="white-line-bottom">
+           {% if not basket.has_physical_products and not basket.has_digital_products and event.is_foundation%}
+           <div class="title1 center">Sponsorships</div>
+           {% else %}
+           <div class="title1 center">Ordered items:</div>
+           {% endif %}
+        </div>
+            {% include 'checkout/tickets_products.html' %}
+        </div>
+        <div class="col-xs-12 col-sm-4 store-overview__right-column">
+            <div class="store-overview__group">
+            {% if shipping_method.name == "No shipping required" %}
+            <div class="section-title section-title-no-padded">
+              <div class="title1">Party Name</div>
+            </div>
+            <div class="store-overview__group__textblock text1">
+              <p>{{ reservation_string }}</p>
+            </div>
+            {% else %}
+            <div class="section-title section-title-no-padded">
+              <div tabindex="0" class="title1">Shipping</div>
+            </div>
+                {% if shipping_address %}
+                    <div class="store-overview__group__textblock text1">
+                        <p tabindex="0" >{{ shipping_address.name }}</p>
+                        <p tabindex="0" >{{ shipping_address.line1 }}</p>
+                        <p tabindex="0" >{{ shipping_address.line2 }}</p>
+                        <p tabindex="0" >{{ shipping_address.city }}{% if shipping_address.state %},  {{ shipping_address.state }}{% endif %}</p>
+                        <p tabindex="0" >{{ shipping_address.country }}</p>
+                    </div>
+                {% endif %}
 
+                {% if shipping_method %}
+                    <div class="store-overview__group__textblock text1">
+                        <p tabindex="0" >Shipping method: {{ shipping_method.name }}</p>
+                    </div>
+                {% endif %}
+            {% endif %}
+            </div>
+            <div class="store-overview__return-button__container">
+
+                {% if not shipping_method.name == "No shipping required" %}
+                    <a href="{% url 'checkout:shipping-address' %}" class="white-border-button">Edit </a>
+                {% endif %}
+            </div>
+            <div class="store-overview__group">
+                <div class="section-title section-title-no-padded">
+                    <div class="title1" tabindex="0" >Billing</div>
+                 </div>
+                {% if billing_address %}
+                <div class="store-overview__group__textblock text1">
+                    <p tabindex="0" >{{ billing_address.name }}</p>
+                    <p tabindex="0" >{{ billing_address.line1 }}</p>
+                    <p tabindex="0" >{{ billing_address.line2 }}</p>
+                    <p tabindex="0" >{{ billing_address.city }}{% if billing_address.state %},  {{ billing_address.state }}{% endif %}</p>
+                    <p tabindex="0" >{{ billing_address.country }}</p>
+                </div>
+                {% endif %}
+                {% if card_token %}
+                  <div class="store-overview__group__textblock text1">
+                      <p class="small-heading">Credit card:</p>
+                      <p>{{ card_info.name }}</p>
+                      <p>xxxx xxxx xxxx {{ card_info.last_4 }}</p>
+                  </div>
+                  {% else %}
+                  <p class="small-heading">PayPal</p>
+                {% endif %}
+                <div class="store-overview__return-button__container">
+                <a href="{% url 'checkout:payment-details' %}" class="white-border-button">Edit</a>
+            </div>
+            </div>
+        </div>
+    </section>
+    <section class="store-cart__footer container">
+      {% if not shipping_charge.excl_tax == 0 %}
+        <div class="col-xs-12 col-sm-12 store-cart__footer__right right">
+            <div class="store-cart__footer__price-container">
+                <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
+                <span class="store-cart__footer__price-container__label">Basket total:</span>
+                <span class="store-cart__footer__price-container__value">{{ shipping_charge.excl_tax|currency:basket.currency }}</span>
+                <span class="store-cart__footer__price-container__label">Shipping:</span>
+                <div class="store-cart__footer__price-container__total">
+                    <span class="store-cart__footer__price-container__value">{{ order_total.excl_tax|currency:basket.currency }}</span>
+                    <span class="store-cart__footer__price-container__label">Total:</span>
+                </div>
+            </div>
+        </div>
+      {% endif %}
+        <div class="col-xs-12 store-cart__footer__buttons">
+          {% block place_order %}
+             <form id="place-order" action="{% url 'checkout:preview' %}" method="post">
+               {% if ticket_name %}
+                <div class="flex-row col-xs-12 col-md-4 col-md-offset-4 hidden">
+                  <input style="margin-right: 15px;" type="text" class="store__form__input"
+                  id="guest-first-name" required size="20"
+                  autocomplete="off"
+                  name="guest_first_name" value="{{ ticket_name.first }}">
+                  <input type="text" class="store__form__input"
+                  id="guest-last-name" required placeholder="Guest list last name" size="20"
+                  autocomplete="off"
+                  name="guest_last_name" value=" {{ ticket_name.last }}">
+                </div>
+              {% endif%}
+              {% csrf_token %}
+              <input type="hidden" name="action" value="place_order"/>
+              <input type="hidden" name="payment_method" value="{{ payment_method }}">
+              {% if card_token %}
+                <input type="hidden" name="card_token" value="{{ card_token }}"/>
+              {% endif %}
+                 <div class="button-row button-row-margin-all confirm-button">
+                     <button class="button-bordered" type="submit">Confirm</button>
+                </div>
+            </form>
+          {% endblock %}
+        </div>
+    </section>
+</div>
 
 {% endblock content %}
 

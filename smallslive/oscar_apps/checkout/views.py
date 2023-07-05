@@ -38,12 +38,25 @@ logger = logging.getLogger('oscar.checkout')
 
 class IndexView(checkout_views.IndexView):
 
+    template_name = 'checkout/checkout-gateway.html'
+
     def get_success_response(self):
         url = self.get_success_url()
         if self.request.is_ajax():
             return http.JsonResponse({'url': url})
         else:
             return redirect(url)
+        
+    def get(self, request, *args, **kwargs):
+        # We redirect immediately to shipping address stage if the user is
+        # signed in.
+        if request.user.is_authenticated:
+            # We raise a signal to indicate that the user has entered the
+            # checkout process so analytics tools can track this event.
+            signals.start_checkout.send_robust(
+                sender=self, request=request)
+            return self.get_success_response()
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         if form.is_guest_checkout():
@@ -309,7 +322,7 @@ class SuccessfulOrderMixin(PaymentCredentialsMixin):
             success_url = self.get_success_url(flow_type)
             response = http.JsonResponse({'success_url': success_url})
         else:
-            response = http.HttpResponseRedirect(self.get_success_url())
+            response = http.HttpResponseRedirect(self.get_success_url(flow_type))
 
         if self.order:
             self.send_signal(self.request, response, self.order)

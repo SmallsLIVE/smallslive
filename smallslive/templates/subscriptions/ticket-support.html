@@ -78,10 +78,7 @@
       </section>
     </form>
   </div>
-  <div id="supporterStepShipping" class="supporter-step hidden"
-       data-billing-hidden="hidden">
 
-  </div>
   <div id="supporterStepPreview"
        class="supporter-step hidden"
        data-billing-hidden="hidden"
@@ -99,6 +96,7 @@
   {{ block.super }}
   <script src="{% static 'oscar/js/oscar/ui.js' %}" type="text/javascript" charset="utf-8"></script>
   <script>
+
     var flow = "ticket_support";
     var type = "store";
     var step = "Basket";
@@ -110,6 +108,13 @@
       $.get(basketContentUrl, function (data) {
         showBasket(data);
       });
+
+      {% if not request.user.is_authenticated %}
+        $('#confirmButton').click(function(event) {
+          event.preventDefault();
+          window.location.href = '/checkout/';
+        });
+      {% endif %}
 
     });
     var options = {
