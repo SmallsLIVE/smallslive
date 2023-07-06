@@ -18,15 +18,23 @@
         </div>
       </div>
 
-      <p class="text2 accent-color">{% trans "Who are you?" %}</p>
+      <p class="text2 accent-color">{% trans "Ticket Checkout as Guest" %}</p>
 
-      <form method="post" class="form-stacked well checkout-gateway">
+      <form method="post" class="form-stacked well checkout-gateway guest-checkout">
         {% csrf_token %}
         {{ form.non_field_errors }}
 
         {% include "oscar/partials/form_field.html" with field=form.username %}
 
         <div class="form-group">
+          <div class="row">
+              <div class="col-sm-3">
+                  <button type="submit" class="btn btn-lg btn-block continue-btn" data-loading-text="{% trans 'Continuing...' %}">{% trans "Continue" %}</button>
+              </div>
+          </div>
+        </div>
+
+        <div class="form-group invisible">
           <div class="controls">
             <div class="radio form-element-wraper">
               {{ form.options.0.tag }}
@@ -35,7 +43,7 @@
           </div>
         </div>
 
-        <div class="form-group {% if form.password.errors %}error{% endif %}">
+        <div class="form-group {% if form.password.errors %}error{% endif %} invisible">
             {{ form.options.errors }}
             <div class="controls">
                 <div class="radio">
@@ -54,19 +62,11 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group invisible">
             <div class="controls">
                 <div class="radio form-element-wraper">
                   {{ form.options.1.tag }}
                   <label class="form-check-label" for="id_options_1"> {{ form.options.1.choice_label }}</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="row">
-                <div class="col-sm-3">
-                    <button type="submit" class="btn btn-lg btn-block continue-btn" data-loading-text="{% trans 'Continuing...' %}">{% trans "Continue" %}</button>
                 </div>
             </div>
         </div>
@@ -77,6 +77,14 @@
 
 {% block extra_js %}
   <script src="{% static "oscar/js/oscar/ui.js" %}"></script>
+  <script>
+    $(document).ready(function(){
+      if($('.guest-checkout').length){
+        $(".form-group>.control-label").remove();
+        $('<label for="id_username" class="control-label email">Please enter your email and continue</label>').insertBefore('#id_username');
+      }
+    });
+  </script>
 {% endblock %}
 
 {% block onbodyload %}

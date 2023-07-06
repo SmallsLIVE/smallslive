@@ -720,8 +720,9 @@
 }
 
 //new checkout-gateway page design
-.checkout-gateway {
+.guest-checkout {
   margin-top: 80px;
+  max-width: 240px;
 
   label {
     font-family: 'Reem Kufi', sans-serif;

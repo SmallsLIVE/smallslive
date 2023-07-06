@@ -1,5 +1,6 @@
 {% extends "store_base.html" %}
 {% load static from staticfiles %}
+{% load currency_filters %}
 {% load thumbor_tags %}
 
 {% block store_nav_active %}active{% endblock %}
@@ -8,12 +9,12 @@
 
 {% block content %}
 
-    <div class="">
+    <div class="ticket-confirmation-page">
 
         <section class="store-header container">
              <div class="store-header__title__container">
                   {% if order.has_tickets %}
-                  <div class="title1 title1--thankyou center"> SmallsLIVE Foundation
+                  <div class="title1 title1--thankyou center invisible"> SmallsLIVE Foundation
 
                   </div>
                   {% else %}
@@ -24,20 +25,49 @@
         <section class="store-done container">
             <div class="store-done__content disclaimer text4">
               {% with order_number=order.number %}
-                  {% for line in order.lines.all %}
+                {% for line in order.lines.all %}
+
+                  {% comment %}
                     <p>
                       You have sponsored {{ line.quantity }} seat(s) for the {{ line.product.event_set.start }} seating on {{ line.product.event_set.event.date }} at {{ line.product.event_set.event.get_venue_name }} Jazz Club.
                       Your order number is {{ order_number }}.  Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}. 75% of this donation to the SmallsLIVE Foundation is tax-deductible.  All of your tax information is in your account.
                     </p>
-                    <p>
-                      The party name of {{ order.first_name }} {{ order.last_name }} will be with the doorman when you arrive.
-                      Please arrive 1/2 hour before the seating.
-                      We are mandated to take temperatures at the door and to collect contact tracing information from at least one person in your party. Your sponsored seat(s) are guaranteed. Your actual space in the venue is first come/first serve so please arrive on time.
-                    </p>
-                    <p>
-                      If you have any issues please email us at reservations@smallslive.com.
-                    </p>
-                  {% endfor %}
+                  {% endcomment %}
+
+                  <p class="title2" tabindex="0">You have successfully purchased {{ line.quantity }} seat(s)<br>
+                    for <span class="text-capitalize">{{ line.product.event_set.event.title }}</span>,
+                    on {{ line.product.event_set.event.date }} at {{ line.product.event_set.start }}<br>
+                  </p>
+
+                  <p class="title2" tabindex="0">Your confirmation number is: {{ order_number }}</p>
+
+                  <p class="normal-text">Please look for your confirmation email. This email will have your
+                    confirmation number and the name of your party. Your name will be at
+                    the door when you arrive, but please also have your confirmation email
+                    with you. In general, there is a <span class="text-danger">NO REFUND POLICY</span> for ticket sales,
+                    although we will make individual exceptions depending on the situation.
+                    For any ticketing questions or issues, please
+                    contact <a class="text-danger mail-link" href="mailto:reservations@smallslive.com">reservations@smallslive.com</a>
+                  </p>
+        
+                  <p class="normal-text">
+                    <span class="text-danger">PLEASE NOTE:</span> your ticket guarantees you entrance, but choice of
+                    seats is first come/first served, so please be on-time for seating.
+                    Seating for each show begins approximately 30 minutes before the set
+                    begins. Please arrive at least 30 minutes before the set and join the
+                    advanced ticket line.
+                  </p>
+        
+                  <p class="normal-text"><span class="text-danger">PLEASE NOTE:</span> once the set has begun, we reserve the right to fill the
+                    seats of ticket holders who have not arrived. If you arrive late, you will
+                    have the option to be seated on the following set, or to be seated at the
+                    other club if possible.
+                  </p>
+        
+                  <p class="normal-text">
+                    <span class="text-danger">PLEASE NOTE:</span> there is a required one-drink minimum per person, per set. It is also customary to leave a gratuity for the bar staff.
+                  </p>
+                {% endfor %}
               {% endwith %}
             </div>
         </section>

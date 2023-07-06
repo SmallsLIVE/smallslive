@@ -15,7 +15,7 @@
                   {% if event.is_foundation %}
                     Sponsorship seat
                   {% else %}
-                    Seat
+                    {{ event.title }}, {{ event.date }}, {{ product.event_set.start|time:'g:i A' }}
                   {% endif %}
                 </div>
             </div>
@@ -35,7 +35,7 @@
         <!-- group total -->
         <div class="store-overview__group__total clearfix">
             <div class="col-xs-9 store-overview__group__total__label">
-                Sub-total:
+                Total:
             </div>
             <div class="col-xs-3 store-overview__group__total__value">
                 {{ basket.digital_total_excl_tax|currency:basket.currency }}

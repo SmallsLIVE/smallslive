@@ -17,7 +17,7 @@ from oscar.apps.checkout.utils import CheckoutSessionData
 from oscar.apps.order.exceptions import UnableToPlaceOrder
 from oscar.apps.payment.exceptions import RedirectRequired, UnableToTakePayment, PaymentError
 from oscar.apps.payment.models import SourceType, Source
-from oscar.core.loading import get_class
+from oscar.core.loading import get_class, get_model
 from oscar_apps.catalogue.models import UserCatalogue, UserCatalogueProduct
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.mixins import PayPalMixin, StripeMixin, PaymentCredentialsMixin
@@ -25,12 +25,15 @@ from subscriptions.models import Donation
 from users.utils import send_admin_notification as util_send_admin_notification
 from utils import utils as sl_utils
 from .forms import PaymentForm, BillingAddressForm
+from django.views import generic
+from django.utils.translation import gettext as _
 
 
 OrderTotalCalculator = get_class(
     'checkout.calculators', 'OrderTotalCalculator')
 Repository = get_class('shipping.repository', 'Repository')
 Selector = get_class('partner.strategy', 'Selector')
+Order = get_model('order', 'Order')
 selector = Selector()
 
 logger = logging.getLogger('oscar.checkout')
@@ -264,6 +267,9 @@ class SuccessfulOrderMixin(PaymentCredentialsMixin):
 
     def get_success_url(self, flow_type):
         success_url = reverse('become_supporter_complete')
+        user = self.request.user
+        if not user.is_authenticated:
+            success_url = reverse('checkout:thank-you')
         if flow_type:
             success_url += '?flow_type=' + flow_type
             # remove flow_type from session
@@ -1070,3 +1076,46 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         self.order = order
         return self.handle()
 
+# =========
+# Thank you
+# =========
+
+class ThankYouView(generic.DetailView):
+    """
+    Displays the 'thank you' page which summarises the order just submitted.
+    """
+    template_name = 'checkout/thank_you.html'
+    context_object_name = 'order'
+
+    def get_object(self):
+        # We allow superusers to force an order thank-you page for testing
+        order = None
+        if self.request.user.is_superuser:
+            if 'order_number' in self.request.GET:
+                order = Order._default_manager.get(
+                    number=self.request.GET['order_number'])
+            elif 'order_id' in self.request.GET:
+                order = Order._default_manager.get(
+                    id=self.request.GET['order_id'])
+
+        if not order:
+            if 'checkout_order_id' in self.request.session:
+                order = Order._default_manager.get(
+                    pk=self.request.session['checkout_order_id'])
+            else:
+                raise http.Http404(_("No order found"))
+
+        return order
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        # Remember whether this view has been loaded.
+        # Only send tracking information on the first load.
+        key = 'order_{}_thankyou_viewed'.format(ctx['order'].pk)
+        if not self.request.session.get(key, False):
+            self.request.session[key] = True
+            ctx['send_analytics_event'] = True
+        else:
+            ctx['send_analytics_event'] = False
+
+        return ctx

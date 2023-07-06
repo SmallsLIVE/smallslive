@@ -12,34 +12,30 @@
 {% load thumbor_tags %}
 {% load basket_tags %}
 
-{% block flow_title %}
-  <p class="text2 accent-color">
-    {% if event.is_foundation %}
-      Sponsorship seat(s)
-    {% else %}
-      Reservation
-    {% endif %}
-  </p>
-{% endblock %}
+{% comment %}
+  {% block flow_title %}
+    <p class="text2 accent-color">
+      {% if event.is_foundation %}
+        Sponsorship seat(s)
+      {% else %}
+        Reservation
+      {% endif %}
+    </p>
+  {% endblock %}
+{% endcomment %}
 
 {% block flow_steps %}
-  <div id="supporterSteps"
-       class="button-row button-row-margin button-row-no-hover"
-       data-flow="ticket_support"
-       data-product-id="{{ product_id }}">
+  {% comment %}
+    <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover" data-flow="ticket_support" data-product-id="{{ product_id }}">
+      <div class="step-button active"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+      <div class="step-button"></div>
+    </div>
+  {% endcomment %}
 
-    <div class="step-button active"></div>
-    <div class="step-button"></div>
-    <div class="step-button"></div>
-    <div class="step-button"></div>
-
-  </div>
-
-  <div id="supporterStepBasket"
-           data-billing-hidden="hidden"
-           class="supporter-step">
+  <div id="supporterStepBasket" data-billing-hidden="hidden" class="supporter-step">
     {% include 'basket/partials/basket_content.html' %}
-
   </div>
 
   <div id="supporterStepBilling" class="supporter-step hidden"

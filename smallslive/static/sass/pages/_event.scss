@@ -988,3 +988,32 @@ $player-height: 25.3vw;
     width: calc(13.94vw + 8.96px);
   }
 }
+
+//new pop up design for ticket confirmation
+#buy-tickets-dialog {
+
+  .custom-modal {
+    padding: 30px;
+  }
+
+  .title2 {
+    font-size: 20px;
+    text-transform: none;
+    margin-bottom: 20px;
+  }
+
+  .text4 {
+    margin-bottom: 20px;
+    line-height: 22px;
+  }
+
+  .text-danger {
+    color: #d21535;
+    font-weight: 600;
+
+    &.mail-link {
+      font-weight: 400;
+      text-decoration: underline;
+    }
+  }
+}
