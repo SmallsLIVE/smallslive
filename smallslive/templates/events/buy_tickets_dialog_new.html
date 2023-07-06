@@ -1,0 +1,61 @@
+<div class="modal fade" id="buy-tickets-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content custom-modal">
+      <div class="modal-body text-left">
+        {% if event.is_foundation %}
+          <p class="title2 accent-color" tabindex="0">Sponsor Seats - SmallsLIVE Foundation</p>
+        {% else %}
+
+        {% endif %}
+        <p class="title2" tabindex="0">You are purchasing tickets for: <span class="text-capitalize">{{ event.title }}</span><br>
+          On: {{ event.date }}<br>
+          Time: <span id="ticket-time"></span><br>
+          Ticket prices for this show is: $<span id="ticket-price" tabindex="0"></span><br>
+          There are currently <span id="ticket-available" tabindex="0"></span> tickets
+          available.</p>
+        {% if event.is_foundation %}
+          <p class="title2">Sponsorship Seats $<span id="ticket-price" tabindex="0"></span></p>
+        {% else %}
+
+        {% endif %}
+        {% if event.is_foundation %}
+          <p class="title2" tabindex="0"><span id="ticket-availability"></span> sponsorships(s) available</p>
+          <p class="text9 text-center">Sponsorships are tax deductible donations to the SmallsLIVE Foundation</p>
+        {% else %}
+          
+          <p class="text4">Please look for your confirmation email. This email will have your
+            confirmation number and the name of your party. Your name will be at
+            the door when you arrive, but please also have your confirmation email
+            with you. In general, there is a <span class="text-danger">NO REFUND POLICY</span> for ticket sales,
+            although we will make individual exceptions depending on the situation.
+            For any ticketing questions or issues, please
+            contact <a class="text-danger mail-link" href="mailto:reservations@smallslive.com">reservations@smallslive.com</a>
+          </p>
+
+          <p class="text4">
+            <span class="text-danger">PLEASE NOTE:</span> your ticket guarantees you entrance, but choice of
+            seats is first come/first served, so please be on-time for seating.
+            Seating for each show begins approximately 30 minutes before the set
+            begins. Please arrive at least 30 minutes before the set and join the
+            advanced ticket line.
+          </p>
+
+          <p class="text4"><span class="text-danger">PLEASE NOTE:</span> once the set has begun, we reserve the right to fill the
+            seats of ticket holders who have not arrived. If you arrive late, you will
+            have the option to be seated on the following set, or to be seated at the
+            other club if possible.
+          </p>
+
+          <p class="text4">
+            <span class="text-danger">PLEASE NOTE:</span> there is a required one-drink minimum per person, per set. It is also customary to leave a gratuity for the bar staff.
+          </p>
+
+        {% endif %}
+        <div>
+          <button id="cancel-buy-tickets" class="white-border-button" tabindex="0">Cancel</button>
+          <button id="confirm-buy-tickets" class="white-border-button" tabindex="0">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

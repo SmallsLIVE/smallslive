@@ -1,0 +1,31 @@
+.store-cart__table__container__new {
+  padding-top: 30px;
+
+  .ticket-info {
+    @include oswald-regular();
+    font-size: 24px;
+  }
+}
+
+.ticket-confirmation-page {
+
+  .title2 {
+    font-size: 22px;
+    text-transform: none;
+    margin-bottom: 20px;
+  }
+
+  .text-danger {
+    color: #d21535;
+    font-weight: 600;
+
+    &.mail-link {
+      font-weight: 400;
+      text-decoration: underline;
+    }
+  }
+
+  .normal-text {
+    margin-bottom: 25px;
+  }
+}
