@@ -27,6 +27,7 @@ from utils import utils as sl_utils
 from .forms import PaymentForm, BillingAddressForm
 from django.views import generic
 from django.utils.translation import gettext as _
+from utils.utils import send_order_confirmation_email
 
 
 OrderTotalCalculator = get_class(
@@ -842,7 +843,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
             # Send confirmation email to customer
-            from utils.utils import send_order_confirmation_email
             message = {}
             event_info = basket.get_tickets_event()
             message['order_number'] = order_number

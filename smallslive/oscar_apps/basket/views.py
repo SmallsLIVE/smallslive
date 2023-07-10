@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.template.loader import render_to_string
 from oscar.apps.basket import views as basket_views
 from oscar_apps.partner.models import StockRecord
 
@@ -43,6 +44,16 @@ class BasketView(basket_views.BasketView):
             context['event_url'] = event_url
 
         return context
+
+    def json_response(self, ctx, flash_messages):
+        basket_html = render_to_string(
+            'basket/partials/basket_content.html',
+            context=ctx, request=self.request)
+
+        return JsonResponse({
+            'content_html': basket_html,
+            'messages': flash_messages.as_dict()
+        })
 
 
 basket_content = BasketView.as_view()
