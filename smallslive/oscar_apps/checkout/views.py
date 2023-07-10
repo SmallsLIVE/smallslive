@@ -486,6 +486,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         # this case, the form needs validating and the order preview shown.
         if request.POST.get('action', '') == 'place_order':
             self.card_token = self.request.POST.get('card_token')
+            print('Place order')
             return self.handle_place_order_submission(request)
 
         return self.handle_payment_details_submission(request)
@@ -673,6 +674,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                shipping_address, shipping_method,
                shipping_charge, billing_address, order_total,
                payment_kwargs=None, order_kwargs=None):
+
         """
         Submit a basket for order placement.
 
@@ -839,6 +841,21 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             response = self.handle_order_placement(
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
+            # Send confirmation email to customer
+            from utils.utils import send_order_confirmation_email
+            message = {}
+            event_info = basket.get_tickets_event()
+            message['order_number'] = order_number
+            message['event_title'] = event_info.title
+            message['event_date'] = event_info.date
+            for line in self.order.lines.all():
+                message['quantity'] = line.quantity
+                message['time'] = line.product.event_set.start
+            if user.is_authenticated:
+                email = user.email
+            else:
+                email = order_kwargs['guest_email']
+            send_order_confirmation_email(email, message)
 
             return response
         except UnableToPlaceOrder as e:
