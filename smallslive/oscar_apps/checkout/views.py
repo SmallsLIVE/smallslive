@@ -329,7 +329,7 @@ class SuccessfulOrderMixin(PaymentCredentialsMixin):
             success_url = self.get_success_url(flow_type)
             response = http.JsonResponse({'success_url': success_url})
         else:
-            response = http.HttpResponseRedirect(self.get_success_url(flow_type))
+            response = http.HttpResponseRedirect(self.get_success_url())
 
         if self.order:
             self.send_signal(self.request, response, self.order)
@@ -1068,7 +1068,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         user = self.request.user
         first_name, last_name = self.checkout_session.get_reservation_name()
 
-        if user.is_anonymous():
+        if user.is_anonymous:
             user = None
             guest_email = self.checkout_session.get_guest_email()
             order_kwargs['guest_email'] = guest_email

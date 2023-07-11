@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-xs-6">
       <input type="text" class="store__form__input"
-         id="card-number" required placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*"
+         id="card-number"  placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*"
          data-stripe="number"
          autocomplete="off" name="card_number" {% if form.card_number.value %}value="{{ form.card_number.value }}"{% endif %}>
       {% for error in form.card_number.errors %}
@@ -11,7 +11,7 @@
       {% endfor %}
     </div>
     <div class="col-xs-3">
-      <input type="text" required class="store__form__input"
+      <input type="text"  class="store__form__input"
              id="expiry-month" placeholder="MM" size="2" pattern="\d*"
              data-stripe="exp-month"
              autocomplete="off" name="exp_month" {% if form.exp_month.value %}value="{{ form.exp_month.value }}"{% endif %}
@@ -21,7 +21,7 @@
       {% endfor %}
     </div>
     <div class="col-xs-3">
-      <input type="text" required class="store__form__input" id="expiry-year" placeholder="YY" size="2" pattern="\d*"
+      <input type="text"  class="store__form__input" id="expiry-year" placeholder="YY" size="2" pattern="\d*"
              data-stripe="exp-year"
              autocomplete="off" name="exp_year" {% if form.exp_year.value %}value="{{ form.exp_year.value }}"{% endif %}>
        {% for error in form.exp_year.errors %}
@@ -32,7 +32,7 @@
   <div class="row">
     <div class="col-xs-9">
       <input id="name-on-card"
-             required
+             
              type="text"
              class="store__form__input"
              placeholder="Name on card"
@@ -42,7 +42,7 @@
              {% if form.name.value %}value="{{ form.name.value }}"{% endif %}>
     </div>
     <div class="col-xs-3">
-      <input type="text" required class="store__form__input" id="cvc" placeholder="xxx" size="4" pattern="\d*"
+      <input type="text"  class="store__form__input" id="cvc" placeholder="xxx" size="4" pattern="\d*"
              data-stripe="cvc"
              autocomplete="off" name="cvc" {% if form.cvc.value %}value="{{ form.cvc.value }}"{% endif %}>
       {% for error in form.cvc.errors %}

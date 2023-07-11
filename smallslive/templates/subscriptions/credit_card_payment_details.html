@@ -6,11 +6,11 @@
       </div>
     {% endif %}
     <div class="store__form__selection__option payment_method single recurring store">
-      <button class="payment-method-toggle {% if not can_use_existing_cc %}active{% endif %}" data-id="credit-card">Pay with credit card</button>
+      <button class="payment-method-toggle btn-card {% if not can_use_existing_cc %}active{% endif %}" data-id="credit-card">Pay with credit card</button>
     </div>
     {% if not flow_type == 'update_pledge' %}
       <div class="store__form__selection__option payment_method single store">
-          <button class="payment-method-toggle" data-id="paypal">Pay with PayPal</button>
+          <button class="payment-method-toggle btn-paypal" data-id="paypal">Pay with PayPal</button>
       </div>
       {% comment %}
         <div class="store__form__selection__option payment_method single deferred">
@@ -36,12 +36,14 @@
 <div class="store__form__group clearfix row payment-method-form hidden" id="paypal-form">
     <p  tabindex="0" class="text9">You will be redirected to PayPal to complete your transaction</p>
 </div>
-<div class="store__form__group clearfix row payment-method-form hidden" id="bitcoin-form">
-  <p tabindex="0" class="text9">You will receive access after your payment confirmation.</p>
-</div>
-<div class="store__form__group clearfix row payment-method-form hidden" id="check-form">
-  <p tabindex="0" class="text9">You will receive access after your payment confirmation.</p>
-</div>
+{% comment %}
+  <div class="store__form__group clearfix row payment-method-form hidden" id="bitcoin-form">
+    <p tabindex="0" class="text9">You will receive access after your payment confirmation.</p>
+  </div>
+  <div class="store__form__group clearfix row payment-method-form hidden" id="check-form">
+    <p tabindex="0" class="text9">You will receive access after your payment confirmation.</p>
+  </div>
+{% endcomment %}
 <div class="store__form__group clearfix payment-method-form {% if can_use_existing_cc %}hidden{% endif %}" id="credit-card-form">
   <div class="col-xs-12 col-sm-4 col-sm-offset-4">
     {% include 'subscriptions/credit_card_details.html' %}

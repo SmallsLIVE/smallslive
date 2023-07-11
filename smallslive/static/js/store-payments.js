@@ -5,7 +5,7 @@ $(document).ready(function () {
   // This makes it generic.
   var checks = {
     "#card-number":  {
-      "length": { "default": 19, "amex": 17 } // 16 cc numbers + 3 white spaces
+      "length": { "default": 19, "amex": 17 }, // 16 cc numbers + 3 white spaces
       "next": ["#expiry-month"]
     },
     "#expiry-month":  {
@@ -93,7 +93,6 @@ $(document).ready(function () {
   
   $(document).on('click', '.payment-method-toggle', function (event) {
     // toggle payment method buttons and forms visibility. Set input value.
-
     event.preventDefault();
     if ($(this).hasClass('active')) {
       return false;
@@ -122,9 +121,11 @@ $(document).ready(function () {
     var id = '#' + $(this).attr('id');
     var keys = Object.keys(checks);
     var pos = keys.indexOf(id);
-    if (pos + 1 < keys.length && $(this).val().length  == checks[id]['length']) {
-      // set focus on next element
-      $(checks[id]['next'].join(', ')).focus();
+    if(checks['id'] !== undefined) {
+      if (pos + 1 < keys.length && $(this).val().length  == checks[id]['length']) {
+        // set focus on next element
+        $(checks[id]['next'].join(', ')).focus();
+      }
     }
   });
 

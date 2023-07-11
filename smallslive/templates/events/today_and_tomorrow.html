@@ -13,7 +13,9 @@
       {% endif %}
     </div>
 
-    <div class="title1 home date">  {% if calendar_page %} {% get_today_and_tomorrow_dates '%a' %}  {% else %} {% now 'D b d' %} {% endif %}</div>
+    <div class="title1 home date">  {% if calendar_page %} {% get_today_and_tomorrow_dates '%a' %}  {% else %} {% now 'D b d' %} {% endif %} 
+       <span class="text-center">Click on an event to purchase tickets</span>
+    </div>
     {% if not calendar_page %}
       <a href='/events/calendar/' class="white-border-button">Full calendar</a>
     {% endif %}

@@ -42,9 +42,15 @@
             {% include 'subscriptions/billing_address_details.html' %}
             {% include 'subscriptions/credit_card_payment_details.html' with can_use_existing_cc=can_use_existing_cc %}
           </section>
-            <div class="button-row button-row-margin-all confirm-button">
-                <button class="button-bordered" type="submit">Continue</button>
+            <div class="button-row button-row-margin-all confirm-button btn-for-card">
+              <button class="button-bordered card-payment-submit" type="submit">Continue</button>
             </div>
+
+            {% block flow_confirm %}
+              <div class="button-row button-row-margin-all confirm-button btn-for-paypal">
+                <button id="confirmButton" data-hide='true' class="button-bordered">Continue</button>
+              </div>
+            {% endblock %}
         </form>
     </div>
 
@@ -52,17 +58,58 @@
 
 
 {% block extra_js %}
-    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-    <script src="https://js.stripe.com/v2/"></script>
-    <script src="{% static 'js/payment/payment.js' %}"></script>
-    <script src="{% static 'js/store-base.js' %}"></script>
-    <script src="{% static 'js/card.js' %}"></script>
-    <script src="{% static 'js/store-payments.js' %}"></script>
-
+  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+  <script src="https://js.stripe.com/v2/"></script>
+  <script src="{% static 'js/payment/payment.js' %}"></script>
+  <script src="{% static 'js/store-base.js' %}"></script>
+  <script src="{% static 'js/card.js' %}"></script>
+  <script src="{% static 'js/store-payments.js' %}"></script>
 
   <script>
 
     $(document).ready(function () {
+
+      $('.btn-for-card .card-payment-submit').click(function(){
+        var cardNumber =  $('#card-number').val();
+        var expiryMonth =  $('#expiry-month').val();
+        var expiryYear =  $('#expiry-year').val();
+        var name =  $('#name-on-card').val();
+        var cvc  =  $('#cvc').val();
+
+        if(cardNumber == "" || expiryMonth == "" || expiryYear == "" || name == "" || cvc == "") {
+          $('#card-number, #expiry-month, #expiry-year, #name-on-card, #cvc').css('border', '2px solid red');
+          if(cardNumber !== ""){
+            $('#card-number').css('border', 'none');
+          }
+          if (expiryMonth !== ""){
+            $('#expiry-month').css('border', 'none');
+          }
+          if (expiryYear !== ""){
+            $('#expiry-year').css('border', 'none');
+          }
+          if (name !== ""){
+            $('#name-on-card').css('border', 'none');
+          }
+          if (cvc !== ""){
+            $('#cvc').css('border', 'none');
+          }
+          
+          return false;
+        }
+      })
+
+      $('.confirm-button.btn-for-paypal').hide();
+      $(document).on("click", ".btn-paypal", function(event) {
+        event.preventDefault();
+        $('.confirm-button.btn-for-card').hide();
+        $('.confirm-button.btn-for-paypal').show();
+      });
+
+      $(document).on("click", ".btn-card", function(event) {
+        event.preventDefault();
+        $('.confirm-button.btn-for-paypal').hide();
+        $('.confirm-button.btn-for-card').show();
+      });
 
         setTimeout(function() {
             $('#payment-form .card-wrapper .jp-card-container').next().remove('.jp-card-container');

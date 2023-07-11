@@ -22,7 +22,7 @@ class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
                          'image_formset': self.image_formset,
                          'recommended_formset': self.recommendations_formset,
                          'stockrecord_formset': self.stockrecord_formset,
-                         'artist_formset': self.artist_formset}
+                        }
 
     def get_context_data(self, **kwargs):
         if self.product_class.slug == 'album':
