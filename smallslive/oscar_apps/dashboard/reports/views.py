@@ -101,8 +101,8 @@ class TicketDetailsView(DetailView):
             for line in Line.objects.filter(product=product).exclude(
                     status="Cancelled").exclude(status="Exchanged").order_by('order__last_name'):
                 set_list.append(line)
-
-            show_data.append({'event_set': product.event_set, 'tickets': set_list})
+            total_tickets_sold = sum([set.quantity for set in set_list])
+            show_data.append({'event_set': product.event_set, 'tickets': set_list, 'total_tickets_sold': total_tickets_sold})
 
         data['show_data'] = show_data
 

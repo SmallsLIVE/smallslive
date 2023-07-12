@@ -23,7 +23,7 @@
   </div>
   {% for item in show_data %}
     <div class="row">
-      <h4>{{ item.event_set.start|time:'f A' }}</h4>
+      <h4>{{ item.event_set.start|time:'f A' }} -  Total tickets sold - {{ item.total_tickets_sold }}</Number></h4>
       <table class="table table-condensed">
         <thead>
         <tr>

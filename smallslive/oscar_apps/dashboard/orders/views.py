@@ -1,11 +1,77 @@
+import datetime
+from collections import OrderedDict
+from decimal import Decimal as D
+from decimal import InvalidOperation
+from django.conf import settings
+from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Count, Q, Sum, fields
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
-from django.views.generic import FormView, View
+from django.utils.translation import gettext_lazy as _
+from django.views.generic import View, DetailView, FormView, ListView, UpdateView
+from oscar.apps.order import exceptions as order_exceptions
+from oscar.apps.payment.exceptions import PaymentError
+from oscar.core.compat import UnicodeCSVWriter
+from oscar.core.loading import get_class, get_model
+from oscar.core.utils import datetime_combine, format_datetime
+from oscar.views import sort_queryset
+from oscar.views.generic import BulkEditMixin
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import BaseFormView
 from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailView
 from .forms import TicketExchangeSelectForm
 from oscar_apps.order.processing import EventHandler
 from oscar_apps.order.models import PaymentEventType, Line, Order
+
+
+
+
+
+Partner = get_model('partner', 'Partner')
+Transaction = get_model('payment', 'Transaction')
+SourceType = get_model('payment', 'SourceType')
+Order = get_model('order', 'Order')
+OrderNote = get_model('order', 'OrderNote')
+ShippingAddress = get_model('order', 'ShippingAddress')
+Line = get_model('order', 'Line')
+ShippingEventType = get_model('order', 'ShippingEventType')
+PaymentEventType = get_model('order', 'PaymentEventType')
+EventHandler = get_class('order.processing', 'EventHandler')
+OrderStatsForm = get_class('dashboard.orders.forms', 'OrderStatsForm')
+OrderSearchForm = get_class('dashboard.orders.forms', 'OrderSearchForm')
+OrderNoteForm = get_class('dashboard.orders.forms', 'OrderNoteForm')
+ShippingAddressForm = get_class(
+    'dashboard.orders.forms', 'ShippingAddressForm')
+OrderStatusForm = get_class('dashboard.orders.forms', 'OrderStatusForm')
+
+
+def queryset_orders_for_user(user):
+    """
+    Returns a queryset of all orders that a user is allowed to access.
+    A staff user may access all orders.
+    To allow access to an order for a non-staff user, at least one line's
+    partner has to have the user in the partner's list.
+    """
+    queryset = Order._default_manager.select_related(
+        'billing_address', 'billing_address__country',
+        'shipping_address', 'shipping_address__country',
+        'user'
+    ).prefetch_related('lines', 'status_changes')
+    if user.is_staff:
+        return queryset
+    else:
+        partners = Partner._default_manager.filter(users=user)
+        return queryset.filter(lines__partner__in=partners).distinct()
+
+
+def get_order_for_user_or_404(user, number):
+    try:
+        return queryset_orders_for_user(user).get(number=number)
+    except ObjectDoesNotExist:
+        raise Http404()
+
 
 
 class LineDetailGetView(CoreLineDetailView):
@@ -72,3 +138,308 @@ class LineDetailView(View):
     def post(self, request, *args, **kwargs):
         view = TicketExchangeView.as_view()
         return view(request, *args, **kwargs)
+
+
+class OrderDetailView(DetailView):
+    """
+    Dashboard Custom view to display a single order.
+
+    Supports the permission-based dashboard.
+    """
+    model = Order
+    context_object_name = 'order'
+    template_name = 'dashboard/orders/order_detail.html'
+
+    # These strings are method names that are allowed to be called from a
+    # submitted form.
+    order_actions = ('save_note', 'delete_note', 'change_order_status',
+                     'create_order_payment_event')
+    line_actions = ('change_line_statuses', 'create_shipping_event',
+                    'create_payment_event')
+
+    def get_object(self, queryset=None):
+        return get_order_for_user_or_404(
+            self.request.user, self.kwargs['number'])
+
+    def get_order_lines(self):
+        return self.object.lines.all()
+
+    def post(self, request, *args, **kwargs):
+        # For POST requests, we use a dynamic dispatch technique where a
+        # parameter specifies what we're trying to do with the form submission.
+        # We distinguish between order-level actions and line-level actions.
+
+        order = self.object = self.get_object()
+
+        # Look for order-level action first
+        if 'order_action' in request.POST:
+            return self.handle_order_action(
+                request, order, request.POST['order_action'])
+
+        # Look for line-level action
+        if 'line_action' in request.POST:
+            return self.handle_line_action(
+                request, order, request.POST['line_action'])
+
+        return self.reload_page(error=_("No valid action submitted"))
+
+    def handle_order_action(self, request, order, action):
+        if action not in self.order_actions:
+            return self.reload_page(error=_("Invalid action"))
+        return getattr(self, action)(request, order)
+
+    def handle_line_action(self, request, order, action):
+        if action not in self.line_actions:
+            return self.reload_page(error=_("Invalid action"))
+
+        # Load requested lines
+        line_ids = request.POST.getlist('selected_line')
+        if len(line_ids) == 0:
+            return self.reload_page(error=_(
+                "You must select some lines to act on"))
+
+        lines = self.get_order_lines()
+        lines = lines.filter(id__in=line_ids)
+        if len(line_ids) != len(lines):
+            return self.reload_page(error=_("Invalid lines requested"))
+
+        # Build list of line quantities
+        line_quantities = []
+        for line in lines:
+            qty = request.POST.get('selected_line_qty_%s' % line.id)
+            try:
+                qty = int(qty)
+            except ValueError:
+                qty = None
+            if qty is None or qty <= 0:
+                error_msg = _("The entered quantity for line #%s is not valid")
+                return self.reload_page(error=error_msg % line.id)
+            elif qty > line.quantity:
+                error_msg = _(
+                    "The entered quantity for line #%(line_id)s "
+                    "should not be higher than %(quantity)s")
+                kwargs = {'line_id': line.id, 'quantity': line.quantity}
+                return self.reload_page(error=error_msg % kwargs)
+
+            line_quantities.append(qty)
+
+        return getattr(self, action)(
+            request, order, lines, line_quantities)
+
+    def reload_page(self, fragment=None, error=None):
+        url = reverse('dashboard:order-detail',
+                      kwargs={'number': self.object.number})
+        if fragment:
+            url += '#' + fragment
+        if error:
+            messages.error(self.request, error)
+        return HttpResponseRedirect(url)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['active_tab'] = kwargs.get('active_tab', 'lines')
+
+        # Forms
+        ctx['note_form'] = self.get_order_note_form()
+        ctx['order_status_form'] = self.get_order_status_form()
+
+        ctx['lines'] = self.get_order_lines()
+        ctx['line_statuses'] = Line.all_statuses()
+        ctx['shipping_event_types'] = ShippingEventType.objects.all()
+        ctx['payment_event_types'] = PaymentEventType.objects.all()
+
+        ctx['payment_transactions'] = self.get_payment_transactions()
+
+        return ctx
+
+    # Data fetching methods for template context
+
+    def get_payment_transactions(self):
+        return Transaction.objects.filter(
+            source__order=self.object)
+
+    def get_order_note_form(self):
+        kwargs = {
+            'order': self.object,
+            'user': self.request.user,
+            'data': None
+        }
+        if self.request.method == 'POST':
+            kwargs['data'] = self.request.POST
+        note_id = self.kwargs.get('note_id', None)
+        if note_id:
+            note = get_object_or_404(OrderNote, order=self.object, id=note_id)
+            if note.is_editable():
+                kwargs['instance'] = note
+        return OrderNoteForm(**kwargs)
+
+    def get_order_status_form(self):
+        data = None
+        if self.request.method == 'POST':
+            data = self.request.POST
+        return OrderStatusForm(order=self.object, data=data)
+
+    # Order-level actions
+
+    def save_note(self, request, order):
+        form = self.get_order_note_form()
+        if form.is_valid():
+            form.save()
+            messages.success(self.request, _("Note saved"))
+            return self.reload_page(fragment='notes')
+
+        ctx = self.get_context_data(note_form=form, active_tab='notes')
+        return self.render_to_response(ctx)
+
+    def delete_note(self, request, order):
+        try:
+            note = order.notes.get(id=request.POST.get('note_id', None))
+        except ObjectDoesNotExist:
+            messages.error(request, _("Note cannot be deleted"))
+        else:
+            messages.info(request, _("Note deleted"))
+            note.delete()
+        return self.reload_page()
+
+    def change_order_status(self, request, order):
+        form = self.get_order_status_form()
+        if not form.is_valid():
+            return self.reload_page(error=_("Invalid form submission"))
+
+        old_status, new_status = order.status, form.cleaned_data['new_status']
+        handler = EventHandler(request.user)
+
+        success_msg = _(
+            "Order status changed from '%(old_status)s' to "
+            "'%(new_status)s'") % {'old_status': old_status,
+                                   'new_status': new_status}
+        try:
+            handler.handle_order_status_change(
+                order, new_status, note_msg=success_msg)
+        except PaymentError as e:
+            messages.error(
+                request, _("Unable to change order status due to "
+                           "payment error: %s") % e)
+        except order_exceptions.InvalidOrderStatus:
+            # The form should validate against this, so we should only end up
+            # here during race conditions.
+            messages.error(
+                request, _("Unable to change order status as the requested "
+                           "new status is not valid"))
+        else:
+            messages.info(request, success_msg)
+        return self.reload_page()
+
+    def create_order_payment_event(self, request, order):
+        """
+        Create a payment event for the whole order
+        """
+        amount_str = request.POST.get('amount', None)
+        try:
+            amount = D(amount_str)
+        except InvalidOperation:
+            messages.error(request, _("Please choose a valid amount"))
+            return self.reload_page()
+        return self._create_payment_event(request, order, amount)
+
+    # Line-level actions
+
+    def change_line_statuses(self, request, order, lines, quantities):
+        new_status = request.POST['new_status'].strip()
+        if not new_status:
+            messages.error(request, _("The new status '%s' is not valid")
+                           % new_status)
+            return self.reload_page()
+        errors = []
+        for line in lines:
+            if new_status not in line.available_statuses():
+                errors.append(_("'%(status)s' is not a valid new status for"
+                                " line %(line_id)d") % {'status': new_status,
+                                                        'line_id': line.id})
+        if errors:
+            messages.error(request, "\n".join(errors))
+            return self.reload_page()
+
+        msgs = []
+        for line in lines:
+            msg = _("Status of line #%(line_id)d changed from '%(old_status)s'"
+                    " to '%(new_status)s'") % {'line_id': line.id,
+                                               'old_status': line.status,
+                                               'new_status': new_status}
+            msgs.append(msg)
+            line.set_status(new_status)
+        message = "\n".join(msgs)
+        messages.info(request, message)
+        order.notes.create(user=request.user, message=message,
+                           note_type=OrderNote.SYSTEM)
+        return self.reload_page()
+
+    def create_shipping_event(self, request, order, lines, quantities):
+        code = request.POST['shipping_event_type']
+        try:
+            event_type = ShippingEventType._default_manager.get(code=code)
+        except ShippingEventType.DoesNotExist:
+            messages.error(request, _("The event type '%s' is not valid")
+                           % code)
+            return self.reload_page()
+
+        reference = request.POST.get('reference', None)
+        try:
+            EventHandler().handle_shipping_event(order, event_type, lines,
+                                                 quantities,
+                                                 reference=reference)
+        except order_exceptions.InvalidShippingEvent as e:
+            messages.error(request,
+                           _("Unable to create shipping event: %s") % e)
+        except order_exceptions.InvalidStatus as e:
+            messages.error(request,
+                           _("Unable to create shipping event: %s") % e)
+        except PaymentError as e:
+            messages.error(request, _("Unable to create shipping event due to"
+                                      " payment error: %s") % e)
+        else:
+            messages.success(request, _("Shipping event created"))
+        return self.reload_page()
+
+    def create_payment_event(self, request, order, lines, quantities):
+        """
+        Create a payment event for a subset of order lines
+        """
+        amount_str = request.POST.get('amount', None)
+
+        # If no amount passed, then we add up the total of the selected lines
+        if not amount_str:
+            amount = sum([line.line_price_incl_tax for line in lines])
+        else:
+            try:
+                amount = D(amount_str)
+            except InvalidOperation:
+                messages.error(request, _("Please choose a valid amount"))
+                return self.reload_page()
+
+        return self._create_payment_event(request, order, amount, lines,
+                                          quantities)
+
+    def _create_payment_event(self, request, order, amount, lines=None,
+                              quantities=None):
+        code = request.POST.get('payment_event_type')
+        try:
+            event_type = PaymentEventType._default_manager.get(code=code)
+        except PaymentEventType.DoesNotExist:
+            messages.error(
+                request, _("The event type '%s' is not valid") % code)
+            return self.reload_page()
+        try:
+            EventHandler().handle_payment_event(
+                order, event_type, amount, lines, quantities)
+        except PaymentError as e:
+            messages.error(request, _("Unable to create payment event due to"
+                                      " payment error: %s") % e)
+        except order_exceptions.InvalidPaymentEvent as e:
+            messages.error(
+                request, _("Unable to create payment event: %s") % e)
+        else:
+            messages.info(request, _("Payment event created"))
+        return self.reload_page()
+
+
