@@ -262,11 +262,27 @@ class SuccessfulOrderMixin(PaymentCredentialsMixin):
         self.send_confirmation_message(self.order, order_type_code)
         self.send_admin_notification()
 
+        # Send confirmation email to customer
+        message = {}
+        event_info = self.order.basket.get_tickets_event()
+        message['order_number'] = self.order.number
+        message['event_title'] = event_info.title
+        message['event_date'] = event_info.date
+        for line in self.order.lines.all():
+            message['quantity'] = line.quantity
+            message['time'] = line.product.event_set.start
+        if self.request.user.is_authenticated:
+            email = self.request.user.email
+        else:
+            email = self.order.guest_email
+        send_order_confirmation_email(email, message)
+
+
     def send_admin_notification(self):
         if self.order.has_physical_products():
             util_send_admin_notification(self.order.number)
 
-    def get_success_url(self, flow_type):
+    def get_success_url(self, flow_type=None):
         success_url = reverse('become_supporter_complete')
         user = self.request.user
         if not user.is_authenticated:
@@ -842,20 +858,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             response = self.handle_order_placement(
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
-            # Send confirmation email to customer
-            message = {}
-            event_info = basket.get_tickets_event()
-            message['order_number'] = order_number
-            message['event_title'] = event_info.title
-            message['event_date'] = event_info.date
-            for line in self.order.lines.all():
-                message['quantity'] = line.quantity
-                message['time'] = line.product.event_set.start
-            if user.is_authenticated:
-                email = user.email
-            else:
-                email = order_kwargs['guest_email']
-            send_order_confirmation_email(email, message)
+          
 
             return response
         except UnableToPlaceOrder as e:
