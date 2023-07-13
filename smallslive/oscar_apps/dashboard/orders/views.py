@@ -73,8 +73,10 @@ def get_order_for_user_or_404(user, number):
         raise Http404()
 
 
-
 class LineDetailGetView(CoreLineDetailView):
+
+    template_name = 'dashboard/orders/line_detail.html'
+
     def get_context_data(self, **kwargs):
         data = super(LineDetailGetView, self).get_context_data(**kwargs)
         data['form'] = TicketExchangeSelectForm(old_ticket_id=self.object.id)
