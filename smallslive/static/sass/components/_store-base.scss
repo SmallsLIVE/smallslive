@@ -3025,3 +3025,13 @@ form .back-to-payment-btn {
     letter-spacing: 0;
   }
 }
+
+@media (max-width: 767px) {
+
+  .store-overview {
+
+    .title1 {
+      font-size: 22px !important;
+    }
+  }
+}

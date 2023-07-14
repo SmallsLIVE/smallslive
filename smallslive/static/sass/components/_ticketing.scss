@@ -40,3 +40,69 @@
     text-align: left;
   }
 }
+
+@media (max-width: 767px) {
+
+  .store-cart__table__container__new {
+
+    >.row {
+      align-items: center;
+      flex-direction: column;
+      gap: 30px;
+
+      >.ticket-pricing {
+        width: 100%;
+        justify-content: center;
+
+        .quantity {
+          margin: 0;
+        }
+      }
+    }
+  
+    .ticket-info {
+      font-size: 18px;
+    }
+
+    .store-cart__table__cell__sub-total {
+      margin-top: 0;
+      justify-content: center;
+
+      .title {
+        margin: 0;
+      }
+    }
+  }
+
+  #tickets-sold-out-dialog {
+
+    .modal-dialog {
+      max-width: 95%;
+    }
+  }
+
+  .ticket-confirmation-page {
+
+    .title2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .normal-text {
+      margin-bottom: 20px;
+    }
+
+    .text-danger {
+      font-size: 14px;
+
+      &.mail-link {
+        font-size: 16px;
+      }
+    }
+
+    .store-header {
+      display: none;
+      padding: 0;
+    }
+  }
+}

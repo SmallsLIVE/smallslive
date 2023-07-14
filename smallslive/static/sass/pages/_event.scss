@@ -1025,9 +1025,78 @@ $player-height: 25.3vw;
 
 //home static text
 
-.home {
+.top-event-slider {
 
   .event-info-text {
     padding-left: 212px;
+  }
+}
+
+@media (max-width: 991px) {
+
+  .top-event-slider {
+
+    .section-title {
+      align-items: start;
+      flex-direction: column;
+    }
+
+    .date {
+      display: flex !important;
+      flex-direction: column;
+      margin-top: 10px;
+    }
+
+    .event-info-text {
+      padding-left: 0;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+
+  #buy-tickets-dialog {
+
+    .modal-dialog {
+      max-width: 95%;
+    }
+
+    .custom-modal {
+      padding: 20px;
+    }
+
+    .title2 {
+      font-size: 18px;
+      line-height: 24px;
+    }
+
+    .text-danger {
+      font-size: 14px;
+
+      &.mail-link {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width:500px) {
+  
+  .event-page-container {
+
+    .event-player-buttons {
+      margin-left: 10px;
+    }
+
+    .white-border-button {
+      
+      &.tickets-sold-out {
+        padding: 21px 25px;
+      }
+
+      &.buy-tickets {
+        padding: 20px 25px;
+      }
+    }
   }
 }
