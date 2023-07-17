@@ -59,8 +59,7 @@ def perform_login(request, user, email_verification,
         if not has_verified_email:
             send_email_confirmation(request, user, signup=signup,
                                     activate_view='account_confirm_email')
-            return HttpResponseRedirect(
-                reverse('account_email_verification_sent'))
+            return HttpResponseRedirect('/accounts/confirm-email/')
     # Local users are stopped due to form validation checking
     # is_active, yet, adapter methods could toy with is_active in a
     # `user_signed_up` signal. Furthermore, social users should be
@@ -335,3 +334,24 @@ def send_admin_notification(order_number):
         message,
         to=email_to,
         from_email=INVOICE_FROM_EMAIL).send()
+
+from django.contrib.auth import get_user_model
+from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils.http import base36_to_int
+def url_str_to_user_pk(s):
+    User = get_user_model()
+    # TODO: Ugh, isn't there a cleaner way to determine whether or not
+    # the PK is a str-like field?
+    if getattr(User._meta.pk, 'remote_field', None):
+        pk_field = User._meta.pk.remote_field.to._meta.pk
+    else:
+        pk_field = User._meta.pk
+    if issubclass(type(pk_field), models.UUIDField):
+        return pk_field.to_python(s)
+    try:
+        # pk_field.to_python('a')
+        pk = s
+    except ValidationError:
+        pk = base36_to_int(s)
+    return pk
