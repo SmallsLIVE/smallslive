@@ -74,7 +74,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     artist = models.OneToOneField('artists.Artist', related_name='user', blank=True, null=True, on_delete=models.CASCADE)
     date_joined = models.DateTimeField(default=timezone.now)
     photo = models.ImageField(upload_to='user_photos', blank=True)
-    access_level = models.CharField(choices=ACCESS_LEVELS, default='', max_length=30, blank=True)
+    access_level = models.CharField(choices=ACCESS_LEVELS, default=ACCESS_LEVELS.member, max_length=30, blank=True)
     login_count = models.IntegerField(default=0)
     accept_agreement = models.BooleanField(default=False)
     renewal_date = models.DateField(blank=True, null=True)

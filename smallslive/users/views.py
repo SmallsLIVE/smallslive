@@ -14,7 +14,8 @@ from allauth.account.app_settings import EmailVerificationMethod
 from allauth.account.forms import ChangePasswordForm
 from users.models import SmallsEmailAddress
 from allauth.account.views import SignupView as AllauthSignupView, \
-    LoginView as CoreLoginView, _ajax_response
+    LoginView as CoreLoginView, _ajax_response, \
+    ConfirmEmailView as AllauthConfirmEmailView
 import braces.views
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin
 from djstripe.models import Customer, Charge, Plan
@@ -27,8 +28,11 @@ from users.utils import charge, \
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
 from oscar_apps.checkout.forms import BillingAddressForm
 from oscar.apps.address.models import UserAddress
-from .utils import complete_signup
+from .utils import complete_signup, url_str_to_user_pk
 
+from allauth.account.adapter import get_adapter
+from allauth.account.utils import perform_login
+from allauth.account import app_settings
 
 class SignupLandingView(TemplateView):
     template_name = 'account/signup-landing.html'
@@ -79,12 +83,11 @@ class SignupView(AllauthSignupView):
         #     verification_method = EmailVerificationMethod.MANDATORY
         # else:
         #     verification_method = EmailVerificationMethod.OPTIONAL
-        verification_method = EmailVerificationMethod.NONE
+        verification_method = EmailVerificationMethod.MANDATORY
         complete_signup(
             self.request, user, verification_method, self.get_success_url()
         )
-
-        return redirect(self.get_success_url())
+        return HttpResponseRedirect(reverse('account_email_verification_sent'))
 
 
 signup_view = SignupView.as_view()
@@ -524,3 +527,49 @@ class ResendEmailConfirmationView(StaffuserRequiredMixin, ListView):
 
 
 admin_email_confirmation = ResendEmailConfirmationView.as_view()
+
+class ConfirmEmailView(AllauthConfirmEmailView):
+
+    def login_on_confirm(self, confirmation):
+        """
+        Simply logging in the user may become a security issue. If you
+        do not take proper care (e.g. don't purge used email
+        confirmations), a malicious person that got hold of the link
+        will be able to login over and over again and the user is
+        unable to do anything about it. Even restoring their own mailbox
+        security will not help, as the links will still work. For
+        password reset this is different, this mechanism works only as
+        long as the attacker has access to the mailbox. If they no
+        longer has access they cannot issue a password request and
+        intercept it. Furthermore, all places where the links are
+        listed (log files, but even Google Analytics) all of a sudden
+        need to be secured. Purging the email confirmation once
+        confirmed changes the behavior -- users will not be able to
+        repeatedly confirm (in case they forgot that they already
+        clicked the mail).
+
+        All in all, opted for storing the user that is in the process
+        of signing up in the session to avoid all of the above.  This
+        may not 100% work in case the user closes the browser (and the
+        session gets lost), but at least we're secure.
+        """
+        user_pk = None
+        user_pk_str = get_adapter(self.request).unstash_user(self.request)
+        if user_pk_str:
+            user_pk = url_str_to_user_pk(user_pk_str)
+        user = confirmation.email_address.user
+        if user_pk == user.pk and self.request.user.is_anonymous:
+            return perform_login(self.request,
+                                 user,
+                                 app_settings.EmailVerificationMethod.NONE,
+                                 # passed as callable, as this method
+                                 # depends on the authenticated state
+                                 redirect_url=self.get_redirect_url)
+
+        return None
+custom_confirm_email = ConfirmEmailView.as_view()
+
+class EmailVerificationSentView(TemplateView):
+    template_name = 'account/verification_sent.html'
+
+email_verification_sent = EmailVerificationSentView.as_view()
