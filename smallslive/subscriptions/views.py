@@ -500,7 +500,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                     return _ajax_response(
                         self.request, redirect(url)
                     )
-                except stripe.StripeError as e:
+                except stripe.error.StripeError as e:
                     # add form error here
                     return JsonResponse({'error': str(e)})
                 except Exception as e:
@@ -745,7 +745,6 @@ class TicketSupportView(BecomeSupporterView):
         return
 
     def get_context_data(self, **kwargs):
-        is_user_authenticated = self.request.user.is_authenticated if self.request.user.is_authenticated else False
         context = super(TicketSupportView, self).get_context_data(**kwargs)
         can_use_existing_cc = False
         context['payment_info_url'] = reverse('payment_info')
@@ -805,15 +804,15 @@ gift_support = GiftSupportView.as_view()
 
 # ## @TODO : Fix later after djstripe upgrade
 # class UpdateCardView(ChangeCardView):
-#
+
 #     def get_post_success_url(self):
 #         return reverse('user_settings_new')
-#
+
 #     def get(self, request, *args, **kwargs):
 #         # only POST
 #         return redirect(self.get_post_success_url())
-#
-#
+
+
 # update_card = UpdateCardView.as_view()
 
 

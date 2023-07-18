@@ -14,6 +14,7 @@ from django.http import HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.utils import timezone
 from custom_stripe.models import CustomPlan
+# from subscriptions.views import update_card
 
 INVOICE_FROM_EMAIL = '' # @TODO Fix later after upgrade dj-stripe 1.2.0 or later
 
@@ -170,7 +171,7 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
 def one_time_donation(customer, stripe_token, amount, donation_type='one_time',
                       event_id=None, dedication='', musician='', event_date=''):
 
-    customer.update_card(stripe_token)
+    #customer.update_card(stripe_token) # @TODO: Figure out update_card later.
     if event_id:
         metadata = {
             'sponsored_event_id': event_id,
@@ -178,7 +179,7 @@ def one_time_donation(customer, stripe_token, amount, donation_type='one_time',
         }
     else:
         metadata = {}
-    charge_object = charge(customer, amount, send_receipt=False, metadata=metadata)
+    charge_object = charge(customer, amount, send_receipt=False, metadata=metadata, token=stripe_token)
     custom_receipt = {
         'customer': customer,
         'amount': amount,
@@ -247,22 +248,34 @@ def subscribe(customer, plan, flow):
 
 
 def charge(customer, amount, currency='USD', description='',
-           send_receipt=True, metadata={}):
+           send_receipt=True, metadata={},token=None):
     """Just charge the customer
     The web hook will take care of updating donations if necessary"""
-
+    source = stripe.Source.create(
+        type='card',
+        amount=int(decimal.Decimal(amount) * 100),
+        currency=currency,
+        owner={
+        'email': customer.subscriber.email
+        },
+        token=token
+    )
     resp = stripe.Charge.create(
         amount=int(decimal.Decimal(amount) * 100),  # Convert dollars into cents
         currency=currency,
         customer=customer.stripe_id,
         description=description,
-        metadata=metadata
+        metadata=metadata,
+        source = source.id
     )
-    obj = customer.record_charge(resp["id"])
-    if send_receipt:
-        obj.send_receipt()
+    # print(dir(customer))
+    # print(resp["id"])
+    # obj = customer.record_charge(resp["id"])
+    # if send_receipt:
+    #     obj.send_receipt()
+    
 
-    return obj
+    return resp
 
 
 def custom_send_receipt(receipt_info={},
