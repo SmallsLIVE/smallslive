@@ -1,5 +1,6 @@
 import csv
 import stripe
+import decimal
 import traceback
 from allauth.account.views import _ajax_response
 from braces.views import FormValidMessageMixin, LoginRequiredMixin, StaffuserRequiredMixin
@@ -440,6 +441,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                         reference=None, confirmed=True):
 
         user = None
+        donation = None
         if self.request.user.is_authenticated:
             user = self.request.user
 
@@ -457,8 +459,13 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
             'sponsored_event_id': self.sponsored_event_id,
             'sponsored_event_dedication': self.sponsored_event_dedication,
         }
+        try:
+            donation = Donation.objects.create(**donation_data)
+        except Exception as e:
+            print('Exception while creating donation after credit card payment')
+            print(e)
 
-        return Donation.objects.create(**donation_data)
+        return donation
 
     def post(self, request, *args, **kwargs):
 
@@ -482,7 +489,9 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
             if self.stripe_token:
                 try:
                     # Donation will come through the webhook.
-                    self.execute_stripe_payment()
+                    payment_reference_id = self.execute_stripe_payment()
+                    self.create_donation(payment_source='Stripe Credit Card',
+                                         reference=payment_reference_id, confirmed=True)
                     url = reverse('become_supporter_complete') + \
                         "?flow_type=" + self.flow_type
                     if self.product_id:

@@ -170,7 +170,7 @@ class Donation(models.Model):
 
     objects = DonationManager()
 
-    def __unicode__(self):
+    def __str__(self):
         reference = self.reference or ''
         if self.user:
             return u'{}: {} - {} - {} - confirmed: {}'.format(self.user.email, self.amount, self.date, reference, self.confirmed)
@@ -197,7 +197,7 @@ class Donation(models.Model):
         days = 0
 
         if amount > 10:
-            months = amount / 10
+            months = int(amount / 10)
             amount = amount % 10
 
         if amount:
