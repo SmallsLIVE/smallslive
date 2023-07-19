@@ -205,10 +205,12 @@ def subscribe_to_plan(customer, stripe_token, amount, plan_type,
 
     plan = Plan.objects.filter(**plan_data).first()
     plan_data['product'] = settings.STRIPE_PRODUCT
+    print("here is the error")
     plan = plan or CustomPlan.create(**plan_data)
 
-    customer.update_card(stripe_token)
-    subscribe(customer, plan, flow)
+    #customer.update_card(stripe_token)
+    subscribe(customer, plan, flow, plan_data, stripe_token)
+    print('==subscribe complete==')
     custom_receipt = {}
     custom_receipt['customer'] = customer
     custom_receipt['plan'] = plan
@@ -218,16 +220,40 @@ def subscribe_to_plan(customer, stripe_token, amount, plan_type,
     # Donation will come through Stripe's webhook
 
 
-def subscribe(customer, plan, flow):
+def subscribe(customer, plan, flow, plan_data, stripe_token):
 
-    cu = customer.stripe_customer
-    cu.update_subscription(plan=plan.stripe_id, prorate=False)
+    #cu = customer.stripe_customer
+    cu = customer.api_retrieve()
+    #customer.update_subscription(plan=plan.stripe_id, prorate=False)
     try:
-        current_subscription = customer.current_subscription
-        current_subscription.plan = plan.stripe_id
-        current_subscription.amount = plan.amount
-        current_subscription.save()
-    except Object.DoesNotExist:
+        payment_method = stripe.PaymentMethod.create(
+            type="card",
+            card={
+                "token": stripe_token,
+            },
+        )
+        
+        stripe.PaymentMethod.attach(
+            payment_method.id,
+            customer=customer.stripe_id,
+        )
+
+        current_subscription = stripe.Subscription.create(
+            customer=customer.stripe_id,
+            items=[{
+                'price': plan.stripe_id,
+            }],
+            default_payment_method= payment_method.id
+        )
+        print(current_subscription)
+        #current_subscription = customer.subscribe(plan.stripe_id)
+        # current_subscription.plan = plan.stripe_id
+        # current_subscription.amount = plan.amount
+        # current_subscription.save()
+        
+                
+    except Exception as e:
+        print(e)
         sub = cu.subscription
 
         # @TODO - FIX this after migrate to dj-stripe 1.20 or later
