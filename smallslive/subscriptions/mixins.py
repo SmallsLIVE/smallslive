@@ -184,7 +184,7 @@ class StripeMixin(PaymentCredentialsMixin):
         customer, created = Customer.get_or_create(
             subscriber=subscriber_request_callback(self.request))
         if self.plan_type == 'month':
-            subscribe_to_plan(customer, self.stripe_token,
+            stripe_ref = subscribe_to_plan(customer, self.stripe_token,
                               self.amount, self.plan_type, self.flow_type)
         else:
             event_id = None

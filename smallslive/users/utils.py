@@ -205,17 +205,16 @@ def subscribe_to_plan(customer, stripe_token, amount, plan_type,
 
     plan = Plan.objects.filter(**plan_data).first()
     plan_data['product'] = settings.STRIPE_PRODUCT
-    print("here is the error")
     plan = plan or CustomPlan.create(**plan_data)
 
     #customer.update_card(stripe_token)
-    subscribe(customer, plan, flow, plan_data, stripe_token)
-    print('==subscribe complete==')
+    charge_id = subscribe(customer, plan, flow, plan_data, stripe_token)
     custom_receipt = {}
     custom_receipt['customer'] = customer
     custom_receipt['plan'] = plan
     custom_receipt['type'] = 'subscribe'
     custom_send_receipt(receipt_info=custom_receipt)
+    return charge_id
 
     # Donation will come through Stripe's webhook
 
@@ -245,7 +244,13 @@ def subscribe(customer, plan, flow, plan_data, stripe_token):
             }],
             default_payment_method= payment_method.id
         )
-        print(current_subscription)
+
+        subscription = stripe.Subscription.retrieve(current_subscription.id)
+        latest_invoice_id = subscription.latest_invoice
+        invoice = stripe.Invoice.retrieve(latest_invoice_id)
+        charge_id = invoice.charge
+        return charge_id
+
         #current_subscription = customer.subscribe(plan.stripe_id)
         # current_subscription.plan = plan.stripe_id
         # current_subscription.amount = plan.amount
