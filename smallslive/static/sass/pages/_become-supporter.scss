@@ -755,6 +755,17 @@
     padding-left: 10px;
   }
 
+  .user-password-field {
+
+    .password-radio {
+      display: none;
+    }
+
+    input[type="password"] {
+      width: 100%;
+    }
+  }
+
   .continue-btn {
     border: 3px solid rgba(255, 255, 255, 0.9);
     border-radius: 0;

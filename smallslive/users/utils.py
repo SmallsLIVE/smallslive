@@ -14,6 +14,8 @@ from django.http import HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.utils import timezone
 from custom_stripe.models import CustomPlan
+from djstripe.models import Subscription
+from djstripe.utils import convert_tstamp
 # from subscriptions.views import update_card
 
 INVOICE_FROM_EMAIL = '' # @TODO Fix later after upgrade dj-stripe 1.2.0 or later
@@ -244,6 +246,20 @@ def subscribe(customer, plan, flow, plan_data, stripe_token):
             }],
             default_payment_method= payment_method.id
         )
+
+        subscription = Subscription(
+            customer=customer,
+            plan=plan,
+            current_period_start=convert_tstamp(current_subscription.current_period_start),
+            current_period_end=convert_tstamp(current_subscription.current_period_end),
+            #amount=current_subscription.plan.amount,
+            status=current_subscription.status,
+            cancel_at_period_end=current_subscription.cancel_at_period_end,
+            #canceled_at=convert_tstamp(current_subscription, 'canceled_at'),
+            start=convert_tstamp(current_subscription.start),
+            quantity=current_subscription.quantity
+        )
+        subscription.save()
 
         subscription = stripe.Subscription.retrieve(current_subscription.id)
         latest_invoice_id = subscription.latest_invoice

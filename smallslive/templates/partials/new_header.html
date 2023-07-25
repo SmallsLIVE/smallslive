@@ -44,7 +44,7 @@
           {% if request.user.artist %}
             <option value="artist_dashboard">Dashboard</option>
           {% endif %}
-          <option value="my_downloads">Library</option>
+          {% comment %} <option value="my_downloads">Library</option> {% endcomment %}
           <option value="account_info">Account</option>
           <option value="logout">Sign Out</option>
         </select>
@@ -98,7 +98,7 @@
           <div class="text2"><a href="{% url 'artist_dashboard:my_past_events' %}">Dashboard</a></div>
         {% endif %}
       {% endif %}
-      <div class="text2"><a href="{% url 'my-downloads' %}">Library</a></div>
+      {% comment %}<div class="text2"><a href="{% url 'my-downloads' %}">Library</a></div>{% endcomment %}
       <div class="text2"><a href="{% url 'user_settings_new' %}">Account</a></div>
       <div class="text2"><a href="{% url 'account_logout' %}">Sign Out</a></div>
     {% endif %}

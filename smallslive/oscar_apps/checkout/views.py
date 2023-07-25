@@ -287,6 +287,8 @@ class SuccessfulOrderMixin(PaymentCredentialsMixin):
         user = self.request.user
         if not user.is_authenticated:
             success_url = reverse('checkout:thank-you')
+        if user.is_authenticated:
+            success_url = reverse('checkout:thank-you')
         if flow_type:
             success_url += '?flow_type=' + flow_type
             # remove flow_type from session

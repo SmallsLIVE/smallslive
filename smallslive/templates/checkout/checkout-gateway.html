@@ -26,6 +26,25 @@
 
         {% include "oscar/partials/form_field.html" with field=form.username %}
 
+        <div class="form-group {% if form.password.errors %}error{% endif %} user-password-field invisible">
+          {{ form.options.errors }}
+          <div class="controls">
+              <div class="radio">
+                  <div class="form-element-wraper password-radio invisible">
+                    {{ form.options.2.tag }}
+                    <label class="form-check-label" for="id_options_2"> {{ form.options.2.choice_label }}</label>
+                  </div>
+                  <div class="form-inline">
+                      {% render_field form.password class+="form-control" %}
+                        {% comment %}<small class="password-remainder"><a href="{% url 'account_reset_password' %}" tabindex="-1">{% trans "Get a password reminder" %}</a></small>{% endcomment %}
+                      {% for error in form.password.errors %}
+                          <span class="error-block">{{ error }}</span>
+                      {% endfor %}
+                  </div>
+              </div>
+          </div>
+        </div>
+
         <div class="form-group">
           <div class="row">
               <div class="col-sm-3">
@@ -41,25 +60,6 @@
               <label class="form-check-label" for="id_options_0"> {{ form.options.0.choice_label }}</label>
             </div>
           </div>
-        </div>
-
-        <div class="form-group {% if form.password.errors %}error{% endif %} invisible">
-            {{ form.options.errors }}
-            <div class="controls">
-                <div class="radio">
-                    <div class="form-element-wraper">
-                      {{ form.options.2.tag }}
-                      <label class="form-check-label" for="id_options_2"> {{ form.options.2.choice_label }}</label>
-                    </div>
-                    <div class="form-inline">
-                        {% render_field form.password class+="form-control" %}
-                        <small class="password-remainder"><a href="{% url 'account_reset_password' %}" tabindex="-1">{% trans "Get a password reminder" %}</a></small>
-                        {% for error in form.password.errors %}
-                            <span class="error-block">{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="form-group invisible">
@@ -82,6 +82,15 @@
       if($('.guest-checkout').length){
         $(".form-group>.control-label").remove();
         $('<label for="id_username" class="control-label email">Please enter your email and continue</label>').insertBefore('#id_username');
+
+        if($('#id_username').next().hasClass('error-block') && $('.error-block').text().toLocaleLowerCase().includes('a user with that email address already exists')){
+          $('.user-password-field').removeClass('invisible');
+          $('input[value="anonymous"]').removeAttr('checked');
+          $('input[value="existing"]').attr('checked', true);
+          console.log('here');
+        }else {
+          $('.user-password-field').css('display', 'none');
+        }
       }
     });
   </script>
