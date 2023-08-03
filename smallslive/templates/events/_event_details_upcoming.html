@@ -65,8 +65,17 @@
         }
 
       } else {
+        /*
         var $modal = $('#becomeMemberDialog');
-        $modal.modal('show');
+        $modal.modal('show'); */
+
+        var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
+        if (moment() - allowStreamingTime > 0) {
+          window.location = "{{ streaming.event_url }}";
+        } else {
+          $('#streamingNotAvailableDialog').modal('show');
+        }
+
       }
     });
 

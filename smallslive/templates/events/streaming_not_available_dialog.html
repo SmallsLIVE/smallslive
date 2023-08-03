@@ -7,21 +7,23 @@
       <div class="modal-body">
         {% if not event.streamable %}
           <p class="title2 accent-color nowrap">This event will not be live streamed at the request of the artist</p>
-        {% elif sets and user.is_authenticated %}
+        {% elif sets %}
           <p class="title2 accent-color nowrap">This event will be streaming live{% if not event.is_today %} on {{ event.date|date:"m/d/Y" }} {% endif %} at {{ sets.0.start|time:"g:iA" }} EST.</p>
-        {% elif user.is_authenticated %}
+        {% else %}
           <p class="title2 accent-color nowrap">Streaming for this event will be available 15 minutes before it begins</p>
         {% endif %}
 
-        {% if not user.is_authenticated %}
-          <p class="text4">Become a member of the SmallsLIVE Foundation to watch our live stream.</p>
-          <div class="flex-row">
-            <button class="white-border-button">
-              <a href="{% url 'contact-and-info' %}#foundation">More Info</a>
-            </button>
-            <button class="white-border-button" onclick="$('#streamingNotAvailableDialog').modal('hide'); $('#becomeMemberDialog').modal('show');">Become a member</button>
-          </div>
-        {% endif %}
+        {% comment %}
+          {% if not user.is_authenticated %}
+            <p class="text4">Become a member of the SmallsLIVE Foundation to watch our live stream.</p>
+            <div class="flex-row">
+              <button class="white-border-button">
+                <a href="{% url 'contact-and-info' %}#foundation">More Info</a>
+              </button>
+              <button class="white-border-button" onclick="$('#streamingNotAvailableDialog').modal('hide'); $('#becomeMemberDialog').modal('show');">Become a member</button>
+            </div>
+          {% endif %}
+        {% endcomment %}
 
         {% if currently_live_event_url %}
           <a class="white-border-button no-v-padding" href="{{ currently_live_event_url }}">View currently live event</a>

@@ -14,7 +14,12 @@
     <div class="button-row">
       {% include 'partials/header_button.html' with button_url='home' button_text='Calendar' %}
       {% include 'partials/header_button.html' with button_url='tickets' button_text='Tickets' %}
-      {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
+      {# {% include 'partials/header_button.html' with button_url='archive' button_text='Archives' %} #}
+      <a href="#" data-toggle="modal" data-target="#archieve-modal">
+        <p class="no-border">
+          Archive
+        </p>
+      </a>
       {% include 'partials/header_button.html' with button_url='foundation' button_text='Foundation' %}
       {% include 'partials/header_button.html' with button_url='livestream' button_text='Livestream' %}
       {% include 'partials/header_button.html' with button_url='contact' button_text='Contact' %}
@@ -140,6 +145,18 @@
       {% include 'partials/header_button.html' with button_url='contact' button_text='Contact' %}
       {% include 'partials/header_button.html' with button_url='about' button_text='About' %}
       {% include 'partials/header_button.html' with button_url='store' button_text='Store' %}
+    </div>
+  </div>
+</div>
+
+<!-- Archive button new modal-->
+<div class="modal fade" id="archieve-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div id="archieve-modal" class="modal-content custom-modal no-cancel">
+      <a href="#" class="close-button"></a>
+      <div class="modal-body">
+        <p class="text4">Here is the modal dummy body text. Go to New Foundation site.</p>
+      </div>
     </div>
   </div>
 </div>
