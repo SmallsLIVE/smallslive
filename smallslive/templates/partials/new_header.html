@@ -33,9 +33,11 @@
 
     <div class="user-menu white-border-select no-arrow">
       {% if not request.user.is_authenticated %}
-        <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
-          Sign In
-        </button>
+        {% comment %}
+          <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
+            Sign In
+          </button>
+        {% endcomment %}
       {% else %}
         <select id="userMenu">
           <option value="current" noSelect="1" selected="selected" title="{{ request.user.email }}">
@@ -150,16 +152,7 @@
 </div>
 
 <!-- Archive button new modal-->
-<div class="modal fade" id="archieve-modal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-    <div id="archieve-modal" class="modal-content custom-modal no-cancel">
-      <a href="#" class="close-button"></a>
-      <div class="modal-body">
-        <p class="text4">Here is the modal dummy body text. Go to New Foundation site.</p>
-      </div>
-    </div>
-  </div>
-</div>
+{% include 'events/archive_new_popup.html' %}
 <script>
   var $side_navigation = $('#side-navigation');
 

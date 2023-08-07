@@ -4,12 +4,17 @@
     {{ form.event_set }}
     <p> 
         <div class="flex-row">
-        <input type="submit" class="white-border-button" value="Comment"  {% if not user.can_watch_video %}  href="#logIn" data-toggle="modal" {% endif %} />
+        {% comment %}
+          <input type="submit" class="white-border-button" value="Comment"  {% if not user.can_watch_video %}  href="#logIn" data-toggle="modal" {% endif %} />
+        {% endcomment %}
+        <a class="white-border-button" style="line-height: 23px"  href="#archieve-modal" data-toggle="modal">Comment</a>
         {% csrf_token %}
         {% if not request.user.is_authenticated %}
-          <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
-            Sign In
-          </button>
+          {% comment %}
+            <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
+              Sign In
+            </button>
+          {% endcomment %}
         {% endif %}
         </div>
     </p>

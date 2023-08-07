@@ -140,7 +140,9 @@
           }
 
         } else {
-          var $modal = $('#becomeMemberDialog');
+          /* var $modal = $('#becomeMemberDialog');
+          $modal.modal('show'); */
+          var $modal = $('#archieve-modal');
           $modal.modal('show');
         }
       });
@@ -363,7 +365,8 @@
           });
       {% else %}
         function cannotWatchModalOpen() {
-          var modal = '#becomeMemberDialog';
+          //var modal = '#becomeMemberDialog';
+          var modal = '#archieve-modal';
           if (smallsConfig.user.isAuthenticated) {
             modal = '#become-a-supporter-dialog';
           }
