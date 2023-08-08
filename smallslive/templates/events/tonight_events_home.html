@@ -23,13 +23,20 @@
       <div class="artists">
         {% with event.artists_gig_info.count as artist_count %}
           {% for gig in event.artists_gig_info.all|slice:"5" %}
-            <a class="title5 {% if artist_count <= 3 %}full-width{% endif %}" href="/search/?artist_pk={{ gig.artist.pk }}">
-                  {{ gig.artist }} / {{ gig.role }}</a>
+            {% comment %}
+              <a class="title5 {% if artist_count <= 3 %}full-width{% endif %}" href="/search/?artist_pk={{ gig.artist.pk }}">
+                {{ gig.artist }} / {{ gig.role }}
+              </a>
+            {% endcomment %}
+            <!-- remove link from artist for new ticketing site -->
+            <div class="title5 artists-name {% if artist_count <= 3 %}full-width{% endif %}">{{ gig.artist }} / {{ gig.role }}</div>
           {% endfor %}
-          {% if artist_count > 5 %}
-            <a class="title5" href="{{ event.get_absolute_url }}">
-                  ... </a>
-          {% endif %}
+          {% comment %}
+            {% if artist_count > 5 %}
+              <a class="title5" href="{{ event.get_absolute_url }}">
+                    ... </a>
+            {% endif %}
+          {% endcomment %}
         {% endwith %}
       </div>
     </article>

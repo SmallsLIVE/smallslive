@@ -374,7 +374,8 @@ $event-row-padding: 3.5vw;
       height: 14vw;
     }
 
-    a {
+    a,
+    .artists-name {
       line-height: 32px;
       width: 48%;
       height: 1.4vw;
@@ -402,6 +403,14 @@ $event-row-padding: 3.5vw;
         &.full-width {
           width: 100%;
         }
+      }
+    }
+
+    .artists-name {
+
+      &:hover {
+        color: $black;
+        text-decoration: none;
       }
     }
   }

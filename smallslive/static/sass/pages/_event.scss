@@ -301,7 +301,7 @@ $player-height: 25.3vw;
 
   .artist-link {
     @include text1();
-    cursor: pointer;
+    // cursor: pointer;
     text-transform: capitalize;
     font-size: 2em;
     color: black;
@@ -756,7 +756,7 @@ $player-height: 25.3vw;
 
   &:hover {
     color: black;
-    text-decoration: underline;
+    // text-decoration: underline;
   }
 }
 
