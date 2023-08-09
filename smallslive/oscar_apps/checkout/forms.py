@@ -14,11 +14,14 @@ from oscar.apps.address.models import UserAddress
 from oscar.apps.checkout.forms import GatewayForm as CoreGatewayForm
 from oscar.apps.customer.utils import normalise_email
 from email_validator import validate_email, EmailNotValidError
+from oscar.core.compat import get_user_model
+from django.utils.translation import gettext_lazy as _
 
 
 STATE_CHOICES_WITH_EMPTY = (('', ''),) + STATE_CHOICES
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
+User = get_user_model()
 
 class ShippingAddressForm(checkout_forms.ShippingAddressForm):
     state = us_forms.USStateField(widget=floppyforms.Select(choices=STATE_CHOICES_WITH_EMPTY), required=False)
@@ -188,8 +191,13 @@ class GatewayForm(CoreGatewayForm):
                                        widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
     password = forms.CharField(label=("Password"), widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
-    
+
     def clean(self):
+        if self.is_guest_checkout():
+            if 'password' in self.errors:
+                del self.errors['password']
+            return self.cleaned_data
+
         if not self.is_guest_checkout():
             if 'first_name' in self.errors:
                 del self.errors['first_name']
@@ -205,3 +213,9 @@ class GatewayForm(CoreGatewayForm):
         except EmailNotValidError as e:
             raise forms.ValidationError("The email address is invalid. Perhaps there was a typo? Please try again.")
         return email
+
+    def is_guest_checkout(self):
+        print('===here we go new===')
+        print(self.cleaned_data.get('options', None))
+
+        return self.cleaned_data.get('options', None) == self.GUEST

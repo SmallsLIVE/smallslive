@@ -150,6 +150,53 @@
   }
 }
 
+#mc_embed_shell {
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 18px;
+  padding: 15px 0;
+  text-align: center;
+
+  .mc_field_group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    label {
+      font-weight: normal;
+      letter-spacing: 1.5px;
+    }
+
+    div.mce_inline_error {
+      background: no-repeat;
+      color: #d21535;
+      font-weight: 100;
+      left: 0;
+      padding: 0;
+      position: absolute;
+      top: 100%;
+      width: 100%;
+    }
+
+    .email {
+      border: 1px solid #ccc;
+      border-radius: 0;
+      margin: 0 10px;
+      padding: 5px 10px;
+    }
+  }
+
+  #mce-success-response {
+    margin-bottom: 25px;
+    color: green;
+  }
+
+  #mce-error-response {
+    margin-bottom: 25px;
+    color:red;
+  }
+}
+
 @media (max-width: $screen-sm-max) {
   .subscription-settings {
 

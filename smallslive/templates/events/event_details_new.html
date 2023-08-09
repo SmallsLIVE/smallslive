@@ -205,20 +205,22 @@
         </div>
       </div>
       {% endif %}
-      <div class="event-related-videos">
-        <div class="section-title section-flex">
-          <div class="title1">Related videos</div>
-        </div>
-        <div>
+      {% comment %}
+        <div class="event-related-videos">
+          <div class="section-title section-flex">
+            <div class="title1">Related videos</div>
+          </div>
           <div>
-            {% for related in related_videos%}
-              <div class="flex-row related-video">
-                {% include 'events/event_card.html' with event=related mini=True side_info=True %}
-              </div>
-            {% endfor %}
+            <div>
+              {% for related in related_videos%}
+                <div class="flex-row related-video">
+                  {% include 'events/event_card.html' with event=related mini=True side_info=True %}
+                </div>
+              {% endfor %}
+            </div>
           </div>
         </div>
-      </div>
+      {% endcomment %}
     </div>
   </div>
 

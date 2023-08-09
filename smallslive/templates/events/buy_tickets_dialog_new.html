@@ -7,7 +7,8 @@
         {% else %}
 
         {% endif %}
-        <p class="title2" tabindex="0">You are purchasing tickets for: <span class="text-capitalize">{{ event.title }}</span><br>
+        <p class="title2" tabindex="0">You are purchasing tickets for:<br>
+          <span class="text-capitalize">{{ event.title }}</span><br>
           On: {{ event.date }}<br>
           Time: <span id="ticket-time"></span><br>
           Ticket prices for this show is: $<span id="ticket-price" tabindex="0"></span><br>
