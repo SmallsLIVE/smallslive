@@ -467,6 +467,17 @@
     }
   }
 }
+
+.top-event-slider {
+
+  .section-title {
+
+    &.calendar {
+      background-size: calc(645px + 3.5vw) 5px;
+    }
+  }
+}
+
 .tabs div .title1 {
   @media (min-width: 690px) and (max-width: 850px) {
     //line-height: 5vw;

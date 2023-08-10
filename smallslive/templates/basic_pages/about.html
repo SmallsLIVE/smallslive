@@ -11,10 +11,10 @@
 {% endblock %}
 
 {% block home_content %}
-    <main class="static-content basic-page">
+    <main class="static-content basic-page about-page">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 about-content-wrapper">
                     <img class="big centered" src="{% static 'image/basic_pages/empty-club.jpeg' %}" alt="Empty club">
                     <p>Smalls Jazz Club opened in 1994 by ex-naval nurse, Mitch Borden. Borden brought a philosophical approach to managing the club. He felt that the social element of hanging out was of utmost importance. He fostered a loose club environment featuring jam sessions and gave the musical community priority over sound business practice. A young generation of musicians quickly made Smalls their homebase. During the early period of Smalls, there was no liquor license and the club operated 24/7. Some musicians lived in the club full time. Many prominent names of the current jazz scene cut their teeth at Smalls. Now, multiple generations of jazz musicians credit Smalls as their incubator and a start to their careers.</p>
 
@@ -25,6 +25,8 @@
                     <p>Both clubs are now vibrantly full of jazz loving people from all over the world. The musicians are all top rate and playing their hearts out for an adoring and sympathetic crowd. We invite you to come visit us in person, reserve a seat and enjoy a concert.</p>
 
                     <p>Please sign up for our weekly newsletter <a href="#" class="accent-color">[LINK]</a> </p>
+                    
+                    {% include 'partials/newsletter.html' %}
                 </div>
             </div>
         </div>

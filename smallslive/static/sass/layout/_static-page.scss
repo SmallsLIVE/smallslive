@@ -277,6 +277,18 @@
   }
 }
 
+.about-page {
+
+  .about-content-wrapper {
+    margin-bottom: 40px;
+  }
+
+  .mc_field_group {
+    justify-content: start !important;
+    margin-left: -10px;
+  }
+}
+
 .big-quote {
   position: relative;
   left: -20px;

@@ -15,5 +15,5 @@ def get_today_and_tomorrow_dates(date_format):
         today = now_ny
     tomorrow = today + datetime.timedelta(days=1)
 
-    return '{} - {}'.format(today.strftime(date_format),
-                            tomorrow.strftime(date_format))
+    return '{} - {}'.format(today.strftime('%b %d %a'),
+                            tomorrow.strftime('%b %d %a'))
