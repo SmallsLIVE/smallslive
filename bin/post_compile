@@ -8,6 +8,7 @@ pip install djangorestframework==3.13.0
 pip install django-filter==2.3.0
 pip install celery==3.1.19
 
+
 # Run Django migrations.
 python smallslive/manage.py migrate catalogue --noinput
 python smallslive/manage.py migrate voucher --noinput
