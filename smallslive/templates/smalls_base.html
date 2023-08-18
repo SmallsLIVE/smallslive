@@ -2,6 +2,7 @@
 {% load pipeline %}
 {% load show_modal %}
 {% load static from staticfiles %}
+{% load site_id_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +45,7 @@
   {% block extra_head %}
   {% endblock %}
 </head>
-<body class="{% block body_class %}default{% endblock %} {% if user.is_superuser %}admin-header{% endif %}">
+<body class="{% block body_class %}{% endblock %} {% if user.is_superuser %}admin-header{% endif %}">
 {% show_modal %}
 {% include "account/ajax_login.html" %}
 {% include "account/ajax_become_member.html" %}
@@ -54,33 +55,30 @@
 {% include 'messages.html' %}
 
 {% block header %}
-  {% if user.is_superuser %}
-    {% include 'admin_header.html' %}
-  {% endif %}
-  {% include 'bootstrap_header.html' %}
+  <div class="navigation-bars">
+    {% if user.is_superuser %}
+      {% include 'admin_header.html' %}
+    {% endif %}
+
+    {% get_site_id as site_id %}
+    {% if site_id == 1 %}
+      {% include 'partials/new_header.html' %}
+    {% else %}
+      {% include 'partials/new_header_foundation.html' %}
+    {% endif %}
+
+    {% block extra_nav %}
+    {% endblock %}
+  </div>
 {% endblock %}
 
 
 {% block content %}{% endblock content %}
 
 {% block footer %}
-
-<footer class="container">
-  <div class="footer-content">
-    <img class="footer-logo" src="{% static "new_logo_transparent_black.svg" %}" alt=""/>
-    <ul class="footer-nav">
-      <li><a href="{% url "static_page" "privacy" %}">Privacy</a></li>
-      <li><a href="{% url "terms-and-conditions" %}">Terms and Conditions</a></li>
-      <li><a href="{% url "contact-and-info" %}">Contact & Info</a></li>
-    </ul>
-    <address>
-      <a href="https://goo.gl/maps/s4jFT">SmallsLIVE  |  183 West 10th Street, Basement  |  New York City, NY 10014</a> <br/>
-      <a href="mailto:smallslive@gmail.com">smallslive@gmail.com</a>
-    </address>
-  </div>
-
-</footer>
+  {% include 'partials/footer.html' %}
 {% endblock %}
+
 <div id="mobile_detector" class="visible-xs" style="width: 1px; height: 1px; display: inline; position: fixed; z-index: -1"></div>
 {% javascript 'js' %}
 <script>

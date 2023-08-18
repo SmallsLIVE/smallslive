@@ -12,10 +12,12 @@
 {% block album_listing %}
     <div hidden class="albumpage" data-page={{pagenumber}}></div>
     {% if artist_page %}
+        <!-- here we go -->
         {% for album in album_page %}
             {% render_product album.product %}
         {% endfor %}
     {% else %}
+    <!-- here we go 11 -->
         {% for album in album_page %}
             {% render_product album %}
         {% endfor %}

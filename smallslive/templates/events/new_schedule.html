@@ -10,17 +10,6 @@
 
 {% endblock %}
 
-{% block header %}
-  <div class="navigation-bars this-new">
-    {% if user.is_superuser %}
-      {% include 'admin_header.html' %}
-    {% endif %}
-    {% include 'partials/new_header.html' %}
-    {% block extra_nav %}
-    {% endblock %}
-  </div>
-{% endblock %}
-
 {% block home_content %}
 <main class="calendar">
   <div class="event-stripe">

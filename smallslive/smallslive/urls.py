@@ -13,7 +13,7 @@ from django.template import TemplateDoesNotExist
 # from paypal.express.dashboard.app import application as paypal_application
 from django.contrib.sitemaps import views as sitemaps_views
 from django.views.decorators.cache import cache_page
-from oscar_apps.catalogue.views import ArtistCatalogue, get_album_catalog
+from oscar_apps.catalogue.views import ArtistCatalogue, get_album_catalog, CatalogueView
 from utils.views import OldSiteRedirectView
 from .sitemaps import sitemaps
 from newsletters.views import *
@@ -91,12 +91,13 @@ urlpatterns = [
     url(r'^robots\.txt', static_file_view, kwargs={'file_name': 'robots.txt'}),
     url(r'^crossdomain\.xml', static_file_view, kwargs={'file_name': 'crossdomain.xml'}),
     # url(r'^$', homepage, name="home"), # Old home Route/URL.
-    url(r'^$', schedule, name="home"),
+    url(r'^$', schedule if settings.SITE_ID == 1 else homepage, name="home"),
     url(r'^livestream/$', livestream, name="livestream"),
-    url(r'^tickets/$', ticketing, name="tickets"),
+    url(r'^tickets/$', ticketing if settings.SITE_ID == 1 else redirect_to_home, name="tickets"),
     url(r'^foundation/$', foundation, name="foundation"),
     # url(r'^store/$', store, name="store"),
     url(r'^about/$', about, name="about"),
+    url(r'^catalog/$', CatalogueView.as_view(), name="catalog"),
     url(r'^contact/$', contact, name="contact"),
     url(r'^old/$', old_home, name="old_home"),
     url(r'^styles/$', styleguide, name="styles"),

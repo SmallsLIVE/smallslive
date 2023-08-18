@@ -2,6 +2,7 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 {% load common_tags %}
+{% load site_id_tags %}
 {% load i18n %}
 
 {% block homepage_nav_active %}active{% endblock %}
@@ -24,17 +25,6 @@
         content="The SmallsLIVE Foundation for Jazz Art & Education is a not-for-profit arts organization. Our mission is to subsidize the operation of our venues, recording projects, tours and educational initiatives">
 {% endblock %}
 
-{% block header %}
-  <div class="navigation-bars">
-    {% if user.is_superuser %}
-      {% include 'admin_header.html' %}
-    {% endif %}
-    {% include 'partials/new_header.html' %}
-    {% block extra_nav %}
-    {% endblock %}
-  </div>
-{% endblock %}
-
 {% block content %}
   {% if user.is_authenticated %}
     {% include 'inactive_dialog.html' %}
@@ -53,64 +43,63 @@
     {% block home_content %}
     <main style="visibility: hidden;">
       {% include 'home_banners_carousel.html' %}
-      <div class="event-stripe">
-        {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
-        <section id="recently-added-section" class="event-stripe">
-          <div class="section-title home recently">
-            <div class="title1">
-              <span id="ra-recently-added-toggle" class="accent-color no-link"> Recently Added</span>  \
-              <span id="ra-most-popular-toggle" class="no-link">Most Popular</span>
-            </div>
-            <span id="most-popular-filter-container" class="select-container hidden">
-              <div class="white-border-select home-filter">
-                <select id="most-popular-filter">
-                  <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
-                  <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
-                  <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
-                  <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
-                </select>
+
+      {% comment %}
+        <div class="event-stripe">
+          {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
+          <section id="recently-added-section" class="event-stripe">
+            <div class="section-title home recently">
+              <div class="title1">
+                <span id="ra-recently-added-toggle" class="accent-color no-link"> Recently Added</span>  \
+                <span id="ra-most-popular-toggle" class="no-link">Most Popular</span>
               </div>
-            </span>
-          </div>
-          <main id="recently-added-container">
-            <div class="slide-btn recently prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="slide-btn recently next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'events/event_row.html' with events=new_in_archive secondary=True carousel='recently-carousel' %}
-          </main>
-          <main id="most-popular-container" class="hidden">
-            <div class="slide-btn popular prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="slide-btn popular next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'events/event_row.html' with events=popular_in_archive secondary=True carousel='popular-carousel' %}
-          </main>
-        </section>
+              <span id="most-popular-filter-container" class="select-container hidden">
+                <div class="white-border-select home-filter">
+                  <select id="most-popular-filter">
+                    <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
+                    <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
+                    <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
+                    <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
+                  </select>
+                </div>
+              </span>
+            </div>
+            <main id="recently-added-container">
+              <div class="slide-btn recently prev"><b class="indicator-icon icon-left-caret"></b></div>
+              <div class="slide-btn recently next"><b class="indicator-icon icon-right-caret"></b></div>
+              {% include 'events/event_row.html' with events=new_in_archive secondary=True carousel='recently-carousel' %}
+            </main>
+            <main id="most-popular-container" class="hidden">
+              <div class="slide-btn popular prev"><b class="indicator-icon icon-left-caret"></b></div>
+              <div class="slide-btn popular next"><b class="indicator-icon icon-right-caret"></b></div>
+              {% include 'events/event_row.html' with events=popular_in_archive secondary=True carousel='popular-carousel' %}
+            </main>
+          </section>
 
-        <section id="most-popular-section" class="event-stripe hidden">
-          <div class="section-title home archive">
-            <div class="title1"><a href="#" id="mp-recently-added-toggle"> Recently Added</a>  \ <a href="#" id="mp-most-popular-toggle" class="accent-color">Most Popular</a></div>
+          <section id="most-popular-section" class="event-stripe hidden">
+            <div class="section-title home archive">
+              <div class="title1"><a href="#" id="mp-recently-added-toggle"> Recently Added</a>  \ <a href="#" id="mp-most-popular-toggle" class="accent-color">Most Popular</a></div>
 
-          </div>
+            </div>
 
-        </section>
+          </section>
 
-        <section class="event-stripe">
-          <div class="section-title home highlights">
-            <div class="title1">Highlights from the Archive</div>
-          </div>
-          <main>
-            <div class="highlights slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="highlights slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'events/event_row.html' with events=staff_picks carousel='tonight-events highlights-carousel' %}
-          </main>
-        </section>
-      </div>
+          <section class="event-stripe">
+            <div class="section-title home highlights">
+              <div class="title1">Highlights from the Archive</div>
+            </div>
+            <main>
+              <div class="highlights slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+              <div class="highlights slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+              {% include 'events/event_row.html' with events=staff_picks carousel='tonight-events highlights-carousel' %}
+            </main>
+          </section>
+        </div>
+      {% endcomment %}
     </main>
     {% endblock %}
   </div>
 {% endblock%}
-
-{% block footer %}
-  {% include 'partials/footer.html' %}
-{% endblock %}
 
 {% block extra_js %}
   {% if activation_key %}

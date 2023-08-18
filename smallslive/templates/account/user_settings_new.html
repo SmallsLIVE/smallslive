@@ -15,10 +15,6 @@
         content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
 {% endblock %}
 
-{% block header %}
-{% include 'partials/new_header.html' %}
-{% endblock %}
-
 {% block content %}
 {% if user.is_authenticated %}
   {% include 'inactive_dialog.html' %}

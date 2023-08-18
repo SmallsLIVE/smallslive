@@ -17,8 +17,7 @@ body {
     }
   }
 
-  @include background-image(url("../image/header_bg.jpg"),
-  url("../image/background-tile.png"));
+//   @include background-image(url("../image/header_bg.jpg"), url("../image/background-tile.png"));
   background-color: $background-color;
   background-position: center top, 0 0;
   background-repeat: no-repeat, repeat;

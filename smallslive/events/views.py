@@ -49,6 +49,7 @@ from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     ShowDefaultTimeInlineFormset, ShowDefaultTimeInlineFormsetHelper, \
     VenueAddForm
 from .models import Event, Venue, ShowDefaultTime, RANGE_MONTH
+from events.mixins import CurrentSiteIdMixin
 
 RANGE_YEAR = 'year'
 RANGE_MONTH = 'month'
@@ -113,8 +114,8 @@ def calculate_query_range(range_size, weekly=None):
 
     return range_start, range_end
 
-
-class HomepageView(ListView, UpcomingEventMixin):
+       
+class HomepageView(ListView, UpcomingEventMixin, CurrentSiteIdMixin):
     template_name = 'home_new.html'
 
     def get_queryset(self):
@@ -127,6 +128,8 @@ class HomepageView(ListView, UpcomingEventMixin):
 
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
+        
+        context = self.get_site_context_data(context)
         context = self.get_upcoming_events_context_data(context)
 
         if self.request.user.is_authenticated:
@@ -139,6 +142,7 @@ class HomepageView(ListView, UpcomingEventMixin):
         context['popular_in_archive'] = Event.objects.get_most_popular_uploaded()
         context['popular_select'] = 'alltime'
         context['events_today'] = list(self.get_queryset())
+        #context['SITE_ID'] = settings.SITE_ID
 
         activation_key =  self.request.GET.get('activate_account')
         if activation_key:
@@ -157,6 +161,11 @@ class HomepageView(ListView, UpcomingEventMixin):
 
 homepage = HomepageView.as_view()
 
+class RederictToHome(View):
+    def get(self, request, *args, **kwargs):
+        return HttpResponseRedirect(reverse('home'))
+
+redirect_to_home = RederictToHome.as_view()
 
 class OldHomeView(HomepageView):
     template_name = 'home.html'
@@ -651,16 +660,16 @@ def annotate_events(events):
     })
 
 
-class GenericScheduleView(TemplateView, UpcomingSearchView):
+class GenericScheduleView(TemplateView, UpcomingSearchView, CurrentSiteIdMixin):
     context_object_name = 'dates'
     template_name = 'events/new_schedule.html'
 
     def get_context_data(self, **kwargs):
         context = super(GenericScheduleView, self).get_context_data(**kwargs)
+        context = self.get_site_context_data(context)
         context['venues'] = Venue.objects.all()
         context['default_from_date'] = timezone.now().strftime('%m/%d/%Y')
         context.update(self.get_upcoming_context())
-
         return context
 
 

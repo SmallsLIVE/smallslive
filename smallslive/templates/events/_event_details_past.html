@@ -7,6 +7,7 @@
 {% load purchase_info_tags %}
 {% load basket_tags %}
 {% load crispy_forms_tags %}
+{% load site_id_tags %}
 
 {% block event_content %}
 {% if user.is_authenticated %}
@@ -366,9 +367,11 @@
       {% else %}
         function cannotWatchModalOpen() {
           //var modal = '#becomeMemberDialog';
-          var modal = '#archieve-modal';
+          var site_id = ('{% get_site_id as site_id %}')
+          var modal = ('{% if site_id == 1 %}#archieve-modal{% else %}#becomeMemberDialog{% endif %}')
           if (smallsConfig.user.isAuthenticated) {
-            modal = '#become-a-supporter-dialog';
+            /* modal = '#become-a-supporter-dialog'; */
+            modal = ('{% if site_id == 1 %}#archieve-modal{% else %}#become-a-supporter-dialog{% endif %}')
           }
           $(modal).modal('show');
         }
