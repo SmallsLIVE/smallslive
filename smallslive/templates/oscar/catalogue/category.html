@@ -1,0 +1,98 @@
+{% extends "store_base.html" %}
+{% load basket_tags %}
+{% load category_tags %}
+{% load product_tags %}
+{% load i18n %}
+{% load purchase_info_tags %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load currency_filters %}
+
+
+{% block store_nav_active %}active{% endblock %}
+
+{% block title %}{{ category.name }} - {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+    <span class="store-header__title__divider">|</span>
+    {% for category in category.get_ancestors %}
+        <span class="store-header__title__category"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></span>
+        <span class="store-header__title__divider">|</span>
+    {% endfor %}
+    <span class="store-header__title__category"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></span>
+{% endblock %}
+
+{% block store_content %}
+    <div class="store-listing__content flex-column">
+        {% if featured_product %}
+            {% purchase_info_for_product request featured_product as session %}
+            <div class="section-title">
+                <div class="title1">Featured</div>
+            </div>
+            <div class="store-listing__big-item flex-row">
+                <div class="store-listing__big-item__image">
+                    {% with image=featured_product.primary_image %}
+                        {% if not image.is_missing %}
+                          <a href="{{ featured_product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode width=400 smart=True %}" alt="{{ featured_product.get_title }}"></a>
+                        {% else %}
+                          <a href="{{ featured_product.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ featured_product.get_title }}"></a>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="store-listing__big-item__content">
+                    <div class="store-listing__big-item__name">
+                        <a href="{{ featured_product.get_absolute_url }}">{{ featured_product.title }}</a>
+                    </div>
+                    <div class="store-listing__big-item__description text-grey">
+                        {{ featured_product.short_description|safe }}
+                    </div>
+                        {% if session.price.exists %}
+                            {% if session.price.excl_tax == 0 %}
+                                <span class="store-listing__big-item__price">{% trans "Free" %}</span>
+                            {% elif session.price.is_tax_known %}
+                                <span class="store-listing__big-item__price">{{ session.price.incl_tax|currency:session.price.currency }}</span>
+                            {% else %}
+                                <span class="store-listing__big-item__price">{{ session.price.excl_tax|currency:session.price.currency }}</span>
+                            {% endif %}
+                        {% else %}
+                            <span class="store-listing__big-item__price">&nbsp;</span>
+                        {% endif %}
+                    <form id="add_to_basket_form" action="{% url 'basket:add' pk=featured_product.pk  %}" method="post" class="add-to-basket">
+                      {% if session.availability.is_available_to_buy %}
+                        {% basket_form request product 'single' as basket_form %}
+                        <div class="store-add-large" style='flex-direction: column'>
+                            {% csrf_token %}
+                            {{ basket_form.quantity }}
+                            {% if basket_form.fields.child_id.choices %}
+                              <select class="store-add-large__options" name="child_id">
+                                  {% for item_value, item_name in basket_form.fields.child_id.choices %}
+                                    <option value="{{ item_value }}">{{ item_name }}</option>
+                                  {% endfor %}
+                              </select>
+                              <div class="arrow-button-container"><button type="submit" class="white-border-button"></button></div>
+                            {% else %}
+                              {{ basket_form.child_id }}
+                                <!--<div class="arrow-button-container"><button type="submit" class="store-add-large__button" style='margin: 0; margin-bottom: 15px '>Add to cart</button><span style='margin-bottom: 15px ' class="arrow"></span></div>-->
+                                <div><button type="submit" class="white-border-button">Add to cart</button></div>
+                            {% endif %}
+                        </div>
+                      {% endif %}
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+        <div class="section-title">
+            <div class="title1">Store products</div>
+        </div>
+        <div class="row store-listing__products-container">
+            {% if products %}
+                {% for product in products %}
+                    {% render_product product %}
+                {% endfor %}
+                {% include "partials/pagination-store-front.html" %}
+            {% else %}
+                <p class="nonefound">{% trans "No products found." %}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock store_content %}

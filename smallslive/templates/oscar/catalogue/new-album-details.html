@@ -1,0 +1,83 @@
+<div class="my-downloads-album row big-player">
+<div class="my-downloads-album__cover flex-column player-container " data-track=0>
+    {% with image=product.primary_image %}
+    {% if product.parent_id %}
+        {% with image=product.parent.primary_image %}
+                <div style="position: relative">
+                    <img class="defineImageRatio" src="{{ image.original.url }}" alt="{{ product.get_title }}">
+                    <div class="purchases-player-button myplay-btn">
+                        <div class="fa-thin-circle fa" >
+                        <i class="fas fa-play"></i></div>
+                    </div>
+                </div>
+
+        {% endwith %}
+    {% else %}
+        {% with image=product.primary_image %}
+            {% thumbnail image.original "245x245" upscale=False as thumb %}
+                <div style="position: relative">
+                    <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}">
+                        <div class="purchases-player-button myplay-btn">
+                        <div class="fa-thin-circle fa" >
+                        <i class="fas fa-play"></i></div>
+                    </div>
+                </div>
+            {% endthumbnail %}
+        {% endwith %}
+    {% endif %}
+    {% endwith %}
+
+    <a class="title6" href="{{ product.get_absolute_url }}">{% if product.parent %}{{ product.parent.title }} - {% endif %}{{ product.title }}</a>
+</div>
+<div class="song-container">
+    <div class="my-downloads-album__tracks-table">
+    {% for track in product.tracks.all|dictsort:"ordering" %}
+        <!-- tracks table row -->
+        <div style="position:relative">
+            <div class="my-downloads-album__tracks-table__row flex-row">
+                <div class="progress-bar"></div>
+                <div class="hidden my-downloads-album__tracks-table__column audio">
+                    <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
+                    {% if is_hd %}
+                        <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                    {% else %}
+                        <source src="{{ track.get_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                    {% endif %}
+
+                    </audio>
+                </div>
+                <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
+                    <div class="my-downloads-album__tracks-table__column title2">
+                    {{ track.title }}
+                    </div>
+                    <div class="my-downloads-album__tracks-table__column composer text1">
+                        {{ track.attr.composer }}
+                    </div>
+                </div>
+                <div class="my-downloads-album__tracks-table__column duration text1">
+                    {{ track.attr.duration }}
+                </div>
+                <div class="my-downloads-album__tracks-table__column buy-track">
+                    <div class="buy-button-container">
+                    <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">
+                            <span>Download</span> <i class="fa fa-caret-down"></i></a>
+                    <div class="dropdown-menu" role="menu">
+                        {% if is_hd %}
+                        <a class="white-border-button flex" href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download
+                            HD</a>
+                        {% else %}
+                        <a class="white-border-button flex" href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download
+                            mp3</a>
+                        {% endif %}
+
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end of tracks table row -->
+    {% endfor %}
+    </div>
+    <!-- end of tracks table -->
+</div>
+</div>

@@ -1,0 +1,58 @@
+{% extends "store_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load thumbnail %}
+{% load currency_filters %}
+{% load i18n %}
+{% load purchase_info_tags %}
+{% load basket_tags %}
+
+{% block store_nav_active %}active{% endblock %}
+
+{% block title %}{{ product.get_title }} - {{ block.super }}{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/fancybox/jquery.fancybox.css' %}">
+    <style type="text/css">
+        @media (max-width: 992px) {
+            .fancybox-next span {
+                left: auto;
+                right: -22px;
+            }
+
+            .fancybox-prev span {
+                left: -20px;
+            }
+
+            .fancybox-nav span {
+                visibility: visible;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block breadcrumbs %}
+    <span class="store-header__title__divider">|</span>
+    {% for category in category.get_ancestors %}
+        <span class="store-header__title__category"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></span>
+        <span class="store-header__title__divider">|</span>
+    {% endfor %}
+    <span class="store-header__title__category"><a href="{{ product.category.get_absolute_url }}">{{ category.name }}</a></span>
+    {% with category=product.categories.all.0 %}
+        {% for c in category.get_ancestors_and_self %}
+            <span class="store-header__title__category"><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></span>
+            <span class="store-header__title__divider">|</span>
+        {% endfor %}
+        <span class="store-header__title__category"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></span>
+    {% endwith %}
+{% endblock %}
+
+{% block store_content %}
+    {% include 'partials/detail.html' %}
+{% endblock store_content %}
+
+{% block extra_js %}
+    {{ block.super }}
+    <script src="{% static 'js/jquery.fancybox.pack.js' %}"></script>
+
+{% endblock %}

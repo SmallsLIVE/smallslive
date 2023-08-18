@@ -1,0 +1,56 @@
+{% load reviews_tags %}
+{% load thumbnail %}
+{% load i18n %}
+{% load display_tags %}
+{% load staticfiles %}
+{% load purchase_info_tags %}
+{% load currency_filters %}
+{% load thumbor_tags %}
+{% load basket_tags %}
+
+
+
+{% block product %}
+  {% purchase_info_for_product request product as session %}
+    <!-- Single store item -->
+    <div tabindex="0" class="store-list-item flex-column items-flex-stretch">
+        <div class="store-list-item-image">
+          {% if product.parent_id %}
+            {% with image=product.parent.primary_image %}
+              {% if not image.is_missing %}
+                <a tabindex="-1" aria-label="." href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+              {% else %}
+                <a tabindex="-1" aria-label="." href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+              {% endif %}
+            {% endwith %}
+          {% else %}
+            {% with image=product.primary_image %}
+                {% if not image.is_missing %}
+                  <a tabindex="-1" href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                {% else %}
+                  <a href="{{ product.get_absolute_url }}"><img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                {% endif %}
+            {% endwith %}
+          {% endif %}
+        </div>
+
+        <span class="text2 store-list-item-tile">
+            <a aria-label="." tabindex="-1" href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title }}</a>
+        </span>
+        <span class="text4">
+        </span>
+        <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
+          {% if session.availability.is_available_to_buy %}
+            {% basket_form request product 'single' as basket_form %}
+                {% csrf_token %}
+                {{ basket_form.quantity }}
+          {% endif %}
+        </form>
+    </div>
+    <!-- End of single store item -->
+{% endblock %}
+    <script>
+    $(".store-list-item").keypress(function(e) {
+      window.location = $(this).children('div').children('a').attr('href')
+    });
+    </script>
