@@ -5,7 +5,9 @@ urlpatterns = [
     ## @TODO : Fix later after djstripe upgrade
     # path(r'^sync-payment-history/', sync_payment_history, name='sync_payment_history'),
     #path(r'^update-card/', views.update_card, name='update_card'),
-    re_path(r'^cancel/subscription/$', views.cancel_subscription, name='cancel_subscription'),
+
+    # Turned off the cancel subscriptions for upgrading djstripe to 2.0.0
+    # re_path(r'^cancel/subscription/$', views.cancel_subscription, name='cancel_subscription'),
     re_path(r'^email-list/', views.subscriber_list_emails, name='subscriber_list_emails'),
 
     re_path(r'^pledge-update/$', views.update_pledge, name='update_pledge'),

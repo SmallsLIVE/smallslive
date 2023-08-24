@@ -3,13 +3,13 @@
     <div id="login-modal" class="modal-content custom-modal no-cancel">
         <a href="#" class="close-button"></a>
       <div class="modal-body">
-        <p class="title2 accent-color">Welcome</p>
+        <p class="title2 accent-color">Welcome to SmallsLIVE</p>
         <p class="title1">Sign in</p>
         <p class="text4 text-grey">
           Not Yet a Member?
           <a class="accent-color underline"
              href="#" id="becomeMemberButton">
-            Become a Member
+             Sign up for SmallsLIVE
           </a>
         </p>
         <form role="form" id="form-login" method="post" action="{% url 'accounts_login' %}?next={{ request.path }}">

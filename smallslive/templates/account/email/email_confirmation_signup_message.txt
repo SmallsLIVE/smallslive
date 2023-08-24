@@ -1,9 +1,9 @@
 {% load account %}{% user_display user as user_display %}{% load i18n %}{% autoescape off %}{% with current_site.name as site_name %}{%if not user.artist %}
-Please click this link to confirm your e-mail address and complete your registration as a member of The SmallsLIVE Foundation for Jazz Arts and Education.
+Please click the link below to confirm this email address and complete your registration with SmallsLIVE. You may now watch our livestream and use our archive.
 
 {{ activate_url }}
 
-SmallsLIVE
+
 {% else %}Hello SmallsLIVE Musicians:
 You are receiving this email to confirm your correct email address that will be used for your login to SmallsLIVE.  Once you have confirmed the email you'll be able to set your password and log into the Artist Page Manager section of SmallsLIVE.  From the Artist Page Manager you will have access to your recorded content, personal bio, photos, band information and account information.   Please be sure to read our SmallsLIVE Legal Agreement and to click to approve.  Royalties can only be paid to those who have approved the agreement.
 

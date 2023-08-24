@@ -625,6 +625,10 @@ STRIPE_PRODUCT = os.environ.get('STRIPE_PRODUCT')
 DJSTRIPE_INVOICE_FROM_EMAIL = DEFAULT_FROM_EMAIL
 DJSTRIPE_PRORATION_POLICY_FOR_UPGRADES = True
 
+# Added these two lines for upgrading djstripe to 2.0.0
+DJSTRIPE_WEBHOOK_VALIDATION='retrieve_event'
+DJSTRIPE_FOREIGN_KEY_TO_FIELD='djstripe_id'
+
 DJSTRIPE_PLANS = {
     # Please note that the plan names the users see are different than the
     # Stripe plans listed here. This is to ensure backwards compatibility.

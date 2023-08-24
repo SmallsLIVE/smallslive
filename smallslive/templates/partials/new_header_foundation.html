@@ -3,12 +3,17 @@
 <header class="main-header new-header">
   <div class="flex-row items-center content-space-between">
     <div class="flex-row items-center new-header-img-wrapper">
-      <div class="new-header-img">
-        <img src="{% static 'jazz-club-black.png' %}" alt="Jazz Club">
+      <div class="smalls-logo">
+        <img src="{% static 'new_logo_transparent_black.svg' %}" alt="smalls live logo">
       </div>
-      <div class="new-header-img">
-        <img src="{% static 'Mezzrow-logo-transparent.png' %}" alt="Smalls and Mezzrow">
-      </div>
+      {% comment %}
+        <div class="new-header-img">
+          <img src="{% static 'jazz-club-black.png' %}" alt="Jazz Club">
+        </div>
+        <div class="new-header-img">
+          <img src="{% static 'Mezzrow-logo-transparent.png' %}" alt="Smalls and Mezzrow">
+        </div>
+      {% endcomment %}
     </div>
 
     <div class="button-row">
@@ -55,14 +60,19 @@
 
 <header class="mobile-header">
   <div class="mobile-logo-container">
-    <div class="flex-row items-center new-header-img-wrapper">
-      <div class="new-header-img">
-        <img src="{% static 'jazz-club-black.png' %}" alt="Jazz Club">
-      </div>
-      <div class="new-header-img">
-        <img src="{% static 'Mezzrow-logo-transparent.png' %}" alt="Smalls and Mezzrow">
-      </div>
+    <div class="smalls-logo">
+      <img src="{% static 'new_logo_transparent_black.svg' %}" alt="smalls live logo">
     </div>
+    {% comment %}
+      <div class="flex-row items-center new-header-img-wrapper">
+        <div class="new-header-img">
+          <img src="{% static 'jazz-club-black.png' %}" alt="Jazz Club">
+        </div>
+        <div class="new-header-img">
+          <img src="{% static 'Mezzrow-logo-transparent.png' %}" alt="Smalls and Mezzrow">
+        </div>
+      </div>
+    {% endcomment %}
   </div>
   <div class="mobile-menu-icons flex-row items-center content-space-between">
     <div>

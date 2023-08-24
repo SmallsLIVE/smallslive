@@ -242,7 +242,7 @@ class EventQuerySet(models.QuerySet):
         qs = qs.order_by('-seconds_played')
 
         items = []
-        for event in qs[:10]:
+        for event in qs[:20]:
             items.append(event)
 
         return items

@@ -6,7 +6,7 @@
     <div class="modal-content custom-modal no-cancel">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
-        <p class="title2 accent-color">Welcome</p>
+        <p class="title2 accent-color">Welcome to SmallsLIVE</p>
         <p class="title3">Become a Member</p>
         <p class="text4 text-grey">
           Already a Member?
@@ -51,21 +51,23 @@
               </label>
             </div>
           </div>
-          <div class="form-check form-check-inline">
-            <div class="checkbox">
-              <label class="text4 text-grey">
-                <input type="checkbox" name="privacy">
-                <span class="checkbox-text">I have reviewed the </span><a href="{% url 'static_page' 'privacy' %}" target="_blank">Privacy Policy</a>
-                <p class="form-error-text hidden" id="privacy-error"></p>
-              </label>
+          {% comment %}
+            <div class="form-check form-check-inline">
+              <div class="checkbox">
+                <label class="text4 text-grey">
+                  <input type="checkbox" name="privacy">
+                  <span class="checkbox-text">I have reviewed the </span><a href="{% url 'static_page' 'privacy' %}" target="_blank">Privacy Policy</a>
+                  <p class="form-error-text hidden" id="privacy-error"></p>
+                </label>
+              </div>
             </div>
-          </div>
+          {% endcomment %}
           <div class="form-group flex-column items-center">
             <input class="login-button" value="Become a member" type="submit">
           </div>
-          <p class="accent-color text9 text-center">For a musician account, email musician@smallslive.com</p>
-
         </form>
+        <br/>
+        <p class="accent-color text9 text-center">Are you a musician who has performed at Smalls or Mezzrow in the past and doesn’t have an artist account then please contact us directly at musician@smallslive.com.</p>
       </div>
     </div>
   </div>

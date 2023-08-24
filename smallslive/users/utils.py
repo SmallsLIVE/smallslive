@@ -236,30 +236,39 @@ def subscribe(customer, plan, flow, plan_data, stripe_token):
         
         stripe.PaymentMethod.attach(
             payment_method.id,
-            customer=customer.stripe_id,
+            customer=customer.id,
+        )
+
+        price = stripe.Price.create(
+            unit_amount=decimal.Decimal(plan_data['amount']) * 100,
+            currency=plan_data['currency'],
+            recurring={"interval": plan_data['interval']},
+            product=plan_data['product'],
         )
 
         current_subscription = stripe.Subscription.create(
-            customer=customer.stripe_id,
+            customer=customer.id,
             items=[{
-                'price': plan.stripe_id,
+                'price': price.id,
             }],
             default_payment_method= payment_method.id
         )
 
-        subscription = Subscription(
-            customer=customer,
-            plan=plan,
-            current_period_start=convert_tstamp(current_subscription.current_period_start),
-            current_period_end=convert_tstamp(current_subscription.current_period_end),
-            #amount=current_subscription.plan.amount,
-            status=current_subscription.status,
-            cancel_at_period_end=current_subscription.cancel_at_period_end,
-            #canceled_at=convert_tstamp(current_subscription, 'canceled_at'),
-            start=convert_tstamp(current_subscription.start),
-            quantity=current_subscription.quantity
-        )
-        subscription.save()
+        # subscription = Subscription(
+        #     customer=customer,
+        #     plan=plan,
+        #     current_period_start=convert_tstamp(current_subscription.current_period_start),
+        #     current_period_end=convert_tstamp(current_subscription.current_period_end),
+        #     #amount=current_subscription.plan.amount,
+        #     status=current_subscription.status,
+        #     cancel_at_period_end=current_subscription.cancel_at_period_end,
+        #     #canceled_at=convert_tstamp(current_subscription, 'canceled_at'),
+        #     start_date=convert_tstamp(current_subscription.start_date),
+        #     quantity=current_subscription.quantity
+        # )
+
+        djstripe_subscription = Subscription.sync_from_stripe_data(current_subscription)
+        #subscription.save()
 
         subscription = stripe.Subscription.retrieve(current_subscription.id)
         latest_invoice_id = subscription.latest_invoice
@@ -310,7 +319,7 @@ def charge(customer, amount, currency='USD', description='',
     resp = stripe.Charge.create(
         amount=int(decimal.Decimal(amount) * 100),  # Convert dollars into cents
         currency=currency,
-        customer=customer.stripe_id,
+        customer=customer.id,
         description=description,
         metadata=metadata,
         source = source.id

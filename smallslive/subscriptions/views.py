@@ -16,7 +16,7 @@ from django.views.generic import TemplateView, FormView, ListView, View
 from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
 ## @TODO : Fix later after djstripe upgrade
-from djstripe.views import CancelSubscriptionView as BaseCancelSubscriptionView
+# from djstripe.views import CancelSubscriptionView as BaseCancelSubscriptionView
 from oscar.apps.payment.models import SourceType, Source
 from oscar.core.loading import get_class
 from oscar_apps.catalogue.mixins import ProductMixin
@@ -824,12 +824,11 @@ gift_support = GiftSupportView.as_view()
 
 # update_card = UpdateCardView.as_view()
 
-
-class CancelSubscriptionView(BaseCancelSubscriptionView):
-    success_url = reverse_lazy("user_settings_new")
-
-
-cancel_subscription = CancelSubscriptionView.as_view()
+## @TODO : Fix later after djstripe upgrade
+# Commented out these lines for upgrading djstripe to 2.0.0
+# class CancelSubscriptionView(BaseCancelSubscriptionView):
+#     success_url = reverse_lazy("user_settings_new")
+# cancel_subscription = CancelSubscriptionView.as_view()
 
 
 class UpdatePledgeView(BecomeSupporterView):

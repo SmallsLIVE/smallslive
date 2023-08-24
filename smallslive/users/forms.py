@@ -32,7 +32,7 @@ class UserSignupForm(SignupForm):
                                 }))
     terms_of_service = forms.BooleanField(required=False)
     newsletter = forms.BooleanField(required=False)
-    privacy = forms.BooleanField()
+    #privacy = forms.BooleanField()
 
     def __init__(self, *args, **kwargs):
 

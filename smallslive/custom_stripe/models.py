@@ -26,12 +26,13 @@ class CustomPlan(models.Model):
             metadata=metadata)
 
         plan = Plan.objects.create(
-            stripe_id=plan.stripe_id,
+            id=plan.id,
+            active= True,
             amount=kwargs['amount'],
             currency=kwargs['currency'],
             interval=kwargs['interval'],
             interval_count=kwargs.get('interval_count', None),
-            name='Archive Access',
+            nickname='Archive Access',
             trial_period_days=kwargs.get('trial_period_days'),
         )
 

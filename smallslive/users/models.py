@@ -3,7 +3,7 @@ from allauth.account import signals
 from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress, EmailConfirmation
 from djstripe.models import Customer
-from djstripe.utils import subscriber_has_active_subscription
+# from djstripe.utils import subscriber_has_active_subscription
 from rest_framework.authtoken.models import Token
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -262,10 +262,15 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     def has_active_institutional_subscription(self):
         return self.institution is not None and self.institution.is_subscription_active()
 
+    # Commented out these lines for upgrading djstripe to 2.0.0
     @property
     def has_active_subscription(self):
+        customer = None
+        if self.djstripe_customers.all():
+            customer = self.djstripe_customers.all()[0]
+            return Customer.has_any_active_subscription(customer)
         """Checks if a user has an active subscription."""
-        return subscriber_has_active_subscription(self)
+        return False
 
     def get_archive_access_expiry_date(self):
         """Returns date of archive access expiry for a user.
@@ -316,7 +321,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         elif self.has_institutional_subscription:
             return {'name': 'Institutional (inactive)', 'type': 'free'}
         elif self.has_active_subscription:
-            plan_id = self.customer.current_subscription.plan
+            plan_id = self.djstripe_customers.all()[0].active_subscriptions
             if plan_id in settings.DJSTRIPE_PLANS:
                 return settings.DJSTRIPE_PLANS[plan_id]
             else:
