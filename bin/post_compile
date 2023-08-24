@@ -7,6 +7,8 @@ pip install django==2.2.8
 pip install djangorestframework==3.13.0
 pip install django-filter==2.3.0
 pip install celery==3.1.19
+pip uninstall dj-stripe==1.1.0
+pip install dj-stripe==2.5.0
 
 
 # Run Django migrations.
