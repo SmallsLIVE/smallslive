@@ -115,7 +115,7 @@
         </div>
 
         <div class="white-border-select artist-sort-select spaced search-tab-content active" data-toggle-tab="musicians" data-toggle-tab-group="search-results">
-          <select id="artists-sort" class="white-border-button">
+          <select id="artists-sort" class="white-border-button {% if request.user.is_authenticated %} hidden {% endif %}">
             <option value="a2z">A-Z</option>
             <option value="z2a">Z-A</option>
           </select>

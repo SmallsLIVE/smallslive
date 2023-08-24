@@ -3,7 +3,7 @@
     <div class="datepicker-btn white-border-button caret hover-fade archived{% if showing_event_results <= 30 %} hidden{% endif %}">Filter by date
     </div>
     <div class="white-border-select event-filter-select spaced">
-      <select id="events-filter" class="white-border-button">
+      <select id="events-filter" class="white-border-button {% if request.user.is_authenticated %} hidden {% endif %}">
         <option value="newest">Newest</option>
         <option value="oldest">Oldest</option>
         <option value="popular">Popular</option>
@@ -11,7 +11,7 @@
     </div>
     {% if is_artist_bio %}
       <div class="white-border-select leader-filter-select">
-        <select id="leader-filter" class="white-border-button">
+        <select id="leader-filter" class="white-border-button {% if request.user.is_authenticated %} hidden {% endif %}">
           <option value="all">Leader or Band</option>
           <option value="leader">Leader</option>
           <option value="sideman">Band</option>
