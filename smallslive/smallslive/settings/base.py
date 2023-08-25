@@ -905,7 +905,7 @@ SHOW_HIJACKUSER_IN_ADMIN = False
 
 # Celery
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
-FORCE_S3_SECURE = False
+FORCE_S3_SECURE = os.environ.get('FORCE_S3_SECURE')
 
 WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'
 
