@@ -243,6 +243,7 @@ def user_settings_view_new(request):
     period_end['date'] = None
 
     customer_detail = None
+    customer = None
     customer_charges = None
     user_archive_access_until = None
     monthly_pledge_in_dollars = None
@@ -250,10 +251,11 @@ def user_settings_view_new(request):
     billing_address = None
 
     show_email_confirmation = False
-
+    subscription = None
 
     try:
-        customer = request.user.customer
+        if request.user.djstripe_customers.all():
+            customer = request.user.djstripe_customers.all()[0]
     except:
         customer = None
 
@@ -261,8 +263,12 @@ def user_settings_view_new(request):
     if request.user.has_archive_access:
         user_archive_access_until = request.user.get_archive_access_expiry_date()
 
-    if customer and customer.has_active_subscription():
-        plan_id = request.user.customer.current_subscription.plan
+    if customer and customer.has_any_active_subscription():
+        if len(customer.subscriptions.all()) > 1:
+            subscription = customer.subscriptions.all()[1]
+        else:
+            subscription = customer.subscriptions.all()[0]
+        plan_id = subscription.plan
         try:
             plan = stripe.Plan.retrieve(id=plan_id)
         except stripe.error.InvalidRequestError:
@@ -278,20 +284,31 @@ def user_settings_view_new(request):
 
     customer_detail = None
     # @TODO : Fix later with djstripe
-    # customer_detail = CustomerDetail.get(
-    #     id=request.user.customer.stripe_id)
+    #changes for new djstripe version 2.5
+    
+    if request.user.djstripe_customers.all():
+            customer = request.user.djstripe_customers.all()[0]
+    if customer and customer.id:
+        customer_detail = CustomerDetail.get(
+            id=customer.id)
+        if len(customer.subscriptions.all()) > 1:
+            subscription = customer.subscriptions.all()[1]
+        elif len(customer.subscriptions.all()):
+            subscription = customer.subscriptions.all()[0]
+        else:
+            subscription = None
 
-    if customer_detail and customer_detail.subscription:
-        monthly_pledge_in_dollars = customer_detail.subscription.plan.amount / 100
+    if customer_detail and subscription:
+        monthly_pledge_in_dollars = subscription.plan.amount
 
-    if customer_detail and customer_detail.subscription:
-        period_end["date"] = datetime.fromtimestamp(
-            customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
-        period_end["due"] = datetime.fromtimestamp(
-            customer_detail.subscription.current_period_end) <= datetime.now()
+    if customer_detail and subscription:
+        date_format = '%d/%m/%y'
+        today = datetime.now().strftime(date_format)
+        period_end["date"] = subscription.current_period_end.strftime(date_format)
+        period_end["due"] = subscription.current_period_end.strftime(date_format) <= today
 
-    if customer_detail and customer_detail.subscription and customer_detail.subscriptions.data:
-        cancel_at = customer_detail.subscriptions.data[0]['cancel_at_period_end']
+    if customer_detail and subscription:
+        cancel_at = subscription.cancel_at_period_end
     else:
         cancel_at = False
 
@@ -314,6 +331,8 @@ def user_settings_view_new(request):
         'plan': plan,
         'donations': request.user.get_donations(this_year=False) or None,
         'customer_detail': customer_detail or '',
+        'customer': customer or '',
+        'subscription': subscription or '',
         'customer_charges': customer_charges or '',
         'charges_value': request.user.get_donation_amount or '0',
         'period_end': period_end,

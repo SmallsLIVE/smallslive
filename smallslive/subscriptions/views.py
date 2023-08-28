@@ -1,5 +1,6 @@
 import csv
 import stripe
+from stripe.error import InvalidRequestError
 import decimal
 import traceback
 from allauth.account.views import _ajax_response
@@ -13,7 +14,7 @@ from django.http import StreamingHttpResponse, HttpResponseRedirect, Http404, Js
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.views.generic import TemplateView, FormView, ListView, View
-from djstripe.models import Customer, Charge, Plan
+from djstripe.models import Customer, Charge, Plan, Subscription
 from djstripe.settings import subscriber_request_callback
 ## @TODO : Fix later after djstripe upgrade
 # from djstripe.views import CancelSubscriptionView as BaseCancelSubscriptionView
@@ -826,10 +827,27 @@ gift_support = GiftSupportView.as_view()
 
 ## @TODO : Fix later after djstripe upgrade
 # Commented out these lines for upgrading djstripe to 2.0.0
-# class CancelSubscriptionView(BaseCancelSubscriptionView):
-#     success_url = reverse_lazy("user_settings_new")
-# cancel_subscription = CancelSubscriptionView.as_view()
+class CancelSubscriptionView(View):
 
+    def post(self, request):
+        customer = None
+        try:
+            if self.request.user.djstripe_customers.all():
+                customer = self.request.user.djstripe_customers.all()[0]
+        except:
+            customer = None
+        
+        if len(customer.subscriptions.all()) > 1:
+            subscription = customer.subscriptions.all()[1]
+        elif len(customer.subscriptions.all()):
+            subscription = customer.subscriptions.all()[0]
+        else:
+            subscription = None
+        subscription.cancel()
+        return redirect('user_settings_new')
+   
+cancel_subscription = CancelSubscriptionView.as_view()
+    
 
 class UpdatePledgeView(BecomeSupporterView):
 
