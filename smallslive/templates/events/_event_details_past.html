@@ -175,7 +175,7 @@
           data.signed_data = metricsSignedData[mediaId];
           data.csrfmiddlewaretoken = '{{ csrf_token }}';
           $.ajax({
-            url: "{{ metrics_server_url }}/metric/",
+            url: "/metric/",
             method: 'POST',
             headers: {
                 "Authorization": "Token {{ user_token }}"

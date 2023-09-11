@@ -314,7 +314,6 @@ class EventDetailView(DetailView):
         context['performers'] = [performers[i:i + 4] for i in range(0, len(performers), 4)]
         context['facebook_app_id'] = settings.FACEBOOK_APP_ID
         context['metrics_ping_interval'] = settings.PING_INTERVAL
-        context['metrics_server_url'] = settings.METRICS_SERVER_URL
         context['metrics_signed_data'] = self._generate_metrics_data()
         context['event_metrics_update_url'] = reverse('event_update_metrics', kwargs={'pk': event.pk})
         # In case the user selects a ticket

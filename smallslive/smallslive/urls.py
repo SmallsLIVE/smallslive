@@ -21,6 +21,7 @@ from artists.views import *
 from events.views import *
 from django.contrib.flatpages.views import flatpage
 from static_pages.views import *
+from metrics.views import metric_view, event_counts, artist_counts
 
 # uncomment these lines to enable the Djrill admin interface 
 # from djrill import DjrillAdminSite
@@ -102,6 +103,11 @@ urlpatterns = [
     url(r'^old/$', old_home, name="old_home"),
     url(r'^styles/$', styleguide, name="styles"),
     url(r'^donate/$', RedirectView.as_view(url=reverse_lazy('donate'), permanent=True)),
+
+    # Metrics urls
+    url(r'^metric/', metric_view, name='metric_view'),
+    url(r'^event_counts/', event_counts, name='event_counts'),
+    url(r'^artist_counts/', artist_counts, name='artist_counts'),
 ]
 
 urlpatterns += [

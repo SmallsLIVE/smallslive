@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     #'oscar_stripe',
     'paypal',
     'pipeline',
+    'rest_framework',
     'rest_framework.authtoken',
     'sortedm2m',
     'storages',
@@ -161,6 +162,7 @@ MIDDLEWARE = (
     'oscar.apps.basket.middleware.BasketMiddleware',
     # 'smallslive.middleware.RedirectMiddleware',
 )
+
 TEMPLATE_DIRS = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
     {
@@ -618,6 +620,7 @@ STRIPE_CURRENCY = 'USD'
 STRIPE_CHARGE_AND_CAPTURE_IN_ONE_STEP = True
 STRIPE_PRODUCT = os.environ.get('STRIPE_PRODUCT')
 
+
 # Stripe account for for profit
 #STRIPE_FOR_PROFIT_PUBLISHABLE_KEY = STRIPE_FOR_PROFIT_PUBLIC_KEY = os.environ.get('STRIPE_FOR_PROFIT_PUBLISHABLE_KEY')
 #STRIPE_FOR_PROFIT_SECRET_KEY = os.environ.get('STRIPE_FOR_PROFIT_SECRET_KEY')
@@ -918,3 +921,9 @@ AWS_PAYOUTS_BUCKET = os.environ.get('AWS_PAYOUTS_BUCKET', 'smallslivepayouts')
 
 THUMBNAIL_DEBUG = ast.literal_eval(os.environ.get('THUMBNAIL_DEBUG', 'False'))
 DEFAULT_FROM_EMAIL = OSCAR_FROM_EMAIL = 'smallslive@smallslive.com'
+
+# Metrics config
+PING_INTERVAL = 30
+PING_INTERVAL_WITH_BUFFER = PING_INTERVAL - 2  # add a little buffer in case client sends too early
+DAILY_LIMIT_PER_MEDIA = 180 * 60  # in seconds
+
