@@ -195,8 +195,7 @@ class MyEventsAJAXView(MyEventsView):
 
         data = {
             'template': render_to_string(
-                self.template_name, context,
-                context_instance=RequestContext(request)
+                self.template_name, context
             ),
             'first_event_date': first_event_date,
             'last_event_date': last_event_date,
@@ -799,8 +798,7 @@ def metrics_payout_poll(request):
 
     tpl = render_to_string(
         template,
-        context,
-        context_instance=RequestContext(request))
+        context)
 
     data = {
         'success': True,
@@ -867,8 +865,11 @@ class DashboardLoginView(TemplateView):
     template_name = 'home_new.html'
 
     def get(self, request):
-        url = '?' + self.request.get_full_path().split('?')[1]
-        return redirect(reverse("home")+url)
+        redirected_url =  reverse("home")
+        if len(self.request.get_full_path().split('?'))>1:
+            url = '?' + self.request.get_full_path().split('?')[1]
+            redirected_url = reverse("home") + url
+        return redirect(redirected_url)
 
     def post(self, request):
         return redirect(reverse("home"))
@@ -944,8 +945,7 @@ def payout_form(request):
         else:
             tpl = render_to_string(
                 'artist_dashboard/artist-payout-form.html',
-                {'artist_info_form': artist_info_form},
-                context_instance=RequestContext(request)
+                {'artist_info_form': artist_info_form}
             )
             data = {
                 'success': False,

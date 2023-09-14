@@ -52,7 +52,7 @@ def static_file_view(request, **kwargs):
 
 
 urlpatterns = [
-    path(r'^dashboard/', include('artist_dashboard.urls')),
+    url(r'^artist-dashboard/', include('artist_dashboard.urls')),
     url(r'^artist-registration/', include('artist_registration.urls')),
     url(r'^artists/', include('artists.urls')),
     url(r'^archive/(?P<year>\d+)/(?P<month>\d+)/$', RedirectView.as_view(permanent=True, pattern_name='search'),

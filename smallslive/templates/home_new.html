@@ -110,7 +110,7 @@
         $modal.modal("show");
         var url = "{% url "artist_registration_confirm_email_ajax" key=activation_key %}";
         $.get(url, function (data) {
-          $modal.find(".modal-body").html(data);
+          $modal.find(".modal-body").html(data.html);
         });
 
 

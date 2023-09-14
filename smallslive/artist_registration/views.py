@@ -59,7 +59,7 @@ class ArtistAccountActivateView(allauth_views.PasswordSetView):
 
     @sensitive_post_parameters_m
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_anonymous() and request.user.has_usable_password():
+        if not request.user.is_anonymous and request.user.has_usable_password():
             return HttpResponseRedirect(self.success_url)
         return super(allauth_views.PasswordSetView, self).dispatch(request, *args, **kwargs)
 
@@ -143,7 +143,7 @@ class ArtistAccountActivateView(allauth_views.PasswordSetView):
         user.last_login = date
         user.save()
         confirmation.delete()
-        if not self.request.user.is_anonymous():
+        if not self.request.user.is_anonymous:
             logout(self.request)
         return perform_login(self.request,
                              user,

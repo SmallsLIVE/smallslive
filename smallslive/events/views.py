@@ -395,25 +395,18 @@ class EventDetailView(DetailView):
         event = self.object
 
         if event.show_streaming:
-            print('here 1')
             if self.request.user.is_authenticated:
-                print('here 2')
                 return ['events/_event_details_streaming.html']
             else:
-                print('here 3')
                 return ['events/_event_details_upcoming.html']
         elif event.is_past:
-            print('here 4')
             return ['events/_event_details_past.html']
         if event.is_future or not event.streamable:
-            print('here 5')
             return ['events/_event_details_upcoming.html']
         else:  # Not sure if there will be another option.
             if self.request.user.is_authenticated:
-                print('here 6')
                 return ['events/_event_details_streaming.html']
             else:
-                print('here 7')
                 return ['events/_event_details_upcoming.html']
 
     def _generate_metrics_data(self):
