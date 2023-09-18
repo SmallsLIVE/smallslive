@@ -113,11 +113,14 @@
       <span class="title1"></span>
     </div>
   {% endif %}
-  {% if artist.albums %}
-    <div data-toggle-tab-target="smallslive-tracks" data-toggle-tab-group="search-results">
-      <span class="title1">Tracks</span>
-    </div>
-  {% endif %}
+
+  {% comment %}
+    {% if artist.albums %}
+      <div data-toggle-tab-target="smallslive-tracks" data-toggle-tab-group="search-results">
+        <span class="title1">Tracks</span>
+      </div>
+    {% endif %}
+  {% endcomment %}
 </div>
 
 <div id="smallslive-tracks" data-toggle-tab="smallslive-tracks" style="display: none;"  data-toggle-tab-group="search-results">

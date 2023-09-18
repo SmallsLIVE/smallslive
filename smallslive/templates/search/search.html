@@ -83,12 +83,14 @@
     </div>
 
     <div class="search-wrapper">
-      <div class="search-input-wrapper">
-        <form class="search-input" action="{% url 'search' %}">
-          <input id="desktop-search-bar" name="q" type="text" placeholder="SEARCH BY NAME, INSTRUMENT, EVENT" autocomplete="off" {% if query_term %} value="{{ query_term }}" {% endif %}>
-        </form>
-        <div class="search-bar-autocomplete-container"></div>
-      </div>
+      {% if not is_artist_bio %}
+        <div class="search-input-wrapper">
+          <form class="search-input" action="{% url 'search' %}">
+            <input id="desktop-search-bar" name="q" type="text" placeholder="SEARCH BY NAME, INSTRUMENT, EVENT" autocomplete="off" {% if query_term %} value="{{ query_term }}" {% endif %}>
+          </form>
+          <div class="search-bar-autocomplete-container"></div>
+        </div>
+      {% endif %}
 
       <div class="archive-datepicker-wrapper search-tab-content {% if is_artist_bio %}active{% endif %}" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
         <div class="archive-datepicker fixed">
