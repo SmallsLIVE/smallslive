@@ -36,8 +36,7 @@ class ToggleRecordingStateForm(forms.ModelForm):
 class ArtistGigPlayedAddInlineFormSet(InlineFormSet):
     model = GigPlayed
     fields = ('artist', 'role', 'is_leader', 'sort_order')
-    extra = 0
-    factory_kwargs = {'can_delete': False}
+    factory_kwargs = {'can_delete': False, 'extra': 0}
 
     def construct_formset(self):
         formset = super(ArtistGigPlayedAddInlineFormSet, self).construct_formset()
