@@ -62,7 +62,7 @@ def has_signed(qs, val):
 
 
 class ArtistFilter(django_filters.FilterSet):
-    name = django_filters.CharFilter()
+    first_name = django_filters.CharFilter()
     instruments = django_filters.ModelChoiceFilter(queryset=Instrument.objects.all())
     is_invited = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES)
     has_registered = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES)
@@ -70,7 +70,7 @@ class ArtistFilter(django_filters.FilterSet):
     signed_legal_agreement = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES)
 
     class Meta:
-        fields = ['name', 'is_invited', 'has_registered', 'has_photo', 'signed_legal_agreement', 'instruments']
+        fields = ['first_name', 'is_invited', 'has_registered', 'has_photo', 'signed_legal_agreement', 'instruments']
         model = Artist
         order_by = (
             ('last_name', 'Last name'),
