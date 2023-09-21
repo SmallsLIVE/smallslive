@@ -9,7 +9,7 @@ from .models import Artist, Instrument
 BOOLEAN_CHOICES = (('', 'Disabled'), ('true', 'Yes'), ('false', 'No'), )
 
 
-def has_photo(qs, val):
+def has_photo(qs, name, val):
     if val == 'true':
         qs = qs.exclude(photo="")
     elif val == 'false':
@@ -17,13 +17,13 @@ def has_photo(qs, val):
     return qs
 
 
-def search_name(qs, val):
-    if val:
-        qs = qs.filter(Q(first_name__icontains=val) | Q(last_name__icontains=val))
-    return qs
+def search_name(qs, name, val):
+        if val:
+            qs = qs.filter(Q(first_name__icontains=val) | Q(last_name__icontains=val))
+        return qs
 
 
-def has_registered(qs, val):
+def has_registered(qs, name, val):
     if val == 'true':
         qs = qs.exclude(user__isnull=True).extra(
             where=[
@@ -45,7 +45,7 @@ def has_registered(qs, val):
     return qs
 
 
-def is_invited(qs, val):
+def is_invited(qs, name, val):
     if val == 'true':
         qs = qs.exclude(user=None)
     elif val == 'false':
@@ -53,7 +53,7 @@ def is_invited(qs, val):
     return qs
 
 
-def has_signed(qs, val):
+def has_signed(qs, name, val):
     if val == 'true':
         qs = qs.exclude(user__legal_agreement_acceptance=None)
     elif val == 'false':
@@ -62,15 +62,15 @@ def has_signed(qs, val):
 
 
 class ArtistFilter(django_filters.FilterSet):
-    first_name = django_filters.CharFilter()
+    name = django_filters.CharFilter(method=search_name)
     instruments = django_filters.ModelChoiceFilter(queryset=Instrument.objects.all())
-    is_invited = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES)
-    has_registered = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES)
-    has_photo = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES)
-    signed_legal_agreement = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES)
+    is_invited = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, method=is_invited)
+    has_registered = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, method=has_registered)
+    has_photo = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, method=has_photo)
+    signed_legal_agreement = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, method=has_signed)
 
     class Meta:
-        fields = ['first_name', 'is_invited', 'has_registered', 'has_photo', 'signed_legal_agreement', 'instruments']
+        fields = ['name', 'is_invited', 'has_registered', 'has_photo', 'signed_legal_agreement', 'instruments']
         model = Artist
         order_by = (
             ('last_name', 'Last name'),
@@ -84,15 +84,16 @@ class ArtistFilter(django_filters.FilterSet):
 
     def __init__(self, *args, **kwargs):
         super(ArtistFilter, self).__init__(*args, **kwargs)
+        self.filters['is_invited'].label = 'Invited'
         self.filters['has_registered'].label = 'Registered'
         self.filters['has_photo'].label = 'Has photo'
         self.filters['signed_legal_agreement'].label = 'Signed'
 
-    # @property
-    # def form(self):
-    #     form = super(ArtistFilter, self).form  # it's a property, so there's no method call
-    #     for field in self.Meta.fields:
-    #         form.fields[field].widget.attrs['class'] = 'form-control selectpicker'
-    #     form.fields['name'].widget.attrs['class'] = 'form-control search'
-    #     form.fields['name'].widget.attrs['placeholder'] = 'Search by name'
-    #     return form
+    @property
+    def form(self):
+        form = super(ArtistFilter, self).form  # it's a property, so there's no method call
+        for field in self.Meta.fields:
+            form.fields[field].widget.attrs['class'] = 'form-control selectpicker'
+        form.fields['name'].widget.attrs['class'] = 'form-control search'
+        form.fields['name'].widget.attrs['placeholder'] = 'Search by name'
+        return form

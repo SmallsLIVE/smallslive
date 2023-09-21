@@ -16,13 +16,13 @@
         <section class="artists-list__search">
             <form method="get" action="{% url "artist_list" %}">
                 <span class="artists-list__search__heading">Search:</span>
-                {{ filter.form.first_name }}
+                {{ filter.form.name }}
                 <input type="submit" value="Search">
             </form>
         </section>
         <section class="artists-list__filters">
             <form method="get" action="{% url "artist_list" %}" id="artist-form">
-                <input type="hidden" name="first_name" value="{{request.GET.first_name}}">
+                <input type="hidden" name="name" value="{{request.GET.name}}">
                 <input type="hidden" name="o" id="sort_form_field" value="{{request.GET.o }}">
                 <ul>
                     <li class="artists-list__filters__group">
