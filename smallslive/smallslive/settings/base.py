@@ -84,7 +84,7 @@ INSTALLED_APPS = [
     'wkhtmltopdf',
     #'oscar_stripe',
     'paypal',
-    'pipeline',
+    # 'pipeline',
     'rest_framework',
     'rest_framework.authtoken',
     'sortedm2m',
@@ -151,7 +151,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = (
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    'pipeline.middleware.MinifyHTMLMiddleware',
+    # 'pipeline.middleware.MinifyHTMLMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -338,80 +338,81 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'staticfiles'),
 ]
-PIPELINE_STORAGE = STATICFILES_STORAGE =  'pipeline.storage.PipelineCachedStorage'
+
+# PIPELINE_STORAGE = STATICFILES_STORAGE =  'pipeline.storage.PipelineCachedStorage'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'pipeline.finders.PipelineFinder',
+    # 'pipeline.finders.PipelineFinder',
 )
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-PIPELINE = {
-    'COMPILERS': (
-        'pipeline.compilers.sass.SASSCompiler',
-    ),
-    'JAVASCRIPT': {
-        'js': {
-            'source_filenames': (
-                'js/jquery.mobile.custom.min.js',
-                'js/jquery-ui.js',
-                'js/jquery.visible.min.js',
-                'js/bootstrap.min.js',
-                'js/slick/slick.min.js',
-                'js/raphael-min.js',
-                'js/imgCoverEffect.min.js',
-                'js/base.js',
-                'js/utils.js',
-                'js/signup_form.js',
-                'js/white-border-select.js',
-                'js/owl.carousel.min.js',
-                'js/custom_owl_carousel.js',
-                'js/custom_recently_added_carousel.js',
-                'js/custom_popular_carousel.js',
-                'js/custom_highlights_carousel.js',
-                'js/custom_catalog_carousel.js',
-            ),
-            'output_filename': 'js/main.js',
-        },
+# PIPELINE = {
+#     'COMPILERS': (
+#         'pipeline.compilers.sass.SASSCompiler',
+#     ),
+#     'JAVASCRIPT': {
+#         'js': {
+#             'source_filenames': (
+#                 'js/jquery.mobile.custom.min.js',
+#                 'js/jquery-ui.js',
+#                 'js/jquery.visible.min.js',
+#                 'js/bootstrap.min.js',
+#                 'js/slick/slick.min.js',
+#                 'js/raphael-min.js',
+#                 'js/imgCoverEffect.min.js',
+#                 'js/base.js',
+#                 'js/utils.js',
+#                 'js/signup_form.js',
+#                 'js/white-border-select.js',
+#                 'js/owl.carousel.min.js',
+#                 'js/custom_owl_carousel.js',
+#                 'js/custom_recently_added_carousel.js',
+#                 'js/custom_popular_carousel.js',
+#                 'js/custom_highlights_carousel.js',
+#                 'js/custom_catalog_carousel.js',
+#             ),
+#             'output_filename': 'js/main.js',
+#         },
+#
+#         'dashboard_js': {
+#             'source_filenames': (
+#                 'js/jquery.mobile.custom.min.js',
+#                 'js/jquery-ui.js',
+#                 'js/bootstrap.min.js',
+#                 'js/slick/slick.min.js',
+#                 'js/raphael-min.js',
+#                 'js/base.js',
+#                 'js/imgCoverEffect.min.js',
+#                 'js/bootstrap-select.js',
+#                 'js/Chart.min.js',
+#                 'js/dashboard-base.js'
+#             ),
+#             'output_filename': 'js/dashboard_main.js',
+#         }
+#     },
+#
+#     'STYLESHEETS': {
+#         'css': {
+#             'source_filenames': (
+#                 'sass/main.scss',
+#             ),
+#             'output_filename': 'css/application.css',
+#         },
+#         'dashboard_css': {
+#             'source_filenames': (
+#                 'sass/dashboard.scss',
+#             ),
+#             'output_filename': 'css/dashboard.css',
+#         },
+#     }
+# }
 
-        'dashboard_js': {
-            'source_filenames': (
-                'js/jquery.mobile.custom.min.js',
-                'js/jquery-ui.js',
-                'js/bootstrap.min.js',
-                'js/slick/slick.min.js',
-                'js/raphael-min.js',
-                'js/base.js',
-                'js/imgCoverEffect.min.js',
-                'js/bootstrap-select.js',
-                'js/Chart.min.js',
-                'js/dashboard-base.js'
-            ),
-            'output_filename': 'js/dashboard_main.js',
-        }
-    },
-
-    'STYLESHEETS': {
-        'css': {
-            'source_filenames': (
-                'sass/main.scss',
-            ),
-            'output_filename': 'css/application.css',
-        },
-        'dashboard_css': {
-            'source_filenames': (
-                'sass/dashboard.scss',
-            ),
-            'output_filename': 'css/dashboard.css',
-        },
-    }
-}
-
-PIPELINE_SASS_BINARY = '/usr/bin/env sass'
-PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
-PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
-PIPELINE_SASS_ARGUMENTS = '--precision 10'
+# PIPELINE_SASS_BINARY = '/usr/bin/env sass'
+# PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
+# PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
+# PIPELINE_SASS_ARGUMENTS = '--precision 10'
 # PIPELINE_CSS = {
 #     'css': {
 #         'source_filenames': (
@@ -465,7 +466,7 @@ PIPELINE_SASS_ARGUMENTS = '--precision 10'
 #         'output_filename': 'js/dashboard_main.js',
 #     }
 # }
-PIPELINE_DISABLE_WRAPPER = True
+# PIPELINE_DISABLE_WRAPPER = True
 
 # Templates
 TEMPLATE_DIRS = [

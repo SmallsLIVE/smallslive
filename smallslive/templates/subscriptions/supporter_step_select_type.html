@@ -19,14 +19,16 @@
           </button>
         </div>
       {% endif %}
-      <div class="store__form__selection__option">
-        <button class="select-supporter-type-toggle {% if flow_type == 'product_support' %} active{% endif %}"
-                data-id="gift"
-                data-recurring="gift"
-                data-payment-options-hidden="hidden">
-          Choose a Gift
-        </button>
-      </div>
+      {% comment %}
+        <div class="store__form__selection__option">
+          <button class="select-supporter-type-toggle {% if flow_type == 'product_support' %} active{% endif %}"
+                  data-id="gift"
+                  data-recurring="gift"
+                  data-payment-options-hidden="hidden">
+            Choose a Gift
+          </button>
+        </div>
+      {% endcomment %}
     </div>
   </div>
 {% endif %}
@@ -68,7 +70,13 @@
 {% endif %}
 {% if not flow_type == 'update_pledge' %}
   <div class="flex-column items-center one-time-input supporter-plan-input{% if flow_type == 'product_support' %} hidden{% endif %}" id="one-time-input">
-
+    <div class="white-border-select home-filter supporter-plan-select">
+      <select id="one-time-donate">
+        <option value="month" selected>10$ for a month</option>
+        <option value="year">100$ for a year</option>
+        <option value="input">Enter your pledge</option>
+      </select>
+    </div>
     <div id="yearlyPledge"
          class="button-row button-row-big donation-container pledge"
          data-dialog-type="supporter">
@@ -82,7 +90,7 @@
         <div class="flex-row custom-out">
           <div class="custom-input text4">
             <input type="number" data-min-donation="{{ min_donation }}" min="{{ min_donation }}" step="1" class="no-spinners transparent" id="yearlyCustom" max="99999" value="supporter-yearly-pledge">
-            <label><div>ENTER YOUR PLEDGE<br>(MIN  ${{ min_donation }})</div></label>
+            <label><div class="hidden label">ENTER YOUR PLEDGE<br>(MIN  ${{ min_donation }})</div></label>
             <div id="yearly-less" class="text9 accent-color minimum-error"></div>
           </div>
         </div>
@@ -101,3 +109,29 @@
   </div>
 {% endif %}
 
+{% block extra_js %}
+
+  <script>
+    $(document).ready(function () {
+      
+
+      $(document).ajaxComplete(function(){
+        $('#yearlyCustom').val(10);
+        // $('#yearlyCustom').addClass('hidden');
+      });
+
+      $('#one-time-donate').on('change', function(e){
+        console.log(e.target.value);
+        if(e.target.value === 'month'){
+          $('#yearlyCustom').val(10);
+        }else if(e.target.value === 'year'){
+          $('#yearlyCustom').val(100);
+        }else if(e.target.value === 'input'){
+          $('#yearlyCustom').val('');
+          $('#yearlyPledge label').removeClass('hidden')
+        }
+      })
+
+    });
+  </script>
+{% endblock extra_js %}

@@ -11,13 +11,13 @@ env/
 #bin/
 build/
 develop-eggs/
-dist/
 eggs/
 lib/
 lib64/
 parts/
 sdist/
 var/
+static/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -58,7 +58,7 @@ docs/_build/
 .idea
 
 # Collected static and media
-smallslive/staticfiles/*
+smallslive/staticfiles/node_modules
 !smallslive/staticfiles/.keep
 media/*/
 koala-config.json
@@ -78,7 +78,6 @@ smallslive/static/css/vendors/*
 smallslive/static/sass/main.css
 secret_vars.yml
 smalls_scraping/*.json
-gulpfile.js
 .python-version
 smallslive/.env
 .DS_Store
@@ -87,3 +86,8 @@ misc
 smallslive/smallslive/settings/yo.py
 smallslive/smallslive/settings/jim_testing.py
 smallslive/smallslive/settings/local*.py
+
+# Ignore documents
+documents
+fixtures/*
+fixtures

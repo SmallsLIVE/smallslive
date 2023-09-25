@@ -1,0 +1,234 @@
+#selected {
+  position: absolute;
+  margin-top: -7px;
+  right: -20px;
+}
+
+#selected-image {
+  background-color: $main-accent-color;
+}
+
+.subscription-settings {
+
+  &__header {
+    padding: 30px 20px;
+    background-color: var(--color-white);
+    color: $main-accent-color;
+
+    & h1 {
+      @include lato-black;
+      font-size: 32px;
+      margin: 0;
+    }
+  }
+
+  &__heading {
+    @include lato-black;
+    font-size: 18px;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  & .setting-toggle-button {
+    width: 100%;
+    background-color: $main-accent-color;
+    color: var(--color-white);
+    padding: 12px;
+    @include lato;
+
+    &:hover,
+    &:focus {
+      outline: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  &.signup-plans {
+    position: relative;
+
+    &::before {
+      top: 0;
+      left: 14%;
+      border: solid transparent;
+      content: ' ';
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-color: rgba(136, 183, 213, 0);
+      border-top-color: var(--color-white);
+      border-width: 24px;
+      margin-left: -24px;
+    }
+
+    & .plan-active {
+      border: 5px solid var(--color-crimson);
+
+      & .signup-plan__active__expiry {
+        @include lato-bold;
+        font-size: 14px;
+        text-align: center;
+        display: block;
+        padding: 30px 10px 10px;
+        border-top: 1px solid var(--color-white);
+        width: 100%;
+        color: $main-accent-color;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  &__auto-renewal {
+    padding: 40px 20px;
+    background-color: var(--color-white);
+    border-bottom: 1px solid var(--color-gallery);
+    @include lato;
+    font-size: 14px;
+
+    & .row {
+      @include display(flex);
+      @include flex-wrap(wrap);
+      @include align-content(center);
+
+      &::before {
+        display: none;
+      }
+    }
+  }
+
+  &.signup__payment {
+    border-bottom: 1px solid var(--color-gallery);
+    padding: 40px 20px;
+  }
+
+  &.transaction-history {
+    padding: 40px 20px;
+    background-color: var(--color-white);
+    @include lato;
+    font-size: 14px;
+
+    & .align-left {
+      text-align: left;
+    }
+
+    & .align-right {
+      text-align: right;
+    }
+
+    & .transaction-history__table {
+
+      &__header {
+        color: var(--color-scorpion);
+        padding: 15px 0;
+        border-bottom: 1px solid var(--color-gallery);
+      }
+
+      &__body {
+
+        & .row {
+          padding: 10px 0;
+          border-bottom: 1px solid var(--color-gallery);
+
+          &:last-of-type {
+            border-bottom: none;
+          }
+        }
+
+        & .date {
+          @include lato-bold;
+        }
+
+        & .receipt {
+
+          & a {
+            @include lato-bold;
+          }
+        }
+      }
+    }
+  }
+}
+
+#mc_embed_shell {
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 18px;
+  padding: 15px 0;
+  text-align: center;
+
+  .mc_field_group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    label {
+      font-weight: normal;
+      letter-spacing: 1.5px;
+    }
+
+    div.mce_inline_error {
+      background: no-repeat;
+      color: var(--color-crimson);
+      font-weight: 100;
+      left: 13px;
+      padding: 0;
+      position: absolute;
+      top: 100%;
+      width: 100%;
+    }
+
+    .email {
+      border: 1px solid var(--color-silver);
+      border-radius: 0;
+      margin: 0 10px;
+      padding: 5px 10px;
+    }
+  }
+
+  #mce-success-response {
+    margin-bottom: 25px;
+    color: var(--color-green);
+  }
+
+  #mce-error-response {
+    margin-bottom: 25px;
+    color: var(--color-crimson);
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+
+  .subscription-settings {
+
+    &__auto-renewal {
+
+      & button {
+        margin-top: 20px;
+      }
+    }
+
+    & .transaction-history__table {
+
+      &__header {
+        display: none;
+      }
+
+      & .align-right {
+        text-align: left;
+      }
+
+      & .date {
+        margin-bottom: 5px;
+      }
+
+      & .amount::before {
+        content: 'Amount:';
+      }
+
+      & .receipt {
+        margin-top: 5px;
+      }
+    }
+  }
+}

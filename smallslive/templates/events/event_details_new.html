@@ -8,6 +8,7 @@
 {% load purchase_info_tags %}
 {% load basket_tags %}
 {% load crispy_forms_tags %}
+{% load site_id_tags %}
 
 {% block schedule_nav_active %}active{% endblock %}
 
@@ -157,12 +158,14 @@
         <div class="event-band">
           {% for artist_dict in event_artists %}
             <div class="current_event">
-              {% comment %}
+              {% get_site_id as site_id %}
+              {% if site_id == 2 %}
                 <a href="{{ artist_dict.absolute_url }}" class="artist-link">
                   {{ artist_dict.name }} / {{ artist_dict.role }}
                 </a>
-              {% endcomment %}
-              <div class="artist-link">{{ artist_dict.name }} / {{ artist_dict.role }}</div>
+              {% else %}
+                <div class="artist-link">{{ artist_dict.name }} / {{ artist_dict.role }}</div>
+              {% endif %}
             </div>
           {% endfor %}
           {% if next_event %}

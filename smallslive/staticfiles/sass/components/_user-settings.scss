@@ -1,0 +1,127 @@
+.user-settings {
+  background-color: var(--color-white);
+  padding: 30px 20px 20px;
+
+  & a {
+    @include lato-bold;
+    color: $main-accent-color;
+    text-decoration: none;
+
+    &:hover {
+      opacity: 0.8;
+      text-decoration: none;
+    }
+  }
+
+  &__main-title {
+    @include lato-black;
+    font-size: 32px;
+    color: $main-accent-color;
+    line-height: 130%;
+    margin-bottom: 20px;
+  }
+
+  &__form {
+    margin-bottom: 30px;
+    padding-left: 20px;
+
+    &.left {
+      border-right: 1px solid var(--color-light-gray);
+      padding-right: 20px;
+      margin-bottom: 30px;
+    }
+
+    &.right {
+      box-shadow: -1px 0 0 0 var(--color-light-gray);
+    }
+
+    &__text {
+      @include lato;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    &__heading {
+      @include lato-black;
+      font-size: 18px;
+      color: #131313;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+
+    & label {
+      @include lato;
+      font-size: 12px;
+
+      & .required {
+        @include lato-bold;
+        font-size: 12px;
+        color: $main-accent-color;
+      }
+    }
+
+    & .form-control {
+      @include lato;
+      font-size: 16px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 0;
+    }
+
+    & input[type='checkbox'] {
+      float: left;
+      clear: left;
+      display: block;
+      margin-left: 10px;
+    }
+
+    & .checkbox-label {
+      @include lato;
+      font-size: 14px;
+      display: block;
+      float: left;
+      margin-bottom: 10px;
+    }
+
+    &__button {
+      @include lato-bold;
+      font-size: 16px;
+      padding: 10px;
+      background-color: $main-accent-color;
+      color: #fff !important;
+      text-decoration: none;
+      margin-top: 20px;
+      margin-bottom: 40px;
+      display: block;
+      width: 40%;
+      text-align: center;
+
+      &.disabled {
+        background-color: #ccc;
+      }
+
+      &:hover {
+        opacity: 0.8;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+
+@media (max-width: 760px) {
+
+  .user-settings {
+
+    &__form {
+      border: none;
+      box-shadow: none;
+      padding-right: 10px;
+      padding-left: 10px;
+      
+      &__button {
+        width: 80%;
+      }
+    }
+  }
+}

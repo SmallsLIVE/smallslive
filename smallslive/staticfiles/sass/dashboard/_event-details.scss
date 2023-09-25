@@ -1,0 +1,279 @@
+.event-media {
+  background-color: #fff;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+
+  &__heading {
+    @include lato-black;
+    font-size: 18px;
+    color: #1f1f1f;
+    margin-bottom: 20px;
+  }
+
+  &__list {
+    padding: 0;
+  }
+
+  &__single {
+    border-bottom: 1px solid #eee;
+    padding: 5px 0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &__icon {
+      font-size: 24px;
+      margin-right: 15px;
+
+      &.published {
+        color: #3F9E52;
+      }
+
+      &.private {
+        color: #d21333;
+      }
+    }
+  }
+
+  &__title {
+    @include lato-bold;
+    color: #1f1f1f;
+    margin: 0;
+    font-size: 14px;
+  }
+
+  &__meta {
+    @include lato;
+    color: #868686;
+    margin: 0;
+    font-size: 12px;
+  }
+
+  &__download {
+    @include lato-bold;
+    font-size: 12px;
+    color: #868686;
+    margin-right: 20px;
+
+    &:hover {
+      color: #1f1f1f;
+      text-decoration: none;
+    }
+
+    & i {
+      font-size: 26px;
+      margin-right: 7px;
+    }
+
+    & span {
+      position: relative;
+      bottom: 6px;
+    }
+  }
+
+  &__control {
+    background-color: transparent;
+    border: none;
+    @include lato-bold;
+    color: #868686;
+    font-size: 12px;
+
+    &:focus {
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+      border: none;
+      outline: none;
+    }
+
+    & span {
+      position: relative;
+      bottom: 6px;
+    }
+
+    &.publish {
+
+      &:hover {
+        color: #3F9E52;
+      }
+
+      & span:before {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: 26px;
+        content: "\f056";
+        position: relative;
+        top: 6px;
+        margin-right: 8px;
+      }
+
+      & span:after {
+        content: "Private"
+      }
+
+      &:hover span:before {
+        content: "\f058";
+      }
+
+      &:hover span:after {
+        content: "Publish";
+      }
+    }
+
+    &.make-private {
+
+      &:hover {
+        color: #D21333;
+      }
+
+      & span:before {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: 26px;
+        content: "\f058";
+        position: relative;
+        top: 6px;
+        margin-right: 8px;
+      }
+
+      & span:after {
+        content: "Published";
+      }
+
+      &:hover span:before {
+        content: "\f056";
+      }
+
+      &:hover span:after {
+        content: "Make private";
+      }
+    }
+  }
+
+  & .jwplayer-placeholder {
+    @include lato-black;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.2);
+    display: block;
+    width: 100%;
+    padding: 10px 10px 9px;
+    text-align: center;
+    background-color: #eee;
+    font-size: 12px;
+  }
+
+  &__player, &__controls, &__details {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  &__controls {
+    padding-left: 20px;
+    padding-right: 20px;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+
+    & form {
+      display: inline-block;
+    }
+  }
+
+  &__details {
+    padding-left: 0;
+    padding-right: 20px;
+  }
+
+  &__player {
+    padding-left: 20px;
+    padding-right: 0;
+  }
+}
+
+.contracts-list {
+  padding: 0;
+
+  & li {
+    @include lato-bold;
+    color: #1f1f1f;
+    font-size: 14px;
+    @include list-unstyled;
+    padding: 5px;
+
+    & i {
+      color: #bbb;
+      font-size: 20px;
+      margin-right: 10px;
+      position: relative;
+      top: 2px;
+
+      &.signed {
+        color: #3F9E52;
+      }
+    }
+  }
+
+  &__is-leader {
+    display: inline-block;
+    padding: 2px 6px;
+    text-transform: uppercase;
+    background-color: #3F9E52;
+    border-radius: 2px;
+    @include lato-black;
+    font-size: 10px;
+    color: #fff;
+    position: relative;
+    bottom: 1px;
+    margin-left: 6px;
+  }
+}
+
+.event-video-modal.in {
+  display: -webkit-box !important;
+  display: -moz-box !important;
+  display: -webkit-flex !important;
+  display: -moz-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  @include align-items(center)
+}
+
+.modal-dialog.event-video {
+  border: 10px solid rgba(255,255,255,0.6);
+  width: 80%;
+  max-width: 980px;
+
+  & .close {
+    border-radius: 100%;
+    position: absolute;
+    z-index: 10;
+    right: -25px;
+    top: -25px;
+    font-size: 16px;
+
+    &:hover, &:focus {
+      outline: none;
+    }
+  }
+}
+
+@media (max-width: $screen-xs-max) {
+  .event-media {
+
+    &__single {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+
+    &__player, &__controls, &__details {
+    padding: 10px;
+  }
+
+    &__controls {
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      border-left: none;
+      border-right: none;
+    }
+  }
+}

@@ -1,0 +1,56 @@
+//Main Sass file
+:root {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-light-gray: #dddddd;
+  --color-gallery: #eeeeee;
+  --color-scorpion: #595959;
+  --color-silver: #595959;
+  --color-crimson: #d21535;
+  --color-green: green;
+}
+
+//Code organization as per: http://sass-guidelin.es/#the-7-1-pattern
+@import 'vendors-extensions/bootstrap';
+
+@import 'vendors/font-awesome/font-awesome';
+@import 'vendors/bourbon/bourbon';
+@import 'vendors/slick';
+@import 'vendors/slick-theme';
+
+@import 'utils/variables';
+@import 'utils/functions';
+@import 'utils/helpers';
+@import 'utils/mixins';
+
+@import 'base/typography';
+
+@import 'dashboard/coloring';
+
+@import 'dashboard/base';
+@import 'dashboard/header';
+@import 'layout/footer';
+@import 'dashboard/dashboard';
+@import 'dashboard/dashboard-metrics';
+@import 'dashboard/mini-event';
+@import 'dashboard/upcoming-event';
+@import 'dashboard/cta';
+@import 'dashboard/shared';
+@import 'dashboard/my-events';
+@import 'dashboard/settings';
+@import 'dashboard/form-elements';
+@import 'dashboard/edit-public-profile';
+@import 'dashboard/event-details';
+@import 'dashboard/event-edit';
+@import 'dashboard/dashboard-welcome';
+@import 'dashboard/legal';
+@import 'dashboard/home';
+@import 'dashboard/intro-js';
+@import 'dashboard/previous-payouts';
+
+@import 'layout/alerts';
+
+@import 'components/about-smalls';
+@import 'components/metrics';
+@import 'components/datepicker';
+@import 'vendors/datepicker';

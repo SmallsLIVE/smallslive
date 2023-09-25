@@ -1,0 +1,87 @@
+.upcoming-events__container {
+  padding: 0;
+}
+
+.upcoming-event {
+  @include list-unstyled;
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &__image {
+    padding: 5px;
+    border: 1px solid #dfdfdf;
+    margin-right: 10px;
+    display: inline-block;
+    background-color: #fff;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    & img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &__details {
+
+    &__date {
+      @include lato-bold;
+      font-size: 16px;
+      color: #777;
+      margin-bottom: 0;
+    }
+
+    &__title {
+      @include lato-black;
+      font-size: 18px;
+      color: #131313;
+
+      &:hover {
+        opacity: 0.7;
+        text-decoration: none;
+      }
+    }
+
+    &__label {
+      @include lato-bold;
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 0;
+    }
+
+    &__artists {
+      @include lato-bold;
+      font-size: 14px;
+      color: #1f1f1f;
+      margin-bottom: 12px;
+
+      & .instrument {
+        @include lato;
+        color: #878787;
+      }
+    }
+
+    & .is-leader {
+      @include lato-bold-italic;
+      font-size: 14px;
+      color: #aaa;
+      margin-right: 15px;
+      float: left;
+      display: block;
+      margin-top: 5px;
+    }
+  }
+}
+
+@media (max-width: $screen-xs-max) {
+
+  .upcoming-event__image {
+    margin-bottom: 20px;
+  }
+}

@@ -1,0 +1,136 @@
+//Main Sass file
+:root {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-light-gray: #dddddd;
+  --color-gallery: #eeeeee;
+  --color-scorpion: #595959;
+  --color-silver: #595959;
+  --color-crimson: #d21535;
+}
+
+//Code organization as per: http://sass-guidelin.es/#the-7-1-pattern
+@import 'vendors-extensions/bootstrap';
+
+@import 'vendors/font-awesome/font-awesome';
+@import 'vendors/bourbon/bourbon';
+@import 'vendors/slick';
+@import 'vendors/slick-theme';
+@import 'vendors/owl-carousel/owl.carousel';
+@import 'vendors/owl-carousel/owl.theme.default';
+
+@import 'utils/variables';
+@import 'utils/functions';
+@import 'utils/flex';
+@import 'utils/helpers';
+@import 'utils/mixins';
+@import 'utils/tabs';
+
+@import 'base/fonts';
+@import 'base/colors';
+@import 'base/typography';
+@import 'base/base';
+@import 'base/inputs';
+
+@import 'layout/header';
+@import 'layout/header2';
+
+@import 'layout/footer';
+@import 'layout/static-page';
+@import 'layout/call-to-action';
+@import 'layout/pages';
+@import 'layout/generic-text-page';
+@import 'layout/alerts';
+
+@import 'pages/style-guide';
+@import 'pages/home';
+@import 'pages/become-supporter';
+@import 'pages/event';
+@import 'pages/search';
+@import 'pages/schedule';
+@import 'pages/artist_detail';
+@import 'pages/artist-dashboard';
+@import 'pages/account-settings';
+@import 'pages/tax-letter';
+
+
+@import 'components/about-smalls';
+@import 'components/admin-email';
+@import 'components/artist-bio';
+@import 'components/artist-details';
+@import 'components/artist-events';
+@import 'components/buy-album';
+@import 'components/close-button';
+@import 'components/event-description';
+//@import 'components/event-details';
+@import 'components/event-object';
+@import 'components/event-tracks';
+@import 'components/event-video';
+@import 'components/gateway';
+@import 'components/header';
+@import 'components/header-img';
+@import 'components/homepage-archive';
+@import 'components/homepage-news';
+@import 'components/homepage-store';
+@import 'components/homepage-events';
+@import 'components/live-stream';
+@import 'components/mini-artist-object';
+@import 'components/mini-event-object';
+@import 'components/mini-gallery';
+@import 'components/mini-video-object';
+@import 'components/photo-gallery';
+@import 'components/newly-added';
+@import 'components/schedule';
+@import 'components/schedule-event-details';
+@import 'components/schedule-object';
+@import 'components/search-artist-object';
+@import 'components/search-event-object';
+@import 'components/search-instrument-object';
+@import 'components/search-nav';
+@import 'components/search-store-object';
+@import 'components/search';
+@import 'components/section-title';
+@import 'components/social-media-btn';
+@import 'components/video-audio';
+@import 'components/login-modal';
+@import 'components/newsletters';
+@import 'components/press';
+@import 'components/sign-up';
+@import 'components/user-settings';
+@import 'components/datepicker';
+@import 'vendors/datepicker';
+@import 'components/header-search';
+@import 'components/login';
+@import 'components/admin-forms';
+@import 'components/admin-nav';
+@import 'components/password-reset';
+@import 'components/admin-artists-list';
+@import 'components/admin-institutions-list';
+@import 'components/invite-artist-module';
+@import 'components/home-membership';
+@import 'components/signup';
+@import 'components/subscription-settings';
+@import 'components/archive-lists';
+@import 'components/audio-player';
+//@import 'components/event-view';
+@import 'components/store-base';
+@import 'components/my-downloads';
+@import 'components/admin-metrics';
+@import 'components/payout-calculator';
+@import 'base/screen-md-specific';
+@import 'components/smalls-mezzrow-crosspromo';
+@import 'components/archive-new';
+@import 'components/bg-image-calendar';
+@import 'components/no-bg-calendar';
+@import 'components/homepage-upcoming';
+@import 'components/homepage-date-browser';
+@import 'components/simple-pagination';
+
+
+@import 'components/event-row';
+@import 'components/home-banners';
+@import 'components/white-border-select';
+@import 'components/account-confirmation';
+@import 'components/artist-tracks';
+@import 'components/_education';
+@import 'components/ticketing';

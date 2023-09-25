@@ -1,0 +1,64 @@
+.video-audio {
+  background-color: var(--color-white);
+  border-top: 1px var(--color-light-gray) solid;
+  padding: 30px 30px 60px;
+
+  &__heading {
+    @include lato-black;
+    color: #9e9d9d;
+    font-size: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    margin-right: 10px;
+  }
+
+  &__more-link {
+    @include lato-bold-italic;
+    font-size: 16px;
+    color: $main-accent-color;
+    text-decoration: underline;
+    margin-left: 105px;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+      color: $main-accent-color-darker;
+    }
+  }
+
+  & .mini-video {
+
+    &:nth-child(odd) {
+      clear: left;
+    }
+
+    &__image {
+
+      @media(max-width:$screen-xs-max) {
+        display: block;
+      }
+    }
+
+    &-info {
+
+      @media(max-width:$screen-xs-max) {
+        display: block;
+        padding: 0;
+        margin-top: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: $screen-xs-max) {
+
+  .video-audio {
+
+    &__more-link {
+      margin-left: 0;
+      margin-bottom: 50px;
+      display: block;
+    }
+  }
+}
