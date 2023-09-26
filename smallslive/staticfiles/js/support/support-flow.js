@@ -1269,12 +1269,13 @@ $(document).ready(function() {
 //    alert('as dfasdfasd');
     console.log(currentStep);
 
-    var min = $(this).data("min-donation");
+    var min = $(this).attr("data-min-donation");
     if (min) {
         min = parseInt(min);
     } else {
         min = 10;
     }
+
     if (currentStep === "SelectType") {
       // We're combining CC info and payment for One Time Donations
       var amount = selectedData.amount;

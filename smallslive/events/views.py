@@ -718,7 +718,7 @@ store = StoreView.as_view()
 class AboutView(TemplateView, UpcomingSearchView):
     if settings.SITE_ID == 1:
         template_name = 'basic_pages/about.html'
-    else:
+    elif settings.SITE_ID == 2:
         template_name = 'basic_pages/about_foundation.html'
 
     def get_context_data(self, **kwargs):

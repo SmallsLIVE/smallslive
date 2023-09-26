@@ -364,7 +364,12 @@ class UserTaxLetterHtml(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserTaxLetterHtml, self).get_context_data(**kwargs)
-        customer = self.request.user.customer
+        customer = None
+        try:
+            if self.request.user.djstripe_customers.all():
+                customer = self.request.user.djstripe_customers.all()[0]
+        except:
+            customer = None
         year = self.request.GET.get('year', str(timezone.now().year))
         year = int(year)
         customer_charges = customer.subscriber.get_donations(year=year)
@@ -394,7 +399,12 @@ class UserTaxLetter(PDFTemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserTaxLetter, self).get_context_data(**kwargs)
-        customer = self.request.user.customer
+        customer = None
+        try:
+            if self.request.user.djstripe_customers.all():
+                customer = self.request.user.djstripe_customers.all()[0]
+        except:
+            customer = None
         year = self.request.GET.get('year', str(timezone.now().year))
         year = int(year)
         customer_charges = self.request.user.get_donations(year=year)

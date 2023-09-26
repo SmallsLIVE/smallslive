@@ -55,7 +55,7 @@
           <p  tabindex="0" class="title7" style="margin-bottom: 70px;"><span class="big-letter">T</span>HE <span class='accent-color'>SMALLSLIVE FOUNDATION</span> IS A
           <span class='accent-color'>NOT-FOR-PROFIT</span> ORGANIZED FOR THE PURPOSE OF THE <span class='accent-color'>DISSEMINATION OF JAZZ MUSIC</span>
           THROUGH OUR ARCHIVE, LIVE STREAMS, SPONSORSHIP OF INDIVIDUAL JAZZ PROJECTS & TOURS, EDUCATION, AND LIVE PERFORMANCES AT SMALLS & MEZZROW.
-          WE ARE SUPPORTED BY OUR MEMBERS THROUGH <span ><a class='accent-color underline' href="{% url 'contact-and-info' %}#foundation">TAX DEDUCTIBLE DONATIONS</a>.</span></p>
+          WE ARE SUPPORTED BY OUR MEMBERS THROUGH <span class='accent-color'>TAX DEDUCTIBLE DONATIONS</span>.</p>
         </div>
       </div>
     {% endif %}
@@ -66,13 +66,13 @@
         {% if flow_type is 'update_pledge' %}
         updating your pledge
         {% elif flow_type is 'one_time_donation' %}
-        making a one time donation
+        making a tax deductible donation
         {% else %}
         making a tax deductible donation
         {% endif %}
-        to the SmallsLIVE Foundation for Jazz Arts and Education.<br>
-        {% if not flow_type is 'update_pledge' %}All tax information is available from your account settings. {% endif %}
-        {% if not flow_type is 'update_pledge' %}Please choose one of the following:{% endif %}
+        to the SmallsLIVE Foundation for Jazz Art and Education.<br>
+        {% if not flow_type is 'update_pledge' %}This initial donation will give you access to our Audio/Video Archive. All of your tax donation information can be found in your Account. {% endif %}
+        <!--{% if not flow_type is 'update_pledge' %}Please choose one of the following:{% endif %}-->
       </div>
       {% if not flow_type is 'gift_support' %}
       {% include 'subscriptions/supporter_step_select_type.html' %}

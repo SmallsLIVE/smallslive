@@ -98,7 +98,7 @@
 
             </div>
           </div>
-          <div class="flex-column buttons-container">
+          <div class="flex-column {% if user.has_active_subscription or user.is_staff %}buttons-container{% endif %}">
             {% block control_buttons %}
             {% endblock %}
             <div class="event-player-buttons text-right">

@@ -1,8 +1,8 @@
-{% load pipeline %}
+{# {% load pipeline %} #}
 {% load static from staticfiles %}
 <html lang="en">
 <head>
-  {% stylesheet 'css' %}
+  {# {% stylesheet 'css' %} #}
 
   <style>
     body {background-image: none !important; background-color: white  !important;
@@ -15,7 +15,7 @@
 <body>
   <div class="tax-letter-container">
       <div class="tax-letter-header">
-          <img src="{% static 'new_logo_white.jpg' %}"  alt="" style="width: 70px; margin-bottom: 20px;"/>
+          <img src="{{ request.scheme }}://{{ request.get_host }}{% static 'new_logo_white.jpg' %}"  alt="" style="width: 70px; margin-bottom: 20px;"/>
           <p>The SmallsLIVE Foundation, INC.</p>
 
           <p>183 West 10th Street</p>
