@@ -1371,6 +1371,16 @@ $(document).ready(function() {
     if (currentStep === "SelectType") {
       setSelected(selectedData.flow, null, null)
       $itemForm = null;
+
+      if($('.become-supporter-donate-select').length) {
+        // Set selected amount on clicking the back button.
+        var selectedType = $('.become-supporter-donate-select .select-items .same-as-selected').attr('value');
+        if(selectedType == 'year') {
+          setSelected(selectedData.flow, "year", 100);
+        } else if(selectedType == 'month') {
+          setSelected(selectedData.flow, "month", 10);
+        }
+      }
     } else {
       $mainContainer.find("#confirmButton").show();
     }

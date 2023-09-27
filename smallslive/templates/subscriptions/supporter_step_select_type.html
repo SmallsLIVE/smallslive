@@ -56,9 +56,10 @@
 {% if not flow_type == 'one_time_donation' %}
   <div class="flex-column items-center monthly-input supporter-plan-input{% if not flow_type == 'update_pledge' %} hidden{% endif %}" id="monthly-input">
     {% if flow_type == 'update_pledge' %}
-      <div class="white-border-select home-filter supporter-plan-select donation-container">
+      <div class="white-border-select home-filter supporter-plan-select donation-container become-supporter-donate-select">
         <select id="update-pledge-donate">
-          <option value="month" selected>$10 for one months access</option>
+          <option value="none" selected>Select your pledge</option>
+          <option value="month">$10 for one months access</option>
           <option value="year">$100 for one years access</option>
         </select>
       </div>
@@ -85,9 +86,10 @@
   <div class="flex-column items-center one-time-input supporter-plan-input{% if flow_type == 'product_support' %} hidden{% endif %}" id="one-time-input">
 
     {% if flow_type == 'become_supporter' %}
-      <div class="white-border-select home-filter supporter-plan-select donation-container">
+      <div class="white-border-select home-filter supporter-plan-select donation-container become-supporter-donate-select">
         <select id="become-supporter-donate">
-          <option value="month" selected>$10 for one months access</option>
+          <option value="none" selected>Select your pledge</option>
+          <option value="month">$10 for one months access</option>
           <option value="year">$100 for one years access</option>
         </select>
       </div>
@@ -129,15 +131,16 @@
   <script>
     $(document).ready(function () {
       {% if flow_type == 'become_supporter' %}
-        $(document).ajaxComplete(function(){
-          $('#yearlyCustom').val(10);
-          $('#confirmButton').attr('data-min-donation', 10);
-          setSelected(selectedData.flow, "year", 10);
-          $('#yearlyCustom').addClass('hidden');
+        $(document).ajaxComplete(function(event,xhr,settings){
+          if (settings.url == '/subscriptions/payment-info/') {
+            //$('#yearlyCustom').val(10);
+            //$('#confirmButton').attr('data-min-donation', 10);
+            //setSelected(selectedData.flow, "year", 10);
+            $('#yearlyCustom').addClass('hidden');
+          }
         });
 
         $('#become-supporter-donate').on('change', function(e){
-          console.log(e.target.value);
           if(e.target.value === 'month'){
             $('#yearlyCustom').val(10);
             $('#confirmButton').attr('data-min-donation', 10);
@@ -149,22 +152,24 @@
           }
         });
       {% elif flow_type == 'update_pledge' %}
-        $(document).ajaxComplete(function(){
-          $('#monthlyCustom').val(10);
-          $('#confirmButton').attr('data-min-donation', 10);
-          setSelected(selectedData.flow, "year", 10);
-          $('#monthlyCustom').addClass('hidden');
+        $(document).ajaxComplete(function(event,xhr,settings){
+          if (settings.url == '/subscriptions/payment-info/') {
+            //$('#monthlyCustom').val(10);
+            //$('#confirmButton').attr('data-min-donation', 10);
+            //setSelected(selectedData.flow, "month", 10);
+            $('#monthlyCustom').addClass('hidden');
+          }
         });
 
         $('#update-pledge-donate').on('change', function(e){
           if(e.target.value === 'month'){
             $('#monthlyCustom').val(10);
             $('#confirmButton').attr('data-min-donation', 10);
-            setSelected(selectedData.flow, "year", 10);
+            setSelected(selectedData.flow, "month", 10);
           }else if(e.target.value === 'year'){
             $('#monthlyCustom').val(100);
             $('#confirmButton').attr('data-min-donation', 100);
-            setSelected(selectedData.flow, "year", 100);
+            setSelected(selectedData.flow, "month", 100);
           }
         });
       {% endif %}
