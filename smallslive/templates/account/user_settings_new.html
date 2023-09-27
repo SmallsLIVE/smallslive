@@ -78,7 +78,8 @@
           {% elif plan and plan.active and plan.interval and plan.interval == 'year' and not cancelled %}
             <div class="text9 accent-color" data-number="3">${{ plan.amount }}/{{ plan.interval }}</div>
           {% else %}
-            <div class="text9 accent-color">{% if cancelled %}Subscription canceled{% else %}None{% endif %}</div>
+            <!-- <div class="text9 accent-color">{% if cancelled %}Subscription canceled{% else %}None{% endif %}</div>  -->
+            <div class="text9 accent-color">{% if charges_value %}${{ charges_value }}{% else %}None{% endif %}</div>
           {% endif %}
 
           {% if not user.has_archive_access %}
@@ -89,7 +90,9 @@
             <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Update Pledge</a>
             </div>
           {% else  %}
-            <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Make a Recurring Monthly Pledge</a>
+            {% comment %}
+              <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Make a Recurring Monthly Pledge</a>
+            {% endcomment %}  
           {% endif %}
         </div>
 
@@ -133,9 +136,9 @@
           {% if subscription.plan and not cancelled %}
             <div class="text9 text-grey">There is no expiration date until the pledge is cancelled</div>
           {% elif user_archive_access_until %}
-            <div class="text9 text-grey"> {{ user_archive_access_until|date:"m/d/Y" }}</div>
+            <div class="text9 text-grey"> {{ user_archive_access_until|date:"d/m/Y" }}</div>
           {% elif subscription.plan and not period_end.due  %}
-            <div class="text9 text-grey">{{ user_archive_access_until|date:"m/d/Y" }}</div>
+            <div class="text9 text-grey">{{ user_archive_access_until|date:"d/m/Y" }}</div>
           {% else %}
             <div class="text9 text-grey">There is no access to the archive</div>
           {% endif %}

@@ -196,33 +196,48 @@ class Donation(models.Model):
         months = 0
         days = 0
 
-        if amount > 10:
-            months = int(amount / 10)
-            amount = amount % 10
+        # Get last donation
+        last_donation = self.user.get_archive_access_expiry_date()
 
-        if amount:
-            days = amount % 10 * 3
+        if last_donation:
+            last_expiry_date = last_donation
+        else:
+            last_expiry_date = datetime.date.today()
+
+        if amount == 100:
+            last_day =  (last_expiry_date + datetime.timedelta(days=365)).isoformat()
+        elif amount == 10:
+            last_day =  (last_expiry_date + datetime.timedelta(days=30)).isoformat()
+        elif amount > 10 and amount < 100:
+            days = (amount / 10) * 30
+            last_day =  (last_expiry_date + datetime.timedelta(days=int(days))).isoformat()
+        elif amount > 100:
+            days = (amount / 100) *  365
+            last_day =  (last_expiry_date + datetime.timedelta(days=int(days))).isoformat()
+        
+        # if amount:
+        #     days = amount % 10 * 3
 
         # Get last donation
-        last_donation = Donation.objects.filter(
-            user=self.user).order_by('-donation_date').first()
-        if last_donation:
-            last_expiry_date = last_donation.archive_access_expiry_date
-        else:
-            last_expiry_date = None
+        # last_donation = Donation.objects.filter(
+        #     user=self.user).order_by('-donation_date').first()
+        # if last_donation:
+        #     last_expiry_date = last_donation.archive_access_expiry_date
+        # else:
+        #     last_expiry_date = None
 
-        if last_expiry_date and last_expiry_date > timezone.now().date():
-            new_expiry_date = last_expiry_date
-        else:
-            new_expiry_date = timezone.now().date()
+        # if last_expiry_date and last_expiry_date > timezone.now().date():
+        #     new_expiry_date = last_expiry_date
+        # else:
+        #     new_expiry_date = timezone.now().date()
 
-        if months:
-            new_expiry_date = new_expiry_date + relativedelta(months=months)
-        if days:
-            new_expiry_date = new_expiry_date + relativedelta(days=days)
+        # if months:
+        #     new_expiry_date = new_expiry_date + relativedelta(months=months)
+        # if days:
+        #     new_expiry_date = new_expiry_date + relativedelta(days=days)
 
         # Limit the date
-        last_day = datetime.date(timezone.now().date().year, 12, 31)
+        # last_day = datetime.date(timezone.now().date().year, 12, 31)
 
         # Spike deprecated this for the time being.
         # if new_expiry_date > last_day:
@@ -231,9 +246,9 @@ class Donation(models.Model):
         new_expiry_date = last_day
 
         # New request from Spike: if donation is made after Dec 1, allow access during one whole year
-        today = timezone.now().date()
-        if today.month == 12:
-            new_expiry_date = new_expiry_date + relativedelta(months=11)
+        # today = timezone.now().date()
+        # if today.month == 12:
+        #     new_expiry_date = new_expiry_date + relativedelta(months=11)
 
         return new_expiry_date
 
