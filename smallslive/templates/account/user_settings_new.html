@@ -21,9 +21,10 @@
 {% endif %}
 {% include 'become_a_supporter_dialog.html' %}
 
-<div class="account-settings-container-new flex-row">
-  <div class="account-settings-info-container">
-    <div class="flex-column">
+<main>
+  <div class="account-settings-container-new">
+  <div>
+    <div class="account-settings-info-container">
       <div id="user-account" class="account-settings-view">
         <div class="title5 account-settings-title text-bottom-line">Account info</div>
         <div data-toggle-tab="user-account-info" data-toggle-tab-group="user-account">
@@ -209,13 +210,12 @@
       </div>
     </div>
   </div>
-</div>
+  </div>
+</main>
 
 
 {% endblock%}
 
-{% block footer %}
-{% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/tabs.js' %}"></script>

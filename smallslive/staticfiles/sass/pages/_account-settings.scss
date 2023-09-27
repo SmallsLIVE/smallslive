@@ -61,12 +61,12 @@
   }
 }
 .account-settings-container-new {
-  padding: 0 0 0 10%;
+  padding: 0 3.5vw;
   margin-bottom: 40px;
   margin-top: 30px;
 
   @media (max-width: $screen-sm-max) {
-    margin-top: 20px;
+    padding: 0 20px;
   }
 
   @media (max-width: 425px) {
@@ -83,9 +83,16 @@
   }
   .account-settings-info-container {
     width: 100%;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 100px;
     > .flex-column {
       height: auto;
+    }
+
+    @media (max-width: $screen-sm-max) {
+      grid-template-columns: repeat(1, 1fr);
+      gap: 30px;
     }
   }
   .account-settings-menu {
@@ -113,18 +120,34 @@
   }
 
   .account-settings-view {
-    margin-bottom: 30px;
+    padding: 40px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    transition: all 0.1s linear;
     > *:not(.title5) {
       margin-left: 5px;
     }
+
+    &:hover {
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+    #billing-change {
+
+      .select-items {
+        max-height: 200px;
+      }
+    }
+
     .title5 {
-      line-height: 20px;
+      color: var(--color-crimson);
+      font-size: 24px;
+      line-height: 28px;
       margin-bottom: 20px;
     }
     .account-settings-info,
     button,
     a {
-      margin-top: 10px;
+      margin-top: 20px;
     }
     .account-settings-info .supporter-options {
       .white-border-button {
