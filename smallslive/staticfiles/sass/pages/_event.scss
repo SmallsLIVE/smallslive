@@ -760,6 +760,16 @@ $player-height: 25.3vw;
   }
 }
 
+a {
+
+  &.artist-link {
+
+    &:hover {
+      color: var(--color-wine-red);
+    }
+  }
+}
+
 .event-video-placeholder {
   .event-video-placeholder-picture {
     filter: $sepia-filter;

@@ -33,18 +33,18 @@
   {% endif %}
 {% endcomment %}
 
+{% comment %}
 <div class="flex-column items-center one-time-input supporter-plan-input{% if flow_type == 'product_support' or flow_type == 'update_pledge' %} hidden{% endif %}">
   <div class="section-title section-title-no-padded">
     <div tabindex="0" class="title1">Access the Archive</div>
   </div>
-  {% comment %}
-    {% if not no_description %}
-      <p tabindex="0" class="text9">This is a one time, 100% tax deductible donation to The SmallsLIVE Foundation. All donations grant access to the SmallsLIVE Archive.<br>
-        If you would like to customize your donation please contact us at foundation@smallslive.com
-      </p>
-    {% endif %}
-  {% endcomment %}
+  {% if not no_description %}
+    <p tabindex="0" class="text9">This is a one time, 100% tax deductible donation to The SmallsLIVE Foundation. All donations grant access to the SmallsLIVE Archive.<br>
+      If you would like to customize your donation please contact us at foundation@smallslive.com
+    </p>
+  {% endif %}
 </div>
+{% endcomment %}
 
 <div class="flex-column items-center monthly-input supporter-plan-input{% if not flow_type == 'update_pledge' %} hidden{% endif %}">
   <div class="section-title section-title-no-padded">
@@ -60,7 +60,6 @@
         <select id="update-pledge-donate">
           <option value="none" selected>Select your pledge</option>
           <option value="month">$10 for one months access</option>
-          <option value="year">$100 for one years access</option>
         </select>
       </div>
     {% endif %}
@@ -107,7 +106,7 @@
       <div class="flex-column">
         <div class="flex-row custom-out">
           <div class="custom-input text4">
-            <input type="number" data-min-donation="{{ min_donation }}" min="{{ min_donation }}" step="1" class="no-spinners transparent" id="yearlyCustom" max="99999" value="supporter-yearly-pledge">
+            <input type="number" data-min-donation="{{ min_donation }}" min="{{ min_donation }}" step="1" class="no-spinners transparent" id="yearlyCustom" max="99999" value="supporter-yearly-pledge" placeholder="Please enter donation amount">
             <label><div class="hidden label">ENTER YOUR PLEDGE<br>(MIN  ${{ min_donation }})</div></label>
             <div id="yearly-less" class="text9 accent-color minimum-error"></div>
           </div>

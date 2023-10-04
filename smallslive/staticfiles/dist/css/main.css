@@ -3,11 +3,13 @@
 :root {
   --color-white: #ffffff;
   --color-black: #000000;
+  --color-gray: gray;
   --color-light-gray: #dddddd;
   --color-gallery: #eeeeee;
   --color-scorpion: #595959;
   --color-silver: #595959;
-  --color-crimson: #d21535; }
+  --color-crimson: #d21535;
+  --color-wine-red: #a41029; }
 
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 html {
@@ -6427,7 +6429,7 @@ a {
   color: black; }
 
 a:hover {
-  color: #a41029;
+  color: var(--color-wine-red);
   text-decoration: none; }
 
 a:active {
@@ -8534,13 +8536,25 @@ div.event-strip {
       left: -50%;
       position: relative; }
   .button-row .custom-input .no-spinners::-webkit-input-placeholder {
-    color: black; }
+    color: var(--color-gray);
+    font-size: 13px;
+    line-height: 1em;
+    top: -12px; }
   .button-row .custom-input .no-spinners::-moz-placeholder {
-    color: black; }
+    color: var(--color-gray);
+    font-size: 13px;
+    line-height: 1em;
+    top: -12px; }
   .button-row .custom-input .no-spinners::-ms-input-placeholder {
-    color: black; }
+    color: var(--color-gray);
+    font-size: 13px;
+    line-height: 1em;
+    top: -12px; }
   .button-row .custom-input .no-spinners::placeholder {
-    color: black; }
+    color: var(--color-gray);
+    font-size: 13px;
+    line-height: 1em;
+    top: -12px; }
   .button-row .custom-input:before {
     top: 2px;
     left: 20px;
@@ -9277,6 +9291,9 @@ div.event-strip {
   color: #808080; }
   .artist-link:hover {
     color: black; }
+
+a.artist-link:hover {
+  color: var(--color-wine-red); }
 
 .event-video-placeholder .event-video-placeholder-picture {
   -webkit-filter: grayscale(100%) brightness(50%) sepia(100%) saturate(20%) hue-rotate(335deg);
@@ -12891,6 +12908,11 @@ label[for="photo-clear_id"] {
     color: grey; }
     .account-settings-container-new .form-control:first-child {
       margin-top: 15px; }
+  .account-settings-container-new .modal-body .account-settings-view {
+    box-shadow: none;
+    padding: 0; }
+    .account-settings-container-new .modal-body .account-settings-view:hover {
+      box-shadow: none; }
   .account-settings-container-new .account-settings-view {
     padding: 40px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
@@ -15768,6 +15790,8 @@ label[for="photo-clear_id"] {
         border: 2px solid #fff;
         display: flex;
         gap: 15px; }
+        .artist-result-wrapper .artist-result .event-display > a:hover .event-info {
+          color: var(--color-wine-red); }
         .artist-result-wrapper .artist-result .event-display > a .event-info {
           color: black;
           flex-basis: calc(100% - 100px);
@@ -15804,6 +15828,8 @@ label[for="photo-clear_id"] {
       border: 2px solid #fff;
       display: flex;
       gap: 15px; }
+      .shows-container-wrapper .wrapped-events .event-display > a:hover .event-info {
+        color: var(--color-wine-red); }
       .shows-container-wrapper .wrapped-events .event-display > a .event-info {
         color: black;
         flex-basis: calc(100% - 100px);

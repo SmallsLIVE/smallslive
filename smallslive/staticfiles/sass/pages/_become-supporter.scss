@@ -447,6 +447,7 @@
 }
 
 .button-row {
+
   .custom-input {
     font-size: 1.2em;
     position: relative;
@@ -474,7 +475,10 @@
     }
 
     .no-spinners::placeholder {
-      color: black;
+      color: var(--color-gray);
+      font-size: 13px;
+      line-height: 1em;
+      top: -12px;
     }
 
     &:before {

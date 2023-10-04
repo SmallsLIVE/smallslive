@@ -119,7 +119,7 @@ a {
 }
 
 a:hover {
-  color: $accent-color-dark;
+  color: var(--color-wine-red);
   text-decoration: none;
 }
 

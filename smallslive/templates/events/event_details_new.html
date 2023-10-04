@@ -208,7 +208,8 @@
         </div>
       </div>
       {% endif %}
-      {% comment %}
+      {% get_site_id as site_id %}
+      {% if site_id == 2 %}
         <div class="event-related-videos">
           <div class="section-title section-flex">
             <div class="title1">Related videos</div>
@@ -223,7 +224,7 @@
             </div>
           </div>
         </div>
-      {% endcomment %}
+      {% endif %}
     </div>
   </div>
 

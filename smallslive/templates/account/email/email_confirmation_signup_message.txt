@@ -1,5 +1,5 @@
 {% load account %}{% user_display user as user_display %}{% load i18n %}{% autoescape off %}{% with current_site.name as site_name %}{%if not user.artist %}
-Please click the link below to confirm this email address and complete your registration with SmallsLIVE. You may now watch our livestream and use our archive.
+Please click the link below to confirm your email address and complete your registration with the SmallsLIVE Foundation
 
 {{ activate_url }}
 

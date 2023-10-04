@@ -236,6 +236,13 @@
                 display: flex;
                 gap: 15px;
 
+                &:hover {
+
+                  .event-info {
+                    color: var(--color-wine-red);
+                  }
+                }
+
                 .event-info {
                     color: $black;
                     flex-basis: calc(100% - 100px);
@@ -292,6 +299,13 @@
                 border: 2px solid #fff;
                 display: flex;
                 gap: 15px;
+
+                &:hover {
+
+                  .event-info {
+                    color: var(--color-wine-red);
+                  }
+                }
 
                 .event-info {
                     color: $black;
