@@ -11347,6 +11347,43 @@ a.artist-link:hover {
     font-size: 24px;
     line-height: 40px; } }
 
+.metrics-profile-container .artist-payout-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 100px;
+  padding-top: 50px; }
+
+.metrics-profile-container .pay-period-wrapper,
+.metrics-profile-container .pay-info-wrapper {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  padding: 40px;
+  transition: all 0.1s linear; }
+  .metrics-profile-container .pay-period-wrapper:hover,
+  .metrics-profile-container .pay-info-wrapper:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; }
+  .metrics-profile-container .pay-period-wrapper .title1,
+  .metrics-profile-container .pay-info-wrapper .title1 {
+    color: var(--color-crimson); }
+
+.metrics-profile-container .pay-period-wrapper .artist-payout-data .payout-info-row {
+  flex-direction: column; }
+
+.metrics-profile-container .pay-period-wrapper .artist-payout-data .artist-payout-data-left {
+  width: 100%;
+  margin: 0; }
+
+.metrics-profile-container .pay-info-wrapper .payout-form {
+  width: 100%; }
+
+@media (max-width: 960px) {
+  .metrics-profile-container.artist-profile-container {
+    padding: 20px !important;
+    margin: 0; }
+  .metrics-profile-container .artist-payout-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 30px;
+    padding-top: 20px; } }
+
 .artist-profile-container {
   min-height: 80vh;
   margin-bottom: 40px;
@@ -11610,7 +11647,8 @@ a.artist-link:hover {
       width: 100%; }
   .artist-profile-container .artist-event {
     padding-top: 23px;
-    width: auto; }
+    width: auto;
+    flex-basis: calc(100% - 565px); }
     .artist-profile-container .artist-event .button-row.controls {
       margin-bottom: 30px;
       visibility: hidden; }
@@ -11644,7 +11682,7 @@ a.artist-link:hover {
           display: block; } }
   .artist-profile-container .artist-events-list {
     padding-top: 90px;
-    width: 35%; }
+    flex-basis: 565px; }
     .artist-profile-container .artist-events-list.future {
       padding-top: 75px;
       width: 50%;
@@ -11662,7 +11700,9 @@ a.artist-link:hover {
           font-size: 5.3vw; } }
       .artist-profile-container .artist-events-list .summary-data.section-title {
         background-size: calc(550px + 3.5vw) 5px;
-        line-height: 30px; }
+        line-height: 30px;
+        padding-left: 0;
+        margin-left: 3.5vw; }
         @media (max-width: 960px) {
           .artist-profile-container .artist-events-list .summary-data.section-title {
             line-height: 2.8vw; } }
@@ -11700,6 +11740,8 @@ a.artist-link:hover {
         width: 100%;
         -o-object-fit: cover;
         object-fit: cover; }
+  .artist-profile-container .event-metrics-container {
+    margin: 0 13px 20px 13px; }
   .artist-profile-container .artist-events-list-info,
   .artist-profile-container .event-mobile-info {
     padding-top: 20px;
@@ -11935,10 +11977,11 @@ a.artist-link:hover {
       .artist-profile-container .artist-events-list-info .event-metrics-container .event-metrics-container-plays,
       .artist-profile-container .event-mobile-info .event-metrics-container .event-metrics-container-plays {
         border-right: 3px solid #d21535;
-        padding-right: 10px; }
+        padding-right: 15px; }
       .artist-profile-container .artist-events-list-info .event-metrics-container .event-metrics-container-time,
       .artist-profile-container .event-mobile-info .event-metrics-container .event-metrics-container-time {
-        margin-left: 10px; }
+        margin-left: 15px;
+        margin-top: -3px; }
     .artist-profile-container .artist-events-list-info .mobile-event-menu,
     .artist-profile-container .event-mobile-info .mobile-event-menu {
       display: none; }
@@ -12107,6 +12150,8 @@ a.artist-link:hover {
             .artist-profile-container .artist-events-list-info .mobile-event-menu .mobile-option-container .edit-event-mobile-form .title1,
             .artist-profile-container .event-mobile-info .mobile-event-menu .mobile-option-container .edit-event-mobile-form .title1 {
               font-size: 6vw; } }
+  .artist-profile-container .artist-events-list-info .edit-event-dashboard {
+    padding: 0 50px; }
   .artist-profile-container .labeled-select {
     margin-bottom: 20px;
     justify-content: space-between;
@@ -12214,7 +12259,7 @@ a.artist-link:hover {
 .artist-dashboard-event-container {
   display: flex;
   flex-direction: column;
-  padding: 0 2%;
+  padding: 0 50px 0 0;
   width: 50%; }
   @media (max-width: 1200px) {
     .artist-dashboard-event-container {
@@ -12298,7 +12343,10 @@ label[for="photo-clear_id"] {
 
 .artist-archive-filter {
   padding-left: 3.5vw;
-  position: relative;
+  position: absolute;
+  margin-top: 25px;
+  top: 0;
+  left: 550px;
   margin-bottom: 30px; }
   @media (max-width: 960px) {
     .artist-archive-filter {
@@ -12527,7 +12575,7 @@ label[for="photo-clear_id"] {
   justify-content: space-between;
   align-items: center;
   position: relative;
-  margin: 20px 0;
+  margin: 20px 13px;
   height: 43px; }
   .artist-metrics-header.white-underline {
     border-bottom: 5px solid white; }
@@ -12741,7 +12789,8 @@ label[for="photo-clear_id"] {
   height: auto;
   max-height: 55vh;
   padding-left: 3.5vw;
-  overflow-y: scroll; }
+  overflow-y: auto;
+  padding-top: 53px; }
   @media (max-width: 769px) {
     .artist-events-list .artist-list {
       height: auto;

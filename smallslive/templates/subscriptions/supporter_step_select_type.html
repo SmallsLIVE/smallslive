@@ -1,25 +1,25 @@
-{% comment %}
-  {% if not flow_type == 'update_pledge' and not flow_type == 'event_sponsorship' and not only_one_time %}
-    <div id="select-type-row" class="row" style="margin-top: 20px;">
-      <div class="button-row button-row-margin supporter-type-select">
-        <div class="store__form__selection__option">
-          <button class="select-supporter-type-toggle{% if not flow_type == 'product_support' %} active{% endif %} single"
-                  data-id="one-time"
-                  data-recurring="single"
-                  data-payment-options-hidden="">
-            One Time Donation
-          </button>
-        </div>
-        {% if flow_type == 'become_supporter' %}
-          <div class="store__form__selection__option">
-            <button class="select-supporter-type-toggle recurring"
-                    data-id="monthly"
-                    data-recurring="recurring"
-                    data-payment-options-hidden="">
-              Monthly Pledge
-            </button>
-          </div>
-        {% endif %}
+{% if flow_type == 'one_time_donation' %}
+  <div id="select-type-row" class="row" style="margin-top: 20px;">
+    <div class="button-row button-row-margin supporter-type-select">
+      <div class="store__form__selection__option">
+        <button class="select-supporter-type-toggle{% if not flow_type == 'product_support' %} active{% endif %} single"
+                data-id="one-time"
+                data-recurring="single"
+                data-payment-options-hidden="">
+          One Time Donation
+        </button>
+      </div>
+
+      <div class="store__form__selection__option">
+        <button class="select-supporter-type-toggle recurring"
+                data-id="monthly"
+                data-recurring="recurring"
+                data-payment-options-hidden="">
+          Monthly Pledge
+        </button>
+      </div>
+
+      {% comment %}
         <div class="store__form__selection__option">
           <button class="select-supporter-type-toggle {% if flow_type == 'product_support' %} active{% endif %}"
                   data-id="gift"
@@ -28,10 +28,11 @@
             Choose a Gift
           </button>
         </div>
-      </div>
+      {% endcomment %}
     </div>
-  {% endif %}
-{% endcomment %}
+  </div>
+{% endif %}
+
 
 {% comment %}
 <div class="flex-column items-center one-time-input supporter-plan-input{% if flow_type == 'product_support' or flow_type == 'update_pledge' %} hidden{% endif %}">
@@ -48,13 +49,14 @@
 
 <div class="flex-column items-center monthly-input supporter-plan-input{% if not flow_type == 'update_pledge' %} hidden{% endif %}">
   <div class="section-title section-title-no-padded">
-    <div tabindex="0" class="title1">Monthly Pledge</div>
+    <div tabindex="0" class="title1">Monthly Recurring Pledge</div>
   </div>
-  <p tabindex="0" class="text9">Monthly pledges are billed automatically and can be cancelled at any time from your account settings. Monthly pledges are 100% tax deductible. All donations grant access to the SmallsLIVE Archive.</p>
+  <p tabindex="0" class="text9">This is a pledge, automatically sent monthly until you cancel</p>
 </div>
 
-{% if not flow_type == 'one_time_donation' %}
-  <div class="flex-column items-center monthly-input supporter-plan-input{% if not flow_type == 'update_pledge' %} hidden{% endif %}" id="monthly-input">
+
+<div class="flex-column items-center monthly-input supporter-plan-input{% if not flow_type == 'update_pledge' or flow_type == 'one_time_donation' %} hidden{% endif %}" id="monthly-input">
+  {% comment %}
     {% if flow_type == 'update_pledge' %}
       <div class="white-border-select home-filter supporter-plan-select donation-container become-supporter-donate-select">
         <select id="update-pledge-donate">
@@ -63,23 +65,24 @@
         </select>
       </div>
     {% endif %}
+  {% endcomment %}
 
-    <div id="monthlyPledge" class="button-row button-row-big donation-container">
-      <div class="flex-column">
-        <div class="flex-row custom-out">
-          <div class="custom-input text4">
-            <input type="number" min="10" max="99999" step="1" class="no-spinners transparent" id="monthlyCustom" value="supporter-monthly-pledge">
-            <label id="set-your-own-lbl"><div class="hidden">ENTER YOUR PLEDGE <br> (MIN $10)</div></label>
-            <div id="monthly-less" class="text9 accent-color minimum-error"></div>
-          </div>
+  <div id="monthlyPledge" class="button-row button-row-big donation-container {% if flow_type == 'update_pledge' %}monthly-pledge-donate{% endif %}">
+    <div class="flex-column">
+      <div class="flex-row custom-out">
+        <div class="custom-input text4">
+          <input type="number" min="10" max="99999" step="1" class="no-spinners transparent" id="monthlyCustom" value="supporter-monthly-pledge" placeholder="Please enter donation amount">
+          <label id="set-your-own-lbl"><div class="hidden">ENTER YOUR PLEDGE <br> (MIN $10)</div></label>
+          <div id="monthly-less" class="text9 accent-color minimum-error"></div>
         </div>
-        <label class="hidden accent-color">
-          $10 is the minimum monthly pledge
-        </label>
       </div>
+      <label class="hidden accent-color">
+        $10 is the minimum monthly pledge
+      </label>
     </div>
   </div>
-{% endif %}
+</div>
+
 
 {% if not flow_type == 'update_pledge' %}
   <div class="flex-column items-center one-time-input supporter-plan-input{% if flow_type == 'product_support' %} hidden{% endif %}" id="one-time-input">
@@ -153,10 +156,9 @@
       {% elif flow_type == 'update_pledge' %}
         $(document).ajaxComplete(function(event,xhr,settings){
           if (settings.url == '/subscriptions/payment-info/') {
-            //$('#monthlyCustom').val(10);
-            //$('#confirmButton').attr('data-min-donation', 10);
-            //setSelected(selectedData.flow, "month", 10);
-            $('#monthlyCustom').addClass('hidden');
+            $('#monthlyCustom').val(10);
+            $('#confirmButton').attr('data-min-donation', 10);
+            setSelected(selectedData.flow, "month", 10);
           }
         });
 

@@ -520,6 +520,16 @@ $(document).ready(function() {
     $("#payment-form").removeClass("hidden");
     $(".deferred").removeClass("hidden");
 
+    if($(this).attr('data-id') == 'monthly') {
+      $("#monthlyCustom").val(10);
+      setSelected(selectedData.flow, "month", 10);
+    }
+
+    if($(this).attr('data-id') == 'one-time') {
+      var previousYearlyCustomValue = $("#yearlyCustom").val();
+      setSelected(selectedData.flow, "year", previousYearlyCustomValue);
+    }
+
     enablePaymentTypes(recurring);
 
     return false;
@@ -1371,6 +1381,18 @@ $(document).ready(function() {
     if (currentStep === "SelectType") {
       setSelected(selectedData.flow, null, null)
       $itemForm = null;
+
+      if($("#monthlyCustom").length) {
+        // Set previous amount on clicking the back button.
+        var previousMonthlyCustomValue = $('#monthlyCustom').val();
+        setSelected(selectedData.flow, "month", previousMonthlyCustomValue);
+      }
+
+      if($("#one-time-input").not('hidden')) {
+        // Set previous amount on clicking the back button.
+        var previousYearlyCustomValue = $('#yearlyCustom').val();
+        setSelected(selectedData.flow, "year", previousYearlyCustomValue);
+      }
 
       if($('.become-supporter-donate-select').length) {
         // Set selected amount on clicking the back button.

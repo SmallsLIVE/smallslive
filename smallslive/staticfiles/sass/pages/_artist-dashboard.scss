@@ -15,6 +15,68 @@ $dashboard-desktop: 1200px;
   }
 }
 
+.metrics-profile-container {
+
+  .artist-payout-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 100px;
+    padding-top: 50px;
+  }
+
+  .pay-period-wrapper,
+  .pay-info-wrapper {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    padding: 40px;
+    transition: all 0.1s linear;
+
+    &:hover {
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+    .title1 {
+      color: var(--color-crimson);
+    }
+  }
+
+  .pay-period-wrapper {
+
+    .artist-payout-data {
+
+      .payout-info-row {
+        flex-direction: column;
+      }
+
+      .artist-payout-data-left {
+        width: 100%;
+        margin: 0;
+      }
+    }
+  }
+
+  .pay-info-wrapper {
+
+    .payout-form {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: $screen-sm-max) {
+
+    &.artist-profile-container {
+      padding: 20px !important;
+      margin: 0;
+    }
+
+    .artist-payout-wrapper {
+      grid-template-columns: repeat(1, 1fr);
+      gap: 30px;
+      padding-top: 20px;
+    }
+  }
+}
+
+
 .artist-profile-container {
   min-height: 80vh;
   margin-bottom: 40px;
@@ -403,6 +465,7 @@ $dashboard-desktop: 1200px;
   .artist-event {
     padding-top: 23px;
     width: auto;
+    flex-basis: calc(100% - 565px);
 
     .button-row {
 
@@ -459,7 +522,8 @@ $dashboard-desktop: 1200px;
 
   .artist-events-list {
     padding-top: 90px;
-    width: 35%;
+    // width: 35%;
+    flex-basis: 565px;
 
     &.future {
       //padding-left: 25%;
@@ -490,6 +554,8 @@ $dashboard-desktop: 1200px;
       &.section-title {
         background-size: calc(550px + 3.5vw) 5px;
         line-height: 30px;
+        padding-left: 0;
+        margin-left: 3.5vw;
 
         @media(max-width: 960px){
           line-height: 2.8vw;
@@ -551,6 +617,10 @@ $dashboard-desktop: 1200px;
         object-fit: cover;
       }
     }
+  }
+
+  .event-metrics-container {
+    margin: 0 13px 20px 13px;
   }
 
   .artist-events-list-info,
@@ -836,11 +906,12 @@ $dashboard-desktop: 1200px;
 
       .event-metrics-container-plays {
         border-right: 3px solid $accent-color;
-        padding-right: 10px;
+        padding-right: 15px;
       }
 
       .event-metrics-container-time {
-        margin-left: 10px;
+        margin-left: 15px;
+        margin-top: -3px;
       }
     }
 
@@ -1073,6 +1144,13 @@ $dashboard-desktop: 1200px;
     }
   }
 
+  .artist-events-list-info {
+
+    .edit-event-dashboard {
+      padding: 0 50px;
+    }
+  }
+
   .labeled-select {
     margin-bottom: 20px;
     justify-content: space-between;
@@ -1242,7 +1320,7 @@ $dashboard-desktop: 1200px;
 .artist-dashboard-event-container {
   display: flex;
   flex-direction: column;
-  padding: 0 2%;
+  padding: 0 50px 0 0;
   width: 50%;
 
   @media (max-width: $dashboard-desktop) {
@@ -1361,7 +1439,10 @@ label[for="photo-clear_id"] {
 .artist-archive-filter {
 
   padding-left: 3.5vw;
-  position: relative;
+  position: absolute;
+  margin-top: 25px;
+  top: 0;
+  left: 550px;
 
   @media(max-width: 960px) {
     padding: 0 5px;
@@ -1677,7 +1758,7 @@ label[for="photo-clear_id"] {
   justify-content: space-between;
   align-items: center;
   position: relative;
-  margin: 20px 0;
+  margin: 20px 13px;
   height: 43px;
 
   &.white-underline{
@@ -1992,7 +2073,8 @@ label[for="photo-clear_id"] {
     height: auto;
     max-height: 55vh;
     padding-left: 3.5vw;
-    overflow-y: scroll;
+    overflow-y: auto;
+    padding-top: 53px;
 
     @media (max-width: 769px) {
       height: auto;

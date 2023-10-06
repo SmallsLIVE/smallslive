@@ -6,110 +6,116 @@
 {% block title %}Home{% endblock %} 
 {% block content %}
 <div class="artist-profile-container metrics-profile-container">
-    
-    <section class="artist-dashboard-payout-title">
-        <div class="title1">Pay Period</div>
-    </section>
-    <div class="labeled-select flex-row">
-        <div class="white-border-select white-border-select-left flex-row">
-            <select id="artist_payout_select">
-                <option value="current" class="text-grey">
-                    {{ current_payout_period.period_start|date:"b j, Y" }} - current
-                </option>
-                {% for earning in user.artist.earnings.all %}
-                <option value="{{ earning.id }}">
-                    {{ earning.payout_period.period_start|date:"b j, Y" }} - {{ earning.payout_period.period_end|date:"b j, Y" }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-      
-        <div class="flex-row payout-bar">
+    <div class="artist-payout-wrapper">
+        <div class="pay-period-wrapper">
+            <section class="artist-dashboard-payout-title">
+                <div class="title1">Pay Period</div>
+            </section>
+            <div class="labeled-select flex-row">
+                <div class="white-border-select white-border-select-left flex-row">
+                    <select id="artist_payout_select">
+                        <option value="current" class="text-grey">
+                            {{ current_payout_period.period_start|date:"b j, Y" }} - current
+                        </option>
+                        {% for earning in user.artist.earnings.all %}
+                        <option value="{{ earning.id }}">
+                            {{ earning.payout_period.period_start|date:"b j, Y" }} - {{ earning.payout_period.period_end|date:"b j, Y" }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            
+                <div class="flex-row payout-bar">
 
-            <button class="white-border-button payout-bar-button" onclick="$('#payout-info').modal('show')">
-                Info
-            </button>
-            <div id='download-button'></div>
-        </div>
-    </div>
-    <div class="artist-payout-data">
-        <div id="currentPayoutData">
-            <div class="flex-row">
-                <div class="artist-payout-data-left">
-                    <div class="flex-column content-flex-end">
+                    <button class="white-border-button payout-bar-button" onclick="$('#payout-info').modal('show')">
+                        Info
+                    </button>
+                    <div id='download-button'></div>
+                </div>
+            </div>
+        
+            <div class="artist-payout-data">
+                <div id="currentPayoutData">
+                    <div class="flex-row payout-info-row">
+                        <div class="artist-payout-data-left">
+                            <div class="flex-column content-flex-end">
 
 
-                    <div class="artist-payout-data-text">
-                        <div class="text1">Total archive usage this period</div>
-                        <div class="text9 accent-color" data-seconds='{{ current_payout_period.current_total_seconds }}' id='event-seconds'></div>
-                    </div>
-                    <div class="artist-payout-data-text">
-                        <div class="text1">{{ user.artist.full_name }} this period</div>
-                        <div class="text9 accent-color" data-seconds='{{ user.artist.current_period_seconds_played }}' id='artist-seconds'></div>
-                    </div>
-                    <div class="artist-payout-data-text">
-                        <div class="text1">Ratio</div>
-                        <div class="text9 accent-color">
-                            {{ user.artist.current_period_percentage_ratio|floatformat:"-5" }}% of archive pool
+                            <div class="artist-payout-data-text">
+                                <div class="text1">Total archive usage this period</div>
+                                <div class="text9 accent-color" data-seconds='{{ current_payout_period.current_total_seconds }}' id='event-seconds'></div>
+                            </div>
+                            <div class="artist-payout-data-text">
+                                <div class="text1">{{ user.artist.full_name }} this period</div>
+                                <div class="text9 accent-color" data-seconds='{{ user.artist.current_period_seconds_played }}' id='artist-seconds'></div>
+                            </div>
+                            <div class="artist-payout-data-text">
+                                <div class="text1">Ratio</div>
+                                <div class="text9 accent-color">
+                                    {{ user.artist.current_period_percentage_ratio|floatformat:"-5" }}% of archive pool
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div>
+                            <div class="artist-payout-data-text">
+                                <div class="text1">Archive revenue this period</div>
+                                <div class="text9 accent-color">Payout has not been processed yet</div>
+                            </div>
+                            <div class="artist-payout-data-text">
+                                <div class="text1">{{ user.artist.full_name }}'s share this period</div>
+                                <div class="text9 accent-color">Payout has not been processed yet</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
-                <div>
-                    <div class="artist-payout-data-text">
-                        <div class="text1">Archive revenue this period</div>
-                        <div class="text9 accent-color">Payout has not been processed yet</div>
-                    </div>
-                    <div class="artist-payout-data-text">
-                        <div class="text1">{{ user.artist.full_name }}'s share this period</div>
-                        <div class="text9 accent-color">Payout has not been processed yet</div>
-                    </div>
+                <div id="payoutData">
                 </div>
             </div>
         </div>
-        <div id="payoutData">
-        </div>
-    </div>
-    <section class="artist-dashboard-payout-title">
-        <div class="title1">Payout info</div>
-    </section>
-    <div class="flex-column settings-right artist-payout-data">
-        <div id="payout-form" style="display: none;" data-subpage-url="{% url 'artist_dashboard:payout_form'%}" data-subpage-name="payout-form">
-         
-        </div>
-        <div class="flex-column" id="payout-address-info">
-            <div class="text1 artist-payout-data-text">Mailing address</div>
-            <div class="text9 text-grey artist-payout-data-text">
-                {% if user.address_1 or user.address_2 or user.city %}
-                    <span id="address-1">{{ user.address_1 }}</span>
-                    <br>
-                    <span id="address-2">{{ user.address_2 }}</span>
-                    <br>  
-                    <span id="city">{{ user.city }}</span>
-                    <span id="zip">{{ user.zip }}</span>
-                {% else %}
-                    There is no address assigned
-                {% endif %}
+        <div class="pay-info-wrapper">
+            <section class="artist-dashboard-payout-title">
+                <div class="title1">Payout info</div>
+            </section>
+            <div class="flex-column settings-right artist-payout-data">
+                <div id="payout-form" style="display: none;" data-subpage-url="{% url 'artist_dashboard:payout_form'%}" data-subpage-name="payout-form">
+                
+                </div>
+                <div class="flex-column" id="payout-address-info">
+                    <div class="text1 artist-payout-data-text">Mailing address</div>
+                    <div class="text9 text-grey artist-payout-data-text">
+                        {% if user.address_1 or user.address_2 or user.city %}
+                            <span id="address-1">{{ user.address_1 }}</span>
+                            <br>
+                            <span id="address-2">{{ user.address_2 }}</span>
+                            <br>  
+                            <span id="city">{{ user.city }}</span>
+                            <span id="zip">{{ user.zip }}</span>
+                        {% else %}
+                            There is no address assigned
+                        {% endif %}
+                    </div>
+                    <div class="text1 artist-payout-data-text">PayPal Email Address</div>
+                    <div class="text9 text-grey artist-payout-data-text">
+                        {% if user.paypal_email %}
+                            <span id="paypal">{{ user.paypal_email }}</span>
+                        {% else %}
+                            <span>Enter a PayPal account if you wish to be paid through that method</span>
+                        {% endif %}
+                    </div>
+                    <div class="text1 artist-payout-data-text">Tax Payer ID</div>
+                    <div class="text9 text-grey artist-payout-data-text">
+                        {% if user.taxpayer_id %}
+                            <span id="taxpayer">{{ user.taxpayer_id }}</span>
+                        {% else %}
+                            <span>Enter a Tax Payer Id (optional)</span>
+                        {% endif %}
+                    </div>
+                    <button class="white-border-button payout-info-button" onclick="showForm()">
+                        Edit Info
+                    </button>
+                </div>
             </div>
-            <div class="text1 artist-payout-data-text">PayPal Email Address</div>
-            <div class="text9 text-grey artist-payout-data-text">
-                {% if user.paypal_email %}
-                    <span id="paypal">{{ user.paypal_email }}</span>
-                {% else %}
-                    <span>Enter a PayPal account if you wish to be paid through that method</span>
-                {% endif %}
-            </div>
-            <div class="text1 artist-payout-data-text">Tax Payer ID</div>
-            <div class="text9 text-grey artist-payout-data-text">
-                {% if user.taxpayer_id %}
-                    <span id="taxpayer">{{ user.taxpayer_id }}</span>
-                {% else %}
-                    <span>Enter a Tax Payer Id (optional)</span>
-                {% endif %}
-            </div>
-            <button class="white-border-button payout-info-button" onclick="showForm()">
-                Edit Info
-            </button>
         </div>
     </div>
         <div class="modal fade" id="payout-info" tabindex="-1" role="dialog" aria-hidden="true">

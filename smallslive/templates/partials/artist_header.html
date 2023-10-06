@@ -30,17 +30,19 @@
           <button class="no-border {% if request.resolver_match.url_name == 'my_future_events' %}active{% endif %}">
               Upcoming
           </button>
-      </a>
-        <a href="{% url 'artist_dashboard:edit_profile' %}">
-          <button class="no-border  {% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">
-              Profile
-          </button>
-      </a>
-        <a href="{% url 'artist_dashboard:legal' %}">
-            <button class="no-border">
-                Agreement
+        </a>
+          <a href="{% url 'artist_dashboard:edit_profile' %}">
+            <button class="no-border  {% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">
+                Profile
             </button>
         </a>
+        {% comment %}
+          <a href="{% url 'artist_dashboard:legal' %}">
+              <button class="no-border">
+                  Agreement
+              </button>
+          </a>
+        {% endcomment %}
       </div>
       {% if not request.user.is_authenticated %}
         <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
@@ -58,7 +60,9 @@
               {% endif %}
             </option>
               <option value="home">Home</option>
-              <option value="my_downloads">Library</option>
+              {% comment %}
+                <option value="my_downloads">Library</option>
+              {% endcomment %}
               <option value="account_info">Account</option>
             <option value="logout">Sign Out</option>
           </select>
@@ -93,7 +97,7 @@
           <div class="text2"><a href="{% url 'artist_dashboard:my_past_events' %}">Dashboard</a></div>
         {% endif %}
       {% endif %}
-      <div class="text2"><a href="{% url 'my-downloads' %}">Library</a></div>
+      {% comment %} <div class="text2"><a href="{% url 'my-downloads' %}">Library</a></div> {% endcomment %}
       <div class="text2"><a href="{% url 'user_settings_new' %}">Account</a></div>
       <div class="text2"><a href="{% url 'account_logout' %}">Sign Out</a></div>
     {% endif %}
@@ -113,8 +117,8 @@
       <a href="{% url 'artist_dashboard:metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}active{% endif %}">Payout</a>
       <a href="{% url 'artist_dashboard:my_future_events' %}" class="{% if request.resolver_match.url_name == 'my_future_events' %}active{% endif %}">Upcoming</a>
       <a href="{% url 'artist_dashboard:edit_profile' %}" class="{% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">Profile</a>
-      {% comment %} <a href="">Smallslive Tracks</a> {% endcomment %}
-      <a href="{% url 'terms-and-conditions' %}">Agreement</a>
+      {% comment %} <a href="">Smallslive Tracks</a>
+      <a href="{% url 'terms-and-conditions' %}">Agreement</a> {% endcomment %}
     </div>
   </div>
 </div>
