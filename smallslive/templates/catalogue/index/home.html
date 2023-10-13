@@ -13,16 +13,18 @@
 {% block title %}SmallsLIVE Tracks{% endblock %}
 
 {% block store_content %}
-  <div class="store-listing__content">
-    <div class="section-title catalog featured">
-      <div class="title1">featured & newest</div>
+  {% comment %}
+    <div class="store-listing__content">
+      <div class="section-title catalog featured">
+        <div class="title1">featured & newest</div>
+      </div>
+      <main class="newest-recordings-container">
+        <div class="slide-btn catalog prev"><b class="indicator-icon icon-left-caret"></b></div>
+        <div class="slide-btn catalog next"><b class="indicator-icon icon-right-caret"></b></div>
+        {% include 'catalogue/index/featured_row.html' with events=newest_recordings extra_events=featured_recordings secondary=False %}
+      </main>
     </div>
-    <main class="newest-recordings-container">
-      <div class="slide-btn catalog prev"><b class="indicator-icon icon-left-caret"></b></div>
-      <div class="slide-btn catalog next"><b class="indicator-icon icon-right-caret"></b></div>
-      {% include 'catalogue/index/featured_row.html' with events=newest_recordings extra_events=featured_recordings secondary=False %}
-    </main>
-  </div>
+  {% endcomment %}
 
   <div class="section-title catalog list">
     <div class="title1 catalog-title">SmallsLIVE Catalog</div>
@@ -57,6 +59,8 @@
         }
         $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
       })
+
+      loadMoreCatalog();
     });
 
     $(window).scroll(function () {

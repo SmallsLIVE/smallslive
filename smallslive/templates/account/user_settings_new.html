@@ -70,36 +70,33 @@
       {% endif %}
       <div id="user-donation-settings" class="account-settings-view">
         <div class="title5 account-settings-title text-bottom-line">Supporter settings</div>
-        <div class="account-settings-info">
-          <div class="text5">Current Pledge</div>
-          {% if subscription and subscription.plan and not cancelled %}
-            <div class="text9 accent-color" data-number="1">${{ monthly_pledge_in_dollars }}/{{ subscription.plan.interval }}</div>
-          {% elif plan and plan.active and plan.interval and plan.interval == 'month' and not cancelled %}
-            <div class="text9 accent-color" data-number="2">${{ plan.amount }}/{{ plan.interval }}</div>
-          {% elif plan and plan.active and plan.interval and plan.interval == 'year' and not cancelled %}
-            <div class="text9 accent-color" data-number="3">${{ plan.amount }}/{{ plan.interval }}</div>
-          {% else %}
-            <!-- <div class="text9 accent-color">{% if cancelled %}Subscription canceled{% else %}None{% endif %}</div>  -->
-            <div class="text9 accent-color">{% if charges_value %}${{ charges_value }}{% else %}None{% endif %}</div>
-          {% endif %}
+        {% if subscription and subscription.plan and not cancelled %}
+          <div class="account-settings-info">
+            <div class="text5">Current Pledge</div>
+            {% if subscription and subscription.plan and not cancelled %}
+              <div class="text9 text-grey">This is a pledge billed automatically each month until cancelled</div>
+              <div class="text9 accent-color" data-number="1">${{ monthly_pledge_in_dollars }}/{{ subscription.plan.interval }}</div>
+              <div class="flex-row supporter-options">
+                <button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>
+                <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Update Pledge</a>
+              </div>
+            {% elif plan and plan.active and plan.interval and plan.interval == 'month' and not cancelled %}
+              <div class="text9 accent-color" data-number="2">${{ plan.amount }}/{{ plan.interval }}</div>
+            {% elif plan and plan.active and plan.interval and plan.interval == 'year' and not cancelled %}
+              <div class="text9 accent-color" data-number="3">${{ plan.amount }}/{{ plan.interval }}</div>
+            {% else %}
+              <!-- <div class="text9 accent-color">{% if cancelled %}Subscription canceled{% else %}None{% endif %}</div>  -->
+              <div class="text9 accent-color">{% if charges_value %}${{ charges_value }}{% else %}None{% endif %}</div>
+            {% endif %}
+          </div>
+        {% endif %}
 
+        <div class="account-settings-info">
           {% if not user.has_archive_access %}
             <button onclick="becomeSupporter()" class="white-border-button">Become a Supporting Member</button>
-          {% elif subscription.plan and not cancelled %}
-            <div class="flex-row supporter-options">
-            <button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>
-            <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Update Pledge</a>
-            </div>
-          {% else  %}
-            <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Make a Recurring Monthly Pledge</a>
           {% endif %}
         </div>
 
-        <div class="account-settings-info ">
-          {% if user.has_archive_access %}
-            <button onclick="makeADonation()" class="white-border-button">Make a One Time Donation</button>
-          {% endif %}
-        </div>
         <div class="account-settings-info">
           <div class="text5">Last donation</div>
           <div class="text9 text-grey">
@@ -142,6 +139,15 @@
             <div class="text9 text-grey">There is no access to the archive</div>
           {% endif %}
 
+        </div>
+
+        <div class="account-settings-info">
+          {% if user.has_archive_access %}
+            {% if not subscription or cancelled %}
+              <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Make a Recurring Monthly Pledge</a>
+            {% endif %}
+            <button onclick="makeADonation()" class="white-border-button">Make a One Time Donation</button>
+          {% endif %}
         </div>
       </div>
 
@@ -190,11 +196,17 @@
           <section class="account-settings-view">
             <div class="title5 account-settings-title text-bottom-line" style="text-align: center;">Cancelling pledge</div>
             <div class="account-settings-info cancel-info">
+                {% comment %}
+                  <div class="text9">
+                    Your current pledge is ${{ charges_value }} giving you access to the archive until
+                    {{ user.get_archive_access_expiry_date|date:"j/n/Y" }}.<br>
+                    Canceling it will make the access to the archive videos unavailable until the renovation of the pledge or the
+                    making of a one time donation.
+                  </div>
+                {% endcomment %}
                 <div class="text9">
-                  Your current pledge is ${{ charges_value }} giving you access to the archive until
-                  {{ user.get_archive_access_expiry_date|date:"n/j/Y" }}.<br>
-                  Canceling it will make the access to the archive videos unavailable until the renovation of the pledge or the
-                  making of a one time donation.
+                  By clicking here you will be cancelling your automatic monthly pledge of ${{ monthly_pledge_in_dollars }}.
+                  Your access to the archive will end on {{ user.get_archive_access_expiry_date|date:"j/n/Y" }}. We thank you for your generous support of The SmallsLIVE Foundation.
                 </div>
                 <div class="custom-settings-form">
                   <form action="{% url 'cancel_subscription' %}" method="post" id="cancel-form" >

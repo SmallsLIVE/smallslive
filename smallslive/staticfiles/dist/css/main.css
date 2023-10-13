@@ -12790,7 +12790,7 @@ label[for="photo-clear_id"] {
   max-height: 55vh;
   padding-left: 3.5vw;
   overflow-y: auto;
-  padding-top: 53px; }
+  margin-top: 53px; }
   @media (max-width: 769px) {
     .artist-events-list .artist-list {
       height: auto;
@@ -21417,6 +21417,9 @@ img.defineImageRatio {
 
 .store-pagination {
   margin-top: 30px; }
+
+.all-recordings-container {
+  margin-bottom: 40px; }
 
 .all-recordings-container,
 .all-artist-tracks {
