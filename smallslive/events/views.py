@@ -34,6 +34,8 @@ from rest_framework import status, views, serializers
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
+from django.contrib.sites.models import Site
+
 
 from artists.models import Artist
 from events.models import get_today_start, StaffPick, EventSet, \
@@ -673,7 +675,7 @@ class LivestreamView(TemplateView, UpcomingSearchView):
 
     def get_context_data(self, **kwargs):
         context = super(LivestreamView, self).get_context_data(**kwargs)
-
+        context['site'] = Site.objects.get(id=2)
         return context
 
 

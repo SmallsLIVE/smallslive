@@ -156,6 +156,10 @@
   padding: 15px 0;
   text-align: center;
 
+  .container {
+    padding-left: 0;
+  }
+
   .mc_field_group {
     display: flex;
     align-items: center;

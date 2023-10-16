@@ -16552,6 +16552,9 @@ footer a:hover {
         .static-content img.logo {
           width: 100%; } }
 
+.newsletter-wrapper p {
+  margin-bottom: 10px; }
+
 .map-wrapper {
   padding-bottom: 40px;
   -webkit-filter: grayscale(60%);
@@ -27937,6 +27940,8 @@ label[for="photo-clear_id"] {
   font-size: 18px;
   padding: 15px 0;
   text-align: center; }
+  #mc_embed_shell .container {
+    padding-left: 0; }
   #mc_embed_shell .mc_field_group {
     display: flex;
     align-items: center;
