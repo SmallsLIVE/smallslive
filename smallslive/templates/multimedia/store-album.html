@@ -200,21 +200,23 @@
               <button id="tracksDownloadBtn" class="white-border-button buttons-row" style="margin-left: 0;">Download Tracks</button>
             </div>
             {% endif %}
-            <div>
+            {% comment %}
+              <div>
 
-              {% if user.is_authenticated %}
-                <a
-                        class="white-border-button confirm"
-                        href="{% url 'product_support' product_id=album_product.pk %}"
-                        style="margin-left: 5px;">Purchase this project</a>
-              {% else %}
-                <button
-                        class="white-border-button sign-in-button"
-                        href="{% url 'product_support' product_id=album_product.pk %}">
-                  Sign In
-                </button>
-              {% endif %}
-            </div>
+                {% if user.is_authenticated %}
+                  <a
+                          class="white-border-button confirm"
+                          href="{% url 'product_support' product_id=album_product.pk %}"
+                          style="margin-left: 5px;">Purchase this project</a>
+                {% else %}
+                  <button
+                          class="white-border-button sign-in-button"
+                          href="{% url 'product_support' product_id=album_product.pk %}">
+                    Sign In
+                  </button>
+                {% endif %}
+              </div>
+            {% endcomment %}
           </div>
         </div>
         <div>
