@@ -18218,7 +18218,8 @@ a.artist-link:hover {
 @media (max-width: 767px) {
   .comments-container {
     padding: 10px;
-    padding-bottom: 0; } }
+    padding-bottom: 0;
+    margin-top: 20px; } }
 
 .comment {
   position: relative;
@@ -19072,7 +19073,7 @@ a.artist-link:hover {
   @media (max-width: 960px) {
     .artist-search-profile__header {
       margin-right: 0; } }
-  @media (max-width: 415px) {
+  @media (max-width: 600px) {
     .artist-search-profile__header {
       display: inline-block; } }
 
@@ -19178,7 +19179,7 @@ a.artist-link:hover {
   @media (max-width: 960px) {
     .artist-search-profile-bio.text4 {
       font-size: 18px;
-      line-height: auto; } }
+      padding: 15px 0; } }
   @media (max-width: 960px) {
     .artist-search-profile-bio {
       width: 100%;

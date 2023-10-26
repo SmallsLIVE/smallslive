@@ -962,7 +962,7 @@ body.headers-1 {
       margin-right: 0;
     }
 
-    @media(max-width: 415px){
+    @media(max-width: 600px){
       display: inline-block;
     }
 
@@ -1123,7 +1123,8 @@ body.headers-1 {
   &.text4 {
     @media (max-width: $screen-sm-max) {
       font-size: 18px;
-      line-height: auto;
+      // line-height: auto;
+      padding: 15px 0;
     }
   }
 
