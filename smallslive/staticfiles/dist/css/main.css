@@ -7734,6 +7734,8 @@ footer a:hover {
     .static-content img.centered {
       display: block;
       margin: 0 auto 30px; }
+  .static-content a {
+    word-wrap: break-word; }
   .static-content p {
     margin-bottom: 40px; }
   .static-content .less-space {
@@ -7771,6 +7773,10 @@ footer a:hover {
         width: 100%; }
         .static-content img.logo {
           width: 100%; } }
+  @media (max-width: 500px) {
+    .static-content #mc_embed_shell .mc_field_group {
+      flex-direction: column;
+      gap: 15px; } }
 
 .newsletter-wrapper p {
   margin-bottom: 10px; }

@@ -146,6 +146,16 @@
       {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
       {% include 'partials/header_button.html' with button_url='about' button_text='About' %}
       {% include 'partials/header_button.html' with button_url='#' button_text='Catalog' %}
+      {% if user.is_authenticated %}
+        {% if not user.can_watch_video %}
+          <a href="{% url 'become_supporter' %}"><p class="no-border ">Donate</p></a>
+        {% else %}
+          <a href="{% url 'user_settings_new' %}#user-donation-settings"><p class="no-border ">Donate</p></a>
+        {% endif %}
+      {% else %}
+        <a href="#logIn" data-toggle="modal"><p class="no-border ">Donate</p></a>
+      {% endif %}
+
       {% comment %}
         {% include 'partials/header_button.html' with button_url='contact' button_text='Contact' %}
       {% endcomment %}

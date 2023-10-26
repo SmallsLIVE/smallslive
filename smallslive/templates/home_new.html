@@ -99,6 +99,14 @@
   </div>
 {% endblock%}
 
+{% block footer %}
+  {% if request.path == '/' %}
+    {% include 'partials/footer_with_newsletter.html' %}
+  {% else %}
+    {% include 'partials/footer.html' %}
+  {% endif %}
+{% endblock %}
+
 {% block extra_js %}
   {% if activation_key %}
     <script>

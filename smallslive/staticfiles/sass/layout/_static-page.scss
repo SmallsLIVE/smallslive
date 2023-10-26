@@ -155,6 +155,10 @@
     }
   }
 
+  a {
+    word-wrap: break-word;
+  }
+
   p {
     margin-bottom: 40px;
   }
@@ -197,6 +201,17 @@
 
       &.logo {
         width: 100%
+      }
+    }
+  }
+
+  @media (max-width: 500px) {
+
+    #mc_embed_shell {
+
+      .mc_field_group {
+        flex-direction: column;
+        gap: 15px;
       }
     }
   }
