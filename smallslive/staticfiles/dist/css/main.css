@@ -7718,6 +7718,9 @@ footer a:hover {
     .static-content.closed {
       height: calc(100vw * 0.0390625 + 37.5px);
       transition: all 0.6s; } }
+  @media (min-width: 1024px) {
+    .static-content .container {
+      width: 100%; } }
   .static-content img {
     margin-bottom: 10px;
     width: 20%; }
@@ -7725,7 +7728,7 @@ footer a:hover {
       width: 40%; }
       @media (max-width: 960px) {
         .static-content img.big {
-          width: 90%; } }
+          width: 100%; } }
     .static-content img.logo {
       display: block;
       margin: 0 auto;
@@ -7773,7 +7776,7 @@ footer a:hover {
         width: 100%; }
         .static-content img.logo {
           width: 100%; } }
-  @media (max-width: 500px) {
+  @media (max-width: 400px) {
     .static-content #mc_embed_shell .mc_field_group {
       flex-direction: column;
       gap: 15px; } }
@@ -7798,11 +7801,8 @@ footer a:hover {
   justify-content: start !important;
   margin-left: -10px; }
   .about-page .mc_field_group .mce_inline_error {
-    left: -165px !important; }
-
-@media (max-width: 991px) {
-  .about-page .mc_field_group .mce_inline_error {
-    left: -35px !important; } }
+    width: unset !important;
+    left: 10px !important; }
 
 .big-quote {
   position: relative;
@@ -8077,6 +8077,9 @@ body.mobile-search-header-shown .mobile-header .fa-search {
 
 .event-container {
   margin-top: 18px; }
+  @media (max-width: 767px) {
+    .event-container {
+      margin-top: 0; } }
 
 div.event-strip {
   margin-top: 0; }
@@ -8871,6 +8874,9 @@ div.event-strip {
 
 .venue-subtitle {
   font-size: 24px; }
+  @media (max-width: 960px) {
+    .venue-subtitle {
+      font-size: 16px; } }
 
 .event-video-info {
   display: flex;
@@ -8885,7 +8891,7 @@ div.event-strip {
     line-height: 30px; }
     @media (max-width: 1023px) {
       .event-video-info .event-title {
-        font-size: 2.5em;
+        font-size: 1.5em;
         line-height: 1em;
         margin-top: 15px; } }
     .event-video-info .event-title.event-subtitle {
@@ -8916,6 +8922,9 @@ div.event-strip {
         /*margin-top: 20px;*/ } }
     .event-video-info .info-container .event-overlay-venue .title5 {
       font-size: 2.4em; }
+      @media (max-width: 1023px) {
+        .event-video-info .info-container .event-overlay-venue .title5 {
+          font-size: 1.5em; } }
   .event-video-info .buttons-container {
     align-items: flex-start;
     flex-grow: 1;
@@ -8943,6 +8952,9 @@ div.event-strip {
 
 .event-band {
   margin: 0 0 2em 0; }
+  @media (max-width: 767px) {
+    .event-band {
+      margin: 0; } }
   .event-band > div {
     margin-right: 30px; }
   .event-band .artist-link {
@@ -8955,12 +8967,18 @@ div.event-strip {
     font-size: 2em;
     color: black;
     letter-spacing: 0; }
+    @media (max-width: 1023px) {
+      .event-band .artist-link {
+        font-size: 1.5em; } }
 
 .player-container {
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 30px;
   position: relative;
   overflow: hidden; }
+  @media (max-width: 1023px) {
+    .player-container {
+      margin-bottom: 0; } }
   .player-container:focus {
     border: 3px solid red !important; }
   .player-container:hover .jw-display .jw-reset .jw-display-icon-container.jw-display-icon-display.jw-reset > div {
@@ -9120,7 +9138,7 @@ div.event-strip {
     align-self: baseline; }
     @media (max-width: 767px) {
       .player-info .event-info-title {
-        font-size: 6.5vw;
+        font-size: 5.5vw;
         line-height: 6.8vw; } }
   .player-info .event-venue {
     font-size: 2vw;
@@ -9133,7 +9151,7 @@ div.event-strip {
     transform: scaleY(1.3); }
     @media (max-width: 767px) {
       .player-info .event-venue {
-        font-size: 6vw;
+        font-size: 5.5vw;
         line-height: 8vw; } }
   .player-info .event-date {
     font-size: 2vw;
@@ -9145,7 +9163,7 @@ div.event-strip {
     transform: scaleY(1.3); }
     @media (max-width: 767px) {
       .player-info .event-date {
-        font-size: 6vw;
+        font-size: 5.5vw;
         line-height: 8vw; } }
   .player-info .event-sets {
     font-size: 2vw;
@@ -9417,9 +9435,9 @@ a.artist-link:hover {
     height: 90px;
     border: none; }
 
-@media (max-width: 960px) {
+@media (max-width: 767px) {
   .comments-container {
-    padding: 20px;
+    padding: 10px;
     padding-bottom: 0; } }
 
 .comment {
@@ -9543,7 +9561,7 @@ a.artist-link:hover {
 
 @media (max-width: 500px) {
   .event-page-container .event-player-buttons {
-    margin-left: 10px; }
+    margin-left: 0; }
   .event-page-container .white-border-button.tickets-sold-out {
     padding: 21px 25px; }
   .event-page-container .white-border-button.buy-tickets {
@@ -10815,6 +10833,9 @@ a.artist-link:hover {
   padding: 0 10%;
   margin-top: 40px;
   min-height: 440px; }
+  @media (max-width: 1023px) {
+    .upcoming-schedule {
+      padding: 0 4%; } }
   @media (min-width: 1201px) {
     .upcoming-schedule > *:nth-last-child(n + 6)::before {
       content: "";
@@ -12933,9 +12954,6 @@ label[for="photo-clear_id"] {
   @media (max-width: 960px) {
     .account-settings-container-new {
       padding: 0 20px; } }
-  @media (max-width: 425px) {
-    .account-settings-container-new {
-      padding-left: 0%; } }
   .account-settings-container-new .text-bottom-line {
     background: linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) no-repeat bottom left;
     background-size: 100% 2px; }
@@ -16057,6 +16075,10 @@ label[for="photo-clear_id"] {
       margin: 0 auto;
       padding: 0 0%;
       width: 300px; } }
+  @media (max-width: 1023px) {
+    .calendar-filters.desktop {
+      display: block;
+      margin-left: 3%; } }
 
 .new-calendar .home .calendar-filters .datepicker-btn {
   margin-left: 20px; }
@@ -19180,11 +19202,18 @@ label[for="photo-clear_id"] {
       background: no-repeat;
       color: var(--color-crimson);
       font-weight: 100;
-      left: 13px;
+      left: -103px;
+      margin: 3px 0;
       padding: 0;
       position: absolute;
       top: 100%;
       width: 100%; }
+      @media (min-width: 1024px) and (max-width: 1400px) {
+        #mc_embed_shell .mc_field_group div.mce_inline_error {
+          left: -100px; } }
+      @media (max-width: 1023px) {
+        #mc_embed_shell .mc_field_group div.mce_inline_error {
+          left: -85px; } }
     #mc_embed_shell .mc_field_group .email {
       border: 1px solid var(--color-silver);
       border-radius: 0;
@@ -21687,6 +21716,9 @@ form .back-to-payment-btn {
 
 .store-home .white-line-bottom {
   margin-top: 0; }
+
+.store-home .description-container {
+  margin-bottom: 20px; }
 
 #downloadConfirmationDialog .table-container {
   margin-top: 40px;

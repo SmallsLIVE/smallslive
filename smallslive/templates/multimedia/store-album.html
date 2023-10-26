@@ -30,9 +30,11 @@
 
           <div class="album__support-buttons__container--mobile">
             <!--<div class="sponsor-text text2">Sponsor this {{ text }} artist and project with a tax-deductable donation to the smallslive foundation</div>-->
-            <div>
-              <button id="projectDonationBtnMobile" class="white-border-button buttons-row" style="width: 100%; margin-left: 0; font-size: 12px;">sponsor</button>
-            </div>
+            {% comment %}
+              <div>
+                <button id="projectDonationBtnMobile" class="white-border-button buttons-row" style="width: 100%; margin-left: 0; font-size: 12px;">sponsor</button>
+              </div>
+            {% endcomment %}
             {% if not is_catalogue %}
             <div>
               <button id="tracksDownloadBtnMobile" class="white-border-button buttons-row" style="width: 100%; margin-left: 0; font-size: 12px;">Download Tracks</button>

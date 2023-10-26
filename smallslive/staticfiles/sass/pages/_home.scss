@@ -59,6 +59,10 @@ body.mobile-search-header-shown {
 
 .event-container {
   margin-top: 18px;
+
+  @media (max-width: 767px) {
+    margin-top: 0;
+  }
 }
 
 div.event-strip {

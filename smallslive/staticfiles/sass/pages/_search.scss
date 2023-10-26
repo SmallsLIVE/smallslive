@@ -1706,6 +1706,10 @@ body.headers-1 {
   margin-top: 40px;
   min-height: 440px;
 
+  @media (max-width: 1023px) {
+    padding: 0 4%;
+  }
+
   @media (min-width: 1201px) {
     > *:nth-last-child(n + 6)::before {
       content: "";

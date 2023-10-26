@@ -48,6 +48,11 @@
       padding: 0 0%;
       width: 300px;
     }
+
+    @media (max-width: 1023px) {
+      display: block;
+      margin-left: 3%;
+    }
   }
 }
 .new-calendar .home .calendar-filters .datepicker-btn {

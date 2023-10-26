@@ -130,6 +130,13 @@
     }
   }
 
+  .container {
+
+    @media (min-width: 1024px) {
+      width: 100%;
+    }
+  }
+
   img {
     margin-bottom: 10px;
     width: 20%;
@@ -138,7 +145,7 @@
         width: 40%;
 
         @media(max-width: $screen-md-min) {
-            width: 90%
+            width: 100%
         }
     }
 
@@ -205,7 +212,7 @@
     }
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 400px) {
 
     #mc_embed_shell {
 
@@ -246,23 +253,12 @@
     margin-left: -10px;
 
     .mce_inline_error {
-      left: -165px !important;
+      width: unset !important;
+      left: 10px !important;
     }
   }
 }
 
-@media(max-width: 991px) {
-  
-  .about-page {
-
-    .mc_field_group {
-  
-      .mce_inline_error {
-        left: -35px !important;
-      }
-    }
-  }
-}
 
 .big-quote {
   position: relative;

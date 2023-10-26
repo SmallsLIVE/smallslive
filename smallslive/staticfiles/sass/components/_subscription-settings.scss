@@ -175,11 +175,20 @@
       background: no-repeat;
       color: var(--color-crimson);
       font-weight: 100;
-      left: 13px;
+      left: -103px;
+      margin: 3px 0;
       padding: 0;
       position: absolute;
       top: 100%;
       width: 100%;
+
+      @media (min-width: 1024px) and (max-width: 1400px) {
+        left: -100px;
+      }
+
+      @media (max-width: 1023px) {
+        left: -85px;
+      }
     }
 
     .email {

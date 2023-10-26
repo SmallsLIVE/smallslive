@@ -86,11 +86,13 @@
         {% endif %}
       {% endif %}
     </div>
-    <div>
-      <!--Hiding search icon-->
-      <!--<i class="fa fa-search"></i>-->
-      <i class="fa fa-user" onclick="toggleAdmin()"></i>
-    </div>
+    {% comment %}
+      <div>
+        <!--Hiding search icon-->
+        <!--<i class="fa fa-search"></i>-->
+        <i class="fa fa-user" onclick="toggleAdmin()"></i>
+      </div>
+    {% endcomment %}
   </div>
   <div id="mobile-user-option-menu" hidden class="mobile-user-option flex-column">
     {% if not request.user.is_authenticated %}

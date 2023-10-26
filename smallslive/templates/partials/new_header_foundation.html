@@ -81,15 +81,17 @@
   <div class="mobile-menu-icons flex-row items-center content-space-between">
     <div>
       <i class="fa fa-bars" onclick="toggleSideBar()"></i>
-      {% if user.is_authenticated %}
-        {% if not user.can_watch_video %}
-          <a class="white-border-button" style="padding: 0 10px;"
-             href="{% url 'become_supporter' %}">Donate</a>
-        {% else %}
-          <a class="white-border-button" style="padding: 0 10px;"
-             href="{% url 'user_settings_new' %}#user-donation-settings">Donate</a>
+      {% comment %}
+        {% if user.is_authenticated %}
+          {% if not user.can_watch_video %}
+            <a class="white-border-button" style="padding: 0 10px;"
+              href="{% url 'become_supporter' %}">Donate</a>
+          {% else %}
+            <a class="white-border-button" style="padding: 0 10px;"
+              href="{% url 'user_settings_new' %}#user-donation-settings">Donate</a>
+          {% endif %}
         {% endif %}
-      {% endif %}
+      {% endcomment %}
     </div>
     <div>
       <!--Hiding search icon-->
@@ -145,7 +147,7 @@
     <div class="flex-column text2">
       {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
       {% include 'partials/header_button.html' with button_url='about' button_text='About' %}
-      {% include 'partials/header_button.html' with button_url='#' button_text='Catalog' %}
+      {% include 'partials/header_button.html' with button_url='catalog' button_text='Catalog' %}
       {% if user.is_authenticated %}
         {% if not user.can_watch_video %}
           <a href="{% url 'become_supporter' %}"><p class="no-border ">Donate</p></a>
