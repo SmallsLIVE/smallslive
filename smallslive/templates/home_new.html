@@ -44,55 +44,69 @@
     <main style="visibility: hidden;">
       {% include 'home_banners_carousel.html' %}
 
-      <div class="event-stripe">
-        {% comment %}
+      {% comment %}
+        <div class="event-stripe">
+          
           {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
-        {% endcomment %}
-        <section class="event-stripe">
-          <div class="section-title home highlights">
-            <div class="title1">Highlights from the Archive</div>
-          </div>
-          <main>
-            <div class="highlights slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="highlights slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'events/event_row.html' with events=staff_picks carousel='tonight-events highlights-carousel' %}
-          </main>
-        </section>
-
-        <section id="recently-added-section" class="event-stripe">
-          <div class="section-title home recently">
-            <div class="title1">
-              <span id="ra-recently-added-toggle" class="accent-color no-link"> Recently Added</span>  \
-              <span id="ra-most-popular-toggle" class="no-link">Most Popular</span>
+          
+          <section class="event-stripe">
+            <div class="section-title home highlights">
+              <div class="title1">Highlights from the Archive</div>
             </div>
-            <span id="most-popular-filter-container" class="select-container hidden">
-              <div class="white-border-select home-filter">
-                <select id="most-popular-filter">
-                  <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
-                  <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
-                  <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
-                  <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
-                </select>
-              </div>
-            </span>
-          </div>
-          <main id="recently-added-container">
-            <div class="slide-btn recently prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="slide-btn recently next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'events/event_row.html' with events=new_in_archive secondary=True carousel='recently-carousel' %}
-          </main>
-          <main id="most-popular-container" class="hidden">
-            <div class="slide-btn popular prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="slide-btn popular next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'events/event_row.html' with events=popular_in_archive secondary=True carousel='popular-carousel' %}
-          </main>
-        </section>
+            <main>
+              <div class="highlights slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+              <div class="highlights slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+              {% include 'events/event_row.html' with events=staff_picks carousel='tonight-events highlights-carousel' %}
+            </main>
+          </section>
 
-        <section id="most-popular-section" class="event-stripe hidden">
-          <div class="section-title home archive">
-            <div class="title1"><a href="#" id="mp-recently-added-toggle"> Recently Added</a>  \ <a href="#" id="mp-most-popular-toggle" class="accent-color">Most Popular</a></div>
+          <section id="recently-added-section" class="event-stripe">
+            <div class="section-title home recently">
+              <div class="title1">
+                <span id="ra-recently-added-toggle" class="accent-color no-link"> Recently Added</span>  \
+                <span id="ra-most-popular-toggle" class="no-link">Most Popular</span>
+              </div>
+              <span id="most-popular-filter-container" class="select-container hidden">
+                <div class="white-border-select home-filter">
+                  <select id="most-popular-filter">
+                    <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
+                    <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
+                    <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
+                    <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
+                  </select>
+                </div>
+              </span>
+            </div>
+            <main id="recently-added-container">
+              <div class="slide-btn recently prev"><b class="indicator-icon icon-left-caret"></b></div>
+              <div class="slide-btn recently next"><b class="indicator-icon icon-right-caret"></b></div>
+              {% include 'events/event_row.html' with events=new_in_archive secondary=True carousel='recently-carousel' %}
+            </main>
+            <main id="most-popular-container" class="hidden">
+              <div class="slide-btn popular prev"><b class="indicator-icon icon-left-caret"></b></div>
+              <div class="slide-btn popular next"><b class="indicator-icon icon-right-caret"></b></div>
+              {% include 'events/event_row.html' with events=popular_in_archive secondary=True carousel='popular-carousel' %}
+            </main>
+          </section>
+
+          <section id="most-popular-section" class="event-stripe hidden">
+            <div class="section-title home archive">
+              <div class="title1"><a href="#" id="mp-recently-added-toggle"> Recently Added</a>  \ <a href="#" id="mp-most-popular-toggle" class="accent-color">Most Popular</a></div>
+            </div>
+          </section>
+        </div>
+      {% endcomment %}
+      <div class="container">
+        <div class="row">
+          <div class="static-content welcome-text">
+            <p>Welcome to The SmallsLIVE Foundation and the SmallsLIVE Audio/Video Archive.</p>
+            <p>The SmallsLIVE Foundation is a not-for-profit arts foundation with the mission of maintaining and subsidizing the SmallsLIVE Archive for the education and enjoyment of the jazz-listening world.</p>
+            <p>Every show at Smalls Jazz Club and Mezzrow is live-streamed and added to our ever-growing archive of shows. You can locate any show by the artist name, instrument or date and see who was on the show and to hear and watch the concert.</p>
+            <p>
+              Access to the archive requires a signup and membership. Initial donation is $10 for a month or $100 for the year. All donations to the SmallsLIVE Foundation are tax deductible.
+            </p>
           </div>
-        </section>
+        </div>
       </div>
     </main>
     {% endblock %}

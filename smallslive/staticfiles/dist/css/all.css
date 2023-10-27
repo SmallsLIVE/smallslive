@@ -35411,6 +35411,9 @@ form .back-to-payment-btn {
   flex-direction: row-reverse;
   width: 500px; }
 
+.home-new .welcome-text {
+  margin-top: 40px; }
+
 .home-new .banners.carousel {
   display: block; }
   .home-new .banners.carousel .banner__inside-container {
