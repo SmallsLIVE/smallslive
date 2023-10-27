@@ -61,7 +61,7 @@ $dashboard-desktop: 1200px;
     }
   }
 
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: 1023px) {
 
     &.artist-profile-container {
       padding: 20px !important;
@@ -1867,6 +1867,19 @@ label[for="photo-clear_id"] {
   padding: 5px;
   padding-left: 12px;
   cursor: pointer;
+}
+
+#artist-set-password-dialog {
+
+  .modal-body {
+
+    .title1 {
+
+      @media (max-width: 767px) {
+        line-height: 30px;
+      }
+    }
+  }
 }
 
 #event_edit_modal {

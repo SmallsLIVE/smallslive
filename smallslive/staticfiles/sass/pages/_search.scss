@@ -917,6 +917,7 @@ body.headers-1 {
     flex-direction: row;
 
     @media (max-width: $screen-sm-max) {
+      display: flex;
       flex-direction: column;
     }
   }

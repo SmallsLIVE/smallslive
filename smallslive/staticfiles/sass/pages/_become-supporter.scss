@@ -196,7 +196,7 @@
 
     @media (max-width: $screen-md-max) {
       .section-title>div.title1 {
-        font-size: 30px;
+        font-size: 20px;
         line-height: 36px;
       }
 
@@ -262,11 +262,14 @@
     position: absolute;
     top: 0;
     left: 0;
-
     z-index: -1;
 
     img {
       width: 100%;
+    }
+
+    @media (max-width: 991px) {
+      min-height: 90vh;
     }
 
     .banner-container {

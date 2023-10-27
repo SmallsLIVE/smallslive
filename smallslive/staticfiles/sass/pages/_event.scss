@@ -704,6 +704,7 @@ $player-height: 25.3vw;
 }
 
 .event-related-videos {
+  margin-top: 10px;
   max-height: 530px;
   overflow: hidden;
   @media (max-width: $screen-sm-max) {
@@ -711,7 +712,6 @@ $player-height: 25.3vw;
   }
 
   &:first-child {
-    margin-top: 10px;
     padding-bottom: 40px;
 
     @media (max-width: $screen-sm-min) {

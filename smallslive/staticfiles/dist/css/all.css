@@ -17104,7 +17104,7 @@ div.event-strip {
     @media (max-width: 1023px) {
       .supporter-main-container .supporter-plan-input .section-title > div.title1,
       .payment-main-container .supporter-plan-input .section-title > div.title1 {
-        font-size: 30px;
+        font-size: 20px;
         line-height: 36px; }
       .supporter-main-container .supporter-plan-input #monthlyPledge .no-spinners,
       .supporter-main-container .supporter-plan-input #yearlyPledge .no-spinners,
@@ -17154,6 +17154,10 @@ div.event-strip {
     .supporter-main-container .supporter-image img,
     .payment-main-container .supporter-image img {
       width: 100%; }
+    @media (max-width: 991px) {
+      .supporter-main-container .supporter-image,
+      .payment-main-container .supporter-image {
+        min-height: 90vh; } }
     .supporter-main-container .supporter-image .banner-container::before,
     .payment-main-container .supporter-image .banner-container::before {
       content: " ";
@@ -18046,13 +18050,13 @@ div.event-strip {
   padding: 60px 100px; }
 
 .event-related-videos {
+  margin-top: 10px;
   max-height: 530px;
   overflow: hidden; }
   @media (max-width: 960px) {
     .event-related-videos {
       max-height: none; } }
   .event-related-videos:first-child {
-    margin-top: 10px;
     padding-bottom: 40px; }
     @media (max-width: 768px) {
       .event-related-videos:first-child {
@@ -19044,6 +19048,7 @@ a.artist-link:hover {
     flex-direction: row; }
     @media (max-width: 960px) {
       .home div.artist-search-profile-container .content-centered {
+        display: flex;
         flex-direction: column; } }
   .home div.artist-search-profile-container .artist-tracks .store-list-item .store-list-item-image img {
     height: 6.735vw;
@@ -20186,7 +20191,7 @@ a.artist-link:hover {
 .metrics-profile-container .pay-info-wrapper .payout-form {
   width: 100%; }
 
-@media (max-width: 960px) {
+@media (max-width: 1023px) {
   .metrics-profile-container.artist-profile-container {
     padding: 20px !important;
     margin: 0; }
@@ -21469,6 +21474,10 @@ label[for="photo-clear_id"] {
   padding-left: 12px;
   cursor: pointer; }
 
+@media (max-width: 767px) {
+  #artist-set-password-dialog .modal-body .title1 {
+    line-height: 30px; } }
+
 #event_edit_modal .custom-modal .modal-body form {
   width: 100%; }
   #event_edit_modal .custom-modal .modal-body form .logo-container {
@@ -21745,7 +21754,7 @@ label[for="photo-clear_id"] {
     gap: 100px; }
     .account-settings-container-new .account-settings-info-container > .flex-column {
       height: auto; }
-    @media (max-width: 960px) {
+    @media (max-width: 1023px) {
       .account-settings-container-new .account-settings-info-container {
         grid-template-columns: repeat(1, 1fr);
         gap: 30px; } }
@@ -35413,6 +35422,9 @@ form .back-to-payment-btn {
 
 .home-new .welcome-text {
   margin-top: 40px; }
+  @media (max-width: 767px) {
+    .home-new .welcome-text {
+      margin-top: 20px; } }
 
 .home-new .banners.carousel {
   display: block; }
