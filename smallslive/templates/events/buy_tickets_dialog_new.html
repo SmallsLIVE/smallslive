@@ -12,10 +12,8 @@
           On: {{ event.date }}<br>
           Time: <span id="ticket-time"></span><br>
           Ticket prices for this show is: $<span id="ticket-price" tabindex="0"></span><br>
-          {% comment %}
-          There are currently <span id="ticket-available" tabindex="0"></span> tickets
-          available.
-          {% endcomment %}
+          {% comment %}There are currently <span id="ticket-available" tabindex="0"></span> tickets
+          available.{% endcomment %}
         </p>
         {% if event.is_foundation %}
           <p class="title2">Sponsorship Seats $<span id="ticket-price" tabindex="0"></span></p>

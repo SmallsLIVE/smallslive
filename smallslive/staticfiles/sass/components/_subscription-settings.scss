@@ -162,7 +162,7 @@
 
   .mc_field_group {
     display: flex;
-    align-items: center;
+    align-items: end;
     justify-content: center;
     position: relative;
 
@@ -175,7 +175,7 @@
       background: no-repeat;
       color: var(--color-crimson);
       font-weight: 100;
-      left: -103px;
+      left: 20px;
       margin: 3px 0;
       padding: 0;
       position: absolute;
@@ -183,11 +183,15 @@
       width: 100%;
 
       @media (min-width: 1024px) and (max-width: 1400px) {
-        left: -100px;
+        left: 30px;
       }
 
-      @media (max-width: 1023px) {
-        left: -85px;
+      @media (min-width: 716px) and (max-width: 1023px) {
+        left: 40px;
+      }
+
+      @media (max-width: 715px) {
+        left: -88px;
       }
     }
 

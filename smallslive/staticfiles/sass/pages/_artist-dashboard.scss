@@ -472,18 +472,19 @@ $dashboard-desktop: 1200px;
       &.controls {
         margin-bottom: 30px;
         visibility: hidden;
+        justify-self: start;
 
         @media (max-width: 1200px) {
-          justify-content: center;
           visibility: visible;
+          margin-left: 25px;
+        }
+
+        @media (max-width: 1023px) {
+          margin-left: 8px;
         }
 
         button {
           cursor: pointer;
-        }
-
-        @media (max-width: 960px) {
-          justify-content: center;
         }
 
       }
@@ -1437,15 +1438,14 @@ label[for="photo-clear_id"] {
 }
 
 .artist-archive-filter {
-
   padding-left: 3.5vw;
-  position: absolute;
   margin-top: 25px;
-  top: 0;
-  left: 550px;
+  margin-bottom: 0 !important;
 
-  @media(max-width: 960px) {
-    padding: 0 5px;
+  @media (min-width: 1024px) {
+    position: absolute;
+    top: 0;
+    left: 550px;
   }
 
   .select-items {
@@ -2088,6 +2088,10 @@ label[for="photo-clear_id"] {
     padding-left: 3.5vw;
     overflow-y: auto;
     margin-top: 53px;
+
+    @media (min-width: 767px) and (max-width: 1200px) {
+      margin-top: 100px;
+    }
 
     @media (max-width: 769px) {
       height: auto;

@@ -1704,13 +1704,9 @@ body.headers-1 {
 
 .upcoming-schedule {
   flex-wrap: wrap;
-  padding: 0 10%;
+  padding: 0 4%;
   margin-top: 40px;
   min-height: 440px;
-
-  @media (max-width: 1023px) {
-    padding: 0 4%;
-  }
 
   @media (min-width: 1201px) {
     > *:nth-last-child(n + 6)::before {

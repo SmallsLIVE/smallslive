@@ -76,15 +76,17 @@
   <div class="mobile-menu-icons flex-row items-center content-space-between">
     <div>
       <i class="fa fa-bars" onclick="toggleSideBar()"></i>
-      {% if user.is_authenticated %}
-        {% if not user.can_watch_video %}
-          <a class="white-border-button" style="padding: 0 10px;"
-             href="{% url 'become_supporter' %}">Donate</a>
-        {% else %}
-          <a class="white-border-button" style="padding: 0 10px;"
-             href="{% url 'user_settings_new' %}#user-donation-settings">Donate</a>
+      {% comment %}
+        {% if user.is_authenticated %}
+          {% if not user.can_watch_video %}
+            <a class="white-border-button" style="padding: 0 10px;"
+              href="{% url 'become_supporter' %}">Donate</a>
+          {% else %}
+            <a class="white-border-button" style="padding: 0 10px;"
+              href="{% url 'user_settings_new' %}#user-donation-settings">Donate</a>
+          {% endif %}
         {% endif %}
-      {% endif %}
+      {% endcomment %}
     </div>
     {% comment %}
       <div>
