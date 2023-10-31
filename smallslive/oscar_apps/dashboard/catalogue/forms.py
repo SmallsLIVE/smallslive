@@ -29,7 +29,8 @@ class ProductForm(oscar_forms.ProductForm):
             'event',
             'set',
             'misc_file',
-            'ordering'
+            'ordering',
+            'external_link'
         ]
 
     def __init__(self, product_class, data=None, parent=None, *args, **kwargs):
@@ -181,17 +182,19 @@ class TrackForm(forms.ModelForm):
             if hasattr(self.instance.attr, 'duration'):
                 self.fields['duration'].initial = self.instance.attr.duration
             try:
-                file_stockrecord = self.instance.stockrecords.get(partner_sku=str(self.instance.id))
-                self.fields['price_excl_tax'].initial = file_stockrecord.price_excl_tax
-                if file_stockrecord.digital_download:
-                    self.fields['track_file'].initial = file_stockrecord.digital_download.file
+                file_stockrecord = self.instance.stockrecords.filter(partner_sku=str(self.instance.id))
+                if file_stockrecord:
+                    self.fields['price_excl_tax'].initial = file_stockrecord[0].price_excl_tax
+                    if file_stockrecord[0].digital_download:
+                        self.fields['track_file'].initial = file_stockrecord[0].digital_download.file
             except StockRecord.DoesNotExist:
                 pass
             try:
-                file_stockrecord = self.instance.stockrecords.get(partner_sku=str(self.instance.id)+'_hd')
-                self.fields['hd_price_excl_tax'].initial = file_stockrecord.price_excl_tax
-                if file_stockrecord.digital_download:
-                    self.fields['hd_track_file'].initial = file_stockrecord.digital_download.file
+                file_stockrecord = self.instance.stockrecords.filter(partner_sku=str(self.instance.id)+'_hd')
+                if file_stockrecord:
+                    self.fields['hd_price_excl_tax'].initial = file_stockrecord[0].price_excl_tax
+                    if file_stockrecord[0].digital_download:
+                        self.fields['hd_track_file'].initial = file_stockrecord[0].digital_download.file
             except StockRecord.DoesNotExist:
                 pass
 
@@ -211,7 +214,7 @@ class TrackForm(forms.ModelForm):
             pass
 
         # don't save URL encoded values in the DB
-        val = urllib.unquote(val)
+        val = urllib.parse.quote_plus(val)
         return val
 
     def clean_track_preview_file(self):

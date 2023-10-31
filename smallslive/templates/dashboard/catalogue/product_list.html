@@ -1,4 +1,4 @@
-{% extends 'oscar/dashboard/layout.html' %}
+{% extends 'dashboard/layout.html' %}
 {% load i18n %}
 {% load staticfiles %}
 {% load sorting_tags %}
@@ -62,7 +62,7 @@
 
     {% if products %}
         {% block product_list %}
-            <form method="post">
+            <form method="post" class="product-list">
                 {% csrf_token %}
                 {% render_table products %}
             </form>

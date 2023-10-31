@@ -35,7 +35,7 @@
     {% if track_formset %}
         <li><a href="#tracks" data-toggle="tab">{% trans 'Tracks' %}</a></li>
     {% endif %}
-    {% if product_class.name = "Album" or product_class.name = "Track" %}
+    {% if product_class.name == "Album" or product_class.name == "Track" %}
         <li><a href="#artist" data-toggle="tab">{% trans 'Artist List' %}</a></li>
     {% endif %}
 {% endblock %}
@@ -52,18 +52,18 @@
                 <hr />
                 <div class="row-fluid">
                     {% block product_overview_content_image %}
-                    <div class="span4">
+                    <div class="col-md-4">
                         {% if product.primary_image.original.url %}
                             {% with image=product.primary_image %}
                                     <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class="thumbnail">
-                                        <img src="{{ thumb.url }}" class="row-fluid" alt="{{ product.get_title }}" data-description="{% if image.caption %}{{ image.caption }}{% endif %}">
+                                        <img src="{{ image.original.url }}" class="row-fluid img-fluid" alt="{{ product.get_title }}" data-description="{% if image.caption %}{{ image.caption }}{% endif %}">
                                     </a>
                             {% endwith %}
                         {% endif %}
                     </div>
                     {% endblock %}
                     {% block product_overview_content_stats %}
-                    <div class="span8">
+                    <div class="col-md-8">
                         <p><strong>{% trans "Description" %}</strong><br /> {{ product.description|safe }}</p>
 
                             {% with stats=product.stats %}
@@ -130,7 +130,7 @@
                 {% for artist_form in artist_formset %}
                     <tr>
                         <td>
-                            {% include "partials/form_fields_inline.html" with form=artist_form %}
+                            {% include "dashboard/partials/form_fields_inline.html" with form=artist_form %}
                         </td>
                     </tr>
                 {% endfor %}

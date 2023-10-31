@@ -14,6 +14,8 @@ ProductClass = get_model('catalogue', 'ProductClass')
 
 class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
 
+
+    template_name = 'dashboard/catalogue/product_update.html'
     artist_formset = ArtistMemberFormSet
 
     def __init__(self, *args, **kwargs):
@@ -22,6 +24,7 @@ class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
                          'image_formset': self.image_formset,
                          'recommended_formset': self.recommendations_formset,
                          'stockrecord_formset': self.stockrecord_formset,
+                         'artist_formset': self.artist_formset
                         }
 
     def get_context_data(self, **kwargs):
@@ -117,6 +120,8 @@ class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
 
 
 class ProductListView(oscar_views.ProductListView):
+
+    template_name = 'dashboard/catalogue/product_list.html'
 
     def get_queryset(self):
         qs = Product.objects.base_queryset()

@@ -185,7 +185,9 @@
                 You may choose to receive this album as a download or cd.
               </p>
             {% endcomment %}
-            <a href="#" class="white-border-button" style="width: 100%; margin-left: 0; max-width: 300px; text-align: center">Purchase on our store</a>
+            {% if album_product.external_link %}
+              <a href={{ album_product.external_link }} target="_blank" class="white-border-button" style="width: 100%; margin-left: 0; max-width: 300px; text-align: center">Purchase on our store</a>
+            {% endif %}
             <div class="album__musician-list">
               <ul>
               {% for artist_product in album_product.artistproduct_set.all %}

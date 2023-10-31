@@ -1,0 +1,1 @@
+{"version":3,"sources":["custom-dashboard.scss"],"names":[],"mappings":"AAAA;EAGI,gBAAe;EACf,aAAY,EACb","file":"custom-dashboard.css","sourcesContent":[".product-list {\n\n  img {\n    max-width: 80px;\n    height: 80px;\n  }\n}"]}
