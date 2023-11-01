@@ -2430,10 +2430,6 @@ img.defineImageRatio {
   margin-top: 30px;
 }
 
-.all-recordings-container {
-  margin-bottom: 40px;
-}
-
 .all-recordings-container,
 .all-artist-tracks {
   position: relative;
@@ -2502,6 +2498,29 @@ img.defineImageRatio {
         min-width: 15.1vw;
       }
     }
+  }
+}
+
+.all-recordings-container {
+  justify-content: start;
+  margin-bottom: 40px;
+  padding-left: 3.2vw;
+
+  @media (max-width: 960px) {
+    column-gap: 5px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0 15px;
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 430px) {
+    column-gap: 10px;
+    display: flex;
+    padding: 0 15px 0 10px;
   }
 }
 
