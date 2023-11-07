@@ -12,7 +12,7 @@
           <th>{% trans "Title" %}</th>
           <td>
             {% if line.product %}
-              <a href="{{ line.product.get_absolute_url }}">{{ line.title }} {% if line.product.event_set %} {{ line.product.event_set }} {% endif %}</a>
+              <a href="{{ line.product.get_absolute_url }}">{{ line.partner_name }} - {{ line.title }}{% if line.product.event_set %} {{ line.product.event_set.event.start|date:"(M/d/Y) H:i" }} - {{ line.product.event_set.event.end|date:"H:i" }} {% endif %}</a>
             {% else %}
               {{ line.title }}
             {% endif %}

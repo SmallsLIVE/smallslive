@@ -12,6 +12,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <title>{{ event.title }} ticket details | Mezzrow</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body class="no-background">
 <div class="container">
@@ -24,11 +25,12 @@
   {% for item in show_data %}
     <div class="row">
       <h4>{{ item.event_set.start|time:'f A' }} -  Total tickets sold - {{ item.total_tickets_sold }}</Number></h4>
-      <table class="table table-condensed">
+      <table class="table">
         <thead>
         <tr>
           <th>Order #</th>
           <th>Party name</th>
+          <th>Party Email</th>
           <th>No. of seats</th>
           <th>Price paid</th>
         </tr>
@@ -39,6 +41,7 @@
             <tr>
               <td>{{ line.order.number }}</td>
               <td><strong>{{ line.order.last_name }}, {{ line.order.first_name }}</strong></td>
+              <td><strong>{{ line.order.email }}</strong></td>
               <td><strong>{{ line.quantity }}</strong></td>
               <td>${{ line.line_price_incl_tax }}</td>
             </tr>

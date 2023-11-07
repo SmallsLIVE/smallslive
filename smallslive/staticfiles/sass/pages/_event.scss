@@ -1025,6 +1025,21 @@ a {
   }
 }
 
+.event-product-info {
+  margin: 30px 0;
+  margin-left: 5px;
+
+  .title2 {
+    font-size: 16px;
+    text-transform: capitalize;
+  }
+
+  .title1{
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+}
+
 //new pop up design for ticket confirmation
 #buy-tickets-dialog {
 

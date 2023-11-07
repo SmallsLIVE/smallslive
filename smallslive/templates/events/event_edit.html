@@ -10,11 +10,12 @@
       <form method="post"  class="admin-interface__form" enctype="multipart/form-data">
         {% crispy form %}
         {% if event.get_tickets %}
-          <ul><strong>Tickets:</strong>
-          {% for product in event.get_tickets %}
-            <li><a href="{% url 'dashboard:catalogue-product' pk=product.id %}">{{ product.title }}</a></li>
-          {% endfor %}
-          </ul>
+          <div class="event-product-info">
+            <strong class="title1">Tickets:</strong>
+            {% for product in event.get_tickets %}
+              <li class="title2"><a href="{% url 'dashboard:catalogue-product' pk=product.id %}">{{ product.title }}</a> -  Price: {{ product.stockrecords.all.0.price_excl_tax }}, Stock: {{ product.stockrecords.all.0.net_stock_level }}</li>
+            {% endfor %}
+          </div>
         {% endif %}
         {% if event.get_tickets|length < event.sets.count %}
           <div class="alert alert-warning alert__tickets">

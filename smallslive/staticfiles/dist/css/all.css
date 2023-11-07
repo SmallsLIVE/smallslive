@@ -18312,6 +18312,16 @@ a.artist-link:hover {
       height: calc(13.94vw + 8.96px);
       width: calc(13.94vw + 8.96px); } }
 
+.event-product-info {
+  margin: 30px 0;
+  margin-left: 5px; }
+  .event-product-info .title2 {
+    font-size: 16px;
+    text-transform: capitalize; }
+  .event-product-info .title1 {
+    font-size: 16px;
+    margin-bottom: 20px; }
+
 #buy-tickets-dialog .custom-modal {
   padding: 30px; }
 

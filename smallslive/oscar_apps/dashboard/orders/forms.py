@@ -6,7 +6,8 @@ from oscar_apps.order.models import Line
 
 class TicketModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
-        return u"{0} ({1.month}/{1.day}/{1.year}) - {2}".format(obj.title, obj.event_set.event.listing_date(), obj.event_set)
+        partner = obj.stockrecords.all().first().partner.name
+        return u"{0} - {1} ({2.month}/{2.day}/{2.year})".format(partner, obj.title, obj.event_set.event.listing_date())
 
 
 class TicketExchangeSelectForm(forms.Form):
