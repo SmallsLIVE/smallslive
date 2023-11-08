@@ -2,6 +2,88 @@
 {% load currency_filters %}
 {% load sorting_tags %}
 {% load i18n %}
+{% load widget_tweaks %}
+
+{% block dashboard_content %}
+
+    <div class="table-header">
+        <h3><i class="icon-search icon-large"></i>{% trans "Search" %}</h3>
+    </div>
+    <div class="well">
+        <form method="get" class="form-inline" id="search_form" action=".">
+            {% for field in form %}
+                {% if "order" in field.id_for_label %}
+                    {% if field.is_hidden %}
+                        {% render_field field class+='form-control' %}
+                    {% else %}
+                        <span class="form-group{% if field.errors %} has-error{% endif %}">
+                            {{ field.label_tag }}
+                            {% render_field field class+='form-control' %}
+                            {% for error in field.errors %}
+                                <ul class="error-block">
+                                    <li>{{ error }}</li>
+                                </ul>
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                {% endif %}
+                {% if "email" in field.id_for_label %}
+                    {% if field.is_hidden %}
+                        {% render_field field class+='form-control' %}
+                    {% else %}
+                        <span class="form-group{% if field.errors %} has-error{% endif %}" style="margin: 0 20px">
+                            {{ field.label_tag }}
+                            {% render_field field class+='form-control' %}
+                            {% for error in field.errors %}
+                                <ul class="error-block">
+                                    <li>{{ error }}</li>
+                                </ul>
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            <input type="submit" value="{% trans "Search" %}" class="btn btn-primary" />
+            <a data-toggle="modal" data-target="#SearchModal" href="#" style="margin-left: 10px;">{% trans "Advanced Search" %}</a>
+        </form>
+
+        {# Search modal, if there are form errors the form is automatically openend #}
+        <div class="modal fade" data-show="true" id="SearchModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3>{% trans "Advanced Search" %}</h3>
+                    </div>
+                    <form method="get" class="form-horizontal">
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                            {% csrf_token %}
+                            {% include "oscar/dashboard/partials/form_fields.html" with form=form style='horizontal' %}
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</a>
+                            <button type="submit" class="btn btn-primary" data-loading-text="{% trans 'Searching...' %}">{% trans "Search" %}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {% comment %}
+            {% if search_filters %}
+                <div class="search-filter-list">
+                    <label>Filters:</label>
+                    {% for filter in search_filters %}
+                    <span class="label label-success">{{ filter }}</span>
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+        {% endcomment %}
+    </div>
 
 {% block order_list %}
 <table class="table table-striped table-bordered table-hover">
@@ -59,3 +141,7 @@
     </tbody>
 </table>
 {% endblock order_list %}
+
+{% include "oscar/dashboard/partials/pagination.html" %}
+
+{% endblock dashboard_content %}

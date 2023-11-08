@@ -444,4 +444,328 @@ class OrderDetailView(DetailView):
             messages.info(request, _("Payment event created"))
         return self.reload_page()
 
+class OrderListView(BulkEditMixin, ListView):
+    """
+    Dashboard view for a list of orders.
+    Supports the permission-based dashboard.
+    """
+    model = Order
+    context_object_name = 'orders'
+    template_name = 'dashboard/orders/order_list.html'
+    form_class = OrderSearchForm
+    paginate_by = settings.OSCAR_DASHBOARD_ITEMS_PER_PAGE
+    actions = ('download_selected_orders', 'change_order_statuses')
 
+    def dispatch(self, request, *args, **kwargs):
+        # base_queryset is equal to all orders the user is allowed to access
+        self.base_queryset = queryset_orders_for_user(
+            request.user).order_by('-date_placed')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if 'order_number' in request.GET and request.GET.get(
+                'response_format', 'html') == 'html':
+            # Redirect to Order detail page if valid order number is given
+            try:
+                order = self.base_queryset.get(
+                    number=request.GET['order_number'])
+            except Order.DoesNotExist:
+                pass
+            # else:
+            #     return redirect(
+            #         'dashboard:order-detail', number=order.number)
+        
+
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):  # noqa (too complex (19))
+        """
+        Build the queryset for this list.
+        """
+        queryset = sort_queryset(self.base_queryset, self.request,
+                                 ['number', 'total_incl_tax'])
+
+        self.form = self.form_class(self.request.GET)
+        if not self.form.is_valid():
+            return queryset
+
+        data = self.form.cleaned_data
+        if data['email']:
+            party_email = data['email']
+            queryset = self.base_queryset.filter(
+                    Q(user__email__icontains=party_email) | Q(guest_email__icontains=party_email))
+
+        if data['order_number']:
+            queryset = self.base_queryset.filter(
+                number__istartswith=data['order_number'])
+
+        if data['name']:
+            # If the value is two words, then assume they are first name and
+            # last name
+            parts = data['name'].split()
+            allow_anon = getattr(settings, 'OSCAR_ALLOW_ANON_CHECKOUT', False)
+
+            if len(parts) == 1:
+                parts = [data['name'], data['name']]
+            else:
+                parts = [parts[0], parts[1:]]
+
+            filter = Q(user__first_name__istartswith=parts[0])
+            filter |= Q(user__last_name__istartswith=parts[1])
+            if allow_anon:
+                filter |= Q(billing_address__first_name__istartswith=parts[0])
+                filter |= Q(shipping_address__first_name__istartswith=parts[0])
+                filter |= Q(billing_address__last_name__istartswith=parts[1])
+                filter |= Q(shipping_address__last_name__istartswith=parts[1])
+
+            queryset = queryset.filter(filter).distinct()
+
+        if data['product_title']:
+            queryset = queryset.filter(
+                lines__title__istartswith=data['product_title']).distinct()
+
+        if data['upc']:
+            queryset = queryset.filter(lines__upc=data['upc'])
+
+        if data['partner_sku']:
+            queryset = queryset.filter(lines__partner_sku=data['partner_sku'])
+
+        if data['date_from'] and data['date_to']:
+            date_to = datetime_combine(data['date_to'], datetime.time.max)
+            date_from = datetime_combine(data['date_from'], datetime.time.min)
+            queryset = queryset.filter(
+                date_placed__gte=date_from, date_placed__lt=date_to)
+        elif data['date_from']:
+            date_from = datetime_combine(data['date_from'], datetime.time.min)
+            queryset = queryset.filter(date_placed__gte=date_from)
+        elif data['date_to']:
+            date_to = datetime_combine(data['date_to'], datetime.time.max)
+            queryset = queryset.filter(date_placed__lt=date_to)
+
+        if data['voucher']:
+            queryset = queryset.filter(
+                discounts__voucher_code=data['voucher']).distinct()
+
+        if data['payment_method']:
+            queryset = queryset.filter(
+                sources__source_type__code=data['payment_method']).distinct()
+
+        if data['status']:
+            queryset = queryset.filter(status=data['status'])
+
+        return queryset
+
+    def get_search_filter_descriptions(self):  # noqa (too complex (19))
+        """Describe the filters used in the search.
+
+        These are user-facing messages describing what filters
+        were used to filter orders in the search query.
+
+        Returns:
+            list of unicode messages
+
+        """
+        descriptions = []
+
+        # Attempt to retrieve data from the submitted form
+        # If the form hasn't been submitted, then `cleaned_data`
+        # won't be set, so default to None.
+        data = getattr(self.form, 'cleaned_data', None)
+
+        if data is None:
+            return descriptions
+
+        if data.get('order_number'):
+            descriptions.append(
+                _('Order number starts with "{order_number}"').format(
+                    order_number=data['order_number']
+                )
+            )
+
+        if data.get('name'):
+            descriptions.append(
+                _('Customer name matches "{customer_name}"').format(
+                    customer_name=data['name']
+                )
+            )
+
+        if data.get('product_title'):
+            descriptions.append(
+                _('Product name matches "{product_name}"').format(
+                    product_name=data['product_title']
+                )
+            )
+
+        if data.get('upc'):
+            descriptions.append(
+                # Translators: "UPC" means "universal product code" and it is
+                # used to uniquely identify a product in an online store.
+                # "Item" in this context means an item in an order placed
+                # in an online store.
+                _('Includes an item with UPC "{upc}"').format(
+                    upc=data['upc']
+                )
+            )
+
+        if data.get('partner_sku'):
+            descriptions.append(
+                # Translators: "SKU" means "stock keeping unit" and is used to
+                # identify products that can be shipped from an online store.
+                # A "partner" is a company that ships items to users who
+                # buy things in an online store.
+                _('Includes an item with partner SKU "{partner_sku}"').format(
+                    partner_sku=data['partner_sku']
+                )
+            )
+
+        if data.get('date_from') and data.get('date_to'):
+            descriptions.append(
+                # Translators: This string refers to orders in an online
+                # store that were made within a particular date range.
+                _('Placed between {start_date} and {end_date}').format(
+                    start_date=data['date_from'],
+                    end_date=data['date_to']
+                )
+            )
+
+        elif data.get('date_from'):
+            descriptions.append(
+                # Translators: This string refers to orders in an online store
+                # that were made after a particular date.
+                _('Placed after {start_date}').format(
+                    start_date=data['date_from'])
+            )
+
+        elif data.get('date_to'):
+            end_date = data['date_to'] + datetime.timedelta(days=1)
+            descriptions.append(
+                # Translators: This string refers to orders in an online store
+                # that were made before a particular date.
+                _('Placed before {end_date}').format(end_date=end_date)
+            )
+
+        if data.get('voucher'):
+            descriptions.append(
+                # Translators: A "voucher" is a coupon that can be applied to
+                # an order in an online store in order to receive a discount.
+                # The voucher "code" is a string that users can enter to
+                # receive the discount.
+                _('Used voucher code "{voucher_code}"').format(
+                    voucher_code=data['voucher'])
+            )
+
+        if data.get('payment_method'):
+            payment_type = SourceType.objects.get(code=data['payment_method'])
+            descriptions.append(
+                # Translators: A payment method is a way of paying for an
+                # item in an online store.  For example, a user can pay
+                # with a credit card or PayPal.
+                _('Paid using {payment_method}').format(
+                    payment_method=payment_type.name
+                )
+            )
+
+        if data.get('status'):
+            descriptions.append(
+                # Translators: This string refers to an order in an
+                # online store.  Some examples of order status are
+                # "purchased", "cancelled", or "refunded".
+                _('Order status is {order_status}').format(
+                    order_status=data['status'])
+            )
+
+        return descriptions
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['form'] = self.form
+        ctx['order_statuses'] = Order.all_statuses()
+        ctx['search_filters'] = self.get_search_filter_descriptions()
+        return ctx
+
+    def is_csv_download(self):
+        return self.request.GET.get('response_format', None) == 'csv'
+
+    def get_paginate_by(self, queryset):
+        return None if self.is_csv_download() else self.paginate_by
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.is_csv_download():
+            return self.download_selected_orders(
+                self.request,
+                context['object_list'])
+        return super().render_to_response(
+            context, **response_kwargs)
+
+    def get_download_filename(self, request):
+        return 'orders.csv'
+
+    def download_selected_orders(self, request, orders):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=%s' \
+            % self.get_download_filename(request)
+        writer = UnicodeCSVWriter(open_file=response)
+
+        meta_data = (('number', _('Order number')),
+                     ('value', _('Order value')),
+                     ('date', _('Date of purchase')),
+                     ('num_items', _('Number of items')),
+                     ('status', _('Order status')),
+                     ('customer', _('Customer email address')),
+                     ('shipping_address_name', _('Deliver to name')),
+                     ('billing_address_name', _('Bill to name')),
+                     )
+        columns = OrderedDict()
+        for k, v in meta_data:
+            columns[k] = v
+
+        writer.writerow(columns.values())
+        for order in orders:
+            row = columns.copy()
+            row['number'] = order.number
+            row['value'] = order.total_incl_tax
+            row['date'] = format_datetime(order.date_placed, 'DATETIME_FORMAT')
+            row['num_items'] = order.num_items
+            row['status'] = order.status
+            row['customer'] = order.email
+            if order.shipping_address:
+                row['shipping_address_name'] = order.shipping_address.name
+            else:
+                row['shipping_address_name'] = ''
+            if order.billing_address:
+                row['billing_address_name'] = order.billing_address.name
+            else:
+                row['billing_address_name'] = ''
+            writer.writerow(row.values())
+        return response
+
+    def change_order_statuses(self, request, orders):
+        for order in orders:
+            self.change_order_status(request, order)
+        return redirect('dashboard:order-list')
+
+    def change_order_status(self, request, order):
+        # This method is pretty similar to what
+        # OrderDetailView.change_order_status does. Ripe for refactoring.
+        new_status = request.POST['new_status'].strip()
+        if not new_status:
+            messages.error(request, _("The new status '%s' is not valid")
+                           % new_status)
+        elif new_status not in order.available_statuses():
+            messages.error(request, _("The new status '%s' is not valid for"
+                                      " this order") % new_status)
+        else:
+            handler = EventHandler(request.user)
+            old_status = order.status
+            try:
+                handler.handle_order_status_change(order, new_status)
+            except PaymentError as e:
+                messages.error(request, _("Unable to change order status due"
+                                          " to payment error: %s") % e)
+            else:
+                msg = _("Order status changed from '%(old_status)s' to"
+                        " '%(new_status)s'") % {'old_status': old_status,
+                                                'new_status': new_status}
+                messages.info(request, msg)
+                order.notes.create(
+                    user=request.user, message=msg, note_type=OrderNote.SYSTEM)
