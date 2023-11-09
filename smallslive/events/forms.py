@@ -58,6 +58,7 @@ class EventStatusWidget(floppyforms.RadioSelect):
 class GigPlayedAddInlineFormSet(InlineFormSet):
     model = GigPlayed
     fields = ('artist', 'role', 'is_leader', 'is_admin', 'sort_order')
+    factory_kwargs = {'can_delete': True, 'extra': 1 }
 
     def construct_formset(self):
         formset = super(GigPlayedAddInlineFormSet, self).construct_formset()
@@ -77,13 +78,13 @@ class GigPlayedAddInlineFormSet(InlineFormSet):
 
 
 class GigPlayedEditInlineFormset(GigPlayedAddInlineFormSet):
-    factory_kwargs = {'can_delete': True}
+    factory_kwargs = {'can_delete': True, 'extra': 1 }
 
     def construct_formset(self):
         # don't automatically show extra rows if there are artists already playing
-        # @TODO : Fix later
-        # if self.object.performers.count() > 0:
-        #     self.extra = 0
+        if self.object.performers.count() > 0:
+            self.factory_kwargs['extra'] = 0
+
         formset = super(GigPlayedEditInlineFormset, self).construct_formset()
         for num, form in enumerate(formset):
             form.fields['DELETE'].widget = forms.HiddenInput()
@@ -102,12 +103,12 @@ class GigPlayedInlineFormSetHelper(FormHelper):
 class EventSetInlineFormset(InlineFormSet):
     model = EventSet
     fields = ('start', 'end', 'walk_in_price')
-
+    factory_kwargs = {'can_delete': True, 'extra': 1 }
 
     def construct_formset(self):
-        # @TODO : Fix later
-        # if self.object and self.object.sets.count() > 0:
-        #     self.extra = 0
+        if self.object and self.object.sets.count() > 0:
+           self.factory_kwargs['extra'] = 0
+
         formset = super(EventSetInlineFormset, self).construct_formset()
         for num, form in enumerate(formset):
             form.fields['DELETE'].widget = forms.HiddenInput()
@@ -216,6 +217,8 @@ class EventAddForm(forms.ModelForm):
             'title',
             'subtitle',
             Field('date', css_class='datepicker'),
+            'start',
+            'end',
             FormActions(css_class='form-group slot-buttons'),
             Formset('sets', template='form_widgets/set_formset_layout.html'),
             Formset('artists', template='form_widgets/formset_layout.html'),
@@ -224,6 +227,11 @@ class EventAddForm(forms.ModelForm):
             'description',
             'state',
             'staff_pick',
+            'tickets_url',
+            'sponsorship_enabled',
+            'streamable',
+            'minimum_sponsorship_amount',
+            'is_foundation'
         )
 
 
