@@ -1,7 +1,7 @@
 import floppyforms
+from django import forms
 from django_thumbor import generate_url
 from image_cropping.widgets import CropWidget, get_attrs
-
 
 class ImageThumbnailWidget(floppyforms.ClearableFileInput):
     template_name = 'form_widgets/image_widget.html'
@@ -12,6 +12,22 @@ class ImageSelectWidget(floppyforms.Select):
 
 
 class ImageCropWidget(ImageThumbnailWidget, CropWidget):
+
+    def _media(self):
+        js = [
+            "",
+        ]
+
+        css = {
+            "all": [
+                "image_cropping/css/jquery.Jcrop.min.css",
+                "image_cropping/css/image_cropping.css",
+            ]
+        }
+
+        return forms.Media(css=css, js=js)
+
+    media = property(_media)
 
     def render(self, name, value, attrs=None, renderer=None):
         if not attrs:
