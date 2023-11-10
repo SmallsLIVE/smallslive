@@ -1,4 +1,5 @@
 import floppyforms
+from django.conf import settings
 from django import forms
 from django_thumbor import generate_url
 from image_cropping.widgets import CropWidget, get_attrs
@@ -14,9 +15,6 @@ class ImageSelectWidget(floppyforms.Select):
 class ImageCropWidget(ImageThumbnailWidget, CropWidget):
 
     def _media(self):
-        js = [
-            "",
-        ]
 
         css = {
             "all": [
@@ -25,7 +23,7 @@ class ImageCropWidget(ImageThumbnailWidget, CropWidget):
             ]
         }
 
-        return forms.Media(css=css, js=js)
+        return forms.Media(css=css)
 
     media = property(_media)
 
