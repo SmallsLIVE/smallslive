@@ -26505,6 +26505,8 @@ label[for="photo-clear_id"] {
         font-weight: 700; }
       .admin-interface #div_id_state label.txt-hidden {
         color: #888; }
+  .admin-interface .event-set-list-form table tbody tr {
+    display: table-row !important; }
 
 .bootstrap-datetimepicker-widget {
   min-width: 300px; }
