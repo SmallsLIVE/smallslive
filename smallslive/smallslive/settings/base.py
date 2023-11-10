@@ -525,7 +525,7 @@ LOGGING = {
 
 # Crispy forms settings
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-
+IMAGE_CROPPING_JQUERY_URL = None
 # Django storages / S3
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
