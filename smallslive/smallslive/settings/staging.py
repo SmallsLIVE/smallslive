@@ -74,9 +74,9 @@ ALLOWED_HOSTS = [
 ]
 
 # Static asset configuration
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
-PIPELINE_SASS_BINARY = 'sassc'
-PIPELINE_SASS_ARGUMENTS = '--precision 8 -s compressed'
+# STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+# PIPELINE_SASS_BINARY = 'sassc'
+# PIPELINE_SASS_ARGUMENTS = '--precision 8 -s compressed'
 
 # Haystack elasticsearch backend
 ELASTICSEARCH_URL = get_env_variable('SEARCHBOX_SSL_URL')

@@ -35,12 +35,13 @@ ALLOWED_HOSTS = [
     '.smallslive.com.',
     'smallslive.herokuapp.com',
     'smallslive.herokuapp.com.'
+    'smallslivecom-rc-832039ab3987.herokuapp.com'
 ]
 
 # Static asset configuration
-STATICFILES_STORAGE = "utils.storages.GzipManifestPipelineStorage"
-PIPELINE_SASS_BINARY = 'sassc'
-PIPELINE_SASS_ARGUMENTS = '--precision 8 -s compressed'
+# STATICFILES_STORAGE = "utils.storages.GzipManifestPipelineStorage"
+# PIPELINE_SASS_BINARY = 'sassc'
+# PIPELINE_SASS_ARGUMENTS = '--precision 8 -s compressed'
 
 # Haystack elasticsearch backend
 ELASTICSEARCH_URL = get_env_variable('SEARCHBOX_SSL_URL')
