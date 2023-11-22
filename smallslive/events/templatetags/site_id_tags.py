@@ -7,3 +7,12 @@ register = template.Library()
 def get_site_id():
     current_site = Site.objects.get_current()
     return current_site.id
+
+@register.simple_tag
+def get_foundation_site():
+    try:
+        current_site = Site.objects.get(id=2)
+    except:
+        current_site = '/'
+
+    return current_site

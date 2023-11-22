@@ -1,4 +1,5 @@
 {% load static from staticfiles %}
+{% load site_id_tags %}
 
 <header class="main-header new-header">
   <div class="flex-row items-center content-space-between">
@@ -16,7 +17,8 @@
       {% include 'partials/header_button.html' with button_url='tickets' button_text='Tickets' %}
       {# {% include 'partials/header_button.html' with button_url='new_archive' button_text='Archive / Foundation' %} #}
       {# {% include 'partials/header_button.html' with button_url='foundation' button_text='Archive' %} #}
-      <a href="https://smallslive-org-b4dbc45187d2.herokuapp.com" target="_blank">
+      {% get_foundation_site as foundation_site %}
+      <a href="{{ foundation_site }}" target="_blank">
         <p class="no-border">
           Archive
         </p>
@@ -156,7 +158,11 @@
       {% include 'partials/header_button.html' with button_url='livestream' button_text='Livestream' %}
       {% include 'partials/header_button.html' with button_url='contact' button_text='Contact' %}
       {% include 'partials/header_button.html' with button_url='about' button_text='About' %}
-      {% include 'partials/header_button.html' with button_url='store' button_text='Store' %}
+      <a href="https://smallslive.store" target="_blank">
+        <p class="no-border">
+           Store
+        </p>
+      </a>
     </div>
   </div>
 </div>
