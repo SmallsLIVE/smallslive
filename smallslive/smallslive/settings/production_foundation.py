@@ -3,8 +3,9 @@ from urllib.parse import urlparse
 from .base import *
 import dj_database_url
 
-# SITE_ID 1 for smallslive.com/jazz/mezzrow club
-SITE_ID = 1
+# SITE_ID 2 for smallslive.org/jazz/mezzrow club
+SITE_ID = 2
+
 def env_var(key, default=None):
     """Retrieves env vars and makes Python boolean replacements"""
     val = os.environ.get(key, default)
