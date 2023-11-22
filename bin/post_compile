@@ -15,6 +15,6 @@ pip install dj-stripe==2.5.0
 python smallslive/manage.py migrate catalogue --noinput
 python smallslive/manage.py migrate voucher --noinput
 
-# Sync djstripe data
-#python smallslive/manage.py resync_subscriptions
-#python smallslive/manage.py sync_customers
+
+# Run collectstatic
+python smallslive/manage.py collectstatic --noinput
