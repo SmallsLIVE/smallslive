@@ -38,7 +38,11 @@ ALLOWED_HOSTS = [
     'smallslive.herokuapp.com',
     'smallslive.herokuapp.com.',
     'smallslivecom-rc-832039ab3987.herokuapp.com',
-    'smallslive-org-rc-1fe8c07a975e.herokuapp.com'
+    'smallslive-org-rc-1fe8c07a975e.herokuapp.com',
+    'smallslive-org-prod-8995af241716.herokuapp.com',
+    '.smallslive.org',
+    'smallslive.org'
+
 ]
 
 # Static asset configuration
