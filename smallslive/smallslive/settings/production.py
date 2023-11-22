@@ -25,7 +25,7 @@ DATABASES['metrics'] = dj_database_url.config('METRICS_DB_URL')
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-MIDDLEWARE = ('sslify.middleware.SSLifyMiddleware',) + MIDDLEWARE
+# MIDDLEWARE = ('sslify.middleware.SSLifyMiddleware',) + MIDDLEWARE
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
@@ -35,12 +35,13 @@ ALLOWED_HOSTS = [
     '.smallslive.com.',
     'smallslive.herokuapp.com',
     'smallslive.herokuapp.com.'
+    'smallslivecom-rc-832039ab3987.herokuapp.com'
 ]
 
 # Static asset configuration
-STATICFILES_STORAGE = "utils.storages.GzipManifestPipelineStorage"
-PIPELINE_SASS_BINARY = 'sassc'
-PIPELINE_SASS_ARGUMENTS = '--precision 8 -s compressed'
+# STATICFILES_STORAGE = "utils.storages.GzipManifestPipelineStorage"
+# PIPELINE_SASS_BINARY = 'sassc'
+# PIPELINE_SASS_ARGUMENTS = '--precision 8 -s compressed'
 
 # Haystack elasticsearch backend
 ELASTICSEARCH_URL = get_env_variable('SEARCHBOX_SSL_URL')
