@@ -34,7 +34,7 @@ ALLOWED_HOSTS = [
     '.smallslive.com',
     '.smallslive.com.',
     'smallslive.herokuapp.com',
-    'smallslive.herokuapp.com.'
+    'smallslive.herokuapp.com.',
     'smallslivecom-rc-832039ab3987.herokuapp.com'
 ]
 
