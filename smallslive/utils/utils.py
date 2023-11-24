@@ -49,3 +49,20 @@ def send_order_confirmation_email(email, message=None):
                   from_email,
                   [to_email],
                   html_message=html_message)
+
+
+def send_order_refunded_email(email, message=None):
+    email_content = {
+        'html': True,
+        'subject': 'Order Refunded',
+        'body': 'this is your order'
+    }
+    from_email = settings.OSCAR_FROM_EMAIL
+    to_email = email
+    html_message = render_to_string('emails/order-refund-email.html', message)
+    if email_content['html']:
+        send_mail(email_content['subject'],
+                  email_content['body'],
+                  from_email,
+                  [to_email],
+                  html_message=html_message)

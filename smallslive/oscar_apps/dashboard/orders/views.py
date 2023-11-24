@@ -24,7 +24,7 @@ from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailVi
 from .forms import TicketExchangeSelectForm
 from oscar_apps.order.processing import EventHandler
 from oscar_apps.order.models import PaymentEventType, Line, Order
-
+from utils.utils import send_order_refunded_email
 
 
 
@@ -318,6 +318,21 @@ class OrderDetailView(DetailView):
         try:
             handler.handle_order_status_change(
                 order, new_status, note_msg=success_msg)
+            # send confirmation email to that user for order refund
+            message = {}
+            event_info = order.basket.get_tickets_event()
+            message['order_number'] = order.number
+            message['event_title'] = event_info.title
+            message['event_date'] = event_info.date
+            for line in order.lines.all():
+                message['quantity'] = line.quantity
+                message['time'] = line.product.event_set.start
+            if order.email:
+                email = order.email
+            else:
+                email = order.guest_email
+            
+            send_order_refunded_email(email, message)
         except PaymentError as e:
             messages.error(
                 request, _("Unable to change order status due to "

@@ -1,7 +1,9 @@
+import datetime
 from django import forms
 from django.http import QueryDict
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy
 from oscar_apps.catalogue.models import Product
 from oscar_apps.order.models import Line
 from oscar.core.loading import get_model
@@ -98,3 +100,50 @@ class OrderSearchForm(forms.Form):
     def payment_method_choices(self):
         return (('', '---------'),) + tuple(
             [(src.code, src.name) for src in SourceType.objects.all()])
+
+class OrderStatsForm(forms.Form):
+    date_from = forms.DateField(
+        required=False, label=pgettext_lazy("start date", "From"),
+        widget=DatePickerInput)
+    date_to = forms.DateField(
+        required=False, label=pgettext_lazy("end date", "To"),
+        widget=DatePickerInput)
+
+    _filters = _description = None
+
+    def _determine_filter_metadata(self):
+        self._filters = {}
+        self._description = _('All orders')
+        if self.errors:
+            return
+
+        date_from = self.cleaned_data['date_from']
+        date_to = self.cleaned_data['date_to']
+        if date_from and date_to:
+            # We want to include end date so we adjust the date we use with the
+            # 'range' function.
+            self._filters = {'date_placed__range':
+                             [date_from, date_to + datetime.timedelta(days=1)]}
+            self._description = _('Orders placed between %(date_from)s and'
+                                  ' %(date_to)s') % {
+                'date_from': date_from,
+                'date_to': date_to}
+        elif date_from and not date_to:
+            self._filters = {'date_placed__gte': date_from}
+            self._description = _('Orders placed since %s') % (date_from,)
+        elif not date_from and date_to:
+            self._filters = {'date_placed__lte': date_to}
+            self._description = _('Orders placed until %s') % (date_to,)
+        else:
+            self._filters = {}
+            self._description = _('All orders')
+
+    def get_filters(self):
+        if self._filters is None:
+            self._determine_filter_metadata()
+        return self._filters
+
+    def get_filter_description(self):
+        if self._description is None:
+            self._determine_filter_metadata()
+        return self._description
