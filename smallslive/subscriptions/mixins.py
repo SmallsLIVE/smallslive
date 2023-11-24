@@ -22,10 +22,10 @@ class PaymentCredentialsMixin(object):
             else:
                 is_foundation = False
                 venue = self.event.venue
-                stripe_client_id = settings.STRIPE_PUBLISHABLE_KEY #venue.get_stripe_publishable_key
-                stripe_client_secret = settings.STRIPE_SECRET_KEY #venue.get_stripe_secret_key
-                paypal_client_id = settings.PAYPAL_CLIENT_ID # @TODO change with venue.get_paypal_client_id later.
-                paypal_client_secret = settings.PAYPAL_CLIENT_SECRET # @TODO change with vennu.get_paypal_client_secret later.
+                stripe_client_id = venue.get_stripe_publishable_key
+                stripe_client_secret = venue.get_stripe_secret_key
+                paypal_client_id = venue.get_paypal_client_id
+                paypal_client_secret = venue.get_paypal_client_secret
         else:
             if self.order:
                 item = self.order
@@ -33,8 +33,8 @@ class PaymentCredentialsMixin(object):
                 item = self.request.basket
             if item.has_catalog():
                 is_foundation = False
-                stripe_client_id = settings.STRIPE_PUBLISHABLE_KEY
-                stripe_client_secret = settings.STRIPE_SECRET_KEY
+                stripe_client_id = settings.STRIPE_FOR_PROFIT_PUBLISHABLE_KEY
+                stripe_client_secret = settings.STRIPE_FOR_PROFIT_SECRET_KEY
                 paypal_client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID
                 paypal_client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET
             else:
