@@ -21,11 +21,11 @@
                 Archived
             </button>
         </a>
-        <a href="{% url 'artist_dashboard:metrics' %}">
-            <button class="no-border {% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">
-                Payout
-            </button>
-        </a>
+        {% comment %}
+          <a href="{% url 'artist_dashboard:metrics' %}">
+            <button class="no-border {% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Payout</button>
+          </a>
+        {% endcomment %}
         <a href="{% url 'artist_dashboard:my_future_events' %}">
           <button class="no-border {% if request.resolver_match.url_name == 'my_future_events' %}active{% endif %}">
               Upcoming
