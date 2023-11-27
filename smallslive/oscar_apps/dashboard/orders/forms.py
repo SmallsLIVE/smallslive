@@ -20,6 +20,7 @@ class TicketModelChoiceField(forms.ModelChoiceField):
                 return u"{0} - {1} ({2.month}/{2.day}/{2.year})".format(partner, obj.title, obj.event_set.event.listing_date())
         except Exception as e:
             print(e)
+            return u"{0} - ({1.month}/{1.day}/{1.year})".format(obj.title, obj.event_set.event.listing_date())
 
 class TicketExchangeSelectForm(forms.Form):
     ticket = TicketModelChoiceField(
