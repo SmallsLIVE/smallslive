@@ -17,43 +17,40 @@ class PaymentCredentialsMixin(object):
     def get_payment_accounts(self):
 
         if self.event:
-            print('hi there ....1')
             if self.event.is_foundation:
                 is_foundation = True
-                print('hi there ....2')
             else:
-                print('hi there ....3')
                 is_foundation = False
                 venue = self.event.venue
+                if venue.name == 'Smalls':
+                    stripe_client_id = settings.STRIPE_PROFIT_CLIENT_ID_SMALLS  # stripe public key for smalls club
+                    stripe_client_secret = settings.STRIPE_PROFIT_CLIENT_SECRET_SMALLS  # stripe secret key smalls club
+                elif venue.name == 'Mezzrow':
+                    stripe_client_id = settings.STRIPE_PROFIT_CLIENT_ID_MEZZROW  # stripe public key for mezzrow
+                    stripe_client_secret = settings.STRIPE_PROFIT_CLIENT_SECRET_MEZZROW  # stripe secret key for mezzrow
                 # stripe_client_id = venue.get_stripe_publishable_key
                 # stripe_client_secret = venue.get_stripe_secret_key
                 # paypal_client_id = venue.get_paypal_client_id
                 # paypal_client_secret = venue.get_paypal_client_secret
-                stripe_client_id = settings.STRIPE_PUBLISHABLE_KEY  # venue.get_stripe_publishable_key
-                stripe_client_secret = settings.STRIPE_SECRET_KEY  # venue.get_stripe_secret_key
+                # stripe_client_id = settings.STRIPE_PUBLISHABLE_KEY  # venue.get_stripe_publishable_key
+                # stripe_client_secret = settings.STRIPE_SECRET_KEY  # venue.get_stripe_secret_key
                 paypal_client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID  # @TODO change with venue.get_paypal_client_id later.
                 paypal_client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET  # @TODO change with vennu.get_paypal_client_secret later.
         else:
-            print('hi there ....4')
             if self.order:
-                print('hi there ....5')
                 item = self.order
             else:
-                print('hi there ....6')
                 item = self.request.basket
             if item.has_catalog():
-                print('hi there ....7')
                 is_foundation = False
                 stripe_client_id = settings.STRIPE_FOR_PROFIT_PUBLISHABLE_KEY
                 stripe_client_secret = settings.STRIPE_FOR_PROFIT_SECRET_KEY
                 paypal_client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID
                 paypal_client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET
             else:
-                print('hi there ....8')
                 is_foundation = True
 
         if is_foundation:
-            print('hi there ....9')
             stripe_client_id = settings.STRIPE_PUBLISHABLE_KEY
             stripe_client_secret = settings.STRIPE_SECRET_KEY
             paypal_client_id = settings.PAYPAL_CLIENT_ID
