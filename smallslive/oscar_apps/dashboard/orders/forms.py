@@ -14,9 +14,12 @@ Order = get_model('order', 'Order')
 
 class TicketModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
-        partner = obj.stockrecords.all().first().partner.name
-        return u"{0} - {1} ({2.month}/{2.day}/{2.year})".format(partner, obj.title, obj.event_set.event.listing_date())
-
+        try:
+            if obj.stockrecords.all().first().partner:
+                partner = obj.stockrecords.all().first().partner.name
+                return u"{0} - {1} ({2.month}/{2.day}/{2.year})".format(partner, obj.title, obj.event_set.event.listing_date())
+        except Exception as e:
+            print(e)
 
 class TicketExchangeSelectForm(forms.Form):
     ticket = TicketModelChoiceField(
