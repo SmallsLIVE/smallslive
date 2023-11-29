@@ -11,6 +11,11 @@
           <span class="text-capitalize">{{ event.title }}</span><br>
           On: {{ event.date }}<br>
           Time: <span id="ticket-time"></span><br>
+          {% if event.get_venue_name == 'Mezzrow' %}
+            Location: Mezzrow (163 w. 10th Street)<br>
+          {% elif event.get_venue_name == 'Smalls' %}
+            Location: Smalls Jazz Club (183 w. 10th Street)<br>
+          {% endif %}
           Ticket prices for this show is: $<span id="ticket-price" tabindex="0"></span><br>
           {% comment %}There are currently <span id="ticket-available" tabindex="0"></span> tickets
           available.{% endcomment %}
