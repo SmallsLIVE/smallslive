@@ -272,5 +272,9 @@ class StripeMixin(PaymentCredentialsMixin):
         self.order = order
         self.event = order.get_tickets_event()
         api_key = self.get_stripe_payment_credentials()[2]
+        print('============================REFUND INFO-===========================')
+        print(api_key)
+        print('---------------------')
+        print(charge_id)
         refund = stripe.Refund.create(api_key=api_key, charge=charge_id)
         return refund.id
