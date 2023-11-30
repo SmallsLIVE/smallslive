@@ -17755,7 +17755,7 @@ label[for="photo-clear_id"] {
   .admin-nav .navbar-toggle i {
     color: #fff; }
   .admin-nav .navbar-collapse {
-    float: right; }
+    float: left; }
     .admin-nav .navbar-collapse ul {
       margin-bottom: 0;
       padding-left: 0; }
@@ -17770,6 +17770,8 @@ label[for="photo-clear_id"] {
         .admin-nav .navbar-collapse ul li a:hover {
           color: rgba(255, 255, 255, 0.6);
           text-decoration: none; }
+    .admin-nav .navbar-collapse > ul > li > a {
+      padding: 10px 25px 10px 0; }
     .admin-nav .navbar-collapse .nav .open > a, .admin-nav .navbar-collapse .nav .open > a:hover, .admin-nav .navbar-collapse .nav .open > a:focus {
       background: none;
       color: rgba(255, 255, 255, 0.5); }

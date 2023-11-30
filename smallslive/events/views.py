@@ -24,6 +24,8 @@ from django.views.generic import DeleteView, TemplateView, View
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, FormView
+from django.shortcuts import redirect
+
 
 # from django_ajax.mixin import AJAXMixin
 from braces.views import StaffuserRequiredMixin
@@ -489,6 +491,9 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
                 if ticket_form.cleaned_data.get('form_enabled'):
                     ticket_form.save(event_set=event_set)
 
+        nav_param = self.request.GET.get('nav')
+        if nav_param == 'manage-archive':
+            return redirect('manage_archive') 
         return response
 
     # TODO: remove duplicate code
