@@ -2,6 +2,12 @@
 
 <h2 style="font-size: 24px;">Your confirmation number is: {{ order_number }}</h2>
 
+{% if venue == 'Mezzrow' %}
+  <h2 style="font-size: 24px;">Location: Mezzrow (163 w. 10th Street)</h2>
+{% elif venue == 'Smalls' %}
+  <h2 style="font-size: 24px;">Location: Smalls Jazz Club (183 w. 10th Street)</h2>
+{% endif %}
+
 <p style="font-size: 18px;">THANK YOU FOR YOUR PURCHASE. Your name will be at the door when you arrive, but please also have your confirmation email with you. In general, there is a <strong style="color: #d21535">NO REFUND POLICY</strong> for ticket sales, although we will make individual exceptions depending on the situation. For any ticketing questions or issues, please contact <a href="mailto:reservations@smallslive.com" style="color: #d21535">reservations@smallslive.com</a> </p>
 
 <p style="font-size: 18px;"><strong style="color: #d21535">PLEASE NOTE:</strong> your ticket guarantees you entrance, but choice of seats is first come/first served, so please be on-time for seating. Seating for each show begins approximately 30 minutes before the set begins. Please arrive at least 30 minutes before the set and join the advanced ticket line.</p>

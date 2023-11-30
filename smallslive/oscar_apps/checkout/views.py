@@ -268,6 +268,7 @@ class SuccessfulOrderMixin(PaymentCredentialsMixin):
         message['order_number'] = self.order.number
         message['event_title'] = event_info.title
         message['event_date'] = event_info.date
+        message['venue'] = event_info.get_venue_name()
         for line in self.order.lines.all():
             message['quantity'] = line.quantity
             message['time'] = line.product.event_set.start

@@ -162,7 +162,7 @@
 
     &.centered {
       display: block;
-      margin: 0 auto 30px;
+      margin: 0 auto 40px;
     }
   }
 
@@ -229,9 +229,15 @@
 }
 
 .newsletter-wrapper {
+  max-width: 350px;
+  margin: 0 auto;
   
   p {
     margin-bottom: 10px;
+  }
+
+  @media (max-width: 960px) {
+    max-width: 100%;
   }
 }
 

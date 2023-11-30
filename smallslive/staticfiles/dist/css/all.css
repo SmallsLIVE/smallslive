@@ -16525,7 +16525,7 @@ footer a:hover {
       width: 80%; }
     .static-content img.centered {
       display: block;
-      margin: 0 auto 30px; }
+      margin: 0 auto 40px; }
   .static-content a {
     word-wrap: break-word; }
   .static-content p {
@@ -16570,8 +16570,14 @@ footer a:hover {
       flex-direction: column;
       gap: 15px; } }
 
-.newsletter-wrapper p {
-  margin-bottom: 10px; }
+.newsletter-wrapper {
+  max-width: 350px;
+  margin: 0 auto; }
+  .newsletter-wrapper p {
+    margin-bottom: 10px; }
+  @media (max-width: 960px) {
+    .newsletter-wrapper {
+      max-width: 100%; } }
 
 .map-wrapper {
   padding-bottom: 40px;
