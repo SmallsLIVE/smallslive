@@ -429,6 +429,7 @@ class UpcomingSearchViewAjax(TemplateView, UpcomingSearchView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         context.update(self.get_upcoming_context())
+        context['user'] = self.request.user
         data = {
             'template': render_to_string(
                 'search/upcoming_calendar_dates.html', context
