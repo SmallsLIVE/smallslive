@@ -22,6 +22,11 @@
                         <button onclick="$('#becomeMemberDialog').modal('show'); return false;" class="white-border-button text-center">Sponsor This Concert</button>
                     {% endif %}
                 </a>
+                {% if user.is_admin or user.is_staff %}
+                    <a href="{% url 'event_edit' pk=event.id slug=event.slug %}?nav=calendar" style="display: inline-block;">
+                        <button class="white-border-button">Edit</button>
+                    </a>
+                {% endif %}
             </div>
         {% empty %}
             <div class="text6 no-event"> To Be Announced </div>
