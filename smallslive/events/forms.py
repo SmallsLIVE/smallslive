@@ -168,6 +168,7 @@ class EventAddForm(forms.ModelForm):
         self.helper.form_action = 'event_add'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
+        self.fields['venue'].required = True
 
         layout = self.get_layout()
 

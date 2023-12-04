@@ -427,5 +427,14 @@ EventForm = {
         $(`#id_set${set}-set_name`).val($(this).val());
       }
     );
+
+    var currentdate = new Date();
+    var time = currentdate.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    var datetime = (currentdate.getMonth()+1)  + "/"
+                + currentdate.getDate() + "/"
+                + currentdate.getFullYear() + " "
+                + time;
+
+    $('#id_start, #id_end').val(datetime);
   }
 };
