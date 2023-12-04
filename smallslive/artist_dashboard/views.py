@@ -575,6 +575,7 @@ class EventEditAjaxView(EventEditView):
                     'photoUrl': form.instance.photo.url,
                 }
                 data = {'success': True, 'data': event_data}
+                form.save()
                 response = JsonResponse(data)
 
         return response
