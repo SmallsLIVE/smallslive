@@ -181,7 +181,10 @@
 
       <div class="flex-row event-set-selector"></div>
       {% if event.published_audio or event.published_video or event.is_live %}
-      <div class="comments-container" data-subpage-url="{% url 'event_comments' pk=event.id slug=event.slug %}?set=0" data-subpage-name="comments"></div>
+        {% get_site_id as site_id %}
+        {% if site_id == 2 %}
+          <div class="comments-container" data-subpage-url="{% url 'event_comments' pk=event.id slug=event.slug %}?set=0" data-subpage-name="comments"></div>
+        {% endif %}
       {% endif %}
     </div>
     <div class="flex-column event-side">
