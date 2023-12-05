@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-#from hijack.admin import HijackUserAdminMixin
+from hijack.contrib.admin import HijackUserAdminMixin
 
 from .models import SmallsUser
 
@@ -82,7 +82,7 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-class SmallsUserAdmin(UserAdmin):
+class SmallsUserAdmin(HijackUserAdminMixin, UserAdmin):
     add_form_template = 'admin/auth/user/add_form.html'
     date_hierarchy = 'last_login'
     fieldsets = (
@@ -104,7 +104,7 @@ class SmallsUserAdmin(UserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
     list_display = ('email', 'artist', 'access_level', 'login_count', 'subscription_price',
-                    'date_joined', 'renewal_date',  'is_active') # Removed hijack_field @TODO : Check later 
+                    'date_joined', 'renewal_date',  'is_active')
     list_filter = ('access_level', 'is_active')
     search_fields = ('email',)
     save_on_top = True

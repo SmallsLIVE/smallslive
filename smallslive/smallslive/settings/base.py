@@ -92,6 +92,8 @@ INSTALLED_APPS = [
     'tinymce',
     'django_tables2',
     'widget_tweaks',
+    'hijack',
+    'hijack.contrib.admin',
 
     # project apps
     'artist_dashboard',
@@ -161,6 +163,7 @@ MIDDLEWARE = (
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
     # 'smallslive.middleware.RedirectMiddleware',
+    'hijack.middleware.HijackUserMiddleware',
 )
 
 TEMPLATE_DIRS = os.path.join(BASE_DIR, 'templates')
@@ -909,8 +912,7 @@ METRICS_SERVER_URL = "" # no trailing slash
 PING_INTERVAL = 30
 
 # Hijack
-ENABLE_HIJACK = False
-SHOW_HIJACKUSER_IN_ADMIN = False
+ENABLE_HIJACK = True
 
 # Celery
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
