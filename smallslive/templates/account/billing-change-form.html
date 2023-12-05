@@ -44,7 +44,21 @@
 
 
     $('#save').click(function(){
+      if(!$('#change-billing-form input[name="last_name"]').val()){
+        $('#change-billing-form input[name="last_name"]').focus();
+      }
+      else if(!$('#change-billing-form input[name="line1"]').val()){
+        $('#change-billing-form input[name="line1"]').focus();
+      }
+      else if(!$('#change-billing-form input[name="line4"]').val()){
+        $('#change-billing-form input[name="line4"]').focus();
+      }
+      else if(!$('#change-billing-form input[name="postcode"]').val()){
+        $('#change-billing-form input[name="postcode"]').focus();
+      }
+      else {
         $('#change-billing-form').submit()
+      }
     })
         $(document).on('change', '#id_email',function(){
           $('#change-mail').attr('name', 'change_email')
