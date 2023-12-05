@@ -122,7 +122,7 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
 
     class Meta(payment_forms.BillingAddressForm):
         model = UserAddress
-        exclude = ('search_text', 'user', 'num_orders', 'hash', 'is_default_for_billing', 'is_default_for_shipping')
+        exclude = ('search_text', 'user', 'num_orders', 'hash', 'is_default_for_billing', 'is_default_for_shipping', 'num_orders_as_shipping_address', 'num_orders_as_billing_address')
 
     def __init__(self, shipping_address, user, data=None, *args, **kwargs):
         # Store a reference to the shipping address

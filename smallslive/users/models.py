@@ -135,11 +135,15 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         :return: bool: Wether is was updated or not.
         """
         try:
-            customer = self.customer.stripe_customer
-            for (key, value) in kwargs.items():
-                customer[key] = value
-            customer.save()
-            return True
+            customer = None
+            if self.djstripe_customers.all():
+                customer = self.djstripe_customers.all()[0]
+            if customer:
+                for (key, value) in kwargs.items():
+                    # customer[key] = value
+                    setattr(customer, key, value)
+                customer.save()
+                return True
         except (Customer.DoesNotExist, InvalidRequestError):
             return False
 

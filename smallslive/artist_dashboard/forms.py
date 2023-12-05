@@ -62,6 +62,16 @@ class ArtistGigPlayedEditLazyInlineFormSet(ArtistGigPlayedAddInlineFormSet):
 
     factory_kwargs = {'can_delete': True}
 
+    def construct_formset(self):
+        # don't automatically show extra rows if there are artists already playing
+        if self.object.performers.count() > 0:
+            self.factory_kwargs['extra'] = 0
+
+        formset = super(ArtistGigPlayedEditLazyInlineFormSet, self).construct_formset()
+        for num, form in enumerate(formset):
+            form.fields['DELETE'].widget = forms.HiddenInput()
+        return formset
+
 
 class EventEditForm(event_forms.EventEditForm):
 
