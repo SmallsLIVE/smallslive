@@ -65,6 +65,8 @@ urlpatterns = [
     url(r'^about-us/$', about_view, name="about-us"),
     url(r'^photo-gallery/$', gallery_view, name="photo-gallery"),
     url(r'^press/$', press_view, name="press"),
+    url(r'^manage_archive', manage_archive, name='manage_archive'),
+    url(r'^events-list', manage_events_list, name='manage_events_list'),
 
     url(r'^newsletters/$', newsletter_list, name="newsletters"),
 
