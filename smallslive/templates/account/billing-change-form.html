@@ -19,6 +19,9 @@
           <input  type="text" class="form-control" name="postcode" id="" value="{{ billing_address.postcode }}" placeholder="Zip code">
     </div>
     <div>
+      <p class="state hidden">{{ billing_address.state }}</p>
+    </div>
+    <div>
         <div class="white-border-select" style="width: 100%;">
               {{ artist_info_form.state }}
               {% for error in artist_info_form.state.errors %}
@@ -60,6 +63,17 @@
         $('#change-billing-form').submit()
       }
     })
+
+    if($('.state').length){
+      var state_value = $('.state').text();
+
+      $("#id_state > option").each(function() {
+        if(this.value == state_value) {
+          this.setAttribute("selected", "selected")
+        }
+      });
+    }
+
         $(document).on('change', '#id_email',function(){
           $('#change-mail').attr('name', 'change_email')
         })
