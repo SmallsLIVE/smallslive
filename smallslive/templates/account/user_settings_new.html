@@ -31,17 +31,20 @@
           <div class="account-settings-info">
               <div class="text5">Name</div>
               <div class="text9 text-grey">{{user.first_name}} {{user.last_name}}</div>
+              <button class="white-border-button edit-profile" data-toggle-tab-target="user-account-form" data-toggle-tab-group="user-account">Edit Basic Info</button>
             </div>
             <div class="account-settings-info">
               <div class="text5">Email</div>
               <div class="text9 text-grey">{{user.email}}</div>
+              <button class="white-border-button edit-email" data-toggle-tab-target="user-account-form" data-toggle-tab-group="user-account">Edit Email</button>
             </div>
             <div class="account-settings-info">
               <div class="text5">Password</div>
               <div class="text9 text-grey">xxxxxxxxxx</div>
+              <button class="white-border-button edit-pass" data-toggle-tab-target="user-account-form" data-toggle-tab-group="user-account">Edit Password</button>
             </div>
-            <button class="white-border-button" data-toggle-tab-target="user-account-form" data-toggle-tab-group="user-account">Edit info</button>
-        </div>
+          
+          </div>
         <div data-toggle-tab="user-account-form" data-toggle-tab-group="user-account" style="display:none">
             {% include 'account/account-change-form.html' %}
         </div>
@@ -234,6 +237,26 @@
 <script>
 
   $(document).ready(function () {
+
+    $(".edit-profile").click(function() {
+      $('#change-email-form .form-group input[name="email"], #change-email-form .form-group input[name="oldpassword"], #change-email-form .form-group input[name="password1"], #change-email-form .form-group input[name="password2"], #change-email-form .email-error, #change-email-form .pass-error').addClass('hidden');
+    });
+
+    $(".edit-email").click(function() {
+      $('#change-email-form .form-group input[name="first_name"], #change-email-form .form-group input[name="last_name"],#change-email-form .form-group input[name="oldpassword"], #change-email-form .form-group input[name="password1"], #change-email-form .form-group input[name="password2"], #change-email-form .pass-error').addClass('hidden');
+    });
+
+    $(".edit-pass").click(function() {
+      $('#change-email-form .form-group input[name="first_name"], #change-email-form .form-group input[name="last_name"],#change-email-form .form-group input[name="email"], #change-email-form .email-error').addClass('hidden');
+    });
+
+    if (($('#oldpassword').parents('.has-error').length) || ($('#password1').parents('.has-error').length) || ($('#password2').parents('.has-error').length)) {
+      $('.edit-pass').trigger('click');
+    }
+
+    if (($('#id_email').parents('.has-error').length)) {
+      $('.edit-email').trigger('click');
+    }
 
     var completeSubpage;
     var notCompleteContainer;

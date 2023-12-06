@@ -14,8 +14,8 @@ from allauth.account.models import EmailConfirmation
 from allauth.account.utils import perform_login
 from allauth.account.views import sensitive_post_parameters_m, _ajax_response
 from artists.models import Artist
+from users.models import SmallsUser
 from .forms import CompleteSignupForm, InviteArtistForm
-
 
 class InviteArtistView(FormView):
     form_class = InviteArtistForm
@@ -35,6 +35,22 @@ class InviteArtistView(FormView):
     def form_valid(self, form):
         response = super(InviteArtistView, self).form_valid(form)
         form.invite_artist(self.request)
+        return response
+
+    def form_invalid(self, form):
+        response = super(InviteArtistView, self).form_invalid(form)
+        try:
+            email = form.data['email']
+            artist = form.artist
+            if email:
+                user = SmallsUser.objects.get(email=email)
+                if user and not user.is_artist:
+                    user.artist = artist
+                    user.save()
+                    messages.success(self.request, "You've successfully assigned " + email + " as an artist.")
+                    return redirect(self.request.META['HTTP_REFERER'])
+        except Exception as e:
+            print(e)
         return response
 
     def get_success_url(self):

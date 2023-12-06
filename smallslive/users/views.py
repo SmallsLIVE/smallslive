@@ -165,7 +165,7 @@ def user_settings_view_new(request):
         if edit_profile_form.is_valid():
             edit_profile_form.save(request)
             messages.success(
-                request, "You've successfully updated your profile.")
+                request, "You've successfully updated your basic info.")
             profile_updated = True
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -193,7 +193,7 @@ def user_settings_view_new(request):
         if change_email_form.is_valid():
             change_email_form.save(request)
             messages.success(
-                request, 'Your email address has been changed successfully.')
+                request, 'Your email address has been changed successfully. Please check your email.')
             profile_updated = True
     else:
         change_email_form = ChangeEmailForm(user=request.user)
