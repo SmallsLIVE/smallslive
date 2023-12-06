@@ -61,7 +61,6 @@ urlpatterns = [
     url(r'^events/', include('events.urls')),
     url(r'^search/', include('search.urls')),
     url(r'^static_page/(?P<template_name>[A-Za-z_-]*)/$', StaticPageView.as_view(), name="static_page"),
-    path('admin/', admin.site.urls),
     url(r'^about-us/$', about_view, name="about-us"),
     url(r'^photo-gallery/$', gallery_view, name="photo-gallery"),
     url(r'^press/$', press_view, name="press"),
@@ -111,6 +110,11 @@ urlpatterns = [
     url(r'^event_counts/', event_counts, name='event_counts'),
     url(r'^artist_counts/', artist_counts, name='artist_counts'),
 ]
+
+if settings.ADMIN_ENABLED:
+    urlpatterns += [
+        path('admin/', admin.site.urls),
+    ]
 
 urlpatterns += [
     url(r'^terms-and-conditions/$', flatpage, {'url': '/terms-and-conditions/'}, name='terms-and-conditions'),
