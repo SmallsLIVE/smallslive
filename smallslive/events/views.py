@@ -496,7 +496,11 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
         if nav_param == 'manage-archive':
             return redirect('manage_archive')
         elif nav_param == 'calendar':
-            return redirect('home')
+            if settings.SITE_ID == 1:
+                return redirect('home')
+            elif settings.SITE_ID == 2:
+                return redirect('schedule')
+            
         elif nav_param == 'event_list':
             return redirect('manage_events_list')
         return response
@@ -667,6 +671,12 @@ def annotate_events(events):
 class GenericScheduleView(TemplateView, UpcomingSearchView, CurrentSiteIdMixin):
     context_object_name = 'dates'
     template_name = 'events/new_schedule.html'
+
+    def get(self, request):
+        if settings.SITE_ID == 2:
+            if not self.request.user.is_staff:
+                return HttpResponseRedirect(reverse('home'))
+        return super(GenericScheduleView, self).get(self, request)
 
     def get_context_data(self, **kwargs):
         context = super(GenericScheduleView, self).get_context_data(**kwargs)

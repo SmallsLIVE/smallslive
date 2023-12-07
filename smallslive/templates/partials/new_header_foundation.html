@@ -17,6 +17,9 @@
     </div>
 
     <div class="button-row">
+      {% if user.is_admin or user.is_staff %}
+        {% include 'partials/header_button.html' with button_url='schedule' button_text='Calendar' %}
+      {% endif %}
       {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
       {% include 'partials/header_button.html' with button_url='about' button_text='About' %}
       {% include 'partials/header_button.html' with button_url='catalog' button_text='Catalog' %}
@@ -145,6 +148,9 @@
       </div>
     </div>
     <div class="flex-column text2">
+      {% if user.is_admin or user.is_staff %}
+        {% include 'partials/header_button.html' with button_url='schedule' button_text='Calendar' %}
+      {% endif %}
       {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
       {% include 'partials/header_button.html' with button_url='about' button_text='About' %}
       {% include 'partials/header_button.html' with button_url='catalog' button_text='Catalog' %}
