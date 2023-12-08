@@ -524,10 +524,10 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         payment_method = request.POST.get('payment_method')
         if basket.has_tickets():
             return self.handle_payment_details_submission_for_tickets(
-                billing_address_form, payment_method)
+                billing_address_form, payment_method, **{'ajax': 0}) #kwargs used to prevent ajax requests
         else:
             return self.handle_payment_details_submission_for_basket(
-                shipping_address, billing_address_form, payment_method)
+                shipping_address, billing_address_form, payment_method, **{'ajax': 0}) #kwargs used to prevent ajax requests
 
     def handle_billing_address(self, shipping_address, user):
         if user.is_authenticated:
@@ -551,7 +551,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
     def handle_payment_details_submission_for_tickets(self,
                                                       billing_address_form,
-                                                      payment_method):
+                                                      payment_method, **kwargs):
         """Customer can pay for Mezzrow or Smalls tickets with PayPal or Credit Card."""
 
         self.event = self.request.basket.get_tickets_event()
@@ -586,7 +586,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                                            payment_method=payment_method,
                                            reservation_string=reservation_string)
             else:
-                if self.request.is_ajax:
+                if self.request.is_ajax and kwargs.get('ajax') != 0:
                     error_message = "<br>".join(["* {} * {}".format(field.replace('_', ' ').title(), errors[0]) for field, errors in form.errors.items()])
                     return http.JsonResponse({'success': False, 'message': error_message})
                 else:
@@ -595,7 +595,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                                                        reservation_string=reservation_string)
 
     def handle_payment_details_submission_for_basket(
-            self, shipping_address, billing_address_form, payment_method):
+            self, shipping_address, billing_address_form, payment_method, **kwargs):
 
         stripe_api_key = self.get_stripe_payment_credentials()[2]
         form = PaymentForm(self.request.user, stripe_api_key, self.request.POST)
@@ -629,7 +629,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                                            billing_address_form=billing_address_form,
                                            reservation_string=reservation_string)
             else:
-                if self.request.is_ajax:
+                if self.request.is_ajax and kwargs.get('ajax') != 0:
                     error_message = "<br>".join(
                         ["* {} * {}".format(field.replace('_', ' ').title(), errors[0]) for field, errors in
                          form.errors.items()])
@@ -791,6 +791,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             error_msg = error_msg.format(msg)
             print('******************')
             print('UnableToTakePayment: ')
+            error_msg = "An unrecoverable error occured when processing payment. Error details : "+ str(e.user_message)
             print(error_msg)
             logger.warning(
                 "Order #%s: unable to take payment (%s) - restoring basket",
@@ -800,6 +801,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             # We assume that the details submitted on the payment details view
             # were invalid (eg expired bankcard).
             if self.request.is_ajax():
+                print('here three')
                 return http.JsonResponse({'error': error_msg})
             else:
                 return self.render_payment_details(
@@ -820,9 +822,11 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             error_msg = error_msg.format(msg)
             print('******************')
             print('PaymentError: ')
+            error_msg = "An unrecoverable error occured when processing payment. Error details : "+ str(e.user_message)
             print(error_msg)
 
             if self.request.is_ajax():
+                print('here two')
                 return http.JsonResponse({'error': error_msg})
             else:
                 return self.render_payment_details(
@@ -842,12 +846,16 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             self.restore_frozen_basket()
             error_msg = str(e).format("")
             print('******************')
+            error_msg = "An unrecoverable error occured when processing payment. Error details : "+ str(e.user_message)
             print(error_msg)
 
             if self.request.is_ajax():
+                print('here one')
                 return http.JsonResponse({'error': error_msg})
             else:
-                return self.render_preview(
+                # return self.render_preview(
+                #     self.request, error=error_msg, **payment_kwargs)
+                return self.render_payment_details(
                     self.request, error=error_msg, **payment_kwargs)
 
         signals.post_payment.send_robust(sender=self, view=self)
