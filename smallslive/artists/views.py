@@ -1,17 +1,19 @@
 from django.conf import settings
 from django.urls import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.detail import DetailView
 from braces.views import StaffuserRequiredMixin
 from django_filters.views import FilterView
 from haystack.query import RelatedSearchQuerySet
 from haystack.views import SearchView
+from django.views.generic import View
 
 from search.utils import facets_by_model_name
 from .forms import ArtistAddForm, ArtistSearchForm
 from .filters import ArtistFilter
 from .models import Artist, Instrument
+import csv
 
 
 class ArtistAddView(StaffuserRequiredMixin, CreateView):
@@ -185,3 +187,42 @@ def artist_instrument_ajax(request, pk):
     instrument = Artist.objects.get(pk=pk).instruments.first()
     instrument_id = getattr(instrument, 'id', "")
     return HttpResponse(instrument_id)
+
+
+class ArtistListCsvView(StaffuserRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        # Create a response with CSV content
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="artist_list.csv"'
+
+        # Create a CSV writer and write the header
+        csv_writer = csv.writer(response)
+        csv_writer.writerow([
+            'ID',
+            'Last Name',
+            'First Name',
+            'Shows'
+        ])
+
+        # Queryset
+        artists = Artist.objects.extra({'events_count': 'SELECT COUNT(*) FROM events_gigplayed WHERE events_gigplayed.artist_id = artists_artist.id'}).select_related('user').prefetch_related('instruments', 'events')
+
+        duplicate_artist = []
+        seen = set()
+        for artist in artists:
+            name = artist.last_name + " " + artist.first_name
+            csv_writer.writerow([
+                artist.id,
+                artist.last_name,
+                artist.first_name,
+                artist.events_count
+            ])
+            if name not in seen:
+                seen.add(name)
+            else:
+                duplicate_artist.append(name)
+
+        return response
+
+
+download_artist_list_csv = ArtistListCsvView.as_view()

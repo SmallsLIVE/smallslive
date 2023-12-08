@@ -26683,66 +26683,93 @@ label[for="photo-clear_id"] {
     color: black;
     margin-bottom: 10px; }
 
-.artists-list__filters, .artists-list__search {
+.artists-list__filters,
+.artists-list__search {
   background-color: #f2f2f2;
   padding: 20px;
   border-top: 1px solid #ddd;
   color: #999; }
-  .artists-list__filters:last-child, .artists-list__search:last-child {
+  .artists-list__filters:last-child,
+  .artists-list__search:last-child {
     border-bottom: 1px solid #ddd; }
-  .artists-list__filters__heading, .artists-list__search__heading {
+  .artists-list__filters__heading,
+  .artists-list__search__heading {
     font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
     font-weight: 400;
     font-size: 14px;
     margin-right: 10px; }
-  .artists-list__filters .search, .artists-list__search .search {
+  .artists-list__filters .search,
+  .artists-list__search .search {
     margin: 0;
     width: 50%;
     padding: 6px 12px;
     line-height: 23px;
     display: inline-block; }
-  .artists-list__filters input[type="submit"], .artists-list__search input[type="submit"] {
+  .artists-list__filters input[type="submit"],
+  .artists-list__search input[type="submit"] {
     font-size: 14px;
     padding: 8px 20px;
     color: #fff;
     background-color: #d21535; }
-  .artists-list__filters ul, .artists-list__search ul {
+  .artists-list__filters ul,
+  .artists-list__search ul {
     padding: 0;
     margin: 0; }
-    .artists-list__filters ul li, .artists-list__search ul li {
+    .artists-list__filters ul li,
+    .artists-list__search ul li {
       padding-left: 0;
       list-style: none;
       padding: 5px 20px;
       border-right: 1px solid #ddd;
       display: inline-block; }
-      .artists-list__filters ul li:first-child, .artists-list__search ul li:first-child {
+      .artists-list__filters ul li:first-child,
+      .artists-list__search ul li:first-child {
         padding-left: 0; }
-      .artists-list__filters ul li:last-child, .artists-list__search ul li:last-child {
+      .artists-list__filters ul li:last-child,
+      .artists-list__search ul li:last-child {
         padding-right: 0;
         border-right: 0; }
-  .artists-list__filters__heading, .artists-list__search__heading {
+  .artists-list__filters__heading,
+  .artists-list__search__heading {
     font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
     font-weight: 400;
     color: #999;
     font-size: 18px; }
-  .artists-list__filters__group, .artists-list__search__group {
+  .artists-list__filters__group,
+  .artists-list__search__group {
     font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
     font-weight: 700;
     font-size: 12px; }
-    .artists-list__filters__group span, .artists-list__search__group span {
+    .artists-list__filters__group span,
+    .artists-list__search__group span {
       display: inline-block;
       margin-right: 10px; }
-    .artists-list__filters__group select, .artists-list__search__group select {
+    .artists-list__filters__group select,
+    .artists-list__search__group select {
       display: inline-block;
       width: auto;
       padding: 4px; }
-      .artists-list__filters__group select .disabled, .artists-list__search__group select .disabled {
+      .artists-list__filters__group select .disabled,
+      .artists-list__search__group select .disabled {
         color: #cccccc; }
-    .artists-list__filters__group input[type="submit"], .artists-list__search__group input[type="submit"] {
+    .artists-list__filters__group input[type="submit"],
+    .artists-list__search__group input[type="submit"] {
       font-size: 12px;
       padding: 6px 14px;
       color: #fff;
       background-color: #d21535; }
+
+.artists-list__search {
+  display: flex;
+  gap: 30px;
+  justify-content: space-between; }
+  .artists-list__search > form {
+    flex-basis: calc(100% - 220px); }
+  .artists-list__search > a:active, .artists-list__search > a:focus {
+    color: inherit;
+    text-decoration: none;
+    box-shadow: none;
+    outline: none; }
 
 .artists-list__list {
   font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;

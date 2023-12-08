@@ -19,6 +19,7 @@
                 {{ filter.form.name }}
                 <input type="submit" value="Search">
             </form>
+            <a href="{% url 'download_artist_list_csv' %}" class="button white-border-button" download>Download as CSV</a>
         </section>
         <section class="artists-list__filters">
             <form method="get" action="{% url "artist_list" %}" id="artist-form">

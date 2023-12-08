@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^add/$', artist_add, name='artist_add'),
     url(r'^emails$', artist_list_emails, name='artist_list_emails'),
     url(r'^$', artist_list, name='artist_list'),
+    url(r'^download-artist-csv/$', download_artist_list_csv, name='download_artist_list_csv')
 ]
