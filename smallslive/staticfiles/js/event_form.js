@@ -236,7 +236,7 @@ EventForm = {
 
     //Remove original id and ensure is shown
     $firstClone.find('input[id$="id"]').val("");
-    $firstClone.show();
+    $firstClone.attr('style','display: table-row');
 
     var total = 0;
     $setsTable.find("tbody tr").each(function() {
@@ -408,6 +408,12 @@ EventForm = {
         $(".btn.btn-success.slot[data-venue~=" + venue + "]").show();
       }
     });
+
+    // Showing set time button for edit events
+    init_venue = $("#div_id_venue .selectize-control .selectize-input .item").text();
+    if(init_venue.length) {
+      $(".btn.btn-success.slot[data-venue~=" + init_venue + "]").show();
+    }
   },
   init: function(datepicker, callback) {
     if (datepicker) {

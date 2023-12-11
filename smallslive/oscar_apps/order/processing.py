@@ -31,6 +31,11 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
                     reference, order)
 
             lines = order.stock_lines()
+            # Change line status (which are  completed) to Cancelled too
+            for line in lines:
+                if line.status == 'Completed':
+                    line.status = new_status
+                    line.save()
             line_quantities = lines.values_list('quantity', flat=True)
             refund_event_type, _ = PaymentEventType.objects.get_or_create(name="Refunded")
             self.handle_payment_event(order, refund_event_type,

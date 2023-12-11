@@ -26512,7 +26512,7 @@ label[for="photo-clear_id"] {
       .admin-interface #div_id_state label.txt-hidden {
         color: #888; }
   .admin-interface .event-set-list-form table tbody tr {
-    display: table-row !important; }
+    display: table-row; }
 
 .bootstrap-datetimepicker-widget {
   min-width: 300px; }
