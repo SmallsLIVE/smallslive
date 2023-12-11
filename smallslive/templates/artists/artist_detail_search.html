@@ -36,9 +36,13 @@
     <div class="artist-search-profile__header">
       <div class="artist-search-profile-image">
         {% if artist.photo %}
+          {% if artist.photo_crop_box != 'NaN' %}
             {% include 'partials/search_artist_profile_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
+          {% endif %}
         {% else %}
+          {% if artist.photo_crop_box != 'NaN' %}
             {% include 'partials/search_artist_profile_picture.html' with photo_url="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" crop_box=artist.photo_crop_box %}
+          {% endif %}
         {% endif %}
       </div>
       <div class="flex-column white-line-right">

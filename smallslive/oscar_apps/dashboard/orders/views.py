@@ -116,7 +116,7 @@ class TicketExchangeView(SingleObjectMixin, BaseFormView):
         return reverse('dashboard:order-detail', kwargs={'number': self.object.number})
 
     def _get_new_ticket(self, old_line, new_ticket):
-        old_sku = old_line.stockrecord
+        old_sku = old_line.product.stockrecords.first()
         sku = new_ticket.stockrecords.first()
         new_line = old_line
         new_line.id = None

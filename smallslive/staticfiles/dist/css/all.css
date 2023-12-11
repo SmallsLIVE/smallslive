@@ -16860,8 +16860,7 @@ body.home {
   @media (max-width: 960px) {
     body.home {
       width: calc(100vw);
-      overflow-x: hidden;
-      overflow-y: scroll; } }
+      overflow: hidden; } }
 
 body.no-scroll {
   overflow: hidden; }
