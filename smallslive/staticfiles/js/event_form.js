@@ -39,10 +39,16 @@ EventForm = {
       create: false
     });
     newElement.find(".artist_remove").on("click", function() {
-      $(this)
+      if(($(this).parents("tbody").find('tr').length > 1) && (!$(this)
+      .parents("tr").is(':first-child'))) {
+        $(this)
         .parents("tr")
         .remove();
-      return false;
+      }
+      else {
+        alert("Can't remove the first one.");
+        return false;
+      }
     });
 
     return newElement;
