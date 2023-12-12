@@ -58,7 +58,7 @@
                     {{ event.venue }}
                 </div>
                 <div class="hidden-xs hidden-sm col-md-2">
-                  {{ event.date }}
+                  {{ event.date|date:"D, M d, Y" }}
                 </div>
                 <div class="col-xs-2 col-sm-2 col-md-2">
                   {% if event.sets.count > 1 %}
