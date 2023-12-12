@@ -108,6 +108,8 @@ class EventSetInlineFormset(InlineFormSet):
     def construct_formset(self):
         if self.object and self.object.sets.count() > 0:
            self.factory_kwargs['extra'] = 0
+        else:
+            self.factory_kwargs['extra'] = 1
 
         formset = super(EventSetInlineFormset, self).construct_formset()
         for num, form in enumerate(formset):
