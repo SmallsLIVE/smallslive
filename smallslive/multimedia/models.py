@@ -87,7 +87,7 @@ class MediaFile(models.Model):
             else:
                 storage = VideoS3Storage(bucket=self.video_bucket_name)
             try:
-                return storage.url(self.file.name.encode('utf-8'), response_headers=response_headers)
+                return storage.url(self.file.name, response_headers=response_headers)
             except:
                 return ''
 
@@ -116,7 +116,7 @@ class MediaFile(models.Model):
                 storage = VideoS3Storage(bucket=self.video_bucket_name)
 
             try:
-                return storage.url(self.sd_video_file.name.encode('utf-8'), response_headers=response_headers)
+                return storage.url(self.sd_video_file.name, response_headers=response_headers)
             except:
                 return ''
         return self.sd_video_file.url
