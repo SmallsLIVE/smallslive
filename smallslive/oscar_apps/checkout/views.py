@@ -29,6 +29,12 @@ from django.views import generic
 from django.utils.translation import gettext as _
 from utils.utils import send_order_confirmation_email
 
+from django.db import transaction
+import threading
+
+# Create a global lock
+processing_lock = threading.Lock()
+
 
 OrderTotalCalculator = get_class(
     'checkout.calculators', 'OrderTotalCalculator')
@@ -485,11 +491,11 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         else:
             return None
 
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         """
         Take order submission.
         """
-
         # Posting to payment-details isn't the right thing to do.  Form
         # submissions should use the preview URL.
         if not self.preview:
@@ -505,9 +511,43 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         # payment form is being submitted from the payment details view. In
         # this case, the form needs validating and the order preview shown.
         if request.POST.get('action', '') == 'place_order':
-            self.card_token = self.request.POST.get('card_token')
-            print('Place order')
-            return self.handle_place_order_submission(request)
+            with processing_lock:
+                import time
+                time.sleep(1)
+
+                product_title = None
+                quantity = None
+                in_stock = None
+                custom_message = []
+
+                for line in request.basket.all_lines():
+                    product_title = line.product.get_title()
+                    quantity = line.quantity
+                    if line.product.stockrecords.all():
+                        in_stock = line.product.stockrecords.all()[0].net_stock_level
+
+                if quantity <= in_stock:
+                    self.card_token = self.request.POST.get('card_token')
+                    print('Place order')
+                    return self.handle_place_order_submission(request)
+                else:
+                    msg = _(
+                        "'%(title)s' is no longer available to buy (%(reason)s). "
+                        "Please adjust your basket to continue"
+                    ) % {
+                              'title': product_title,
+                              'reason': quantity}
+                    custom_message.append(msg)
+
+                    try:
+                        self.check_pre_conditions(request)
+                    except FailedPreCondition as e:
+                        custom_url = '/subscriptions/tickets/?flow_type=ticket_support'
+                        messages.warning(request, custom_message)
+                        if request.is_ajax():
+                            return http.JsonResponse({'url': custom_url})
+                        else:
+                            return http.HttpResponseRedirect(custom_url)
 
         return self.handle_payment_details_submission(request)
 
