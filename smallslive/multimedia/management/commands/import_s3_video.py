@@ -1,6 +1,7 @@
 import boto
 import datetime
 import logging
+import functools
 from optparse import make_option
 import os
 from django.conf import settings
@@ -15,29 +16,59 @@ logger = logging.getLogger('cron')
 class Command(BaseCommand):
     help = 'Imports the newly added video files from S3 and assigns them to correct events'
 
-    option_list = BaseCommand.option_list + (
-        make_option('--bucket-name',
-                    action='store',
-                    dest='bucket_name',
-                    default='smallslivevid',
-                    help='Bucket name'),
-        make_option('--venue-name',
-                    action='store',
-                    dest='venue_name',
-                    default='Smalls',
-                    help='Venue name'),
-        make_option('--full',
-                    action='store_true',
-                    dest='full',
-                    default=False,
-                    help='Import full recordings'),
-        make_option('--different-source',
-                    action='store_true',
-                    dest='different_source',
-                    default=False,
-                    help='Import recording from different event ids'),
+    # option_list = BaseCommand.option_list + (
+    #     make_option('--bucket-name',
+    #                 action='store',
+    #                 dest='bucket_name',
+    #                 default='smallslivevid',
+    #                 help='Bucket name'),
+    #     make_option('--venue-name',
+    #                 action='store',
+    #                 dest='venue_name',
+    #                 default='Smalls',
+    #                 help='Venue name'),
+    #     make_option('--full',
+    #                 action='store_true',
+    #                 dest='full',
+    #                 default=False,
+    #                 help='Import full recordings'),
+    #     make_option('--different-source',
+    #                 action='store_true',
+    #                 dest='different_source',
+    #                 default=False,
+    #                 help='Import recording from different event ids'),
+    #
+    # )
+    def add_arguments(self, parser):
 
-    )
+        # Named (optional) arguments
+        parser.add_argument(
+            '--bucket-name',
+            action='store',
+            dest='bucket_name',
+            default='smallslivevid',
+            help='Bucket name'
+        )
+        parser.add_argument(
+            '--venue-name',
+            action='store',
+            dest='venue_name',
+            default='Smalls',
+            help='Venue name'),
+        parser.add_argument(
+            '--full',
+            action='store_true',
+            dest='full',
+            default=False,
+            help='Import full recordings'),
+        parser.add_argument(
+            '--different-source',
+            action='store_true',
+            dest='different_source',
+            default=False,
+            help='Import recording from different event ids'
+        ),
+
 
     def handle(self, *args, **options):
 
@@ -50,9 +81,9 @@ class Command(BaseCommand):
         now = timezone.now()
         # heroku scheduler launches the task every day, we make sure it only really does the import
         # twice a week
-        if not full and env == "heroku" and now.weekday() in (0, 1, 3, 4, 5):
-            logger.info('Today is not importing day')
-            return
+        # if not full and env == "heroku" and now.weekday() in (0, 1, 3, 4, 5):
+        #     logger.info('Today is not importing day')
+        #     return
 
         conn = boto.connect_s3(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
@@ -87,7 +118,7 @@ class Command(BaseCommand):
                 event_id = event.id
 
             # Retrieve sets in the right order
-            event_sets = sorted(list(event.sets.all()), Event.sets_order)
+            event_sets = sorted(list(event.sets.all()), key=functools.cmp_to_key(Event.sets_order))
             print(event_sets)
 
             for set_num in range(1, 7):
