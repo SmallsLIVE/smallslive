@@ -87,11 +87,11 @@ class Command(BaseCommand):
             else:
                 event_id = event.id
 
-            print '(Count, id, original): ', count, event.id, event_id
+            print('(Count - {0}, id - {1}, original - {2}): '.format(count, event.id, event_id))
 
             # Retrieve sets in the right order
             event_sets = sorted(list(event.sets.all()), Event.sets_order)
-            print event_sets
+            print(event_sets)
 
             for set_num in range(1, 7):
                 no_zero_padded = '{0.year}-{0.month}-{0.day}/{1}-{2}.mp3'.format(
@@ -132,12 +132,11 @@ class Command(BaseCommand):
                                 event_set = event_sets[set_num - 1]
                                 event_set.audio_recording = recording
                                 event_set.save()
-                                print 'Saved: ', event_set
+                                print('Saved: {0}'.format(event_set))
 
                         else:
                             recording.media_file.file = filename
                             recording.media_file.size = key.size
                             recording.media_file.save()
-
 
         logger.info("{0} new files imported".format(new_files_imported))

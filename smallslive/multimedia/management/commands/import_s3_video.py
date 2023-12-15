@@ -78,7 +78,7 @@ class Command(BaseCommand):
 
         count = Event.objects.filter(**filter_cond).count()
         for event in Event.objects.filter(**filter_cond).order_by('start'):
-            print count
+            print(count)
             count -= 1
 
             if different_source:
@@ -88,14 +88,14 @@ class Command(BaseCommand):
 
             # Retrieve sets in the right order
             event_sets = sorted(list(event.sets.all()), Event.sets_order)
-            print event_sets
+            print(event_sets)
 
             for set_num in range(1, 7):
                 filename = '{0.year}-{0.month:02}-{0.day:02}/360p/{1}-{2}_360p.mp4'.format(
                     event.listing_date(), event_id, set_num)
                 key = self.bucket.get_key(filename)
                 if key:
-                    print "importing {0}".format(filename)
+                    print("importing {0}".format(filename))
                     try:
                         recording = Recording.objects.get(event_id=event.id,
                                                           set_number=set_num,
@@ -108,7 +108,7 @@ class Command(BaseCommand):
                                                                               media_type='video',
                                                                               sd_video_file=filename,
                                                                               size=key.size)
-                        print 'Created: ', created
+                        print('Created: {0}'.format(created))
                         recording.media_file = media_file
                         recording.save()
 
@@ -118,6 +118,6 @@ class Command(BaseCommand):
                         event_set = event_sets[set_num - 1]
                         event_set.video_recording = recording
                         event_set.save()
-                        print 'Saved: ', event_set
+                        print('Saved: {0}'.format(event_set))
 
         self.stdout.write("{0} new files imported".format(self.files_imported))

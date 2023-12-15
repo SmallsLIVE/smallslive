@@ -10,7 +10,72 @@ from events.models import Event, EventSet
 from multimedia.models import MediaFile
 from oscar_apps.catalogue.models import Product, ProductClass, ArtistProduct
 from oscar_apps.partner.models import StockRecord, Partner
+from oscar.forms.widgets import DateTimePickerInput, ImageInput
+from oscar.core.loading import get_class, get_model, get_classes
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from oscar.core.thumbnails import get_thumbnailer
 
+
+ProductImage = get_model('catalogue', 'ProductImage')
+
+class ProductImageInput(ImageInput):
+    """
+    Widget providing a input element for file uploads based on the
+    Django ``FileInput`` element. It hides the actual browser-specific
+    input element and shows the available image for images that have
+    been previously uploaded. Selecting the image will open the file
+    dialog and allow for selecting a new or replacing image file.
+    """
+
+    def __init__(self, attrs=None):
+        if not attrs:
+            attrs = {}
+        attrs['accept'] = 'image/*'
+        super().__init__(attrs=attrs)
+
+    def get_context(self, name, value, attrs):
+        ctx = super().get_context(name, value, attrs)
+
+        ctx['image_url'] = ''
+        if value and not isinstance(value, InMemoryUploadedFile):
+            # can't display images that aren't stored - pass empty string to context
+            # This is a pure bloody hack!!
+            try:
+                # Just try to make thumbnail, if not let them go with default/null image
+                thumbnailer = get_thumbnailer()
+                options = {'size': '200x200', 'upscale': False}
+                thumbnail = thumbnailer.generate_thumbnail(value, **options)
+                ctx['image_url'] = value
+            except Exception as e:
+                ctx['image_url'] = ''
+
+        ctx['image_id'] = "%s-image" % ctx['widget']['attrs']['id']
+        return ctx
+
+class ProductImageForm(forms.ModelForm):
+
+    class Meta:
+        model = ProductImage
+        fields = ['product', 'original', 'caption', 'display_order']
+        # use ImageInput widget to create HTML displaying the
+        # actual uploaded image and providing the upload dialog
+        # when clicking on the actual image.
+        widgets = {
+            'original': ProductImageInput(),
+            'display_order': forms.HiddenInput(),
+        }
+
+    def __init__(self, data=None, *args, **kwargs):
+        self.prefix = kwargs.get('prefix', None)
+        instance = kwargs.get('instance', None)
+        if not instance:
+            initial = {'display_order': self.get_display_order()}
+            initial.update(kwargs.get('initial', {}))
+            kwargs['initial'] = initial
+        super().__init__(data, *args, **kwargs)
+
+    def get_display_order(self):
+        return int(self.prefix.split('-').pop())
 
 class ProductForm(oscar_forms.ProductForm):
 
