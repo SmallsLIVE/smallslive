@@ -81,9 +81,9 @@ class Command(BaseCommand):
         now = timezone.now()
         # heroku scheduler launches the task every day, we make sure it only really does the import
         # twice a week
-        # if not full and env == "heroku" and now.weekday() in (0, 1, 3, 4, 5):
-        #     logger.info('Today is not importing day')
-        #     return
+        if not full and env == "heroku" and now.weekday() in (0, 1, 3, 4, 5):
+            logger.info('Today is not importing day')
+            return
 
         conn = boto.connect_s3(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
