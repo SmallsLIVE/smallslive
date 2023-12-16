@@ -133,13 +133,13 @@
         <div class="account-settings-info ">
           <div class="text5">Expiration of archive access</div>
           {% if subscription.plan and not cancelled %}
-            <div class="text9 text-grey">There is no expiration date until the pledge is cancelled</div>
+            <div class="text9 text-grey">1. There is no expiration date until the pledge is cancelled</div>
           {% elif user_archive_access_until %}
-            <div class="text9 text-grey"> {{ user_archive_access_until|date:"d/m/Y" }}</div>
+            <div class="text9 text-grey">2. {{ user_archive_access_until|date:"d/m/Y" }}</div>
           {% elif subscription.plan and not period_end.due  %}
-            <div class="text9 text-grey">{{ user_archive_access_until|date:"d/m/Y" }}</div>
+            <div class="text9 text-grey">3.{{ user_archive_access_until|date:"d/m/Y" }}</div>
           {% else %}
-            <div class="text9 text-grey">There is no access to the archive</div>
+            <div class="text9 text-grey">4.There is no access to the archive</div>
           {% endif %}
 
         </div>
