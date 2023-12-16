@@ -46,7 +46,7 @@ class PaymentForm(forms.Form):
         self.user = user
         if user.is_authenticated:
             try:
-                customer = Customer.objects.get(subscriber=user)
+                customer = Customer.objects.filter(subscriber=user).first()
                 if customer and customer.can_charge():
                     self.fields['payment_method'].choices.insert(1, ('existing-credit-card', 'existing-credit-card'))
                     self.fields['payment_method'].initial = 'existing-credit-card'
