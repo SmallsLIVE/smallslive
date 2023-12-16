@@ -405,6 +405,7 @@ class EventDetailView(DetailView):
             # else:
             #     return ['events/_event_details_upcoming.html']
         elif event.is_past:
+            print('yes this is a past event ....................')
             return ['events/_event_details_past.html']
         if event.is_future or not event.streamable:
             return ['events/_event_details_upcoming.html']
