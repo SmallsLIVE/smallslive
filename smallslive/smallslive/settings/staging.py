@@ -101,7 +101,6 @@ INSTALLED_APPS += (
 ENABLE_HIJACK = env_var('ENABLE_HIJACK')
 if ENABLE_HIJACK:
     INSTALLED_APPS += (
-        'hijack',
         'compat',
     )
 
