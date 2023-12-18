@@ -201,6 +201,8 @@ class Donation(models.Model):
 
         if last_donation:
             last_expiry_date = last_donation
+            if last_expiry_date < datetime.date.today():
+                last_expiry_date = datetime.date.today()
         else:
             last_expiry_date = datetime.date.today()
 
