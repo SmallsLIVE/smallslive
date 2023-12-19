@@ -412,6 +412,7 @@ EventForm = {
         ).text();
         $(".btn.btn-success.slot").hide();
         $(".btn.btn-success.slot[data-venue~=" + venue + "]").show();
+        copyImageToAnotherBucket(venue);
       }
     });
 
@@ -450,3 +451,25 @@ EventForm = {
     $('#id_start, #id_end').val(datetime);
   }
 };
+
+
+function copyImageToAnotherBucket(venue) {
+  var postData = {
+    venue: venue,
+    image_url: $('.s3-photo-url').text(),
+    csrfmiddlewaretoken: $('[name=csrfmiddlewaretoken]').val()
+  };
+
+  $.ajax({
+    type: 'POST',
+    url: '/events/copy_s3_image_to_another_bucket/',
+    data: postData,
+    success: function (response) {
+      // Image Uploaded from URL to S3 Bucket.
+      console.log('Success response:', response);
+    },
+    error: function (error) {
+      console.error('Error:', error);
+    }
+  });
+}

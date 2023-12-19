@@ -9,6 +9,7 @@
       <h1 class="admin-interface__main-title">Add/Edit gig:</h1>
       <form method="post"  class="admin-interface__form" enctype="multipart/form-data">
         {% crispy form %}
+        <div class="s3-photo-url hidden">{{ event.get_photo_url }}</div>
         {% if event.get_tickets %}
           <div class="event-product-info">
             <strong class="title1">Tickets:</strong>

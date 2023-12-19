@@ -32,4 +32,5 @@ urlpatterns = [
 
     # maintenance
     url(r'^maintenance/$', maintenance_view, name='maintenance_view'),
+    url(r'^copy_s3_image_to_another_bucket', copy_s3_image_to_another_bucket, name='copy_s3_image_to_another_bucket'),
 ]

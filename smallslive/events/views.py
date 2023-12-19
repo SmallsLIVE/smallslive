@@ -21,6 +21,7 @@ from django.utils.text import slugify
 from django.utils.timezone import timedelta
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.generic import DeleteView, TemplateView, View
+
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, FormView
@@ -54,6 +55,12 @@ from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     VenueAddForm
 from .models import Event, Venue, ShowDefaultTime, RANGE_MONTH
 from events.mixins import CurrentSiteIdMixin
+
+# Importing following libraries for uploading files to s3 bucket from url
+import requests
+import boto3
+from botocore.exceptions import NoCredentialsError, ClientError
+from io import BytesIO
 
 RANGE_YEAR = 'year'
 RANGE_MONTH = 'month'
@@ -405,7 +412,6 @@ class EventDetailView(DetailView):
             # else:
             #     return ['events/_event_details_upcoming.html']
         elif event.is_past:
-            print('yes this is a past event ....................')
             return ['events/_event_details_past.html']
         if event.is_future or not event.streamable:
             return ['events/_event_details_upcoming.html']
@@ -1144,3 +1150,61 @@ class MaintenanceView(TemplateView):
 
 
 maintenance_view = MaintenanceView.as_view()
+
+
+def copy_s3_image_to_another_bucket(request):
+    """
+        Uploading files from URL to S3 bucket.
+    """
+    if request.method == 'POST':
+        image_url = request.POST['image_url']
+        storage_dir = "event_images"
+        if request.POST['venue'] == 'Mezzrow':
+            destination_bucket_name = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
+            destination_aws_access_key = settings.AWS_ACCESS_KEY_ID_MEZZROW
+            destination_aws_secret_key = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
+        else:
+            destination_bucket_name = settings.AWS_STORAGE_BUCKET_NAME_SMALLS
+            destination_aws_access_key = settings.AWS_ACCESS_KEY_ID_SMALLS
+            destination_aws_secret_key = settings.AWS_SECRET_ACCESS_KEY_SMALLS
+
+        # Extract the object key with directory from the URL
+        object_key = get_s3_object_name_from_url(image_url, storage_dir)
+
+        s3 = boto3.client(
+            's3',
+            aws_access_key_id=destination_aws_access_key,
+            aws_secret_access_key=destination_aws_secret_key
+        )
+
+        try:
+            # Use head_object to check if the file exists
+            s3.head_object(Bucket=destination_bucket_name, Key=object_key)
+            print(f"File '{object_key}' exists in '{destination_bucket_name}'.")
+            return JsonResponse({'data': f"File '{object_key}' exists in '{destination_bucket_name}'."})
+        except NoCredentialsError:
+            print("Credentials not available or not valid.")
+            return JsonResponse({'data': "Credentials not available or not valid."})
+        except ClientError as e:
+            try:
+                # Stream the content from the URL
+                response = requests.get(image_url, stream=True)
+                response.raise_for_status()
+                # Upload the content to S3
+                s3.upload_fileobj(BytesIO(response.content), destination_bucket_name, object_key)
+                print(f"File '{object_key}' uploaded to '{destination_bucket_name}' successfully.")
+                return JsonResponse({'data': f"File '{object_key}' uploaded to '{destination_bucket_name}' successfully."})
+            except NoCredentialsError:
+                print(f"Credentials not available or not valid.")
+                return JsonResponse({'data': f"Credentials not available or not valid."})
+
+
+def get_s3_object_name_from_url(url, storage_dir):
+    try:
+        index = url.index(storage_dir)
+        result = url[index + len(storage_dir):]
+        result = storage_dir+result
+        return result
+    except ValueError:
+        # Handle the case where the target word is not found
+        return None
