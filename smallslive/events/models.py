@@ -429,8 +429,10 @@ class Event(TimeStampedModel):
 
         start_hour = timezone.localtime(self.start).hour
 
-        if start_hour <= 1:
-            return (self.start - timedelta(days=1)).date()
+        # this was causing issue on midnight events
+        # if start_hour <= 1:
+        #     print('hereee')
+        #     return (self.start - timedelta(days=1)).date()
 
         return self.date
 

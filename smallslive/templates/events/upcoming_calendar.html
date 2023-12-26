@@ -37,6 +37,12 @@
   <div class="flex-row upcoming-schedule">
     {% include 'search/upcoming_calendar_dates.html' with day_list=day_list %}
   </div>
+  <div id="event-load-gif" class="loading-image events-gif text-center">
+    <img src="{% static 'image/loading.gif' %}" alt="loader">
+  </div>
+  <div class="shows-show-more-wrapper">
+    <div class="shows-show-more btn text4">Click for more</div>
+  </div>
   <input  type="hidden" id="load-more-calendar" data-starting-date="{{ new_date }}" data-venue="all">
 
 </section>
@@ -53,6 +59,7 @@
   var startDate = new Date();
   var nextDate = startDate;
   var venue = "all";
+  var lastEventDate;
 
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -144,6 +151,7 @@
         if (typeof callback === "function") {
           callback();
         }
+        $("#event-load-gif").css("display", "none");
       },
       error: function(err) {
         console.log(err);
@@ -154,6 +162,41 @@
     });
   }
 
+  $(document).ready(function () {
+    if (queryFromScroll) {
+      return;
+    }
+
+    $(window).scroll(function () {
+      $loadMore = $("#load-more-calendar");
+      lastEventDate = $("#upcoming-shows").data("last-event-date");
+      lastEventDate = new Date(lastEventDate);
+      nextDate = $loadMore.data("starting-date");
+      var parts = nextDate.split('-');
+      nextDate = new Date(parts[0], parts[1] - 1, parts[2]);
+
+      if(nextDate > lastEventDate) {
+        $('.shows-show-more-wrapper').hide();
+      }
+    })
+
+    $('.new-calendar .shows-show-more').click(function() {
+      
+      if (nextDate < lastEventDate) {
+        queryFromScroll = true;
+        $("#event-load-gif").css("display", "block");
+        setTimeout(function() {
+          getCalendarAjax(15, false, function (err) {
+            if (!err) {
+              queryFromScroll = false;
+            }
+          });
+        }, 500)
+      }
+    });
+  })
+
+  /*
   $(window).scroll(function () {
     if (queryFromScroll) {
       return;
@@ -175,6 +218,7 @@
       }
     };
   });
+  */
 
   $("#calendar-club-filter").change(function () {
     $("#load-more-calendar").data("venue", $(this).find("option:selected").val());

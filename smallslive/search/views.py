@@ -395,10 +395,10 @@ class UpcomingSearchView(SearchMixin):
         for day in range(0, days):
             # list of events for one day
             day_itinerary = {}
-            day_start = starting_date + timedelta(days=day, hours=5)
+            day_start = starting_date + timedelta(days=day)
             day_end = day_start + timedelta(days=1)
             day_itinerary['day_start'] = day_start
-            day_itinerary['day_events'] = event_list.filter(start__gte=day_start, start__lte=day_end).order_by('start', 'venue__id')
+            day_itinerary['day_events'] = event_list.filter(start__gte=day_start, start__lt=day_end).order_by('start', 'venue__id')
             context['day_list'].append(day_itinerary)
 
         context['first_event'] = first_event

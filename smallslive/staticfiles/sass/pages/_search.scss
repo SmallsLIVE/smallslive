@@ -1863,6 +1863,21 @@ body.headers-1 {
     }
   }
 }
+
+.new-calendar {
+
+  .shows-show-more-wrapper {
+    margin: 30px 0;
+    text-align: center;
+
+    .shows-show-more {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 0;
+      color: var(--color-white);
+    }
+  }
+}
+
 @media (max-width: $screen-sm-max) {
   .calendar-filters .select-selected {
     height: 5vw;

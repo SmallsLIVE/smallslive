@@ -123,8 +123,11 @@
               {% if card_token %}
                 <input type="hidden" name="card_token" value="{{ card_token }}"/>
               {% endif %}
+                <div class="loader-overlay" id="loaderOverlay">
+                  <div class="my-loader"></div>
+                </div>
                  <div class="button-row button-row-margin-all confirm-button">
-                     <button class="button-bordered" type="submit">Confirm</button>
+                     <button class="button-bordered confirmBtn" type="submit">Confirm</button>
                 </div>
             </form>
           {% endblock %}
@@ -136,4 +139,19 @@
 
 {% block extra_js %}
   <script src="{% static 'js/store-base.js' %}"></script>
+  <script>
+    $(document).ready(function () {
+      $('#place-order .confirmBtn').on('click', function () {
+
+          $(this).prop('disabled', true);
+          // Show loader
+          $('#loaderOverlay').fadeIn();
+
+          setTimeout(function () {
+              // Hide loader
+              $('#loaderOverlay').fadeOut();
+          }, 2000);
+      });
+    });
+  </script>
 {% endblock %}
