@@ -10989,6 +10989,12 @@ a.artist-link:hover {
     border-radius: 0;
     color: var(--color-white); }
 
+.new-calendar .click-more-btn {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 0;
+  color: var(--color-white);
+  padding: 10px; }
+
 @media (max-width: 960px) {
   .calendar-filters .select-selected {
     height: 5vw;

@@ -1,4 +1,4 @@
-{% for day in day_list %}
+{% for day in current_page %}
     {% if day.day_start.date <= last_event.date %}
     <div class="flex-column day-list">
         <div class="title1" data-date="{{ day.day_start.date }}">

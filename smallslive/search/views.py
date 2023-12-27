@@ -2,8 +2,9 @@ import json
 import string
 from itertools import chain
 import datetime
+from datetime import date
 from dateutil import parser
-from django.core.paginator import EmptyPage, Paginator
+from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger
 from django.http import Http404, HttpResponse, JsonResponse
 from django.template import RequestContext
 from django.template.loader import render_to_string
@@ -379,7 +380,7 @@ class UpcomingSearchView(SearchMixin):
 
     def get_upcoming_context(self):
         context = {'day_list': []}
-        days = int(self.request.GET.get('days', 30))
+        # days = int(self.request.GET.get('days', 30))
         starting_date = self.request.GET.get('starting_date', datetime.datetime.today().strftime('%Y-%m-%d'))
         starting_date = datetime.datetime.strptime(starting_date, '%Y-%m-%d')
         venue = self.request.GET.get('venue', 'all')
@@ -392,6 +393,8 @@ class UpcomingSearchView(SearchMixin):
         event_list = event_list.order_by('start')
         first_event = event_list.first()
         last_event = event_list.last()
+        time_difference = last_event.start.date() - first_event.get_date()
+        days = int(time_difference.days) + 1
         for day in range(0, days):
             # list of events for one day
             day_itinerary = {}
@@ -427,14 +430,25 @@ class UpcomingSearchViewAjax2(TemplateView, UpcomingSearchView):
 class UpcomingSearchViewAjax(TemplateView, UpcomingSearchView):
 
     def get(self, request, *args, **kwargs):
+        page_number = request.GET.get('page', 1)
         context = self.get_context_data(**kwargs)
         context.update(self.get_upcoming_context())
         context['user'] = self.request.user
+        paginator = Paginator(context['day_list'], 15)
+        current_page = paginator.page(page_number).object_list
+        current_page_number = paginator.page(page_number)
+        page_range = paginator.page_range
+        context['paginator'] = paginator
+        context['current_page'] = current_page
+        context['current_page_number'] = current_page_number.number
+        context['page_range'] = page_range
         data = {
             'template': render_to_string(
                 'search/upcoming_calendar_dates.html', context
             ),
             'new_date':  context['new_date'],
+            'current_page_number': context['current_page_number'],
+            'page_range': list(context['page_range']),
         }
         if 'first_event' in context and context['first_event']:
             data['first_date'] = context['first_event'].date.strftime('%Y-%m-%d')
