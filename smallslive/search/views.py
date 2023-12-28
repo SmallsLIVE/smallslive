@@ -391,9 +391,15 @@ class UpcomingSearchView(SearchMixin):
             if venue != 'all':
                 event_list = event_list.filter(venue__pk=venue)
         event_list = event_list.order_by('start')
+        if not event_list.exists():
+            context['first_event'] = None
+            context['last_event'] = None
+            context['new_date'] = starting_date.strftime('%Y-%m-%d')
+            return context
+
         first_event = event_list.first()
         last_event = event_list.last()
-        time_difference = last_event.start.date() - first_event.get_date()
+        time_difference = last_event.start.date() - starting_date.date()
         days = int(time_difference.days) + 1
         for day in range(0, days):
             # list of events for one day

@@ -91,7 +91,8 @@
     $datePickerCalendar.on("changeDate", function (event) {
       nextDate = event.date;
       startDate = nextDate;
-      getCalendarAjax(15, true);
+      /* getCalendarAjax(15, true); */
+      loadMore(1, nextDate);
       toggleDisplay(this);
     });
 
@@ -172,11 +173,15 @@
     });
   }
 
-  function loadMore(currentPageNumber) {
+  function loadMore(currentPageNumber, selectedDate) {
     var venue = $("#load-more-calendar").data("venue");
     $("#event-load-gif").css("display", "block");
+    var day = selectedDate.getDate();
+    var monthIndex = selectedDate.getMonth() + 1;
+    var year = selectedDate.getFullYear();
+    var startingDate = year + '-' + monthIndex + '-' + day;
     $.ajax({
-        url: '/search/upcoming-ajax/?page=' + currentPageNumber + '&venue=' + venue,
+        url: '/search/upcoming-ajax/?page=' + currentPageNumber + '&venue=' + venue + '&starting_date=' + startingDate,
         dataType: "json",
         success: function (response) {
             $('.page_number').val(response.current_page_number);
@@ -189,7 +194,9 @@
                 $("#home-calender").append(response.template);
               }, 500);
             }
-            console.log(response);
+            var options = { month: 'short', day: 'numeric' };
+            var formattedDate = startDate.toLocaleDateString('en-US', options);
+            $("#upcoming-shows-date-from").text(formattedDate);
             if (currentPageNumber >= response.page_range.slice(-1)[0]) {
               $('.click-more-btn').hide();
             } else {
@@ -227,7 +234,8 @@
 
     $('.click-more-btn').click(function(){
       var currentPage = parseInt($('.page_number').val()) + 1;
-      loadMore(currentPage);
+      nextDate = startDate;
+      loadMore(currentPage, nextDate);
     });
   })
 
@@ -261,7 +269,7 @@
     venue = $(this).find("option:selected").val();
     nextDate = startDate;
     /*getCalendarAjax(12, true); */
-    loadMore(1);
+    loadMore(1, nextDate);
   });
 
   $(".sponsor-concert-donation-btn").click(function (e) {
