@@ -172,6 +172,37 @@
     });
   }
 
+  function loadMore(currentPageNumber) {
+    var venue = $("#load-more-calendar").data("venue");
+    $("#event-load-gif").css("display", "block");
+    $.ajax({
+        url: '/search/upcoming-ajax/?page=' + currentPageNumber + '&venue=' + venue,
+        dataType: "json",
+        success: function (response) {
+            $('.page_number').val(response.current_page_number);
+            if (currentPageNumber === 1) {
+              $("#event-load-gif").css("display", "none");
+              $("#home-calender").html(response.template);
+            }else {
+              setTimeout(function() {
+                $("#event-load-gif").css("display", "none");
+                $("#home-calender").append(response.template);
+              }, 500);
+            }
+            console.log(response);
+            if (currentPageNumber >= response.page_range.slice(-1)[0]) {
+              $('.click-more-btn').hide();
+            } else {
+              $('.click-more-btn').show();
+            }
+
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+  }
+
   $(document).ready(function () {
 
     if($('#home-calender').length) {
@@ -179,10 +210,9 @@
         url: '/search/upcoming-ajax/?',
         dataType: "json",
         success: function (response) {
-          $('.page_number').attr('current_page_numbe', response.current_page_number);
           $('.page_number').val(response.current_page_number);
           $("#home-calender").html(response.template);
-          if (currentPage >= response.page_range.slice(-1)[0]) {
+          if (response.current_page_number >= response.page_range.slice(-1)[0]) {
             $('.click-more-btn').hide();
           }
         },
@@ -197,24 +227,7 @@
 
     $('.click-more-btn').click(function(){
       var currentPage = parseInt($('.page_number').val()) + 1;
-      $("#event-load-gif").css("display", "block");
-      $.ajax({
-          url: '/search/upcoming-ajax/?page=' + currentPage,
-          dataType: "json",
-          success: function (response) {
-              $('.page_number').val(response.current_page_number);
-              setTimeout(function(){
-                $("#event-load-gif").css("display", "none");
-                $("#home-calender").append(response.template);
-              }, 500);
-              if (currentPage >= response.page_range.slice(-1)[0]) {
-                $('.click-more-btn').hide();
-              }
-          },
-          error: function(err) {
-              console.log(err);
-          }
-      });
+      loadMore(currentPage);
     });
   })
 
@@ -243,10 +256,12 @@
   */
 
   $("#calendar-club-filter").change(function () {
+    $('.page_number').val(1);
     $("#load-more-calendar").data("venue", $(this).find("option:selected").val());
     venue = $(this).find("option:selected").val();
     nextDate = startDate;
-    getCalendarAjax(12, true);
+    /*getCalendarAjax(12, true); */
+    loadMore(1);
   });
 
   $(".sponsor-concert-donation-btn").click(function (e) {
