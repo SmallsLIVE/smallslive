@@ -180,7 +180,11 @@
         dataType: "json",
         success: function (response) {
           $('.page_number').attr('current_page_numbe', response.current_page_number);
+          $('.page_number').val(response.current_page_number);
           $("#home-calender").html(response.template);
+          if (currentPage >= response.page_range.slice(-1)[0]) {
+            $('.click-more-btn').hide();
+          }
         },
         error: function(err) {
           console.log(err);
