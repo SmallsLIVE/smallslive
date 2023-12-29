@@ -141,14 +141,14 @@
   <script src="{% static 'js/store-base.js' %}"></script>
   <script>
     $(document).ready(function () {
-      $('.confirmBtn').click(function () {
+      $(document).on("click", ".confirmBtn", function () {
         $('#loaderOverlay').fadeIn();
         $('.confirmBtn').prop('disabled', true);
         this.closest("form").submit();
         setTimeout(function () {
           $('#loaderOverlay').fadeOut();
         }, 2500);
-      })
+      });
     });
   
   </script>
