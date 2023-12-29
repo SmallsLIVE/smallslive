@@ -25,7 +25,7 @@
     <div class="modal-dialog">
       <div class="modal-content custom-modal">
         <div class="modal-body text-left">
-         <p class="title2" style="text-transform: none;">Please use this <a class="accent-color" href="https://www.smallslive.com">https://www.smallslive.com</a> for your future useage.</p>
+         <p class="title2" style="text-transform: none;">Please use this <a class="accent-color live-url" href="">Smalllive</a> for your future useage.</p>
         </div>
       </div>
     </div>
@@ -43,9 +43,15 @@
   $(document).ready(function () {
 
     var site_url = document.location.href;
-    var protocol = 'http';
-    if(site_url.includes(protocol)){
+    var protocol = 'https';
+    var site = 'https://' + document.location.host
+    if(!(site_url.includes(protocol))){
       $('#old-site-dialog').modal('show');
+
+      $( "#old-site-dialog" ).on('shown.bs.modal', function(){
+        $('.live-url').attr('href', site);
+        $('.live-url').text(site)
+      });
     }
   
     $("#calendar-club-filter ~ .select-selected").css("padding: 1em 30px;")
