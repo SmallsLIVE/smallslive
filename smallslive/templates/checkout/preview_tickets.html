@@ -141,16 +141,15 @@
   <script src="{% static 'js/store-base.js' %}"></script>
   <script>
     $(document).ready(function () {
-      $('#place-order .confirmBtn').on('click', function () {
-
-          // Show loader
-          $('#loaderOverlay').fadeIn();
-
-          setTimeout(function () {
-              // Hide loader
-              $('#loaderOverlay').fadeOut();
-          }, 2000);
-      });
+      $('.confirmBtn').click(function () {
+        $('#loaderOverlay').fadeIn();
+        $('.confirmBtn').prop('disabled', true);
+        this.closest("form").submit();
+        setTimeout(function () {
+          $('#loaderOverlay').fadeOut();
+        }, 2500);
+      })
     });
+  
   </script>
 {% endblock %}
