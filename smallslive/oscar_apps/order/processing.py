@@ -11,6 +11,21 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
         self.tickets_type = None
 
         return super(EventHandler, self).__init__(*args, **kwargs)
+    
+    def cancel_stock_allocations(self, order, lines=None, line_quantities=None):
+        """
+        Cancel the stock allocations for the passed lines.
+
+        If no lines/quantities are passed, do it for all lines.
+        """
+        if not lines:
+            lines = order.lines.all()
+        if not line_quantities:
+            line_quantities = [line.quantity for line in lines]
+        for line, qty in zip(lines, line_quantities):
+            if line.status == 'Cancelled':
+                if line.stockrecord:
+                    line.stockrecord.cancel_allocation(qty)
 
     def handle_order_status_change(self, order, new_status, note_msg):
 

@@ -25,8 +25,7 @@ from .forms import TicketExchangeSelectForm
 from oscar_apps.order.processing import EventHandler
 from oscar_apps.order.models import PaymentEventType, Line, Order
 from utils.utils import send_order_refunded_email
-
-
+from events.models import Event
 
 
 Partner = get_model('partner', 'Partner')
@@ -120,9 +119,12 @@ class TicketExchangeView(SingleObjectMixin, BaseFormView):
         sku = new_ticket.stockrecords.first()
         new_line = old_line
         new_line.id = None
+        new_line.partner_name = sku.partner
+        new_line.partner_id = sku.partner_id
         new_line.product = new_ticket
         new_line.sku = sku
         new_line.partner_sku = sku.partner_sku
+        new_line.stockrecord_id = sku.partner_sku
         new_line.status = "Completed"
         new_line.title = new_ticket.title
         new_line.save()
@@ -323,11 +325,16 @@ class OrderDetailView(DetailView):
                 message = {}
                 event_info = order.basket.get_tickets_event()
                 message['order_number'] = order.number
-                message['event_title'] = event_info.title
-                message['event_date'] = event_info.date
+                # message['event_title'] = event_info.title
+                # message['event_date'] = event_info.date
                 for line in order.lines.all():
-                    message['quantity'] = line.quantity
-                    message['time'] = line.product.event_set.start
+                    if line.status == 'Completed':
+                        if line.product.event_set.event_id:
+                            product_event = Event.objects.get(id=line.product.event_set.event_id)
+                        message['event_title'] = line.title
+                        message['event_date'] = product_event.date
+                        message['quantity'] = line.quantity
+                        message['time'] = line.product.event_set.start
                 if order.email:
                     email = order.email
                 else:

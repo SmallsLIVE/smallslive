@@ -27,6 +27,17 @@ class Order(AbstractOrder):
     last_name = models.CharField(max_length=150, blank=True)
     order_type = models.CharField(max_length=32, choices=ORDER_TYPE_CHOICES, default=REGULAR)
 
+    @property
+    def num_items(self):
+        """
+        Returns the number of items in this order.
+        """
+        num_items = 0
+        for line in self.lines.all():
+            if line.status != 'Exchanged':
+                num_items += line.quantity
+        return num_items
+
     def has_physical_products(self):
         physical_count = self.lines.filter(product__product_class__requires_shipping=True).count()
         if physical_count > 0:
