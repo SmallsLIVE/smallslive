@@ -21,15 +21,7 @@
   {% endif %}
   {% include 'events/upcoming_calendar.html' with upcoming=True show_extend_date=True show_event_venue=False hide_play=True day_list=day_list new_date=new_date %}
 
-  <div class="modal fade" id="old-site-dialog" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content custom-modal">
-        <div class="modal-body text-left">
-         <p class="title2" style="text-transform: none;">Please use this <a class="accent-color live-url" href="">Smalllive</a> for your future useage.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+
 </main>
 {% endblock home_content %}
 
@@ -41,18 +33,6 @@
 <script>
 
   $(document).ready(function () {
-
-    var site_url = document.location.href;
-    var protocol = 'https';
-    var site = 'https://' + document.location.host
-    if(!(site_url.includes(protocol))){
-      $('#old-site-dialog').modal('show');
-
-      $( "#old-site-dialog" ).on('shown.bs.modal', function(){
-        $('.live-url').attr('href', site);
-        $('.live-url').text(site)
-      });
-    }
   
     $("#calendar-club-filter ~ .select-selected").css("padding: 1em 30px;")
 
