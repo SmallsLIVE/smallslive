@@ -32282,8 +32282,6 @@ form .back-to-payment-btn {
           .custom-date-picker .datepicker.dropdown-menu td.day.active:hover, .custom-date-picker .datepicker.dropdown-menu td .month.active:hover, .custom-date-picker .datepicker.dropdown-menu td .year.active:hover {
             background-color: rgba(255, 255, 255, 0.9) !important;
             color: black; }
-      .custom-date-picker .datepicker.dropdown-menu .disabled {
-        display: none; }
 
 .custom-date-picker-apply {
   display: none;
