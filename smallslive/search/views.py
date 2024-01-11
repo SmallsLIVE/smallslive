@@ -20,6 +20,7 @@ from events.models import Event, Venue, RANGE_MONTH
 from .mixins import SearchMixin, UpcomingEventMixin
 from .search import SearchObject
 from .utils import facets_by_model_name
+from datetime import time
 
 
 def search_autocomplete(request):
@@ -407,7 +408,21 @@ class UpcomingSearchView(SearchMixin):
             day_start = starting_date + timedelta(days=day)
             day_end = day_start + timedelta(days=1)
             day_itinerary['day_start'] = day_start
-            day_itinerary['day_events'] = event_list.filter(start__gte=day_start, start__lt=day_end).order_by('start', 'venue__id')
+            day_events = (
+                event_list
+                .filter(start__gte=day_start, start__lt=day_end)
+                .order_by('start', 'venue__id')
+            )
+
+            midnight_events = [event for event in day_events if timezone.localtime(event.start).hour < 6]
+
+            morning_events = [event for event in day_events if timezone.localtime(event.start).hour < 12 and timezone.localtime(event.start).hour >= 6]
+
+            rest_events = [event for event in day_events if timezone.localtime(event.start).hour >= 12]
+
+            day_events = morning_events + rest_events + midnight_events
+
+            day_itinerary['day_events'] = day_events
             context['day_list'].append(day_itinerary)
 
         context['first_event'] = first_event
