@@ -22,6 +22,8 @@ from multimedia.s3_storages import ImageS3Storage
 from metrics.models import UserVideoMetric
 from utils.hkdf import derive_fernet_key
 
+from datetime import date, timedelta
+
 RANGE_YEAR = 'year'
 RANGE_MONTH = 'month'
 RANGE_WEEK = 'week'
@@ -180,18 +182,29 @@ class EventQuerySet(models.QuerySet):
         # considered to be the same before, but internally date is real.
 
         # cover one day or two
-        days = 2
-        if just_today:
-            days = 1
-        date_range_start = get_today_start()
-        date_range_end = date_range_start + timedelta(days=days)
+        # days = 2
+        # if just_today:
+        #     days = 1
+        # date_range_start = get_today_start()
+        # date_range_end = date_range_start + timedelta(days=days)
 
-        # from 6:00 to 6:00 (date range)
-        # also make sure events have not finished already. (end > now)
+        # # from 6:00 to 6:00 (date range)
+        # # also make sure events have not finished already. (end > now)
+        # filter_data = {
+        #     'start__gte': date_range_start,
+        #     'end__lte': date_range_end
+        #     # 'end__gte': timezone.now()
+        # }
+
+        #show today and tomorrow events date only
+        startdate = date.today()
+        enddate = startdate + timedelta(days=1)
+
+        if just_today:
+            enddate = startdate
+
         filter_data = {
-            'start__gte': date_range_start,
-            'end__lte': date_range_end
-            # 'end__gte': timezone.now()
+            'date__range':[startdate, enddate],
         }
 
         if venue_id:
@@ -741,6 +754,23 @@ class Event(TimeStampedModel):
         start = self.start
         if about_to_begin:
             start = start - timedelta(minutes=self.start_streaming_before_minutes)
+
+        today = timezone.now()
+        today_date = today.date()
+
+        event_datetime = timezone.localtime(start)
+        event_date = event_datetime.date()
+        
+        if event_date == today_date and timezone.localtime(start).hour < 6:
+            event_date += timedelta(days=1)
+            return event_date == today_date and timezone.localtime(start) <= timezone.localtime(timezone.now()) <= timezone.localtime(self.end) + timedelta(minutes=self.start_streaming_before_minutes)
+        
+        if (today_date - event_date).days == 1 and timezone.localtime(start).hour < 6:
+            event_date += timedelta(days=1)
+            start_date = start + timedelta(days=1)
+            end_date = self.end + timedelta(days=1)
+            return event_date == today_date and timezone.localtime(start_date) <= timezone.localtime(timezone.now()) <= timezone.localtime(end_date) + timedelta(minutes=self.start_streaming_before_minutes)
+
 
         is_live = start <= timezone.now() <= self.end + timedelta(minutes=self.start_streaming_before_minutes)
 
