@@ -22,7 +22,6 @@ from multimedia.s3_storages import ImageS3Storage
 from metrics.models import UserVideoMetric
 from utils.hkdf import derive_fernet_key
 
-from datetime import date, timedelta
 
 RANGE_YEAR = 'year'
 RANGE_MONTH = 'month'
@@ -182,29 +181,18 @@ class EventQuerySet(models.QuerySet):
         # considered to be the same before, but internally date is real.
 
         # cover one day or two
-        # days = 2
-        # if just_today:
-        #     days = 1
-        # date_range_start = get_today_start()
-        # date_range_end = date_range_start + timedelta(days=days)
-
-        # # from 6:00 to 6:00 (date range)
-        # # also make sure events have not finished already. (end > now)
-        # filter_data = {
-        #     'start__gte': date_range_start,
-        #     'end__lte': date_range_end
-        #     # 'end__gte': timezone.now()
-        # }
-
-        #show today and tomorrow events date only
-        startdate = date.today()
-        enddate = startdate + timedelta(days=1)
-
+        days = 2
         if just_today:
-            enddate = startdate
+            days = 1
+        date_range_start = get_today_start()
+        date_range_end = date_range_start + timedelta(days=days)
 
+        # from 6:00 to 6:00 (date range)
+        # also make sure events have not finished already. (end > now)
         filter_data = {
-            'date__range':[startdate, enddate],
+            'start__gte': date_range_start,
+            'end__lte': date_range_end
+            # 'end__gte': timezone.now()
         }
 
         if venue_id:
