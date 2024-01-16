@@ -184,14 +184,19 @@ class EventQuerySet(models.QuerySet):
         days = 2
         if just_today:
             days = 1
+
         date_range_start = get_today_start()
+        date_start = date_range_start - timedelta(hours=6, minutes=1)
+
         date_range_end = date_range_start + timedelta(days=days)
+        date_end = date_range_end - timedelta(hours=6, minutes=1)
 
         # from 6:00 to 6:00 (date range)
         # also make sure events have not finished already. (end > now)
         filter_data = {
-            'start__gte': date_range_start,
-            'end__lte': date_range_end
+            'start__gte': date_start,
+            'start__lte': date_end
+            # 'end__lte': date_range_end
             # 'end__gte': timezone.now()
         }
 
