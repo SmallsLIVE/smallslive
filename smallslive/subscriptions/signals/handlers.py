@@ -2,11 +2,13 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from djstripe.models import Charge
 from djstripe.signals import WEBHOOK_SIGNALS
+from djstripe import webhooks
 import subscriptions
 from subscriptions.utils import send_admin_donation_notification
 
 
-@receiver(WEBHOOK_SIGNALS['charge.succeeded'])
+# @receiver(WEBHOOK_SIGNALS['charge.succeeded'])
+@webhooks.handler("charge.succeeded")
 def invoice_payment_succeeded(sender, **kwargs):
     """Receive notifications from invoice payment (subscriptions)
     and accrue the donation.

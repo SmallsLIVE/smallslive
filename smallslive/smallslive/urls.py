@@ -81,7 +81,8 @@ urlpatterns = [
     url(r'^search/instrument/', instrument_search, name='instrument_search'),
     url(r'^checkout/paypal/', include('paypal.express.urls')),
    # url(r'^dashboard/paypal/express/', include(paypal_application.urls)), ## @TODO Fix later after upgrade
-    url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
+    # url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
+    url(r'^stripe/', include('djstripe.urls', namespace="djstripe")),
     url(r'^catalog/accounts/login/$', RedirectView.as_view(url=reverse_lazy('accounts_login'))),
     path('', include(apps.get_app_config('smallslive').urls[0])),
     url(r'^catalog/artist-catalogue/', ArtistCatalogue.as_view(), name='artist_store'),
