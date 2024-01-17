@@ -644,6 +644,7 @@ DJSTRIPE_PRORATION_POLICY_FOR_UPGRADES = True
 
 #stripe webhook
 DJSTRIPE_WEBHOOK_SECRET = os.environ.get('DJSTRIPE_WEBHOOK_SECRET')
+DJSTRIPE_USE_NATIVE_JSONFIELD = True
 
 # Added these two lines for upgrading djstripe to 2.0.0
 DJSTRIPE_WEBHOOK_VALIDATION = None
