@@ -15,7 +15,7 @@ from django.views.generic.base import TemplateView
 from haystack.query import SearchQuerySet
 
 from artists.models import Artist, Instrument
-from events.models import Event, Venue, RANGE_MONTH
+from events.models import Event, Venue, RANGE_MONTH, get_today_start
 
 from .mixins import SearchMixin, UpcomingEventMixin
 from .search import SearchObject
@@ -430,11 +430,12 @@ class UpcomingSearchView(SearchMixin):
         context['new_date'] = (day_start + timedelta(days=1)).strftime('%Y-%m-%d')
 
         # Today and tomorrow events
-        today = timezone.now().date()
+        today = get_today_start().date()
         tomorrow = today + timezone.timedelta(days=1)
         events_today_and_tomorrow_qs = Event.objects.get_today_and_tomorrow_events(
             is_staff=self.request.user.is_staff
         )
+
         today_qs = events_today_and_tomorrow_qs.filter(start__date=today)
         tomorrow_qs = events_today_and_tomorrow_qs.filter(start__date=tomorrow)
 
