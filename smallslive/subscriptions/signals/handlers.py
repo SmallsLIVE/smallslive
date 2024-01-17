@@ -74,3 +74,9 @@ def check_admin_update(sender, instance, update_fields=None, **kwargs):
 def send_admin_update(sender, instance, created, **kwargs):
     if instance.__send_email:
         send_admin_donation_notification(instance)
+
+
+#@webhooks.handler("invoice.payment_succeeded")
+@receiver(WEBHOOK_SIGNALS['invoice.payment_succeeded'])
+def test_webhook(event, **kwargs):
+    print('We are here ..')
