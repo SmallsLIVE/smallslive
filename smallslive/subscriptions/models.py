@@ -10,6 +10,7 @@ from events.models import Event
 from oscar_apps.catalogue.models import Product
 from oscar_apps.order.models import Order
 from users.models import SmallsUser
+from .signals.handlers import invoice_payment_succeeded
 
 
 
