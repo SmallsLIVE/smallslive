@@ -15,7 +15,7 @@ from django.views.generic.base import TemplateView
 from haystack.query import SearchQuerySet
 
 from artists.models import Artist, Instrument
-from events.models import Event, Venue, RANGE_MONTH
+from events.models import Event, Venue, RANGE_MONTH, get_today_start
 
 from .mixins import SearchMixin, UpcomingEventMixin
 from .search import SearchObject
@@ -429,10 +429,28 @@ class UpcomingSearchView(SearchMixin):
         context['last_event'] = last_event
         context['new_date'] = (day_start + timedelta(days=1)).strftime('%Y-%m-%d')
 
-        # Tonight events
-        context['events_today'] = Event.objects.get_today_and_tomorrow_events(
+        # Today and tomorrow events
+        today = get_today_start().date()
+        tomorrow = today + timezone.timedelta(days=1)
+        events_today_and_tomorrow_qs = Event.objects.get_today_and_tomorrow_events(
             is_staff=self.request.user.is_staff
         )
+
+        today_qs = events_today_and_tomorrow_qs.filter(start__date=today)
+        tomorrow_qs = events_today_and_tomorrow_qs.filter(start__date=tomorrow)
+
+        today_midnight_events = [event for event in today_qs if timezone.localtime(event.start).hour < 6]
+        today_morning_events = [event for event in today_qs if timezone.localtime(event.start).hour < 12 and timezone.localtime(event.start).hour >= 6]
+        today_rest_events = [event for event in today_qs if timezone.localtime(event.start).hour >= 12]
+        today_qs = today_morning_events + today_rest_events + today_midnight_events
+
+        tomorrow_midnight_events = [event for event in tomorrow_qs if timezone.localtime(event.start).hour < 6]
+        tomorrow_morning_events = [event for event in tomorrow_qs if timezone.localtime(event.start).hour < 12 and timezone.localtime(event.start).hour >= 6]
+        tomorrow_rest_events = [event for event in tomorrow_qs if timezone.localtime(event.start).hour >= 12]
+        tomorrow_qs = tomorrow_morning_events + tomorrow_rest_events + tomorrow_midnight_events
+
+        today_and_tomorrow_qs = today_qs + tomorrow_qs
+        context['events_today'] = today_and_tomorrow_qs
 
         return context
 
