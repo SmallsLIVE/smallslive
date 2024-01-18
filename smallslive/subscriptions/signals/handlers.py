@@ -15,7 +15,6 @@ def invoice_payment_succeeded(event, **kwargs):
     """
     print('Invoice payment ...')
     if event:
-        print('here 1')
         customer = event.customer
         charge = event.data['object']
         metadata = charge['metadata']
@@ -24,11 +23,8 @@ def invoice_payment_succeeded(event, **kwargs):
 
         charge_id = charge['id']
         amount = charge['amount'] / 100
-        print('here 2')
         donation = subscriptions.models.Donation.objects.filter(reference=charge_id).first()
-        print('here 3')
         if not donation:
-            print('here 4')
             donation = {
                 'user': customer.subscriber,
                 'currency': 'USD',
@@ -40,13 +36,9 @@ def invoice_payment_succeeded(event, **kwargs):
             if 'sponsored_event_id' in metadata:
                 donation['sponsored_event_id'] = metadata['sponsored_event_id']
                 donation['sponsored_event_dedication'] = metadata['sponsored_event_dedication']
-            print('here 4')
             subscriptions.models.Donation.objects.create(**donation)
-            print('here 5')
+            print('Invoice payment donation created successfully')
         else:
-            print('here 6')
-            print(donation)
-            print(donation.id)
             donation.confirmed = True
             donation.save()
 
@@ -73,9 +65,3 @@ def check_admin_update(sender, instance, update_fields=None, **kwargs):
 def send_admin_update(sender, instance, created, **kwargs):
     if instance.__send_email:
         send_admin_donation_notification(instance)
-
-
-#@webhooks.handler("invoice.payment_succeeded")
-@receiver(WEBHOOK_SIGNALS['invoice.payment_succeeded'])
-def test_webhook(event, **kwargs):
-    print('We are here ..')
