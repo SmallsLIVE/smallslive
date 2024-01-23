@@ -40,7 +40,6 @@ ALLOWED_HOSTS = []
 
 
 ADMINS = (
-    ('Nate Aune', 'natea@jazkarta.com'),
     ('Rajib Paul', 'rajib.paul@idlewilddigital.com'),
 )
 
