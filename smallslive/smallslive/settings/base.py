@@ -39,9 +39,9 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
-ADMINS = (
-    ('Rajib Paul', 'rajib.paul@idlewilddigital.com'),
-)
+# ADMINS = (
+#     ('Rajib Paul', 'rajib.paul@idlewilddigital.com'),
+# )
 
 MANAGERS = ADMINS
 
@@ -527,11 +527,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
+        # 'django.request': {
+        #     'handlers': ['mail_admins'],
+        #     'level': 'ERROR',
+        #     'propagate': True,
+        # },
     },
     'filters': {
            'require_debug_false': {
