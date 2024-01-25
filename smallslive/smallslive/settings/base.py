@@ -39,9 +39,9 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# ADMINS = (
-#     ('Rajib Paul', 'rajib.paul@idlewilddigital.com'),
-# )
+ADMINS = (
+    # ('Rajib Paul', 'rajib.paul@idlewilddigital.com'),
+)
 
 MANAGERS = ADMINS
 
