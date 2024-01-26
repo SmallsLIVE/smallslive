@@ -41,11 +41,33 @@
 
                   <p class="title2" tabindex="0">Your confirmation number is: {{ order_number }}</p>
 
+                  <p class="title2" tabindex="0">Party name: {{ order.first_name }} {{ order.last_name }}</p>
+
+                  <p class="title2" tabindex="0">Ticket total price: {{ line.line_price_incl_tax }}</p>
+
+                  {% if line.product.event_set.event.get_venue_name == 'Mezzrow' %}
+                    <p class="title2" tabindex="0">Location: Mezzrow (163 w. 10th Street)</p>
+                  {% elif line.product.event_set.event.get_venue_name == 'Smalls' %}
+                    <p class="title2" tabindex="0">Location: Smalls Jazz Club (183 w. 10th Street)</p>
+                  {% endif %}
+
+                  {% comment %}
                   <p class="normal-text">Please look for your confirmation email. This email will have your
                     confirmation number and the name of your party. Your name will be at
                     the door when you arrive, but please also have your confirmation email
                     with you. In general, there is a <span class="text-danger">NO REFUND POLICY</span> for ticket sales,
                     although we will make individual exceptions depending on the situation.
+                    For any ticketing questions or issues, please
+                    contact <a class="text-danger mail-link" href="mailto:reservations@smallslive.com">reservations@smallslive.com</a>
+                  </p>
+                  {% endcomment %}
+
+                  <p class="normal-text">Please look for your confirmation email. This email will have your
+                    confirmation number and the name of your party. Your name will be at
+                    the door when you arrive, but please also have your confirmation email
+                    with you. We have a <span class="text-danger">NO REFUND POLICY</span>.
+                    Although we will make individual exceptions depending on the situation.
+                    We may allow exchanges for a different show on our calendar (1 change per reservation). All requests of reservation modifications are to be made up to 24 hours prior to the event date. Requests for reservation changes made less than 24 hours prior to the event date cannot be accommodated.
                     For any ticketing questions or issues, please
                     contact <a class="text-danger mail-link" href="mailto:reservations@smallslive.com">reservations@smallslive.com</a>
                   </p>

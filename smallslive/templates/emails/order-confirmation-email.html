@@ -2,13 +2,23 @@
 
 <h2 style="font-size: 24px;">Your confirmation number is: {{ order_number }}</h2>
 
+{% if party_name %}
+<h2 style="font-size: 24px;">Party name: {{ party_name }}</h2>
+{% endif %}
+
+<h2 style="font-size: 24px;">Ticket total price: {{ total_amount }}</h2>
+
 {% if venue == 'Mezzrow' %}
   <h2 style="font-size: 24px;">Location: Mezzrow (163 w. 10th Street)</h2>
 {% elif venue == 'Smalls' %}
   <h2 style="font-size: 24px;">Location: Smalls Jazz Club (183 w. 10th Street)</h2>
 {% endif %}
 
+{% comment %}
 <p style="font-size: 18px;">THANK YOU FOR YOUR PURCHASE. Your name will be at the door when you arrive, but please also have your confirmation email with you. There is a <strong style="color: #d21535">NO REFUND POLICY</strong> for all ticket sales. You must use the tickets you’ve purchased they cannot be refunded. You may, however, exchange your tickets for another show on the calendar. For all ticket exchanges please email: <a href="mailto:reservations@smallslive.com" style="color: #d21535">reservations@smallslive.com</a> </p>
+{% endcomment %}
+
+<p style="font-size: 18px;">THANK YOU FOR YOUR PURCHASE. Your name will be at the door when you arrive, but please also have your confirmation email with you. We have a <strong style="color: #d21535">NO REFUND POLICY</strong>. You must use the tickets you’ve purchased they cannot be refunded. We have a no refund policy. We may allow exchanges for a different show on our calendar (1 change per reservation). All requests of reservation modifications are to be made up to 24 hours prior to the event date. Requests for reservation changes made less than 24 hours prior to the event date cannot be accommodated. For all ticket exchanges please email: <a href="mailto:reservations@smallslive.com" style="color: #d21535">reservations@smallslive.com</a> </p>
 
 <p style="font-size: 18px;">After confirming purchase, please look for your confirmation email. This email will have your confirmation number and party name. Your name will be at the door as well, when you arrive. However, please also have your confirmation email with you.</p>
 
