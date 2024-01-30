@@ -5,7 +5,7 @@
           <div class="form-row">
               <div class="form-group">
                <label>card number</label>
-              <input  class="form-control" type="text" size="20" pattern="\d*" autocomplete="off" data-stripe="number" placeholder="xxxx-xxxx-xxxx-{{customer_detail.active_card.last4}}"/>
+              <input  class="form-control" type="text" size="20" pattern="\d*" autocomplete="off" data-stripe="number" placeholder="xxxx-xxxx-xxxx-{{ last4 }}"/>
             </div>
           </div>
 
@@ -19,9 +19,9 @@
           <div class="form-row">
             <div class="form-group">
             <label>month</label>
-              <input class="form-control" type="text" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month" placeholder="{{ customer_detail.active_card.exp_month }}"/>
+              <input class="form-control" type="text" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month" placeholder="{{ exp_month }}"/>
             <label>year</label>
-            <input  class="form-control" type="text" size="4" pattern="\d*" autocomplete="off" data-stripe="exp-year" placeholder="{{ customer_detail.active_card.exp_year }}"/>
+            <input  class="form-control" type="text" size="4" pattern="\d*" autocomplete="off" data-stripe="exp-year" placeholder="{{ exp_year }}"/>
             </div>
           </div>
 

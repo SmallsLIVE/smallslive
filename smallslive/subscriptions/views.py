@@ -1,5 +1,6 @@
 import csv
 import stripe
+import json
 from stripe.error import InvalidRequestError
 import decimal
 import traceback
@@ -14,7 +15,7 @@ from django.http import StreamingHttpResponse, HttpResponseRedirect, Http404, Js
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.views.generic import TemplateView, FormView, ListView, View
-from djstripe.models import Customer, Charge, Plan, Subscription
+from djstripe.models import Customer, Charge, Plan, Subscription, PaymentMethod
 from djstripe.settings import subscriber_request_callback
 ## @TODO : Fix later after djstripe upgrade
 # from djstripe.views import CancelSubscriptionView as BaseCancelSubscriptionView
@@ -33,6 +34,8 @@ from .filters import SponsorFilter, SupporterFilter
 from .forms import ReactivateSubscriptionForm
 from .mixins import PayPalMixin, StripeMixin
 from .models import Donation
+from custom_stripe.models import CustomerDetail
+from custom_stripe.models import CustomPlan
 
 BankcardForm = get_class('payment.forms', 'BankcardForm')
 
@@ -129,8 +132,22 @@ class DonationPreviewView(TemplateView):
         payment_method = self.request.GET.get('payment_method')
         context['payment_method'] = payment_method
         if payment_method == 'existing-credit-card':
-            last = self.request.user.customer.card_last_4
-            context['last_4'] = last
+            last4 = None
+            try:
+                if self.request.user.djstripe_customers.all():
+                    customer = self.request.user.djstripe_customers.all()[0]
+            except:
+                customer = None
+            
+            if customer and customer.id:
+                customer_detail = CustomerDetail.get(id=customer.id)
+
+            if customer_detail and customer_detail.invoice_settings != None:
+                payment_method = stripe.PaymentMethod.retrieve(customer_detail.invoice_settings.default_payment_method)
+                last4 = payment_method.card.last4
+            
+            # last = self.request.user.customer.card_last_4
+            context['last_4'] = last4
         elif payment_method == 'credit-card':
             last = self.request.GET.get('last')
             context['last_4'] = last
@@ -225,6 +242,7 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         self.stripe_token = None
         self.tickets_type = None
         self.paypal_credit_card = None
+        self.existing_payment_method = None
         super(BecomeSupporterView, self).__init__(*args, **kwargs)
 
     def get_artist_context(self):
@@ -360,6 +378,28 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
         event_context = self.get_event_context()
         context.update(event_context)
 
+        customer = None
+        customer_detail = None
+        last4 = None
+        brand = None
+
+        try:
+            if current_user.djstripe_customers.all():
+                customer = current_user.djstripe_customers.all()[0]
+        except:
+            customer = None
+
+        if customer and customer.id:
+            customer_detail = CustomerDetail.get(id=customer.id)
+        
+        if customer_detail and customer_detail.invoice_settings.default_payment_method:
+            payment_method = stripe.PaymentMethod.retrieve(customer_detail.invoice_settings.default_payment_method)
+            last4 = payment_method.card.last4
+            brand = payment_method.card.brand
+        
+        context['last4'] = last4
+        context['brand'] = brand
+
         if not current_user.is_anonymous:
             context['can_free_donate'] = current_user.get_donation_amount >= 100
         else:
@@ -468,6 +508,18 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
 
         return donation
 
+    def set_existing_payment_method(self, stripe_customer):
+        customer_default_payment_method = None
+        try:
+            customer_detail = CustomerDetail.get(
+                id=stripe_customer.id)
+            if customer_detail.invoice_settings:
+                customer_default_payment_method = customer_detail.invoice_settings.default_payment_method
+        except Exception as E:
+            print(str(E))
+
+        return customer_default_payment_method
+
     def post(self, request, *args, **kwargs):
 
         try:
@@ -480,14 +532,18 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
             self.set_billing_address()
 
             if self.existing_cc:
-                stripe_customer = self.request.user.customer.stripe_customer
-                self.stripe_token = stripe_customer.get('default_source')
+                if self.request.user.djstripe_customers.exists():
+                    customer = self.request.user.djstripe_customers.first()
+                else:
+                    raise Exception("No existing customer found")
+
+                self.existing_payment_method = self.set_existing_payment_method(customer)
 
             if self.amount:
                 self.amount = int(self.amount)
                 self.deductable_amount = self.amount
 
-            if self.stripe_token:
+            if self.stripe_token or self.existing_payment_method:
                 try:
                     # Donation will come through the webhook.
                     payment_reference_id = self.execute_stripe_payment()
@@ -677,6 +733,28 @@ class DonateView(BecomeSupporterView):
             context['skip_intro'] = True
         context['flow_type'] = 'one_time_donation'
 
+        customer = None
+        customer_detail = None
+        last4 = None
+        brand = None
+
+        try:
+            if self.request.user.djstripe_customers.all():
+                customer = self.request.user.djstripe_customers.all()[0]
+        except:
+            customer = None
+
+        if customer and customer.id:
+            customer_detail = CustomerDetail.get(id=customer.id)
+        
+        if customer_detail and customer_detail.invoice_settings.default_payment_method:
+            payment_method = stripe.PaymentMethod.retrieve(customer_detail.invoice_settings.default_payment_method)
+            last4 = payment_method.card.last4
+            brand = payment_method.card.brand
+        
+        context['last4'] = last4
+        context['brand'] = brand
+
         return context
 
 donate = DonateView.as_view()
@@ -812,18 +890,42 @@ gift_support = GiftSupportView.as_view()
 # ## @TODO : Fix later after djstripe upgrade
 # sync_payment_history = SyncPaymentHistoryView.as_view()
 
-# ## @TODO : Fix later after djstripe upgrade
-# class UpdateCardView(ChangeCardView):
+## @TODO : Fix later after djstripe upgrade
+class UpdateCardView(View):
 
-#     def get_post_success_url(self):
-#         return reverse('user_settings_new')
+    def get_post_success_url(self):
+        return reverse('user_settings_new')
 
-#     def get(self, request, *args, **kwargs):
-#         # only POST
-#         return redirect(self.get_post_success_url())
+    def get(self, request, *args, **kwargs):
+        # only POST
+        return redirect(self.get_post_success_url())
+    
+    def post(self, request, *args, **kwargs):
+        stripe_token = request.POST.get('stripe_token')
+        
+        try:
+            if self.request.user.djstripe_customers.all():
+                customer = self.request.user.djstripe_customers.all()[0]
+        except:
+            customer = None
+
+        # Set your Stripe API key
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        # Create a PaymentMethod from the token
+        payment_method = stripe.PaymentMethod.create(
+            type="card",
+            card={"token": stripe_token}
+        )
+        customer.add_payment_method(payment_method)
+        customer.metadata = json.loads(customer.metadata)
+        customer.invoice_settings = json.loads(customer.invoice_settings)
+        customer.preferred_locales = json.loads(customer.preferred_locales)
+        customer.save()
+        return redirect(self.get_post_success_url())
 
 
-# update_card = UpdateCardView.as_view()
+update_card = UpdateCardView.as_view()
+
 
 ## @TODO : Fix later after djstripe upgrade
 # Commented out these lines for upgrading djstripe to 2.0.0

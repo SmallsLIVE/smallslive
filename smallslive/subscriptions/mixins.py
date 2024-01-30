@@ -194,8 +194,10 @@ class StripeMixin(PaymentCredentialsMixin):
         customer, created = Customer.get_or_create(
             subscriber=subscriber_request_callback(self.request))
         if self.plan_type == 'month':
-            stripe_ref = subscribe_to_plan(customer, self.stripe_token,
-                              self.amount, self.plan_type, self.flow_type)
+            stripe_ref = subscribe_to_plan(
+                customer, self.stripe_token, self.amount,
+                self.plan_type, self.flow_type, payment_method=self.existing_payment_method
+            )
         else:
             event_id = None
             dedication = ''
@@ -211,7 +213,9 @@ class StripeMixin(PaymentCredentialsMixin):
 
             stripe_ref = one_time_donation(
                 customer, self.stripe_token, self.amount, donation_type=donation_type,
-                event_id=event_id, dedication=dedication, event_date=event_date, musician=musician)
+                event_id=event_id, dedication=dedication, event_date=event_date, musician=musician,
+                payment_method=self.existing_payment_method
+            )
             if self.product_id:
                 # We need to record the product id if donation comes from the Catalog.
                 pass

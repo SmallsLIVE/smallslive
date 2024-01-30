@@ -1,11 +1,12 @@
 import decimal
 from datetime import date, timedelta
 import stripe
+import json
 from allauth.account import signals
 from allauth.account.adapter import get_adapter
 from allauth.account.app_settings import EmailVerificationMethod
 from allauth.account.utils import get_login_redirect_url, user_email
-from djstripe.models import Customer, Charge, Plan
+from djstripe.models import Customer, Charge, Plan, PaymentMethod
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMessage
@@ -16,6 +17,7 @@ from django.utils import timezone
 from custom_stripe.models import CustomPlan
 from djstripe.models import Subscription
 from djstripe.utils import convert_tstamp
+from decimal import Decimal
 # from subscriptions.views import update_card
 
 INVOICE_FROM_EMAIL = '' # @TODO Fix later after upgrade dj-stripe 1.2.0 or later
@@ -50,7 +52,7 @@ def perform_login(request, user, email_verification,
 
     from .models import SmallsEmailAddress
     has_verified_email = SmallsEmailAddress.objects.filter(user=user,
-                                                     verified=True).exists()
+                                                           verified=True).exists()
     if email_verification == EmailVerificationMethod.NONE:
         pass
     elif email_verification == EmailVerificationMethod.OPTIONAL:
@@ -171,9 +173,10 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
 
 
 def one_time_donation(customer, stripe_token, amount, donation_type='one_time',
-                      event_id=None, dedication='', musician='', event_date=''):
+                      event_id=None, dedication='', musician='', event_date='',
+                      payment_method=None):
 
-    #customer.update_card(stripe_token) # @TODO: Figure out update_card later.
+    # customer.update_card(stripe_token) # @TODO: Figure out update_card later.
     if event_id:
         metadata = {
             'sponsored_event_id': event_id,
@@ -181,7 +184,19 @@ def one_time_donation(customer, stripe_token, amount, donation_type='one_time',
         }
     else:
         metadata = {}
-    charge_object = charge(customer, amount, send_receipt=False, metadata=metadata, token=stripe_token)
+    # charge_object = charge(customer, amount, send_receipt=False, metadata=metadata, token=stripe_token)
+    charge_object = charge(
+        customer, amount, send_receipt=False, metadata=metadata,
+        token=stripe_token, payment_method=payment_method
+    )
+
+    customer.add_payment_method(charge_object.payment_method)
+
+    customer.metadata = json.loads(customer.metadata)
+    customer.invoice_settings = json.loads(customer.invoice_settings)
+    customer.preferred_locales = json.loads(customer.preferred_locales)
+    customer.save()
+
     custom_receipt = {
         'customer': customer,
         'amount': amount,
@@ -198,7 +213,7 @@ def update_active_card(customer, stripe_token):
 
 
 def subscribe_to_plan(customer, stripe_token, amount, plan_type,
-                      flow="Charge"):
+                      flow="Charge", payment_method=None):
     plan_data = {
         'amount': amount,
         'currency': 'usd',
@@ -210,7 +225,7 @@ def subscribe_to_plan(customer, stripe_token, amount, plan_type,
     plan = plan or CustomPlan.create(**plan_data)
 
     #customer.update_card(stripe_token)
-    charge_id = subscribe(customer, plan, flow, plan_data, stripe_token)
+    charge_id = subscribe(customer, plan, flow, plan_data, stripe_token, payment_method)
     custom_receipt = {}
     custom_receipt['customer'] = customer
     custom_receipt['plan'] = plan
@@ -221,23 +236,32 @@ def subscribe_to_plan(customer, stripe_token, amount, plan_type,
     # Donation will come through Stripe's webhook
 
 
-def subscribe(customer, plan, flow, plan_data, stripe_token):
+def subscribe(customer, plan, flow, plan_data, stripe_token, payment_method=None):
 
     #cu = customer.stripe_customer
     cu = customer.api_retrieve()
     #customer.update_subscription(plan=plan.stripe_id, prorate=False)
     try:
-        payment_method = stripe.PaymentMethod.create(
-            type="card",
-            card={
-                "token": stripe_token,
-            },
-        )
-        
-        stripe.PaymentMethod.attach(
-            payment_method.id,
-            customer=customer.id,
-        )
+        if payment_method:
+            current_payment_method = payment_method
+        else:
+            current_payment_method = stripe.PaymentMethod.create(
+                type="card",
+                card={
+                    "token": stripe_token,
+                },
+            )
+
+        # stripe.PaymentMethod.attach(
+        #     payment_method.id,
+        #     customer=customer.id,
+        # )
+
+        customer.add_payment_method(current_payment_method)
+        customer.metadata = json.loads(customer.metadata)
+        customer.invoice_settings = json.loads(customer.invoice_settings)
+        customer.preferred_locales = json.loads(customer.preferred_locales)
+        customer.save()
 
         price = stripe.Price.create(
             unit_amount=decimal.Decimal(plan_data['amount']) * 100,
@@ -251,7 +275,7 @@ def subscribe(customer, plan, flow, plan_data, stripe_token):
             items=[{
                 'price': price.id,
             }],
-            default_payment_method= payment_method.id
+            default_payment_method=current_payment_method
         )
 
         # subscription = Subscription(
@@ -280,8 +304,8 @@ def subscribe(customer, plan, flow, plan_data, stripe_token):
         # current_subscription.plan = plan.stripe_id
         # current_subscription.amount = plan.amount
         # current_subscription.save()
-        
-                
+
+
     except Exception as e:
         print(e)
         sub = cu.subscription
@@ -304,34 +328,60 @@ def subscribe(customer, plan, flow, plan_data, stripe_token):
 
 
 def charge(customer, amount, currency='USD', description='',
-           send_receipt=True, metadata={},token=None):
+           send_receipt=True, metadata={}, token=None, payment_method=None):
     """Just charge the customer
     The web hook will take care of updating donations if necessary"""
-    source = stripe.Source.create(
-        type='card',
-        amount=int(decimal.Decimal(amount) * 100),
-        currency=currency,
-        owner={
-        'email': customer.subscriber.email
-        },
-        token=token
-    )
-    resp = stripe.Charge.create(
-        amount=int(decimal.Decimal(amount) * 100),  # Convert dollars into cents
-        currency=currency,
-        customer=customer.id,
-        description=description,
-        metadata=metadata,
-        source = source.id
-    )
+    # source = stripe.Source.create(
+    #     type='card',
+    #     amount=int(decimal.Decimal(amount) * 100),
+    #     currency=currency,
+    #     owner={
+    #     'email': customer.subscriber.email
+    #     },
+    #     token=token
+    # )
+    # resp = stripe.Charge.create(
+    #     amount=int(decimal.Decimal(amount) * 100),  # Convert dollars into cents
+    #     currency=currency,
+    #     customer=customer.id,
+    #     description=description,
+    #     metadata=metadata,
+    #     # source = source.id
+    # )
     # print(dir(customer))
     # print(resp["id"])
     # obj = customer.record_charge(resp["id"])
     # if send_receipt:
     #     obj.send_receipt()
-    
 
-    return resp
+    # new code for using payment intent
+
+    common_params = {
+        'amount': int(decimal.Decimal(amount) * 100),
+        'currency': currency,
+        'customer': customer.id,
+        'description': description,
+        'metadata': metadata,
+        'setup_future_usage': 'off_session',
+        'confirmation_method': 'manual',
+        'confirm': True,
+    }
+    if token:
+        common_params['payment_method_data'] = {
+            'type': 'card',
+            'card': {
+                'token': token,
+            },
+        }
+
+    if payment_method:
+        common_params['payment_method'] = payment_method
+
+
+    payment_intent_id = stripe.PaymentIntent.create(**common_params)
+
+
+    return payment_intent_id
 
 
 def custom_send_receipt(receipt_info={},
