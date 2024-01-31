@@ -912,15 +912,20 @@ class UpdateCardView(View):
         # Set your Stripe API key
         stripe.api_key = settings.STRIPE_SECRET_KEY
         # Create a PaymentMethod from the token
-        payment_method = stripe.PaymentMethod.create(
-            type="card",
-            card={"token": stripe_token}
-        )
-        customer.add_payment_method(payment_method)
-        customer.metadata = json.loads(customer.metadata)
-        customer.invoice_settings = json.loads(customer.invoice_settings)
-        customer.preferred_locales = json.loads(customer.preferred_locales)
-        customer.save()
+        try:
+            payment_method = stripe.PaymentMethod.create(
+                type="card",
+                card={"token": stripe_token}
+            )
+            customer.add_payment_method(payment_method)
+            customer.metadata = json.loads(customer.metadata)
+            customer.invoice_settings = json.loads(customer.invoice_settings)
+            customer.preferred_locales = json.loads(customer.preferred_locales)
+            customer.save()
+        except Exception as e:
+            # if test card got in live mode or vice-versa, then we can have an error.
+            # Better not raise the exception here.
+            print(e)
         return redirect(self.get_post_success_url())
 
 
