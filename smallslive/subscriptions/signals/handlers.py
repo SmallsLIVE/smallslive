@@ -18,14 +18,16 @@ def invoice_payment_succeeded(event, **kwargs):
     print('Invoice payment ...')
     if event:
         # charge = event.data['object']
-        invoice = event
-        customer = invoice.customer
-        metadata = invoice.metadata
+        print('==================event ..................')
+        print(dir(event))
+
+        customer = event.customer
+        metadata = event.metadata
         if metadata and 'isFoundation' in metadata and not metadata['isFoundation']:
             return
 
-        charge_id = invoice.charge
-        amount = invoice.amount_paid / 100
+        charge_id = event.charge
+        amount = event.amount_paid / 100
         donation = subscriptions.models.Donation.objects.filter(reference=charge_id).first()
         if not donation:
             donation = {
@@ -44,7 +46,7 @@ def invoice_payment_succeeded(event, **kwargs):
 
             if not customer.default_payment_method:
                 print('User have no default payment method')
-                payment_intent_id = invoice.payment_intent
+                payment_intent_id = event.payment_intent
                 if payment_intent_id:
                     payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
                     payment_method = payment_intent.payment_method
