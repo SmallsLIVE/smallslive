@@ -26,7 +26,7 @@ def invoice_payment_succeeded(event, **kwargs):
         print('=====================event data ====')
         pprint(event.data)
 
-        invoice = event.data
+        invoice = event.data['object']
 
         customer = invoice['customer']
         metadata = invoice['metadata']
