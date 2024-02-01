@@ -2,11 +2,12 @@ import stripe
 import json
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from djstripe.models import Charge
+from djstripe.models import Charge, Customer
 from djstripe.signals import WEBHOOK_SIGNALS
 from djstripe import webhooks
 import subscriptions
 from subscriptions.utils import send_admin_donation_notification
+
 
 
 # @receiver(WEBHOOK_SIGNALS['charge.succeeded'])
@@ -28,7 +29,7 @@ def invoice_payment_succeeded(event, **kwargs):
 
         invoice = event.data['object']
 
-        customer = invoice['customer']
+        customer_id = invoice['customer']
         metadata = invoice['metadata']
         if metadata and 'isFoundation' in metadata and not metadata['isFoundation']:
             return
@@ -36,7 +37,12 @@ def invoice_payment_succeeded(event, **kwargs):
         charge_id = invoice['charge']
         amount = invoice['amount_paid'] / 100
         donation = subscriptions.models.Donation.objects.filter(reference=charge_id).first()
-        if not donation:
+        try:
+            customer = Customer.objects.get(id=customer_id)
+        except Exception as e:
+            print(e)
+            customer = None
+        if customer and not donation:
             donation = {
                 'user': customer.subscriber,
                 'currency': 'USD',
@@ -51,7 +57,7 @@ def invoice_payment_succeeded(event, **kwargs):
             subscriptions.models.Donation.objects.create(**donation)
             print('Invoice payment donation created successfully')
 
-            if not customer.default_payment_method:
+            if customer and not customer.default_payment_method:
                 print('User have no default payment method')
                 payment_intent_id = invoice['payment_intent']
                 if payment_intent_id:
