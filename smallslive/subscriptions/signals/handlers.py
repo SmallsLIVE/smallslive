@@ -10,7 +10,7 @@ from subscriptions.utils import send_admin_donation_notification
 
 
 # @receiver(WEBHOOK_SIGNALS['charge.succeeded'])
-@webhooks.handler("charge.succeeded")
+@webhooks.handler("invoice.payment_succeeded")
 def invoice_payment_succeeded(event, **kwargs):
     """Receive notifications from invoice payment (subscriptions)
     and accrue the donation.
