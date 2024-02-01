@@ -18,17 +18,7 @@ def invoice_payment_succeeded(event, **kwargs):
     """
     print('Invoice payment ...')
     if event:
-        # charge = event.data['object']
-        print('==================event ..................')
-        print(dir(event))
-        print(dir(event.data))
-
-        from pprint import pprint
-        print('=====================event data ====')
-        pprint(event.data)
-
         invoice = event.data['object']
-
         customer_id = invoice['customer']
         metadata = invoice['metadata']
         if metadata and 'isFoundation' in metadata and not metadata['isFoundation']:
