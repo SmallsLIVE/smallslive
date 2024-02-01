@@ -506,6 +506,11 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
 
     },
     'loggers': {
@@ -522,7 +527,20 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
     },
+    'filters': {
+           'require_debug_false': {
+              '()': 'django.utils.log.RequireDebugFalse',
+           },
+           'require_debug_true': {
+              '()': 'django.utils.log.RequireDebugTrue',
+           },
+    },  
 }
 
 
