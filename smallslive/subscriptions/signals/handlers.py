@@ -20,6 +20,11 @@ def invoice_payment_succeeded(event, **kwargs):
         # charge = event.data['object']
         print('==================event ..................')
         print(dir(event))
+        print(dir(event.data))
+
+        from pprint import pprint
+        print('=====================event data ====')
+        pprint(event.data)
 
         customer = event.customer
         metadata = event.metadata
