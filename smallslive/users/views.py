@@ -321,6 +321,15 @@ def user_settings_view_new(request):
         except UserAddress.DoesNotExist:
             billing_address = UserAddress()
 
+    last4 = None
+    exp_month = None
+    exp_year = None
+    if customer_detail and customer_detail.invoice_settings.default_payment_method:
+        payment_method = stripe.PaymentMethod.retrieve(customer_detail.invoice_settings.default_payment_method)
+        last4 = payment_method.card.last4
+        exp_month = payment_method.card.exp_month
+        exp_year = payment_method.card.exp_year
+
     return render(request, 'account/user_settings_new.html', {
         'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
         'change_email_form': change_email_form,
@@ -341,7 +350,10 @@ def user_settings_view_new(request):
         'cancelled': cancel_at or '',
         'donate_url': reverse('donate'),
         'billing_address': billing_address or '',
-        'show_email_confirmation_dialog': show_email_confirmation
+        'show_email_confirmation_dialog': show_email_confirmation,
+        'last4': last4 or None,
+        'exp_month': exp_month or None,
+        'exp_year': exp_year or None,
     })
 
 

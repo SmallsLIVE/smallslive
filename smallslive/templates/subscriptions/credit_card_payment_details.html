@@ -31,7 +31,7 @@
 </div>
 <input type="hidden" name="payment_method" id="payment-method" value="{% if can_use_existing_cc %}existing-credit-card{%  else %}credit-card{% endif %}">
 <div class="store__form__group clearfix row payment-method-form {% if not can_use_existing_cc %}hidden{% endif %}" id="existing-credit-card-form">
-    <p tabindex="0" class="text9">Pay with existing {{ user.customer.card_kind }} credit card ending in {{ user.customer.card_last_4 }}</p>
+    <p tabindex="0" class="text9">Pay with existing {{ brand }} credit card ending in {{ last4 }}</p>
 </div>
 <div class="store__form__group clearfix row payment-method-form hidden" id="paypal-form">
     <p  tabindex="0" class="text9">You will be redirected to PayPal to complete your transaction</p>

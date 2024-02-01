@@ -1,3 +1,5 @@
+import stripe
+import json
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from djstripe.models import Charge
@@ -38,6 +40,20 @@ def invoice_payment_succeeded(event, **kwargs):
                 donation['sponsored_event_dedication'] = metadata['sponsored_event_dedication']
             subscriptions.models.Donation.objects.create(**donation)
             print('Invoice payment donation created successfully')
+
+            if not customer.default_payment_method:
+                print('User have no default payment method')
+                payment_intent_id = charge['payment_intent']
+                if payment_intent_id:
+                    payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+                    payment_method = payment_intent.payment_method
+                    customer.add_payment_method(payment_method)
+                    customer.metadata = json.loads(customer.metadata)
+                    customer.invoice_settings = json.loads(customer.invoice_settings)
+                    customer.preferred_locales = json.loads(customer.preferred_locales)
+                    customer.save()
+                print('Successfully added Payment Method')
+
         else:
             donation.confirmed = True
             donation.save()

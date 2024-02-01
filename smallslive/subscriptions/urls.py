@@ -4,7 +4,7 @@ from subscriptions import views
 urlpatterns = [
     ## @TODO : Fix later after djstripe upgrade
     # path(r'^sync-payment-history/', sync_payment_history, name='sync_payment_history'),
-    #path(r'^update-card/', views.update_card, name='update_card'),
+    path(r'^update-card/', views.update_card, name='update_card'),
 
     # Turned off the cancel subscriptions for upgrading djstripe to 2.0.0
     re_path(r'^cancel/subscription/$', views.cancel_subscription, name='cancel_subscription'),

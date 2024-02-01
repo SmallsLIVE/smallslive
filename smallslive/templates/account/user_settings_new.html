@@ -124,6 +124,7 @@
                     <option value="2021">2021</option>
                     <option value="2022">2022</option>
                     <option value="2023">2023</option>
+                    <option value="2024">2024</option>
                   </select>
                 </div>
               {% endif %}
@@ -158,12 +159,12 @@
         <div class="title5 account-settings-title text-bottom-line">Billing</div>
           <div class="account-settings-info">
             <div class="text5">Credit card</div>
-            {% if not customer_detail.active_card %}
+            {% if not customer_detail.invoice_settings.default_payment_method %}
               <div class="text9 text-grey">There is no credit card assigned</div>
             {% else %}
             <div id="credit-card-info">
-              <div class="text9 text-grey">xxxx-xxxx-xxxx-{{customer_detail.active_card.last4}}</div>
-              <div class="text9 text-grey">exp: {{customer_detail.active_card.exp_month}}/{{customer_detail.active_card.exp_year}}</div>
+              <div class="text9 text-grey">xxxx-xxxx-xxxx-{{last4}}</div>
+              <div class="text9 text-grey">exp: {{exp_month}}/{{exp_year}}</div>
               <button id='update-credit-card' class="white-border-button">Update</button>
             </div>
             <div id="credit-card-update">
