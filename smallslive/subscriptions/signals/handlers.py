@@ -21,7 +21,7 @@ def invoice_payment_succeeded(event, **kwargs):
         invoice = event
         customer = invoice.customer
         metadata = invoice.metadata
-        if 'isFoundation' in metadata and not metadata['isFoundation']:
+        if metadata and 'isFoundation' in metadata and not metadata['isFoundation']:
             return
 
         charge_id = invoice.charge
@@ -36,7 +36,7 @@ def invoice_payment_succeeded(event, **kwargs):
                 'reference': charge_id,
                 'confirmed': True,
             }
-            if 'sponsored_event_id' in metadata:
+            if metadata and 'sponsored_event_id' in metadata:
                 donation['sponsored_event_id'] = metadata['sponsored_event_id']
                 donation['sponsored_event_dedication'] = metadata['sponsored_event_dedication']
             subscriptions.models.Donation.objects.create(**donation)
