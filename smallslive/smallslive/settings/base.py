@@ -484,6 +484,67 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger'
 }
+# Logging to send email
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'verbose': {
+#             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+#         },
+#         'simple': {
+#             'format': '%(levelname)s %(message)s'
+#         },
+#     },
+#     'handlers': {
+#         'null': {
+#             'level': 'DEBUG',
+#             'class': 'logging.NullHandler',
+#         },
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'simple'
+#         },
+#         'mail_admins': {
+#             'level': 'ERROR',
+#             'filters': ['require_debug_false'],
+#             'class': 'django.utils.log.AdminEmailHandler'
+#         }
+#
+#     },
+#     'loggers': {
+#         'cron': {
+#             'handlers': ['console',],
+#             'level': 'INFO'
+#         },
+#         'paypal.payflow': {
+#             'handlers': ['console',],
+#             'level': 'DEBUG'
+#         },
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'ERROR',
+#             'propagate': False,
+#         },
+#         'django.request': {
+#             'handlers': ['mail_admins'],
+#             'level': 'ERROR',
+#             'propagate': True,
+#         },
+#     },
+#     'filters': {
+#            'require_debug_false': {
+#               '()': 'django.utils.log.RequireDebugFalse',
+#            },
+#            'require_debug_true': {
+#               '()': 'django.utils.log.RequireDebugTrue',
+#            },
+#     },
+# }
+
+# Logging without sending email
 
 LOGGING = {
     'version': 1,
@@ -506,11 +567,6 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
 
     },
     'loggers': {
@@ -527,22 +583,8 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
     },
-    'filters': {
-           'require_debug_false': {
-              '()': 'django.utils.log.RequireDebugFalse',
-           },
-           'require_debug_true': {
-              '()': 'django.utils.log.RequireDebugTrue',
-           },
-    },  
 }
-
 
 # Crispy forms settings
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
