@@ -17190,6 +17190,12 @@ label[for="photo-clear_id"] {
   #change-card-form .form-row input::placeholder {
     color: grey; }
 
+#add-card-modal a {
+  margin-top: 0; }
+
+#add-card-modal p {
+  letter-spacing: 1px; }
+
 @media (max-width: 760px) {
   .user-settings__form {
     border: none;

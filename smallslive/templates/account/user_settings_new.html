@@ -168,7 +168,20 @@
             {% else %}
               <div id="credit-card-info">
                 <div class="text9 text-grey">There is no credit card assigned</div>
-                <button id='update-credit-card' class="white-border-button">Add</button>
+                <button id='{% if customer%}update-credit-card{% else %}add-modal{% endif %}' class="white-border-button">Add</button>
+              </div>
+
+              <div class="modal fade" id="add-card-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content custom-modal no-cancel">
+                    <a href="#" class="close-button"></a>
+                    <div class="modal-body text-left">
+                     <p class="title2" style="text-transform: none;">
+                      You have to be supporting member to add/update your credit card.
+                     </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             {% endif %}
             <div id="credit-card-update">
@@ -295,6 +308,11 @@
       $('#credit-card-update').css('display', 'inherit');
       $('#credit-card-info').hide();
 
+    })
+
+    var addModal = $('#add-card-modal');
+    $('#add-modal').click(function(){
+      addModal.modal("show");
     })
 
     $('.close-button').bind("click", ToggleDisplay);

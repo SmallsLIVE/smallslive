@@ -902,6 +902,8 @@ class UpdateCardView(View):
     
     def post(self, request, *args, **kwargs):
         stripe_token = request.POST.get('stripe_token')
+
+        customer = None
         
         try:
             if self.request.user.djstripe_customers.all():
@@ -917,11 +919,12 @@ class UpdateCardView(View):
                 type="card",
                 card={"token": stripe_token}
             )
-            customer.add_payment_method(payment_method)
-            customer.metadata = json.loads(customer.metadata)
-            customer.invoice_settings = json.loads(customer.invoice_settings)
-            customer.preferred_locales = json.loads(customer.preferred_locales)
-            customer.save()
+            if customer:
+                customer.add_payment_method(payment_method)
+                customer.metadata = json.loads(customer.metadata)
+                customer.invoice_settings = json.loads(customer.invoice_settings)
+                customer.preferred_locales = json.loads(customer.preferred_locales)
+                customer.save()
         except Exception as e:
             # if test card got in live mode or vice-versa, then we can have an error.
             # Better not raise the exception here.
