@@ -25,7 +25,12 @@
             </div>
           </div>
 
-          <button class="change-card white-border-button"  type="submit">Change Card</button>
+          <button class="change-card white-border-button"  type="submit">{% if last4 %}
+            Change Card
+            {% else %}
+              Add Card
+            {% endif %}
+          </button>
 </form>
 
 

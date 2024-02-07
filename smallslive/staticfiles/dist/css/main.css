@@ -17179,6 +17179,17 @@ label[for="photo-clear_id"] {
         opacity: 0.8;
         text-decoration: none; }
 
+#change-card-form .form-row input {
+  color: black; }
+  #change-card-form .form-row input::-webkit-input-placeholder {
+    color: grey; }
+  #change-card-form .form-row input::-moz-placeholder {
+    color: grey; }
+  #change-card-form .form-row input::-ms-input-placeholder {
+    color: grey; }
+  #change-card-form .form-row input::placeholder {
+    color: grey; }
+
 @media (max-width: 760px) {
   .user-settings__form {
     border: none;

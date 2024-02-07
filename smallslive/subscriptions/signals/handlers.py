@@ -59,7 +59,6 @@ def invoice_payment_succeeded(event, **kwargs):
                     customer.preferred_locales = json.loads(customer.preferred_locales)
                     customer.save()
                 print('Successfully added Payment Method')
-
         else:
             donation.confirmed = True
             donation.save()

@@ -108,6 +108,20 @@
   }
 }
 
+#change-card-form {
+
+  .form-row {
+
+    input {
+      color: black;
+
+      &::placeholder {
+        color: grey;
+      }
+    }
+  }
+}
+
 
 @media (max-width: 760px) {
 

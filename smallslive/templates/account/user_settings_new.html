@@ -159,18 +159,21 @@
         <div class="title5 account-settings-title text-bottom-line">Billing</div>
           <div class="account-settings-info">
             <div class="text5">Credit card</div>
-            {% if not customer_detail.invoice_settings.default_payment_method %}
-              <div class="text9 text-grey">There is no credit card assigned</div>
+            {% if customer_detail.invoice_settings.default_payment_method %}
+              <div id="credit-card-info">
+                <div class="text9 text-grey">xxxx-xxxx-xxxx-{{last4}}</div>
+                <div class="text9 text-grey">exp: {{exp_month}}/{{exp_year}}</div>
+                <button id='update-credit-card' class="white-border-button">Update</button>
+              </div>
             {% else %}
-            <div id="credit-card-info">
-              <div class="text9 text-grey">xxxx-xxxx-xxxx-{{last4}}</div>
-              <div class="text9 text-grey">exp: {{exp_month}}/{{exp_year}}</div>
-              <button id='update-credit-card' class="white-border-button">Update</button>
-            </div>
+              <div id="credit-card-info">
+                <div class="text9 text-grey">There is no credit card assigned</div>
+                <button id='update-credit-card' class="white-border-button">Add</button>
+              </div>
+            {% endif %}
             <div id="credit-card-update">
               {% include 'account/credit-card-update-form.html' %}
             </div>
-            {% endif %}
           </div>
           <div class="account-settings-info">
             <div class="text5">Billing address</div>
