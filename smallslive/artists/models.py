@@ -241,8 +241,11 @@ class Artist(models.Model):
     def photo_crop_box(self):
         if not self.cropping or '-' in self.cropping:
             return
-        top_x, top_y, bottom_x, bottom_y = self.cropping.split(',')
-        return ((int(top_x), int(top_y)), (int(bottom_x), int(bottom_y)))
+        try:
+            top_x, top_y, bottom_x, bottom_y = self.cropping.split(',')
+            return ((int(top_x), int(top_y)), (int(bottom_x), int(bottom_y)))
+        except:
+            return None
 
     def current_period_percentage_ratio(self):
         return self.current_period_ratio * 100

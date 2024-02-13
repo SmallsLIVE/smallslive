@@ -16,6 +16,7 @@ from allauth.account.views import sensitive_post_parameters_m, _ajax_response
 from artists.models import Artist
 from users.models import SmallsUser
 from .forms import CompleteSignupForm, InviteArtistForm
+from users.utils import send_email_confirmation
 
 class InviteArtistView(FormView):
     form_class = InviteArtistForm
@@ -33,8 +34,10 @@ class InviteArtistView(FormView):
         return kwargs
 
     def form_valid(self, form):
+        print('-----------valid form=================')
         response = super(InviteArtistView, self).form_valid(form)
         form.invite_artist(self.request)
+        print('-----------end valid form=================')
         return response
 
     def form_invalid(self, form):
@@ -44,11 +47,19 @@ class InviteArtistView(FormView):
             artist = form.artist
             if email:
                 user = SmallsUser.objects.get(email=email.lower())
-                if user and not user.is_artist:
-                    user.artist = artist
-                    user.save()
-                    messages.success(self.request, "You've successfully assigned " + email + " as an artist.")
-                    return redirect(self.request.META['HTTP_REFERER'])
+                if user:
+                    if not user.is_artist:
+                        user.artist = artist
+                        user.save()
+                        messages.success(self.request, "You've successfully assigned " + email + " as an artist.")
+                        return redirect(self.request.META['HTTP_REFERER'])
+                    # Resend invitation to complete user registration by artist
+                    if user.is_artist and not artist.has_registered:
+                        send_email_confirmation(self.request, user, signup=True,
+                                                activate_view='artist_registration_confirm_email')
+                        messages.success(self.request, "You've successfully resend invitation to " + email)
+                        return redirect(self.request.META['HTTP_REFERER'])
+
         except Exception as e:
             print(e)
         return response
