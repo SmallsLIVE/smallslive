@@ -159,18 +159,34 @@
         <div class="title5 account-settings-title text-bottom-line">Billing</div>
           <div class="account-settings-info">
             <div class="text5">Credit card</div>
-            {% if not customer_detail.invoice_settings.default_payment_method %}
-              <div class="text9 text-grey">There is no credit card assigned</div>
+            {% if customer_detail.invoice_settings.default_payment_method %}
+              <div id="credit-card-info">
+                <div class="text9 text-grey">xxxx-xxxx-xxxx-{{last4}}</div>
+                <div class="text9 text-grey">exp: {{exp_month}}/{{exp_year}}</div>
+                <button id='update-credit-card' class="white-border-button">Update</button>
+              </div>
             {% else %}
-            <div id="credit-card-info">
-              <div class="text9 text-grey">xxxx-xxxx-xxxx-{{last4}}</div>
-              <div class="text9 text-grey">exp: {{exp_month}}/{{exp_year}}</div>
-              <button id='update-credit-card' class="white-border-button">Update</button>
-            </div>
+              <div id="credit-card-info">
+                <div class="text9 text-grey">There is no credit card assigned</div>
+                <button id='{% if customer%}update-credit-card{% else %}add-modal{% endif %}' class="white-border-button">Add</button>
+              </div>
+
+              <div class="modal fade" id="add-card-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content custom-modal no-cancel">
+                    <a href="#" class="close-button"></a>
+                    <div class="modal-body text-left">
+                     <p class="title2" style="text-transform: none;">
+                      You have to be supporting member to add/update your credit card.
+                     </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
             <div id="credit-card-update">
               {% include 'account/credit-card-update-form.html' %}
             </div>
-            {% endif %}
           </div>
           <div class="account-settings-info">
             <div class="text5">Billing address</div>
@@ -292,6 +308,11 @@
       $('#credit-card-update').css('display', 'inherit');
       $('#credit-card-info').hide();
 
+    })
+
+    var addModal = $('#add-card-modal');
+    $('#add-modal').click(function(){
+      addModal.modal("show");
     })
 
     $('.close-button').bind("click", ToggleDisplay);

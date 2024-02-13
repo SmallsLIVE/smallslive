@@ -306,14 +306,6 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         today = timezone.localtime(
             timezone.now().replace(hour=0, minute=0, second=0)).date()
         date = self.get_donation_expiry_date
-        # debug
-        print('================has archive access===================')
-        print('expired date - {0}'.format(date))
-        print('has expired? - {0}'.format(date and date >= today))
-        print('subscription plan check - {0}'.format(self.get_subscription_plan['type']))
-        print('is vip - {0}'.format(self.is_vip))
-        print('Institutional subscription - {0}'.format(self.has_active_institutional_subscription))
-        print('is artist - {0}'.format(self.is_artist))
 
         print('has archive access - {0}'.format(
             date and date >= today or \
@@ -321,8 +313,6 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
             self.is_vip or \
             self.has_active_institutional_subscription or \
             self.is_artist))
-
-        print('================ end has archive access===================')
         return date and date >= today or \
                self.get_subscription_plan['type'] != 'free' or \
                self.is_vip or \

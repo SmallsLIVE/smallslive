@@ -43,7 +43,7 @@ class InviteArtistView(FormView):
             email = form.data['email']
             artist = form.artist
             if email:
-                user = SmallsUser.objects.get(email=email)
+                user = SmallsUser.objects.get(email=email.lower())
                 if user and not user.is_artist:
                     user.artist = artist
                     user.save()
