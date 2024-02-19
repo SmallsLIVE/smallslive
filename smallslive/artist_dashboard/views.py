@@ -681,6 +681,7 @@ admin_metrics = AdminMetricsView.as_view()
 
 
 class ChangePayoutPeriodView(SuperuserRequiredMixin, UpdateView):
+    fields = '__all__'
     success_url = reverse_lazy('artist_dashboard:change_payout_period')
     template_name = 'artist_dashboard/change_payout_period.html'
 
