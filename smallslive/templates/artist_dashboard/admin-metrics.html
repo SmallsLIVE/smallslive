@@ -1,7 +1,7 @@
 {% extends "home_new.html" %}
 {% load add_get_parameter %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 
 {% block title %}Admin metrics{% endblock %}
 
@@ -211,7 +211,7 @@
                   <li class="metrics__event-list__row row">
                       <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
                           {% if event.photo %}
-                            <a href="{{ event.get_absolute_url }}"><img src="{% thumbor_url event.get_photo_url|urlencode height=68 width=68 smart=True %}" alt=""/></a>
+                            <a href="{{ event.get_absolute_url }}"><img src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=68 width=68 %}" alt=""/></a>
                           {% else %}
                             <a href="{{ event.get_absolute_url }}"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/></a>
                           {% endif %}
@@ -244,7 +244,7 @@
                   <li class="metrics__event-list__row row">
                       <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
                           {% if event.photo %}
-                            <a href="{{ event.get_absolute_url }}"><img src="{% thumbor_url event.get_photo_url|urlencode height=68 width=68 smart=True %}" alt=""/></a>
+                            <a href="{{ event.get_absolute_url }}"><img src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=68 width=68 %}" alt=""/></a>
                           {% else %}
                             <a href="{{ event.get_absolute_url }}"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/></a>
                           {% endif %}

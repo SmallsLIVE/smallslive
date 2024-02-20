@@ -1,6 +1,6 @@
 {% load static from staticfiles %}
 {% load humanize %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 
 <section id="upcoming-events-fullsize" class="homepage-upcoming container">
   <div class="row homepage-upcoming__carousel" id="upcoming-carousel">
@@ -10,9 +10,9 @@
       <div class="homepage-upcoming__event__image-container"
            {% if event.photo %}
               {% if event.photo_crop_box %}
-                style="background-image: url('{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=600 %}')"
+                style="background-image: url('{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode crop_box=event.photo_crop_box width=600 %}')"
               {% else %}
-                style="background-image: url('{% thumbor_url event.get_photo_url|urlencode height=360 width=600 smart=True %}')"
+                style="background-image: url('{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=360 width=600 %}')"
               {% endif %}
            {% else %}
               style="background-image: url('{% static "image/no-event-image-placeholder.jpg" %}')"

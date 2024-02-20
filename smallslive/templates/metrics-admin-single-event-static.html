@@ -1,7 +1,8 @@
 {% extends "smalls_base.html" %}
 {% load add_get_parameter %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+
+{% load custom_cloudinary_tags %}
 
 {% block content %}
 
@@ -22,7 +23,7 @@
               </div>
               <div class="col-xs-12 col-sm-4 hidden-xs page-heading-event__image">
                   {% if event.photo %}
-                      <img id="eventImageCover" src="{% thumbor_url event.get_photo_url|urlencode height=320 width=320 smart=True %}" alt=""/>
+                      <img id="eventImageCover" src="{% cloudinary_image_url photo_url=event.get_photo_url|urlencode photo_name=event.get_photo_name_with_bucket height=320 width=320 %}" alt=""/>
                   {% else %}
                       <img id="eventImageCover" src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                   {% endif %}

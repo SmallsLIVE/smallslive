@@ -1,7 +1,7 @@
 {% load purchase_info_tags %}
 {% load basket_tags %}
 {% load currency_filters %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 {% load staticfiles %}
 
 <div class="flex-column items-center gift-input supporter-plan-input{% if hidden %} hidden{% endif %}" id="gift-input">
@@ -76,7 +76,7 @@
             <div class="store-list-item-image">
               {% with image=product.get_primary_image %}
                 {% if not image.is_missing %}
-                  <img src="{% thumbor_url image.original.url|urlencode height=260 %}" alt="{{ product.get_title }}" class="defineImageRatio">
+                  <img src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode height=260 %}" alt="{{ product.get_title }}" class="defineImageRatio">
                 {% else %}
                   <img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio">
                 {% endif %}

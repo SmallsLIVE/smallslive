@@ -1,6 +1,6 @@
 {% extends "static-page.html" %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 
 
 {% block press-active %}active{% endblock %}
@@ -31,7 +31,7 @@
         {% for photo in photos %}
             <div class="press__file col-sm-4 col-xs-6">
                 <div class="press__file__photo col-xs-12">
-                    <img src="{% thumbor_url photo.file.url|urlencode height=255 width=255 smart=True %}" alt="{{ photo.name }} photo"/>
+                    <img src="{% cloudinary_image_url photo_name="" photo_url=photo.file.url|urlencode height=255 width=255 %}" alt="{{ photo.name }} photo"/>
                 </div>
                 <div class="press__file__title">{{ photo.name }}</div>
                 <div class="press__file__meta">{{ photo.extension|upper }}  |  {{ photo.size|filesizeformat }}</div>

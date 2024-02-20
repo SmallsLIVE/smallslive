@@ -1,6 +1,6 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 
 {% block title %}New/Popular{% endblock %}
 
@@ -43,7 +43,7 @@
                     <div class="newly-added event-object--gold">
                         <a href="{{ event.get_absolute_url }}">
                             {% if event.photo %}
-                                <div class="newly-added__image-container" style="background-image:url('{% thumbor_url event.get_photo_url|urlencode height=300 width=350 smart=True %}')"></div>
+                                <div class="newly-added__image-container" style="background-image:url('{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=300 width=350 %}')"></div>
                             {% else %}
                                 <div class="newly-added__image-container" style="background-image:url('{% static 'image/no-event-photo-thumbnail.jpg' %}')"></div>
                             {% endif %}
@@ -62,7 +62,7 @@
                     <div class="newly-added event-object--gold">
                         <a href="{{ event.get_absolute_url }}">
                             {% if event.photo %}
-                                <div class="newly-added__image-container" style="background-image:url('{% thumbor_url event.get_photo_url|urlencode height=300 width=350 smart=True %}')"></div>
+                                <div class="newly-added__image-container" style="background-image:url('{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=300 width=350 %}')"></div>
                             {% else %}
                                 <div class="newly-added__image-container" style="background-image:url('{% static 'image/no-event-photo-thumbnail.jpg' %}')"></div>
                             {% endif %}
@@ -112,7 +112,7 @@
                     <div class="mini-video__image">
                       <a href="{{ object.event.get_absolute_url }}">
                       {% if object.event.photo %}
-                        <img src="{% thumbor_url object.event.get_photo_url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                        <img src="{% cloudinary_image_url photo_name=object.event.get_photo_name_with_bucket photo_url=object.event.get_photo_url|urlencode height=80 width=80 %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}
@@ -144,7 +144,7 @@
                     <div class="mini-video__image">
                       <a href="{{ object.event.get_absolute_url }}">
                       {% if object.event.photo %}
-                        <img src="{% thumbor_url object.event.get_photo_url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                        <img src="{% cloudinary_image_url photo_name=object.event.get_photo_name_with_bucket photo_url=object.event.get_photo_url|urlencode height=80 width=80 %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}
@@ -178,7 +178,7 @@
                     <div class="mini-video__image">
                       <a href="{{ object.event.get_absolute_url }}">
                       {% if object.event.photo %}
-                        <img src="{% thumbor_url object.event.get_photo_url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                        <img src="{% cloudinary_image_url photo_name=object.event.get_photo_name_with_bucket photo_url=object.event.get_photo_url|urlencode height=80 width=80 %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}
@@ -210,7 +210,7 @@
                     <div class="mini-video__image">
                       <a href="{{ object.event.get_absolute_url }}">
                       {% if object.event.photo %}
-                        <img src="{% thumbor_url object.event.get_photo_url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                        <img src="{% cloudinary_image_url photo_name=object.event.get_photo_name_with_bucket photo_url=object.event.get_photo_url|urlencode height=80 width=80 %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}

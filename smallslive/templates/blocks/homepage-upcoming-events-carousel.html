@@ -1,6 +1,6 @@
 {% load static from staticfiles %}
 {% load humanize %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 
 {% if not request.is_ajax %}
 <section id="upcoming-events-fullsize" class="upcoming-events container hidden-xs hidden-sm">
@@ -13,9 +13,9 @@
                 <div class="gradient-overlay"></div>
                 {% if event.photo %}
                     {% if event.photo_crop_box %}
-                      <img src="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=600 %}" alt="" class="event-details__image img div-fill-img"/>
+                      <img src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode crop_box=event.photo_crop_box width=600 %}" alt="" class="event-details__image img div-fill-img"/>
                     {% else %}
-                      <img src="{% thumbor_url event.get_photo_url|urlencode height=360 width=600 smart=True %}" alt="" class="event-details__image img div-fill-img"/>
+                      <img src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=360 width=600 %}" alt="" class="event-details__image img div-fill-img"/>
                     {% endif %}
                 {% else %}
                     <img src="{% static "image/no-event-image-placeholder.jpg" %}" class="event-details__image img div-fill-img" alt="{{ event.title }} photo"/>

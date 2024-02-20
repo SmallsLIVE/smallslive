@@ -1,5 +1,5 @@
 {% extends "base_musician-signup.html" %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 {% block title %}stepnamehere{% endblock title %}
 {% block bodyclass %}musician-registration{% endblock bodyclass %}
 {% block nav %}{% endblock nav %}
@@ -51,7 +51,7 @@
                 {% if past_event.get_photo_url != "" %}
                   <a href="/events/{{ past_event.id }}/">
                     <span class="glyphicon glyphicon-play"></span>
-                    <img src="{% thumbor_url past_event.get_photo_url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}"  />
+                    <img src="{% cloudinary_image_url photo_name=past_event.get_photo_name_with_bucket photo_url=past_event.get_photo_url|urlencode width=100 height=60 %}" alt="Play video: {{ event.title }}"  />
                   </a>
                 {% endif %}       
               </td>

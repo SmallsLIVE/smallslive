@@ -1,5 +1,4 @@
 {% load static from staticfiles %}
-{% load thumbor_tags %}
 <a href="{{ event.get_absolute_url }}" style="display: flex; align-items: center;" aria-label="{{ event.get_date|date:'m/d/Y' }}, {{ event.title }}">
   <div class="
       {% if not mini  %}
@@ -16,7 +15,7 @@
         <div class="event-picture">
           <!--  <div class="img-overlay"></div> -->
           {% if event.get_photo_url %}
-            {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url height="300" width="300" %}
+            {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url photo_name=event.get_photo_name_with_bucket height="300" width="300" %}
           {% else %}
             {% include 'partials/thumbored_picture.html' %}
           {% endif %}

@@ -1,7 +1,7 @@
 {% extends "home_new.html" %}
 {% load schemaless_url %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 
 {% block title %}{{ artist.full_name }} profile{% endblock %}
 
@@ -14,8 +14,8 @@
   <meta property="og:title" content="{{ artist.full_name }} profile" />
   <meta property="og:title" content="{{ artist.biography|truncatewords:40|striptags|safe }}" />
   {% if artist.photo %}
-    <meta property="og:image" content="https:{% thumbor_url artist.photo.url|urlencode height=315 width=600 smart=True %}" />
-    <meta itemprop="image" content="https:{% thumbor_url artist.photo.url|urlencode height=315 width=600 smart=True %}">
+    <meta property="og:image" content="https:{% cloudinary_image_url photo_name=artist.get_photo_name_with_bucket photo_url=artist.photo.url|urlencode height=315 width=600 %}" />
+    <meta itemprop="image" content="https:{% cloudinary_image_url photo_name=artist.get_photo_name_with_bucket photo_url=artist.photo.url|urlencode height=315 width=600 %}">
   {% endif %}
   <meta property="fb:app_id" content="{{ facebook_app_id }}" />
   <meta itemprop="name" content="{{ artist.full_name }} profile">
@@ -27,7 +27,7 @@
     <div class="flex-row items-flex-stretch artist-header wrap">
       <div class="artist-picture">
         {% if artist.photo %}
-          {% include 'partials/thumbored_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
+          {% include 'partials/thumbored_picture.html' with photo_url=artist.photo.url photo_name=artist.get_photo_name_with_bucket crop_box=artist.photo_crop_box %}
         {% else %}
           {% include 'partials/thumbored_picture.html' with photo_url="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" crop_box=artist.photo_crop_box %}
         {% endif %}

@@ -1,7 +1,7 @@
 {% extends "home_new.html" %}
 {% load static from staticfiles %}
 {% load thumbnail %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 
 {% block title %}Library{% endblock %}
 
@@ -24,7 +24,7 @@
                     <div class="hidden-xs col-sm-4 col-md-3 my-downloads-album__cover">
                       {% with image=album.grouper.primary_image %}
                           {% if not image.is_missing %}
-                            <a href="{{ album.grouper.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=245 width=245 smart=True %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio"></a>
+                            <a href="{{ album.grouper.get_absolute_url }}"><img src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode height=245 width=245 %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio"></a>
                           {% else %}
                             <a href="{{ album.grouper.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio"></a>
                           {% endif %}

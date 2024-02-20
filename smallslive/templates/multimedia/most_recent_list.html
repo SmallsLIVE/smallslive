@@ -1,7 +1,7 @@
 {% extends "multimedia/archive-list.html" %}
 {% load static from staticfiles %}
 {% load add_get_parameter %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 
 {% block list_content %}
     {% for event in events %}
@@ -9,7 +9,7 @@
             <div class="archive-list__event__image">
                 {% if event.photo %}
                     <a href="{{ event.get_absolute_url }}"><img
-                            src="{% thumbor_url event.get_photo_url|urlencode height=140 width=140 smart=True %}"
+                            src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=140 width=140 %}"
                             alt=""/></a>
                 {% else %}
                     <a href="{{ event.get_absolute_url }}"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}"

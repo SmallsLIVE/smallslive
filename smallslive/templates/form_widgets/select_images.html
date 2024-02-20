@@ -1,6 +1,6 @@
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 <select name="{{ name }}"{% if multiple %} multiple="multiple"{% endif %}{% if required %} required{% endif %}{% include "floppyforms/attrs.html" %}>{% for group_name, group_choices in optgroups %}{% if group_name %}
 	<optgroup label="{{ group_name }}">{% endif %}{% for option in group_choices %}
-	<option value="{{ option.0 }}" {% if option.1 %}data-img-src="{% thumbor_url option.1 width=100 height=100 smart=True %}"{% endif %}{% if option.1 in value %} selected="selected" {% endif %}>{{ option.0 }}</option>{% endfor %}{% if group_name %}
+	<option value="{{ option.0 }}" {% if option.1 %}data-img-src="{% cloudinary_image_url photo_name="" photo_url=option.1 width=100 height=100 %}"{% endif %}{% if option.1 in value %} selected="selected" {% endif %}>{{ option.0 }}</option>{% endfor %}{% if group_name %}
 	</optgroup>{% endif %}{% endfor %}
 </select>
