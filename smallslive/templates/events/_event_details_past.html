@@ -228,6 +228,7 @@
       {% endif %}
 
       {% if event.published_audio and user.can_watch_video %}
+          console.log("Here")
         audioPlayer = jwplayer("player-audio").setup({
           primary: 'html5',
           playlist: [

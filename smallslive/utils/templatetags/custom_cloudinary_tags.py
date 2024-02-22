@@ -46,13 +46,17 @@ def decode_url_safe(url):
 def get_transformation_list(height, width, crop_box):
     transformations = []
     if crop_box:
+        crop_x = crop_box[0][0]
+        crop_y = crop_box[0][1]
+        width = crop_box[1][0] - crop_x
+        height = crop_box[1][1] - crop_y
+
         transformations.append({
-            'x': crop_box[0][0],
-            'y': crop_box[0][1],
-            'width': crop_box[1][0],
-            'height': crop_box[1][1],
-            'crop': 'fit',
-            'quality': 'auto'
+            'x': crop_x,
+            'y': crop_y,
+            'width': width,
+            'height': height,
+            'crop': 'crop',
         })
     transformations.append({
         'height': height,
