@@ -8,7 +8,7 @@
         {% if crop_box %}
             {% cloudinary_image_transform photo_name=photo_name height=height_default width=width_default crop_box=crop_box photo_url=photo_url %}
         {% else %}
-            {% cloudinary_image_transform photo_name=photo_name height=height_default width=width_default photo_url=photo_url %}
+            {% cloudinary_image_transform photo_name=photo_name height=height_default width=width_default photo_url=photo_url smart=True %}
         {% endif %}
     {% endwith %}
 {% else %}

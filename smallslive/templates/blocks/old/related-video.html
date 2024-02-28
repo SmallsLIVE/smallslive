@@ -1,7 +1,7 @@
 {% load custom_cloudinary_tags %}
 <tr>
   {% if video_thumb %}
-    <td class="video-thumb"><a href="{{ set.media_file.get_file_url }}"><span class="glyphicon glyphicon-play"></span><img src="{% cloudinary_image_url photo_name="" photo_url=video_thumb.url|urlencode width=100 height=60 %}"   /></a></td>
+    <td class="video-thumb"><a href="{{ set.media_file.get_file_url }}"><span class="glyphicon glyphicon-play"></span><img src="{% cloudinary_image_url photo_name="" photo_url=video_thumb.url|urlencode width=100 height=60 smart=True %}"   /></a></td>
   {% endif %}
   <td><a href="{{ past_event.get_absolute_url }}">{{ past_event.title }}</a> - <span class="text-muted">{{ past_event.start }}</span><br /> w/  {{ past_event.performers.all|join:", " }}  </td>
 </tr> 

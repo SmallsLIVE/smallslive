@@ -6,6 +6,7 @@ from cloudinary import CloudinaryImage
 from cloudinary.utils import cloudinary_url
 from django import template
 from django.utils.safestring import mark_safe
+from utils.cloudinary_utils import get_transformation_list
 
 register = template.Library()
 logger = logging.getLogger(__name__)
@@ -43,33 +44,9 @@ def decode_url_safe(url):
     return decoded_url
 
 
-def get_transformation_list(height, width, crop_box):
-    transformations = []
-    if crop_box:
-        crop_x = crop_box[0][0]
-        crop_y = crop_box[0][1]
-        width = crop_box[1][0] - crop_x
-        height = crop_box[1][1] - crop_y
-
-        transformations.append({
-            'x': crop_x,
-            'y': crop_y,
-            'width': width,
-            'height': height,
-            'crop': 'crop',
-        })
-    transformations.append({
-        'height': height,
-        'width': width,
-        'quality': 'auto',
-    })
-
-    return transformations
-
-
 @register.simple_tag(takes_context=True)
-def cloudinary_image_transform(context, photo_name, height=None, width=None, crop_box=None, photo_url=None):
-    transformation = get_transformation_list(height, width, crop_box)
+def cloudinary_image_transform(context, photo_name, height=None, width=None, crop_box=None, photo_url=None, smart=False):
+    transformation = get_transformation_list(height, width, crop_box, smart)
     if photo_name:
         try:
             return mark_safe(CloudinaryImage(photo_name).image(
@@ -96,8 +73,8 @@ def cloudinary_image_transform(context, photo_name, height=None, width=None, cro
 
 
 @register.simple_tag(takes_context=True)
-def cloudinary_image_url(context, photo_name, height=None, width=None, crop_box=None, photo_url=None):
-    transformation = get_transformation_list(height, width, crop_box)
+def cloudinary_image_url(context, photo_name, height=None, width=None, crop_box=None, photo_url=None, smart=False):
+    transformation = get_transformation_list(height, width, crop_box, smart)
     if photo_name:
         try:
             return mark_safe(cloudinary_url(photo_name, transformation=transformation)[0])

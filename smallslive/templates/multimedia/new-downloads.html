@@ -109,7 +109,7 @@
                       {% with image=album.grouper.primary_image %}
                           {% if not image.is_missing %}
                             <div style="position: relative">
-                                <img src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode height=245 width=245 %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
+                                <img src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode height=245 width=245 smart=True %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
                                 <div class="purchases-player-button myplay-btn">
                                     <div class="fa-thin-circle fa" >
                                     <i class="fas fa-play"></i></div>

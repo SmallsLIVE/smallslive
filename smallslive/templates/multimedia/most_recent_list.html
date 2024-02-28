@@ -9,7 +9,7 @@
             <div class="archive-list__event__image">
                 {% if event.photo %}
                     <a href="{{ event.get_absolute_url }}"><img
-                            src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=140 width=140 %}"
+                            src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=140 width=140 smart=True %}"
                             alt=""/></a>
                 {% else %}
                     <a href="{{ event.get_absolute_url }}"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}"

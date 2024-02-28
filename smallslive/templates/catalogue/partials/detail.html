@@ -14,7 +14,7 @@
           <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
             {% for image in all_images %}
               {% if not image.is_missing %}
-                <img src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode height=300 width=300 %}"
+                <img src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode height=300 width=300 smart=True %}"
                      alt="{{ product.get_title }}" class="defineImageRatio">
               {% else %}
                 <img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}">

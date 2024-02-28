@@ -13,8 +13,8 @@
   <meta property="og:title" content="{{ event.full_title }}" />
   <meta property="og:description" content="{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}" />
   {% if event.photo %}
-    <meta property="og:image" content="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=315 width=600 %}" />
-    <meta itemprop="image" content="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=315 width=600 %}">
+    <meta property="og:image" content="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=315 width=600 smart=True %}" />
+    <meta itemprop="image" content="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=315 width=600 smart=True %}">
   {% endif %}
   <meta property="fb:app_id" content="{{ facebook_app_id }}" />
   <meta itemprop="name" content="{{ event.full_title }}">
@@ -60,7 +60,7 @@
               <div class="mini-artist">
                 <div class="mini-artist__image">
                   {% if gig_info.artist.photo %}
-                    <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% cloudinary_image_url photo_name=gig_info.artist.get_photo_name_with_bucket photo_url=gig_info.artist.get_photo_url|urlencode height=80 width=80 %}" alt="{{ gig_info.artist.full_name }} photo"/></a>
+                    <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% cloudinary_image_url photo_name=gig_info.artist.get_photo_name_with_bucket photo_url=gig_info.artist.get_photo_url|urlencode height=80 width=80 smart=True %}" alt="{{ gig_info.artist.full_name }} photo"/></a>
                   {% else %}
                     <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
                   {% endif %}

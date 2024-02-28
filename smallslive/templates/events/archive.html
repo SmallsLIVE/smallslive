@@ -67,7 +67,7 @@
               <a href="{{ event.get_absolute_url }}" class="archive-new__carousel__item__container">
                 {% if event.photo %}
                   <img class="event-image"
-                       src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=300 width=350 %}">
+                       src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=300 width=350 smart=True %}">
                 {% else %}
                   <img class="event-image" src="{% static 'image/no-event-photo-thumbnail--archive-carousel.jpg' %}">
                 {% endif %}
@@ -86,7 +86,7 @@
               <a href="{{ event.get_absolute_url }}" class="archive-new__carousel__item__container">
                 {% if event.photo %}
                   <img class="event-image"
-                       src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=300 width=350 %}">
+                       src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=300 width=350 smart=True %}">
                 {% else %}
                   <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
                 {% endif %}

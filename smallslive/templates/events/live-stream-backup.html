@@ -75,7 +75,7 @@
                   <div class="mini-event" data-end-time="{{ upcoming_event.end.isoformat }}">
                     <div class="mini-event__image">
                       {% if upcoming_event.photo %}
-                        <a href="{{ upcoming_event.get_absolute_url }}"><img src="{% cloudinary_image_url photo_name=upcoming_event.get_photo_name_with_bucket photo_url=upcoming_event.get_photo_url|urlencode height=80 width=80 %}" alt=""/></a>
+                        <a href="{{ upcoming_event.get_absolute_url }}"><img src="{% cloudinary_image_url photo_name=upcoming_event.get_photo_name_with_bucket photo_url=upcoming_event.get_photo_url|urlencode height=80 width=80 smart=True %}" alt=""/></a>
                       {% else %}
                         <a href="{{ upcoming_event.get_absolute_url }}"><img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/></a>
                       {% endif %}

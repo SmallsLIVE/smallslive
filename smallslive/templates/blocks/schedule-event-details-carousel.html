@@ -10,7 +10,7 @@
                 {% if event.photo_crop_box %}
                       <img src="{% cloudinary_image_url photo_url=event.get_photo_url|urlencode photo_name=event.get_photo_name_with_bucket crop_box=event.photo_crop_box width=600 %}" alt="" class="event-details__image img div-fill-img"/>
                     {% else %}
-                      <img src="{% cloudinary_image_url photo_url=event.get_photo_url|urlencode photo_name=event.get_photo_name_with_bucket height=360 width=600 %}" alt="" class="event-details__image img div-fill-img"/>
+                      <img src="{% cloudinary_image_url photo_url=event.get_photo_url|urlencode photo_name=event.get_photo_name_with_bucket height=360 width=600 smart=True %}" alt="" class="event-details__image img div-fill-img"/>
                     {% endif %}
             {% else %}
                 <img src="{% static "image/no-event-image-placeholder.jpg" %}" class="event-details__image img div-fill-img" alt=""/>

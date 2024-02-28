@@ -14,8 +14,8 @@
   <meta property="og:title" content="{{ artist.full_name }} profile" />
   <meta property="og:title" content="{{ artist.biography|truncatewords:40|striptags|safe }}" />
   {% if artist.photo %}
-    <meta property="og:image" content="https:{% cloudinary_image_url photo_name=artist.get_photo_name_with_bucket photo_url=artist.photo.url|urlencode height=315 width=600 %}" />
-    <meta itemprop="image" content="https:{% cloudinary_image_url photo_name=artist.get_photo_name_with_bucket photo_url=artist.photo.url|urlencode height=315 width=600 %}">
+    <meta property="og:image" content="https:{% cloudinary_image_url photo_name=artist.get_photo_name_with_bucket photo_url=artist.photo.url|urlencode height=315 width=600 smart=True %}" />
+    <meta itemprop="image" content="https:{% cloudinary_image_url photo_name=artist.get_photo_name_with_bucket photo_url=artist.photo.url|urlencode height=315 width=600 smart=True %}">
   {% endif %}
   <meta property="fb:app_id" content="{{ facebook_app_id }}" />
   <meta itemprop="name" content="{{ artist.full_name }} profile">

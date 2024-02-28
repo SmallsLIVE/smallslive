@@ -12,7 +12,7 @@
     {% for event in events %}
 
         <div class="upcoming-event-mobile">
-            <div class="upcoming-event-mobile__bg-image-cover" style="background-image: url('{% if event.photo %}{% if event.photo_crop_box %}{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode crop_box=event.photo_crop_box width=600 %}{% else %}{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket height=360 width=600 %}{% endif %}{% else %}{% static "image/no-event-image-placeholder.jpg" %}{% endif %}');"></div>
+            <div class="upcoming-event-mobile__bg-image-cover" style="background-image: url('{% if event.photo %}{% if event.photo_crop_box %}{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode crop_box=event.photo_crop_box width=600 %}{% else %}{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket height=360 width=600 smart=True %}{% endif %}{% else %}{% static "image/no-event-image-placeholder.jpg" %}{% endif %}');"></div>
             <div class="upcoming-event-mobile__info">
                 {% if event.is_cancelled %}<span class="event-details__cancelled-ribbon">cancelled</span>{% endif %}
                 <span class="upcoming-event-mobile__timeslot">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
@@ -46,7 +46,7 @@
             {% if event.photo_crop_box %}
               <img src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket crop_box=event.photo_crop_box width=600 %}" alt="" class="event-details__image img img-responsive div-fill-img"/>
             {% else %}
-              <img src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket height=360 width=600 %}" alt="" class="event-details__image img img-responsive div-fill-img"/>
+              <img src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket height=360 width=600 smart=True %}" alt="" class="event-details__image img img-responsive div-fill-img"/>
             {% endif %}
           {% else %}
             <img src="{% static "image/no-event-image-placeholder.jpg" %}"

@@ -65,7 +65,7 @@
     <div tabindex="0" class="event-video-placeholder flex-column content-space-between" style="flex: initial;">
       <span class="event-video-placeholder-picture">
         {% if event.photo %}
-        <img src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=360 width=600 crop_box=event.photo_crop_box %}"
+        <img src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=360 width=600 crop_box=event.photo_crop_box smart=True %}"
              onError="this.src='{% static 'image/no-event-image-placeholder.jpg' %}'" style="width: 100%">
         {% else %}
         <img src="{% static 'image/no-event-image-placeholder.jpg' %}" style="width: 100%">

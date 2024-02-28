@@ -18,7 +18,7 @@
           {% if product.parent_id %}
             {% with image=product.parent.primary_image %}
               {% if not image.is_missing %}
-                <a tabindex="-1" aria-label="." href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode height=260 %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                <a tabindex="-1" aria-label="." href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode height=260 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
               {% else %}
                 <a tabindex="-1" aria-label="." href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
               {% endif %}
@@ -26,7 +26,7 @@
           {% else %}
             {% with image=product.primary_image %}
                 {% if not image.is_missing %}
-                  <a tabindex="-1" href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode height=260 %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                  <a tabindex="-1" href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode height=260 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
                 {% else %}
                   <a href="{{ product.get_absolute_url }}"><img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
                 {% endif %}
