@@ -136,3 +136,4 @@ whitenoise==6.0.0
 wkhtmltopdf-pack-ng==0.12.3.0
 XlsxWriter==0.7.3
 zipp==3.6.0
+cloudinary==1.38.0

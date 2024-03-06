@@ -5,7 +5,7 @@
 {% load i18n %}
 {% load purchase_info_tags %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 {% load currency_filters %}
 
 
@@ -33,7 +33,7 @@
                 <div class="store-listing__big-item__image">
                     {% with image=featured_product.primary_image %}
                         {% if not image.is_missing %}
-                          <a href="{{ featured_product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode width=400 smart=True %}" alt="{{ featured_product.get_title }}"></a>
+                          <a href="{{ featured_product.get_absolute_url }}"><img src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode width=400 %}" alt="{{ featured_product.get_title }}"></a>
                         {% else %}
                           <a href="{{ featured_product.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ featured_product.get_title }}"></a>
                         {% endif %}

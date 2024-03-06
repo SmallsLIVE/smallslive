@@ -1,10 +1,10 @@
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 <div class="media">
   <span class="pull-left">{{ event.start|date:"D" }}<br />
     <small>{{ event.start|date:"M j" }}</small>
   </span>
   {% if event.photo %}
-    <a href="{{ event.get_absolute_url }}" class="pull-right"><img src="{% thumbor_url event.get_photo_url|urlencode height=85 width=117 smart=True %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}" class="media-object img-responsive pull-left" /></a>
+    <a href="{{ event.get_absolute_url }}" class="pull-right"><img src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=85 width=117 smart=True %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}" class="media-object img-responsive pull-left" /></a>
   {% endif %}
   <div class="media-body">
     <h4 class="media-heading"><a href="{{ event.get_absolute_url }}">{{ event.display_title }}<br />{{ event.subtitle }}</a></h4>

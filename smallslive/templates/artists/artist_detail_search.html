@@ -1,6 +1,5 @@
 {% load schemaless_url %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
 
 <div  class="content-centered clearfix" style="width: 100%;">
   <div class="artist-search-profile-resume">
@@ -37,7 +36,7 @@
       <div class="artist-search-profile-image">
         {% if artist.photo %}
           {% if artist.photo_crop_box != 'NaN' %}
-            {% include 'partials/search_artist_profile_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
+            {% include 'partials/search_artist_profile_picture.html' with photo_name=artist.get_photo_name_with_bucket photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
           {% endif %}
         {% else %}
           {% if artist.photo_crop_box != 'NaN' %}

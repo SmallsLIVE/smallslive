@@ -1,7 +1,8 @@
 {% extends "home_new.html" %}
 {% load add_get_parameter %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+
+{% load custom_cloudinary_tags %}
 
 {% block title %}Artist list{% endblock %}
 
@@ -79,7 +80,7 @@
                     <li class="artists-list__list__row row">
                         <div class="hidden-xs col-sm-2 col-md-1 artists-list__list__image">
                             {% if artist.photo %}
-                                <img src="{% thumbor_url artist.photo.url|urlencode height=40 width=40 smart=True %}" alt="{{ artist.full_name }} photo"/>
+                                <img src="{% cloudinary_image_url photo_name=artist.get_photo_name_with_bucket height=40 width=40 photo_url=artist.photo.url smart=True %}" alt="{{ artist.full_name }} photo"/>
                             {% else %}
                                 <img src="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" alt="{{ artist.full_name }} photo"/>
                             {% endif %}

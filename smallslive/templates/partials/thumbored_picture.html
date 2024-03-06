@@ -1,15 +1,16 @@
 {% load static from staticfiles %}
-{% load thumbor_tags %}
-<img
+{% load custom_cloudinary_tags %}
+
 {% if local_url %}
-    src="{% static local_url %}"
-{% endif %}
-{% if photo_url %}
-  {% if crop_box %}
-    src="{% thumbor_url photo_url|urlencode height=height|default_if_none:360 width=width|default_if_none:600 crop=crop_box %}"
-  {% else %}
-    src="{% thumbor_url photo_url|urlencode height=height|default_if_none:360 width=width|default_if_none:600 smart=True %}"
-  {% endif %}
+    <img src="{% static local_url %}" alt="">
+{% elif photo_name or photo_url %}
+    {% with height_default=height|default:360 width_default=width|default:600 %}
+        {% if crop_box %}
+            {% cloudinary_image_transform photo_name=photo_name height=height_default width=width_default crop_box=crop_box photo_url=photo_url %}
+        {% else %}
+            {% cloudinary_image_transform photo_name=photo_name height=height_default width=width_default photo_url=photo_url smart=True %}
+        {% endif %}
+    {% endwith %}
 {% else %}
-    src="{% static 'image/no-event-image-placeholder.jpg' %}"
-{% endif %} alt="">
+    <img src="{% static 'image/no-event-image-placeholder.jpg' %}" alt="">
+{% endif %}

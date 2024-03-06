@@ -7,7 +7,6 @@ from django.db.models import F, Q, Max
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, CreateView, TemplateView, View
-from django_thumbor import generate_url
 from oscar.apps.order.models import Line
 from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
@@ -17,6 +16,7 @@ from custom_stripe.models import CustomerDetail
 from events.models import Recording, Event
 from .forms import TrackFileForm
 from .models import ImageMediaFile, MediaFile
+from utils.cloudinary_utils import generate_url
 
 
 def json_error_response(error_message):
@@ -235,10 +235,7 @@ class UploadImagePreview(View):
         image.name = self.sanitize_file_name(image.name)
         image_file = ImageMediaFile.objects.create(photo=image)
 
-        filters = {
-            'width': 300,
-        }
-        url = generate_url(image_url=image_file.photo.url, **filters)
+        url = generate_url(image_file.photo.file, image_file.storage.bucket.name, width=300)
 
         data = {
             'success': True,

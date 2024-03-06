@@ -1,6 +1,7 @@
 {% extends "home_new.html" %}
 {% load add_get_parameter %}
 {% load static from staticfiles %}
+{% load custom_cloudinary_tags %}
 
 {% block title %}Manage Archive{% endblock %}
 
@@ -48,7 +49,7 @@
             <li class="artists-list__list__row row">
                 <div class="hidden-xs hidden-sm col-md-1 artists-list__list__image">
                     {% if event.photo %}
-                        <img src="{{ event.get_photo_url }}" alt="{{ event.title }}" style="height: 50px; width: 50px"/>
+                        <img src="{% cloudinary_image_url photo_url=event.get_photo_url|urlencode photo_name=event.get_photo_name_with_bucket height=50 width=50 %}" alt="{{ event.title }}" style="height: 50px; width: 50px"/>
                     {% endif %}
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 artists-list__list__name">

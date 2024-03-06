@@ -1,6 +1,5 @@
 {% extends "events/event_details_new.html" %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
 {% load thumbnail %}
 {% load currency_filters %}
 {% load i18n %}
@@ -8,6 +7,8 @@
 {% load basket_tags %}
 {% load crispy_forms_tags %}
 {% load site_id_tags %}
+
+{% load custom_cloudinary_tags %}
 
 {% block event_content %}
 {% if user.is_authenticated %}
@@ -22,7 +23,7 @@
         {% if not user.can_watch_video %}
           <div class="not-auth-container">
             {% if event.photo %}
-              {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+              {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url photo_name=event.get_photo_name_with_bucket crop_box=event.photo_crop_box %}
             {% else %}
               {% include 'partials/thumbored_picture.html' %}
             {% endif %}
@@ -43,7 +44,7 @@
         {% if not user.can_watch_video %}
           <div class="not-auth-container">
             {% if event.photo %}
-              {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+              {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url photo_name=event.get_photo_name_with_bucket crop_box=event.photo_crop_box %}
             {% else %}
               {% include 'partials/thumbored_picture.html' %}
             {% endif %}
@@ -64,7 +65,7 @@
     <div tabindex="0" class="event-video-placeholder flex-column content-space-between" style="flex: initial;">
       <span class="event-video-placeholder-picture">
         {% if event.photo %}
-        <img src="{% thumbor_url event.get_photo_url|urlencode height=360 width=600 crop=event.photo_crop_box %}"
+        <img src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=360 width=600 crop_box=event.photo_crop_box smart=True %}"
              onError="this.src='{% static 'image/no-event-image-placeholder.jpg' %}'" style="width: 100%">
         {% else %}
         <img src="{% static 'image/no-event-image-placeholder.jpg' %}" style="width: 100%">
@@ -227,6 +228,7 @@
       {% endif %}
 
       {% if event.published_audio and user.can_watch_video %}
+          console.log("Here")
         audioPlayer = jwplayer("player-audio").setup({
           primary: 'html5',
           playlist: [
@@ -237,7 +239,7 @@
                   type: "mp3"
                 }],
                 image:   {% if event.photo %}
-                            {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                            {% include 'partials/thumbor_url.html' with photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
                           {% else %}
                             {% include 'partials/thumbor_url.html' %}
                           {% endif %}
@@ -317,7 +319,7 @@
                     }],
                     mediaid: {{ video.id }},
                     image: {% if event.photo %}
-                          {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                          {% include 'partials/thumbor_url.html' with photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
                         {% else %}
                           {% include 'partials/thumbor_url.html' %}
                         {% endif %}

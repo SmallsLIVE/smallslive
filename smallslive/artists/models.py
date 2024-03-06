@@ -259,6 +259,9 @@ class Artist(models.Model):
 
         return sqs.count()
 
+    def get_photo_name_with_bucket(self):
+        return f'{self.photo.storage.bucket_name}/{self.photo.name}'
+
 
 class Instrument(models.Model):
     name = models.CharField(max_length=255)

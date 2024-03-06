@@ -1,5 +1,5 @@
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 {% load thumbnail %}
 {% load currency_filters %}
 {% load i18n %}
@@ -36,7 +36,7 @@
         <div class="store-list-item-image">
         {% with image=product.primary_image %}
         {% if not image.is_missing %}
-          <img src="{% thumbor_url image.original.url|urlencode height=260 width=260 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio">
+          <img src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode height=260 width=260 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio">
         {% else %}
           <img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio">
         {% endif %}
@@ -93,7 +93,7 @@
       {% for image in all_images %}
       {% thumbnail image.original "x365" upscale=False as thumb %}
       <div class="store-single__item__images__big-image">
-        <img src="{% thumbor_url image.original.url|urlencode height=260 width=260 smart=True %}"
+        <img src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode height=260 width=260 smart=True %}"
              alt="{{ product.get_title }}"
              class="defineImageRatio{% if all_images.count == 1 %} one-image{% else %} more-images{% endif %}">
       </div>

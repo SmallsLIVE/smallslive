@@ -1,5 +1,5 @@
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 
 <div class='artist-set-main'>
   <div class="artist-event-info flex-column wrap">
@@ -11,7 +11,7 @@
                value="{{ set.video_recording.media_file.get_sd_video_url|safe }}"
                data-id="{{ set.video_recording.id }}"
                data-media-type="mp4"
-               data-image="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=600 %}">
+               data-image="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode crop_box=event.photo_crop_box width=600 %}">
       {% else %}
         <input type="hidden"
                class="player-video-info"
@@ -19,7 +19,7 @@
                value="{{ set.audio_recording.media_file.get_sd_video_url|safe }}"
                data-id="{{ set.audio_recording.id }}"
                data-media-type="mp3"
-               data-image="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=600 %}">
+               data-image="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode crop_box=event.photo_crop_box width=600 %}">
       {% endif %}
 
     {% endfor %}
@@ -47,7 +47,7 @@
                   <div class="picture-border">
                     <div class="set-picture">
                       {% if event.photo %}
-                        {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                        {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url photo_name=event.get_photo_name_with_bucket crop_box=event.photo_crop_box %}
                       {% else %}
                         {% include 'partials/thumbored_picture.html' %}
                       {% endif %}

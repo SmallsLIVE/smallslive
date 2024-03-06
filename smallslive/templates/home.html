@@ -1,6 +1,6 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 {% load i18n %}
 
 {% block homepage_nav_active %}active{% endblock %}
@@ -85,7 +85,7 @@
                   <li class="col-xs-6 col-sm-4 col-md-3 col-lg-2 home-store__product">
                     {% with image=product.primary_image %}
                         {% if not image.is_missing %}
-                          <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=258 width=235 smart=True %}" alt="{{ product.get_title }}" class="home-store__img"></a>
+                          <a href="{{ product.get_absolute_url }}"><img src="{% cloudinary_image_url photo_name="" photo_url=image.original.url|urlencode height=258 width=235 smart=True %}" alt="{{ product.get_title }}" class="home-store__img"></a>
                         {% else %}
                           <a href="{{ product.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ product.get_title }}" class="home-store__img"></a>
                         {% endif %}

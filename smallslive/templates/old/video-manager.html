@@ -1,6 +1,6 @@
 {% extends "base_admin.html" %}
 {% load humanize %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 {% block title %}Videos &amp; Audio {% endblock title%}
 {% block content %}
   <div class="page-header">
@@ -47,7 +47,7 @@
                   {% if past_event.get_photo_url != "" %}
                     <a href="/events/{{ past_event.id }}/">
                       <span class="glyphicon glyphicon-play"></span>
-                      <img src="{% thumbor_url past_event.get_photo_url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
+                      <img src="{% cloudinary_image_url photo_nam=past_event.get_photo_name_with_bucket photo_url=past_event.get_photo_url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
                     </a>
                   {% endif %}       
                 </td>
@@ -157,7 +157,7 @@
                   {% if past_event.get_photo_url != "" %}
                     <a href="/events/{{ past_event.id }}/">
                       <span class="glyphicon glyphicon-play"></span>
-                      <img src="{% thumbor_url past_event.get_photo_url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
+                      <img src="{% cloudinary_image_url photo_name=past_event.get_photo_name_with_bucket photo_url=past_event.get_photo_url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
                     </a>
                   {% endif %}       
                 </td>

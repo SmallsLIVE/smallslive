@@ -564,6 +564,9 @@ class Event(TimeStampedModel):
         """Mezzrow has different buckets. S3 storage is overridden and bucket name has to be passed"""
         return self.photo.get_url()
 
+    def get_photo_name_with_bucket(self):
+        return f'{self.photo.storage.bucket_name}/{self.photo.name}'
+
     def performers_string(self, separator=", "):
         "Returns the comma-separated list of performers (including the leader) as a string"
         return self.leader_string() + separator + self.sidemen_string()

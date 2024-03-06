@@ -1,11 +1,11 @@
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 
 {% if photo_url %}
   {% if crop_box %}
-    "{% thumbor_url photo_url|urlencode crop=crop_box width=600 %}"
+    "{% cloudinary_image_url photo_name=photo_name photo_url=photo_url|urlencode crop_box=crop_box width=600 %}"
   {% else %}
-    "{% thumbor_url photo_url %}"
+    "{% cloudinary_image_url photo_name=photo_name photo_url=photo_url|urlencode %}"
   {% endif %}
 {% else %}
   "{% static "image/no-event-image-placeholder.jpg" %}"

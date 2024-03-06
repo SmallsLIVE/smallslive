@@ -1,8 +1,8 @@
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 <div>
     {% if value.url %}<a target="_blank" href="{{ value.url }}">
         <img
-            src="{% thumbor_url value.url|urlencode width=300 %}" alt="{{ value }}"/></a>
+            src="{% cloudinary_image_url photo_name="" photo_url=value.url|urlencode width=300 %}" alt="{{ value }}"/></a>
         {% if not required %}
             <div class="checkbox">
                 <label for="{{ checkbox_id }}">

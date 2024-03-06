@@ -1,5 +1,4 @@
 {% load static from staticfiles %}
-{% load thumbor_tags %}
 
 <a {% if not redirect %}href="{{ event.get_absolute_url }}"{% endif %} aria-label="{{ event.get_date|date:'m/d/Y' }}, {{ event.title }}">
   <div class="
@@ -16,7 +15,7 @@
       <div class="picture-border">
         <div class="event-picture">
           {% if event.primary_image.original.url %}
-            {% include 'partials/thumbored_picture.html' with photo_url=event.primary_image.original.url crop_box=False %}
+            {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url photo_name=event.get_photo_name_with_bucket %}
           {% else %}
             {% include 'partials/thumbored_picture.html' %}
           {% endif %}

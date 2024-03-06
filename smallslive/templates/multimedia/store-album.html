@@ -1,6 +1,6 @@
 {% extends 'store_base.html' %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 {% load thumbnail %}
 {% load currency_filters %}
 {% load i18n %}
@@ -16,7 +16,7 @@
         <div class="album__header__cover"><!--album cover container-->
           {% with cover_art=album_product.images.first %}
             <div class="album__header__cover__artwork"><!--cover art container-->
-              <img src="{% thumbor_url cover_art.original.url|urlencode height=480 width=0 %}"
+              <img src="{% cloudinary_image_url photo_name="" photo_url=cover_art.original.url|urlencode height=480 %}"
                    alt="{{ product.get_title }}"
                    class="album__header__cover__artwork {% if all_images.count == 1 %} one-image{% else %} more-images{% endif %}">
             </div>

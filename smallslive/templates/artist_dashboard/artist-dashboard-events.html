@@ -7,7 +7,7 @@
         <div class="artist-event-info flex-row wrap">
           <div class="artist-event-picture">
             {% if event.photo %}
-              {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box height=57 width=57 %}
+              {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url photo_name=event.get_photo_name_with_bucket crop_box=event.photo_crop_box height=57 width=57 %}
             {% else %}
               {% include 'partials/thumbored_picture.html' %}
             {% endif %}

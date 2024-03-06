@@ -1,7 +1,7 @@
 {% extends "home_new.html" %}
 {% load static from staticfiles %}
 {% load basket_tags currency_filters tz %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 {% load thumbnail %}
 {% load currency_filters %}
 {% load i18n %}
@@ -22,8 +22,8 @@
   <meta property="og:description"
         content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.get_date|date:'D d M Y' }} - {{ event.get_date|date:'D d M Y' }}"/>
   {% if event.photo %}
-    <meta property="og:image" content="https:{% thumbor_url event.get_photo_url|urlencode height=315 width=600 smart=True %}"/>
-    <meta itemprop="image" content="https:{% thumbor_url event.get_photo_url|urlencode height=315 width=600 smart=True %}">
+    <meta property="og:image" content="https:{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=315 width=600 smart=True %}"/>
+    <meta itemprop="image" content="https:{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=315 width=600 smart=True %}">
   {% endif %}
   <meta property="fb:app_id" content="{{ facebook_app_id }}"/>
   <meta itemprop="name" content="{{ event.full_title }}">

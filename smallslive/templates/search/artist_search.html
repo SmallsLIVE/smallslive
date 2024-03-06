@@ -1,6 +1,6 @@
 {% extends "search_base.html" %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 
 {% block search_section_title %}Found {{ paginator.count }} artist{{ paginator.count|pluralize }}:{% endblock %}
 
@@ -10,7 +10,7 @@
       <div class="search-artist">
         <div class="search-artist__image">
           {% if result.object.photo %}
-            <img src="{% thumbor_url result.object.photo.url|urlencode height=140 width=140 smart=True %}" alt="{{ result.object.full_name }} photo"/>
+            <img src="{% cloudinary_image_url photo_name=result.object.get_photo_name_with_bucket photo_url=result.object.photo.url|urlencode height=140 width=140 smart=True %}" alt="{{ result.object.full_name }} photo"/>
           {% else %}
             <img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/>
           {% endif %}

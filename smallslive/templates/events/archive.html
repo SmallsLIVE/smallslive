@@ -1,6 +1,6 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 {% load addurlparameter %}
 
 {% block title %}SmallsLIVE Audio/Video Archive{% endblock %}
@@ -67,7 +67,7 @@
               <a href="{{ event.get_absolute_url }}" class="archive-new__carousel__item__container">
                 {% if event.photo %}
                   <img class="event-image"
-                       src="{% thumbor_url event.get_photo_url|urlencode height=300 width=350 smart=True %}">
+                       src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=300 width=350 smart=True %}">
                 {% else %}
                   <img class="event-image" src="{% static 'image/no-event-photo-thumbnail--archive-carousel.jpg' %}">
                 {% endif %}
@@ -86,7 +86,7 @@
               <a href="{{ event.get_absolute_url }}" class="archive-new__carousel__item__container">
                 {% if event.photo %}
                   <img class="event-image"
-                       src="{% thumbor_url event.get_photo_url|urlencode height=300 width=350 smart=True %}">
+                       src="{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=300 width=350 smart=True %}">
                 {% else %}
                   <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
                 {% endif %}

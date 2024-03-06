@@ -1,6 +1,6 @@
 {% extends "static-page.html" %}
 {% load static from staticfiles %}
-{% load thumbor_tags %}
+{% load custom_cloudinary_tags %}
 
 {% block photo-gallery-active %}static-nav__item--active{% endblock %}
 
@@ -32,9 +32,9 @@
     <div class="row photo-gallery">
       {% for photo in photos %}
         {% if forloop.counter0|divisibleby:"6"  %}
-            <div class="col-sm-4 col-xs-6 photo-gallery__image-container"><a href="{{ photo.file.url }}" rel="group" class="photo-gallery__image fancybox"><img src="{% thumbor_url photo.file.url|urlencode height=548 width=548 %}" class="img-responsive photo-gallery__image" alt=""/></a></div>
+            <div class="col-sm-4 col-xs-6 photo-gallery__image-container"><a href="{{ photo.file.url }}" rel="group" class="photo-gallery__image fancybox"><img src="{% cloudinary_image_url photo_url=photo.file.url|urlencode height=548 width=548 %}" class="img-responsive photo-gallery__image" alt=""/></a></div>
         {% else %}
-            <div class="col-sm-4 col-xs-6 photo-gallery__image-container"><a href="{{ photo.file.url }}" rel="group" class="photo-gallery__image fancybox"><img src="{% thumbor_url photo.file.url|urlencode height=264 width=264 %}" class="img-responsive  photo-gallery__image" alt=""/></a></div>
+            <div class="col-sm-4 col-xs-6 photo-gallery__image-container"><a href="{{ photo.file.url }}" rel="group" class="photo-gallery__image fancybox"><img src="{% cloudinary_image_url photo_url=photo.file.url|urlencode height=264 width=264 %}" class="img-responsive  photo-gallery__image" alt=""/></a></div>
         {% endif %} 
       {% endfor %}
     </div>
