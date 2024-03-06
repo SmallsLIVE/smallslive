@@ -78,7 +78,7 @@ importlib-resources==5.4.0
 ipython==3.1.0
 Jinja2==3.1.2
 #jsonfield==2.0.2
-#kombu==3.0.30
+#kombu==4.6.11
 libsass==0.7.0
 libthumbor==2.0.2
 lxml==4.9.2
@@ -110,7 +110,7 @@ python3-openid==3.2.0
 pytz==2015.2
 raven==6.10.0
 rcssmin==1.1.1
-redis==2.10.6
+redis==5.0.1
 reportlab==3.6.12
 requests==2.27.1
 requests-oauthlib==0.4.2
@@ -136,4 +136,3 @@ whitenoise==6.0.0
 wkhtmltopdf-pack-ng==0.12.3.0
 XlsxWriter==0.7.3
 zipp==3.6.0
-cloudinary==1.38.0

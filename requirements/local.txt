@@ -104,7 +104,7 @@ ipaddress==1.0.23
 ipython==3.1.0
 Jinja2==2.7.3
 jsonfield
-kombu==3.0.30
+kombu==4.6.11
 libsass==0.7.0
 libthumbor==1.0.1
 lxml==4.9.2
@@ -150,7 +150,7 @@ pytz==2015.2
 PyYAML==3.11
 queuelib==1.6.1
 raven==5.7.2
-redis==2.10.6
+redis==5.0.1
 requests==2.8.1
 requests-oauthlib==0.4.2
 resolvelib==0.5.4

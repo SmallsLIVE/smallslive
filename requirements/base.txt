@@ -11,7 +11,6 @@ bleach==1.4
 boto==2.38.0
 celery==4.4.7
 certifi==2015.04.28
-cloudinary==1.38.0
 cryptography==2.4.2
 dj-database-url==0.3.0
 djrill>=1.4.0
@@ -63,7 +62,7 @@ html5lib==0.999
 idna
 ipython==3.1.0
 jsonfield==2.0.2
-kombu==3.0.30
+kombu==4.6.11
 libsass==0.7.0
 libthumbor==1.0.1
 lxml
@@ -84,7 +83,7 @@ pycrypto==2.6.1
 python-dateutil==2.4.2
 pytz==2015.2
 raven==5.7.2
-redis==2.10.6
+redis==5.0.1
 requests==2.8.1
 requests-oauthlib==0.4.2
 six
