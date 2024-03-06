@@ -89,5 +89,4 @@ smallslive/smallslive/settings/local*.py
 
 # Ignore documents
 documents
-fixtures/*
-fixtures
+/smallslive/.env.local

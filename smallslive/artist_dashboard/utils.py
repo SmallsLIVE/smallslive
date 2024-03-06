@@ -144,7 +144,7 @@ def donations_data_for_date_period(start_date, end_date, metrics):
 def update_current_period_metrics():
     current_period = CurrentPayoutPeriod.objects.first()
     metrics = metrics_data_for_date_period(current_period.period_start, current_period.period_end)
-    for artist_id, info in metrics['metrics_info'].items():
+    for artist_id, info in metrics['metrics_info'].iteritems():
         Artist.objects.filter(id=artist_id).update(
             current_period_seconds_played=info['seconds_played'],
             current_period_ratio=info['ratio']
@@ -159,7 +159,7 @@ def generate_metrics_payout_sheet(metrics, file, start_date, end_date,
                                   process_personal_donations=False):
 
     # Add extra revenue minus extra cost
-    pool = revenue - operating_expenses
+    pool = Decimal(revenue - operating_expenses)
     workbook = xlsxwriter.Workbook(file, {'in_memory': True})
     bold = workbook.add_format({'bold': True})
     sheet = workbook.add_worksheet('Payments')

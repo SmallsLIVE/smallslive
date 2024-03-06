@@ -1,9 +1,8 @@
-try:
-    from StringIO import StringIO ## for Python 2
-except ImportError:
-    from io import StringIO ## for Python 3
+from io import BytesIO
 from celery import shared_task
 from django.core.files.base import ContentFile
+
+from datetime import datetime
 
 from artists.models import PayoutPeriodGeneration
 from artist_dashboard.utils import generate_metrics_payout_sheet, \
@@ -17,7 +16,7 @@ def attach_metrics_payout_sheet(metrics, start, end,
                                 revenue, operating_expenses,
                                 save_earnings, process_personal_donations=False):
 
-    output = StringIO.StringIO()
+    output = BytesIO()
     generate_metrics_payout_sheet(metrics, output, start, end,
                                   revenue, operating_expenses,
                                   save_earnings, process_personal_donations)
@@ -28,7 +27,7 @@ def attach_metrics_payout_sheet(metrics, start, end,
 
 def attach_donations_sheet(donations, start, end):
 
-    output = StringIO.StringIO()
+    output = BytesIO()
     generate_donations_payout_sheet(donations, output)
     output.seek(0)
     filename = 'donations-admin-{}_{}_{}-{}_{}_{}.xlsx'.format(
@@ -44,6 +43,11 @@ def generate_payout_sheet_task(start, end,
     Poll to download when ready"""
 
     # Spreadsheet for admins with personal donations.
+    start = datetime.fromisoformat(start)
+    end = datetime.fromisoformat(end)
+    revenue = float(revenue)
+    operating_expenses = float(revenue)
+
     metrics = metrics_data_for_date_period(start, end)
     metrics = donations_data_for_date_period(start, end, metrics)
     output, file_name = attach_metrics_payout_sheet(

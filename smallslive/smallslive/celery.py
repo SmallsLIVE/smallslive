@@ -5,7 +5,10 @@ import os
 from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'smallslive.settings.production')
+if os.environ.get('ENV') == 'LOCAL':
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'smallslive.settings.local_foundation')
+else:
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'smallslive.settings.production')
 
 from django.conf import settings  # noqa
 
