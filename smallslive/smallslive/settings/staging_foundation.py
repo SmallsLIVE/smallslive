@@ -102,6 +102,7 @@ INSTALLED_APPS += (
 ENABLE_HIJACK = env_var('ENABLE_HIJACK')
 if ENABLE_HIJACK:
     INSTALLED_APPS += (
+        'hijack',
         'compat',
     )
 
@@ -135,10 +136,9 @@ METRICS_SERVER_URL = "https://smallslive-metrics-staging.herokuapp.com"  # no tr
 PAYPAL_SANDBOX_MODE = env_var("PAYPAL_SANDBOX_MODE", True)
 
 # Celery
-# BROKER_URL = get_env_variable("REDISCLOUD_CELERY_QUEUE_URL")
-CELERY_ALWAYS_EAGER = False
-CELERY_CREATE_MISSING_QUEUES = True
-BROKER_POOL_LIMIT = 1
-BROKER_URL = get_env_variable('CLOUDAMQP_URL')
+BROKER_URL = get_env_variable("REDISCLOUD_CELERY_QUEUE_URL")
+# CELERY_ALWAYS_EAGER = False
+# CELERY_CREATE_MISSING_QUEUES = True
+# BROKER_POOL_LIMIT = 1
+# BROKER_URL = get_env_variable('CLOUDAMQP_URL')
 
-ADMIN_ENABLED = True

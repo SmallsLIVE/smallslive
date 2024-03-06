@@ -3,8 +3,7 @@ from urllib.parse import urlparse
 from .base import *
 import dj_database_url
 
-# SITE_ID 1 for smallslive.com/jazz/mezzrow club
-SITE_ID = 1
+
 def env_var(key, default=None):
     """Retrieves env vars and makes Python boolean replacements"""
     val = os.environ.get(key, default)
@@ -74,9 +73,9 @@ ALLOWED_HOSTS = [
 ]
 
 # Static asset configuration
-# STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
-# PIPELINE_SASS_BINARY = 'sassc'
-# PIPELINE_SASS_ARGUMENTS = '--precision 8 -s compressed'
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+PIPELINE_SASS_BINARY = 'sassc'
+PIPELINE_SASS_ARGUMENTS = '--precision 8 -s compressed'
 
 # Haystack elasticsearch backend
 ELASTICSEARCH_URL = get_env_variable('SEARCHBOX_SSL_URL')
@@ -101,6 +100,7 @@ INSTALLED_APPS += (
 ENABLE_HIJACK = env_var('ENABLE_HIJACK')
 if ENABLE_HIJACK:
     INSTALLED_APPS += (
+        'hijack',
         'compat',
     )
 
@@ -134,9 +134,9 @@ METRICS_SERVER_URL = "https://smallslive-metrics-staging.herokuapp.com"  # no tr
 PAYPAL_SANDBOX_MODE = env_var("PAYPAL_SANDBOX_MODE", True)
 
 # Celery
-# BROKER_URL = get_env_variable("REDISCLOUD_CELERY_QUEUE_URL")
-CELERY_ALWAYS_EAGER = False
-CELERY_CREATE_MISSING_QUEUES = True
-BROKER_POOL_LIMIT = 1
-BROKER_URL = get_env_variable('CLOUDAMQP_URL')
+BROKER_URL = get_env_variable("REDISCLOUD_CELERY_QUEUE_URL")
+# CELERY_ALWAYS_EAGER = False
+# CELERY_CREATE_MISSING_QUEUES = True
+# BROKER_POOL_LIMIT = 1
+# BROKER_URL = get_env_variable('CLOUDAMQP_URL')
 
