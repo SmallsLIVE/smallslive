@@ -27,28 +27,40 @@
         <section class="payout-calculator">
             <table class="table table-striped">
                 <thead>
-                    <tr>
-                        <th>Start</th>
-                        <th>End</th>
-                        <th>Seconds</th>
-                        <th>Amount</th>
-                        <th>Admin spreadsheet</th>
-                        <th>Musicians spreadsheet</th>
-                        <th>Donations spreadsheet</th>
-                    </tr>
+                <tr>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Seconds</th>
+                    <th>Amount</th>
+                    <th>Admin spreadsheet</th>
+                    <th>Musicians spreadsheet</th>
+                    <th>Donations spreadsheet</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {% for past_payout_period in past_payout_periods %}
-                        <tr>
-                            <td>{{ past_payout_period.period_start }}</td>
-                            <td>{{ past_payout_period.period_end }}</td>
-                            <td>{{ past_payout_period.total_seconds }}</td>
-                            <td>{{ past_payout_period.total_amount }}</td>
-                            <td><a href="{{ past_payout_period.admin_payout_spreadsheet.url }}" download>Admin Spreadsheet</a></td>
-                            <td><a href="{{ past_payout_period.musicians_payout_spreadsheet.url }}" download>Musicians Spreadsheet</a></td>
-                            <td><a href="{{ past_payout_period.donation_payout_spreadsheet.url }}" download>Donation Spreadsheet</a></td>
-                        </tr>
-                    {% endfor %}
+                {% for past_payout_period in past_payout_periods %}
+                    <tr>
+                        <td>{{ past_payout_period.period_start }}</td>
+                        <td>{{ past_payout_period.period_end }}</td>
+                        <td>{{ past_payout_period.total_seconds }}</td>
+                        <td>{{ past_payout_period.total_amount }}</td>
+                        <td>
+                            {% if past_payout_period.admin_payout_spreadsheet %}
+                                <a href="{{ past_payout_period.admin_payout_spreadsheet.url }}" download>Admin Spreadsheet</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if past_payout_period.musicians_payout_spreadsheet %}
+                            <a href="{{ past_payout_period.musicians_payout_spreadsheet.url }}" download>Musicians Spreadsheet</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if past_payout_period.donation_payout_spreadsheet %}
+                            <a href="{{ past_payout_period.donation_payout_spreadsheet.url }}" download>Donation Spreadsheet</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
 
@@ -57,33 +69,33 @@
 {% endblock content %}
 
 {% block extra_js %}
-          <script src="{% static 'js/bootstrap-select.js' %}"></script>
-          <script src="{% static 'js/dashboard-base.js' %}"></script>
+    <script src="{% static 'js/bootstrap-select.js' %}"></script>
+    <script src="{% static 'js/dashboard-base.js' %}"></script>
 
 
-          <!-- Bootstrap datepicker JavaScript -->
-          <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-          <script src="{% static 'js/metrics_datepicker.js' %}"></script>
-          <script>
-            var $datePickerStart = $('#payout-calculator__date-picker-start input');
-            $datePickerStart.datepicker({
-                format: 'yyyy-mm-dd',
-                minViewMode: "days",
-                orientation: "top auto",
-                autoclose: true
-            });
+    <!-- Bootstrap datepicker JavaScript -->
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'js/metrics_datepicker.js' %}"></script>
+    <script>
+        var $datePickerStart = $('#payout-calculator__date-picker-start input');
+        $datePickerStart.datepicker({
+            format: 'yyyy-mm-dd',
+            minViewMode: "days",
+            orientation: "top auto",
+            autoclose: true
+        });
 
-            var $datePickerEnd = $('#payout-calculator__date-picker-end input');
-            $datePickerEnd.datepicker({
-                format: 'yyyy-mm-dd',
-                minViewMode: "days",
-                orientation: "top auto",
-                autoclose: true
-            });
+        var $datePickerEnd = $('#payout-calculator__date-picker-end input');
+        $datePickerEnd.datepicker({
+            format: 'yyyy-mm-dd',
+            minViewMode: "days",
+            orientation: "top auto",
+            autoclose: true
+        });
 
-            var start_date = new Date({{ form.period_start.value.year }}, {{ form.period_start.value.month }}-1, {{ form.period_start.value.day }});
-            var end_date = new Date({{ form.period_end.value.year }}, {{ form.period_end.value.month}}-1, {{ form.period_end.value.day }});
-            $datePickerStart.datepicker("setDate", start_date);
-            $datePickerEnd.datepicker("setDate", end_date);
-          </script>
+        var start_date = new Date({{ form.period_start.value.year }}, {{ form.period_start.value.month }}-1, {{ form.period_start.value.day }});
+        var end_date = new Date({{ form.period_end.value.year }}, {{ form.period_end.value.month}}-1, {{ form.period_end.value.day }});
+        $datePickerStart.datepicker("setDate", start_date);
+        $datePickerEnd.datepicker("setDate", end_date);
+    </script>
 {% endblock %}
