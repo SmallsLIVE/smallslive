@@ -235,7 +235,7 @@ class UploadImagePreview(View):
         image.name = self.sanitize_file_name(image.name)
         image_file = ImageMediaFile.objects.create(photo=image)
 
-        url = generate_url(image_file.photo.file, image_file.storage.bucket.name, width=300)
+        url = generate_url(image_file.photo.file, image_file.photo.storage.bucket.name, width=300)
 
         data = {
             'success': True,
