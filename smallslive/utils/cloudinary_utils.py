@@ -6,12 +6,17 @@ from django.utils.safestring import mark_safe
 logger = logging.getLogger(__name__)
 
 
+def extract_image_without_format(image_name):
+    dot_index = image_name.rfind('.')
+    return image_name[:dot_index]
+
+
 def get_transformation_list(height, width, crop_box, smart):
     transformations = []
     default_transformation = {
         'height': height,
         'width': width,
-        'quality': 'auto',
+        'quality': 'auto'
     }
 
     if smart:
@@ -43,7 +48,8 @@ def generate_url(
     transformation = get_transformation_list(height, width, crop_box, smart)
     try:
         photo_name_with_bucket = f'{bucket_name}/{photo_name}'
-        return mark_safe(cloudinary_url(photo_name_with_bucket, transformation=transformation)[0])
+        photo_name_with_bucket = extract_image_without_format(photo_name_with_bucket)
+        return mark_safe(cloudinary_url(photo_name_with_bucket, transformation=transformation, format='jpg')[0])
     except Exception as E:
         logger.error(str(E), exc_info=True)
 
