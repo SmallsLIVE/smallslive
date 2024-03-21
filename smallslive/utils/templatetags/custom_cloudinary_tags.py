@@ -50,10 +50,8 @@ def cloudinary_image_transform(context, photo_name, height=None, width=None, cro
     transformation = get_transformation_list(height, width, crop_box, smart)
     if photo_name:
         try:
-            photo_name = extract_image_without_format(photo_name)
             return mark_safe(CloudinaryImage(photo_name).image(
-                transformation=transformation,
-                format='jpg'
+                transformation=transformation
             ))
         except Exception as E:
             logger.error(str(E), exc_info=True)
@@ -63,11 +61,9 @@ def cloudinary_image_transform(context, photo_name, height=None, width=None, cro
 
         if bucket_name and file_path:
             photo_name = f'{bucket_name}{file_path}'
-            photo_name = extract_image_without_format(photo_name)
             try:
                 return mark_safe(CloudinaryImage(photo_name).image(
-                    transformation=transformation,
-                    format='jpg'
+                    transformation=transformation
                 ))
             except Exception as E:
                 logger.error(str(E), exc_info=True)
@@ -82,8 +78,7 @@ def cloudinary_image_url(context, photo_name, height=None, width=None, crop_box=
     transformation = get_transformation_list(height, width, crop_box, smart)
     if photo_name:
         try:
-            photo_name = extract_image_without_format(photo_name)
-            return mark_safe(cloudinary_url(photo_name, transformation=transformation, format='jpg')[0])
+            return mark_safe(cloudinary_url(photo_name, transformation=transformation)[0])
         except Exception as E:
             logger.error(str(E), exc_info=True)
 
@@ -93,9 +88,8 @@ def cloudinary_image_url(context, photo_name, height=None, width=None, crop_box=
 
         if bucket_name and file_path:
             photo_name = f'{bucket_name}{file_path}'
-            photo_name = extract_image_without_format(photo_name)
             try:
-                return mark_safe(cloudinary_url(photo_name, transformation=transformation, format='jpg')[0])
+                return mark_safe(cloudinary_url(photo_name, transformation=transformation)[0])
             except Exception as E:
                 logger.error(str(E), exc_info=True)
 

@@ -16,7 +16,11 @@ def get_transformation_list(height, width, crop_box, smart):
     default_transformation = {
         'height': height,
         'width': width,
-        'quality': 'auto'
+        'quality': 'auto',
+    }
+
+    image_format_transform = {
+        'fetch_format': 'jpg'
     }
 
     if smart:
@@ -37,6 +41,7 @@ def get_transformation_list(height, width, crop_box, smart):
             'crop': 'crop',
         })
     transformations.append(default_transformation)
+    transformations.append(image_format_transform)
 
     return transformations
 
@@ -48,8 +53,7 @@ def generate_url(
     transformation = get_transformation_list(height, width, crop_box, smart)
     try:
         photo_name_with_bucket = f'{bucket_name}/{photo_name}'
-        photo_name_with_bucket = extract_image_without_format(photo_name_with_bucket)
-        return mark_safe(cloudinary_url(photo_name_with_bucket, transformation=transformation, format='jpg')[0])
+        return mark_safe(cloudinary_url(photo_name_with_bucket, transformation=transformation)[0])
     except Exception as E:
         logger.error(str(E), exc_info=True)
 
