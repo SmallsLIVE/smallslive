@@ -976,3 +976,5 @@ cloudinary.config(
     api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
     secure=True
 )
+
+EVENT_UPDATE_RECEIVER = os.environ.get('EVENT_UPDATE_RECEIVER', '').split(',')
