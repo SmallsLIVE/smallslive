@@ -205,26 +205,61 @@ $(document).ready(function () {
       $('#image-upload-loading').removeClass("hidden");
 
       $.ajax({
-          url: uploadImagePreviewUrl,
-          type: "POST",
-          data: data,
-          enctype: 'multipart/form-data',
-          processData: false,
-          contentType: false,
-          cache: false,
-          success: function (data) {
-            if (data.success) {
-              $('#image-load-gif').toggleClass('hidden');
-              $("#image-upload-loading").toggleClass("hidden");
-              updateUploadedImage(data);
-            }
+        url: uploadImagePreviewUrl,
+        type: "POST",
+        data: data,
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function (data) {
+          if (data.success) {
+            $('#image-load-gif').toggleClass('hidden');
+            $("#image-upload-loading").toggleClass("hidden");
+            updateUploadedImage(data);
           }
+        }
       });
 
     })
 
+    function validateArtistInput() {
+      var error = [];
+      var totalNumArtist = $("#id_artists_gig_info-TOTAL_FORMS").val();
+
+      for (var i = 0; i < totalNumArtist; i++) {
+        var artist = $(`#id_artists_gig_info-${i}-artist`).val();
+        var role = $(`#id_artists_gig_info-${i}-role`).val();
+        if (!artist) {
+          error.push({
+            'id': `#id_artists_gig_info-${i}-artist`,
+            'message': 'Please select artist'
+          })
+        }
+        if (!role) {
+          error.push({
+            'id': `#id_artists_gig_info-${i}-role`,
+            'message': 'Please select role'
+          })
+        }
+      }
+
+      return error
+    }
+
     $(document).on("click", "#submit-id-submit", function () {
-      $("#event-edit-form").submit();
+      var hasError = validateArtistInput();
+      if(hasError.length == 0){
+        $("#event-edit-form").submit();
+      }else{
+         toastr.options = {
+            "positionClass": "toast-top-center"
+        };
+        toastr.error(
+            "<div style='font-size: 12px;'>Please provide valid input for artist.</div>",
+            "<div style='font-size: 14px'>Error</div>"
+        );
+      }
     });
 
     $(document).on("submit", "#event-edit-form", function (event) {
@@ -242,7 +277,8 @@ $(document).ready(function () {
           showEventInfo(infoUrl);
           updateEventList(data.data.eventId, data.data.title, data.data.photoUrl);
         },
-        error: function() {}
+        error: function() {
+        }
       });
     });
 
@@ -541,19 +577,19 @@ $(document).ready(function () {
 
     if (dateFrom) {
       utcDateFrom =
-        dateFrom.getFullYear() +
-        "/" +
-        (dateFrom.getMonth() + 1) +
-        "/" +
-        dateFrom.getDate();
+          dateFrom.getFullYear() +
+          "/" +
+          (dateFrom.getMonth() + 1) +
+          "/" +
+          dateFrom.getDate();
     }
     if (dateTo) {
       utcDateTo =
-        dateTo.getFullYear() +
-        "/" +
-        (dateTo.getMonth() + 1) +
-        "/" +
-        dateTo.getDate();
+          dateTo.getFullYear() +
+          "/" +
+          (dateTo.getMonth() + 1) +
+          "/" +
+          dateTo.getDate();
     }
 
     if (dateFrom) {
@@ -672,7 +708,9 @@ $(document).ready(function () {
   function updateEventList(eventId, title, photoUrl) {
     var $row = $("#artist-event-row-" + eventId);
     $row.find("div.title").text(title);
-    $row.find(".artist-event-picture img").attr("src", photoUrl);
+    if(photoUrl){
+      $row.find(".artist-event-picture img").attr("src", photoUrl);
+    }
   }
 
   function disableEditForm() {
@@ -940,63 +978,63 @@ function askPublish(eventId) {
 }
 
 function makeSetPrivate() {
-    $.post('/events/sets/' + selectedSetId + '/private/', {
-      csrfmiddlewaretoken: csrfToken
-    }, function (data, status) {
-    });
-    hideMakePrivate();
-    $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
-        '<button class="publish-button" onclick="askPublish(' + selectedSetId + ')">Publish</button>'
-    )
-    $("#set-id-" + selectedSetId).find('.set-status').text('Hidden')
-    showSuccess('private')
+  $.post('/events/sets/' + selectedSetId + '/private/', {
+    csrfmiddlewaretoken: csrfToken
+  }, function (data, status) {
+  });
+  hideMakePrivate();
+  $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
+      '<button class="publish-button" onclick="askPublish(' + selectedSetId + ')">Publish</button>'
+  )
+  $("#set-id-" + selectedSetId).find('.set-status').text('Hidden')
+  showSuccess('private')
 }
 
 function publishEvent() {
-    hideMakePrivate();
-    hidePublish();
-    $.post('/events/' + selectedEventId + '/publish/', {
-      csrfmiddlewaretoken: csrfToken
-    }, function (data, status) {
-      var $button = $("#artist-event-action-" + selectedEventId).find("button.publish");
-      var newText = "Make Private";
-      var newClass = "private-button";
-      var oldClass = "publish-button";
-      var newStatus = "Public";
-      if (!data.is_published) {
-        newText = "Publish";
-        newStatus = "Private";
-        oldClass = "private-button";
-        newClass = "publish-button";
-      }
-      $button.text(newText);
-      $button.removeClass(oldClass);
-      $button.addClass(newClass);
-      $("#event-list-event-" + selectedEventId).text(newStatus);
+  hideMakePrivate();
+  hidePublish();
+  $.post('/events/' + selectedEventId + '/publish/', {
+    csrfmiddlewaretoken: csrfToken
+  }, function (data, status) {
+    var $button = $("#artist-event-action-" + selectedEventId).find("button.publish");
+    var newText = "Make Private";
+    var newClass = "private-button";
+    var oldClass = "publish-button";
+    var newStatus = "Public";
+    if (!data.is_published) {
+      newText = "Publish";
+      newStatus = "Private";
+      oldClass = "private-button";
+      newClass = "publish-button";
+    }
+    $button.text(newText);
+    $button.removeClass(oldClass);
+    $button.addClass(newClass);
+    $("#event-list-event-" + selectedEventId).text(newStatus);
 
-    });
+  });
 }
 
 function hideMakePrivate() {
-    $('#privateConfirm').modal('hide');
+  $('#privateConfirm').modal('hide');
 }
 
 function hidePublish() {
-    $('#publishConfirm').modal('hide');
+  $('#publishConfirm').modal('hide');
 }
 
 function showSelectFormat() {
-    var $downloadDialog = $('#downloadFormat');
-    var $table = $("#track-list-tbl");
-    var $clonedTable = $table.clone(true).removeClass("hidden").removeAttr("id");
-    var $tableContainer = $downloadDialog.find(".table-container");
-    if ($tableContainer.find("table").length === 0) {
-      $tableContainer.append($clonedTable);
-    } else {
-      $tableContainer.html('');
-      $tableContainer.append($clonedTable);
-    }
-    $downloadDialog.modal('show');
+  var $downloadDialog = $('#downloadFormat');
+  var $table = $("#track-list-tbl");
+  var $clonedTable = $table.clone(true).removeClass("hidden").removeAttr("id");
+  var $tableContainer = $downloadDialog.find(".table-container");
+  if ($tableContainer.find("table").length === 0) {
+    $tableContainer.append($clonedTable);
+  } else {
+    $tableContainer.html('');
+    $tableContainer.append($clonedTable);
+  }
+  $downloadDialog.modal('show');
 }
 
 var resizeTimer;
@@ -1007,19 +1045,19 @@ function loadArtist(value, select) {
     type: 'GET',
     url: '/search/artist_form_autocomplete/?artist-start=' + value,
     success: function(data){
-        data.artist_list.forEach(function(artist) {
+      data.artist_list.forEach(function(artist) {
 
-            // Select already selected artists and  exclude them from the options.
-            var $artists = $(".artist_field option[selected='selected']");
-            var exclude = $(".artist_field option[selected='selected']").map(function () {
-              return $(this).val();
-            }).get();
+        // Select already selected artists and  exclude them from the options.
+        var $artists = $(".artist_field option[selected='selected']");
+        var exclude = $(".artist_field option[selected='selected']").map(function () {
+          return $(this).val();
+        }).get();
 
-            if (exclude.indexOf(artist.val.toString()) < 0) {
-              select.selectize.addOption({ value: artist.val, text: artist.full_name });
-              select.selectize.refreshOptions();
-            }
-        })
+        if (exclude.indexOf(artist.val.toString()) < 0) {
+          select.selectize.addOption({ value: artist.val, text: artist.full_name });
+          select.selectize.refreshOptions();
+        }
+      })
 
     }
   })
@@ -1119,16 +1157,16 @@ var loadMetricsData = function () {
     $.ajax(countsURL, {
       data: data,
       success: function (response) {
-          console.log('-----------------------------');
-          console.log(response);
-          $container.find(".play-value").html(response.playCount);
-          var playedSeconds = response.secondsPlayed;
-          var formattedSeconds = moment.utc((playedSeconds) * 1000).format('HH:mm:ss');
-          $container.find(".time-value").html(formattedSeconds);
+        console.log('-----------------------------');
+        console.log(response);
+        $container.find(".play-value").html(response.playCount);
+        var playedSeconds = response.secondsPlayed;
+        var formattedSeconds = moment.utc((playedSeconds) * 1000).format('HH:mm:ss');
+        $container.find(".time-value").html(formattedSeconds);
       },
       type: 'GET',
       xhrFields: {
-          withCredentials: true
+        withCredentials: true
       }
     });
 

@@ -341,11 +341,12 @@ EventForm = {
         .parent()
         .next()
         .find("select");
+      console.log($role_field);
       var value = $(e.currentTarget).val();
       $.get(
         "//" + EventForm.SITE_URL + "/artists/" + value + "/instrument_ajax/",
         function(data) {
-          if ($role_field.length > 0) {
+          if ($role_field) {
             $role_field[0].selectize.setValue(data);
           }
         }
