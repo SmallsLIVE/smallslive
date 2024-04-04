@@ -574,7 +574,7 @@ class EventEditAjaxView(EventEditView):
                 event_data = {
                     'eventId': form.instance.pk,
                     'title': form.instance.title,
-                    'photoUrl': form.instance.photo.url,
+                    'photoUrl': form.instance.photo.url if form.instance.photo.name else None,
                 }
                 data = {'success': True, 'data': event_data}
                 form.save()
