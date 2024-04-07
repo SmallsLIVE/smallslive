@@ -88,6 +88,7 @@ def send_event_update_email(updated_by, event, base_url):
         'event_full_title': event.full_title(),
         'event_url': event.get_absolute_url(),
         'event_slug': event.slug,
+        'event_date': event.date,
         'base_url': base_url,
     }
 

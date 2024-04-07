@@ -1,8 +1,9 @@
-<h2 style="font-size: 24px;">Event "{{ event_title }}" has been updated.</h2>
+<h2 style="font-size: 24px;">Event "{{ event_title }}" on {{ event_date|date:'m/d/Y' }} has been updated.</h2>
 
 <p>
     Event Id: {{ event_id }} <br>
     Event Title: {{ event_full_title }}<br>
+    Event Date: {{ event_date|date:'m/d/Y' }}<br>
     Updated by: {{ artist_name }}<br>
     Event slug: {{ event_slug }}
 </p>
