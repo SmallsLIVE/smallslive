@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 
@@ -168,6 +169,15 @@ class Product(AbstractProduct):
         category = self.categories.filter(name='Full Access').first()
 
         return bool(category)
+
+    def get_absolute_url(self):
+        """
+        Return a product's absolute url
+        """
+        return reverse(
+            'dashboard:catalogue-product',
+            kwargs={"pk": self.id}
+        )
 
     def _clean_child(self):
         """
