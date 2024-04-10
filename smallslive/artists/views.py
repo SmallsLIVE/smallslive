@@ -226,3 +226,33 @@ class ArtistListCsvView(StaffuserRequiredMixin, View):
 
 
 download_artist_list_csv = ArtistListCsvView.as_view()
+
+
+class ArtistArchiveCSVList(StaffuserRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        # Create a response with CSV content
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="artist_archive_list.csv"'
+
+        # Create a CSV writer and write the header
+        csv_writer = csv.writer(response)
+        csv_writer.writerow([
+            'First Name',
+            'Last Name'
+        ])
+
+        all_artists = Artist.objects.values(
+            'first_name', 'last_name'
+        ).all().order_by("last_name")
+
+        for artist in all_artists:
+            csv_writer.writerow([
+                artist['first_name'],
+                artist['last_name'],
+            ])
+
+        return response
+
+
+download_archive_artist_list_csv = ArtistArchiveCSVList.as_view()
