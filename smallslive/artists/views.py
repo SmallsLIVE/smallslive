@@ -242,12 +242,14 @@ class ArtistArchiveCSVList(StaffuserRequiredMixin, View):
             'Last Name'
         ])
 
-        all_artists = Artist.objects.all().order_by("last_name")
+        all_artists = Artist.objects.values(
+            'first_name', 'last_name'
+        ).all().order_by("last_name")
 
         for artist in all_artists:
             csv_writer.writerow([
-                artist.first_name,
-                artist.last_name,
+                artist['first_name'],
+                artist['last_name'],
             ])
 
         return response
