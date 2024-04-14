@@ -237,21 +237,14 @@ class ArtistArchiveCSVList(StaffuserRequiredMixin, View):
 
         # Create a CSV writer and write the header
         csv_writer = csv.writer(response)
-        csv_writer.writerow([
-            'First Name',
-            'Last Name'
-        ])
 
-        all_artists = Artist.objects.values(
-            'first_name', 'last_name'
-        ).all().order_by("last_name")
+        all_artists = Artist.objects.all().order_by("last_name")
+        artist_name_list = []
 
         for artist in all_artists:
-            csv_writer.writerow([
-                artist['first_name'],
-                artist['last_name'],
-            ])
+            artist_name_list.append(artist.full_name())
 
+        csv_writer.writerow(artist_name_list)
         return response
 
 
