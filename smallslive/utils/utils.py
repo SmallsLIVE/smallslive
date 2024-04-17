@@ -97,6 +97,9 @@ def send_event_update_email(updated_by, event, base_url):
 
     try:
         html_message = render_to_string('emails/event-update-email.html', update_details)
+        print("-------------- Sending Event update email ----------------")
+        print(f"--------- Sender {from_email}-------------")
+        print(f"------- Receiver {to_email} -------------")
 
         send_mail(email_content['subject'],
                   email_content['body'],
