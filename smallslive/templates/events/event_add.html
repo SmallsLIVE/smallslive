@@ -75,6 +75,17 @@
       EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
       EventForm.init(true);
 
+      function resetCropBox(data){
+          var $idCropping = $("#id_cropping");
+          var imageStr = `0,0,${data.width},${data.height}`;
+          var ratio = data.width/data.height;
+
+          $idCropping.data("org-width", data.width);
+          $idCropping.val(imageStr);
+          $idCropping.data("org-height", data.height);
+          $idCropping.data("ration", ratio);
+      }
+
       function updateUploadedImage(data) {
 
         var $imageId = $('#id_image_id');
@@ -92,6 +103,8 @@
         $(".jcrop-holder").remove();
         $("#id_cropping-image").remove();
         $(".field-box.allow-fullsize").remove();
+
+        resetCropBox(data);
         image_cropping.init();
 
       }
