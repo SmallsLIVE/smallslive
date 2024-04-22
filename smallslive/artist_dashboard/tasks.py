@@ -46,7 +46,7 @@ def generate_payout_sheet_task(start, end,
     start = datetime.fromisoformat(start)
     end = datetime.fromisoformat(end)
     revenue = float(revenue)
-    operating_expenses = float(revenue)
+    operating_expenses = float(operating_expenses)
 
     metrics = metrics_data_for_date_period(start, end)
     metrics = donations_data_for_date_period(start, end, metrics)

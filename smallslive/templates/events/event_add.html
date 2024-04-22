@@ -75,6 +75,11 @@
       EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
       EventForm.init(true);
 
+      function resetCropBox(){
+          var $idCropping = $("#id_cropping");
+          $idCropping.val("");
+      }
+
       function updateUploadedImage(data) {
 
         var $imageId = $('#id_image_id');
@@ -92,6 +97,8 @@
         $(".jcrop-holder").remove();
         $("#id_cropping-image").remove();
         $(".field-box.allow-fullsize").remove();
+
+        resetCropBox(data);
         image_cropping.init();
 
       }

@@ -122,6 +122,13 @@
             <option value="z2a">Z-A</option>
           </select>
         </div>
+          {% if request.user.is_staff %}
+              <div>
+                  <a href="{% url 'download_archive_artist_list_csv' %}" class="btn white-border-button" id="download-artist-btn">
+                      <i class="fa fa-download margin-right"></i>Download Artist list
+                  </a>
+              </div>
+          {% endif %}
       {% endif %}
       {% include 'events/archived_filters.html' with default_to_date=default_to_date is_artist_bio=is_artist_bio %}
     </div>

@@ -9,6 +9,8 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from dateutil import parser
 
+from utils.utils import send_event_update_email
+
 try:
     from StringIO import StringIO ## for Python 2
 except ImportError:
@@ -572,10 +574,12 @@ class EventEditAjaxView(EventEditView):
                 event_data = {
                     'eventId': form.instance.pk,
                     'title': form.instance.title,
-                    'photoUrl': form.instance.photo.url,
+                    'photoUrl': form.instance.photo.url if form.instance.photo.name else None,
                 }
                 data = {'success': True, 'data': event_data}
                 form.save()
+
+                send_event_update_email(self.request.user, form.instance, self.request.build_absolute_uri('/')[:-1])
                 response = JsonResponse(data)
 
         return response

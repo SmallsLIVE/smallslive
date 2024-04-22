@@ -1,4 +1,5 @@
 {# {% load pipeline %} #}
+{% extends "home_new.html" %}
 {% load static from staticfiles %}
 {% load custom_cloudinary_tags %}
 
@@ -11,7 +12,7 @@
   {# {% stylesheet 'dashboard_css' %} #}
   <link href='https://fonts.googleapis.com/css?family=Lato:300,400,400italic,700,700italic,900' rel='stylesheet'
         type='text/css'>
-  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  {# <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script> #}
   <title>Artist Dashboard - SmallsLIVE</title>
   {% block extra_head %}
   {% endblock extra_head %}
@@ -91,7 +92,19 @@
       </div>
   </footer>
 
-  {% javascript 'dashboard_js' %}
+  {# {% javascript 'dashboard_js' %} #}
+  {% block js %}
+  <script type="text/javascript" src="{% static 'js/jquery.mobile.custom.min.js' %}" charset="utf-8"></script>
+  <script type="text/javascript" src="{% static 'js/jquery-ui.js' %}" charset="utf-8"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}" charset="utf-8"></script>
+  <script type="text/javascript" src="{% static 'js/slick/slick.min.js' %}" charset="utf-8"></script>
+  <script type="text/javascript" src="{% static 'js/raphael-min.js' %}" charset="utf-8"></script>
+  <script type="text/javascript" src="{% static 'js/imgCoverEffect.min.js' %}" charset="utf-8"></script>
+  <script type="text/javascript" src="{% static 'js/base.js' %}" charset="utf-8"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap-select.js' %}" charset="utf-8"></script>
+  <script type="text/javascript" src="{% static 'js/Chart.min.js' %}" charset="utf-8"></script>
+  <script type="text/javascript" src="{% static 'js/dashboard-base.js' %}" charset="utf-8"></script>
+  {% endblock js %}
   {% block extra_js %}
   {% endblock extra_js %}
 </body>

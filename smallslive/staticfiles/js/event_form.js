@@ -13,16 +13,16 @@ EventForm = {
     newElement.find(":input").each(function() {
       if ($(this).attr("id")) {
         var name = $(this)
-          .attr("name")
-          .replace("-0-", "-" + total + "-");
+            .attr("name")
+            .replace("-0-", "-" + total + "-");
         var id = "id_" + name;
         $(this)
-          .attr({
-            name: name,
-            id: id
-          })
-          .val("")
-          .removeAttr("checked");
+            .attr({
+              name: name,
+              id: id
+            })
+            .val("")
+            .removeAttr("checked");
       }
       // Clone value if 'data-clone-value' = True. Set default value for walk in price.
       if ($(this).data("clone-value") == "True") {
@@ -39,11 +39,12 @@ EventForm = {
       create: false
     });
     newElement.find(".artist_remove").on("click", function() {
+      setFormCount();
       if(($(this).parents("tbody").find('tr').length > 1) && (!$(this)
-      .parents("tr").is(':first-child'))) {
+          .parents("tr").is(':first-child'))) {
         $(this)
-        .parents("tr")
-        .remove();
+            .parents("tr")
+            .remove();
       }
       else {
         alert("Can't remove the first one.");
@@ -91,19 +92,19 @@ EventForm = {
 
     var propagateStart = function(start) {
       var redrawSlotButtons =
-        EventForm.selectedDate.isoWeekday() !== start.isoWeekday();
+          EventForm.selectedDate.isoWeekday() !== start.isoWeekday();
       var oldEnd = moment($end.data("DateTimePicker").getDate());
       EventForm.selectedDate = start;
 
       // auto set event end to 1 hour later
       var newEnd = moment(
-        new Date(
-          start.year(),
-          start.month(),
-          start.date(),
-          oldEnd.hour(),
-          oldEnd.minute()
-        )
+          new Date(
+              start.year(),
+              start.month(),
+              start.date(),
+              oldEnd.hour(),
+              oldEnd.minute()
+          )
       );
 
       // If start is before the midnight adjust end if necessary
@@ -120,8 +121,8 @@ EventForm = {
     $start.on("dp.hide", function(ev) {
       // save the selected date so that slot buttons work correctly
       var start = $(this)
-        .data("DateTimePicker")
-        .getDate();
+          .data("DateTimePicker")
+          .getDate();
 
       propagateStart(start);
       // $(this).data("DateTimePicker").show();
@@ -131,27 +132,27 @@ EventForm = {
     // fix for not showing the widget on every click on input
     $end.on("dp.hide", function(ev) {
       $(this)
-        .data("DateTimePicker")
-        .show();
+          .data("DateTimePicker")
+          .show();
       return false;
     });
 
     $date.on("dp.change", function(ev) {
       var start = moment(
-        $(this)
-          .data("DateTimePicker")
-          .getDate()
+          $(this)
+              .data("DateTimePicker")
+              .getDate()
       );
       var oldStart = moment(EventForm.selectedDate);
 
       var newStart = moment(
-        new Date(
-          start.year(),
-          start.month(),
-          start.date(),
-          oldStart.hour(),
-          oldStart.minute()
-        )
+          new Date(
+              start.year(),
+              start.month(),
+              start.date(),
+              oldStart.hour(),
+              oldStart.minute()
+          )
       );
 
       // If current start is after midnight
@@ -228,8 +229,8 @@ EventForm = {
       $(this).datetimepicker("update");
       $(this).on("dp.hide", function(ev) {
         $(this)
-          .data("DateTimePicker")
-          .show();
+            .data("DateTimePicker")
+            .show();
         return false;
       });
     });
@@ -268,26 +269,26 @@ EventForm = {
     firstRow.appendTo($setsTableBody);
     this.configureTimePicker(firstRow);
     firstRow
-      .find("#id_sets-" + total + "-start")
-      .data("DateTimePicker")
-      .setDate(first);
+        .find("#id_sets-" + total + "-start")
+        .data("DateTimePicker")
+        .setDate(first);
     firstRow
-      .find("#id_sets-" + total + "-end")
-      .data("DateTimePicker")
-      .setDate(first.add(duration, "h"));
+        .find("#id_sets-" + total + "-end")
+        .data("DateTimePicker")
+        .setDate(first.add(duration, "h"));
 
     if (second) {
       var secondRow = EventForm.cloneMore($firstClone, undefined, "sets");
       secondRow.appendTo($setsTableBody);
       this.configureTimePicker(secondRow);
       secondRow
-        .find("#id_sets-" + (total + 1) + "-start")
-        .data("DateTimePicker")
-        .setDate(second);
+          .find("#id_sets-" + (total + 1) + "-start")
+          .data("DateTimePicker")
+          .setDate(second);
       secondRow
-        .find("#id_sets-" + (total + 1) + "-end")
-        .data("DateTimePicker")
-        .setDate(second.add(duration, "h"));
+          .find("#id_sets-" + (total + 1) + "-end")
+          .data("DateTimePicker")
+          .setDate(second.add(duration, "h"));
     }
 
     this.fixTableWidths($setsTable);
@@ -313,11 +314,11 @@ EventForm = {
     $(document).on("click", ".artist_remove", function(e) {
       // hide the entry and set the DELETE value to true so Django knows to delete it
       $(this)
-        .parents("tr")
-        .hide();
+          .parents("tr")
+          .hide();
       var del = $(this)
-        .parents("tr")
-        .find('input[id$="DELETE"]')[0];
+          .parents("tr")
+          .find('input[id$="DELETE"]')[0];
       $(del).val(true);
       EventForm.fixTableWidths($setsTable);
       return false;
@@ -338,17 +339,18 @@ EventForm = {
     // Dynamically sets the default instrument for an artist
     $(document).on("change", ".artist_field", function(e) {
       var $role_field = $(e.currentTarget)
-        .parent()
-        .next()
-        .find("select");
+          .parent()
+          .next()
+          .find("select");
+      console.log($role_field);
       var value = $(e.currentTarget).val();
       $.get(
-        "//" + EventForm.SITE_URL + "/artists/" + value + "/instrument_ajax/",
-        function(data) {
-          if ($role_field.length > 0) {
-            $role_field[0].selectize.setValue(data);
+          "//" + EventForm.SITE_URL + "/artists/" + value + "/instrument_ajax/",
+          function(data) {
+            if ($role_field) {
+              $role_field[0].selectize.setValue(data);
+            }
           }
-        }
       );
     });
 
@@ -370,13 +372,14 @@ EventForm = {
     });
 
     buttonRemove.on("click", function(e) {
+      setFormCount();
       // hide the entry and set the DELETE value to true so Django knows to delete it
       $(this)
-        .parents("tr")
-        .hide();
+          .parents("tr")
+          .hide();
       var del = $(this)
-        .parents("tr")
-        .find('input[id$="DELETE"]')[0];
+          .parents("tr")
+          .find('input[id$="DELETE"]')[0];
       $(del).val(true);
       EventForm.fixTableWidths($artistTable);
       return false;
@@ -406,7 +409,7 @@ EventForm = {
       create: false,
       onChange: function(value) {
         venue = $(
-          "#div_id_venue .selectize-dropdown-content [data-value~=" +
+            "#div_id_venue .selectize-dropdown-content [data-value~=" +
             value +
             "]"
         ).text();
@@ -433,20 +436,20 @@ EventForm = {
     this.initInlineArtistsFunctionality(callback);
 
     $(document).on(
-      "change",
-      "#id_sets-0-start, #id_sets-1-start, #id_sets-2-start, #id_sets-3-start",
-      function(e) {
-        let set = parseInt(this.id[8]) + 1;
-        $(`#id_set${set}-set_name`).val($(this).val());
-      }
+        "change",
+        "#id_sets-0-start, #id_sets-1-start, #id_sets-2-start, #id_sets-3-start",
+        function(e) {
+          let set = parseInt(this.id[8]) + 1;
+          $(`#id_set${set}-set_name`).val($(this).val());
+        }
     );
 
     var currentdate = new Date();
     var time = currentdate.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
     var datetime = (currentdate.getMonth()+1)  + "/"
-                + currentdate.getDate() + "/"
-                + currentdate.getFullYear() + " "
-                + time;
+        + currentdate.getDate() + "/"
+        + currentdate.getFullYear() + " "
+        + time;
 
     $('#id_start, #id_end').val(datetime);
   }
@@ -472,4 +475,10 @@ function copyImageToAnotherBucket(venue) {
       console.error('Error:', error);
     }
   });
+}
+
+
+function setFormCount(){
+  var currentTotalForm = parseInt($("#id_artists_gig_info-TOTAL_FORMS").val());
+  $("#id_artists_gig_info-TOTAL_FORMS").val(currentTotalForm - 1) ? currentTotalForm > 0 : 0;
 }
