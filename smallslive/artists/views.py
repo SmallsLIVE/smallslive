@@ -239,12 +239,9 @@ class ArtistArchiveCSVList(StaffuserRequiredMixin, View):
         csv_writer = csv.writer(response)
 
         all_artists = Artist.objects.all().order_by("last_name")
-        artist_name_list = []
 
         for artist in all_artists:
-            artist_name_list.append(artist.full_name())
-
-        csv_writer.writerow(artist_name_list)
+            csv_writer.writerow([artist.full_name()])
         return response
 
 
