@@ -97,15 +97,15 @@
   <div class="artist-metrics-header white-underline flex-row">
     <div id="datepicker-dashboard-btn" class="title1 datepicker-dashboard-btn">Metrics</div>
     <div class="text2 metrics-datepicker-description" id="metrics-datepicker-description">All Time</div>
-    <div id="datepicker-dashboard-left-panel" class="datepicker-dashboard-left-panel">
-      {% for range in datepicker_default_ranges %}
-          <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>
-      {% endfor %}
-      <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ datepicker_current_range.date }}" data-start="{{ datepicker_current_range.period_start }}" data-end="{% now 'b, d, Y' %}">Current pay period</div>
-      {% for range in datepicker_old_payout_ranges %}
-          <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.period_start }}" data-end="{{ range.period_end }}">{{ range.period_start|date:"m/d/Y" }} - {{ range.period_end|date:"m/d/Y" }}  </div>
-      {% endfor %}
-    </div>
+{#    <div id="datepicker-dashboard-left-panel" class="datepicker-dashboard-left-panel">#}
+{#      {% for range in datepicker_default_ranges %}#}
+{#          <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>#}
+{#      {% endfor %}#}
+{#      <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ datepicker_current_range.date }}" data-start="{{ datepicker_current_range.period_start }}" data-end="{% now 'b, d, Y' %}">Current pay period</div>#}
+{#      {% for range in datepicker_old_payout_ranges %}#}
+{#          <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.period_start }}" data-end="{{ range.period_end }}">{{ range.period_start|date:"m/d/Y" }} - {{ range.period_end|date:"m/d/Y" }}  </div>#}
+{#      {% endfor %}#}
+{#    </div>#}
   </div>
   <label class="metrics accent-color text4 date-error no-h-padding hidden">
     Invalid date range selection
