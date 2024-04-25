@@ -552,6 +552,8 @@ $(document).ready(function () {
 
     var dateFrom = $datePickerFrom.datepicker("getDate");
     var dateTo = $datePickerTo.datepicker("getDate");
+    var utcDateFrom = null;
+    var utcDateTo = null;
 
     if ($datePickerFrom.length == 0) {
       dateFrom = null;
