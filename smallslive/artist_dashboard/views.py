@@ -57,6 +57,9 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(MyEventsView, self).get_context_data(**kwargs)
+        artist = self.request.user.artist
+        context['current_payout_period'] = CurrentPayoutPeriod.objects.first()
+        context['previous_payout_period'] = artist.earnings.first()
         paginator = context['paginator']
         current_page_number = context['page_obj'].number
         context.update({
