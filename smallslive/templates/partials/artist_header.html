@@ -23,7 +23,7 @@
         </a>
         {# {% comment %} #}
           <a href="{% url 'artist_dashboard:metrics' %}">
-            <button class="no-border {% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Payout</button>
+            <button class="no-border {% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</button>
           </a>
         {# {% endcomment %} #}
         <a href="{% url 'artist_dashboard:my_future_events' %}">
