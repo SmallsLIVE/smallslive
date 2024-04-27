@@ -90,3 +90,4 @@ smallslive/smallslive/settings/local*.py
 # Ignore documents
 documents
 /smallslive/.env.local
+/smallslive/foundation.py
