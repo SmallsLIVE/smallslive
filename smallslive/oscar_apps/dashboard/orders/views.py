@@ -334,7 +334,7 @@ class OrderDetailView(DetailView):
             handler.handle_order_status_change(
                 order, new_status, note_msg=success_msg, refund_quantity=refund_quantity)
             # send confirmation email to that user for order refund
-            if new_status == 'Cancelled':
+            if new_status == 'Cancelled' or new_status == 'Refund':
                 message = {}
                 event_info = order.basket.get_tickets_event()
                 message['order_number'] = order.number

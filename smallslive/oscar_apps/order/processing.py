@@ -5,6 +5,8 @@ from subscriptions.mixins import PayPalMixin
 from subscriptions.mixins import StripeMixin
 from oscar.apps.order.models import PaymentEventType
 from oscar.apps.order.processing import EventHandler as CoreEventHandler
+from django.db.models import Sum
+from django.db import transaction
 
 
 class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
@@ -14,7 +16,7 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
 
         return super(EventHandler, self).__init__(*args, **kwargs)
     
-    def cancel_stock_allocations(self, order, lines=None, line_quantities=None):
+    def cancel_stock_allocations(self, order, lines=None, line_quantities=None, is_refund=False):
         """
         Cancel the stock allocations for the passed lines.
 
@@ -25,7 +27,7 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
         if not line_quantities:
             line_quantities = [line.quantity for line in lines]
         for line, qty in zip(lines, line_quantities):
-            if line.status == 'Cancelled':
+            if line.status == 'Cancelled' or is_refund:
                 if line.stockrecord:
                     line.stockrecord.cancel_allocation(qty)
 
@@ -56,12 +58,22 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
 
         return line_items
 
+    def update_order_after_refund(self, order):
+        all_lines = order.stock_lines().aggregate(
+            sum_total_incl_tax=Sum('line_price_incl_tax'),
+            sum_total_excl_tax=Sum('line_price_excl_tax'),
+        )
+        order.total_incl_tax = all_lines.get('sum_total_incl_tax', 0)
+        order.total_excl_tax = all_lines.get('sum_total_excl_tax', 0)
+
+        order.save()
+
     def handle_order_status_change(self, order, new_status, note_msg, refund_quantity=None):
 
         if new_status == 'Cancelled':
             payment_source = order.sources.first()
             reference = payment_source.reference
-            amount = payment_source.amount_allocated
+            amount = payment_source.amount_available_for_refund
             currency = payment_source.currency
             payment_type_name = payment_source.source_type.name.lower()
             refund_reference = self.refund_payment(order, reference, amount, currency, payment_type_name)
@@ -78,37 +90,40 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
                                       order.total_incl_tax, lines,
                                       line_quantities, reference=refund_reference)
             self.cancel_stock_allocations(order, lines, line_quantities)
+            payment_source.refund(amount)
 
         if new_status == 'Refund':
-            payment_source = order.sources.first()
-            active_order_line = order.lines.filter(status='Completed').first()
+            try:
+                with transaction.atomic():
+                    payment_source = order.sources.first()
+                    active_order_line = order.lines.filter(status='Completed').first()
 
-            if active_order_line:
-                reference = payment_source.reference
-                refund_amount = active_order_line.unit_price_incl_tax * refund_quantity
+                    if active_order_line:
+                        reference = payment_source.reference
+                        refund_amount = active_order_line.unit_price_incl_tax * refund_quantity
 
-                currency = payment_source.currency
-                payment_type_name = payment_source.source_type.name.lower()
-                refund_reference = self.refund_payment(order, reference, refund_amount, currency, payment_type_name)
+                        currency = payment_source.currency
+                        payment_type_name = payment_source.source_type.name.lower()
+                        refund_reference = self.refund_payment(
+                            order, reference, refund_amount, currency, payment_type_name
+                        )
 
-                lines = order.stock_lines()
-                updated_order_line = self.get_updated_order_line_data(active_order_line, refund_quantity)
+                        lines = order.stock_lines()
+                        updated_order_line = self.get_updated_order_line_data(active_order_line, refund_quantity)
 
-                lines.filter(status='Completed').update(**updated_order_line)
+                        lines.filter(status='Completed').update(**updated_order_line)
 
-                # for line in lines:
-                #     if line.status == 'Completed':
-                #         line.quantity = line.quantity - refund_quantity
-                #         line.save()
+                        refund_event_type, _ = PaymentEventType.objects.get_or_create(name="PartialRefund")
+                        self.create_payment_event(order, refund_event_type,
+                                                  refund_amount, lines,
+                                                  [refund_quantity], reference=refund_reference)
 
-                refund_event_type, _ = PaymentEventType.objects.get_or_create(name="Refunded")
-                self.handle_payment_event(order, refund_event_type,
-                                          refund_amount, lines,
-                                          [refund_quantity], reference=refund_reference)
+                        self.cancel_stock_allocations(order, lines, [refund_quantity], is_refund=True)
 
-                print("Help me")
-
-
-        # order.set_status(new_status)
-        # TODO: undo donations and library if necessary
+                        self.update_order_after_refund(order)
+                        payment_source.refund(refund_amount)
+            except Exception as E:
+                print(E)
+        else:
+            order.set_status(new_status)
 
