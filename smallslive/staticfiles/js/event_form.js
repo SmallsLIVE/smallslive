@@ -39,7 +39,6 @@ EventForm = {
       create: false
     });
     newElement.find(".artist_remove").on("click", function() {
-      setFormCount();
       if(($(this).parents("tbody").find('tr').length > 1) && (!$(this)
           .parents("tr").is(':first-child'))) {
         $(this)
@@ -372,7 +371,6 @@ EventForm = {
     });
 
     buttonRemove.on("click", function(e) {
-      setFormCount();
       // hide the entry and set the DELETE value to true so Django knows to delete it
       $(this)
           .parents("tr")
@@ -475,10 +473,4 @@ function copyImageToAnotherBucket(venue) {
       console.error('Error:', error);
     }
   });
-}
-
-
-function setFormCount(){
-  var currentTotalForm = parseInt($("#id_artists_gig_info-TOTAL_FORMS").val());
-  $("#id_artists_gig_info-TOTAL_FORMS").val(currentTotalForm - 1) ? currentTotalForm > 0 : 0;
 }

@@ -230,13 +230,19 @@ $(document).ready(function () {
       for (var i = 0; i < totalNumArtist; i++) {
         var artist = $(`#id_artists_gig_info-${i}-artist`).val();
         var role = $(`#id_artists_gig_info-${i}-role`).val();
+        var isDeleted = $(`#id_artists_gig_info-${i}-DELETE`).val();
+
+        if(isDeleted == 'true' || isDeleted == null){
+          continue
+        }
+
         if (!artist) {
           error.push({
             'id': `#id_artists_gig_info-${i}-artist`,
             'message': 'Please select artist'
           })
         }
-        if (!role) {
+        if (!role && !isDeleted) {
           error.push({
             'id': `#id_artists_gig_info-${i}-role`,
             'message': 'Please select role'
@@ -546,6 +552,8 @@ $(document).ready(function () {
 
     var dateFrom = $datePickerFrom.datepicker("getDate");
     var dateTo = $datePickerTo.datepicker("getDate");
+    var utcDateFrom = null;
+    var utcDateTo = null;
 
     if ($datePickerFrom.length == 0) {
       dateFrom = null;
