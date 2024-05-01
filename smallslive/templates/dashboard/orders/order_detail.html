@@ -3,53 +3,60 @@
 {% load currency_filters %}
 
 {% block order_information %}
-  <table class="table table-striped table-bordered table-hover">
-    <caption><i class="icon-shopping-cart icon-large"></i>{% trans "Order information" %}</caption>
-    <tr>
-      <th>{% trans "Order Total" %}</th>
-      <th>{% trans "Date of purchase" %}</th>
-      <th>{% trans "Time of purchase" %}</th>
-      <th>{% trans "Status" %}</th>
-      <th>{% trans "Actions" %}</th>
-    </tr>
-    <tr>
-      <td>{{ order.total_incl_tax|currency:order.currency }}</td>
-      <td>{{ order.date_placed|date:"d/m/y" }}</td>
-      <td>{{ order.date_placed|date:"H:i" }}</td>
-      <td>{{ order.status|default:"N/A" }}</td>
-      <td>
-        {% if order.status != "Cancelled" %}
-          <input type="button" name="refund" value="Refund order" class="btn btn btn-danger" id="button-id-delete"
-                 data-target="#refundModal" data-toggle="modal">
-        {% endif %}
-      </td>
-    </tr>
-  </table>
-  <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-       aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <table class="table table-striped table-bordered table-hover">
+        <caption><i class="icon-shopping-cart icon-large"></i>{% trans "Order information" %}</caption>
+        <tr>
+            <th>{% trans "Order Total" %}</th>
+            <th>{% trans "Date of purchase" %}</th>
+            <th>{% trans "Time of purchase" %}</th>
+            <th>{% trans "Status" %}</th>
+            <th>{% trans "Actions" %}</th>
+        </tr>
+        <tr>
+            <td>{{ order.total_incl_tax|currency:order.currency }}</td>
+            <td>{{ order.date_placed|date:"d/m/y" }}</td>
+            <td>{{ order.date_placed|date:"H:i" }}</td>
+            <td>{{ order.status|default:"N/A" }}</td>
+            <td>
+                {% if order.status != "Cancelled" %}
+                    <input type="button" name="refund" value="Refund order" class="btn btn btn-danger" id="button-id-delete"
+                           data-target="#refundModal" data-toggle="modal">
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
-          <h4 class="modal-title" id="myModalLabel">Refund order #{{ order.number }}</h4>
+                    <h4 class="modal-title" id="myModalLabel">Refund order #{{ order.number }}</h4>
+                </div>
+                <form action="." method="post"
+                      class="left-aligned-form">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        Are you <strong>sure</strong> you want to refund the order #{{ order.number }}?
+                        <div class="form-group" style="margin-top: 20px">
+                            <label for="refund-quantity">How many tickets you want to refund?</label>
+                            <input id="refund-quantity" type="number" name="refund_quantity"
+                                   class="form-control" min="1" max="{{ available_quantity }}"
+                                   required="required" value="{{ available_quantity }}"
+                            />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="order_action" value="change_order_status"/>
+                        <input type="hidden" name="new_status" value="Cancelled"/>
+                        <input type="submit" class="btn btn-danger" value="Refund"/>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="modal-body">
-          Are you <strong>sure</strong> you want to refund the order #{{ order.number }}?
-        </div>
-        <div class="modal-footer">
-          <form action="." method="post"
-                class="left-aligned-form">
-            {% csrf_token %}
-            <input type="hidden" name="order_action" value="change_order_status"/>
-            <input type="hidden" name="new_status" value="Cancelled"/>
-            <input type="submit" class="btn btn-danger" value="Refund"/>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          </form>
-        </div>
-      </div>
     </div>
-  </div>
 {% endblock order_information %}
 
 {% block line_actions %}

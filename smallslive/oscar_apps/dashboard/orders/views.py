@@ -239,6 +239,10 @@ class OrderDetailView(DetailView):
             messages.error(self.request, error)
         return HttpResponseRedirect(url)
 
+    def get_available_quantity(self, order):
+        active_order_line = order.lines.filter(status='Completed').first()
+        return active_order_line.quantity if active_order_line else 0
+
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['active_tab'] = kwargs.get('active_tab', 'lines')
@@ -253,6 +257,7 @@ class OrderDetailView(DetailView):
         ctx['payment_event_types'] = PaymentEventType.objects.all()
 
         ctx['payment_transactions'] = self.get_payment_transactions()
+        ctx['available_quantity'] = self.get_available_quantity(self.object)
 
         return ctx
 
@@ -311,6 +316,14 @@ class OrderDetailView(DetailView):
             return self.reload_page(error=_("Invalid form submission"))
 
         old_status, new_status = order.status, form.cleaned_data['new_status']
+        refund_quantity = int(self.request.POST.get('refund_quantity', 0))
+        available_quantity = self.get_available_quantity(order)
+
+        if refund_quantity <= 0 and refund_quantity > available_quantity:
+            print(f"Invalid refund quantity. Available Refund {available_quantity}. Given refund {refund_quantity}")
+            return self.reload_page(error=_("Invalid form submission"))
+        if refund_quantity != available_quantity:
+            new_status = 'Refund'
         handler = EventHandler(request.user)
 
         success_msg = _(
@@ -319,9 +332,9 @@ class OrderDetailView(DetailView):
                                    'new_status': new_status}
         try:
             handler.handle_order_status_change(
-                order, new_status, note_msg=success_msg)
+                order, new_status, note_msg=success_msg, refund_quantity=refund_quantity)
             # send confirmation email to that user for order refund
-            if new_status == 'Cancelled':
+            if new_status == 'Cancelled' or new_status == 'Refund':
                 message = {}
                 event_info = order.basket.get_tickets_event()
                 message['order_number'] = order.number
