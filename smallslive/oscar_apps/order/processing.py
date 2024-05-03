@@ -70,6 +70,9 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
 
     def handle_order_status_change(self, order, new_status, note_msg, refund_quantity=None):
 
+        return_refund_amount = None
+        return_refund_quantity = None
+
         if new_status == 'Cancelled':
             payment_source = order.sources.first()
             reference = payment_source.reference
@@ -91,6 +94,8 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
                                       line_quantities, reference=refund_reference)
             self.cancel_stock_allocations(order, lines, line_quantities)
             payment_source.refund(amount)
+            return_refund_amount = amount
+            return_refund_quantity = line_quantities[0]
 
         if new_status == 'Refund':
             try:
@@ -122,8 +127,12 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
 
                         self.update_order_after_refund(order)
                         payment_source.refund(refund_amount)
+                        return_refund_amount = refund_amount
+                        return_refund_quantity = refund_quantity
             except Exception as E:
                 print(E)
         else:
             order.set_status(new_status)
+
+        return return_refund_amount, return_refund_quantity
 
