@@ -331,15 +331,16 @@ class OrderDetailView(DetailView):
             "'%(new_status)s'") % {'old_status': old_status,
                                    'new_status': new_status}
         try:
-            handler.handle_order_status_change(
-                order, new_status, note_msg=success_msg, refund_quantity=refund_quantity)
+            return_amount, refund_quantity = handler.handle_order_status_change(
+                order, new_status, note_msg=success_msg,
+                refund_quantity=refund_quantity
+            )
             # send confirmation email to that user for order refund
             if new_status == 'Cancelled' or new_status == 'Refund':
                 message = {}
-                event_info = order.basket.get_tickets_event()
                 message['order_number'] = order.number
-                # message['event_title'] = event_info.title
-                # message['event_date'] = event_info.date
+                message['refund_amount'] = return_amount
+                message['refund_quantity'] = refund_quantity
                 for line in order.lines.all():
                     if line.status == 'Completed':
                         if line.product.event_set.event_id:
