@@ -120,6 +120,9 @@ class Command(BaseCommand):
 
         artist_to_be_deleted = []
 
+        print("------- Prepared artist data -------------")
+        print(prepared_artist_data)
+
         for current_data in prepared_artist_data:
             replace_id = current_data['id']
 
@@ -150,6 +153,7 @@ class Command(BaseCommand):
         if artist_to_be_deleted:
             try:
                 with connection.cursor() as cursor:
+                    print("Deleting artists feom databases")
                     cursor.execute("DELETE FROM artists_artist WHERE id IN %s", [tuple(artist_to_be_deleted)])
             except Exception as e:
                 print(e)
