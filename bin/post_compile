@@ -18,4 +18,3 @@ python smallslive/manage.py migrate voucher --noinput
 
 # Run collectstatic
 python smallslive/manage.py collectstatic --noinput
-python smallslive/manage.py duplicate_artist_cleanup
