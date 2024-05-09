@@ -19,6 +19,7 @@ class Command(BaseCommand):
     help = 'Clean up artist'
 
     def handle(self, *args, **options):
+        logger.error("------ Entered the commend ------------")
         duplicate_artist_name = [
             'Joe Abba',
             'Shabnam Abedi',
