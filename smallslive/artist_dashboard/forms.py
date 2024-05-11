@@ -103,6 +103,8 @@ class EventAjaxEditForm(EventEditForm):
 
     def __init__(self, *args, **kwargs):
         super(EventAjaxEditForm, self).__init__(*args, **kwargs)
+        del self.fields['description']
+
         for field in self.fields:
             if 'class' in self.fields[field].widget.attrs:
                 class_names = self.fields[field].widget.attrs['class'].split(' ')
