@@ -30,6 +30,19 @@
             border-bottom: 3px solid rgba(255, 255, 255, 0.9);
         }
 
+        @media (max-width: 960px) {
+            .search-container-with-tabs .all-options {
+                column-count: unset;
+                -webkit-column-count: unset;
+                max-height: 300px;
+                overflow-y: scroll;
+            }
+            .search-container-with-tabs .instruments-container {
+                width: 250px;
+                left: 33%;
+            }
+        }
+
         @media (min-width: 960px) {
             .instruments-container {
                 width: 25%!important;
