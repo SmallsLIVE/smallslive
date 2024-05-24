@@ -11,6 +11,7 @@ $(document).ready(function () {
 
   var startDateMetrics;
   var endDateMetrics;
+  var isLoading = false;
 
   initializeFilters();
   initializeDashboardDatePickers();
@@ -121,9 +122,16 @@ $(document).ready(function () {
       currentPage = 0;
       totalPages = 1;
       $('#artistEventsList').html("");
-      $('#artistEventsList').addClass("artist-loading-gif");
+      // $('#artistEventsList').addClass("artist-loading-gif");
       loadMore();
     });
+
+    $("#artistEventsList").on('scroll', function(){
+      var element = $(this)[0];
+      if(element.scrollTop + element.clientHeight >= element.scrollHeight && !isLoading){
+        loadMore();
+      }
+    })
 
 
     $("#refine-btn").click(function () {
@@ -552,6 +560,8 @@ $(document).ready(function () {
 
     var dateFrom = $datePickerFrom.datepicker("getDate");
     var dateTo = $datePickerTo.datepicker("getDate");
+    var utcDateFrom = null;
+    var utcDateTo = null;
 
     if ($datePickerFrom.length == 0) {
       dateFrom = null;
@@ -563,7 +573,7 @@ $(document).ready(function () {
 
     if (dateFrom &&  dateTo &&  dateFrom > dateTo) {
       $(".date-error.list").removeClass("hidden");
-      $("#artistEventsList").removeClass("artist-loading-gif");
+      // $("#artistEventsList").removeClass("artist-loading-gif");
       $("#event-load-gif").addClass("hidden");
       return;
     } else {
@@ -572,8 +582,8 @@ $(document).ready(function () {
       }
     }
 
-    $('#artistEventsList').hide();
-    $('#artistEventsList').addClass("artist-loading-gif");
+    // $('#artistEventsList').hide();
+    // $('#artistEventsList').addClass("artist-loading-gif");
     $("#event-load-gif").removeClass("hidden");
     $('.concerts-footer').hide();
 
@@ -619,7 +629,8 @@ $(document).ready(function () {
       data: params,
       dataType: 'json',
       success: function (data) {
-        $("#artistEventsList").removeClass("artist-loading-gif");
+        isLoading = false;
+        // $("#artistEventsList").removeClass("artist-loading-gif");
         firstEventDate = data.first_event_date;
         lastEventDate = data.last_event_date;
         var callback;
@@ -635,8 +646,8 @@ $(document).ready(function () {
 
   function updateShows(data, loadFirstEvent) {
     $("#event-load-gif").addClass("hidden");
-    $("#artistEventsList").removeClass("artist-loading-gif");
-    $('#artistEventsList').show();
+    // $("#artistEventsList").removeClass("artist-loading-gif");
+    // $('#artistEventsList').show();
     $('.concerts-footer').show();
     if (data.template) {
       if (data.total_results > 0) {
@@ -968,6 +979,7 @@ $(document).ready(function () {
     }
 
     var callbacks = [updateShows];
+    isLoading = true;
     sendEventRequest(callbacks, loadFirstEvent);
   }
 

@@ -15,7 +15,46 @@
 {% endblock %}
 
 {% block extra_head %}
-  <meta name="description" content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
+    <meta name="description"
+          content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
+    <style>
+        .all-options {
+            display: block!important;
+            width: 80%;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        .instrument {
+            width: 50%;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.9);
+        }
+
+        @media (max-width: 960px) {
+            .search-container-with-tabs .all-options {
+                column-count: unset;
+                -webkit-column-count: unset;
+                max-height: 300px;
+                overflow-y: scroll;
+            }
+            .search-container-with-tabs .instruments-container {
+                width: 250px;
+                left: 33%;
+            }
+        }
+
+        @media (min-width: 960px) {
+            .instruments-container {
+                width: 25%!important;
+                left: 25%!important;
+                max-height: 350px;
+            }
+
+            .instruments-container .instrument {
+                width: 100px;
+            }
+        }
+    </style>
 {% endblock %}
 
 {% block content %}

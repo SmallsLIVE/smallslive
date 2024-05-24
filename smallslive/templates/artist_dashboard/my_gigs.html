@@ -4,24 +4,30 @@
 {% load thumbor_tags %}
 
 {% block extra_head %}
-  <script>
-    var django = {jQuery: jQuery};
-  </script>
-  <link href="{% static 'css/selectize.bootstrap3.css' %}" rel="stylesheet">
-  <link href="{% static 'image_cropping/css/jquery.Jcrop.min.css' %}" type="text/css" media="all" rel="stylesheet" />
-  <link href="{% static 'image_cropping/css/image_cropping.css' %}" type="text/css" media="all" rel="stylesheet" />
-  <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
-  <!-- Image Cropping is removing jQuery, let's remember it -->
-  <script>
-    window.__jQuery = window.jQuery;
-    window.__$ = window.$;
-  </script>
-  <script type="text/javascript" src="{% static 'image_cropping/js/jquery.Jcrop.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'image_cropping/image_cropping.js' %}"></script>
-  <script>
-    window.jQuery = window.__jQuery;
-    window.$ = window.__$;
-  </script>
+    <script>
+        var django = {jQuery: jQuery};
+    </script>
+    <link href="{% static 'css/selectize.bootstrap3.css' %}" rel="stylesheet">
+    <link href="{% static 'image_cropping/css/jquery.Jcrop.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+    <link href="{% static 'image_cropping/css/image_cropping.css' %}" type="text/css" media="all" rel="stylesheet" />
+    <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+    <!-- Image Cropping is removing jQuery, let's remember it -->
+    <script>
+        window.__jQuery = window.jQuery;
+        window.__$ = window.$;
+    </script>
+    <script type="text/javascript" src="{% static 'image_cropping/js/jquery.Jcrop.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'image_cropping/image_cropping.js' %}"></script>
+    <script>
+        window.jQuery = window.__jQuery;
+        window.$ = window.__$;
+    </script>
+
+    <style>
+    .artist-profile-container .labeled-select .white-border-select .select-selected{
+        border: 2px solid rgba(255, 255, 255, 0.9)!important;
+    }
+    </style>
 
 {% endblock extra_head %}
 
@@ -30,80 +36,84 @@
 {% block title %}My events{% endblock %}
 
 {% block content %}
-  {% include 'artist_dashboard/publish_modal.html' %}
-  {% include 'artist_dashboard/sidemusician_modal.html' %}
+    {% include 'artist_dashboard/publish_modal.html' %}
+    {% include 'artist_dashboard/sidemusician_modal.html' %}
 
-  {# TODO Move container to dashboard base #}
-  <div class="artist-profile-container flex-column" style="padding-left: 0; padding-right: 0;">
-    <div class="event-mobile-info" id="event-info-mobile-card" style="display:none;width:100%;padding:0"></div>
+    {# TODO Move container to dashboard base #}
+    <div class="artist-profile-container flex-column" style="padding-left: 0; padding-right: 0;">
+        <div class="event-mobile-info" id="event-info-mobile-card" style="display:none;width:100%;padding:0"></div>
 
-    <div id="artistEventsContainer" class="flex-row items-flex-stretch artist-events-container{% if is_future %} future{% endif %}" style="border-top: none;">
-      {% include 'artist_dashboard/my_gigs/event_list.html' %}
-      <div class="flex-column artist-event{% if is_future %} future{% endif %}">
+        <div id="artistEventsContainer" class="flex-row items-flex-stretch artist-events-container{% if is_future %} future{% endif %}" style="border-top: none;">
+            {% include 'artist_dashboard/my_gigs/event_list.html' %}
+            <div class="flex-column artist-event{% if is_future %} future{% endif %}">
 
-        <div id="artistEventsInfo" class="flex-row items-flex-stretch artist-events-list-info">
-          <div id="event-edit-form-load-gif" class="hidden events-gif text-center">
-            <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
-          </div>
-          <div id="edit-event-dashboard" class="edit-event-dashboard{% if is_future %} future{% endif %}">
+                <div id="artistEventsInfo" class="flex-row items-flex-stretch artist-events-list-info">
+                    <div id="event-edit-form-load-gif" class="hidden events-gif text-center">
+                        <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
+                    </div>
+                    <div id="edit-event-dashboard" class="edit-event-dashboard{% if is_future %} future{% endif %}">
 
-          </div>
-          <div id="event-info-load-gif" class="hidden events-gif text-center">
-            <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
-          </div>
-          <div id="event-info" class="artist-dashboard-event-container {% if is_future %} future{% else %} active{% endif %}">
-
-          </div>
+                    </div>
+                    <div id="event-info-load-gif" class="hidden events-gif text-center">
+                        <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
+                    </div>
+                    <div class="artist-dashboard-event-container {% if is_future %} future{% else %} active{% endif %}">
+                        <div class="artist-payout-wrapper">
+                            {% include 'artist_dashboard/my_gigs/payout_period_component.html' %}
+                        </div>
+                        <div id="event-info"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-  </div>
+    </div>
 {% endblock content %}
 
 {% block extra_js %}
-  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
-  <script src="{% static 'js/selectize.min.js' %}"></script>
-  <script src="{% static 'js/Chart.min.js' %}"></script>
-  <script src="{% static 'js/subpages.js' %}"></script>
-  <script src="{% static 'js/jquery.form.js' %}"></script>
-  <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
-  <script src="{% static 'js/moment.min.js' %}"></script>
-  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-  <script src="{% static 'js/event_form.js' %}"></script>
-  <script src="{% static 'js/search/artist_dashboard.js' %}"></script>
+    <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+    <script src="{% static 'js/selectize.min.js' %}"></script>
+    <script src="{% static 'js/Chart.min.js' %}"></script>
+    <script src="{% static 'js/subpages.js' %}"></script>
+    <script src="{% static 'js/jquery.form.js' %}"></script>
+    <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
+    <script src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'js/event_form.js' %}"></script>
+    <script src="{% static 'js/search/artist_dashboard.js' %}"></script>
+    <script src="{% static 'js/search/artist_metrics.js' %}"></script>
 
-  <script>
+    <script>
 
-    var videoPlayer;
-    var videoPlaying = false;
-    var currentListIndex;
+        var videoPlayer;
+        var videoPlaying = false;
+        var currentListIndex;
 
-    {% if is_future %}
-      var eventsUrl = "{% url 'artist_dashboard:my_future_events_ajax' %}";
-    {% else %}
-      var eventsUrl = "{% url 'artist_dashboard:my_past_events_ajax' %}";
-    {% endif %}
+        {% if is_future %}
+            var eventsUrl = "{% url 'artist_dashboard:my_future_events_ajax' %}";
+        {% else %}
+            var eventsUrl = "{% url 'artist_dashboard:my_past_events_ajax' %}";
+        {% endif %}
 
-    var selectedEventId;
-    var selectedSetId;
-    var currentPage = 0;
-    var totalPages = 1;
+        var selectedEventId;
+        var selectedSetId;
+        var currentPage = 0;
+        var totalPages = 1;
 
-    var jwPlayerSkin = "https:{% static "jwplayer-skin/smalls.xml" %}";
+        var jwPlayerSkin = "https:{% static "jwplayer-skin/smalls.xml" %}";
 
-    //////////
+        //////////
 
-    EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
+        EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
 
-    var countsURL = "{% url 'event_counts' %}";
+        var countsURL = "{% url 'event_counts' %}";
 
-    var uploadImagePreviewUrl = "{% url 'upload_image_preview' %}";
-    var loadingGif = "{% static 'image/loading.gif' %}";
-    var csrfToken = "{{ csrf_token }}";
-    var isFuture = {% if is_future %}true{% else %}false{% endif %};
+        var uploadImagePreviewUrl = "{% url 'upload_image_preview' %}";
+        var loadingGif = "{% static 'image/loading.gif' %}";
+        var csrfToken = "{{ csrf_token }}";
+        var isFuture = {% if is_future %}true{% else %}false{% endif %};
 
-  </script>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/selectize.bootstrap3.css' %}">
+    </script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/selectize.bootstrap3.css' %}">
 
 {% endblock %}

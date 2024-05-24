@@ -18,17 +18,17 @@
         </div>
     </div>
     </div>
-    <div>
-        <div class="artist-payout-data-text">
-            <div class="text1">Archive revenue this period</div>
-            <div class="text9 accent-color">$ {{earning.payout_period.total_amount|floatformat:"2"}}</div>
-        </div>
-        <div class="artist-payout-data-text">
-            <div class="text1">{{ artist.full_name }}'s share this period</div>
-            <div class="text9 accent-color">$ {{ earning.amount|floatformat:"2" }}</div>
-            <div class="text8 accent-color">Amounts less than $20 will be carried over to the next payment period</div>
-        </div>
-    </div>
+{#    <div>#}
+{#        <div class="artist-payout-data-text">#}
+{#            <div class="text1">Archive revenue this period</div>#}
+{#            <div class="text9 accent-color">$ {{earning.payout_period.total_amount|floatformat:"2"}}</div>#}
+{#        </div>#}
+{#        <div class="artist-payout-data-text">#}
+{#            <div class="text1">{{ artist.full_name }}'s share this period</div>#}
+{#            <div class="text9 accent-color">$ {{ earning.amount|floatformat:"2" }}</div>#}
+{#            <div class="text8 accent-color">Amounts less than $20 will be carried over to the next payment period</div>#}
+{#        </div>#}
+{#    </div>#}
 </div>
 
 {% block extra_js %}
@@ -50,7 +50,7 @@
     $(document).ready(function () {
         artistSeconds.innerHTML = formattedPayout(artistSecondsValue)
         eventsSeconds.innerHTML = formattedPayout(eventsSecondsValue)
-        downloadButton.innerHTML = '       <a href="{{ earning.payout_period.musicians_payout_spreadsheet.url }}" download> <button class="white-border-button payout-bar-button"> Download XLS </button> </a>'
+        {#downloadButton.innerHTML = '       <a href="{{ earning.payout_period.musicians_payout_spreadsheet.url }}" download> <button class="white-border-button payout-bar-button"> Download XLS </button> </a>'#}
 
     });
 </script> {% endblock %}

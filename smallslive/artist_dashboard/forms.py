@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from allauth.account import app_settings
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import user_pk_to_url_str, user_username
@@ -97,9 +99,12 @@ class EventEditForm(event_forms.EventEditForm):
 
 
 class EventAjaxEditForm(EventEditForm):
+    event_date = forms.DateField(widget=forms.DateTimeInput(attrs={'readonly': 'readonly'}))
 
     def __init__(self, *args, **kwargs):
         super(EventAjaxEditForm, self).__init__(*args, **kwargs)
+        del self.fields['description']
+
         for field in self.fields:
             if 'class' in self.fields[field].widget.attrs:
                 class_names = self.fields[field].widget.attrs['class'].split(' ')
@@ -108,6 +113,10 @@ class EventAjaxEditForm(EventEditForm):
                     self.fields[field].widget.attrs['class'] = ' '.join(class_names)
             else:
                 self.fields[field].widget.attrs['class'] = 'form-control'
+        try:
+            self.fields['event_date'].initial = datetime.strftime(self.instance.get_date(), "%m/%d/%Y")
+        except Exception as e:
+            print(e)
 
 
 class ArtistInfoForm(forms.ModelForm):
