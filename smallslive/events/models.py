@@ -189,15 +189,13 @@ class EventQuerySet(models.QuerySet):
         date_start = date_range_start - timedelta(hours=6, minutes=1)
 
         date_range_end = date_range_start + timedelta(days=days)
-        date_end = date_range_end - timedelta(hours=6, minutes=1)
+        date_end = date_range_end.replace(hour=23, minute=59, second=59)
 
         # from 6:00 to 6:00 (date range)
         # also make sure events have not finished already. (end > now)
         filter_data = {
-            'start__gte': date_start,
-            'start__lte': date_end
-            # 'end__lte': date_range_end
-            # 'end__gte': timezone.now()
+            'start__gte': date_start.astimezone(timezone.utc),
+            'start__lte': date_end.astimezone(timezone.utc)
         }
 
         if venue_id:
@@ -717,7 +715,10 @@ class Event(TimeStampedModel):
         """
         Checks if the event happened in the past and already ended.
         """
-        return self.end < timezone.now()
+        current_time = timezone.localtime()
+
+        end_date = timezone.localtime(self.end)
+        return end_date < current_time
 
     def all_events_completed(self):
         """
