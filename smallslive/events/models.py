@@ -181,15 +181,15 @@ class EventQuerySet(models.QuerySet):
         # considered to be the same before, but internally date is real.
 
         # cover one day or two
-        days = 2
+        days = 3
         if just_today:
-            days = 1
+            days = 2
 
         date_range_start = get_today_start()
         date_start = date_range_start - timedelta(hours=6, minutes=1)
 
         date_range_end = date_range_start + timedelta(days=days)
-        date_end = date_range_end.replace(hour=23, minute=59, second=59)
+        date_end = date_range_end.replace(hour=5, minute=59, second=59)
 
         # from 6:00 to 6:00 (date range)
         # also make sure events have not finished already. (end > now)
