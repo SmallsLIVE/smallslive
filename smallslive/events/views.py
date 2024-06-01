@@ -341,8 +341,7 @@ class EventDetailView(DetailView):
                 context['count_metrics'] = True
 
         context['related_videos'] = Event.objects.event_related_videos(event)
-        events = Event.objects.get_today_and_tomorrow_events(
-            just_today=True, is_staff=self.request.user.is_staff)
+        events = Event.objects.get_today_and_tomorrow_events(just_today=True, is_staff=self.request.user.is_staff)
         context['streaming_tonight_videos'] = events
 
         # In this case, we need to change show info without reloading
@@ -407,10 +406,6 @@ class EventDetailView(DetailView):
 
         if event.show_streaming:
             return ['events/_event_details_streaming.html']
-            # if self.request.user.is_authenticated:
-            #     return ['events/_event_details_streaming.html']
-            # else:
-            #     return ['events/_event_details_upcoming.html']
         elif event.is_past:
             return ['events/_event_details_past.html']
         if event.is_future or not event.streamable:
