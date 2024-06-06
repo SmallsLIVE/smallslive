@@ -736,6 +736,11 @@ class Event(TimeStampedModel):
         current_time = timezone.localtime()
 
         end_date = timezone.localtime(self.end)
+        start_time = timezone.localtime(self.start)
+
+        if start_time.hour == 0 and start_time.minute == 0:
+            end_date = end_date + timedelta(days=1)
+
         return end_date < current_time
 
     def all_events_completed(self):
@@ -757,7 +762,13 @@ class Event(TimeStampedModel):
         """
         Checks if the event will happen in the future and hasn't yet started.
         """
-        return timezone.now() < self.start
+        start_time = timezone.localtime(self.start)
+        current_time = timezone.localtime()
+
+        if start_time.hour == 0 and start_time.minute == 0:
+            start_time = start_time + timedelta(days=1)
+
+        return current_time < start_time
 
     def is_live_or_about_to_begin(self, about_to_begin=False):
         """
