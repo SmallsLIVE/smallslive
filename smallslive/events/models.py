@@ -184,20 +184,36 @@ class EventQuerySet(models.QuerySet):
         days = 2
         if just_today:
             days = 1
+        """
+            Scenario 1: 
+                - Current datetime, 02/06/2024 1:00
+                - Day starts: 01/06/2024 6:00
+                - Day ends: 02/06/2024  6:00
+                - get all events between 30/05/2024 23:59:59 - 03/06/2024 23:59:59
+            Scenario 2: 
+                - Current datetime, 02/06/2024 7:00
+                - Day starts: 02/06/2024 6:00
+                - Day ends: 03/06/2024  6:00
+                - get all events between 01/06/2024 23:59:59 - 03/06/2024 23:59:59
+        """
+
+        current_time = timezone.localtime()
+        offset = 0
+
+        if current_time.hour < 6:
+            offset = 1
 
         date_range_start = get_today_start()
         date_start = date_range_start - timedelta(hours=6, minutes=1)
 
-        date_range_end = date_range_start + timedelta(days=days)
-        date_end = date_range_end - timedelta(hours=6, minutes=1)
+        date_range_end = date_range_start + timedelta(days=days + offset)
+        date_end = date_range_end.replace(hour=23, minute=59, second=59)
 
         # from 6:00 to 6:00 (date range)
         # also make sure events have not finished already. (end > now)
         filter_data = {
-            'start__gte': date_start,
-            'start__lte': date_end
-            # 'end__lte': date_range_end
-            # 'end__gte': timezone.now()
+            'start__gte': date_start.astimezone(timezone.utc),
+            'start__lte': date_end.astimezone(timezone.utc)
         }
 
         if venue_id:
@@ -717,7 +733,15 @@ class Event(TimeStampedModel):
         """
         Checks if the event happened in the past and already ended.
         """
-        return self.end < timezone.now()
+        current_time = timezone.localtime()
+
+        end_date = timezone.localtime(self.end)
+        start_time = timezone.localtime(self.start)
+
+        if start_time.hour == 0 and start_time.minute == 0:
+            end_date = end_date + timedelta(days=1)
+
+        return end_date < current_time
 
     def all_events_completed(self):
         """
@@ -738,7 +762,13 @@ class Event(TimeStampedModel):
         """
         Checks if the event will happen in the future and hasn't yet started.
         """
-        return timezone.now() < self.start
+        start_time = timezone.localtime(self.start)
+        current_time = timezone.localtime()
+
+        if start_time.hour == 0 and start_time.minute == 0:
+            start_time = start_time + timedelta(days=1)
+
+        return current_time < start_time
 
     def is_live_or_about_to_begin(self, about_to_begin=False):
         """
@@ -1399,6 +1429,7 @@ def get_today_start():
     """ Day actually starts at 6 am"""
 
     start = timezone.localtime(timezone.now())
+
     if start.hour < 6:
         start = start - timedelta(days=1)
     start = start.replace(hour=6, minute=0)
