@@ -189,12 +189,12 @@ class EventQuerySet(models.QuerySet):
                 - Current datetime, 02/06/2024 1:00
                 - Day starts: 01/06/2024 6:00
                 - Day ends: 02/06/2024  6:00
-                - get all events between 30/05/2024 23:59:59 - 03/06/2024 23:59:59
+                - get all events between 30/05/2024 23:59:59 - 02/06/2024 23:59:59
             Scenario 2: 
                 - Current datetime, 02/06/2024 7:00
                 - Day starts: 02/06/2024 6:00
                 - Day ends: 03/06/2024  6:00
-                - get all events between 01/06/2024 23:59:59 - 03/06/2024 23:59:59
+                - get all events between 01/06/2024 23:59:59 - 02/06/2024 23:59:59
         """
 
         current_time = timezone.localtime()
@@ -207,7 +207,7 @@ class EventQuerySet(models.QuerySet):
         date_start = date_range_start - timedelta(hours=6, minutes=1)
 
         date_range_end = date_range_start + timedelta(days=days + offset)
-        date_end = date_range_end.replace(hour=23, minute=59, second=59)
+        date_end = date_range_end - timedelta(hours=6, minutes=1)
 
         # from 6:00 to 6:00 (date range)
         # also make sure events have not finished already. (end > now)
