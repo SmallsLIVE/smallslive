@@ -3,7 +3,7 @@ import time
 import functools
 from cryptography.fernet import Fernet
 from django.core.cache import cache
-from django.db.models import Count, Max, Q, Sum, F,  Case, When, F, DateTimeField, ExpressionWrapper
+from django.db.models import Count, Max, Q, Sum, Case, When, F, DateTimeField, ExpressionWrapper
 from django.utils.timezone import make_aware
 from django.conf import settings
 from django.core.files.base import File
