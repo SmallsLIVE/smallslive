@@ -391,7 +391,8 @@ class UpcomingSearchView(SearchMixin):
         if venue:
             if venue != 'all':
                 event_list = event_list.filter(venue__pk=venue)
-        event_list = event_list.order_by('start')
+        event_list = Event.objects.get_modified_start_for_events(event_list)
+        event_list = event_list.order_by('modified_start')
         if not event_list.exists():
             context['first_event'] = None
             context['last_event'] = None
@@ -411,7 +412,7 @@ class UpcomingSearchView(SearchMixin):
             day_events = (
                 event_list
                 .filter(start__gte=day_start, start__lt=day_end)
-                .order_by('start', 'venue__id')
+                .order_by('modified_start', 'venue__id')
             )
 
             midnight_events = [event for event in day_events if timezone.localtime(event.start).hour < 6]
