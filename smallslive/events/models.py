@@ -3,7 +3,8 @@ import time
 import functools
 from cryptography.fernet import Fernet
 from django.core.cache import cache
-from django.db.models import Count, Max, Q, Sum
+from django.db.models import Count, Max, Q, Sum, Case, When, F, DateTimeField, ExpressionWrapper
+from django.utils.timezone import make_aware
 from django.conf import settings
 from django.core.files.base import File
 from django.urls import reverse
@@ -219,12 +220,36 @@ class EventQuerySet(models.QuerySet):
         if venue_id:
             filter_data['venue_id'] = venue_id
 
+        midnight = make_aware(datetime.combine(datetime.today(), datetime.min.time()))
+        utc_midnight = midnight.astimezone(timezone.utc)
+
         qs = self.filter(**filter_data)
+
+        """
+            Event 1: 15/06/2024 12:00AM - 2:00AM
+            Event 2: 15/06/2024 03:00PM - 5:00PM
+            Event 3: 15/06/2024 07:00PM - 10:00PM
+            
+            expected sorting:
+            Event 2: 15/06/2024 03:00PM - 5:00PM
+            Event 3: 15/06/2024 07:00PM - 10:00PM
+            Event 1: 15/06/2024 12:00AM - 2:00AM
+        """
+        qs = qs.annotate(
+            modified_start=Case(
+                When(
+                    start=utc_midnight,
+                    then=ExpressionWrapper(F('start') + timedelta(days=1), output_field=DateTimeField())
+                ),
+                default=F('start'),
+                output_field=DateTimeField()
+            )
+        )
 
         if not is_staff:
             qs = qs.exclude(state=Event.STATUS.Draft)
 
-        qs = qs.order_by('start', '-venue__sort_order')
+        qs = qs.order_by('modified_start', '-venue__sort_order')
 
         return qs
 
