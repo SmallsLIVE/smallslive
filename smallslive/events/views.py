@@ -363,7 +363,8 @@ class EventDetailView(DetailView):
                     'date': date,
                     'sets_info': sets_info,
                     'artists_info': artists_info,
-                    'start': start
+                    'start': start,
+                    'url': next_event.get_absolute_url()
                 }
 
         live_events = None

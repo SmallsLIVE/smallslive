@@ -27,13 +27,11 @@
 
       {% if next_event %}
         var changeTime = moment("{{ next_event.start.isoformat }}");
+        var nextEventUrl = "{{ next_event.url }}"
         var waitTime = changeTime.diff(moment(), 'miliseconds');
         var intervalId = setInterval(function () {
             clearInterval(intervalId);
-            $('.current-event').addClass('hidden');
-            $('.next-event').removeClass('hidden');
-            $('.related-video.selected').removeClass('selected');
-            $('.related-video.next-up').addClass('selected');
+            window.location = nextEventUrl
         }, waitTime);
       {% endif %}
 
