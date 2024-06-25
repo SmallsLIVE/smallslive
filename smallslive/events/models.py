@@ -809,6 +809,20 @@ class Event(TimeStampedModel):
 
         return current_time < start_time
 
+    @property
+    def can_purchase_ticket(self):
+        start_time = timezone.localtime(self.start)
+        current_time = timezone.localtime()
+
+        if start_time.hour == 0 and start_time.minute == 0:
+            start_time = start_time + timedelta(days=1)
+
+        time_difference = start_time - current_time
+        if time_difference <= timedelta(minutes=15):
+            return False
+
+        return True
+
     def is_live_or_about_to_begin(self, about_to_begin=False):
         """
         An event is live depending on start and end time.
