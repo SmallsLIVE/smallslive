@@ -121,7 +121,7 @@
                             {% csrf_token %}
                             {{ basket_form.as_p }}
                             <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
-                            {% if session.availability.num_available > 0 %}
+                            {% if session.availability.num_available > 0 and event.can_purchase_ticket %}
                               <button type='submit'
                                       data-ticket-name="{{ product.set }}"
                                       data-ticket-time="{{ product.event_set.start|time:'g:i A' }}"
