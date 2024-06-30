@@ -1254,6 +1254,21 @@ class EventSet(models.Model):
         ny_end = datetime.combine(self.event.date, self.end)
         return timezone.make_aware(ny_end, timezone=(timezone.get_current_timezone()))
 
+    @property
+    def can_purchase_ticket(self):
+        start_time = datetime.combine(self.event.date, self.start)
+        start_time = make_aware(start_time, get_current_timezone())
+        current_time = timezone.localtime()
+
+        if start_time.hour == 0 and start_time.minute == 0:
+            start_time = start_time + timedelta(days=1)
+
+        time_difference = start_time - current_time
+        if time_difference <= timedelta(minutes=15):
+            return False
+
+        return True
+
     def get_user_video_metrics_dict(self):
 
         audio_play_count = {}
