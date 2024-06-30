@@ -515,6 +515,7 @@ class Event(TimeStampedModel):
         """ Return real NY time start and end for the event.
         """
         sets = list(self.sets.all())
+        offset = 0
         # sets = sorted(sets, Event.sets_order)
         sets = sorted(sets, key=functools.cmp_to_key(Event.sets_order))
 
@@ -524,6 +525,9 @@ class Event(TimeStampedModel):
             return None, None
 
         ny_start = datetime.combine(self.date, sets[0].start)
+        if ny_start.hour == 0 and ny_start.minute == 0:
+            offset = 1
+            ny_start = ny_start + timedelta(days=1)
         try:
             ny_start = timezone.make_aware(ny_start, timezone=current_timezone)
         except (pytz.NonExistentTimeError, pytz.AmbiguousTimeError):
@@ -532,7 +536,7 @@ class Event(TimeStampedModel):
                 timezone=current_timezone
             )
 
-        ny_end = datetime.combine(self.date, sets[-1].end)
+        ny_end = datetime.combine(self.date, sets[-1].end) + timedelta(days=offset)
         if ny_start.hour > 6 > sets[-1].end.hour >= 0:
             ny_end = ny_end + timedelta(days=1)
         try:
