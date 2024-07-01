@@ -1,6 +1,7 @@
 from datetime import datetime, date
 import json
 import stripe
+import logging
 from wkhtmltopdf.views import PDFTemplateView
 from django.conf import settings
 from django.urls import reverse, reverse_lazy
@@ -8,6 +9,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, redirect
+from django.db.models import ObjectDoesNotExist
 from django.views.generic import TemplateView, FormView, ListView, View
 from django.utils import timezone
 from allauth.account.app_settings import EmailVerificationMethod
@@ -28,11 +30,18 @@ from users.utils import charge, \
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
 from oscar_apps.checkout.forms import BillingAddressForm
 from oscar.apps.address.models import UserAddress
+from oscar_apps.order.models import PaymentEvent, Line, Order
+from events.models import Event
+
 from .utils import complete_signup, url_str_to_user_pk
 
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import perform_login
 from allauth.account import app_settings
+from utils.utils import send_order_confirmation_email, send_order_refunded_email
+
+logger = logging.getLogger(__name__)
+
 
 class SignupLandingView(TemplateView):
     template_name = 'account/signup-landing.html'
@@ -614,3 +623,69 @@ class EmailVerificationSentView(TemplateView):
     template_name = 'account/verification_sent.html'
 
 email_verification_sent = EmailVerificationSentView.as_view()
+
+
+class ResendConfirmationEmail(View):
+
+    def resend_confirmation_email(self, order, email):
+        message = {}
+        event_info = order.basket.get_tickets_event()
+        message['order_number'] = order.number
+        message['party_name'] = order.first_name + ' ' + order.last_name
+        message['event_title'] = event_info.title
+        message['event_date'] = event_info.date
+        message['venue'] = event_info.get_venue_name()
+        for line in order.lines.all():
+            message['quantity'] = line.quantity
+            message['total_amount'] = line.line_price_incl_tax
+            message['time'] = line.product.event_set.start
+        send_order_confirmation_email(email, message)
+
+    def resend_refund_email(self, order, email):
+        line = order.lines.first()
+        payment_event = PaymentEvent.objects.filter(order=order)
+
+        payment_event = payment_event.filter(event_type__code='refunded') \
+                        | payment_event.filter(event_type__code='partialrefund')
+        payment_event = payment_event.order_by('-date_created').first()
+
+        if not payment_event:
+            raise ValueError("No refund available for this order")
+
+        payment_event_quantity = payment_event.line_quantities.first()
+
+        message = {}
+        message['order_number'] = order.number
+        message['refund_amount'] = payment_event.amount
+        message['refund_quantity'] = payment_event_quantity.quantity if payment_event_quantity else ''
+        if line:
+            if line.product.event_set.event_id:
+                product_event = Event.objects.get(id=line.product.event_set.event_id)
+                message['event_date'] = product_event.date
+
+            message['event_title'] = line.title
+            message['quantity'] = line.quantity
+            message['time'] = line.product.event_set.start
+
+        send_order_refunded_email(email, message)
+
+    def post(self, request):
+        email_type = request.POST['resend_type']
+        customer_email = request.POST['email']
+        order_number = request.POST['order_number']
+        try:
+            order = Order.objects.get(number=order_number)
+            if email_type == 'confirmation':
+                self.resend_confirmation_email(order, customer_email)
+            elif email_type == 'refund':
+                self.resend_refund_email(order, customer_email)
+            return JsonResponse({
+                'status': 'success'
+            }, status=200)
+
+        except Exception as E:
+            logger.error(str(E), exc_info=True)
+
+        return JsonResponse({
+            'status': 'error'
+        }, status=500)

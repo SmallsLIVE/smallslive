@@ -24,5 +24,6 @@ urlpatterns = [
     re_path(r'^check-account-status/', check_account_status, name='check_account_status'),
     re_path(r"^confirm-email/(?P<key>[-:\w]+)/$", custom_confirm_email,
             name="account_confirm_email"),
+    re_path(r'^resend-confirmation-email/', ResendConfirmationEmail.as_view(), name='resend-confirmation-email'),
     re_path(r'^', include('allauth.urls'), name='allauth'),
 ]

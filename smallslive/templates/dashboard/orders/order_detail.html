@@ -22,6 +22,8 @@
                     <input type="button" name="refund" value="Refund order" class="btn btn btn-danger" id="button-id-delete"
                            data-target="#refundModal" data-toggle="modal">
                 {% endif %}
+                <button type="button" name="resend-confirmation" class="btn btn btn-info" id="button-id-delete"
+                        data-target="#resendEmailModal" data-toggle="modal">Resend Email</button>
             </td>
         </tr>
     </table>
@@ -57,7 +59,101 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="resendEmailModal" tabindex="-1" role="dialog" aria-labelledby="ResendEmailLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                    <h4 class="modal-title" id="ResendEmailLabel">Resend Email #{{ order.number }}</h4>
+                </div>
+                <form action="." method="post"
+                      class="left-aligned-form">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        Are you <strong>sure</strong> you want to resend confirmation email #{{ order.number }}?
+                        <div class="form-group" style="margin-top: 20px">
+                            <label for="resend-type">Email type
+                            </label>
+                            <select class="form-control" id="resend-type" style="width: 100%">
+                                <option value="confirmation">Confirmation</option>
+                                <option value="refund">Refund</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-top: 20px">
+                            <label for="customer-email">Customer email</label>
+                            <input id="customer-email" type="text" name="customer_email"
+                                   class="form-control"
+                                   required="required"
+                                    {% if order.guest_email %}
+                                   value="{{ order.guest_email }}"
+                                    {% else %}
+                                   value="{{ order.user.email }}"
+                                    {% endif %}
+                            />
+                        </div>
+                        <div style="color: #fff; background-color: #449d44; padding: 5px; display: none" class="custom-alert">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="btn-resend-email">Send</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock order_information %}
 
 {% block line_actions %}
 {% endblock line_actions %}
+
+{% block extrascripts %}
+    {{ block.super }}
+    <script>
+
+        function resetAlert(){
+            $('.custom-alert').text('')
+            $(".custom-alert").css('display', 'none')
+        }
+        $(document).on('click', '#btn-resend-email', function(){
+            var action_url = '/accounts/resend-confirmation-email/';
+
+            var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+            var customerEmail = $("#customer-email").val();
+            var resendType = $("#resend-type").val();
+
+            $.ajax({
+                type: "POST",
+                url: action_url,
+                headers: {
+                    "X-CSRFToken": csrfToken
+                },
+                data: {
+                    'email': customerEmail.trim(),
+                    'resend_type': resendType,
+                    'order_number': {{ order.number }}
+                },
+                success: function(data) {
+                    $('.custom-alert').text('Email sent successfully!!!')
+                    $(".custom-alert").css('background-color', '#449d44')
+                    $(".custom-alert").css('color', '#fff')
+                    $(".custom-alert").css('display', 'block')
+                    setTimeout(function(){
+                        resetAlert()
+                    }, 1000)
+                },
+                error: function() {
+                    $('.custom-alert').text('Email could not sent!!!')
+                    $(".custom-alert").css('background-color', '#f8d7da')
+                    $(".custom-alert").css('color', '#721c24')
+                    $(".custom-alert").css('display', 'block')
+                    setTimeout(function(){
+                        resetAlert()
+                    }, 1000)
+                }
+            });
+        })
+    </script>
+{% endblock %}
