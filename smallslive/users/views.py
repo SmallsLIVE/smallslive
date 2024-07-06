@@ -629,24 +629,34 @@ class ResendConfirmationEmail(View):
 
     def resend_confirmation_email(self, order, email):
         message = {}
-        event_info = order.basket.get_tickets_event()
+        completed_lines = order.lines.filter(
+            status='Completed'
+        ).order_by('-id').first()
+
+        if not completed_lines:
+            raise ValueError("No confirmation email available for this order")
         message['order_number'] = order.number
         message['party_name'] = order.first_name + ' ' + order.last_name
-        message['event_title'] = event_info.title
-        message['event_date'] = event_info.date
-        message['venue'] = event_info.get_venue_name()
-        for line in order.lines.all():
-            message['quantity'] = line.quantity
-            message['total_amount'] = line.line_price_incl_tax
-            message['time'] = line.product.event_set.start
+
+        if completed_lines and completed_lines.product.event_set.event_id:
+            product_event = Event.objects.get(id=completed_lines.product.event_set.event_id)
+            message['event_title'] = product_event.title
+            message['event_date'] = product_event.date
+            message['venue'] = product_event.get_venue_name()
+            message['quantity'] = completed_lines.quantity
+            message['total_amount'] = completed_lines.line_price_incl_tax
+            message['time'] = completed_lines.product.event_set.start
+
         send_order_confirmation_email(email, message)
 
     def resend_refund_email(self, order, email):
-        line = order.lines.first()
+        line = order.lines.order_by('-id').first()
+
         payment_event = PaymentEvent.objects.filter(order=order)
 
         payment_event = payment_event.filter(event_type__code='refunded') \
                         | payment_event.filter(event_type__code='partialrefund')
+
         payment_event = payment_event.order_by('-date_created').first()
 
         if not payment_event:
@@ -658,10 +668,9 @@ class ResendConfirmationEmail(View):
         message['order_number'] = order.number
         message['refund_amount'] = payment_event.amount
         message['refund_quantity'] = payment_event_quantity.quantity if payment_event_quantity else ''
-        if line:
-            if line.product.event_set.event_id:
-                product_event = Event.objects.get(id=line.product.event_set.event_id)
-                message['event_date'] = product_event.date
+        if line and line.product.event_set.event_id:
+            product_event = Event.objects.get(id=line.product.event_set.event_id)
+            message['event_date'] = product_event.date
 
             message['event_title'] = line.title
             message['quantity'] = line.quantity

@@ -15,415 +15,428 @@
 {% block title %}{{ event.title }}{% endblock %}
 
 {% block extra_head %}
-  <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:site_name" content="SmallsLIVE"/>
-  <meta property="og:title" content="{{ event.full_title }}"/>
-  <meta property="og:description"
-        content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.get_date|date:'D d M Y' }} - {{ event.get_date|date:'D d M Y' }}"/>
-  {% if event.photo %}
-    <meta property="og:image" content="https:{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=315 width=600 smart=True %}"/>
-    <meta itemprop="image" content="https:{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=315 width=600 smart=True %}">
-  {% endif %}
-  <meta property="fb:app_id" content="{{ facebook_app_id }}"/>
-  <meta itemprop="name" content="{{ event.full_title }}">
-  <meta itemprop="description"
-        content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.get_date|date:'D d M Y' }} - {{ event.get_date|date:'D d M Y' }}"">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="SmallsLIVE"/>
+    <meta property="og:title" content="{{ event.full_title }}"/>
+    <meta property="og:description"
+          content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.get_date|date:'D d M Y' }} - {{ event.get_date|date:'D d M Y' }}"/>
+    {% if event.photo %}
+        <meta property="og:image" content="https:{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=315 width=600 smart=True %}"/>
+        <meta itemprop="image" content="https:{% cloudinary_image_url photo_name=event.get_photo_name_with_bucket photo_url=event.get_photo_url|urlencode height=315 width=600 smart=True %}">
+    {% endif %}
+    <meta property="fb:app_id" content="{{ facebook_app_id }}"/>
+    <meta itemprop="name" content="{{ event.full_title }}">
+    <meta itemprop="description"
+          content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.get_date|date:'D d M Y' }} - {{ event.get_date|date:'D d M Y' }}"">
 {% endblock %}
 
 {% block home_content %}
 
-  <div class="event-page-container">
+    <div class="event-page-container">
 
-    <div class="flex-column flex event-container">
-      {% if request.user.is_staff and event.state == "Draft" %}
-        <div id="title" class="{{ event.get_venue_name|lower}}-color event-venue title5"></div>
-      {% endif %}
-      {% block event_content %}
-      {% endblock %}
+        <div class="flex-column flex event-container">
+            {% if request.user.is_staff and event.state == "Draft" %}
+                <div id="title" class="{{ event.get_venue_name|lower}}-color event-venue title5"></div>
+            {% endif %}
+            {% block event_content %}
+            {% endblock %}
 
-      <div class="event-container__sub">
-        <div class="event-video-info content-space-between">
-          <div class=" flex-column info-container">
-            <div class="event-set-info">
-              <div class="current-event event-title title1">{{ event.title }}</div>
-              <div class="current-event event-title event-subtitle title5 accent-color">{{ event.subtitle }}</div>
-              {% if event.sponsorship %}
-                <div class="current-event event-title event-subtitle title5 accent-color">Sponsored By: {{ event.sponsorship.sponsored_event_dedication }}</div>
-              {% endif %}
-              <div class="current-event event-title title2">{{ event.description|striptags|safe }}</div>
-              {% if event.is_past %}
-                <div class="{{ event.get_venue_name|lower}}-color title2 venue-subtitle">{{ event.get_venue_name }}</div>
-              {% endif %}
-              {% if event.is_future %}
-                <div class="{{ event.get_venue_name|lower}}-color title2 venue-subtitle">Live at {{ event.get_venue_name }}</div>
-              {% endif %}
+            <div class="event-container__sub">
+                <div class="event-video-info content-space-between">
+                    <div class=" flex-column info-container">
+                        <div class="event-set-info">
+                            <div class="current-event event-title title1">{{ event.title }}</div>
+                            <div class="current-event event-title event-subtitle title5 accent-color">{{ event.subtitle }}</div>
+                            {% if event.sponsorship %}
+                                <div class="current-event event-title event-subtitle title5 accent-color">Sponsored By: {{ event.sponsorship.sponsored_event_dedication }}</div>
+                            {% endif %}
+                            <div class="current-event event-title title2">{{ event.description|striptags|safe }}</div>
+                            {% if event.is_past %}
+                                <div class="{{ event.get_venue_name|lower}}-color title2 venue-subtitle">{{ event.get_venue_name }}</div>
+                            {% endif %}
+                            {% if event.is_future %}
+                                <div class="{{ event.get_venue_name|lower}}-color title2 venue-subtitle">Live at {{ event.get_venue_name }}</div>
+                            {% endif %}
 
-              {% if next_event %}
-                <div class="next-event event-title title1 hidden">
-                  {{ next_event.title }}</div>
-                <div class="next-event accent-color text7 hidden">
-                  {{ next_event.get_date|date:'m/d/Y' }}</div>
-              {% endif %}
-            </div>
-            <div class="event-overlay-venue">
+                            {% if next_event %}
+                                <div class="next-event event-title title1 hidden">
+                                    {{ next_event.title }}</div>
+                                <div class="next-event accent-color text7 hidden">
+                                    {{ next_event.get_date|date:'m/d/Y' }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="event-overlay-venue">
 
-              <div class="title5">
-                {% if event.is_future %}
-                  {{ event.get_date|date:'D M d' }}
-                {% elif event.is_live %}
-                  <span class="accent-color">Live Now</span>
-                {% else %}
-                  {{ event.get_date|date:'m/d/Y' }}
-                {% endif %}
-              </div>
-              <div class="title5">
-                {% if sets and event.is_future %}
-                <!--
-                  <span class="accent-color"> / </span>
-                //-->
-                  {% if event.sets.count > 1 %}
-                  Sets at
-                  {% for set in sets %}
-                    <span class="event-overlay-venue-set">
+                            <div class="title5">
+                                {% if event.is_future %}
+                                    {{ event.get_date|date:'D M d' }}
+                                {% elif event.is_live %}
+                                    <span class="accent-color">Live Now</span>
+                                {% else %}
+                                    {{ event.get_date|date:'m/d/Y' }}
+                                {% endif %}
+                            </div>
+                            <div class="title5">
+                                {% if sets and event.is_future %}
+                                    <!--
+                                      <span class="accent-color"> / </span>
+                                    //-->
+                                    {% if event.sets.count > 1 %}
+                                        Sets at
+                                        {% for set in sets %}
+                                            <span class="event-overlay-venue-set">
                       {{ set.start|time:'g:iA'}}
                     </span>
-                  {% endfor %}
-                  {% else %}
-                  From
-                  {{ event.get_set_hours_display}}
-                  {% endif %}
-                {% endif %}
-              </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        From
+                                        {{ event.get_set_hours_display}}
+                                    {% endif %}
+                                {% endif %}
+                            </div>
 
-            </div>
-          </div>
-          <div class="flex-column {% if user.has_active_subscription or user.is_staff %}buttons-container{% endif %}">
-            {% block control_buttons %}
-            {% endblock %}
-            <div class="event-player-buttons text-right">
-              {% if user.is_admin or user.is_staff %}
-                <a href="{% url 'event_edit' pk=event.id slug=event.slug %}" style="display: inline-block;">
-                  <button class="white-border-button">Edit</button>
-                </a>
-               <form method="post" action="{% url 'event_clone' pk=event.id slug=event.slug %}" style="display: inline">
-                 {% csrf_token %}
-                 <button class="white-border-button">Clone</button>
-               </form>
-              {% endif %}
-              {% if event.is_live or event.is_future %}
-                {% if products %}
-                  {% for product in products %}
-                    {% if not product.event_set.is_past %}
-                      {% purchase_info_for_product request product as session %}
-                        {% basket_form request product 'single' as basket_form %}
-                          <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
-                            {% csrf_token %}
-                            {{ basket_form.as_p }}
-                            <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
-                            {% if session.availability.num_available > 0 and product.event_set.can_purchase_ticket %}
-                              <button type='submit'
-                                      data-ticket-name="{{ product.set }}"
-                                      data-ticket-time="{{ product.event_set.start|time:'g:i A' }}"
-                                      data-ticket-price="{{ session.price.excl_tax }}"
-                                      data-ticket-availability="{{ session.availability.num_available }}"
-                                      data-walk-in-price="{{ product.event_set.walk_in_price }}"
-                                      class="buy-tickets white-border-button"
-                                      style="display: inline;">{{ product.set }}</button>
-                              {% include 'events/buy_tickets_dialog_new.html' %}
+                        </div>
+                    </div>
+                    <div class="flex-column {% if user.has_active_subscription or user.is_staff %}buttons-container{% endif %}">
+                        {% block control_buttons %}
+                        {% endblock %}
+                        <div class="event-player-buttons text-right">
+                            {% if user.is_admin or user.is_staff %}
+                                <a href="{% url 'event_edit' pk=event.id slug=event.slug %}" style="display: inline-block;">
+                                    <button class="white-border-button">Edit</button>
+                                </a>
+                                <form method="post" action="{% url 'event_clone' pk=event.id slug=event.slug %}" style="display: inline">
+                                    {% csrf_token %}
+                                    <button class="white-border-button">Clone</button>
+                                </form>
                             {% endif %}
-                            {% if session.availability.num_available == 0 %}
-                              <button type='submit'
-                                      class="tickets-sold-out white-border-button"
-                                      style="display: inline;">{{ product.set }}</button>
-                              {% include 'events/tickets_sold_out_dialog.html' %}
+                            {% if event.is_live or event.is_future %}
+                                {% if products %}
+                                    {% for product in products %}
+                                        {% if not product.event_set.is_past %}
+                                            {% purchase_info_for_product request product as session %}
+                                            {% basket_form request product 'single' as basket_form %}
+                                            <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
+                                                {% csrf_token %}
+                                                {{ basket_form.as_p }}
+                                                <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
+                                                {% if session.availability.num_available > 0 and product.event_set.can_purchase_ticket %}
+                                                    <button type='submit'
+                                                            data-ticket-name="{{ product.set }}"
+                                                            data-ticket-time="{{ product.event_set.start|time:'g:i A' }}"
+                                                            data-ticket-purchase-cutoff="{{ product.event_set.ticket_purchase_cutoff_time|date:'Y-m-d H:i' }}"
+                                                            data-ticket-price="{{ session.price.excl_tax }}"
+                                                            data-ticket-availability="{{ session.availability.num_available }}"
+                                                            data-walk-in-price="{{ product.event_set.walk_in_price }}"
+                                                            class="buy-tickets white-border-button"
+                                                            style="display: inline;">{{ product.set }}</button>
+                                                    {% include 'events/buy_tickets_dialog_new.html' %}
+                                                {% endif %}
+                                                {% if session.availability.num_available == 0 %}
+                                                    <button type='submit'
+                                                            class="tickets-sold-out white-border-button"
+                                                            style="display: inline;">{{ product.set }}</button>
+                                                    {% include 'events/tickets_sold_out_dialog.html' %}
+                                                {% endif %}
+                                            </form>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                {% if user.is_authenticated  %}
+                                    {% if event.sponsorship_enabled and not event.sponsorship %}
+                                        <button id="sponsor-concert-donation-btn"
+                                                class="white-border-button text-center">Sponsor This Concert
+                                        </button>
+                                    {% endif %}
+                                {% elif event.sponsorship_enabled %}
+                                    <button onclick="$('#becomeMemberDialog').modal('show');" class="white-border-button text-center">Sponsor This Concert</button>
+                                {% endif %}
                             {% endif %}
-                          </form>
-                    {% endif %}
-                  {% endfor %}
-                {% endif %}
-                {% if user.is_authenticated  %}
-                    {% if event.sponsorship_enabled and not event.sponsorship %}
-                    <button id="sponsor-concert-donation-btn"
-                            class="white-border-button text-center">Sponsor This Concert
-                    </button>
-                    {% endif %}
-                {% elif event.sponsorship_enabled %}
-                    <button onclick="$('#becomeMemberDialog').modal('show');" class="white-border-button text-center">Sponsor This Concert</button>
-                {% endif %}
-              {% endif %}
-            </div>
-          </div>
-        </div>
-        <div class="event-band">
-          {% for artist_dict in event_artists %}
-            <div class="current_event">
-              {% get_site_id as site_id %}
-              {% if site_id == 2 %}
-                <a href="{{ artist_dict.absolute_url }}" class="artist-link">
-                  {{ artist_dict.name }} / {{ artist_dict.role }}
-                </a>
-              {% else %}
-                <div class="artist-link">{{ artist_dict.name }} / {{ artist_dict.role }}</div>
-              {% endif %}
-            </div>
-          {% endfor %}
-          {% if next_event %}
-            {% for artist_dict in next_event.artists_info %}
-              <div class="next-event hidden">
-                <a href="{{ artist_dict.absolute_url }}" class="artist-link">
-                  {{ artist_dict.name }} / {{ artist_dict.role }}</a>
-              </div>
-            {% endfor %}
-          {% endif %}
-        </div>
-      </div>
-
-      <div class="flex-row event-set-selector"></div>
-      {% if event.published_audio or event.published_video or event.is_live %}
-        {% get_site_id as site_id %}
-        {% if site_id == 2 %}
-          <div class="comments-container" data-subpage-url="{% url 'event_comments' pk=event.id slug=event.slug %}?set=0" data-subpage-name="comments"></div>
-        {% endif %}
-      {% endif %}
-    </div>
-    <div class="flex-column event-side">
-      {% if streaming_tonight_videos %}
-      <div class="event-related-videos tonight">
-        <div class="section-title section-flex">
-          <div class="title1">Streaming Tonight <span class="date-separator" style="margin-right: 5px;">/</span></div>
-          <div class="header-sub title1">{% now "m/d/y" %}</div>
-        </div>
-        <div>
-            <div>
-            {% for related in streaming_tonight_videos %}
-              <div class="flex-row related-video{% if related == event %} selected{% endif %}{% if next_event and next_event.title == related.title %} next-up{% endif %}{% if related.is_live %} live{% endif %}">
-                {% if next_event and next_event.title == related.title %}
-                  {% include 'events/event_card.html' with event=related mini=True show_time=True next_up=True side_info=True show_venue_on_side=True %}
-                {% elif related == event %}
-                  {% include 'events/event_card.html' with event=related mini=True show_time=True current_event=True side_info=True show_venue_on_side=True %}
-                {% else %}
-                  {% include 'events/event_card.html' with event=related mini=True show_time=True side_info=True show_venue_on_side=True %}
-                {% endif %}
-              </div>
-            {% endfor %}
-            </div>
-        </div>
-      </div>
-      {% endif %}
-      {% get_site_id as site_id %}
-      {% if site_id == 2 %}
-        <div class="event-related-videos">
-          <div class="section-title section-flex">
-            <div class="title1">Related videos</div>
-          </div>
-          <div>
-            <div>
-              {% for related in related_videos%}
-                <div class="flex-row related-video">
-                  {% include 'events/event_card.html' with event=related mini=True side_info=True %}
+                        </div>
+                    </div>
                 </div>
-              {% endfor %}
+                <div class="event-band">
+                    {% for artist_dict in event_artists %}
+                        <div class="current_event">
+                            {% get_site_id as site_id %}
+                            {% if site_id == 2 %}
+                                <a href="{{ artist_dict.absolute_url }}" class="artist-link">
+                                    {{ artist_dict.name }} / {{ artist_dict.role }}
+                                </a>
+                            {% else %}
+                                <div class="artist-link">{{ artist_dict.name }} / {{ artist_dict.role }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    {% if next_event %}
+                        {% for artist_dict in next_event.artists_info %}
+                            <div class="next-event hidden">
+                                <a href="{{ artist_dict.absolute_url }}" class="artist-link">
+                                    {{ artist_dict.name }} / {{ artist_dict.role }}</a>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
             </div>
-          </div>
-        </div>
-      {% endif %}
-    </div>
-  </div>
 
-  <div class="modal fade flow-modal" id="remove-comment" aria-hidden="true">
-    <div class="modal-dialog remove-comment-modal">
-      <div class="modal-content custom-modal">
-        <a href="#" class="close-button"></a>
-        <div class="modal-body">
-           <div class="title1">Removing comments</div>
-            <div class="current-event accent-color text7">Are you sure to remove this comment?</div>
-           <form action="{% url 'remove_comment'%}" method="post">
-              {% csrf_token %}
-              <button type="submit" name="id" value="" class="white-border-button">Confirm</button>
-              <button onclick="$('#remove-comment').modal('hide')" class="white-border-button">Cancel</button>
-          </form>
+            <div class="flex-row event-set-selector"></div>
+            {% if event.published_audio or event.published_video or event.is_live %}
+                {% get_site_id as site_id %}
+                {% if site_id == 2 %}
+                    <div class="comments-container" data-subpage-url="{% url 'event_comments' pk=event.id slug=event.slug %}?set=0" data-subpage-name="comments"></div>
+                {% endif %}
+            {% endif %}
         </div>
-      </div>
+        <div class="flex-column event-side">
+            {% if streaming_tonight_videos %}
+                <div class="event-related-videos tonight">
+                    <div class="section-title section-flex">
+                        <div class="title1">Streaming Tonight <span class="date-separator" style="margin-right: 5px;">/</span></div>
+                        <div class="header-sub title1">{% now "m/d/y" %}</div>
+                    </div>
+                    <div>
+                        <div>
+                            {% for related in streaming_tonight_videos %}
+                                <div class="flex-row related-video{% if related == event %} selected{% endif %}{% if next_event and next_event.title == related.title %} next-up{% endif %}{% if related.is_live %} live{% endif %}">
+                                    {% if next_event and next_event.title == related.title %}
+                                        {% include 'events/event_card.html' with event=related mini=True show_time=True next_up=True side_info=True show_venue_on_side=True %}
+                                    {% elif related == event %}
+                                        {% include 'events/event_card.html' with event=related mini=True show_time=True current_event=True side_info=True show_venue_on_side=True %}
+                                    {% else %}
+                                        {% include 'events/event_card.html' with event=related mini=True show_time=True side_info=True show_venue_on_side=True %}
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% get_site_id as site_id %}
+            {% if site_id == 2 %}
+                <div class="event-related-videos">
+                    <div class="section-title section-flex">
+                        <div class="title1">Related videos</div>
+                    </div>
+                    <div>
+                        <div>
+                            {% for related in related_videos%}
+                                <div class="flex-row related-video">
+                                    {% include 'events/event_card.html' with event=related mini=True side_info=True %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
     </div>
-  </div>
-  {% include 'subscriptions/popups/event_sponsorship_confirmation_dialog.html' %}
+
+    <div class="modal fade flow-modal" id="remove-comment" aria-hidden="true">
+        <div class="modal-dialog remove-comment-modal">
+            <div class="modal-content custom-modal">
+                <a href="#" class="close-button"></a>
+                <div class="modal-body">
+                    <div class="title1">Removing comments</div>
+                    <div class="current-event accent-color text7">Are you sure to remove this comment?</div>
+                    <form action="{% url 'remove_comment'%}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" name="id" value="" class="white-border-button">Confirm</button>
+                        <button onclick="$('#remove-comment').modal('hide')" class="white-border-button">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'subscriptions/popups/event_sponsorship_confirmation_dialog.html' %}
 
 {% endblock %}
 
 {% block extra_js %}
-  <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
-  <script>
-    var showRegister = function() {
-      $('#becomeMemberDialog').modal('show');
-    };
-    
-    $(document).ready(function() {
-      if($('.event-page-container .tonight').length){
-        var referrer =  document.referrer;
-        if(referrer.includes('/search/archive/') || referrer.includes('/search/')){
-          $('.event-page-container .tonight').hide();
-        }
-        
-      }
-    });
-  </script>
-  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-  <script src="{% static 'js/subpages.js' %}"></script>
-  <script>
+    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+    <script>
+        var showRegister = function() {
+            $('#becomeMemberDialog').modal('show');
+        };
 
-    $(document).ready(function () {
+        $(document).ready(function() {
+            if($('.event-page-container .tonight').length){
+                var referrer =  document.referrer;
+                if(referrer.includes('/search/archive/') || referrer.includes('/search/')){
+                    $('.event-page-container .tonight').hide();
+                }
 
-      $('#btn-tickets').click(function () {
-        $('#ticketsDialog').modal('show');
-      });
-      $('#btn-tickets-sold-out').click(function (e) {
-        e.preventDefault();
-        $('#ticketsSoldOutDialog').modal('show');
-      });
-      var $form;
-      $('.buy-tickets').click(function(e) {
-        e.preventDefault();
-          $form = $(this).closest('form');
-          $('#ticket-time').text( $(this).data('ticket-time'));
-          $('#ticket-price').text($(this).data('ticket-price'));
-          $('#walk-in-price').text($(this).data('walk-in-price'));
-          $('#ticket-available').text($(this).data('ticket-availability'));
-          $('#buy-tickets-dialog').modal('show');
-
-        {% if user.is_authenticated %}
-
-          // Remember form to be submitted
-          /*
-          $form = $(this).closest('form');
-          $('#ticket-time').text( $(this).data('ticket-time'));
-          $('#ticket-price').text($(this).data('ticket-price'));
-          $('#walk-in-price').text($(this).data('walk-in-price'));
-          $('#buy-tickets-dialog').modal('show');
-          */
-
-        {% else %}
-
-          //$('#becomeMemberDialog').modal('show');
-
-        {% endif %}
-      });
-
-      $('#confirm-buy-tickets').click(function (e) {
-        e.preventDefault();
-        $.ajax({
-          type: "POST",
-          url: $form.attr("action"),
-          data: $form.serialize(),
-          success: function(data) {
-            if (data.error) {
-
-            } else {
-              window.location = "{% url 'ticket_support' %}?flow_type=ticket_support";
             }
-          },
-          error: function() {}
         });
-      });
+    </script>
+    <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+    <script src="{% static 'js/subpages.js' %}"></script>
+    <script>
+        function checkAndHideTickets() {
+            var availableEventTickets = $(".buy-tickets");
+            availableEventTickets.each(function() {
+                var cutoffTime = $(this).data('ticket-purchase-cutoff');
+                var cutoffDate = moment(cutoffTime, 'YYYY-MM-DD HH:mm');
+                var currentTime = moment();
+                if (currentTime.isAfter(cutoffDate)) {
+                    $(this).hide();
+                }
+            });
+        }
 
-      $('#cancel-buy-tickets').click(function (event) {
-        event.preventDefault();
-        $form = null;
-        $('#buy-tickets-dialog').modal('toggle');
-      });
+        $(document).ready(function () {
+            setInterval(checkAndHideTickets, 60000)
 
-      $('.tickets-sold-out').click(function(e) {
-        e.preventDefault();
-        $('#tickets-sold-out-dialog').modal('show');
-      });
+            $('#btn-tickets').click(function () {
+                $('#ticketsDialog').modal('show');
+            });
+            $('#btn-tickets-sold-out').click(function (e) {
+                e.preventDefault();
+                $('#ticketsSoldOutDialog').modal('show');
+            });
+            var $form;
+            $('.buy-tickets').click(function(e) {
+                e.preventDefault();
+                $form = $(this).closest('form');
+                $('#ticket-time').text( $(this).data('ticket-time'));
+                $('#ticket-price').text($(this).data('ticket-price'));
+                $('#walk-in-price').text($(this).data('walk-in-price'));
+                $('#ticket-available').text($(this).data('ticket-availability'));
+                $('#buy-tickets-dialog').modal('show');
 
-      var subpages = window.subpages;
-      subpages.register();
-      subpages.loadAll();
+                {% if user.is_authenticated %}
 
-      $(document).on('click', '.remove-comment', function () {
-        $('#remove-comment').modal('show',true)
-        $('#remove-comment button').val($(this).data("value"))
-      })
+                    // Remember form to be submitted
+                    /*
+                    $form = $(this).closest('form');
+                    $('#ticket-time').text( $(this).data('ticket-time'));
+                    $('#ticket-price').text($(this).data('ticket-price'));
+                    $('#walk-in-price').text($(this).data('walk-in-price'));
+                    $('#buy-tickets-dialog').modal('show');
+                    */
 
-      // Scroll related events until live is visible
-      var $liveEvents = $(".event-related-videos .live");
-      if ($liveEvents.length) {
-        $(".event-related-videos .live")[0].scrollIntoView(false);
-      }
+                {% else %}
 
-      {% if event.sponsorship_enabled %}
+                    //$('#becomeMemberDialog').modal('show');
 
-      $("#sponsor-concert-donation-btn").click(function (e) {
-        e.preventDefault();
-        var $dialog = $("#sponsorshipConfirmationDialog");
-        var leaderName = "{{ event.leader_string }}";
-        $("#leader-name").text(leaderName);
-        var sponsorshipDate = "{{ event.get_date }}";
-        $("#sponsorship-date").text(sponsorshipDate);
-        var eventId = "{{ event.id }}";
-        $("#confirmDonationButton").data("event-id", eventId);
-        var dedication = "{{ request.user.full_name }}";
-        $("#dedication").val(dedication);
-        var minDonation = "{{ event.minimum_sponsorship_amount }}";
-        $("#minimum-donation").text(minDonation);
-        $dialog.modal("show");
-      });
+                {% endif %}
+            });
 
-      $(document).on("click", "#confirmSponsorshipButton", function () {
-        var dedication = $("#dedication").val();
-        window.location = "{% url 'event_sponsorship' %}?event_id={{ event.id }}" + "&dedication=" + dedication;
-      });
+            $('#confirm-buy-tickets').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: $form.attr("action"),
+                    data: $form.serialize(),
+                    success: function(data) {
+                        if (data.error) {
 
-      {% endif %}
+                        } else {
+                            window.location = "{% url 'ticket_support' %}?flow_type=ticket_support";
+                        }
+                    },
+                    error: function() {}
+                });
+            });
 
-    });
+            $('#cancel-buy-tickets').click(function (event) {
+                event.preventDefault();
+                $form = null;
+                $('#buy-tickets-dialog').modal('toggle');
+            });
 
-    $(document).on('click', '[data-playlist-index]', function (ev) {
-      var subpage = subpages.get('comments');
-      if (subpage) {
-        subpage.setUrl($(this).data('comments-page'));
-      }
-    });
+            $('.tickets-sold-out').click(function(e) {
+                e.preventDefault();
+                $('#tickets-sold-out-dialog').modal('show');
+            });
+
+            var subpages = window.subpages;
+            subpages.register();
+            subpages.loadAll();
+
+            $(document).on('click', '.remove-comment', function () {
+                $('#remove-comment').modal('show',true)
+                $('#remove-comment button').val($(this).data("value"))
+            })
+
+            // Scroll related events until live is visible
+            var $liveEvents = $(".event-related-videos .live");
+            if ($liveEvents.length) {
+                $(".event-related-videos .live")[0].scrollIntoView(false);
+            }
+
+            {% if event.sponsorship_enabled %}
+
+                $("#sponsor-concert-donation-btn").click(function (e) {
+                    e.preventDefault();
+                    var $dialog = $("#sponsorshipConfirmationDialog");
+                    var leaderName = "{{ event.leader_string }}";
+                    $("#leader-name").text(leaderName);
+                    var sponsorshipDate = "{{ event.get_date }}";
+                    $("#sponsorship-date").text(sponsorshipDate);
+                    var eventId = "{{ event.id }}";
+                    $("#confirmDonationButton").data("event-id", eventId);
+                    var dedication = "{{ request.user.full_name }}";
+                    $("#dedication").val(dedication);
+                    var minDonation = "{{ event.minimum_sponsorship_amount }}";
+                    $("#minimum-donation").text(minDonation);
+                    $dialog.modal("show");
+                });
+
+                $(document).on("click", "#confirmSponsorshipButton", function () {
+                    var dedication = $("#dedication").val();
+                    window.location = "{% url 'event_sponsorship' %}?event_id={{ event.id }}" + "&dedication=" + dedication;
+                });
+
+            {% endif %}
+
+        });
+
+        $(document).on('click', '[data-playlist-index]', function (ev) {
+            var subpage = subpages.get('comments');
+            if (subpage) {
+                subpage.setUrl($(this).data('comments-page'));
+            }
+        });
 
 
-  </script>
+    </script>
 
-  {% with album=event.products.first %}
-      {% if not event.is_future and album and album.tracks %}
-          <script>
-              var tracksPlayer = jwplayer("player-tracks").setup({
-                  primary: 'html5',
-                  playlist: [
-                      {% for track in album.tracks.all %}
-                          {% if track.preview %}
-                              {
-                                  sources: [{
-                                      file: "{{ track.get_track_preview_url|safe }}",
-                                      type: "mp3"
-                                  }],
-                                  mediaid: {{ track.id }}
-                              }{% if not forloop.last %},{% endif %}
-                          {% endif %}
-                      {% endfor %}
-                  ],
-                  skin: "{% static "jwplayer-skin/smalls.xml" %}",
-                  width: "100%",
-                  height: 0
-              });
-              $(".playback-control").on('click', function (e) {
-                  e.preventDefault();
-                  if (tracksPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {
-                      tracksPlayer.pause();
-                  } else {
-                      tracksPlayer.playlistItem($(this).data('playlist-id'));
-                      $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
-                  }
-                  $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
-              });
-          </script>
-      {% endif %}
-  {% endwith %}
+    {% with album=event.products.first %}
+        {% if not event.is_future and album and album.tracks %}
+            <script>
+                var tracksPlayer = jwplayer("player-tracks").setup({
+                    primary: 'html5',
+                    playlist: [
+                        {% for track in album.tracks.all %}
+                            {% if track.preview %}
+                                {
+                                    sources: [{
+                                        file: "{{ track.get_track_preview_url|safe }}",
+                                        type: "mp3"
+                                    }],
+                                    mediaid: {{ track.id }}
+                                }{% if not forloop.last %},{% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    ],
+                    skin: "{% static "jwplayer-skin/smalls.xml" %}",
+                    width: "100%",
+                    height: 0
+                });
+                $(".playback-control").on('click', function (e) {
+                    e.preventDefault();
+                    if (tracksPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {
+                        tracksPlayer.pause();
+                    } else {
+                        tracksPlayer.playlistItem($(this).data('playlist-id'));
+                        $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
+                    }
+                    $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
+                });
+            </script>
+        {% endif %}
+    {% endwith %}
 
 {% endblock %}

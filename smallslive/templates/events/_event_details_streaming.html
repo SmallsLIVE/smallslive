@@ -25,17 +25,6 @@
 <script>
   $(document).ready(function () {
 
-      {% if next_event %}
-        var changeTime = moment("{{ next_event.start.isoformat }}");
-        var nextEventUrl = "{{ next_event.url }}"
-        var waitTime = changeTime.diff(moment(), 'miliseconds');
-        var intervalId = setInterval(function () {
-            clearInterval(intervalId);
-            window.location = nextEventUrl
-        }, waitTime);
-      {% endif %}
-
-
       {% if count_metrics %}
         var first_play = true
         function playCallback(event, playing) {

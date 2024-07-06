@@ -1273,6 +1273,15 @@ class EventSet(models.Model):
 
         return True
 
+    @property
+    def ticket_purchase_cutoff_time(self):
+        start_time = datetime.combine(self.event.date, self.start)
+        start_time = make_aware(start_time, get_current_timezone())
+        if start_time.hour == 0 and start_time.minute == 0:
+            start_time = start_time + timedelta(days=1)
+
+        return start_time - timedelta(minutes=15)
+
     def get_user_video_metrics_dict(self):
 
         audio_play_count = {}
