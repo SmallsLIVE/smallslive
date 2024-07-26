@@ -9,6 +9,7 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from events.models import Recording, Event
 from multimedia.models import MediaFile
+from utils.video_to_audio_utils import VideoToAudioConverter
 
 logger = logging.getLogger('cron')
 
@@ -81,13 +82,15 @@ class Command(BaseCommand):
         now = timezone.now()
         # heroku scheduler launches the task every day, we make sure it only really does the import
         # twice a week
-        if not full and env == "heroku" and now.weekday() in (0, 1, 3, 4, 5):
-            logger.info('Today is not importing day')
-            return
+        # if not full and env == "heroku" and now.weekday() in (0, 1, 3, 4, 5):
+        #     logger.info('Today is not importing day')
+        #     return
 
         conn = boto.connect_s3(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
                                calling_format=boto.s3.connection.OrdinaryCallingFormat())
+
+        video_to_audio_converter = VideoToAudioConverter(bucket_name)
 
 
         self.bucket = conn.get_bucket(bucket_name)
@@ -122,8 +125,9 @@ class Command(BaseCommand):
             print(event_sets)
 
             for set_num in range(1, 7):
-                filename = '{0.year}-{0.month:02}-{0.day:02}/360p/{1}-{2}_360p.mp4'.format(
-                    event.listing_date(), event_id, set_num)
+                folder_name = '{0.year}-{0.month:02}-{0.day:02}'.format(event.listing_date())
+                filename = '{0}/360p/{1}-{2}_360p.mp4'.format(
+                    folder_name, event_id, set_num)
                 key = self.bucket.get_key(filename)
                 if key:
                     print("importing {0}".format(filename))
@@ -142,6 +146,7 @@ class Command(BaseCommand):
                         print('Created: {0}'.format(created))
                         recording.media_file = media_file
                         recording.save()
+                        video_to_audio_converter.convert_video_to_audio(filename, folder_name, event_id, set_num)
 
                         self.files_imported += 1
 

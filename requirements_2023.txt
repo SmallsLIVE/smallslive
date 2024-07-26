@@ -88,6 +88,7 @@ MarkupSafe==2.1.2
 metrics==0.3.3
 mock==1.0.1
 MonthDelta==1.0b0
+moviepy==1.0.3
 natsort==3.5.0
 newrelic==2.54.0.41
 oauthlib==0.7.2
