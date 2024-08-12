@@ -127,6 +127,7 @@ INSTALLED_APPS = [
     'oscar.apps.dashboard.communications.apps.CommunicationsDashboardConfig',
     'oscar.apps.dashboard.shipping.apps.ShippingDashboardConfig',
     'oscar.apps.analytics.apps.AnalyticsConfig',
+    'oscar.apps.communication.apps.CommunicationConfig',
 
     # Oscar custom apps
     'oscar_apps.config.SmallsLiveShop',
@@ -959,7 +960,7 @@ AWS_PAYOUTS_BUCKET = os.environ.get('AWS_PAYOUTS_BUCKET', 'smallslivepayouts')
 
 THUMBNAIL_DEBUG = ast.literal_eval(os.environ.get('THUMBNAIL_DEBUG', 'False'))
 DEFAULT_FROM_EMAIL = OSCAR_FROM_EMAIL = 'smallslive@smallslive.com'
-
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Metrics config
 PING_INTERVAL = 30
 PING_INTERVAL_WITH_BUFFER = PING_INTERVAL - 2  # add a little buffer in case client sends too early

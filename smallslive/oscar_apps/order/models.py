@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMultiAlternatives, EmailMessage
 from django.db import models
 
-CommunicationEventType = get_model('customer', 'CommunicationEventType')
+CommunicationEventType = get_model('communication', 'CommunicationEventType')
 
 
 class Order(AbstractOrder):

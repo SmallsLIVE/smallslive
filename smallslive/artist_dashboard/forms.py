@@ -14,7 +14,7 @@ from django.urls import reverse
 from django_countries import countries
 import floppyforms
 import allauth.account.forms as allauth_forms
-from extra_views import InlineFormSet
+from extra_views import InlineFormSetFactory
 from localflavor.us.forms import USStateField
 from localflavor.us.us_states import STATE_CHOICES
 from artists.forms import ArtistAddForm
@@ -35,7 +35,7 @@ class ToggleRecordingStateForm(forms.ModelForm):
         fields = ('state',)
 
 
-class ArtistGigPlayedAddInlineFormSet(InlineFormSet):
+class ArtistGigPlayedAddInlineFormSet(InlineFormSetFactory):
     model = GigPlayed
     fields = ('artist', 'role', 'is_leader', 'sort_order')
     factory_kwargs = {'can_delete': False, 'extra': 0}

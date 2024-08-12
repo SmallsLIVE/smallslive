@@ -9,7 +9,7 @@ urlpatterns = [
         name="email_confirm_resend_ajax"),
     re_path(r'^email-confirmed-donate/$', email_confirmed_donate,
         name="email_confirmed_donate"),
-    path(r'^confirm-email/', email_verification_sent,
+    re_path(r'^confirm-email/', email_verification_sent,
          name="account_email_verification_sent"),
     re_path(r'^email-confirmed-catalog/$', email_confirmed_catalog,
         name="email_confirmed_catalog"),

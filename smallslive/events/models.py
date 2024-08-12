@@ -388,25 +388,26 @@ class CustomImageField(models.ImageField):
     descriptor_class = CustomFileDescriptor
 
 
-def get_event_media_storage(instance):
+def get_event_media_storage(instance=None):
 
     params = {}
 
-    if instance.get_venue_name() == 'Mezzrow':
+    if instance and instance.get_venue_name() == 'Mezzrow':
         params['access_key'] = settings.AWS_ACCESS_KEY_ID_MEZZROW
         params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
         params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
 
     # if venue object has credentials, use them
-    aws_access_key_id = instance.get_aws_access_key_id()
-    aws_secret_access_key = instance.get_aws_secret_access_key()
-    aws_storage_bucket_name = instance.get_aws_storage_bucket_name()
-    if aws_access_key_id and \
-            aws_secret_access_key and \
-            aws_storage_bucket_name:
-        params['access_key'] = aws_access_key_id
-        params['secret_key'] = aws_secret_access_key
-        params['bucket'] = aws_storage_bucket_name
+    if instance:
+        aws_access_key_id = instance.get_aws_access_key_id()
+        aws_secret_access_key = instance.get_aws_secret_access_key()
+        aws_storage_bucket_name = instance.get_aws_storage_bucket_name()
+        if aws_access_key_id and \
+                aws_secret_access_key and \
+                aws_storage_bucket_name:
+            params['access_key'] = aws_access_key_id
+            params['secret_key'] = aws_secret_access_key
+            params['bucket'] = aws_storage_bucket_name
 
     return ImageS3Storage(**params)
 
@@ -420,7 +421,7 @@ class Event(TimeStampedModel):
                               null=True)
     start = models.DateTimeField(db_index=True, blank=True, null=True)
     end = models.DateTimeField(db_index=True, blank=True, null=True)
-    set = models.CharField(choices=SETS, blank=True, max_length=10)
+    set = models.CharField(choices=SETS, blank=True, max_length=12)
     description = tinymce_models.HTMLField(blank=True)
     subtitle = models.CharField(max_length=255, blank=True)
     event_type = models.ForeignKey('EventType', blank=True, null=True, on_delete=models.CASCADE,)

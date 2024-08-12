@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.template import Context
 from django.template.loader import render_to_string
-from extra_views import InlineFormSet
+from extra_views import InlineFormSetFactory
 import floppyforms
 from haystack.forms import SearchForm
 from oscar.apps.catalogue.models import ProductImage
@@ -55,7 +55,7 @@ class EventStatusWidget(floppyforms.RadioSelect):
     template_name = 'form_widgets/event_status.html'
 
 
-class GigPlayedAddInlineFormSet(InlineFormSet):
+class GigPlayedAddInlineFormSet(InlineFormSetFactory):
     model = GigPlayed
     fields = ('artist', 'role', 'is_leader', 'is_admin', 'sort_order')
     factory_kwargs = {'can_delete': True, 'extra': 1 }
@@ -100,7 +100,7 @@ class GigPlayedInlineFormSetHelper(FormHelper):
         self.form_show_labels = False
 
 
-class EventSetInlineFormset(InlineFormSet):
+class EventSetInlineFormset(InlineFormSetFactory):
     model = EventSet
     fields = ('start', 'end', 'walk_in_price')
     factory_kwargs = {'can_delete': True, 'extra': 1 }
@@ -381,7 +381,7 @@ class TicketAddForm(forms.Form):
             )
 
 
-class ShowDefaultTimeInlineFormset(InlineFormSet):
+class ShowDefaultTimeInlineFormset(InlineFormSetFactory):
     model = ShowDefaultTime
     fields = ('first_set', 'second_set', 'set_duration')
     # extra = 1

@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 
 from oscar.apps.catalogue.abstract_models import AbstractProduct
-from oscar.apps.catalogue.managers import ProductManager as CoreProductManager
+from oscar_apps.catalogue.managers import ProductManager as CoreProductManager
 from users.models import SmallsUser
 
 

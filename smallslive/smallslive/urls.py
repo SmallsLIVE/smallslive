@@ -7,7 +7,7 @@ from django.urls import path, re_path, include
 from django.contrib import admin
 from django.urls import reverse_lazy
 from django.http import Http404
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.views.generic.base import TemplateView, RedirectView
 from django.template import TemplateDoesNotExist
 # from paypal.express.dashboard.app import application as paypal_application
@@ -45,7 +45,7 @@ def static_file_view(request, **kwargs):
         content_type = 'application/xml'
     else:
         content_type = 'text/plain'
-    response = render_to_response(file_name, content_type=content_type)
+    response = render(file_name, content_type=content_type)
     response['Access-Control-Allow-Origin'] = '*'
     response['Cache-Control'] = 'public, max-age=3600'
     return response
