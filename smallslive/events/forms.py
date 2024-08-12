@@ -371,8 +371,8 @@ class TicketAddForm(forms.Form):
             product=product,
             partner_sku=last_id + 1,
             num_in_stock=self.cleaned_data.get('seats'),
-            price_excl_tax=self.cleaned_data.get('price'),
-            cost_price=self.cleaned_data.get('cost'),
+            price=self.cleaned_data.get('price'),
+            # cost_price=self.cleaned_data.get('cost'),
         )
         if event.photo:
             ProductImage.objects.create(
