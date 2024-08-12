@@ -249,7 +249,7 @@ class TrackForm(forms.ModelForm):
             try:
                 file_stockrecord = self.instance.stockrecords.filter(partner_sku=str(self.instance.id))
                 if file_stockrecord:
-                    self.fields['price_excl_tax'].initial = file_stockrecord[0].price_excl_tax
+                    self.fields['price_excl_tax'].initial = file_stockrecord[0].price
                     if file_stockrecord[0].digital_download:
                         self.fields['track_file'].initial = file_stockrecord[0].digital_download.file
             except StockRecord.DoesNotExist:
@@ -257,7 +257,7 @@ class TrackForm(forms.ModelForm):
             try:
                 file_stockrecord = self.instance.stockrecords.filter(partner_sku=str(self.instance.id)+'_hd')
                 if file_stockrecord:
-                    self.fields['hd_price_excl_tax'].initial = file_stockrecord[0].price_excl_tax
+                    self.fields['hd_price_excl_tax'].initial = file_stockrecord[0].price
                     if file_stockrecord[0].digital_download:
                         self.fields['hd_track_file'].initial = file_stockrecord[0].digital_download.file
             except StockRecord.DoesNotExist:
