@@ -19,6 +19,7 @@ class TicketReportGenerator(ReportGenerator):
     code = 'ticket_report'
     description = _("Tickets sold")
     date_range_field_name = 'start'
+    model_class = Event
 
     formatters = {
         'HTML_formatter': TicketReportHTMLFormatter,
