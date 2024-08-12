@@ -41,6 +41,9 @@ class ProductManager(models.Manager):
 
     def base_queryset(self):
         return self.get_queryset().base_queryset()
+    
+    def public(self):
+        return self.filter(is_public=True)
 
 
 class BrowsableProductManager(ProductManager):
