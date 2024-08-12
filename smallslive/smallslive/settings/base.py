@@ -805,60 +805,60 @@ OSCAR_IMAGE_FOLDER = 'product_images/%Y/%m/'
 OSCAR_HOMEPAGE = '/home/'
 OSCAR_PRODUCTS_PER_PAGE = 12
 
-OSCAR_DASHBOARD_NAVIGATION += [
-    {
-        'label': 'Files',
-        'icon': 'icon-file',
-        'children': [
-            {
-                'label': 'Press Files',
-                'url_name': 'dashboard:file-list',
-                'url_kwargs': {
-                    "category": "press-file"
-                }
-            },
-            {
-                'label': 'Press Photos',
-                'url_name': 'dashboard:file-list',
-                'url_kwargs': {
-                    "category": "press-photo"
-                }
-            },
-            {
-                'label': 'Photo Gallery',
-                'url_name': 'dashboard:file-list',
-                'url_kwargs': {
-                    "category": "gallery-photo"
-                }
-            },
-            {
-                'label': 'About us photos',
-                'url_name': 'dashboard:file-list',
-                'url_kwargs': {
-                    "category": "about-photo"
-                }
-            },
+# OSCAR_DASHBOARD_NAVIGATION += [
+#     {
+#         'label': 'Files',
+#         'icon': 'icon-file',
+#         'children': [
+#             {
+#                 'label': 'Press Files',
+#                 'url_name': 'dashboard:file-list',
+#                 'url_kwargs': {
+#                     "category": "press-file"
+#                 }
+#             },
+#             {
+#                 'label': 'Press Photos',
+#                 'url_name': 'dashboard:file-list',
+#                 'url_kwargs': {
+#                     "category": "press-photo"
+#                 }
+#             },
+#             {
+#                 'label': 'Photo Gallery',
+#                 'url_name': 'dashboard:file-list',
+#                 'url_kwargs': {
+#                     "category": "gallery-photo"
+#                 }
+#             },
+#             {
+#                 'label': 'About us photos',
+#                 'url_name': 'dashboard:file-list',
+#                 'url_kwargs': {
+#                     "category": "about-photo"
+#                 }
+#             },
 
-         ],
-    },
-    {
-        'label': 'Tickets',
-        'icon': 'icon-bar-chart',
-        'url_name': 'dashboard:tickets-report-index',
-    },
-]
+#          ],
+#     },
+#     {
+#         'label': 'Tickets',
+#         'icon': 'icon-bar-chart',
+#         'url_name': 'dashboard:tickets-report-index',
+#     },
+# ]
 
-OSCAR_DASHBOARD_NAVIGATION.append(
-    {
-        'label': 'PayPal',
-        'icon': 'icon-globe',
-        'children': [
-            {
-                'label': 'Express transactions',
-                'url_name': 'paypal-express-list',
-            },
-        ]
-    })
+# OSCAR_DASHBOARD_NAVIGATION.append(
+#     {
+#         'label': 'PayPal',
+#         'icon': 'icon-globe',
+#         'children': [
+#             {
+#                 'label': 'Express transactions',
+#                 'url_name': 'paypal-express-list',
+#             },
+#         ]
+#     })
 
 OSCAR_INITIAL_ORDER_STATUS = 'Pending'
 OSCAR_INITIAL_LINE_STATUS = 'Pending'

@@ -4,12 +4,18 @@ from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 
 from oscar.apps.dashboard.catalogue import views as oscar_views
-from oscar.core.loading import get_model
+from oscar.core.loading import get_model, get_classes
 from .forms import TrackFormSet, ArtistMemberFormSet
 from .tables import ProductTable
+from django_tables2 import SingleTableView
 
 Product = get_model('catalogue', 'Product')
 ProductClass = get_model('catalogue', 'ProductClass')
+Option = get_model('catalogue', 'Option')
+ProductTable, CategoryTable, AttributeOptionGroupTable, OptionTable \
+    = get_classes('dashboard.catalogue.tables',
+                  ('ProductTable', 'CategoryTable',
+                   'AttributeOptionGroupTable', 'OptionTable'))
 
 
 class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
@@ -163,3 +169,10 @@ class ProductListView(oscar_views.ProductListView):
             queryset = queryset.filter(product_class=data['product_class'])
 
         return queryset
+
+class OptionListView(SingleTableView):
+
+    template_name = 'oscar/dashboard/catalogue/option_list.html'
+    model = Option
+    table_class = OptionTable
+    context_table_name = 'options'

@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from oscar.apps.dashboard.catalogue import apps
+from django.urls import path
 
 
 class CatalogueDashboardConfig(apps.CatalogueDashboardConfig):
@@ -61,5 +62,6 @@ class CatalogueDashboardConfig(apps.CatalogueDashboardConfig):
             url(r'^product-type/(?P<pk>\d+)/delete/$',
                 self.product_class_delete_view.as_view(),
                 name='catalogue-class-delete'),
+            path('option/', self.option_list_view.as_view(), name='catalogue-option-list'),
         ]
         return self.post_process_urls(urls)
