@@ -419,14 +419,17 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
 
         context['gifts'] = []
         context['costs'] = []
-        for product in Product.objects.filter(categories__name='Gifts'):
-            context['gifts'].append(product)
-            if product.children.count():
-                context['costs'].append(
-                    product.children.first().stockrecords.first().cost_price)
-            else:
-                context['costs'].append(
-                    product.stockrecords.first().cost_price)
+
+        ## @TODO: Cost Price now has been removed from the stock records - so for now disabled this code.
+    
+        # for product in Product.objects.filter(categories__name='Gifts'):
+        #     context['gifts'].append(product)
+        #     if product.children.count():
+        #         context['costs'].append(
+        #             product.children.first().stockrecords.first().cost_price)
+        #     else:
+        #         context['costs'].append(
+        #             product.stockrecords.first().cost_price)
 
         def get_product_price(x):
             selector = Selector()

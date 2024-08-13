@@ -265,7 +265,8 @@ class SuccessfulOrderMixin(PaymentCredentialsMixin):
             order_type_code = 'GIFT_PLACED'
 
         # Send confirmation message (normally an email)
-        self.send_confirmation_message(self.order, order_type_code)
+        # It is a new method the old method changed in version 2.1
+        self.send_order_placed_email(self.order)
         self.send_admin_notification()
 
         # Send confirmation email to customer
@@ -735,7 +736,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
     def submit(self, user, basket,
                shipping_address, shipping_method,
                shipping_charge, billing_address, order_total,
-               payment_kwargs=None, order_kwargs=None):
+               payment_kwargs=None, order_kwargs=None, surcharges=None):
 
         """
         Submit a basket for order placement.

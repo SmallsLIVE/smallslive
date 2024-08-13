@@ -38,7 +38,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ homepage_url }}"><i class="fas fa-home"></i> {% trans "Return to site" %}</a>
+                    <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home"></i> {% trans "Return to site" %}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'customer:summary' %}"><i class="fas fa-user"></i> {% trans "Account" %}</a>

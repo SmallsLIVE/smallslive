@@ -265,10 +265,11 @@ class StripeMixin(PaymentCredentialsMixin):
             )
             stripe_ref = resp['id']
 
-        cost = 0
-        for line in basket_lines:
-            if line.stockrecord and line.stockrecord.cost_price:
-                cost += line.stockrecord.cost_price
+        ## @TODO: Cost Price now has been removed from the stock records - so for now disabled this code.
+        # cost = 0
+        # for line in basket_lines:
+        #     if line.stockrecord and line.stockrecord.cost_price:
+        #         cost += line.stockrecord.cost_price
 
         return stripe_ref
 
