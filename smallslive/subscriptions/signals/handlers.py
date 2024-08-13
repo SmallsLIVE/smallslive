@@ -54,8 +54,11 @@ def invoice_payment_succeeded(event, **kwargs):
                     payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
                     payment_method = payment_intent.payment_method
                     customer.add_payment_method(payment_method)
+                    customer.metadata = json.dumps(customer.metadata)
                     customer.metadata = json.loads(customer.metadata)
+                    customer.invoice_settings = json.dumps(customer.invoice_settings)
                     customer.invoice_settings = json.loads(customer.invoice_settings)
+                    customer.preferred_locales = json.dumps(customer.preferred_locales)
                     customer.preferred_locales = json.loads(customer.preferred_locales)
                     customer.save()
                 print('Successfully added Payment Method')

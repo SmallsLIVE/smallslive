@@ -192,8 +192,11 @@ def one_time_donation(customer, stripe_token, amount, donation_type='one_time',
 
     customer.add_payment_method(charge_object.payment_method)
 
+    customer.metadata = json.dumps(customer.metadata)
     customer.metadata = json.loads(customer.metadata)
+    customer.invoice_settings = json.dumps(customer.invoice_settings)
     customer.invoice_settings = json.loads(customer.invoice_settings)
+    customer.preferred_locales = json.dumps(customer.preferred_locales)
     customer.preferred_locales = json.loads(customer.preferred_locales)
     customer.save()
 
@@ -258,8 +261,11 @@ def subscribe(customer, plan, flow, plan_data, stripe_token, payment_method=None
         # )
 
         customer.add_payment_method(current_payment_method)
+        customer.metadata = json.dumps(customer.metadata)
         customer.metadata = json.loads(customer.metadata)
+        customer.invoice_settings = json.dumps(customer.invoice_settings)
         customer.invoice_settings = json.loads(customer.invoice_settings)
+        customer.preferred_locales = json.dumps(customer.preferred_locales)
         customer.preferred_locales = json.loads(customer.preferred_locales)
         customer.save()
 
