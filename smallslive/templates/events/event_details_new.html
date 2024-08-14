@@ -46,7 +46,71 @@
                 <div class="event-video-info content-space-between">
                     <div class=" flex-column info-container">
                         <div class="event-set-info">
-                            <div class="current-event event-title title1">{{ event.title }}</div>
+                            <div class="event-info-container">
+                                <div class="title-ticket-container">
+                                    <div class="current-event event-title title1">{{ event.title }}</div>
+                                    <div class="flex-column ticket-buttons">
+                                        <div class="event-player-buttons text-right">
+                                            
+                                            {% if event.is_live or event.is_future %}
+                                            {% if products %}
+                                                {% for product in products %}
+                                                    {% if not product.event_set.is_past %}
+                                                        {% purchase_info_for_product request product as session %}
+                                                        {% basket_form request product 'single' as basket_form %}
+                                                        <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
+                                                            {% csrf_token %}
+                                                            {{ basket_form.as_p }}
+                                                            <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
+                                                            {% if session.availability.num_available > 0 and product.event_set.can_purchase_ticket %}
+                                                                <button type='submit'
+                                                                        data-ticket-name="{{ product.set }}"
+                                                                        data-ticket-time="{{ product.event_set.start|time:'g:i A' }}"
+                                                                        data-ticket-purchase-cutoff="{{ product.event_set.ticket_purchase_cutoff_time|date:'Y-m-d H:i' }}"
+                                                                        data-ticket-price="{{ session.price.excl_tax }}"
+                                                                        data-ticket-availability="{{ session.availability.num_available }}"
+                                                                        data-walk-in-price="{{ product.event_set.walk_in_price }}"
+                                                                        class="buy-tickets white-border-button"
+                                                                        style="display: inline;">{{ product.set }}</button>
+                                                                {% include 'events/buy_tickets_dialog_new.html' %}
+                                                            {% endif %}
+                                                            {% if session.availability.num_available == 0 %}
+                                                                <button type='submit'
+                                                                        class="tickets-sold-out white-border-button"
+                                                                        style="display: inline;">{{ product.set }}</button>
+                                                                {% include 'events/tickets_sold_out_dialog.html' %}
+                                                            {% endif %}
+                                                        </form>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                            {% if user.is_authenticated  %}
+                                                {% if event.sponsorship_enabled and not event.sponsorship %}
+                                                    <button id="sponsor-concert-donation-btn"
+                                                            class="white-border-button text-center">Sponsor This Concert
+                                                    </button>
+                                                {% endif %}
+                                            {% elif event.sponsorship_enabled %}
+                                                <button onclick="$('#becomeMemberDialog').modal('show');" class="white-border-button text-center">Sponsor This Concert</button>
+                                            {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="{% if user.has_active_subscription or user.is_staff %}buttons-container{% endif %}">
+                                    {% block control_buttons %}
+                                    {% endblock %}
+                                    {% if user.is_admin or user.is_staff %}
+                                        <a href="{% url 'event_edit' pk=event.id slug=event.slug %}" style="display: inline-block; margin-right: 8px;">
+                                            <button class="white-border-button">Edit</button>
+                                        </a>
+                                        <form method="post" action="{% url 'event_clone' pk=event.id slug=event.slug %}" style="display: inline">
+                                            {% csrf_token %}
+                                            <button class="white-border-button">Clone</button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
                             <div class="current-event event-title event-subtitle title5 accent-color">{{ event.subtitle }}</div>
                             {% if event.sponsorship %}
                                 <div class="current-event event-title event-subtitle title5 accent-color">Sponsored By: {{ event.sponsorship.sponsored_event_dedication }}</div>
@@ -96,63 +160,6 @@
                                 {% endif %}
                             </div>
 
-                        </div>
-                    </div>
-                    <div class="flex-column {% if user.has_active_subscription or user.is_staff %}buttons-container{% endif %}">
-                        {% block control_buttons %}
-                        {% endblock %}
-                        <div class="event-player-buttons text-right">
-                            {% if user.is_admin or user.is_staff %}
-                                <a href="{% url 'event_edit' pk=event.id slug=event.slug %}" style="display: inline-block;">
-                                    <button class="white-border-button">Edit</button>
-                                </a>
-                                <form method="post" action="{% url 'event_clone' pk=event.id slug=event.slug %}" style="display: inline">
-                                    {% csrf_token %}
-                                    <button class="white-border-button">Clone</button>
-                                </form>
-                            {% endif %}
-                            {% if event.is_live or event.is_future %}
-                                {% if products %}
-                                    {% for product in products %}
-                                        {% if not product.event_set.is_past %}
-                                            {% purchase_info_for_product request product as session %}
-                                            {% basket_form request product 'single' as basket_form %}
-                                            <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
-                                                {% csrf_token %}
-                                                {{ basket_form.as_p }}
-                                                <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
-                                                {% if session.availability.num_available > 0 and product.event_set.can_purchase_ticket %}
-                                                    <button type='submit'
-                                                            data-ticket-name="{{ product.set }}"
-                                                            data-ticket-time="{{ product.event_set.start|time:'g:i A' }}"
-                                                            data-ticket-purchase-cutoff="{{ product.event_set.ticket_purchase_cutoff_time|date:'Y-m-d H:i' }}"
-                                                            data-ticket-price="{{ session.price.excl_tax }}"
-                                                            data-ticket-availability="{{ session.availability.num_available }}"
-                                                            data-walk-in-price="{{ product.event_set.walk_in_price }}"
-                                                            class="buy-tickets white-border-button"
-                                                            style="display: inline;">{{ product.set }}</button>
-                                                    {% include 'events/buy_tickets_dialog_new.html' %}
-                                                {% endif %}
-                                                {% if session.availability.num_available == 0 %}
-                                                    <button type='submit'
-                                                            class="tickets-sold-out white-border-button"
-                                                            style="display: inline;">{{ product.set }}</button>
-                                                    {% include 'events/tickets_sold_out_dialog.html' %}
-                                                {% endif %}
-                                            </form>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                                {% if user.is_authenticated  %}
-                                    {% if event.sponsorship_enabled and not event.sponsorship %}
-                                        <button id="sponsor-concert-donation-btn"
-                                                class="white-border-button text-center">Sponsor This Concert
-                                        </button>
-                                    {% endif %}
-                                {% elif event.sponsorship_enabled %}
-                                    <button onclick="$('#becomeMemberDialog').modal('show');" class="white-border-button text-center">Sponsor This Concert</button>
-                                {% endif %}
-                            {% endif %}
                         </div>
                     </div>
                 </div>
