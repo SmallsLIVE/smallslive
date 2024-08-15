@@ -17715,7 +17715,6 @@ div.event-strip {
     padding-top: 5px; }
   .event-video-info .info-container {
     /*width: 70%;*/
-    margin-right: 20px;
     margin-top: 0px;
     margin-bottom: 20px; }
     @media (max-width: 960px) {
@@ -17729,11 +17728,20 @@ div.event-strip {
       @media (max-width: 1023px) {
         .event-video-info .info-container .event-overlay-venue .title5 {
           font-size: 1.5em; } }
+  .event-video-info .event-info-container {
+    display: flex;
+    flex-direction: column; }
+  .event-video-info .title-ticket-container {
+    align-items: baseline;
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px; }
+    .event-video-info .title-ticket-container .ticket-buttons {
+      margin-left: auto; }
   .event-video-info .buttons-container {
     align-items: flex-start;
     flex-grow: 1;
-    margin: 30px 0;
-    text-align: right;
+    margin: 10px 0;
     /*width: 50%;*/ }
     @media (max-width: 480px) {
       .event-video-info .buttons-container {
@@ -17743,7 +17751,7 @@ div.event-strip {
         text-align: left; } }
   .event-video-info .event-player-buttons {
     display: flex;
-    gap: 30px; }
+    gap: 10px; }
     .event-video-info .event-player-buttons .buy-tickets {
       border-color: #d21535;
       color: #d21535;
@@ -18349,6 +18357,16 @@ a.artist-link:hover {
 
 .top-event-slider .event-info-text {
   padding-left: 212px; }
+
+@media (max-width: 1190px) {
+  .event-video-info .title-ticket-container {
+    flex-direction: column-reverse; }
+    .event-video-info .title-ticket-container .ticket-buttons {
+      margin-left: unset; } }
+
+@media (max-width: 1023px) {
+  .event-video-info .title-ticket-container {
+    gap: 0; } }
 
 @media (max-width: 991px) {
   .top-event-slider .section-title {
