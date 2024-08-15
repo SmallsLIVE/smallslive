@@ -15,8 +15,8 @@ class Migration(migrations.Migration):
             name='category',
             options={'ordering': ['path'], 'verbose_name': 'Category', 'verbose_name_plural': 'Categories'},
         ),
-        migrations.RemoveField(
-            model_name='category',
-            name='full_name',
-        ),
+        # migrations.RemoveField(
+        #     model_name='category',
+        #     name='full_name',
+        # ),
     ]

@@ -13,11 +13,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='productattributevalue',
-            name='value_multi_option',
-            field=models.ManyToManyField(blank=True, related_name='multi_valued_attribute_values', to='catalogue.AttributeOption', verbose_name='Value multi option'),
-        ),
+        # migrations.AddField(
+        #     model_name='productattributevalue',
+        #     name='value_multi_option',
+        #     field=models.ManyToManyField(blank=True, related_name='multi_valued_attribute_values', to='catalogue.AttributeOption', verbose_name='Value multi option'),
+        # ),
         migrations.AlterField(
             model_name='productattribute',
             name='option_group',

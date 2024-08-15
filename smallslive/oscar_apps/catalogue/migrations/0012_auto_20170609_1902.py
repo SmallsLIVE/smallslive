@@ -12,11 +12,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='productattributevalue',
-            name='value_datetime',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='DateTime'),
-        ),
+        # migrations.AddField(
+        #     model_name='productattributevalue',
+        #     name='value_datetime',
+        #     field=models.DateTimeField(blank=True, null=True, verbose_name='DateTime'),
+        # ),
         migrations.AlterField(
             model_name='productattribute',
             name='type',

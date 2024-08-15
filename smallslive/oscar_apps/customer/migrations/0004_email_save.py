@@ -13,15 +13,15 @@ class Migration(migrations.Migration):
         ('customer', '0003_update_email_length'),
     ]
 
-    operations = [
-        migrations.AddField(
-            model_name='email',
-            name='email',
-            field=models.EmailField(blank=True, max_length=254, null=True, verbose_name='Email Address'),
-        ),
-        migrations.AlterField(
-            model_name='email',
-            name='user',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='emails', to=settings.AUTH_USER_MODEL, verbose_name='User'),
-        ),
-    ]
+    # operations = [
+    #     migrations.AddField(
+    #         model_name='email',
+    #         name='email',
+    #         field=models.EmailField(blank=True, max_length=254, null=True, verbose_name='Email Address'),
+    #     ),
+    #     migrations.AlterField(
+    #         model_name='email',
+    #         name='user',
+    #         field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='emails', to=settings.AUTH_USER_MODEL, verbose_name='User'),
+    #     ),
+    # ]
