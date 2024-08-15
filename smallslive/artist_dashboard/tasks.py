@@ -43,8 +43,6 @@ def generate_payout_sheet_task(start, end,
     Poll to download when ready"""
 
     # Spreadsheet for admins with personal donations.
-    start = datetime.fromisoformat(start)
-    end = datetime.fromisoformat(end)
     revenue = float(revenue)
     operating_expenses = float(operating_expenses)
 

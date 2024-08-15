@@ -75,7 +75,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_extensions',
     'django_thumbor',
-    'djcelery',
+    # 'djcelery',
     'djstripe',
     'filer',
     'floppyforms',
@@ -946,7 +946,7 @@ PING_INTERVAL = 30
 ENABLE_HIJACK = True
 
 # Celery
-CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+# CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 FORCE_S3_SECURE = os.environ.get('FORCE_S3_SECURE')
 
 WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'
