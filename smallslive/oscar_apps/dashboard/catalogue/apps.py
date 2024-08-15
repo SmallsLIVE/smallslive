@@ -63,5 +63,6 @@ class CatalogueDashboardConfig(apps.CatalogueDashboardConfig):
                 self.product_class_delete_view.as_view(),
                 name='catalogue-class-delete'),
             path('option/', self.option_list_view.as_view(), name='catalogue-option-list'),
+            path('option/create/', self.option_create_view.as_view(), name='catalogue-option-create'),
         ]
         return self.post_process_urls(urls)
