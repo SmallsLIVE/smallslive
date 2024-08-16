@@ -17625,10 +17625,12 @@ div.event-strip {
     display: inline;
     margin-right: 2px; }
     .event-page-container .white-border-button.buy-tickets {
-      white-space: nowrap; }
+      white-space: nowrap;
+      margin-right: 0; }
     .event-page-container .white-border-button.tickets-sold-out {
       padding: 20px 40px;
-      height: auto; }
+      height: auto;
+      white-space: nowrap; }
     .event-page-container .white-border-button.no-v-padding {
       padding-bottom: 0;
       padding-top: 0; }
@@ -18366,7 +18368,8 @@ a.artist-link:hover {
 
 @media (max-width: 1023px) {
   .event-video-info .title-ticket-container {
-    gap: 0; } }
+    gap: 0;
+    margin-bottom: 0; } }
 
 @media (max-width: 991px) {
   .top-event-slider .section-title {
