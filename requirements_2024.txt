@@ -19,6 +19,7 @@ click-didyoumean==0.3.1
 click-plugins==1.1.1
 click-repl==0.3.0
 cloudinary==1.38.0
+crispy-bootstrap3==2024.1
 cryptography==2.4.2
 cssselect2==0.7.0
 defusedxml==0.7.1
@@ -32,7 +33,7 @@ django-cacheops==5.0.1
 django-compat==1.0.15
 django-compressor==4.3.1
 django-countries==7.5.1
-django-crispy-forms==1.11.0
+django-crispy-forms==2.0
 django-extensions==3.0.0
 django-extra-views==0.14.0
 django-filer==2.2.4
