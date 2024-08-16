@@ -44,7 +44,7 @@ class Formset(LayoutObject):
         if template:
             self.template = template
 
-    def render(self, form, form_style, context, template_pack=TEMPLATE_PACK):
+    def render(self, form, context, template_pack=TEMPLATE_PACK):
         formset = context[self.formset_name_in_context]
 
         return render_to_string(self.template, {'wrapper': self,
@@ -123,6 +123,9 @@ class EventSetInlineFormset(InlineFormSetFactory):
             form.fields['end'].initial = now
             form.fields['end'].input_formats = ['%I:%M %p']
             form.fields['walk_in_price'].widget.attrs['data-clone-value'] = 'True'
+            form.fields['start'].widget.attrs.update({'class': 'form-control'})
+            form.fields['end'].widget.attrs.update({'class': 'form-control'})
+            form.fields['walk_in_price'].widget.attrs.update({'class': 'form-control'})
 
         return formset
 
@@ -402,6 +405,9 @@ class ShowDefaultTimeInlineFormset(InlineFormSetFactory):
             form.fields['second_set'].widget = forms.TimeInput(format='%I:%M %p')
             form.fields['second_set'].initial = now
             form.fields['second_set'].input_formats = ['%I:%M %p']
+            form.fields['first_set'].widget.attrs.update({'class': 'form-control'})
+            form.fields['second_set'].widget.attrs.update({'class': 'form-control'})
+            form.fields['set_duration'].widget.attrs.update({'class': 'form-control'})
         return formset
 
 

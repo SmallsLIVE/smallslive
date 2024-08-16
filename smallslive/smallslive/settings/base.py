@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'compressor',
     'crispy_forms',
+    'crispy_bootstrap3',
     'django_extensions',
     'django_thumbor',
     # 'djcelery',
@@ -549,6 +550,7 @@ LOGGING = {
 
 # Crispy forms settings
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap3'
 IMAGE_CROPPING_JQUERY_URL = None
 # Django storages / S3
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
