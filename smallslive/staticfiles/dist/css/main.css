@@ -8780,6 +8780,8 @@ div.event-strip {
     width: auto; }
     .guest-checkout .continue-btn:hover {
       background-color: rgba(255, 255, 255, 0.9); }
+  .guest-checkout .col-form-label {
+    display: none; }
 
 .modal-dialog.donate-dialog {
   width: 95vw;
