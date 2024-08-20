@@ -369,8 +369,12 @@ def charge(customer, amount, currency='USD', description='',
         'description': description,
         'metadata': metadata,
         'setup_future_usage': 'off_session',
-        'confirmation_method': 'manual',
+        # 'confirmation_method': 'manual',
         'confirm': True,
+        'automatic_payment_methods': {
+            "enabled": True, 
+            "allow_redirects": "never"
+        },
     }
     if token:
         common_params['payment_method_data'] = {
