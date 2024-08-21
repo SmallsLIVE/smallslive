@@ -21,10 +21,20 @@ class VideoToAudioConverter:
             region_name='us-east-1',
         )
 
+    def __convert_to_audio(self, video_file_name, audio_file_name):
+        video_clip = VideoFileClip(video_file_name)
+
+        audio_clip = video_clip.audio
+        audio_clip.write_audiofile(audio_file_name)
+
+        audio_clip.close()
+        video_clip.close()
+
+        logger.info("Audio converted successfully!!")
+
     def __download_video_file_from_s3(self, filename):
         write_file_name = f'tmp_video_{datetime.now().timestamp()}.mp4'
-
-        print(write_file_name)
+        logger.info(f"Fetching file from bucket {filename}")
         with open(write_file_name, 'wb') as f:
             self.conn.download_fileobj(self.bucket, filename, f)
 
@@ -33,4 +43,6 @@ class VideoToAudioConverter:
         return write_file_name
 
     def convert_video_to_audio(self, file_name, folder_name, event_id, set_num):
-        local_file_name = self.__download_video_file_from_s3(file_name)
+        audio_file_name = f'{event_id}-{set_num}.mp3'
+        video_file_path = self.__download_video_file_from_s3(file_name)
+        audio_file_name = self.__convert_to_audio(video_file_path, audio_file_name)
