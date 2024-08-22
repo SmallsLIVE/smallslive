@@ -8,7 +8,6 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('communication', '0005_auto_20240822_1112'),
         ('order', '0009_merge_0005_auto_20230323_1447_0008_auto_20190301_1035'),
     ]
 
