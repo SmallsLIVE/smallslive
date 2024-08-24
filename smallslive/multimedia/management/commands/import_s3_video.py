@@ -82,9 +82,9 @@ class Command(BaseCommand):
         now = timezone.now()
         # heroku scheduler launches the task every day, we make sure it only really does the import
         # twice a week
-        # if not full and env == "heroku" and now.weekday() in (0, 1, 3, 4, 5):
-        #     logger.info('Today is not importing day')
-        #     return
+        if not full and env == "heroku" and now.weekday() in (0, 1, 3, 4, 5):
+            logger.info('Today is not importing day')
+            return
 
         conn = boto.connect_s3(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
@@ -111,8 +111,8 @@ class Command(BaseCommand):
             filter_cond['venue__name'] = venue_name
 
         count = Event.objects.filter(**filter_cond).count()
-        for event in Event.objects.filter(**filter_cond).order_by('start'):
-            print(count)
+        all_events = Event.objects.filter(**filter_cond).order_by('start')
+        for event in all_events:
             count -= 1
 
             if different_source:
@@ -122,7 +122,6 @@ class Command(BaseCommand):
 
             # Retrieve sets in the right order
             event_sets = sorted(list(event.sets.all()), key=functools.cmp_to_key(Event.sets_order))
-            print(event_sets)
 
             for set_num in range(1, 7):
                 folder_name = '{0.year}-{0.month:02}-{0.day:02}'.format(event.listing_date())
