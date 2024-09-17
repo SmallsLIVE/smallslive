@@ -22,7 +22,7 @@
       {% endif %}
       {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
       {% include 'partials/header_button.html' with button_url='about' button_text='About' %}
-      {# {% include 'partials/header_button.html' with button_url='catalog' button_text='Catalog' %} #}
+      {% comment %}{% include 'partials/header_button.html' with button_url='catalog' button_text='Catalog' %}{% endcomment %}
       {% if user.is_authenticated %}
         {% if not user.can_watch_video %}
           <a href="{% url 'become_supporter' %}"><p class="no-border ">Donate</p></a>
@@ -153,7 +153,7 @@
       {% endif %}
       {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
       {% include 'partials/header_button.html' with button_url='about' button_text='About' %}
-      {# {% include 'partials/header_button.html' with button_url='catalog' button_text='Catalog' %} #}
+      {% comment %}{% include 'partials/header_button.html' with button_url='catalog' button_text='Catalog' %}{% endcomment %}
       {% if user.is_authenticated %}
         {% if not user.can_watch_video %}
           <a href="{% url 'become_supporter' %}"><p class="no-border ">Donate</p></a>
