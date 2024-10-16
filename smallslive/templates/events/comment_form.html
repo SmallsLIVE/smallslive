@@ -5,21 +5,24 @@
     {{ form.event_set }}
     <p> 
         <div class="flex-row">
-            {% get_site_id as site_id %}
-            {% if site_id == 1 %}
-              <a class="white-border-button" style="line-height: 23px"  href="#archieve-modal" data-toggle="modal">Comment</a>
-            {% else %}
-              <input type="submit" class="white-border-button" value="Comment"  {% if not user.can_watch_video %}  href="#logIn" data-toggle="modal" {% endif %} />
-            {% endif %}
-
             {% csrf_token %}
-            {% if not request.user.is_authenticated %}
-              {% if site_id == 2 %}
-                <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
-                  Sign In
-                </button>
-              {% endif %}
-            {% endif %}
+            <a class="white-border-button" style="line-height: 23px"  href="#archieve-modal" data-toggle="modal">Comment</a>
+            {% comment %}
+                {% get_site_id as site_id %}
+                {% if site_id == 1 %}
+                  <a class="white-border-button" style="line-height: 23px"  href="#archieve-modal" data-toggle="modal">Comment</a>
+                {% else %}
+                  <input type="submit" class="white-border-button" value="Comment"  {% if not user.can_watch_video %}  href="#logIn" data-toggle="modal" {% endif %} />
+                {% endif %}
+
+                {% if not request.user.is_authenticated %}
+                  {% if site_id == 2 %}
+                    <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
+                      Sign In
+                    </button>
+                  {% endif %}
+                {% endif %}
+            {% endcomment %}
         </div>
     </p>
   

@@ -499,10 +499,11 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
         if nav_param == 'manage-archive':
             return redirect('manage_archive')
         elif nav_param == 'calendar':
-            if settings.SITE_ID == 1:
-                return redirect('home')
-            elif settings.SITE_ID == 2:
-                return redirect('schedule')
+            # if settings.SITE_ID == 1:
+            #     return redirect('home')
+            # elif settings.SITE_ID == 2:
+            #     return redirect('schedule')
+            return redirect('home')
             
         elif nav_param == 'event_list':
             return redirect('manage_events_list')
@@ -676,9 +677,9 @@ class GenericScheduleView(TemplateView, UpcomingSearchView, CurrentSiteIdMixin):
     template_name = 'events/new_schedule.html'
 
     def get(self, request):
-        if settings.SITE_ID == 2:
-            if not self.request.user.is_staff:
-                return HttpResponseRedirect(reverse('home'))
+        # if settings.SITE_ID == 2:
+        #     if not self.request.user.is_staff:
+        #         return HttpResponseRedirect(reverse('home'))
         return super(GenericScheduleView, self).get(self, request)
 
     def get_context_data(self, **kwargs):
@@ -741,10 +742,12 @@ class StoreView(TemplateView, UpcomingSearchView):
 store = StoreView.as_view()
 
 class AboutView(TemplateView, UpcomingSearchView):
-    if settings.SITE_ID == 1:
-        template_name = 'basic_pages/about.html'
-    elif settings.SITE_ID == 2:
-        template_name = 'basic_pages/about_foundation.html'
+    # if settings.SITE_ID == 1:
+    #     template_name = 'basic_pages/about.html'
+    # elif settings.SITE_ID == 2:
+    #     template_name = 'basic_pages/about_foundation.html'
+
+    template_name = 'basic_pages/about.html'
 
     def get_context_data(self, **kwargs):
         context = super(AboutView, self).get_context_data(**kwargs)

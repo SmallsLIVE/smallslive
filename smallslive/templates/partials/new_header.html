@@ -15,14 +15,17 @@
     <div class="button-row">
       {% include 'partials/header_button.html' with button_url='home' button_text='Tickets' %}
       {% include 'partials/header_button.html' with button_url='tickets' button_text='Info' %}
-      {# {% include 'partials/header_button.html' with button_url='new_archive' button_text='Archive / Foundation' %} #}
-      {# {% include 'partials/header_button.html' with button_url='foundation' button_text='Archive' %} #}
-      {% get_foundation_site as foundation_site %}
-      <a href="{{ foundation_site }}" target="_blank">
-        <p class="no-border">
-          Archive
-        </p>
-      </a>
+      {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
+      {% comment %}
+        {# {% include 'partials/header_button.html' with button_url='new_archive' button_text='Archive / Foundation' %} #}
+        {# {% include 'partials/header_button.html' with button_url='foundation' button_text='Archive' %} #}
+        {% get_foundation_site as foundation_site %}
+        <a href="{{ foundation_site }}" target="_blank">
+          <p class="no-border">
+            Archive
+          </p>
+        </a>
+      {% endcomment %}
       {% include 'partials/header_button.html' with button_url='livestream' button_text='Livestream' %}
       {% include 'partials/header_button.html' with button_url='contact' button_text='Contact' %}
       {% include 'partials/header_button.html' with button_url='about' button_text='About' %}      

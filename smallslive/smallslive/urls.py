@@ -94,9 +94,11 @@ urlpatterns = [
     url(r'^robots\.txt', static_file_view, kwargs={'file_name': 'robots.txt'}),
     url(r'^crossdomain\.xml', static_file_view, kwargs={'file_name': 'crossdomain.xml'}),
     # url(r'^$', homepage, name="home"), # Old home Route/URL.
-    url(r'^$', schedule if settings.SITE_ID == 1 else homepage, name="home"),
+    # url(r'^$', schedule if settings.SITE_ID == 1 else homepage, name="home"),
+    url(r'^$', schedule, name="home"),
     url(r'^livestream/$', livestream, name="livestream"),
-    url(r'^tickets/$', ticketing if settings.SITE_ID == 1 else redirect_to_home, name="tickets"),
+    # url(r'^tickets/$', ticketing if settings.SITE_ID == 1 else redirect_to_home, name="tickets"),
+    url(r'^tickets/$', ticketing, name="tickets"),
     url(r'^foundation/$', foundation, name="foundation"),
     # url(r'^store/$', store, name="store"),
     url(r'^about/$', about, name="about"),

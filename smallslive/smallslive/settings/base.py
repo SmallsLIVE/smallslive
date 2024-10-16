@@ -166,6 +166,7 @@ MIDDLEWARE = (
     'oscar.apps.basket.middleware.BasketMiddleware',
     # 'smallslive.middleware.RedirectMiddleware',
     'hijack.middleware.HijackUserMiddleware',
+    'smallslive.middleware.DisableMemberLoginMiddleware',
 )
 
 TEMPLATE_DIRS = os.path.join(BASE_DIR, 'templates')

@@ -166,14 +166,17 @@
                 <div class="event-band">
                     {% for artist_dict in event_artists %}
                         <div class="current_event">
-                            {% get_site_id as site_id %}
-                            {% if site_id == 2 %}
-                                <a href="{{ artist_dict.absolute_url }}" class="artist-link">
-                                    {{ artist_dict.name }} / {{ artist_dict.role }}
-                                </a>
-                            {% else %}
-                                <div class="artist-link">{{ artist_dict.name }} / {{ artist_dict.role }}</div>
-                            {% endif %}
+                             <div class="artist-link">{{ artist_dict.name }} / {{ artist_dict.role }}</div>
+                            {% comment %}
+                                {% get_site_id as site_id %}
+                                {% if site_id == 2 %}
+                                    <a href="{{ artist_dict.absolute_url }}" class="artist-link">
+                                        {{ artist_dict.name }} / {{ artist_dict.role }}
+                                    </a>
+                                {% else %}
+                                    <div class="artist-link">{{ artist_dict.name }} / {{ artist_dict.role }}</div>
+                                {% endif %}
+                            {% endcomment %}
                         </div>
                     {% endfor %}
                     {% if next_event %}
@@ -188,12 +191,14 @@
             </div>
 
             <div class="flex-row event-set-selector"></div>
-            {% if event.published_audio or event.published_video or event.is_live %}
-                {% get_site_id as site_id %}
-                {% if site_id == 2 %}
-                    <div class="comments-container" data-subpage-url="{% url 'event_comments' pk=event.id slug=event.slug %}?set=0" data-subpage-name="comments"></div>
+            {% comment %}
+                {% if event.published_audio or event.published_video or event.is_live %}
+                    {% get_site_id as site_id %}
+                    {% if site_id == 2 %}
+                        <div class="comments-container" data-subpage-url="{% url 'event_comments' pk=event.id slug=event.slug %}?set=0" data-subpage-name="comments"></div>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
+            {% endcomment %}
         </div>
         <div class="flex-column event-side">
             {% if streaming_tonight_videos %}
@@ -219,23 +224,25 @@
                     </div>
                 </div>
             {% endif %}
-            {% get_site_id as site_id %}
-            {% if site_id == 2 %}
-                <div class="event-related-videos">
-                    <div class="section-title section-flex">
-                        <div class="title1">Related videos</div>
-                    </div>
-                    <div>
+            {% comment %}
+                {% get_site_id as site_id %}
+                {% if site_id == 2 %}
+                    <div class="event-related-videos">
+                        <div class="section-title section-flex">
+                            <div class="title1">Related videos</div>
+                        </div>
                         <div>
-                            {% for related in related_videos%}
-                                <div class="flex-row related-video">
-                                    {% include 'events/event_card.html' with event=related mini=True side_info=True %}
-                                </div>
-                            {% endfor %}
+                            <div>
+                                {% for related in related_videos%}
+                                    <div class="flex-row related-video">
+                                        {% include 'events/event_card.html' with event=related mini=True side_info=True %}
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
+            {% endcomment %}
         </div>
     </div>
 

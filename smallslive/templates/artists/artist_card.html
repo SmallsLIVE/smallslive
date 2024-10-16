@@ -5,7 +5,7 @@
       <div class="picture-border">
         <div class="event-picture">
           <!--  <div class="img-overlay"></div>  -->
-          {% if artist.photo %}
+          {% if artist.photo and artist.photo.url %}
             {% include 'partials/thumbored_picture.html' with photo_url=artist.photo.url photo_name=artist.get_photo_name_with_bucket height="300" width="300" %}
           {% else %}
             <img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}"alt="Generic artist image">
