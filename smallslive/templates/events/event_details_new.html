@@ -166,7 +166,12 @@
                 <div class="event-band">
                     {% for artist_dict in event_artists %}
                         <div class="current_event">
-                             <div class="artist-link">{{ artist_dict.name }} / {{ artist_dict.role }}</div>
+                             {% comment %}
+                                <div class="artist-link">{{ artist_dict.name }} / {{ artist_dict.role }}</div>
+                             {% endcomment %}
+                             <a href="{{ artist_dict.absolute_url }}" class="artist-link">
+                                        {{ artist_dict.name }} / {{ artist_dict.role }}
+                             </a>
                             {% comment %}
                                 {% get_site_id as site_id %}
                                 {% if site_id == 2 %}
