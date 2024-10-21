@@ -47,7 +47,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DEFAULT_FROM_EMAIL = 'foundation@smallslive.com'
+#DEFAULT_FROM_EMAIL = 'foundation@smallslive.com'
+DEFAULT_FROM_EMAIL = 'smallslive@smallslive.com'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 DEFAULT_FROM_REGISTRATION_EMAIL = DEFAULT_FROM_EMAIL
 

@@ -114,10 +114,10 @@ urlpatterns = [
     url(r'^artist_counts/', artist_counts, name='artist_counts'),
 ]
 
-if settings.ADMIN_ENABLED:
-    urlpatterns += [
-        path('admin/', admin.site.urls),
-    ]
+#if settings.ADMIN_ENABLED:
+urlpatterns += [
+    path('admin/', admin.site.urls),
+]
 
 urlpatterns += [
     url(r'^terms-and-conditions/$', flatpage, {'url': '/terms-and-conditions/'}, name='terms-and-conditions'),

@@ -43,6 +43,9 @@
             Sign In
           </button>
         {% endcomment %}
+        <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
+          Musician Login
+        </button>
       {% else %}
         <select id="userMenu">
           <option value="current" noSelect="1" selected="selected" title="{{ request.user.email }}">
@@ -100,12 +103,20 @@
         <i class="fa fa-user" onclick="toggleAdmin()"></i>
       </div>
     {% endcomment %}
+    <div>
+      <i class="fa fa-user" onclick="toggleAdmin()"></i>
+    </div>
   </div>
   <div id="mobile-user-option-menu" hidden class="mobile-user-option flex-column">
     {% if not request.user.is_authenticated %}
+    {% comment %}
       <button class="text2 sign-in-button" href="#logIn" data-toggle="modal">
         Sign In
       </button>
+    {% endcomment %}
+    <button class="text2 sign-in-button" href="#logIn" data-toggle="modal">
+      Musician Login
+    </button>
     {% else %}
       {% if request.user.artist %}
         {% if is_dashboard %}
@@ -150,13 +161,15 @@
     <div class="flex-column text2">
       {% include 'partials/header_button.html' with button_url='home' button_text='Tickets' %}
       {% include 'partials/header_button.html' with button_url='tickets' button_text='Info' %}
-      {# {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %} #}
+      {% include 'partials/header_button.html' with button_url='archive' button_text='Archive' %}
       {# {% include 'partials/header_button.html' with button_url='foundation' button_text='Archive / Foundation' %} #}
-      <a href="{{ foundation_site }}" target="_blank">
-        <p class="no-border">
-          Archive
-        </p>
-      </a>
+      {% comment %}
+        <a href="{{ foundation_site }}" target="_blank">
+          <p class="no-border">
+            Archive
+          </p>
+        </a>
+      {% endcomment %}
       {# {% include 'partials/header_button.html' with button_url='foundation' button_text='Foundation' %} #}
       {% include 'partials/header_button.html' with button_url='livestream' button_text='Livestream' %}
       {% include 'partials/header_button.html' with button_url='contact' button_text='Contact' %}
