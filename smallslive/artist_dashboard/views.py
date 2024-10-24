@@ -33,7 +33,7 @@ from rest_framework.authtoken.models import Token
 
 from artists.models import Artist, ArtistEarnings, \
     CurrentPayoutPeriod, Instrument, PastPayoutPeriod, PayoutPeriodGeneration
-from events.models import Recording, Event
+from events.models import Recording, Event, GigPlayed
 import events.views as event_views
 from subscriptions.models import Donation
 import users.forms as user_forms
@@ -47,6 +47,7 @@ from .forms import ToggleRecordingStateForm, EventAjaxEditForm,  \
 from artist_dashboard.tasks import generate_payout_sheet_task,\
     update_current_period_metrics_task
 from artist_dashboard.utils import start_generate_payout_sheet
+from django.forms import inlineformset_factory
 
 
 class MyEventsView(HasArtistAssignedMixin, ListView):
@@ -545,11 +546,24 @@ class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
 event_edit = EventEditView.as_view()
 
 
+# Create an inline formset for GigPlayed (or the model that handles the artists)
+GigPlayedFormset = inlineformset_factory(
+    Event,  # Parent model
+    GigPlayed,  # Related model (through which Event and Artist are related)
+    fields=('artist', 'role', 'is_leader', 'sort_order'),  # Include the fields you want to manage
+    extra=1,  # Number of extra forms to display
+    can_delete=True  # Allow deletion of artists
+)
+
+
 class EventEditAjaxView(EventEditView):
     context_object_name = 'event'
     form_class = EventAjaxEditForm
     inlines = [ArtistGigPlayedEditLazyInlineFormSet]
     inlines_names = ['artists']
+
+    def get_formset_class(self):
+        return GigPlayedFormset
 
     def get_context_data(self, **kwargs):
         context = super(EventEditAjaxView, self).get_context_data(**kwargs)
@@ -571,18 +585,24 @@ class EventEditAjaxView(EventEditView):
 
         form_class = self.get_form_class()
         form = self.get_form(form_class)
+        formset_class = self.get_formset_class()
+        formset = formset_class(self.request.POST, instance=form.instance)
 
         if self.request.is_ajax():
-            if form.is_valid():
+            if form.is_valid() and formset.is_valid():
+                event = form.save(commit=False)
+                # Save the main form data
+                event.save()
+                # Save the formset (artists, GigPlayed)
+                formset.save()
+                send_event_update_email(self.request.user, form.instance, self.request.build_absolute_uri('/')[:-1])
                 event_data = {
                     'eventId': form.instance.pk,
                     'title': form.instance.title,
                     'photoUrl': form.instance.photo.url if form.instance.photo.name else None,
                 }
-                data = {'success': True, 'data': event_data}
-                form.save()
 
-                send_event_update_email(self.request.user, form.instance, self.request.build_absolute_uri('/')[:-1])
+                data = {'success': True, 'data': event_data}
                 response = JsonResponse(data)
 
         return response
