@@ -591,10 +591,16 @@ class EventEditAjaxView(EventEditView):
         if self.request.is_ajax():
             if form.is_valid() and formset.is_valid():
                 event = form.save(commit=False)
-                # Save the main form data
                 event.save()
-                # Save the formset (artists, GigPlayed)
-                formset.save()
+
+                # Clear existing performers to prevent duplicates
+                form.instance.performers.through.objects.filter(event=form.instance).delete()
+                # Save the formset while ensuring no duplicates are saved
+                formset.save(commit=False)
+                for gig in formset:
+                    if gig.cleaned_data and not gig.cleaned_data.get('DELETE', False):
+                        gig.save()
+
                 send_event_update_email(self.request.user, form.instance, self.request.build_absolute_uri('/')[:-1])
                 event_data = {
                     'eventId': form.instance.pk,
