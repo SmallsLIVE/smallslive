@@ -1,19 +1,80 @@
-<div class="modal fade" id="tickets-sold-out-dialog" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content custom-modal no-cancel">
-      <a href="#" class="close-button"></a>
-      <div class="modal-body">
-        <p class="title2" tabindex="0">ALL RESERVATIONS ARE SOLD FOR THIS SET</p>
-        <p class="text9">Depending on availability you can simply walk-in on any show without
-          an advanced ticket for a discounted price. The walk-in price is $25. This
-          $25 music charge is added to your bar bill. There is a required one-
-          drink minimum per person per set. There are 15 additional seats
-          available for every show after the reservations are sold-out. We
-          recommend arriving early before the set for a walk-in ticket as they go
-          fast. Our advanced tickets are seated first and then our walk-ins. Walk-
-          ins are generally seated 10 minutes before the set starts.
-        </p>
+{% comment %}
+  <div
+    class="modal fade"
+    id="tickets-sold-out-dialog"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content custom-modal no-cancel">
+        <a href="#" class="close-button"></a>
+        <div class="modal-body">
+          <p class="title2" tabindex="0">
+            ALL RESERVATIONS ARE SOLD FOR THIS SET
+          </p>
+          <p class="text9">
+            Depending on availability you can simply walk-in on any show without
+            an advanced ticket for a discounted price. The walk-in price is $25.
+            This $25 music charge is added to your bar bill. There is a required
+            one- drink minimum per person per set. There are 15 additional seats
+            available for every show after the reservations are sold-out. We
+            recommend arriving early before the set for a walk-in ticket as they
+            go fast. Our advanced tickets are seated first and then our walk-ins.
+            Walk- ins are generally seated 10 minutes before the set starts.
+          </p>
+        </div>
       </div>
     </div>
   </div>
-</div>
+{% endcomment %} 
+{% if event.get_venue_name == 'Smalls' %}
+  <div
+    class="modal fade"
+    id="tickets-sold-out-dialog"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content custom-modal no-cancel">
+        <a href="#" class="close-button"></a>
+        <div>
+          <p class="title2" tabindex="0">
+            ALL ADVANCED TICKETS ARE SOLD FOR THIS SET
+          </p>
+          <p class="text9">
+            There will be a limited number of walk-in tickets still available at
+            the door. Walk-in tickets are released when the previous show begins.
+            There will also be a standby line waiting for possible no-shows.
+            Inquire at the door for more information.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% elif event.get_venue_name == 'Mezzrow' %}
+  <div
+    class="modal fade"
+    id="tickets-sold-out-dialog"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content custom-modal no-cancel">
+        <a href="#" class="close-button"></a>
+        <div>
+          <p class="title2" tabindex="0">
+            ALL ADVANCED TICKETS ARE SOLD FOR THIS SET
+          </p>
+          <p class="text9">
+            Seating for our listening room is sold out. Walk-in tickets will still
+            be available for seating in our bar. Inquire at the door for more
+            information.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
