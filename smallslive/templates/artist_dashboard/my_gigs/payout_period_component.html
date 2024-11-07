@@ -17,13 +17,15 @@
             </select>
         </div>
 
-        <div class="flex-row payout-bar">
+        {% comment %}
+            <div class="flex-row payout-bar">
 
-            <button class="white-border-button payout-bar-button" onclick="$('#payout-info').modal('show')">
-                Info
-            </button>
-            <div id='download-button'></div>
-        </div>
+                <button class="white-border-button payout-bar-button" onclick="$('#payout-info').modal('show')">
+                    Info
+                </button>
+                <div id='download-button'></div>
+            </div>
+        {% endcomment %}
     </div>
 
     <div class="artist-payout-data">
@@ -39,12 +41,14 @@
                             <div class="text1">{{ user.artist.full_name }} this period</div>
                             <div class="text9 accent-color" data-seconds='{{ user.artist.current_period_seconds_played }}' id='artist-seconds'></div>
                         </div>
-                        <div class="artist-payout-data-text">
-                            <div class="text1">Ratio</div>
-                            <div class="text9 accent-color">
-                                {{ user.artist.current_period_percentage_ratio|floatformat:"-5" }}% of archive pool
+                        {% comment %}
+                            <div class="artist-payout-data-text">
+                                <div class="text1">Ratio</div>
+                                <div class="text9 accent-color">
+                                    {{ user.artist.current_period_percentage_ratio|floatformat:"-5" }}% of archive pool
+                                </div>
                             </div>
-                        </div>
+                        {% endcomment %}
                     </div>
                 </div>
             </div>
