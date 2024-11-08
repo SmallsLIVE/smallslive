@@ -60,15 +60,17 @@
         </div>
       {% endwith %}
     {% endif %}
-    <div class="artist-set-list flex-row">
-      {% if not event.is_future and sets_with_media.count > 1 %}
-        {% for set in sets_with_media %}
-          <div class="{% if forloop.counter0 == 0 %}artist-active-set accent-color {% endif %}set-changer"
-               data-set-id="{{ set.pk }}">
-            <div class="text2 flex-column flex-grow "> Set {{ forloop.counter0|add:"1" }} </div>
-          </div>
-        {% endfor %}
-      {% endif %}
-    </div>
+    {% comment %}
+      <div class="artist-set-list flex-row">
+        {% if not event.is_future and sets_with_media.count > 1 %}
+          {% for set in sets_with_media %}
+            <div class="{% if forloop.counter0 == 0 %}artist-active-set accent-color {% endif %}set-changer"
+                data-set-id="{{ set.pk }}">
+              <div class="text2 flex-column flex-grow "> Set {{ forloop.counter0|add:"1" }} </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    {% endcomment %}
   </div>
 </div>
