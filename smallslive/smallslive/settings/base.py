@@ -47,7 +47,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DEFAULT_FROM_EMAIL = 'foundation@smallslive.com'
+#DEFAULT_FROM_EMAIL = 'foundation@smallslive.com'
+DEFAULT_FROM_EMAIL = 'smallslive@smallslive.com'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 DEFAULT_FROM_REGISTRATION_EMAIL = DEFAULT_FROM_EMAIL
 
@@ -166,6 +167,7 @@ MIDDLEWARE = (
     'oscar.apps.basket.middleware.BasketMiddleware',
     # 'smallslive.middleware.RedirectMiddleware',
     'hijack.middleware.HijackUserMiddleware',
+    'smallslive.middleware.DisableMemberLoginMiddleware',
 )
 
 TEMPLATE_DIRS = os.path.join(BASE_DIR, 'templates')

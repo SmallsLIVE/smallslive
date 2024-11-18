@@ -4,14 +4,19 @@
         <a href="#" class="close-button"></a>
       <div class="modal-body">
         <p class="title2 accent-color">Welcome to SmallsLIVE</p>
-        <p class="title1">Sign in</p>
-        <p class="text4 text-grey">
-          Not Yet a Member?
-          <a class="accent-color underline"
-             href="#" id="becomeMemberButton">
-             Sign up for SmallsLIVE
-          </a>
-        </p>
+        {% comment %}
+          <p class="title1">Sign in</p>
+        {% endcomment %}
+        <p class="title1">Musician Login</p>
+        {% comment %}
+          <p class="text4 text-grey">
+            Not Yet a Member?
+            <a class="accent-color underline"
+              href="#" id="becomeMemberButton">
+              Sign up for SmallsLIVE
+            </a>
+          </p>
+        {% endcomment %}
         <form role="form" id="form-login" method="post" action="{% url 'accounts_login' %}?next={{ request.path }}">
           {% csrf_token %}
           <div class="form-group">
@@ -32,7 +37,10 @@
             </a>
           </div>
           <div class="form-group flex-column items-center">
-            <input class="login-button" value="Sign in" type="submit">
+            {% comment %}
+              <input class="login-button" value="Sign in" type="submit">
+            {% endcomment %}
+            <input class="login-button" value="Log in" type="submit">
           </div>
         </form>
       </div>
