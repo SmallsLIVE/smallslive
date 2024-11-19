@@ -1,3 +1,4 @@
+{% comment %}
 <div class="button-row controls">
   <div id="event-info-close-btn" class="go-back">
     <img src="/static/image/arrow-right-red.svg" alt="">
@@ -15,6 +16,7 @@
   <button class="active show-video-metrics-btn">Video & Metrics</button>
 </div>
 {% endif %}
+{% endcomment %}
 
 {% with sets_with_media=event.sets.with_media %}
   <div id="artist-event-action-{{ event.pk  }}"
