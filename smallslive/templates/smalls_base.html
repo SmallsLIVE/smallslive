@@ -60,12 +60,15 @@
       {% include 'admin_header.html' %}
     {% endif %}
 
-    {% get_site_id as site_id %}
-    {% if site_id == 1 %}
-      {% include 'partials/new_header.html' %}
-    {% else %}
-      {% include 'partials/new_header_foundation.html' %}
-    {% endif %}
+    {% comment %}
+      {% get_site_id as site_id %}
+      {% if site_id == 1 %}
+        {% include 'partials/new_header.html' %}
+      {% else %}
+        {% include 'partials/new_header_foundation.html' %}
+      {% endif %}
+    {% endcomment %}
+    {% include 'partials/new_header.html' %}
 
     {% block extra_nav %}
     {% endblock %}

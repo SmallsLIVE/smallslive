@@ -13,12 +13,18 @@
 
 {% block home_content %}
 <main class="calendar">
-  {% get_site_id as site_id %}
-  {% if site_id == 1 %}
-    <div class="event-stripe">
-      {% include 'events/today_and_tomorrow.html' with custom_venue_style=True calendar_page=True%}
-    </div>
-  {% endif %}
+  {% comment %}
+    {% get_site_id as site_id %}
+    {% if site_id == 1 %}
+      <div class="event-stripe">
+        {% include 'events/today_and_tomorrow.html' with custom_venue_style=True calendar_page=True%}
+      </div>
+    {% endif %}
+  {% endcomment %}
+
+  <div class="event-stripe">
+    {% include 'events/today_and_tomorrow.html' with custom_venue_style=True calendar_page=True%}
+  </div>
   {% include 'events/upcoming_calendar.html' with upcoming=True show_extend_date=True show_event_venue=False hide_play=True day_list=day_list new_date=new_date %}
 
 

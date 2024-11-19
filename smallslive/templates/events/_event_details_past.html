@@ -19,19 +19,21 @@
   {% if event.published_videos or event.published_audio %}
     {% if event.published_videos %}
       <!--show archived video-->
-      <div tabindex="0" id="videoContainer" class="player-container {% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}">
-        {% if not user.can_watch_video %}
-          <div class="not-auth-container">
-            {% if event.photo %}
-              {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url photo_name=event.get_photo_name_with_bucket crop_box=event.photo_crop_box %}
-            {% else %}
-              {% include 'partials/thumbored_picture.html' %}
-            {% endif %}
-            <div class="icon-overlay">
-              <i class="fa fa-play fa-thin-circle"></i>
+      <div tabindex="0" id="videoContainer" class="player-container allowed">
+        {% comment %}
+          {% if not user.can_watch_video %}
+            <div class="not-auth-container">
+              {% if event.photo %}
+                {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url photo_name=event.get_photo_name_with_bucket crop_box=event.photo_crop_box %}
+              {% else %}
+                {% include 'partials/thumbored_picture.html' %}
+              {% endif %}
+              <div class="icon-overlay">
+                <i class="fa fa-play fa-thin-circle"></i>
+              </div>
             </div>
-          </div>
-        {% endif%}
+          {% endif%}
+        {% endcomment %}
         <div id="player-video"></div>
         <div class="player-info" id="playerTextOverlay">
           {% include 'events/_event_player_overlay.html' %}
@@ -40,7 +42,7 @@
     {% endif %}
     {% if event.published_audio %}
       <div id="audioContainer" class="player-container" style="display: none;">
-
+        {% comment %}
         {% if not user.can_watch_video %}
           <div class="not-auth-container">
             {% if event.photo %}
@@ -53,6 +55,7 @@
             </div>
           </div>
         {% endif%}
+        {% endcomment %}
 
         <div id="player-audio" class="{% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}"></div>
         <div class="player-info audio" id="playerAudioTextOverlay">
@@ -144,8 +147,8 @@
         } else {
           /* var $modal = $('#becomeMemberDialog');
           $modal.modal('show'); */
-          var $modal = $('#archieve-modal');
-          $modal.modal('show');
+          /*  var $modal = $('#archieve-modal');
+          $modal.modal('show'); */
         }
       });
 
@@ -227,7 +230,7 @@
         });
       {% endif %}
 
-      {% if event.published_audio and user.can_watch_video %}
+      {% if event.published_audio %}
           console.log("Here")
         audioPlayer = jwplayer("player-audio").setup({
           primary: 'html5',
@@ -306,8 +309,8 @@
           $('#audio-sets-list button[data-playlist-index=' + currentIndex + ']').toggleClass('active');
         });
       {% endif %}
-
-      {% if event.published_videos and user.can_watch_video %}
+      {# {% if event.published_videos and user.can_watch_video %} #}
+      {% if event.published_videos  %}
         videoPlayer = jwplayer("player-video").setup({
             primary: 'html5',
             playlist: [
@@ -370,12 +373,14 @@
         function cannotWatchModalOpen() {
           //var modal = '#becomeMemberDialog';
           var site_id = ('{% get_site_id as site_id %}')
-          var modal = ('{% if site_id == 1 %}#archieve-modal{% else %}#becomeMemberDialog{% endif %}')
+          //var modal = ('{% if site_id == 1 %}#archieve-modal{% else %}#becomeMemberDialog{% endif %}')
+          //var modal = ('#archieve-modal')
           if (smallsConfig.user.isAuthenticated) {
             /* modal = '#become-a-supporter-dialog'; */
-            modal = ('{% if site_id == 1 %}#archieve-modal{% else %}#become-a-supporter-dialog{% endif %}')
+            //modal = ('{% if site_id == 1 %}#archieve-modal{% else %}#become-a-supporter-dialog{% endif %}')
+            //modal = ('#archieve-modal')
           }
-          $(modal).modal('show');
+          //$(modal).modal('show');
         }
 
         $(document).on('click', '.not-auth-container .icon-overlay', function (event) {
