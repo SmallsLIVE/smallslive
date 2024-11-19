@@ -42,7 +42,7 @@
     {% endif %}
     {% if event.published_audio %}
       <div id="audioContainer" class="player-container" style="display: none;">
-
+        {% comment %}
         {% if not user.can_watch_video %}
           <div class="not-auth-container">
             {% if event.photo %}
@@ -55,6 +55,7 @@
             </div>
           </div>
         {% endif%}
+        {% endcomment %}
 
         <div id="player-audio" class="{% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}"></div>
         <div class="player-info audio" id="playerAudioTextOverlay">
@@ -146,8 +147,8 @@
         } else {
           /* var $modal = $('#becomeMemberDialog');
           $modal.modal('show'); */
-          var $modal = $('#archieve-modal');
-          $modal.modal('show');
+          /*  var $modal = $('#archieve-modal');
+          $modal.modal('show'); */
         }
       });
 
@@ -229,7 +230,7 @@
         });
       {% endif %}
 
-      {% if event.published_audio and user.can_watch_video %}
+      {% if event.published_audio %}
           console.log("Here")
         audioPlayer = jwplayer("player-audio").setup({
           primary: 'html5',
@@ -373,13 +374,13 @@
           //var modal = '#becomeMemberDialog';
           var site_id = ('{% get_site_id as site_id %}')
           //var modal = ('{% if site_id == 1 %}#archieve-modal{% else %}#becomeMemberDialog{% endif %}')
-          var modal = ('#archieve-modal')
+          //var modal = ('#archieve-modal')
           if (smallsConfig.user.isAuthenticated) {
             /* modal = '#become-a-supporter-dialog'; */
             //modal = ('{% if site_id == 1 %}#archieve-modal{% else %}#become-a-supporter-dialog{% endif %}')
-            modal = ('#archieve-modal')
+            //modal = ('#archieve-modal')
           }
-          $(modal).modal('show');
+          //$(modal).modal('show');
         }
 
         $(document).on('click', '.not-auth-container .icon-overlay', function (event) {
