@@ -3,11 +3,21 @@
 <header class="main-header hidden-xs hidden-sm hidden-md">
   <div class="flex-row items-center wrap content-space-between">
     <div class="flex-row items-center logo-container">
+      {% comment %}
       <div>
         <a href="/" class="smalls-logo">
-          <img src="{% static 'new_logo_transparent_black.svg' %}" alt=""/>
+          <img src="{% static 'jazz-club-black.png' %}" alt="home" title="Home"/>
         </a>
       </div>
+      {% endcomment %}
+      <a href="/" class="flex-row items-center" style="width: 100%; max-width: 400px">
+        <div class="new-header-img" style="flex-basis: 200px;">
+          <img src="/static/jazz-club-black.png" alt="Jazz Club">
+        </div>
+        <div class="new-header-img" style="flex-basis: 200px;">
+          <img src="/static/Mezzrow-logo-transparent.png" alt="Smalls and Mezzrow">
+        </div>
+      </a>
       <div class="section-title" style="margin-right:10px; background-size: 500px 5px;">
         <div class="title1 artist-title" >Dashboard</div>
       </div>
@@ -74,8 +84,18 @@
 
 <header class="mobile-header visible-xs visible-sm visible-md mobile-artist-header">
   <div class="mobile-logo-container">
-    <a href="/" class="smalls-logo">
-      <img src="{% static 'new_logo_transparent_black.svg' %}"  alt=""/>
+    {% comment %}
+      <a href="/" class="smalls-logo">
+        <img src="{% static 'new_logo_transparent_black.svg' %}"  alt=""/>
+      </a>
+    {% endcomment %}
+    <a href="/" class="flex-row items-center smalls-logo" style="justify-content: center;">
+      <div class="new-header-img">
+        <img src="/static/jazz-club-black.png" alt="Jazz Club" style="width: 100px;">
+      </div>
+      <div class="new-header-img">
+        <img src="/static/Mezzrow-logo-transparent.png" alt="Smalls and Mezzrow" style="width: 100px;">
+      </div>
     </a>
   </div>
   <div class="mobile-menu-icons flex-row items-center content-space-between">
