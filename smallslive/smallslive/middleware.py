@@ -22,7 +22,9 @@ class DisableMemberLoginMiddleware:
 
     def __call__(self, request):
         if request.user.is_authenticated:
-            if request.user.access_level == 'member':
+            if request.user.is_artist and request.user.access_level == 'member':
+                return self.get_response(request)
+            elif request.user.access_level == 'member':
                 logout(request)
                 return redirect('home')  # Redirect to an appropriate page
 
