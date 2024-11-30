@@ -93,7 +93,7 @@ sqlparse==0.1.14
 static==1.1.1
 stripe==1.22.1
 static3==0.5.1
-urllib3==1.10.1
+urllib3==1.26.5
 whitenoise==2.0.4
 wsgiref==0.1.2
 xlsxwriter==0.7.3
