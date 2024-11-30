@@ -18,7 +18,7 @@ factory-boy==2.5.2
 glob2==0.4.1
 model-mommy==1.2.4
 paramiko==1.15.2
-py==1.4.26
+py==1.10.0
 pytest==2.7.0
 pytest-bdd==2.7.2
 pytest-cov==1.8.1
