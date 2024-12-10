@@ -352,15 +352,23 @@
           if ($("#search-content").is(":visible") && moreEvents && !loadingEvents) {
             loadingEvents = true;
             //loadMoreEvents('Archived');
-            $('.shows-show-more').click(function() {
-              loadMoreEvents('Archived');
-            });
             $('.shows-show-more-wrapper').show();
           }
         };
       });
 
-      console.log(loadingEvents);
+
+      $('.shows-show-more').click(function() {
+        console.log('on click!!!');
+        
+        loadMoreEvents('Archived', function(data) {
+          var pageCount = data.numPages;
+          console.log("Updated pageCount:", pageCount);
+        });
+      });
+      
+
+     // console.log(loadingEvents);
       if(loadingEvents) {
         $('.shows-show-more-wrapper').show();
       } else {

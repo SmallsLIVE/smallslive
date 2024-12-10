@@ -297,6 +297,8 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
       if (callback) {
         callback(data);
       }
+
+      return data.numPages;
     },
     error: function (data) {
       loadingEvents = false;
@@ -921,7 +923,7 @@ function triggerSearch() {
   }
 }
 
-function loadMoreEvents(mode) {
+function loadMoreEvents(mode, callback) {
   if ($("main.calendar").length > 0) {
     show_event_venue = true;
     show_event_setTime = true;
@@ -938,7 +940,12 @@ function loadMoreEvents(mode) {
     mode,
     datePickerFromDate,
     datePickerToDate,
-    updateArchiveShows
+    function(data) {
+      updateArchiveShows(data);
+      if (callback) {
+        callback(data);
+      }
+    }
   );
 
   showQuantityDisplay($eventSubheader, true, false);
