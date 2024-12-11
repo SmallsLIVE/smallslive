@@ -84,8 +84,11 @@
 
         &.active {
 
-          .datepicker-dropdown {
-            display: block !important;
+          .active {
+
+            + .datepicker-dropdown {
+              display: block !important;
+            }
           }
 
           .datepicker-reset{
