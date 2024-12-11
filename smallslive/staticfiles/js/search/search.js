@@ -294,11 +294,16 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
     dataType: "json",
     success: function(data) {
       loadingEvents = false;
-      if (callback) {
-        callback(data);
+
+      var searchData = {
+        numPages: data.numPages,
+        pageNo: searchFilters.page
       }
 
-      return data.numPages;
+      if (callback) {
+        callback(data, searchData);
+      }
+      return searchData;
     },
     error: function (data) {
       loadingEvents = false;
@@ -940,10 +945,10 @@ function loadMoreEvents(mode, callback) {
     mode,
     datePickerFromDate,
     datePickerToDate,
-    function(data) {
+    function(data, searchData) {
       updateArchiveShows(data);
       if (callback) {
-        callback(data);
+        callback(searchData);
       }
     }
   );

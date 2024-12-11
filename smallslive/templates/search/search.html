@@ -359,11 +359,17 @@
 
 
       $('.shows-show-more').click(function() {
-        console.log('on click!!!');
         
-        loadMoreEvents('Archived', function(data) {
-          var pageCount = data.numPages;
-          console.log("Updated pageCount:", pageCount);
+        loadMoreEvents('Archived', function(searchData) {
+          var totalPageCount = searchData.numPages;
+          var currentPageNo = searchData.pageNo;
+          if(totalPageCount === currentPageNo) {
+            moreEvents = false
+            loadingEvents = false
+            $('#showsArchivedContent .shows-show-more-wrapper .shows-show-more').prop('disabled', true);
+            $('#showsArchivedContent .shows-show-more-wrapper').hide();
+          }
+          
         });
       });
       
