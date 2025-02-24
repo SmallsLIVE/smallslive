@@ -85,7 +85,7 @@ libthumbor==2.0.2
 lxml==4.9.2
 mailchimp==2.0.9
 # MarkupSafe==2.1.2
-metrics==0.3.3
+# metrics==0.3.3
 mock==1.0.1
 MonthDelta==1.0b0
 natsort==3.5.0
