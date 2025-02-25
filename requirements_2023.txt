@@ -42,9 +42,9 @@ django-localflavor==1.1
 #django-model-utils==4.1.1
 django-mptt==0.14.0
 django-multi-email-field==0.3.1
-# django-oscar==2.0
-# django-oscar-paypal==2.0.0
-# django-oscar-stripe-sca==0.1
+django-oscar==2.0
+django-oscar-paypal==2.0.0
+django-oscar-stripe-sca==0.1
 #django-phonenumber-field==2.0.1
 django-pipeline==2.1.0
 #django-polymorphic==3.1.0
@@ -52,16 +52,14 @@ django-redis-cache==3.0.0
 django-sortedm2m==3.0.2
 #django-sslify==0.2.7
 django-storages-redux==1.3
-django-tables2==2.2.0
+# django-tables2==2.2.0
+-e git+https://github.com/jieter/django-tables2.git@7d72aa55ce5b621baf6edb216427b3e191158257#egg=django-tables2
 #django-thumbor==0.5.3
 django-tinymce==3.5.0
 django-treebeard==4.5.1
 django-widget-tweaks==1.4.1
 django-wkhtmltopdf==3.2.0
 djangorestframework==3.13.0
-django-oscar==2.0
-django-oscar-paypal==2.0.0
-django-oscar-stripe-sca==0.1
 #djrill==2.1.0
 dnspython==1.15.0
 dnspython3==1.15.0
