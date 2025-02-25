@@ -75,7 +75,6 @@ INSTALLED_APPS = [
     'compressor',
     'crispy_forms',
     'django_extensions',
-    'django_thumbor',
     'djcelery',
     'djstripe',
     'filer',
@@ -572,9 +571,9 @@ AWS_STORAGE_BUCKET_NAME_SMALLS = os.environ.get('AWS_STORAGE_BUCKET_NAME_SMALLS'
 
 
 # Thumbor server settings
-THUMBOR_MEDIA_URL = os.environ.get('THUMBOR_MEDIA_URL', "")
-THUMBOR_SECURITY_KEY = os.environ.get('THUMBOR_SECURITY_KEY', "")
-THUMBOR_SERVER = os.environ.get('THUMBOR_SERVER', "")
+# THUMBOR_MEDIA_URL = os.environ.get('THUMBOR_MEDIA_URL', "")
+# THUMBOR_SECURITY_KEY = os.environ.get('THUMBOR_SECURITY_KEY', "")
+# THUMBOR_SERVER = os.environ.get('THUMBOR_SERVER', "")
 AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN', "")
 
 # Allauth config
