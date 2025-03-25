@@ -75,8 +75,7 @@ INSTALLED_APPS = [
     'compressor',
     'crispy_forms',
     'django_extensions',
-    'django_thumbor',
-    'djcelery',
+    # 'djcelery',
     'djstripe',
     'filer',
     'floppyforms',
@@ -572,9 +571,9 @@ AWS_STORAGE_BUCKET_NAME_SMALLS = os.environ.get('AWS_STORAGE_BUCKET_NAME_SMALLS'
 
 
 # Thumbor server settings
-THUMBOR_MEDIA_URL = os.environ.get('THUMBOR_MEDIA_URL', "")
-THUMBOR_SECURITY_KEY = os.environ.get('THUMBOR_SECURITY_KEY', "")
-THUMBOR_SERVER = os.environ.get('THUMBOR_SERVER', "")
+# THUMBOR_MEDIA_URL = os.environ.get('THUMBOR_MEDIA_URL', "")
+# THUMBOR_SECURITY_KEY = os.environ.get('THUMBOR_SECURITY_KEY', "")
+# THUMBOR_SERVER = os.environ.get('THUMBOR_SERVER', "")
 AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN', "")
 
 # Allauth config
@@ -947,7 +946,7 @@ PING_INTERVAL = 30
 ENABLE_HIJACK = True
 
 # Celery
-CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+# CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 FORCE_S3_SECURE = os.environ.get('FORCE_S3_SECURE')
 
 WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'

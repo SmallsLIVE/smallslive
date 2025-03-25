@@ -24624,7 +24624,7 @@ label[for="photo-clear_id"] {
         top: 340px;
         width: 100%;
         z-index: 111; }
-      .search-container-with-tabs .search-wrapper .archive-datepicker .datepicker-container.active .datepicker-dropdown {
+      .search-container-with-tabs .search-wrapper .archive-datepicker .datepicker-container.active .active + .datepicker-dropdown {
         display: block !important; }
       .search-container-with-tabs .search-wrapper .archive-datepicker .datepicker-container.active .datepicker-reset {
         display: block !important; }

@@ -352,15 +352,29 @@
           if ($("#search-content").is(":visible") && moreEvents && !loadingEvents) {
             loadingEvents = true;
             //loadMoreEvents('Archived');
-            $('.shows-show-more').click(function() {
-              loadMoreEvents('Archived');
-            });
             $('.shows-show-more-wrapper').show();
           }
         };
       });
 
-      console.log(loadingEvents);
+
+      $('.shows-show-more').click(function() {
+        
+        loadMoreEvents('Archived', function(searchData) {
+          var totalPageCount = searchData.numPages;
+          var currentPageNo = searchData.pageNo;
+          if(totalPageCount === currentPageNo) {
+            moreEvents = false
+            loadingEvents = false
+            $('#showsArchivedContent .shows-show-more-wrapper .shows-show-more').prop('disabled', true);
+            $('#showsArchivedContent .shows-show-more-wrapper').hide();
+          }
+          
+        });
+      });
+      
+
+     // console.log(loadingEvents);
       if(loadingEvents) {
         $('.shows-show-more-wrapper').show();
       } else {

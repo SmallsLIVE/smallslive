@@ -294,9 +294,16 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
     dataType: "json",
     success: function(data) {
       loadingEvents = false;
-      if (callback) {
-        callback(data);
+
+      var searchData = {
+        numPages: data.numPages,
+        pageNo: searchFilters.page
       }
+
+      if (callback) {
+        callback(data, searchData);
+      }
+      return searchData;
     },
     error: function (data) {
       loadingEvents = false;
@@ -921,7 +928,7 @@ function triggerSearch() {
   }
 }
 
-function loadMoreEvents(mode) {
+function loadMoreEvents(mode, callback) {
   if ($("main.calendar").length > 0) {
     show_event_venue = true;
     show_event_setTime = true;
@@ -938,7 +945,12 @@ function loadMoreEvents(mode) {
     mode,
     datePickerFromDate,
     datePickerToDate,
-    updateArchiveShows
+    function(data, searchData) {
+      updateArchiveShows(data);
+      if (callback) {
+        callback(searchData);
+      }
+    }
   );
 
   showQuantityDisplay($eventSubheader, true, false);

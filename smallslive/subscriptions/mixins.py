@@ -194,10 +194,11 @@ class StripeMixin(PaymentCredentialsMixin):
         customer, created = Customer.get_or_create(
             subscriber=subscriber_request_callback(self.request))
         if self.plan_type == 'month':
-            stripe_ref = subscribe_to_plan(
-                customer, self.stripe_token, self.amount,
-                self.plan_type, self.flow_type, payment_method=self.existing_payment_method
-            )
+            # stripe_ref = subscribe_to_plan(
+            #     customer, self.stripe_token, self.amount,
+            #     self.plan_type, self.flow_type, payment_method=self.existing_payment_method
+            # )
+            print('No Action required for now the subscription is disabled.')
         else:
             event_id = None
             dedication = ''
