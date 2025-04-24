@@ -70,16 +70,16 @@ class CatalogueView(catalogue_views.CatalogueView):
     template_name = 'catalogue/index/home.html'
     def get_context_data(self, **kwargs):
         context = super(CatalogueView, self).get_context_data(**kwargs)
-        context['newest_recordings'] = list(Product.objects.filter(
-            product_class__slug="full-access")) + list(Product.objects.filter(
-            product_class__slug="album").order_by('-id')[:12])
-        context['all_recordings'] = Product.objects.filter(
-            product_class__slug="album").order_by('upc')[:12]
-        context['featured_recordings'] = Product.objects.filter(
-            product_class__slug="album", featured=True)[:4]
-        context['preview_track_id_counter'] = itertools.count()
-        context['artist_with_media'] = Artist.objects.exclude(artistproduct=None)
-        context['is_catalogue_list'] = True
+        # context['newest_recordings'] = list(Product.objects.filter(
+        #     product_class__slug="full-access")) + list(Product.objects.filter(
+        #     product_class__slug="album").order_by('-id')[:12])
+        # context['all_recordings'] = Product.objects.filter(
+        #     product_class__slug="album").order_by('upc')[:12]
+        # context['featured_recordings'] = Product.objects.filter(
+        #     product_class__slug="album", featured=True)[:4]
+        # context['preview_track_id_counter'] = itertools.count()
+        # context['artist_with_media'] = Artist.objects.exclude(artistproduct=None)
+        # context['is_catalogue_list'] = True
 
         return context
 
