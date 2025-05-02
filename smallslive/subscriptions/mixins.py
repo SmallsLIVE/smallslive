@@ -212,11 +212,12 @@ class StripeMixin(PaymentCredentialsMixin):
                 event_date = self.sponsored_event.get_date()
                 donation_type = 'event_sponsorship'
 
-            stripe_ref = one_time_donation(
-                customer, self.stripe_token, self.amount, donation_type=donation_type,
-                event_id=event_id, dedication=dedication, event_date=event_date, musician=musician,
-                payment_method=self.existing_payment_method
-            )
+            # stripe_ref = one_time_donation(
+            #     customer, self.stripe_token, self.amount, donation_type=donation_type,
+            #     event_id=event_id, dedication=dedication, event_date=event_date, musician=musician,
+            #     payment_method=self.existing_payment_method
+            # )
+            print('No Action required for now the subscription is disabled.')
             if self.product_id:
                 # We need to record the product id if donation comes from the Catalog.
                 pass

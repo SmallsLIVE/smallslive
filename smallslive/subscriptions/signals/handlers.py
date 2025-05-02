@@ -46,22 +46,24 @@ def invoice_payment_succeeded(event, **kwargs):
                 donation['sponsored_event_dedication'] = metadata['sponsored_event_dedication']
             subscriptions.models.Donation.objects.create(**donation)
             print('Invoice payment donation created successfully')
+            print('No Action required for now the subscription is disabled.')
 
-            if customer and not customer.default_payment_method:
-                print('User have no default payment method')
-                payment_intent_id = invoice['payment_intent']
-                if payment_intent_id:
-                    payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
-                    payment_method = payment_intent.payment_method
-                    customer.add_payment_method(payment_method)
-                    customer.metadata = json.loads(customer.metadata)
-                    customer.invoice_settings = json.loads(customer.invoice_settings)
-                    customer.preferred_locales = json.loads(customer.preferred_locales)
-                    customer.save()
-                print('Successfully added Payment Method')
+            # if customer and not customer.default_payment_method:
+            #     print('User have no default payment method')
+            #     payment_intent_id = invoice['payment_intent']
+            #     if payment_intent_id:
+            #         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+            #         payment_method = payment_intent.payment_method
+            #         customer.add_payment_method(payment_method)
+            #         customer.metadata = json.loads(customer.metadata)
+            #         customer.invoice_settings = json.loads(customer.invoice_settings)
+            #         customer.preferred_locales = json.loads(customer.preferred_locales)
+            #         customer.save()
+            #     print('Successfully added Payment Method')
         else:
-            donation.confirmed = True
-            donation.save()
+            print('No Action required for now the subscription is disabled.')
+            # donation.confirmed = True
+            # donation.save()
 
 
 # Send email updates to admin only if donation is confirmed
