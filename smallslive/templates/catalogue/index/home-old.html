@@ -1,0 +1,38 @@
+{% extends "store_base.html" %}
+{% load static from staticfiles %}
+{% load category_tags %}
+{% load product_tags %}
+{% load purchase_info_tags %}
+{% load i18n %}
+{% load currency_filters %}
+{% load basket_tags %}
+
+{% block store_nav_active %}active{% endblock %}
+
+{% block store_content %}
+
+  <main class="static-content basic-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+              <img style="margin-left: calc(-50vw + 50%); max-width: inherit; width: 100vw; margin-bottom: 50px; height: 350px; object-fit: cover" src="{% static 'image/banners/club_reduced.jpg' %}" alt="club">
+              <div class="title1">SmallsLIVE Catalog</div><br>
+              <p class="less-space">
+                The SmallsLIVE Catalog is our collection of individually produced HD artist projects.
+              </p>
+              <p class="less-space">
+                The SmallsLIVE Catalog is a collection of HD projects, recorded live at Smalls Jazz Club or Mezzrow with tracks selected by the artist.
+                These projects are available as collectible CD’s or as either HD or MP3 downloads.
+                Members have a “library” from which they can access their recorded projects for their own downloads and enjoyment.
+              </p>
+              <p >Our third Party Site Url- <a class="accent-color" href="https://www.google.com">Visit the Site</a></p><br>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock store_content %}
+
+{% block extra_js %}
+  <script src="{% static 'js/store-base.js' %}"></script>
+{% endblock %}
