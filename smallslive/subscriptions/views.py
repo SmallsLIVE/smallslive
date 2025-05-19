@@ -501,7 +501,8 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
             'sponsored_event_dedication': self.sponsored_event_dedication,
         }
         try:
-            donation = Donation.objects.create(**donation_data)
+            # donation = Donation.objects.create(**donation_data)
+            print('No Action required for now the subscription is disabled.')
         except Exception as e:
             print('Exception while creating donation after credit card payment')
             print(e)
@@ -547,8 +548,9 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                 try:
                     # Donation will come through the webhook.
                     payment_reference_id = self.execute_stripe_payment()
-                    self.create_donation(payment_source='Stripe Credit Card',
-                                         reference=payment_reference_id, confirmed=True)
+                    # self.create_donation(payment_source='Stripe Credit Card',
+                    #                      reference=payment_reference_id, confirmed=True)
+                    print('No Action required for now the subscription is disabled.')
                     url = reverse('become_supporter_complete') + \
                         "?flow_type=" + self.flow_type
                     if self.product_id:
@@ -572,54 +574,59 @@ class BecomeSupporterView(PayPalMixin, StripeMixin, TemplateView):
                 except Exception as e:
                     return JsonResponse({'error': str(e)})
             elif self.bitcoin:
-                self.execute_bitcoin_payment()
-                url = reverse('supporter_pending') + \
-                    "?pending_payment_type=bitcoin"
-                if self.product_id:
-                    url += '&product_id=' + self.product_id
-                if self.event_id:
-                    url += '&event_id=' + self.event_id
-                    url += '&event_slug=' + self.event_slug
-                if self.artist_id:
-                    url += '&artist_id=' + self.artist_id
+                print('No Action required for now the subscription is disabled.')
+                # self.execute_bitcoin_payment()
+                # url = reverse('supporter_pending') + \
+                #     "?pending_payment_type=bitcoin"
+                # if self.product_id:
+                #     url += '&product_id=' + self.product_id
+                # if self.event_id:
+                #     url += '&event_id=' + self.event_id
+                #     url += '&event_slug=' + self.event_slug
+                # if self.artist_id:
+                #     url += '&artist_id=' + self.artist_id
 
-                return _ajax_response(
-                    self.request, redirect(url)
-                )
+                # return _ajax_response(
+                #     self.request, redirect(url)
+                # )
             elif self.check:
-                self.execute_check_payment()
-                url = reverse('supporter_pending') + \
-                    "?pending_payment_type=check"
-                if self.product_id:
-                    url += '&product_id=' + self.product_id
-                if self.event_id:
-                    url += '&event_id=' + self.event_id
-                    url += '&event_slug=' + self.event_slug
+                print('No Action required for now the subscription is disabled.')
+                # self.execute_check_payment()
+                # url = reverse('supporter_pending') + \
+                #     "?pending_payment_type=check"
+                # if self.product_id:
+                #     url += '&product_id=' + self.product_id
+                # if self.event_id:
+                #     url += '&event_id=' + self.event_id
+                #     url += '&event_slug=' + self.event_slug
 
-                return _ajax_response(
-                    self.request, redirect(url)
-                )
+                # return _ajax_response(
+                #     self.request, redirect(url)
+                # )
             else:
                 try:
-                    payment_execute_url = self.request.build_absolute_uri(
-                        reverse('supporter_paypal_execute'))
-                    payment_cancel_url = self.request.build_absolute_uri(
-                        reverse('become_supporter'))
-                    item = {
-                        'name': 'One Time Donation',
-                        'price': self.amount,
-                        "sku": "N/A",
-                        'currency': 'USD',
-                        'quantity': 1}
-                    item_list = []
-                    self.handle_paypal_payment(
-                        'USD', item_list,
-                        execute_uri=payment_execute_url,
-                        cancel_uri=payment_cancel_url
-                    )
+                    print('No Action required for now the subscription is disabled.')
+                    # payment_execute_url = self.request.build_absolute_uri(
+                    #     reverse('supporter_paypal_execute'))
+                    # payment_cancel_url = self.request.build_absolute_uri(
+                    #     reverse('become_supporter'))
+                    # item = {
+                    #     'name': 'One Time Donation',
+                    #     'price': self.amount,
+                    #     "sku": "N/A",
+                    #     'currency': 'USD',
+                    #     'quantity': 1}
+                    # item_list = []
+                    # self.handle_paypal_payment(
+                    #     'USD', item_list,
+                    #     execute_uri=payment_execute_url,
+                    #     cancel_uri=payment_cancel_url
+                    # )
                 except RedirectRequiredAjax as e:
-                    self.create_donation(payment_source='PayPal Foundation',
-                                         reference=e.reference, confirmed=False)
+                    print('No Action required for now the subscription is disabled.')
+                    print(e)
+                    # self.create_donation(payment_source='PayPal Foundation',
+                    #                      reference=e.reference, confirmed=False)
                     return JsonResponse({'payment_url': e.url})
         except Exception as e:
             message = str(e)
