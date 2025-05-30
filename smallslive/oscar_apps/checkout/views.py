@@ -27,7 +27,7 @@ from utils import utils as sl_utils
 from .forms import PaymentForm, BillingAddressForm
 from django.views import generic
 from django.utils.translation import gettext as _
-from utils.utils import send_order_confirmation_email
+from utils.utils import send_order_confirmation_email, send_order_error_email
 
 from django.db import transaction
 import threading
@@ -922,9 +922,29 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             msg = six.text_type(e)
             logger.error("Order #%s: unable to place order - %s",
                          order_number, msg, exc_info=True)
+            email = ['sudiptomitro2016@gmail.com', 'rajib.paul@idlewilddigital.com', 'natea@jazkarta.com']
+            error_type = 'UnableToPlaceOrder Exception'
+            first_name, last_name = self.checkout_session.get_reservation_name()
+            message = {}
+            message['order_number'] = order_number
+            message['party_name'] = first_name + ' ' + last_name
+            message['type'] = error_type
+            message['error'] = e
+            send_order_error_email(email, message)
             self.restore_frozen_basket()
             return self.render_preview(
                 self.request, error=msg, **payment_kwargs)
+        except Exception as e:
+            print(e)
+            first_name, last_name = self.checkout_session.get_reservation_name()
+            error_type = 'Global Exception'
+            email = ['sudiptomitro2016@gmail.com', 'rajib.paul@idlewilddigital.com', 'natea@jazkarta.com']
+            message = {}
+            message['order_number'] = order_number
+            message['party_name'] = first_name + ' ' + last_name
+            message['type'] = error_type
+            message['error'] = e
+            send_order_error_email(email, message)
 
     def get_item_list(self, basket_lines):
 
