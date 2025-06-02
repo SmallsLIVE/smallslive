@@ -109,3 +109,20 @@ def send_event_update_email(updated_by, event, base_url):
         logger.info(f"Event update email has been sent for {event.id}")
     except Exception as E:
         logger.error(f"Event update email failed for event {event.id}. Reason {str(E)}", exc_info=True)
+
+def send_order_error_email(emails, message=None):
+    email_content = {
+        'html': True,
+        'subject': 'Order placement issue',
+        'body': 'this is your order'
+    }
+    from_email = settings.OSCAR_FROM_EMAIL
+    if isinstance(emails, str):
+        emails = [emails]
+    html_message = render_to_string('emails/order-error-mail.html', message)
+    if email_content['html']:
+        send_mail(email_content['subject'],
+                  email_content['body'],
+                  from_email,
+                  emails,
+                  html_message=html_message)
