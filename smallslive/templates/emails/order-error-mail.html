@@ -1,6 +1,17 @@
-<h2 style="font-size: 24px;">The following order placement error happend at smallslive.</h2>
-<h4>The order number was #{{ order_number }} and the order placed by {{ party_name }}</h4>
-<h4>The email used to place this order is {{ email }}</h4>
-<h4>The Exception type is: {{ type }}</h4>
-<h4>The actual exception message is:</h4>
+<h2 style="font-size: 24px;">
+  An error occurred during an order placement on SmallsLIVE.
+</h2>
+<h4>
+  Order Number: #{{ order_number }}<br>
+  Placed By: {{ party_name }}
+</h4>
+<h4>
+  Email Address: {{ email }}
+</h4>
+<h4>
+  Exception Type: {{ type }}
+</h4>
+<h4>
+  Exception Message:
+</h4>
 <p>{{ error }}</p>

@@ -27,7 +27,7 @@ from utils import utils as sl_utils
 from .forms import PaymentForm, BillingAddressForm
 from django.views import generic
 from django.utils.translation import gettext as _
-from utils.utils import send_order_confirmation_email, send_order_error_email, manage_order_error_email
+from utils.utils import send_order_confirmation_email, send_incompleted_order_refunded_email, manage_order_error_email
 
 from django.db import transaction
 import threading
@@ -907,7 +907,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                     order_number)
 
         try:
-            raise UnableToPlaceOrder("The order could not be placed due to invalid data.")
             order_kwargs.update({'order_type': basket.get_order_type()})
             response = self.handle_order_placement(
                 order_number, user, basket, shipping_address, shipping_method,
@@ -939,7 +938,14 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             self.restore_frozen_basket()
             # refund the order if pyament is already done and order is not completed
             if amount and reference:
-                self.refund_stripe_payment(reference, amount=amount)
+                refund_id = self.refund_stripe_payment(reference, amount=amount)
+                if refund_id:
+                    send_incompleted_order_refunded_email(
+                        order_number= order_number,
+                        order_kwargs=order_kwargs,
+                        amount=order_total.excl_tax,
+                        refund_id = refund_id
+                    )
             return self.render_preview(
                 self.request, error=msg, **payment_kwargs)
         except Exception as e:
@@ -959,7 +965,14 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 amount = int(amount * 100)
             # refund the order if pyament is already done and order is not completed
             if amount and reference:
-                self.refund_stripe_payment(reference, amount=amount)
+                refund_id = self.refund_stripe_payment(reference, amount=amount)
+                if refund_id:
+                    send_incompleted_order_refunded_email(
+                        order_number= order_number,
+                        order_kwargs=order_kwargs,
+                        amount=order_total.excl_tax,
+                        refund_id = refund_id
+                    )
 
     def get_item_list(self, basket_lines):
 
