@@ -126,3 +126,13 @@ def send_order_error_email(emails, message=None):
                   from_email,
                   emails,
                   html_message=html_message)
+
+def manage_order_error_email(order_number, first_name, last_name, error, error_type, order_kwargs):
+    recevier_email_list = ['sudiptomitro2016@gmail.com', 'rajib.paul@idlewilddigital.com']
+    message = {}
+    message['order_number'] = order_number
+    message['party_name'] = first_name + ' ' + last_name
+    message['type'] = error_type
+    message['email'] = order_kwargs['guest_email']
+    message['error'] = error
+    send_order_error_email(emails=recevier_email_list, message=message)
