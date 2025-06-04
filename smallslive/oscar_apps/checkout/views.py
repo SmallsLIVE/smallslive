@@ -27,7 +27,7 @@ from utils import utils as sl_utils
 from .forms import PaymentForm, BillingAddressForm
 from django.views import generic
 from django.utils.translation import gettext as _
-from utils.utils import send_order_confirmation_email, send_order_error_email
+from utils.utils import send_order_confirmation_email, send_incompleted_order_refunded_email, manage_order_error_email
 
 from django.db import transaction
 import threading
@@ -805,7 +805,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         basket_lines = basket.lines.all()
 
         try:
-            self.handle_payment(order_number, order_total, basket_lines,
+            reference = self.handle_payment(order_number, order_total, basket_lines,
                                 shipping_charge=str(shipping_charge.incl_tax), **payment_kwargs)
         except RedirectRequired as e:
             # Redirect required (eg PayPal, 3DS)
@@ -922,29 +922,57 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             msg = six.text_type(e)
             logger.error("Order #%s: unable to place order - %s",
                          order_number, msg, exc_info=True)
-            email = ['sudiptomitro2016@gmail.com', 'rajib.paul@idlewilddigital.com', 'natea@jazkarta.com']
             error_type = 'UnableToPlaceOrder Exception'
             first_name, last_name = self.checkout_session.get_reservation_name()
-            message = {}
-            message['order_number'] = order_number
-            message['party_name'] = first_name + ' ' + last_name
-            message['type'] = error_type
-            message['error'] = e
-            send_order_error_email(email, message)
+            amount = order_total.excl_tax
+            if amount:
+                amount = int(amount * 100)
+            manage_order_error_email(
+                order_number= order_number,
+                first_name=first_name,
+                last_name=last_name,
+                error=e,
+                error_type=error_type,
+                order_kwargs=order_kwargs
+            )
             self.restore_frozen_basket()
+            # refund the order if pyament is already done and order is not completed
+            if amount and reference:
+                refund_id = self.refund_stripe_payment(reference, amount=amount)
+                if refund_id:
+                    send_incompleted_order_refunded_email(
+                        order_number= order_number,
+                        order_kwargs=order_kwargs,
+                        amount=order_total.excl_tax,
+                        refund_id = refund_id
+                    )
             return self.render_preview(
                 self.request, error=msg, **payment_kwargs)
         except Exception as e:
             print(e)
-            first_name, last_name = self.checkout_session.get_reservation_name()
             error_type = 'Global Exception'
-            email = ['sudiptomitro2016@gmail.com', 'rajib.paul@idlewilddigital.com', 'natea@jazkarta.com']
-            message = {}
-            message['order_number'] = order_number
-            message['party_name'] = first_name + ' ' + last_name
-            message['type'] = error_type
-            message['error'] = e
-            send_order_error_email(email, message)
+            first_name, last_name = self.checkout_session.get_reservation_name()
+            manage_order_error_email(
+                order_number= order_number,
+                first_name=first_name,
+                last_name=last_name,
+                error=e,
+                error_type=error_type,
+                order_kwargs=order_kwargs
+            )
+            amount = order_total.excl_tax
+            if amount:
+                amount = int(amount * 100)
+            # refund the order if pyament is already done and order is not completed
+            if amount and reference:
+                refund_id = self.refund_stripe_payment(reference, amount=amount)
+                if refund_id:
+                    send_incompleted_order_refunded_email(
+                        order_number= order_number,
+                        order_kwargs=order_kwargs,
+                        amount=order_total.excl_tax,
+                        refund_id = refund_id
+                    )
 
     def get_item_list(self, basket_lines):
 
@@ -983,6 +1011,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 reference=self.payment_id)
             self.add_payment_source(source)
             self.add_payment_event('Purchase', total.incl_tax, reference=self.payment_id)
+            return self.payment_id
 
 
         elif payment_method == 'paypal':
