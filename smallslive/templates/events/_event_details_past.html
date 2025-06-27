@@ -103,7 +103,7 @@
 
 {% block control_buttons %}
 <div class="event-player-buttons event-change-buttons">
-{% if event.is_past and user.can_watch_video %}
+{% if event.is_past %}
   {% for set in sets %}
     {% if set.has_media %}
       <button class="set-select-button white-border-button {{ forloop.counter0|yesno:',active' }}"
