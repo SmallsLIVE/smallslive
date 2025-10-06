@@ -688,6 +688,9 @@ class GenericScheduleView(TemplateView, UpcomingSearchView, CurrentSiteIdMixin):
         context['venues'] = Venue.objects.all()
         context['default_from_date'] = timezone.now().strftime('%m/%d/%Y')
         context.update(self.get_upcoming_context())
+        activation_key =  self.request.GET.get('activate_account')
+        if activation_key:
+            context['activation_key'] = activation_key
         return context
 
 
