@@ -60,6 +60,44 @@
   var defaultFromDate = '{{ default_from_date }}';
   var defaultToDate;
 </script>
+
+{% if activation_key %}
+  <script>
+    $(document).ready(function () {
+      // Show artist sign up form using the modal
+      var  $modal = $("#artist-set-password-dialog");
+      $modal.modal("show");
+      var url = "{% url "artist_registration_confirm_email_ajax" key=activation_key %}";
+      $.get(url, function (data) {
+        $modal.find(".modal-body").html(data.html);
+      });
+
+
+      $(document).on("submit", "#artist-registration-set-password-form", function (event) {
+        event.preventDefault();
+        var form = $(this);
+        var url = form.attr('action');
+
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: form.serialize(),
+          success: function (data) {
+          if (data.location) {
+            window.location.href = data.location;
+          } else if (data.errors) {
+            for (var key in data.errors) {
+              $modal.find("#" + key + "-error").html(data.errors[key]).removeClass("hidden");
+            }
+          }
+          }
+        });
+
+      });
+
+    });
+  </script>
+{% endif  %}
 <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
 <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
 <script src="{% static 'js/search/search.js' %}"></script>
