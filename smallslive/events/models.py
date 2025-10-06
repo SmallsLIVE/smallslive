@@ -396,6 +396,12 @@ def get_event_media_storage(instance):
         params['access_key'] = settings.AWS_ACCESS_KEY_ID_MEZZROW
         params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
         params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
+    
+    if instance.get_venue_name() == 'Jazzcultural':
+        params['access_key'] = settings.AWS_ACCESS_KEY_ID_JAZZCULTURAL
+        params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_JAZZCULTURAL
+        params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_JAZZCULTURAL
+
 
     # if venue object has credentials, use them
     aws_access_key_id = instance.get_aws_access_key_id()
@@ -1399,6 +1405,8 @@ class Venue(models.Model):
         # TODO: un-hardcode o_o'
         if 'mezzrow' in self.name.lower():
             return 'rgb(241, 187, 83)'
+        if 'jazzcultural' in self.name.lower():
+            return 'rgb(215, 100, 34)'
         return '#D21535'
 
     @property

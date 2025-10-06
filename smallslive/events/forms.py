@@ -197,6 +197,11 @@ class EventAddForm(forms.ModelForm):
                 params['access_key'] = settings.AWS_ACCESS_KEY_ID_MEZZROW
                 params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
                 params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
+            
+            if instance.get_venue_name() == 'Jazzcultural':
+                params['access_key'] = settings.AWS_ACCESS_KEY_ID_JAZZCULTURAL
+                params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_JAZZCULTURAL
+                params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_JAZZCULTURAL
 
             # if venue object has credentials, use them
             if instance.venue.get_aws_access_key_id and \
