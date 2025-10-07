@@ -525,8 +525,9 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 for line in request.basket.all_lines():
                     product_title = line.product.get_title()
                     quantity = line.quantity
-                    if line.product.stockrecords.all():
-                        in_stock = line.product.stockrecords.all()[0].net_stock_level
+                    if line.product.stockrecords.exists():
+                        in_stock_item = line.product.stockrecords.select_for_update().first()
+                        in_stock = in_stock_item.net_stock_level
 
                 if quantity <= in_stock:
                     self.card_token = self.request.POST.get('card_token')
