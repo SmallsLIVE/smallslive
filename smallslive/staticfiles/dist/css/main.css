@@ -6057,6 +6057,11 @@ a.badge:hover, a.badge:focus {
   .mezzrow-color--thankyou {
     display: inline-block; }
 
+.jazzcultural-color {
+  color: #1055C9; }
+  .jazzcultural-color--thankyou {
+    display: inline-block; }
+
 .text-grey {
   color: #808080; }
 

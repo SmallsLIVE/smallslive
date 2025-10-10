@@ -28,6 +28,9 @@ class PaymentCredentialsMixin(object):
                 elif venue.name == 'Mezzrow':
                     stripe_client_id = settings.STRIPE_PROFIT_CLIENT_ID_MEZZROW  # stripe public key for mezzrow
                     stripe_client_secret = settings.STRIPE_PROFIT_CLIENT_SECRET_MEZZROW  # stripe secret key for mezzrow
+                elif venue.name == 'Jazzcultural':
+                    stripe_client_id = settings.STRIPE_PROFIT_CLIENT_ID_SMALLS  # stripe public key for Jazzcultural
+                    stripe_client_secret = settings.STRIPE_PROFIT_CLIENT_SECRET_SMALLS  # stripe secret key for Jazzcultural
                 # stripe_client_id = venue.get_stripe_publishable_key
                 # stripe_client_secret = venue.get_stripe_secret_key
                 # paypal_client_id = venue.get_paypal_client_id

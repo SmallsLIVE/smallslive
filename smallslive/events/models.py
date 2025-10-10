@@ -1406,7 +1406,7 @@ class Venue(models.Model):
         if 'mezzrow' in self.name.lower():
             return 'rgb(241, 187, 83)'
         if 'jazzcultural' in self.name.lower():
-            return 'rgb(215, 100, 34)'
+            return '#1055C9'
         return '#D21535'
 
     @property
@@ -1430,55 +1430,98 @@ class Venue(models.Model):
     @property
     def get_stripe_publishable_key(self):
         if self.stripe_publishable_key:
-            return self.fernet.decrypt(force_bytes(self.stripe_publishable_key))
+            return self.fernet.decrypt(force_bytes(self.stripe_publishable_key)).decode('utf-8')
         return None
 
     @property
     def get_stripe_secret_key(self):
         if self.stripe_secret_key:
-            return self.fernet.decrypt(force_bytes(self.stripe_secret_key))
+            return self.fernet.decrypt(force_bytes(self.stripe_secret_key)).decode('utf-8')
         return None
 
     @property
     def get_paypal_client_id(self):
         if self.paypal_client_id:
-            return self.fernet.decrypt(force_bytes(self.paypal_client_id))
+            return self.fernet.decrypt(force_bytes(self.paypal_client_id)).decode('utf-8')
         return None
 
     @property
     def get_paypal_client_secret(self):
         if self.paypal_client_secret:
-            return self.fernet.decrypt(force_bytes(self.paypal_client_secret))
+            return self.fernet.decrypt(force_bytes(self.paypal_client_secret)).decode('utf-8')
         return None
 
     @cached_property
     def fernet(self):
         return Fernet(derive_fernet_key(settings.SECRET_KEY))
 
+    def _is_encrypted(self, value):
+        if not value or not isinstance(value, str):
+            return False
+        
+        try:
+            self.fernet.decrypt(force_bytes(value))
+            return True
+        except Exception:
+            return False
+     
     def save(self, *args, **kwargs):
-        self.aws_access_key_id = self.fernet.encrypt(
-            force_bytes(self.aws_access_key_id)
-        )
-        self.aws_secret_access_key = self.fernet.encrypt(
-            force_bytes(self.aws_secret_access_key)
-        )
-        self.aws_storage_bucket_name = self.fernet.encrypt(
-            force_bytes(self.aws_storage_bucket_name)
-        )
-        self.stripe_publishable_key = self.fernet.encrypt(
-            force_bytes(self.stripe_publishable_key)
-        )
-        self.stripe_secret_key = self.fernet.encrypt(
-            force_bytes(self.stripe_secret_key)
-        )
-        self.paypal_client_id = self.fernet.encrypt(
-            force_bytes(self.paypal_client_id)
-        )
+        
+        if self.aws_access_key_id and not self._is_encrypted(self.aws_access_key_id):
+            encrypted = self.fernet.encrypt(force_bytes(self.aws_access_key_id))
+            self.aws_access_key_id = encrypted.decode('utf-8')
+        
+        if self.aws_secret_access_key and not self._is_encrypted(self.aws_secret_access_key):
+            encrypted = self.fernet.encrypt(force_bytes(self.aws_secret_access_key))
+            self.aws_secret_access_key = encrypted.decode('utf-8')
+        
+        if self.aws_storage_bucket_name and not self._is_encrypted(self.aws_storage_bucket_name):
+            encrypted = self.fernet.encrypt(force_bytes(self.aws_storage_bucket_name))
+            self.aws_storage_bucket_name = encrypted.decode('utf-8')
 
-        self.paypal_client_secret = self.fernet.encrypt(
-            force_bytes(self.paypal_client_secret)
-        )
+        if self.stripe_publishable_key and not self._is_encrypted(self.stripe_publishable_key):
+            encrypted = self.fernet.encrypt(force_bytes(self.stripe_publishable_key))
+            self.stripe_publishable_key = encrypted.decode('utf-8')
+        
+        if self.stripe_secret_key and not self._is_encrypted(self.stripe_secret_key):
+            encrypted = self.fernet.encrypt(force_bytes(self.stripe_secret_key))
+            self.stripe_secret_key = encrypted.decode('utf-8')
+        
+        if self.paypal_client_id and not self._is_encrypted(self.paypal_client_id):
+            encrypted = self.fernet.encrypt(force_bytes(self.paypal_client_id))
+            self.paypal_client_id = encrypted.decode('utf-8')
+        
+        if self.paypal_client_secret and not self._is_encrypted(self.paypal_client_secret):
+            encrypted = self.fernet.encrypt(force_bytes(self.paypal_client_secret))
+            self.paypal_client_secret = encrypted.decode('utf-8')
+        
         super(Venue, self).save(*args, **kwargs)
+
+    # @TODO: old code for setting credential 
+    # def save(self, *args, **kwargs):
+    #     self.aws_access_key_id = self.fernet.encrypt(
+    #         force_bytes(self.aws_access_key_id)
+    #     )
+    #     self.aws_secret_access_key = self.fernet.encrypt(
+    #         force_bytes(self.aws_secret_access_key)
+    #     )
+    #     self.aws_storage_bucket_name = self.fernet.encrypt(
+    #         force_bytes(self.aws_storage_bucket_name)
+    #     )
+    #     self.stripe_publishable_key = self.fernet.encrypt(
+    #         force_bytes(self.stripe_publishable_key)
+    #     )
+    #     self.stripe_secret_key = self.fernet.encrypt(
+    #         force_bytes(self.stripe_secret_key)
+    #     )
+    #     self.paypal_client_id = self.fernet.encrypt(
+    #         force_bytes(self.paypal_client_id)
+    #     )
+
+    #     self.paypal_client_secret = self.fernet.encrypt(
+    #         force_bytes(self.paypal_client_secret)
+    #     )
+    #     super(Venue, self).save(*args, **kwargs)
 
 
 class ShowDefaultTime(models.Model):
