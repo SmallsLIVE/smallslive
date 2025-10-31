@@ -358,7 +358,7 @@ class TicketAddForm(forms.Form):
             product=product,
             category=tickets_category
         )
-        # TODO: make this dynamic.
+        
         partner_name = event.get_venue_name()
         partner, created = Partner.objects.get_or_create(name=partner_name)
         last_stockrecord = StockRecord.objects.order_by('-id').first()
@@ -366,14 +366,17 @@ class TicketAddForm(forms.Form):
             last_id = last_stockrecord.id
         else:
             last_id = 0
-        StockRecord.objects.create(
+        stock_record = StockRecord.objects.create(
             partner=partner,
             product=product,
-            partner_sku=last_id + 1,
+            partner_sku="0",
             num_in_stock=self.cleaned_data.get('seats'),
             price_excl_tax=self.cleaned_data.get('price'),
             cost_price=self.cleaned_data.get('cost'),
         )
+        # Note: Previously partner_sku was generated using last_id but this solution was not perfect, it should same as stockrecord id
+        stock_record.partner_sku = str(stock_record.id)
+        stock_record.save(update_fields=['partner_sku'])
         if event.photo:
             ProductImage.objects.create(
                 product=product,
