@@ -979,3 +979,4 @@ cloudinary.config(
 )
 
 EVENT_UPDATE_RECEIVER = os.environ.get('EVENT_UPDATE_RECEIVER', '').split(',')
+ERROR_UPDATE_RECEIVER = os.environ.get('ERROR_UPDATE_RECEIVER', '').split(',')
