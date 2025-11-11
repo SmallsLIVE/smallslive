@@ -24,7 +24,7 @@ from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailVi
 from .forms import TicketExchangeSelectForm
 from oscar_apps.order.processing import EventHandler
 from oscar_apps.order.models import PaymentEventType, Line, Order
-from utils.utils import send_order_refunded_email
+from utils.utils import send_order_refunded_email, send_exchange_error_mail
 from events.models import Event
 from django.db import transaction
 
@@ -111,6 +111,9 @@ class TicketExchangeView(SingleObjectMixin, BaseFormView):
                 return response
         
         except Exception as e:
+            if self.object.number:
+                order_number = self.object.number
+            send_exchange_error_mail(order_number, e)
             print("Exchange failed error:", e)
 
     def form_valid(self, form):
