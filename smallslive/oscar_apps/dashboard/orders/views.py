@@ -24,8 +24,9 @@ from oscar.apps.dashboard.orders.views import LineDetailView as CoreLineDetailVi
 from .forms import TicketExchangeSelectForm
 from oscar_apps.order.processing import EventHandler
 from oscar_apps.order.models import PaymentEventType, Line, Order
-from utils.utils import send_order_refunded_email
+from utils.utils import send_order_refunded_email, send_exchange_error_mail
 from events.models import Event
+from django.db import transaction
 
 
 Partner = get_model('partner', 'Partner')
@@ -90,21 +91,30 @@ class TicketExchangeView(SingleObjectMixin, BaseFormView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        response = super(TicketExchangeView, self).post(request, *args, **kwargs)
-        old_ticket = Line.objects.get(id=self.old_ticket_id)
-        # https://github.com/django-oscar/django-oscar/blob/0.7.2/oscar/apps/catalogue/abstract_models.py#L397
-        # TODO: if no stocks, no error is shown to the user. Exchange will not work.
-        if self.new_ticket.stockrecords.first().net_stock_level >= old_ticket.quantity:
-            exchange_event, created = PaymentEventType.objects.get_or_create(name="Exchanged")
-            sold_event, created = PaymentEventType.objects.get_or_create(name="Sold")
-            old_ticket.set_status("Exchanged")
-            handler = EventHandler(request.user)
-            handler.handle_payment_event(
-                self.object, exchange_event, old_ticket.line_price_incl_tax, [old_ticket], [old_ticket.quantity])
-            new_line = self._get_new_ticket(old_ticket, self.new_ticket)
-            handler.handle_payment_event(
-                self.object, sold_event, new_line.line_price_incl_tax, [new_line], [new_line.quantity])
-        return response
+        try:
+            with transaction.atomic():
+                response = super(TicketExchangeView, self).post(request, *args, **kwargs)
+                old_ticket = Line.objects.get(id=self.old_ticket_id)
+                # https://github.com/django-oscar/django-oscar/blob/0.7.2/oscar/apps/catalogue/abstract_models.py#L397
+                # TODO: if no stocks, no error is shown to the user. Exchange will not work.
+                if self.new_ticket.stockrecords.first().net_stock_level >= old_ticket.quantity:
+                    exchange_event, created = PaymentEventType.objects.get_or_create(name="Exchanged")
+                    sold_event, created = PaymentEventType.objects.get_or_create(name="Sold")
+                    old_ticket.set_status("Exchanged")
+                    handler = EventHandler(request.user)
+                    handler.handle_payment_event(
+                        self.object, exchange_event, old_ticket.line_price_incl_tax, [old_ticket], [old_ticket.quantity])
+
+                    new_line = self._get_new_ticket(old_ticket, self.new_ticket)
+                    handler.handle_payment_event(
+                        self.object, sold_event, new_line.line_price_incl_tax, [new_line], [new_line.quantity])
+                return response
+        
+        except Exception as e:
+            if self.object.number:
+                order_number = self.object.number
+            send_exchange_error_mail(order_number, e)
+            print("Exchange failed error:", e)
 
     def form_valid(self, form):
         self.old_ticket_id = form.cleaned_data['old_ticket_id']

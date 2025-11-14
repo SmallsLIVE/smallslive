@@ -128,7 +128,7 @@ def send_order_error_email(emails, message=None):
                   html_message=html_message)
 
 def manage_order_error_email(order_number, first_name, last_name, error, error_type, order_kwargs):
-    recevier_email_list = ['sudiptomitro2016@gmail.com', 'rajib.paul@idlewilddigital.com', 'paultapan248@gmail.com', 'natea@jazkarta.com']
+    recevier_email_list = settings.ERROR_UPDATE_RECEIVER
     message = {}
     message['order_number'] = order_number
     message['party_name'] = first_name + ' ' + last_name
@@ -138,7 +138,7 @@ def manage_order_error_email(order_number, first_name, last_name, error, error_t
     send_order_error_email(emails=recevier_email_list, message=message)
 
 def send_incompleted_order_refunded_email(order_number, order_kwargs, amount, refund_id):
-    recevier_email_list = ['sudiptomitro2016@gmail.com', 'rajib.paul@idlewilddigital.com', 'paultapan248@gmail.com', 'naamagheber@smallslive.com']
+    recevier_email_list = settings.ERROR_UPDATE_RECEIVER
     message = {}
     message['order_number'] = order_number
     message['email'] = order_kwargs['guest_email']
@@ -153,6 +153,27 @@ def send_incompleted_order_refunded_email(order_number, order_kwargs, amount, re
     if isinstance(recevier_email_list, str):
         recevier_email_list = [recevier_email_list]
     html_message = render_to_string('emails/incompleted-order-refund-email.html', message)
+    if email_content['html']:
+        send_mail(email_content['subject'],
+                  email_content['body'],
+                  from_email,
+                  recevier_email_list,
+                  html_message=html_message)
+
+def send_exchange_error_mail(order_number, error):
+    recevier_email_list = settings.ERROR_UPDATE_RECEIVER
+    message = {}
+    message['order_number'] = order_number
+    message['error'] = error
+    email_content = {
+        'html': True,
+        'subject': 'An error occured while exchanging event ticket',
+        'body': 'this is your order'
+    }
+    from_email = settings.OSCAR_FROM_EMAIL
+    if isinstance(recevier_email_list, str):
+        recevier_email_list = [recevier_email_list]
+    html_message = render_to_string('emails/exchange-error-mail.html', message)
     if email_content['html']:
         send_mail(email_content['subject'],
                   email_content['body'],
