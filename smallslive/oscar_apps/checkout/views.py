@@ -30,6 +30,8 @@ from django.utils.translation import gettext as _
 from utils.utils import send_order_confirmation_email, send_incompleted_order_refunded_email, manage_order_error_email
 
 from django.db import transaction
+from decimal import Decimal
+import stripe
 import threading
 
 # Create a global lock
@@ -532,7 +534,12 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 if quantity <= in_stock:
                     self.card_token = self.request.POST.get('card_token')
                     print('Place order')
-                    return self.handle_place_order_submission(request)
+                    try:
+                        return self.handle_place_order_submission(request)
+                    except Exception as e:
+                        logger.error('In Place Order Error')
+                        logger.error(e)
+                        print(e)
                 else:
                     msg = _(
                         "'%(title)s' is no longer available to buy (%(reason)s). "
@@ -808,6 +815,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         try:
             reference = self.handle_payment(order_number, order_total, basket_lines,
                                 shipping_charge=str(shipping_charge.incl_tax), **payment_kwargs)
+            # raise Exception('Test exception for ticket purchase')
         except RedirectRequired as e:
             # Redirect required (eg PayPal, 3DS)
             logger.info("Order #%s: redirecting to %s", order_number, e.url)
@@ -913,6 +921,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
           
+            # capture the payment here after successfull order place.
+            stripe.PaymentIntent.capture(reference)
 
             return response
         except UnableToPlaceOrder as e:
