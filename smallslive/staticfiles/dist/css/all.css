@@ -36038,6 +36038,9 @@ form .back-to-payment-btn {
 #tickets-sold-out-dialog .text9 {
   text-align: left; }
 
+#ticket-confirmation-dialog {
+  overflow: auto; }
+
 #loaderOverlay {
   display: none;
   position: fixed;
