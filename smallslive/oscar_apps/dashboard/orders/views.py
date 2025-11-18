@@ -113,7 +113,14 @@ class TicketExchangeView(SingleObjectMixin, BaseFormView):
         except Exception as e:
             if self.object.number:
                 order_number = self.object.number
-            send_exchange_error_mail(order_number, e)
+            if self.new_ticket:
+                new_event_title = self.new_ticket.title
+                new_event_id = self.new_ticket.event_id
+                new_event_set_id = self.new_ticket.id
+            if old_ticket:
+                old_event_title = old_ticket.title
+                old_event_set_id = old_ticket.product_id
+            send_exchange_error_mail(order_number, e, new_event_title, new_event_id, new_event_set_id, old_event_title, old_event_set_id)
             print("Exchange failed error:", e)
 
     def form_valid(self, form):
