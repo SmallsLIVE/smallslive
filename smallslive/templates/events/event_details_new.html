@@ -73,6 +73,7 @@
                                                                         class="buy-tickets white-border-button"
                                                                         style="display: inline;">{{ product.set }}</button>
                                                                 {% include 'events/buy_tickets_dialog_new.html' %}
+                                                                {% include 'events/buy_tickets_confirmation_dialog.html' %}
                                                             {% endif %}
                                                             {% if session.availability.num_available == 0 %}
                                                                 <button type='submit'
@@ -359,10 +360,22 @@
                 });
             });
 
+            $('#ticket-confirmation').click(function (event) {
+                event.preventDefault();
+                $('#buy-tickets-dialog').modal('toggle');
+                $('#ticket-confirmation-dialog').modal('show');
+            });
+
             $('#cancel-buy-tickets').click(function (event) {
                 event.preventDefault();
                 $form = null;
                 $('#buy-tickets-dialog').modal('toggle');
+            });
+
+            $('#cancel-confirm-dialog').click(function (event) {
+                event.preventDefault();
+                $form = null;
+                $('#ticket-confirmation-dialog').modal('toggle');
             });
 
             $('.tickets-sold-out').click(function(e) {
