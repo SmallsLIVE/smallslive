@@ -766,6 +766,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                          forms can be re-rendered correctly if payment fails.
         :order_kwargs: Additional kwargs to pass to the place_order method
         """
+        print('in the submit step')
 
         if payment_kwargs is None:
             payment_kwargs = {}
@@ -1031,7 +1032,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             # 'handle_paypal_payment' returns a RedirectRequiredException
             # and the flow will be completed in ExecutePaypalPayment
             self.handle_paypal_payment(
-                currency, item_list,
+                currency, item_list, basket,
                 shipping_charge=shipping_charge)
 
     def payment_description(self, order_number, total, **kwargs):
@@ -1072,6 +1073,8 @@ class ExecutePayPalPaymentView(AssignProductMixin,
 
     def get(self, request, *args, **kwargs):
 
+        print('i am in the paypal get====')
+
         """
         Receive callback from PayPal after the user has authorized the payment there.
         GET /store/checkout/paypal/execute/?paymentId=PAY-1LV98277E5422594XLP4E2MY&token=EC-1FB41424NL964725H&PayerID=EXH9W7JL6NSN8
@@ -1097,9 +1100,10 @@ class ExecutePayPalPaymentView(AssignProductMixin,
             msg = six.text_type(e) + "."
             error_msg = error_msg.format(msg)
             self.restore_frozen_basket()
+            return http.HttpResponseRedirect(reverse('basket:summary'))
 
-            return self.render_payment_details(
-                self.request, error=error_msg)
+            # return self.render_preview(
+            #     self.request, error=error_msg)
 
         if self.product_id:
             del self.request.session['product_id']
@@ -1138,6 +1142,32 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         # request.basket doesn't work b/c the basket is frozen
         basket = self.get_submitted_basket()
         self.event = basket.get_tickets_event()
+
+        if basket:
+            with transaction.atomic():
+                for line in basket.all_lines():
+                    if line.product.stockrecords.exists():
+                        # Lock the stock record to prevent race conditions
+                        stockrecord = line.product.stockrecords.select_for_update().first()
+                        
+                        # Check if enough stock available
+                        if stockrecord.net_stock_level < line.quantity:
+                            error_msg = (
+                                f"Sorry, '{line.product.get_title()}' is no longer available. "
+                                f"Available: {stockrecord.net_stock_level}, "
+                                f"You requested: {line.quantity}. "
+                                f"Please update your basket."
+                            )
+                            print("PayPal: Insufficient stock - %s", error_msg)
+                            logger.warning("PayPal: Insufficient stock - %s", error_msg)
+                            messages.warning(self.request, error_msg)
+                            raise UnableToTakePayment(error_msg)
+                        
+                        print(
+                            "PayPal: Stock check passed for %s (Available: %d, Requested: %d)",
+                            line.product.get_title(), stockrecord.net_stock_level, line.quantity
+                        )
+
         self.payment_id = self.execute_payment()
 
         # TODO: check that the strategy is correct for Tracks (right stock record).
