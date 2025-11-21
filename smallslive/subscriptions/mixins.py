@@ -144,8 +144,8 @@ class PayPalMixin(PaymentCredentialsMixin):
                         if stockrecord.net_stock_level < line.quantity:
                             error_msg = (
                                 f"Sorry, '{line.product.get_title()}' is no longer available. "
-                                f"Available: {stockrecord.net_stock_level}, "
-                                f"You requested: {line.quantity}. "
+                                f"Available: {stockrecord.net_stock_level} ticket, "
+                                f"You requested: {line.quantity} ticket. "
                                 f"Please update your basket."
                             )
                             print("PayPal: Insufficient stock - %s", error_msg)
@@ -153,9 +153,8 @@ class PayPalMixin(PaymentCredentialsMixin):
                             raise UnableToTakePayment(error_msg)
                         
                         print(
-                            "PayPal: Stock check passed for %s (Available: %d, Requested: %d)",
-                            line.product.get_title(), stockrecord.net_stock_level, line.quantity
-                        )
+                            f"PayPal: Stock check passed for {line.product.get_title()} "
+                            f"(Available: {stockrecord.net_stock_level}, Requested: {line.quantity})")
 
         payment_data = self.get_payment_data(item_list, currency, shipping_charge,
                                              execute_uri=execute_uri, cancel_uri=cancel_uri)
