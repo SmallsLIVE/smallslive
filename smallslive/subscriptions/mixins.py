@@ -7,9 +7,11 @@ from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
 from oscar.apps.payment.exceptions import RedirectRequired, \
     UnableToTakePayment, PaymentError
+from django.db import transaction
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from users.utils import charge, one_time_donation, \
     subscribe_to_plan, update_active_card
+from django.contrib import messages
 
 
 class PaymentCredentialsMixin(object):
@@ -123,10 +125,36 @@ class PayPalMixin(PaymentCredentialsMixin):
         paypalrestsdk.configure(data)
 
     def handle_paypal_payment(self, currency, item_list,
+                              basket,
                               shipping_charge=0.00,
                               execute_uri=None,
                               cancel_uri=None):
         self.configure_paypal()
+
+        # print(basket.all_lines())
+
+        if basket:
+            with transaction.atomic():
+                for line in basket.all_lines():
+                    if line.product.stockrecords.exists():
+                        # Lock the stock record to prevent race conditions
+                        stockrecord = line.product.stockrecords.select_for_update().first()
+                        
+                        # Check if enough stock available
+                        if stockrecord.net_stock_level < line.quantity:
+                            error_msg = (
+                                f"Sorry, '{line.product.get_title()}' is no longer available. "
+                                f"Available: {stockrecord.net_stock_level} ticket, "
+                                f"You requested: {line.quantity} ticket. "
+                                f"Please update your basket."
+                            )
+                            print("PayPal: Insufficient stock - %s", error_msg)
+                            messages.warning(self.request, error_msg)
+                            raise UnableToTakePayment(error_msg)
+                        
+                        print(
+                            f"PayPal: Stock check passed for {line.product.get_title()} "
+                            f"(Available: {stockrecord.net_stock_level}, Requested: {line.quantity})")
 
         payment_data = self.get_payment_data(item_list, currency, shipping_charge,
                                              execute_uri=execute_uri, cancel_uri=cancel_uri)
