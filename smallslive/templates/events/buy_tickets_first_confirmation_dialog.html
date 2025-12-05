@@ -1,0 +1,24 @@
+<div class="modal fade" id="ticket-first-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content custom-modal">
+      <div class="modal-body text-left">
+        <p class="text4" tabindex="0">You are purchasing tickets for:
+          <span class="text-capitalize">{{ event.get_venue_name }}</span>
+          {% if event.get_venue_name == 'Mezzrow' %}
+            located at: Mezzrow (163 w. 10th Street)<br>
+          {% elif event.get_venue_name == 'Smalls' %}
+            located at: Smalls Jazz Club (183 w. 10th Street)<br>
+          {% endif %}
+        </p>
+        <br>
+        <div>
+          <button id="cancel-first-confirm-dialog" class="white-border-button" tabindex="0">Cancel</button>
+          <button id="confirm-first-dialog" class="white-border-button" tabindex="0">Confirm</button>
+        </div> <br>
+        <p class="text4">
+          If you are trying to purchase tickets for one of our other venues, please return to our event calendar.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
