@@ -767,7 +767,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                          forms can be re-rendered correctly if payment fails.
         :order_kwargs: Additional kwargs to pass to the place_order method
         """
-        print('in the submit step')
 
         if payment_kwargs is None:
             payment_kwargs = {}
@@ -817,7 +816,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         try:
             reference = self.handle_payment(order_number, order_total, basket_lines,
                                 shipping_charge=str(shipping_charge.incl_tax), **payment_kwargs)
-            raise Exception('Test exception for ticket purchase after payment')
+            # raise Exception('Test exception for ticket purchase after payment')
         except RedirectRequired as e:
             # Redirect required (eg PayPal, 3DS)
             logger.info("Order #%s: redirecting to %s", order_number, e.url)
