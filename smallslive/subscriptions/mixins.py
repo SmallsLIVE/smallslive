@@ -319,7 +319,7 @@ class StripeMixin(PaymentCredentialsMixin):
 
         return stripe_ref
 
-    def refund_stripe_payment(self, charge_id, order=None, amount=None):
+    def refund_stripe_payment(self, payment_intent_id, order=None, amount=None):
         if order:
             self.order = order
             self.event = order.get_tickets_event()
@@ -327,7 +327,7 @@ class StripeMixin(PaymentCredentialsMixin):
         print('============================REFUND INFO-===========================')
         print(api_key)
         print('---------------------')
-        print(charge_id)
-        refund = stripe.Refund.create(api_key=api_key, charge=charge_id, amount=amount)
+        print(payment_intent_id)
+        refund = stripe.Refund.create(api_key=api_key, payment_intent=payment_intent_id, amount=amount)
         print("order has been refunded successfully!")
         return refund.id
