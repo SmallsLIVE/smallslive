@@ -3,11 +3,10 @@
     <div class="modal-content custom-modal">
       <div class="modal-body text-left">
         <p class="text4" tabindex="0">You are purchasing tickets for:
-          <span class="text-capitalize">{{ event.get_venue_name }}</span>
           {% if event.get_venue_name == 'Mezzrow' %}
-            located at: Mezzrow (163 w. 10th Street)<br>
+            Mezzrow (163 West 10th Street)<br>
           {% elif event.get_venue_name == 'Smalls' %}
-            located at: Smalls Jazz Club (183 w. 10th Street)<br>
+            Smalls Jazz Club (183 West 10th Street)<br>
           {% endif %}
         </p>
         <br>
