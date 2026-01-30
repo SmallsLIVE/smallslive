@@ -31,7 +31,8 @@ def search_autocomplete(request):
     suggestions = [{'label': result.object.autocomplete_label(),
                     'sublabel': result.object.autocomplete_sublabel(),
                     'category': result.model_exact,
-                    'url': result.object.get_absolute_url()} for result in chain(artists, events, instruments) if result]
+                    'url': result.object.get_absolute_url()} for result in chain(artists, events, instruments) if
+                   result]
 
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
@@ -48,7 +49,7 @@ def artist_form_autocomplete(request):
     artist_qs = Artist.objects.filter(first_name__istartswith=artist_start)
     artist_list = []
     for artist in artist_qs:
-        artist_data = {'full_name' : artist.full_name(), 'val': artist.pk}
+        artist_data = {'full_name': artist.full_name(), 'val': artist.pk}
         artist_list.append(artist_data)
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
@@ -111,7 +112,7 @@ class MainSearchView(View, SearchMixin):
                 'secondary': True,
                 'show_event_venue': show_venue,
                 'show_extend_date': show_sets,
-                'upcoming':  upcoming,
+                'upcoming': upcoming,
                 'with_date_picker': True,
             }
             if self.request.user.is_staff:
@@ -155,7 +156,7 @@ class SearchBarView(View):
 
         sqs = search.search_artist(terms, instruments, all_sax_instruments, partial_instruments,
                                    first_name, last_name, partial_name, artist_search, term_for_artist)
-        
+
         paginator = Paginator(sqs, artist_results_per_page)
         artists_results = paginator.count
 
@@ -163,7 +164,7 @@ class SearchBarView(View):
             item = Artist.objects.filter(pk=item.pk).first()
             artists.append(item)
         artists_results_left = artists_results - len(artists)
-        
+
         events = []
         event_results_per_page = 8
 
@@ -212,7 +213,6 @@ class SearchBarView(View):
 
 
 class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
-
     template_name = 'search/search.html'
 
     def get_query_context(self):
@@ -244,7 +244,7 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
             artists_blocks, showing_artist_results, num_pages, search_input = self.search(
                 Artist, q, artist_search=artist_search)
             if artists_blocks and len(artists_blocks[0]) == 1:
-                artist=artists_blocks[0][0]
+                artist = artists_blocks[0][0]
 
         artist = artist or Artist.objects.filter(id=artist_id).first()
 
@@ -371,7 +371,6 @@ class ArtistInfo(View):
 
 
 class UpcomingSearchView(SearchMixin):
-
     template_name = 'search/upcoming_calendar_dates.html'
 
     def get_context_data(self, **kwargs):
@@ -381,18 +380,26 @@ class UpcomingSearchView(SearchMixin):
 
     def get_upcoming_context(self):
         context = {'day_list': []}
-        # days = int(self.request.GET.get('days', 30))
-        starting_date = self.request.GET.get('starting_date', datetime.datetime.today().strftime('%Y-%m-%d'))
-        starting_date = datetime.datetime.strptime(starting_date, '%Y-%m-%d')
+
+        starting_date_str = self.request.GET.get(
+            'starting_date', datetime.datetime.today().strftime('%Y-%m-%d')
+        )
+        starting_date = datetime.datetime.strptime(starting_date_str, '%Y-%m-%d')
+
         venue = self.request.GET.get('venue', 'all')
-        event_list = Event.objects.filter(start__gte=starting_date)
+
+        # Prefetch venue to avoid N+1 queries
+        event_list = Event.objects.select_related('venue').filter(start__gte=starting_date)
+
         if not self.request.user.is_superuser:
             event_list = event_list.exclude(state=Event.STATUS.Draft)
-        if venue:
-            if venue != 'all':
-                event_list = event_list.filter(venue__pk=venue)
+
+        if venue and venue != 'all':
+            event_list = event_list.filter(venue__pk=venue)
+
         event_list = Event.objects.get_modified_start_for_events(event_list)
         event_list = event_list.order_by('modified_start')
+
         if not event_list.exists():
             context['first_event'] = None
             context['last_event'] = None
@@ -403,27 +410,34 @@ class UpcomingSearchView(SearchMixin):
         last_event = event_list.last()
         time_difference = last_event.start.date() - starting_date.date()
         days = int(time_difference.days) + 1
-        for day in range(0, days):
-            # list of events for one day
+
+        for day in range(days):
             day_itinerary = {}
             day_start = starting_date + timedelta(days=day)
             day_end = day_start + timedelta(days=1)
             day_itinerary['day_start'] = day_start
-            day_events = (
-                event_list
-                .filter(start__gte=day_start, start__lt=day_end)
-                .order_by('modified_start', 'venue__id')
-            )
 
-            midnight_events = [event for event in day_events if timezone.localtime(event.start).hour < 6]
+            # Filter events for this day
+            day_events = event_list.filter(start__gte=day_start, start__lt=day_end)
 
-            morning_events = [event for event in day_events if timezone.localtime(event.start).hour < 12 and timezone.localtime(event.start).hour >= 6]
+            # Sort by time within day
+            midnight_events = [e for e in day_events if timezone.localtime(e.start).hour < 6]
+            morning_events = [e for e in day_events if 6 <= timezone.localtime(e.start).hour < 12]
+            rest_events = [e for e in day_events if timezone.localtime(e.start).hour >= 12]
 
-            rest_events = [event for event in day_events if timezone.localtime(event.start).hour >= 12]
+            day_events_sorted = morning_events + rest_events + midnight_events
 
-            day_events = morning_events + rest_events + midnight_events
+            # Group events by venue
+            venues_dict = {}
+            for event in day_events_sorted:
+                venue_name = event.venue.name if event.venue else "No Venue"
+                if venue_name not in venues_dict:
+                    venues_dict[venue_name] = []
+                venues_dict[venue_name].append(event)
 
-            day_itinerary['day_events'] = day_events
+            # Sort venues alphabetically
+            day_itinerary['day_events'] = dict(sorted(venues_dict.items()))
+
             context['day_list'].append(day_itinerary)
 
         context['first_event'] = first_event
@@ -435,29 +449,24 @@ class UpcomingSearchView(SearchMixin):
         tomorrow = today + timezone.timedelta(days=1)
         events_today_and_tomorrow_qs = Event.objects.get_today_and_tomorrow_events(
             is_staff=self.request.user.is_staff
-        )
+        ).select_related('venue')
 
-        today_qs = events_today_and_tomorrow_qs.filter(start__date=today)
-        tomorrow_qs = events_today_and_tomorrow_qs.filter(start__date=tomorrow)
+        # Helper function to sort by time
+        def sort_day_qs(qs):
+            midnight = [e for e in qs if timezone.localtime(e.start).hour < 6]
+            morning = [e for e in qs if 6 <= timezone.localtime(e.start).hour < 12]
+            rest = [e for e in qs if timezone.localtime(e.start).hour >= 12]
+            return morning + rest + midnight
 
-        today_midnight_events = [event for event in today_qs if timezone.localtime(event.start).hour < 6]
-        today_morning_events = [event for event in today_qs if timezone.localtime(event.start).hour < 12 and timezone.localtime(event.start).hour >= 6]
-        today_rest_events = [event for event in today_qs if timezone.localtime(event.start).hour >= 12]
-        today_qs = today_morning_events + today_rest_events + today_midnight_events
+        today_qs = sort_day_qs(events_today_and_tomorrow_qs.filter(start__date=today))
+        tomorrow_qs = sort_day_qs(events_today_and_tomorrow_qs.filter(start__date=tomorrow))
 
-        tomorrow_midnight_events = [event for event in tomorrow_qs if timezone.localtime(event.start).hour < 6]
-        tomorrow_morning_events = [event for event in tomorrow_qs if timezone.localtime(event.start).hour < 12 and timezone.localtime(event.start).hour >= 6]
-        tomorrow_rest_events = [event for event in tomorrow_qs if timezone.localtime(event.start).hour >= 12]
-        tomorrow_qs = tomorrow_morning_events + tomorrow_rest_events + tomorrow_midnight_events
-
-        today_and_tomorrow_qs = today_qs + tomorrow_qs
-        context['events_today'] = today_and_tomorrow_qs
+        context['events_today'] = today_qs + tomorrow_qs
 
         return context
 
 
 class UpcomingSearchViewAjax2(TemplateView, UpcomingSearchView):
-
     template_name = 'search/upcoming_calendar_dates.html'
 
     def get_context_data(self, **kwargs):
@@ -486,11 +495,11 @@ class UpcomingSearchViewAjax(TemplateView, UpcomingSearchView):
             'template': render_to_string(
                 'search/upcoming_calendar_dates.html', context
             ),
-            'new_date':  context['new_date'],
+            'new_date': context['new_date'],
             'current_page_number': context['current_page_number'],
             'page_range': list(context['page_range']),
         }
         if 'first_event' in context and context['first_event']:
             data['first_date'] = context['first_event'].date.strftime('%Y-%m-%d')
-        
+
         return JsonResponse(data)
