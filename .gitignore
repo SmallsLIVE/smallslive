@@ -91,3 +91,5 @@ smallslive/smallslive/settings/local*.py
 documents
 /smallslive/.env.local
 /smallslive/foundation.py
+.env
+db_init
