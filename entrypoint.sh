@@ -16,6 +16,7 @@ if [ "$MIGRATE_DB" = "true" ]; then
   echo "Running database migrations..."
   python smallslive/manage.py collectstatic --noinput --clear
 #  python smallslive/manage.py migrate order 0006_orderstatuschange --fake
+#  python smallslive/manage.py migrate customer 0008_auto_20260207_0800 --fake
   python smallslive/manage.py migrate --noinput
 else
   echo "Skipping database migrations"
