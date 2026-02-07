@@ -1,0 +1,46 @@
+services:
+  web:
+    build: .
+    container_name: smallslive_web
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./smallslive
+          target: /app
+          ignore:
+            - __pycache__/
+            - static/
+            - templates/
+
+        - action: sync
+          path: ./smallslive/templates
+          target: /app/templates
+
+        - action: sync
+          path: ./smallslive/staticfiles
+          target: /app/staticfiles
+
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: smallslive_db
+    restart: always
+    environment:
+      POSTGRES_DB: smallslivedb_new
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_PORT: 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db_init:/docker-entrypoint-initdb.d
+    ports:
+      - "${POSTGRES_PORT}:5432"
+
+volumes:
+  postgres_data:

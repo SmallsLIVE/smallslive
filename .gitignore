@@ -94,3 +94,5 @@ documents
 venv
 smenv
 p10env
+.env
+db_init
