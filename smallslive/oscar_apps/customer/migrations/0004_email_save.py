@@ -14,11 +14,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='email',
-            name='email',
-            field=models.EmailField(blank=True, max_length=254, null=True, verbose_name='Email Address'),
-        ),
+        # migrations.AddField(
+        #     model_name='email',
+        #     name='email',
+        #     field=models.EmailField(blank=True, max_length=254, null=True, verbose_name='Email Address'),
+        # ),
         migrations.AlterField(
             model_name='email',
             name='user',

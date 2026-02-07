@@ -14,10 +14,18 @@ echo "Postgres ready"
 # Run migrations only if MIGRATE_DB=true
 if [ "$MIGRATE_DB" = "true" ]; then
   echo "Running database migrations..."
-  python manage.py collectstatic --noinput --clear
-  python manage.py migrate --noinput
+  python smallslive/manage.py collectstatic --noinput --clear
+#  python smallslive/manage.py migrate order 0006_orderstatuschange --fake
+  python smallslive/manage.py migrate --noinput
 else
   echo "Skipping database migrations"
+fi
+
+if [ "$RUN_MIGRATE_SCRIPT" = "true" ]; then
+  echo "Running migrate.sh script..."
+  bash /app/migrate.sh
+else
+  echo "Skipping migrate.sh script"
 fi
 
 # Finally start CMD

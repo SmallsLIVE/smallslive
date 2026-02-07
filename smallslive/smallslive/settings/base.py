@@ -149,6 +149,7 @@ INSTALLED_APPS = [
     # 'oscar_apps.promotions',
     'oscar_apps.search.apps.SearchConfig',
     'oscar_apps.shipping.apps.ShippingConfig',
+    'oscar.apps.communication.notifications'
 ] + [
     'easy_thumbnails',  # needs to go after the oscar import to avoid template tag clashes
     'sorl.thumbnail',
