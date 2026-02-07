@@ -1,5 +1,5 @@
 {% extends "search_base.html" %}
-{% load static from staticfiles %}
+{% load static %}
 {% load custom_cloudinary_tags %}
 
 {% block search_section_title %}Found {{ paginator.count }} artist{{ paginator.count|pluralize }}:{% endblock %}

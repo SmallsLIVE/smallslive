@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Installed these packages after all packages specially setuptools 45.x installed
+pip install django-ajax==0.3.0 django-cacheops==5.0.1 django-haystack==2.8.1 django-js-asset==2.0.0 django-model-utils==4.1.1 django-phonenumber-field==2.0.1 django-polymorphic==3.1.0 django-polymorphic==3.1.0 djrill==2.1.0 jsonfield==2.0.2
+#pip install smallslive-metrics-app@git+https://github.com/SmallsLIVE/smallslive-metrics-djangoapp.git@e5b4b537a4356ea4e2ba1e9a20409d33c8fef544
+#pip install django==2.2.8
+#pip install django-oscar==2.0
+#pip install django-oscar-paypal==2.0.0
+pip install django-oscar-stripe-sca==0.1
+pip install djangorestframework==3.13.0
+pip install django-filter==2.3.0
+#pip install celery==4.4.7
+pip install celery==5.4.0
+pip install dj-stripe==2.5.0
+
+
+# Run Django migrations.
+python smallslive/manage.py migrate catalogue --noinput
+python smallslive/manage.py migrate voucher --noinput
+
+
+# Run collectstatic
+python smallslive/manage.py collectstatic --noinput

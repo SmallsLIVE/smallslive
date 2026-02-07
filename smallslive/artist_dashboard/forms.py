@@ -14,7 +14,7 @@ from django.urls import reverse
 from django_countries import countries
 import floppyforms
 import allauth.account.forms as allauth_forms
-from extra_views import InlineFormSet
+from extra_views import InlineFormSetFactory as InlineFormSet
 from localflavor.us.forms import USStateField
 from localflavor.us.us_states import STATE_CHOICES
 from artists.forms import ArtistAddForm

@@ -1,4 +1,4 @@
-{% load static from staticfiles %}
+{% load static %}
 
 <a href="{{ event.get_absolute_url }}" aria-label="{{ event.title }},  Live at {{ event.get_venue_name }}, sets start at {{ event.get_set_hours_display}}">
   <div class="event-card">

@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.template import Context
 from django.template.loader import render_to_string
-from extra_views import InlineFormSet
+from extra_views import InlineFormSetFactory as InlineFormSet
 import floppyforms
 from haystack.forms import SearchForm
 from oscar.apps.catalogue.models import ProductImage

@@ -84,7 +84,7 @@ INSTALLED_APPS = [
     'metrics',
     'wkhtmltopdf',
     #'oscar_stripe',
-    'paypal',
+    # 'paypal',
     # 'pipeline',
     'rest_framework',
     'rest_framework.authtoken',
@@ -127,6 +127,7 @@ INSTALLED_APPS = [
     'oscar.apps.dashboard.communications.apps.CommunicationsDashboardConfig',
     'oscar.apps.dashboard.shipping.apps.ShippingDashboardConfig',
     'oscar.apps.analytics.apps.AnalyticsConfig',
+    'oscar.apps.communication.apps.CommunicationConfig',
 
     # Oscar custom apps
     'oscar_apps.config.SmallsLiveShop',
@@ -160,6 +161,7 @@ MIDDLEWARE = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
@@ -188,7 +190,7 @@ TEMPLATES = [
                 'oscar.apps.search.context_processors.search_form',
                 # 'oscar.apps.promotions.context_processors.promotions',
                 'oscar.apps.checkout.context_processors.checkout',
-                'oscar.apps.customer.notifications.context_processors.notifications',
+                'oscar.apps.communication.notifications.context_processors.notifications',
                 'oscar.core.context_processors.metadata',
                 'users.context_processors.check_account_status',
                 'users.context_processors.check_if_event_confirmed_user',
@@ -928,6 +930,8 @@ ELASTICSEARCH_FIELD_MAPPINGS = {
     'long':       {'type': 'long'},
     'integer':    {'type': 'long'},
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 FACEBOOK_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 

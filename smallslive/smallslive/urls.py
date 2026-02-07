@@ -7,7 +7,7 @@ from django.urls import path, re_path, include
 from django.contrib import admin
 from django.urls import reverse_lazy
 from django.http import Http404
-from django.shortcuts import render_to_response
+from django.shortcuts import render as render_to_response
 from django.views.generic.base import TemplateView, RedirectView
 from django.template import TemplateDoesNotExist
 # from paypal.express.dashboard.app import application as paypal_application

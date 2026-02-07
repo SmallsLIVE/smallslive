@@ -91,3 +91,6 @@ smallslive/smallslive/settings/local*.py
 documents
 /smallslive/.env.local
 /smallslive/foundation.py
+venv
+smenv
+p10env
