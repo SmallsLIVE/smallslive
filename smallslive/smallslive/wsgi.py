@@ -21,6 +21,6 @@ import os
 # Django 2.2.28
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'smallslive.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', os.environ.get('DJANGO_SETTINGS_MODULE', 'smallslive.settings'))
 
 application = get_wsgi_application()
