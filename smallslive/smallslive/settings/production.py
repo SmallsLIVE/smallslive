@@ -27,8 +27,10 @@ DATABASES['default']['CONN_MAX_AGE'] = 60
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # MIDDLEWARE = ('sslify.middleware.SSLifyMiddleware',) + MIDDLEWARE
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+
+# todo: This is temporary until we have ssl
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 # Allow all host headers
 ALLOWED_HOSTS = [
