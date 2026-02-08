@@ -26,7 +26,7 @@ services:
     container_name: smallslive_redis
     restart: always
     ports:
-      - "6380:6379"
+      - "6379:6379"
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
