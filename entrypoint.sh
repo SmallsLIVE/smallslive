@@ -12,7 +12,7 @@ done
 echo "Postgres ready"
 
 # Run migrations only if MIGRATE_DB=true
-if [ "$MIGRATE_DB" = "true" ]; then
+if [ "$MIGRATE_DB" = "true" ] && [ "$SERVICE_TYPE" = "web" ]; then
   echo "Running database migrations..."
   python manage.py collectstatic --noinput --clear
   python manage.py migrate --noinput
