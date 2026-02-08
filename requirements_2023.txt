@@ -111,6 +111,7 @@ pyOpenSSL==16.2.0
 pystache==0.6.0
 python-dateutil==2.4.2
 python3-openid==3.2.0
+python-dotenv==1.2.1
 pytz==2015.2
 raven==6.10.0
 rcssmin==1.1.1
