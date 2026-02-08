@@ -30,7 +30,10 @@ from django.utils.translation import gettext as _
 from utils.utils import send_order_confirmation_email, send_incompleted_order_refunded_email, manage_order_error_email
 
 from django.db import transaction
+from decimal import Decimal
+import stripe
 import threading
+from oscar_apps.basket.models import Basket
 
 # Create a global lock
 processing_lock = threading.Lock()
@@ -532,7 +535,12 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 if quantity <= in_stock:
                     self.card_token = self.request.POST.get('card_token')
                     print('Place order')
-                    return self.handle_place_order_submission(request)
+                    try:
+                        return self.handle_place_order_submission(request)
+                    except Exception as e:
+                        logger.error('In Place Order Error')
+                        logger.error(e)
+                        print(e)
                 else:
                     msg = _(
                         "'%(title)s' is no longer available to buy (%(reason)s). "
@@ -808,6 +816,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         try:
             reference = self.handle_payment(order_number, order_total, basket_lines,
                                 shipping_charge=str(shipping_charge.incl_tax), **payment_kwargs)
+            # raise Exception('Test exception for ticket purchase after payment')
         except RedirectRequired as e:
             # Redirect required (eg PayPal, 3DS)
             logger.info("Order #%s: redirecting to %s", order_number, e.url)
@@ -913,6 +922,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
           
+            # capture the payment here after successfull order place.
+            stripe.PaymentIntent.capture(reference)
 
             return response
         except UnableToPlaceOrder as e:
@@ -1021,7 +1032,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             # 'handle_paypal_payment' returns a RedirectRequiredException
             # and the flow will be completed in ExecutePaypalPayment
             self.handle_paypal_payment(
-                currency, item_list,
+                currency, item_list, basket,
                 shipping_charge=shipping_charge)
 
     def payment_description(self, order_number, total, **kwargs):
@@ -1059,8 +1070,11 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         self.event_id = None
         self.artist_id = None
         self.card_token = None
+        self.stock_allocated = False  # Track if we actually allocated stock in this flow
 
     def get(self, request, *args, **kwargs):
+
+        print('i am in the paypal get====')
 
         """
         Receive callback from PayPal after the user has authorized the payment there.
@@ -1087,9 +1101,46 @@ class ExecutePayPalPaymentView(AssignProductMixin,
             msg = six.text_type(e) + "."
             error_msg = error_msg.format(msg)
             self.restore_frozen_basket()
+            # @Note:  Releasing allocated stocks, if error happend during payment.
+            checkout_session = CheckoutSessionData(request)
+            basket_id = checkout_session.get_submitted_basket_id()
+            
+            if basket_id:
+                try:
+                    basket = Basket.objects.get(id=basket_id)
+                    # Only cancel allocation if THIS basket actually allocated stock
+                    if self.stock_allocated:
+                        logger.warning("PayPal Payment failed, releasing allocated stock")
+                        with transaction.atomic():
+                            for line in basket.all_lines():
+                                if line.product.stockrecords.exists():
+                                    stockrecord = line.product.stockrecords.select_for_update().first()
+                                    num_allocated = stockrecord.num_allocated or 0
+                                    if num_allocated >= line.quantity:
+                                        stockrecord.cancel_allocation(line.quantity)
+                                        stockrecord.save()
+                                        logger.info(
+                                            "Released %d units of %s back to stock",
+                                            line.quantity, line.product.get_title()
+                                        )
+                                        print(f"Released {line.quantity} units of {line.product.get_title()} back to stock")
+                                    else:
+                                        logger.warning(
+                                            "PayPal: Expected to cancel %d units of %s but num_allocated is only %d",
+                                            line.quantity, line.product.get_title(), num_allocated
+                                        )
+                    else:
+                        # Stock was never allocated in this flow (e.g., stock check failed before allocation)
+                        logger.info(
+                            "PayPal Payment failed but no stock was allocated in this flow - nothing to cancel"
+                        )
+                        print("PayPal Payment failed but no stock was allocated in this flow - nothing to cancel")
+                except Exception as release_error:
+                    logger.error("Error releasing stock: %s", str(release_error))
+            return http.HttpResponseRedirect(reverse('basket:summary'))
 
-            return self.render_payment_details(
-                self.request, error=error_msg)
+            # return self.render_preview(
+            #     self.request, error=error_msg)
 
         if self.product_id:
             del self.request.session['product_id']
@@ -1128,6 +1179,41 @@ class ExecutePayPalPaymentView(AssignProductMixin,
         # request.basket doesn't work b/c the basket is frozen
         basket = self.get_submitted_basket()
         self.event = basket.get_tickets_event()
+
+        if basket:
+            with transaction.atomic():
+                for line in basket.all_lines():
+                    if line.product.stockrecords.exists():
+                        # Lock the stock record to prevent race conditions
+                        stockrecord = line.product.stockrecords.select_for_update().first()
+                        
+                        # Check if enough stock available
+                        if stockrecord.net_stock_level < line.quantity:
+                            error_msg = (
+                                f"Sorry, '{line.product.get_title()}' is no longer available. "
+                                f"Available: {stockrecord.net_stock_level} ticket, "
+                                f"You requested: {line.quantity} tickets. "
+                                f"Please update your basket."
+                            )
+                            print("PayPal: Insufficient stock - %s", error_msg)
+                            logger.warning("PayPal: Insufficient stock - %s", error_msg)
+                            messages.warning(self.request, error_msg)
+                            # Stock check failed - no allocation happened
+                            self.stock_allocated = False
+                            raise UnableToTakePayment(error_msg)
+                        
+                        # @NOTE: Allocating the stock here (before charging customer) and releasing this stock after successfull order.
+                        stockrecord.allocate(line.quantity)
+                        print('====allocated the amount before order===')
+                        stockrecord.save()
+                        # Mark that we successfully allocated stock in this flow
+                        self.stock_allocated = True
+                        print(
+                            f"PayPal: Stock check passed for {line.product.get_title()} "
+                            f"(Available: {stockrecord.net_stock_level}, Requested: {line.quantity})")
+                        
+        # raise UnableToTakePayment('Test exception for testing')
+
         self.payment_id = self.execute_payment()
 
         # TODO: check that the strategy is correct for Tracks (right stock record).
@@ -1189,6 +1275,31 @@ class ExecutePayPalPaymentView(AssignProductMixin,
                                         shipping_address, shipping_method,
                                         shipping_charge, billing_address, order_total,
                                         **order_kwargs)
+            
+            # @NOTE: Releasing the above allocating stock here
+            with transaction.atomic():
+                for line in basket.all_lines():
+                    if line.product.stockrecords.exists():
+                        stockrecord = line.product.stockrecords.select_for_update().first()
+                        # Canceling the allocation we made before execute_payment
+                        # Allocation is atomic - either all requested quantity is allocated or none
+                        num_allocated = stockrecord.num_allocated or 0
+                        if num_allocated >= line.quantity:
+                            stockrecord.cancel_allocation(line.quantity)
+                            stockrecord.save()
+                            logger.info(
+                                "PayPal Order #%s: Cancelled pre-payment allocation for %s (net_stock: %d)",
+                                order_number, line.product.get_title(), stockrecord.net_stock_level
+                            )
+                            print(
+                                f"PayPal Order #{order_number}: Cancelled pre-payment allocation for "
+                                f"{line.product.get_title()} (net_stock: {stockrecord.net_stock_level})")
+                        else:
+                            logger.warning(
+                                "PayPal Order #%s: No allocation to cancel for %s (num_allocated: %s, requested: %s)",
+                                order_number, line.product.get_title(), num_allocated, line.quantity
+                            )
+
         except ValueError as e:
             # Probably order is already  placed because of a reload
             logging.error(str(e))

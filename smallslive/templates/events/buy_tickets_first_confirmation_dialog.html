@@ -1,0 +1,29 @@
+<div class="modal fade" id="ticket-first-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content custom-modal">
+      <div class="modal-body text-left">
+        <p class="text4" tabindex="0">You are purchasing tickets for:
+          {% if event.get_venue_name == 'Mezzrow' %}
+            Mezzrow located at 163 West 10th Street<br>
+          {% elif event.get_venue_name == 'Smalls' %}
+            Smalls Jazz Club located at 183 West 10th Street<br>
+          {% endif %}
+        </p>
+        <br>
+        {% comment %}
+        <p class="text4">THANK YOU FOR YOUR PURCHASE. Your name will be at the door when you arrive, but please also have your confirmation email with you. We have a <span class="text-danger">NO REFUND POLICY</span>. You must use the tickets you’ve purchased; they cannot be refunded. Exchanges or modifications of existing reservations will be at the discretion of the management. We may allow exchanges for a different show on our calendar (1 change per reservation). All requests of reservation modifications are to be made up to 24 hours prior to the event date. Requests for reservation modifications are to be made up to 24 hours prior to the event date. Requests for reservation changes made less than 24 hours prior to the event date cannot be accommodated. For all ticket exchanges please email: <a class="text-danger mail-link" href="mailto:reservations@smallslive.com">reservations@smallslive.com</a></p>
+        <br>
+        {% endcomment %}
+        <div>
+          <button id="cancel-first-confirm-dialog" class="white-border-button" tabindex="0">Cancel</button>
+          <button id="confirm-first-dialog" class="white-border-button" tabindex="0">Confirm</button>
+        </div> <br>
+        {% comment %}
+          <p class="text4">
+            If you are trying to purchase tickets for one of our other venues, please return to our event calendar.
+          </p>
+        {% endcomment %}
+      </div>
+    </div>
+  </div>
+</div>

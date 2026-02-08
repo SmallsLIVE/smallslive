@@ -1059,7 +1059,8 @@ a {
 }
 
 //new pop up design for ticket confirmation
-#buy-tickets-dialog {
+#buy-tickets-dialog,
+#ticket-first-dialog {
 
   .custom-modal {
     padding: 30px;
@@ -1145,7 +1146,8 @@ a {
 
 @media (max-width: 767px) {
 
-  #buy-tickets-dialog {
+  #buy-tickets-dialog,
+  #ticket-first-dialog {
 
     .modal-dialog {
       max-width: 95%;

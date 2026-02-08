@@ -9551,23 +9551,28 @@ a.artist-link:hover {
     font-size: 16px;
     margin-bottom: 20px; }
 
-#buy-tickets-dialog .custom-modal {
+#buy-tickets-dialog .custom-modal,
+#ticket-first-dialog .custom-modal {
   padding: 30px; }
 
-#buy-tickets-dialog .title2 {
+#buy-tickets-dialog .title2,
+#ticket-first-dialog .title2 {
   font-size: 20px;
   text-transform: none;
   margin-bottom: 20px;
   width: 100%; }
 
-#buy-tickets-dialog .text4 {
+#buy-tickets-dialog .text4,
+#ticket-first-dialog .text4 {
   margin-bottom: 20px;
   line-height: 22px; }
 
-#buy-tickets-dialog .text-danger {
+#buy-tickets-dialog .text-danger,
+#ticket-first-dialog .text-danger {
   color: #d21535;
   font-weight: 600; }
-  #buy-tickets-dialog .text-danger.mail-link {
+  #buy-tickets-dialog .text-danger.mail-link,
+  #ticket-first-dialog .text-danger.mail-link {
     font-weight: 400;
     text-decoration: underline; }
 
@@ -9597,16 +9602,21 @@ a.artist-link:hover {
     padding-left: 0; } }
 
 @media (max-width: 767px) {
-  #buy-tickets-dialog .modal-dialog {
+  #buy-tickets-dialog .modal-dialog,
+  #ticket-first-dialog .modal-dialog {
     max-width: 95%; }
-  #buy-tickets-dialog .custom-modal {
+  #buy-tickets-dialog .custom-modal,
+  #ticket-first-dialog .custom-modal {
     padding: 20px; }
-  #buy-tickets-dialog .title2 {
+  #buy-tickets-dialog .title2,
+  #ticket-first-dialog .title2 {
     font-size: 18px;
     line-height: 24px; }
-  #buy-tickets-dialog .text-danger {
+  #buy-tickets-dialog .text-danger,
+  #ticket-first-dialog .text-danger {
     font-size: 14px; }
-    #buy-tickets-dialog .text-danger.mail-link {
+    #buy-tickets-dialog .text-danger.mail-link,
+    #ticket-first-dialog .text-danger.mail-link {
       font-size: 16px; } }
 
 @media (max-width: 500px) {
@@ -27251,6 +27261,9 @@ form .back-to-payment-btn {
 
 #tickets-sold-out-dialog .text9 {
   text-align: left; }
+
+#ticket-confirmation-dialog {
+  overflow: auto; }
 
 #loaderOverlay {
   display: none;

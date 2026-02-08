@@ -160,11 +160,16 @@ def send_incompleted_order_refunded_email(order_number, order_kwargs, amount, re
                   recevier_email_list,
                   html_message=html_message)
 
-def send_exchange_error_mail(order_number, error):
+def send_exchange_error_mail(order_number, error, new_event_title, new_event_id, new_event_set_id, old_event_title, old_event_set_id):
     recevier_email_list = settings.ERROR_UPDATE_RECEIVER
     message = {}
     message['order_number'] = order_number
     message['error'] = error
+    message['new_event_title'] = new_event_title
+    message['new_event_id'] = new_event_id
+    message['new_event_set_id'] = new_event_set_id
+    message['old_event_title'] = old_event_title
+    message['old_event_set_id'] = old_event_set_id
     email_content = {
         'html': True,
         'subject': 'An error occured while exchanging event ticket',

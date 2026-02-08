@@ -7,9 +7,11 @@ from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
 from oscar.apps.payment.exceptions import RedirectRequired, \
     UnableToTakePayment, PaymentError
+from django.db import transaction
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from users.utils import charge, one_time_donation, \
     subscribe_to_plan, update_active_card
+from django.contrib import messages
 
 
 class PaymentCredentialsMixin(object):
@@ -123,10 +125,36 @@ class PayPalMixin(PaymentCredentialsMixin):
         paypalrestsdk.configure(data)
 
     def handle_paypal_payment(self, currency, item_list,
+                              basket,
                               shipping_charge=0.00,
                               execute_uri=None,
                               cancel_uri=None):
         self.configure_paypal()
+
+        # print(basket.all_lines())
+
+        if basket:
+            with transaction.atomic():
+                for line in basket.all_lines():
+                    if line.product.stockrecords.exists():
+                        # Lock the stock record to prevent race conditions
+                        stockrecord = line.product.stockrecords.select_for_update().first()
+                        
+                        # Check if enough stock available
+                        if stockrecord.net_stock_level < line.quantity:
+                            error_msg = (
+                                f"Sorry, '{line.product.get_title()}' is no longer available. "
+                                f"Available: {stockrecord.net_stock_level} ticket, "
+                                f"You requested: {line.quantity} ticket. "
+                                f"Please update your basket."
+                            )
+                            print("PayPal: Insufficient stock - %s", error_msg)
+                            messages.warning(self.request, error_msg)
+                            raise UnableToTakePayment(error_msg)
+                        
+                        print(
+                            f"PayPal: Stock check passed for {line.product.get_title()} "
+                            f"(Available: {stockrecord.net_stock_level}, Requested: {line.quantity})")
 
         payment_data = self.get_payment_data(item_list, currency, shipping_charge,
                                              execute_uri=execute_uri, cancel_uri=cancel_uri)
@@ -257,15 +285,32 @@ class StripeMixin(PaymentCredentialsMixin):
                 metadata = {
                     'isFoundation': False
                 }
-            resp = stripe.Charge.create(
+            # resp = stripe.Charge.create(
+            #     api_key=stripe_secret_key,
+            #     source=self.card_token,
+            #     amount=int(self.total.incl_tax * 100),  # Convert dollars into cents
+            #     currency=settings.STRIPE_CURRENCY,
+            #     description=self.payment_description(order_number, self.total.incl_tax, **kwargs),
+            #     metadata=metadata
+            # )
+            intent = stripe.PaymentIntent.create(
                 api_key=stripe_secret_key,
-                source=self.card_token,
-                amount=int(self.total.incl_tax * 100),  # Convert dollars into cents
+                amount=int(self.total.incl_tax * 100),
                 currency=settings.STRIPE_CURRENCY,
                 description=self.payment_description(order_number, self.total.incl_tax, **kwargs),
-                metadata=metadata
+                metadata=metadata,
+                payment_method_data={
+                    'type': 'card',
+                    'card': {
+                        'token': self.card_token
+                    }
+                },
+                confirmation_method="manual",
+                confirm=True,
+                capture_method="manual"
             )
-            stripe_ref = resp['id']
+
+            stripe_ref = intent.id
 
         cost = 0
         for line in basket_lines:
@@ -274,7 +319,7 @@ class StripeMixin(PaymentCredentialsMixin):
 
         return stripe_ref
 
-    def refund_stripe_payment(self, charge_id, order=None, amount=None):
+    def refund_stripe_payment(self, payment_intent_id, order=None, amount=None):
         if order:
             self.order = order
             self.event = order.get_tickets_event()
@@ -282,7 +327,7 @@ class StripeMixin(PaymentCredentialsMixin):
         print('============================REFUND INFO-===========================')
         print(api_key)
         print('---------------------')
-        print(charge_id)
-        refund = stripe.Refund.create(api_key=api_key, charge=charge_id, amount=amount)
+        print(payment_intent_id)
+        refund = stripe.Refund.create(api_key=api_key, payment_intent=payment_intent_id, amount=amount)
         print("order has been refunded successfully!")
         return refund.id

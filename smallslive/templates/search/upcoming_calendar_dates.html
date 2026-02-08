@@ -4,33 +4,56 @@
         <div class="title1" data-date="{{ day.day_start.date }}">
             {{ day.day_start|date:'D M d' }}
         </div>
-        {% for event in day.day_events %}
-            <div class="flex-column day-event">
-                <a href="{{ event.get_absolute_url }}">
-                    <div class="{{ event.get_venue_name|lower}}-color text2"> {{ event.venue }} </div>
-                    <div class="text-grey text2"> {{ event.get_set_hours_display }}</div>
-                    <div class="text2 day_event_title"> {{ event.title }} {% if event.is_draft %}- <span class="accent-color">DRAFT</span>{% endif %}</div>
-                    {% if user.is_authenticated  %}
-                        {% if event.sponsorship_enabled and not event.sponsorship %}
-                        <button class="sponsor-concert-donation-btn white-border-button text-center"
-                                data-min-donation="{{ event.minimum_sponsorship_amount }}"
-                                data-leader-name="{{ event.leader_string }}"
-                                data-sponsorship-date="{{ event.get_date }}"
-                                data-event-id="{{ event.pk }}">Sponsor This Concert</button>
-                        {% endif %}
-                    {% elif event.sponsorship_enabled and not event.sponsorship %}
-                        <button onclick="$('#becomeMemberDialog').modal('show'); return false;" class="white-border-button text-center">Sponsor This Concert</button>
-                    {% endif %}
-                </a>
-                {% if user.is_admin or user.is_staff %}
-                    <a href="{% url 'event_edit' pk=event.id slug=event.slug %}?nav=calendar" style="display: inline-block;">
-                        <button class="white-border-button">Edit</button>
-                    </a>
-                {% endif %}
-            </div>
-        {% empty %}
-            <div class="text6 no-event"> To Be Announced </div>
-        {% endfor %}
+
+        {% if day.day_events %}
+            {% for venue, events in day.day_events.items %}
+                <div class="venue-group" style="margin-top: 40px;">
+                    <div class="{{ venue|lower }}-color text2">
+                        {{ venue }}
+                    </div>
+                    {% for event in events %}
+                        <div class="flex-column day-event">
+                            <a href="{{ event.get_absolute_url }}">
+                                <div class="text-grey text2">
+                                    {{ event.get_set_hours_display }}
+                                </div>
+                                <div class="text2 day_event_title">
+                                    {{ event.title }}
+                                    {% if event.is_draft %}
+                                        - <span class="accent-color">DRAFT</span>
+                                    {% endif %}
+                                </div>
+
+                                {% if user.is_authenticated %}
+                                    {% if event.sponsorship_enabled and not event.sponsorship %}
+                                        <button class="sponsor-concert-donation-btn white-border-button text-center"
+                                                data-min-donation="{{ event.minimum_sponsorship_amount }}"
+                                                data-leader-name="{{ event.leader_string }}"
+                                                data-sponsorship-date="{{ event.get_date }}"
+                                                data-event-id="{{ event.pk }}">
+                                            Sponsor This Concert
+                                        </button>
+                                    {% endif %}
+                                {% elif event.sponsorship_enabled and not event.sponsorship %}
+                                    <button onclick="$('#becomeMemberDialog').modal('show'); return false;" class="white-border-button text-center">
+                                        Sponsor This Concert
+                                    </button>
+                                {% endif %}
+                            </a>
+
+                            {% if user.is_admin or user.is_staff %}
+                                <a href="{% url 'event_edit' pk=event.id slug=event.slug %}?nav=calendar" style="display: inline-block;">
+                                    <button class="white-border-button">Edit</button>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text6 no-event">To Be Announced</div>
+        {% endif %}
+
     </div>
     {% endif %}
-{% endfor%}
+{% endfor %}
