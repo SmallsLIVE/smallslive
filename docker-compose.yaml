@@ -10,6 +10,10 @@ services:
     environment:
       - SERVICE_TYPE=web
 
+    volumes:
+      - ./smallslive/static:/app/static
+      - ./smallslive/media:/app/media
+
   celery:
     build: .
     container_name: smallslive_celery
