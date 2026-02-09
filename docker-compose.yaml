@@ -1,54 +1,105 @@
+version: "3.9"
+
 services:
   web:
     build: .
     container_name: smallslive_web
-    command: gunicorn smallslive.wsgi:application --bind 0.0.0.0:8000 --workers 2
+    command: gunicorn smallslive.wsgi:application --bind 0.0.0.0:8000 --workers 2 --threads 2 --timeout 120
     ports:
       - "8000:8000"
     env_file:
       - .env
     environment:
       - SERVICE_TYPE=web
-
     volumes:
       - ./smallslive/static:/app/static
       - ./smallslive/media:/app/media
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'       # max 1 core
+          memory: 500M      # max 500 MB
+        reservations:
+          cpus: '0.5'       # reserve 0.5 core
+          memory: 300M      # reserve 300 MB
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
 
   celery:
     build: .
     container_name: smallslive_celery
-    command: celery worker -A smallslive -l info --workdir smallslive
+    command: celery -A smallslive worker -l info --concurrency=1 --prefetch-multiplier=1 --max-tasks-per-child=50 --workdir smallslive
     env_file:
       - .env
     environment:
       - SERVICE_TYPE=celery
     depends_on:
       - redis
-
+    deploy:
+      resources:
+        limits:
+          cpus: '0.8'
+          memory: 300M
+        reservations:
+          cpus: '0.4'
+          memory: 200M
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+        
   redis:
     image: redis:7
     container_name: smallslive_redis
     restart: always
     ports:
       - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 200M
+        reservations:
+          cpus: '0.1'
+          memory: 100M
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
     container_name: smallslive_es
     environment:
       - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ES_JAVA_OPTS=-Xms256m -Xmx256m
       - xpack.security.enabled=true
       - ELASTIC_PASSWORD=changeme
     ports:
       - "9200:9200"
     volumes:
       - es_data:/usr/share/elasticsearch/data
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    restart: always
     healthcheck:
       test: ["CMD-SHELL", "curl -u elastic:changeme -f http://localhost:9200 || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
 
 volumes:
   es_data:
