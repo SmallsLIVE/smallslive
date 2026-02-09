@@ -61,7 +61,6 @@ services:
     environment:
       - SERVICE_TYPE=celerybeat
     depends_on:
-      - db
       - redis
       - celery
 
