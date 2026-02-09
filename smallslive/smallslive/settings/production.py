@@ -41,8 +41,8 @@ ALLOWED_HOSTS = [
     'smallslivecom-rc-832039ab3987.herokuapp.com',
     'smallslive-org-rc-1fe8c07a975e.herokuapp.com',
     'smallslivecom-prod-f95fe9b892cb.herokuapp.com',
-    '35.173.248.194',
-    'ec2-35-173-248-194.compute-1.amazonaws.com',
+    'ec2-34-207-209-25.compute-1.amazonaws.com',
+
 ]
 
 # Static asset configuration
