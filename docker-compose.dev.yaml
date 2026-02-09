@@ -42,6 +42,19 @@ services:
       - db
       - redis
 
+  celerybeat:
+    build: .
+    container_name: smallslive_celerybeat
+    command: celery beat -A smallslive -l info --workdir smallslive
+    env_file:
+      - .env
+    environment:
+      - SERVICE_TYPE=celerybeat
+    depends_on:
+      - db
+      - redis
+      - celery
+
   redis:
     image: redis:7
     container_name: smallslive_redis

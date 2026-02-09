@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   web:
     build: .
@@ -53,7 +51,35 @@ services:
       options:
         max-size: "50m"
         max-file: "3"
-        
+
+  celerybeat:
+    build: .
+    container_name: smallslive_celerybeat
+    command: celery beat -A smallslive -l info --workdir smallslive
+    env_file:
+      - .env
+    environment:
+      - SERVICE_TYPE=celerybeat
+    depends_on:
+      - db
+      - redis
+      - celery
+
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 300M
+        reservations:
+          cpus: '0.2'
+          memory: 200M
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "2"
+
   redis:
     image: redis:7
     container_name: smallslive_redis

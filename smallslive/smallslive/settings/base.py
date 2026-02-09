@@ -100,6 +100,7 @@ INSTALLED_APPS = [
     'hijack',
     'hijack.contrib.admin',
     'cloudinary',
+    'django_celery_beat',
 
     # project apps
     'artist_dashboard',
@@ -116,6 +117,7 @@ INSTALLED_APPS = [
     'utils',
     'custom_stripe',
     'treebeard',
+    'scheduler',
     ## Dependent oscar packages
     'oscar.config.Shop',
     'oscar.apps.wishlists.apps.WishlistsConfig',
@@ -984,3 +986,7 @@ cloudinary.config(
 
 EVENT_UPDATE_RECEIVER = os.environ.get('EVENT_UPDATE_RECEIVER', '').split(',')
 ERROR_UPDATE_RECEIVER = os.environ.get('ERROR_UPDATE_RECEIVER', '').split(',')
+
+# celery settings
+CELERY_TIMEZONE = 'UTC'
+CELERY_ENABLE_UTC = True
