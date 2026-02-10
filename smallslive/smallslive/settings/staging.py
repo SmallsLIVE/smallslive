@@ -69,7 +69,8 @@ ALLOWED_HOSTS = [
     'smallslive-staging.herokuapp.com.',
     '.herokuapp.com',
     '.herokuapp.com.',
-    '127.0.0.1'
+    '127.0.0.1',
+    '54.236.79.133',
 ]
 
 # Static asset configuration
