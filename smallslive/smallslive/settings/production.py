@@ -42,6 +42,7 @@ ALLOWED_HOSTS = [
     'smallslive-org-rc-1fe8c07a975e.herokuapp.com',
     'smallslivecom-prod-f95fe9b892cb.herokuapp.com',
     'ec2-34-207-209-25.compute-1.amazonaws.com',
+    '54.236.79.133'
 
 ]
 
