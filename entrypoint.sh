@@ -20,5 +20,10 @@ else
   echo "Skipping database migrations"
 fi
 
+# Load bashrc if it exists
+if [ -f ~/.bashrc ]; then
+  source ~/.bashrc
+fi
+
 # Finally start CMD
 exec "$@"
