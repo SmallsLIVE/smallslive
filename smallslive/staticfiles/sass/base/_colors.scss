@@ -9,6 +9,7 @@ $text-grey: #808080;
 $background-grey: #e0e0dc;
 $mezzrow: #f1bb53;
 $smallslive: #d21535;
+$jazzcultural: #1055C9;
 
 .black-color {
   color: $black;
@@ -29,6 +30,14 @@ $smallslive: #d21535;
     display: inline-block;
   }
 }
+
+.jazzcultural-color {
+  color: $jazzcultural;
+  &--thankyou {
+    display: inline-block;
+  }
+}
+
 .text-grey {
   color: $text-grey;
 }
