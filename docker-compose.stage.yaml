@@ -21,10 +21,12 @@ services:
           cpus: '0.5'       # reserve 0.5 core
           memory: 300M      # reserve 300 MB
     logging:
-      driver: "json-file"
+      driver: awslogs
       options:
-        max-size: "50m"
-        max-file: "3"
+        awslogs-region: us-east-1
+        awslogs-group: smallslive/stage
+        awslogs-stream: web
+        awslogs-create-group: "true"
 
   celery:
     build: .
@@ -45,10 +47,12 @@ services:
           cpus: '0.4'
           memory: 200M
     logging:
-      driver: "json-file"
+      driver: awslogs
       options:
-        max-size: "50m"
-        max-file: "3"
+        awslogs-region: us-east-1
+        awslogs-group: smallslive/stage
+        awslogs-stream: celery
+        awslogs-create-group: "true"
 
   celerybeat:
     build: .
@@ -71,10 +75,12 @@ services:
           cpus: '0.2'
           memory: 200M
     logging:
-      driver: "json-file"
+      driver: awslogs
       options:
-        max-size: "50m"
-        max-file: "2"
+        awslogs-region: us-east-1
+        awslogs-group: smallslive/stage
+        awslogs-stream: celerybeat
+        awslogs-create-group: "true"
 
   redis:
     image: redis:7
