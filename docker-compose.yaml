@@ -24,10 +24,12 @@ services:
           memory: 4G
     restart: always
     logging:
-      driver: "json-file"
+      driver: awslogs
       options:
-        max-size: "50m"
-        max-file: "3"
+        awslogs-region: us-east-1
+        awslogs-group: smallslive/prod
+        awslogs-stream: web
+        awslogs-create-group: "true"
 
   celery:
     build: .
@@ -49,10 +51,12 @@ services:
             memory: 1G
     restart: always
     logging:
-      driver: "json-file"
+      driver: awslogs
       options:
-        max-size: "50m"
-        max-file: "3"
+        awslogs-region: us-east-1
+        awslogs-group: smallslive/prod
+        awslogs-stream: celery
+        awslogs-create-group: "true"
 
   celerybeat:
     build: .
@@ -76,10 +80,12 @@ services:
           memory: 300M
     restart: always
     logging:
-      driver: "json-file"
+      driver: awslogs
       options:
-        max-size: "50m"
-        max-file: "2"
+        awslogs-region: us-east-1
+        awslogs-group: smallslive/prod
+        awslogs-stream: celerybeat
+        awslogs-create-group: "true"
 
   redis:
     image: redis:7
