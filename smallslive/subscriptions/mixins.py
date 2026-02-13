@@ -27,20 +27,36 @@ class PaymentCredentialsMixin(object):
                 if venue.name == 'Smalls':
                     stripe_client_id = settings.STRIPE_PROFIT_CLIENT_ID_SMALLS  # stripe public key for smalls club
                     stripe_client_secret = settings.STRIPE_PROFIT_CLIENT_SECRET_SMALLS  # stripe secret key smalls club
+
+                    paypal_client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID
+                    paypal_client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET
                 elif venue.name == 'Mezzrow':
                     stripe_client_id = settings.STRIPE_PROFIT_CLIENT_ID_MEZZROW  # stripe public key for mezzrow
                     stripe_client_secret = settings.STRIPE_PROFIT_CLIENT_SECRET_MEZZROW  # stripe secret key for mezzrow
+
+                    paypal_client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID
+                    paypal_client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET
                 elif venue.name == 'Jazzcultural':
-                    stripe_client_id = settings.STRIPE_PROFIT_CLIENT_ID_SMALLS  # stripe public key for Jazzcultural
-                    stripe_client_secret = settings.STRIPE_PROFIT_CLIENT_SECRET_SMALLS  # stripe secret key for Jazzcultural
+                    stripe_client_id = settings.STRIPE_PUBLISHABLE_KEY_JAZZ  # stripe public key for Jazzcultural
+                    stripe_client_secret = settings.STRIPE_SECRET_KEY_JAZZ  # stripe secret key for Jazzcultural
+
+                    paypal_client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID_JAZZ
+                    paypal_client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET_JAZZ
+                    print(stripe_client_id)
+                    print('===here===')
+                    print(stripe_client_secret)
+                    print('======')
+                    print(paypal_client_id)
+                    print('===here2===')
+                    print(paypal_client_secret)
                 # stripe_client_id = venue.get_stripe_publishable_key
                 # stripe_client_secret = venue.get_stripe_secret_key
                 # paypal_client_id = venue.get_paypal_client_id
                 # paypal_client_secret = venue.get_paypal_client_secret
                 # stripe_client_id = settings.STRIPE_PUBLISHABLE_KEY  # venue.get_stripe_publishable_key
                 # stripe_client_secret = settings.STRIPE_SECRET_KEY  # venue.get_stripe_secret_key
-                paypal_client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID  # @TODO change with venue.get_paypal_client_id later.
-                paypal_client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET  # @TODO change with vennu.get_paypal_client_secret later.
+                #paypal_client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID  # @TODO change with venue.get_paypal_client_id later.
+                #paypal_client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET  # @TODO change with vennu.get_paypal_client_secret later.
         else:
             if self.order:
                 item = self.order
