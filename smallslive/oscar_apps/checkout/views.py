@@ -38,7 +38,6 @@ from oscar_apps.basket.models import Basket
 # Create a global lock
 processing_lock = threading.Lock()
 
-
 OrderTotalCalculator = get_class(
     'checkout.calculators', 'OrderTotalCalculator')
 Repository = get_class('shipping.repository', 'Repository')
@@ -50,7 +49,6 @@ logger = logging.getLogger('oscar.checkout')
 
 
 class IndexView(checkout_views.IndexView):
-
     template_name = 'checkout/checkout-gateway.html'
 
     def get_success_response(self):
@@ -59,7 +57,7 @@ class IndexView(checkout_views.IndexView):
             return http.JsonResponse({'url': url})
         else:
             return redirect(url)
-        
+
     def get(self, request, *args, **kwargs):
         # We redirect immediately to shipping address stage if the user is
         # signed in.
@@ -289,7 +287,6 @@ class SuccessfulOrderMixin(PaymentCredentialsMixin):
             email = self.order.guest_email
         send_order_confirmation_email(email, message)
 
-
     def send_admin_notification(self):
         if self.order.has_physical_products():
             util_send_admin_notification(self.order.number)
@@ -503,6 +500,11 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         """
         # Posting to payment-details isn't the right thing to do.  Form
         # submissions should use the preview URL.
+
+        print("=== POST DATA ===")
+        for k, v in request.POST.items():
+            print(f"{k}: {v}")
+
         if not self.preview:
             return http.HttpResponseBadRequest()
 
@@ -516,6 +518,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         # payment form is being submitted from the payment details view. In
         # this case, the form needs validating and the order preview shown.
         if request.POST.get('action', '') == 'place_order':
+            print('placeing_order...........')
             with processing_lock:
                 import time
                 time.sleep(1)
@@ -567,6 +570,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         Process payment. Stripe can be processed immediately, while
         PayPal will require a redirect and be finished in another class.
         """
+
+        print('not placeing_order...........')
         basket = request.basket
         shipping_address = self.get_shipping_address(basket)
         billing_address_form = None
@@ -575,10 +580,11 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         payment_method = request.POST.get('payment_method')
         if basket.has_tickets():
             return self.handle_payment_details_submission_for_tickets(
-                billing_address_form, payment_method, **{'ajax': 0}) #kwargs used to prevent ajax requests
+                billing_address_form, payment_method, **{'ajax': 0})  # kwargs used to prevent ajax requests
         else:
             return self.handle_payment_details_submission_for_basket(
-                shipping_address, billing_address_form, payment_method, **{'ajax': 0}) #kwargs used to prevent ajax requests
+                shipping_address, billing_address_form, payment_method,
+                **{'ajax': 0})  # kwargs used to prevent ajax requests
 
     def handle_billing_address(self, shipping_address, user):
         if user.is_authenticated:
@@ -599,7 +605,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         return billing_address_form
 
-
     def handle_payment_details_submission_for_tickets(self,
                                                       billing_address_form,
                                                       payment_method, **kwargs):
@@ -619,7 +624,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             if first_name and last_name:
                 reservation_string = '{} {}'.format(first_name, last_name)
             else:
-                return http.JsonResponse({'success': False, 'message': "Please enter a name for your reservation under PARTY NAME above"})
+                return http.JsonResponse(
+                    {'success': False, 'message': "Please enter a name for your reservation under PARTY NAME above"})
 
             if payment_method == 'existing-credit-card':
                 for field in form.fields:
@@ -638,7 +644,9 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                                            reservation_string=reservation_string)
             else:
                 if self.request.is_ajax and kwargs.get('ajax') != 0:
-                    error_message = "<br>".join(["* {} * {}".format(field.replace('_', ' ').title(), errors[0]) for field, errors in form.errors.items()])
+                    error_message = "<br>".join(
+                        ["* {} * {}".format(field.replace('_', ' ').title(), errors[0]) for field, errors in
+                         form.errors.items()])
                     return http.JsonResponse({'success': False, 'message': error_message})
                 else:
                     return self.render_payment_details(self.request, form=form,
@@ -739,12 +747,22 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         submission = self.build_submission()
         submission['payment_kwargs']['payment_method'] = payment_method
 
+        print("=== SUBMISSION DICT ===")
+        import pprint
+        pprint.pprint(submission)
+
+        if not submission:
+            print("Submission is empty!")
+        if 'user' not in submission or 'basket' not in submission:
+            print("Missing required keys for submit()!")
+
         return self.submit(**submission)
 
     def submit(self, user, basket,
                shipping_address, shipping_method,
                shipping_charge, billing_address, order_total,
                payment_kwargs=None, order_kwargs=None):
+        print('submiting.........')
 
         """
         Submit a basket for order placement.
@@ -815,7 +833,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         try:
             reference = self.handle_payment(order_number, order_total, basket_lines,
-                                shipping_charge=str(shipping_charge.incl_tax), **payment_kwargs)
+                                            shipping_charge=str(shipping_charge.incl_tax), **payment_kwargs)
             # raise Exception('Test exception for ticket purchase after payment')
         except RedirectRequired as e:
             # Redirect required (eg PayPal, 3DS)
@@ -843,7 +861,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             error_msg = error_msg.format(msg)
             print('******************')
             print('UnableToTakePayment: ')
-            error_msg = "An unrecoverable error occured when processing payment. Error details : "+ str(e.user_message)
+            error_msg = "An unrecoverable error occured when processing payment. Error details : " + str(e.user_message)
             print(error_msg)
             logger.warning(
                 "Order #%s: unable to take payment (%s) - restoring basket",
@@ -874,7 +892,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             error_msg = error_msg.format(msg)
             print('******************')
             print('PaymentError: ')
-            error_msg = "An unrecoverable error occured when processing payment. Error details : "+ str(e.user_message)
+            error_msg = "An unrecoverable error occured when processing payment. Error details : " + str(e.user_message)
             print(error_msg)
 
             if self.request.is_ajax():
@@ -898,7 +916,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             self.restore_frozen_basket()
             error_msg = str(e).format("")
             print('******************')
-            error_msg = "An unrecoverable error occured when processing payment. Error details : "+ str(e.user_message)
+            error_msg = "An unrecoverable error occured when processing payment. Error details : " + str(e.user_message)
             print(error_msg)
 
             if self.request.is_ajax():
@@ -921,7 +939,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             response = self.handle_order_placement(
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
-          
+
             # capture the payment here after successfull order place.
             stripe.PaymentIntent.capture(reference)
 
@@ -940,7 +958,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             if amount:
                 amount = int(amount * 100)
             manage_order_error_email(
-                order_number= order_number,
+                order_number=order_number,
                 first_name=first_name,
                 last_name=last_name,
                 error=e,
@@ -953,10 +971,10 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 refund_id = self.refund_stripe_payment(reference, amount=amount)
                 if refund_id:
                     send_incompleted_order_refunded_email(
-                        order_number= order_number,
+                        order_number=order_number,
                         order_kwargs=order_kwargs,
                         amount=order_total.excl_tax,
-                        refund_id = refund_id
+                        refund_id=refund_id
                     )
             return self.render_preview(
                 self.request, error=msg, **payment_kwargs)
@@ -965,7 +983,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             error_type = 'Global Exception'
             first_name, last_name = self.checkout_session.get_reservation_name()
             manage_order_error_email(
-                order_number= order_number,
+                order_number=order_number,
                 first_name=first_name,
                 last_name=last_name,
                 error=e,
@@ -980,10 +998,10 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 refund_id = self.refund_stripe_payment(reference, amount=amount)
                 if refund_id:
                     send_incompleted_order_refunded_email(
-                        order_number= order_number,
+                        order_number=order_number,
                         order_kwargs=order_kwargs,
                         amount=order_total.excl_tax,
-                        refund_id = refund_id
+                        refund_id=refund_id
                     )
 
     def get_item_list(self, basket_lines):
@@ -1027,7 +1045,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
 
         elif payment_method == 'paypal':
-            item_list = [] # self.get_item_list(basket_lines)
+            item_list = []  # self.get_item_list(basket_lines)
             self.amount = str(total.incl_tax)
             # 'handle_paypal_payment' returns a RedirectRequiredException
             # and the flow will be completed in ExecutePaypalPayment
@@ -1104,7 +1122,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
             # @Note:  Releasing allocated stocks, if error happend during payment.
             checkout_session = CheckoutSessionData(request)
             basket_id = checkout_session.get_submitted_basket_id()
-            
+
             if basket_id:
                 try:
                     basket = Basket.objects.get(id=basket_id)
@@ -1123,7 +1141,8 @@ class ExecutePayPalPaymentView(AssignProductMixin,
                                             "Released %d units of %s back to stock",
                                             line.quantity, line.product.get_title()
                                         )
-                                        print(f"Released {line.quantity} units of {line.product.get_title()} back to stock")
+                                        print(
+                                            f"Released {line.quantity} units of {line.product.get_title()} back to stock")
                                     else:
                                         logger.warning(
                                             "PayPal: Expected to cancel %d units of %s but num_allocated is only %d",
@@ -1186,7 +1205,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
                     if line.product.stockrecords.exists():
                         # Lock the stock record to prevent race conditions
                         stockrecord = line.product.stockrecords.select_for_update().first()
-                        
+
                         # Check if enough stock available
                         if stockrecord.net_stock_level < line.quantity:
                             error_msg = (
@@ -1201,7 +1220,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
                             # Stock check failed - no allocation happened
                             self.stock_allocated = False
                             raise UnableToTakePayment(error_msg)
-                        
+
                         # @NOTE: Allocating the stock here (before charging customer) and releasing this stock after successfull order.
                         stockrecord.allocate(line.quantity)
                         print('====allocated the amount before order===')
@@ -1211,7 +1230,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
                         print(
                             f"PayPal: Stock check passed for {line.product.get_title()} "
                             f"(Available: {stockrecord.net_stock_level}, Requested: {line.quantity})")
-                        
+
         # raise UnableToTakePayment('Test exception for testing')
 
         self.payment_id = self.execute_payment()
@@ -1275,7 +1294,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
                                         shipping_address, shipping_method,
                                         shipping_charge, billing_address, order_total,
                                         **order_kwargs)
-            
+
             # @NOTE: Releasing the above allocating stock here
             with transaction.atomic():
                 for line in basket.all_lines():
@@ -1309,6 +1328,7 @@ class ExecutePayPalPaymentView(AssignProductMixin,
     def handle_successful_order(self, order):
         self.order = order
         return self.handle()
+
 
 # =========
 # Thank you

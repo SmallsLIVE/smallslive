@@ -72,23 +72,32 @@ class PaymentForm(forms.Form):
                     pass
             else:
                 try:
-                    token = stripe.Token.create(
-                        api_key=self.stripe_api_key,
-                        card={
-                            'number': data.get('card_number'),
-                            'exp_month': data.get('exp_month'),
-                            'exp_year': data.get('exp_year'),
-                            'cvc': data.get('cvc'),
-                            'name': data.get('name'),
-                        },
-                    )
-                    self.token = token.id
+                    stripe_token = self.data.get("token")
+
+                    if not stripe_token:
+                        raise forms.ValidationError("Payment token missing.")
+
+                    self.token = stripe_token
+                    print(f"on the form.--{self.token}")
+
+                    # token = stripe.Token.create(
+                    #     api_key=self.stripe_api_key,
+                    #     card={
+                    #         'number': data.get('card_number'),
+                    #         'exp_month': data.get('exp_month'),
+                    #         'exp_year': data.get('exp_year'),
+                    #         'cvc': data.get('cvc'),
+                    #         'name': data.get('name'),
+                    #     },
+                    # )
+                    # self.token = token.id
                 except stripe.error.CardError as e:
                     print('VALIDATION ERROR !!!!')
                     print(e)
                     error = e.json_body['error']
                     print(error)
-                    if error['param'] == 'number' or not error['param'] or not error['param'] in self.declared_fields.keys():
+                    if error['param'] == 'number' or not error['param'] or not error[
+                                                                                   'param'] in self.declared_fields.keys():
                         error['param'] = 'card_number'
                     self.add_error(error['param'], error['message'])
                     data = {
@@ -122,7 +131,8 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
 
     class Meta(payment_forms.BillingAddressForm):
         model = UserAddress
-        exclude = ('search_text', 'user', 'num_orders', 'hash', 'is_default_for_billing', 'is_default_for_shipping', 'num_orders_as_shipping_address', 'num_orders_as_billing_address')
+        exclude = ('search_text', 'user', 'num_orders', 'hash', 'is_default_for_billing', 'is_default_for_shipping',
+                   'num_orders_as_shipping_address', 'num_orders_as_billing_address')
 
     def __init__(self, shipping_address, user, data=None, *args, **kwargs):
         # Store a reference to the shipping address
@@ -167,13 +177,13 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
                 address = UserAddress.objects.get(
                     user=self.instance.user,
                     hash=address.generate_hash())
-                    
+
                 last_address = UserAddress.objects.get(user=self.instance.user, is_default_for_billing=True)
                 last_address.is_default_for_billing = False
-                
+
                 address.is_default_for_billing = True
                 address.save()
-                
+
             except UserAddress.DoesNotExist:
                 address.is_default_for_billing = True
                 address.save()
@@ -184,13 +194,12 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
 
 
 class GatewayForm(CoreGatewayForm):
-    username = forms.EmailField(required=True,widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    username = forms.EmailField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Email'}))
     first_name = forms.CharField(max_length=150, required=False,
-                                       widget=forms.TextInput(attrs={'placeholder': 'First name'}))
+                                 widget=forms.TextInput(attrs={'placeholder': 'First name'}))
     last_name = forms.CharField(max_length=150, required=False,
-                                       widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
+                                widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
     password = forms.CharField(label=("Password"), widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
-
 
     def clean(self):
         if self.is_guest_checkout():

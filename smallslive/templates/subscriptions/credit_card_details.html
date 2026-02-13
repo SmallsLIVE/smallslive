@@ -50,7 +50,120 @@
       {% endfor %}
     </div>
   </div>
+
+
+
+
+
+
+
+
+
+
+
+  <div class="container">
+            <!-- Name -->
+            <div class="flex-row col-xs-12 col-md-4 col-md-offset-4">
+                <input type="text"
+                       id="name-on-card"
+                       class="store__form__input"
+                       placeholder="Name on card"
+                       required>
+            </div>
+
+            <!-- Button to reveal card element -->
+            <div class="button-row" style="margin-top:20px;">
+                <button type="button"
+                        id="show-card-btn"
+                        class="button-bordered">
+                    Pay with Card
+                </button>
+            </div>
+
+            <!-- Hidden Card Container -->
+            <div id="card-container"
+                 style="display:none; margin-top:20px;"
+                 class="flex-row col-xs-12 col-md-4 col-md-offset-4">
+
+                <div id="card-element"
+                     style="padding:12px; border:1px solid #ccc; border-radius:4px;">
+                </div>
+
+                <div id="card-errors"
+                     style="color:red; margin-top:10px;">
+                </div>
+                <div class="button-row button-row-margin-all confirm-button btn-for-card">
+                  <button class="button-bordered card-payment-submit" type="submit">Continue</button>
+                </div>
+
+            </div>
+
+        </div>
   <div class="payment-errors text1 accent-color"></div>
 </div>
 <div class="card-wrapper"></div>
 <div id="form-general-error" class="accent-color text-center text3"></div>
+
+
+
+{% block extra_js %}
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const stripe = Stripe("{{ stripe_publishable_key }}");
+    const elements = stripe.elements();
+
+    const card = elements.create("card");
+    card.mount("#card-element");
+
+    const showBtn = document.getElementById("show-card-btn");
+    const cardContainer = document.getElementById("card-container");
+    const form = document.getElementById("payment-form");
+    const errorDiv = document.getElementById("card-errors");
+
+    // Show card element when button clicked
+    showBtn.addEventListener("click", function () {
+        cardContainer.style.display = "block";
+        showBtn.style.display = "none";
+    });
+
+    console.log("Stripe initialized with publishable key");
+
+    // Create token on submit
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const name = document.getElementById("name-on-card").value;
+
+        const { token, error } = await stripe.createToken(card, {
+            name: name
+        });
+
+        if (error) {
+            errorDiv.textContent = error.message;
+            return;
+        }
+
+        // Add token to form
+        let hiddenInput = document.createElement("input");
+        hiddenInput.setAttribute("type", "hidden");
+        hiddenInput.setAttribute("name", "card_token");
+        hiddenInput.setAttribute("value", token.id);
+        form.appendChild(hiddenInput);
+
+        let hiddenAction = document.createElement("input");
+        hiddenAction.setAttribute("type", "hidden");
+        hiddenAction.setAttribute("name", "action");
+        hiddenAction.setAttribute("value", "place_order");
+        form.appendChild(hiddenAction);
+
+        form.submit();
+    });
+
+});
+</script>
+
+{% endblock %}
