@@ -643,7 +643,6 @@ $(document).ready(function() {
   });
 
   $(document).on("submit", "#place-order", function() {
-      e.preventDefault();
       console.log("Submitting order form");
       // todo: Implement stripe token logic here before submitting form.
       // use {{STRIPE_PUBLIC_KEY}} for initialzing stripe. already sent as context
@@ -1330,7 +1329,8 @@ $(document).ready(function() {
       } else if (currentStep === "Billing") {
         $mainContainer.find("#payment-form").submit();
       } else if (currentStep === "Preview") {
-        $mainContainer.find("#place-order").submit();
+          console.log("Submitting order form");
+        // $mainContainer.find("#place-order").submit();
       }
     } else {
       if (currentStep == "Intro") {
@@ -1341,6 +1341,7 @@ $(document).ready(function() {
       } else if (currentStep === "Billing") {
         getDonationPreviewForm();
       } else if (currentStep == "Preview") {
+          console.log()
         processPaymentInfoStep();
       } else {
         showPanel(getNextStep());

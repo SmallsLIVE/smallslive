@@ -34,11 +34,12 @@ class ShippingAddressForm(checkout_forms.ShippingAddressForm):
 class PaymentForm(forms.Form):
     PAYMENT_CHOICES = Choices('paypal', 'credit-card', 'existing-credit-card')
     payment_method = forms.ChoiceField(required=True, choices=PAYMENT_CHOICES, initial='credit-card')
-    card_number = forms.CharField(required=True, min_length=16, max_length=20)
-    exp_month = forms.CharField(required=True, max_length=2)
-    exp_year = forms.CharField(required=True, min_length=2, max_length=4)
-    cvc = forms.CharField(required=True, min_length=3, max_length=4)
-    name = forms.CharField(required=True)
+    card_number = forms.CharField(required=False, min_length=16, max_length=20)
+    exp_month = forms.CharField(required=False, max_length=2)
+    exp_year = forms.CharField(required=False, min_length=2, max_length=4)
+    cvc = forms.CharField(required=False, min_length=3, max_length=4)
+    name = forms.CharField(required=False)
+    stripe_token = forms.CharField(required=False)
 
     def __init__(self, user, stripe_api_key, *args, **kwargs):
         self.stripe_api_key = stripe_api_key
@@ -71,32 +72,36 @@ class PaymentForm(forms.Form):
                     print('============================')
                     pass
             else:
-                try:
-                    token = stripe.Token.create(
-                        api_key=self.stripe_api_key,
-                        card={
-                            'number': data.get('card_number'),
-                            'exp_month': data.get('exp_month'),
-                            'exp_year': data.get('exp_year'),
-                            'cvc': data.get('cvc'),
-                            'name': data.get('name'),
-                        },
-                    )
-                    self.token = token.id
-                except stripe.error.CardError as e:
-                    print('VALIDATION ERROR !!!!')
-                    print(e)
-                    error = e.json_body['error']
-                    print(error)
-                    if error['param'] == 'number' or not error['param'] or not error['param'] in self.declared_fields.keys():
-                        error['param'] = 'card_number'
-                    self.add_error(error['param'], error['message'])
-                    data = {
-                        error['param']: error['message']
-                    }
-                    print('data ->')
-                    print(data)
-                    raise forms.ValidationError(data)
+                stripe_token = data.get('stripe_token')
+                if stripe_token:
+                    self.token = stripe_token
+                else:
+                    try:
+                        token = stripe.Token.create(
+                            api_key=self.stripe_api_key,
+                            card={
+                                'number': data.get('card_number'),
+                                'exp_month': data.get('exp_month'),
+                                'exp_year': data.get('exp_year'),
+                                'cvc': data.get('cvc'),
+                                'name': data.get('name'),
+                            },
+                        )
+                        self.token = token.id
+                    except stripe.error.CardError as e:
+                        print('VALIDATION ERROR !!!!')
+                        print(e)
+                        error = e.json_body['error']
+                        print(error)
+                        if error['param'] == 'number' or not error['param'] or not error['param'] in self.declared_fields.keys():
+                            error['param'] = 'card_number'
+                        self.add_error(error['param'], error['message'])
+                        data = {
+                            error['param']: error['message']
+                        }
+                        print('data ->')
+                        print(data)
+                        raise forms.ValidationError(data)
         return data
 
     def _post_clean(self):
