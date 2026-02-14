@@ -643,6 +643,11 @@ $(document).ready(function() {
   });
 
   $(document).on("submit", "#place-order", function() {
+      e.preventDefault();
+      console.log("Submitting order form");
+      // todo: Implement stripe token logic here before submitting form.
+      // use {{STRIPE_PUBLIC_KEY}} for initialzing stripe. already sent as context
+
     var flowType = $mainContainer.find("#supporterSteps").data("flow");
     $(this).append($('<input type="hidden" name="flow_type" />').val(flowType));
     var productId = $mainContainer.find("#supporterSteps").data("product-id");
