@@ -21332,6 +21332,7 @@ label[for="photo-clear_id"] {
   outline: none;
   width: 100%;
   margin-bottom: 10px;
+  background: white;
   transition: all 0.3s ease-in-out; }
   .store__form__input:hover, .store__form__input:focus, .store__form__select:hover, .store__form__select:focus {
     outline: none;
