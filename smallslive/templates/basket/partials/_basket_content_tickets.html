@@ -18,12 +18,22 @@
                     Tickets for
                   {% endif %}
                   <div>"{{ event.title }}"</div>
-                  <div>On</div>
-                  <div>{{ event.date }}</div>
+                  {% comment %} <div>On</div>
+                  <div>{{ event.date }}</div> {% endcomment %}
+                  {% comment %} <div>At</div>
+                  <div>{{ product.event_set.start|time:'g:i A' }}</div> {% endcomment %}
                   <div>At</div>
-                  <div>{{ product.event_set.start|time:'g:i A' }}</div>
-                  <div>At</div>
-                  <div>{{ event.venue }}</div>
+                  <div>{{ event.venue }}, 
+                    <span>{{ product.event_set.start|time:'g:i A' }},</span>
+                    {% if event.get_venue_name == 'Mezzrow' %}
+                      Mezzrow (163 w. 10th Street)<br>
+                    {% elif event.get_venue_name == 'Smalls' %}
+                      Smalls Jazz Club (183 w. 10th Street)<br>
+                    {% elif event.get_venue_name == 'Jazzcultural' %}
+                      Jazzcultural (349 w. 46th Street)<br>
+                    {% endif %}
+                  </div>
+                  
                 </div> 
               </div>
               <div class="col-xs-3 store-cart__table__cell ticket-pricing">
