@@ -27265,6 +27265,12 @@ form .back-to-payment-btn {
 .ticket-confirmation-page .normal-text {
   margin-bottom: 25px; }
 
+.link-underline {
+  text-decoration: underline; }
+
+.color-blue {
+  color: #2929fc; }
+
 #tickets-sold-out-dialog .title2 {
   margin-bottom: 30px; }
 
