@@ -118,14 +118,58 @@
       const cardNumber = elements.create('cardNumber');
       const cardExpiry = elements.create('cardExpiry');
       const cardCvc = elements.create('cardCvc');
+      let cardMounted = false;
 
-      cardNumber.mount('#card-number');
-      cardExpiry.mount('#card-expiry');
-      cardCvc.mount('#card-cvc');
+
+       function mountCardElements() {
+           if (!cardMounted) {
+               cardNumber.mount('#card-number');
+               cardExpiry.mount('#card-expiry');
+               cardCvc.mount('#card-cvc');
+               cardMounted = true;
+               console.log("Stripe elements mounted");
+           }
+       }
+
+
+       function unmountCardElements() {
+           if (cardMounted) {
+               cardNumber.unmount();
+               cardExpiry.unmount();
+               cardCvc.unmount();
+               cardMounted = false;
+               console.log("Stripe elements unmounted");
+           }
+       }
+
+       mountCardElements();
+
+
+       $(document).on("click", ".payment-method-toggle", function(e){
+           e.preventDefault();
+           const method = $(this).data("id");
+
+           $('#payment-method').val(method);
+
+           if (method === 'credit-card') {
+               mountCardElements();
+           } else {
+               unmountCardElements();
+           }
+           console.log("Payment method changed to:", method);
+       });
 
       $(document).on('submit', '#payment-form', function(e){
           e.preventDefault();
           const form = this;
+          const paymentMethod = $('#payment-method').val();
+          console.log("Submitting with method:", paymentMethod);
+
+          if (paymentMethod !== 'credit-card') {
+               form.submit();
+               return;
+           }
+
           stripe.createToken(cardNumber).then(function(result) {
               if (result.error) {
                   alert(result.error.message);
