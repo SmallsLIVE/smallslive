@@ -42,13 +42,6 @@ class PaymentCredentialsMixin(object):
 
                     paypal_client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID_JAZZ
                     paypal_client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET_JAZZ
-                    print(stripe_client_id)
-                    print('===here===')
-                    print(stripe_client_secret)
-                    print('======')
-                    print(paypal_client_id)
-                    print('===here2===')
-                    print(paypal_client_secret)
                 # stripe_client_id = venue.get_stripe_publishable_key
                 # stripe_client_secret = venue.get_stripe_secret_key
                 # paypal_client_id = venue.get_paypal_client_id
