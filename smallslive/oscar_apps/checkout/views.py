@@ -24,6 +24,7 @@ from subscriptions.mixins import PayPalMixin, StripeMixin, PaymentCredentialsMix
 from subscriptions.models import Donation
 from users.utils import send_admin_notification as util_send_admin_notification
 from utils import utils as sl_utils
+from utils.stripe_utils import get_stripe_public_key_by_venue_name
 from .forms import PaymentForm, BillingAddressForm
 from django.views import generic
 from django.utils.translation import gettext as _
@@ -447,10 +448,20 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         if basket.has_tickets():
             kwargs.update(self.get_tickets_context(**kwargs))
+            kwargs.update(self.get_stripe_key_context(basket))
         else:
             kwargs.update(self.get_basket_context(basket))
 
         return super(PaymentDetailsView, self).get_context_data(**kwargs)
+
+    def get_stripe_key_context(self, basket):
+        venue_name = basket.get_tickets_type()
+        stripe_public_key = get_stripe_public_key_by_venue_name(venue_name)
+
+        kwargs = {
+            'STRIPE_PUBLIC_KEY': stripe_public_key
+        }
+        return kwargs
 
     def get_tickets_context(self, **kwargs):
         reservation_name = self.checkout_session.get_reservation_name()

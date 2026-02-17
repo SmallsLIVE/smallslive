@@ -2067,6 +2067,7 @@ $tablet-break: 650px;
     outline: none;
     width: 100%;
     margin-bottom: 10px;
+    background: white;
     @include transition(all 0.3s ease-in-out);
 
     &:hover,
