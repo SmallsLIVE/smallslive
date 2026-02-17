@@ -9560,27 +9560,32 @@ a.artist-link:hover {
     margin-bottom: 20px; }
 
 #buy-tickets-dialog .custom-modal,
-#ticket-first-dialog .custom-modal {
+#ticket-first-dialog .custom-modal,
+#ticket-confirmation-dialog .custom-modal {
   padding: 30px; }
 
 #buy-tickets-dialog .title2,
-#ticket-first-dialog .title2 {
+#ticket-first-dialog .title2,
+#ticket-confirmation-dialog .title2 {
   font-size: 20px;
   text-transform: none;
   margin-bottom: 20px;
   width: 100%; }
 
 #buy-tickets-dialog .text4,
-#ticket-first-dialog .text4 {
+#ticket-first-dialog .text4,
+#ticket-confirmation-dialog .text4 {
   margin-bottom: 20px;
   line-height: 22px; }
 
 #buy-tickets-dialog .text-danger,
-#ticket-first-dialog .text-danger {
+#ticket-first-dialog .text-danger,
+#ticket-confirmation-dialog .text-danger {
   color: #d21535;
   font-weight: 600; }
   #buy-tickets-dialog .text-danger.mail-link,
-  #ticket-first-dialog .text-danger.mail-link {
+  #ticket-first-dialog .text-danger.mail-link,
+  #ticket-confirmation-dialog .text-danger.mail-link {
     font-weight: 400;
     text-decoration: underline; }
 
