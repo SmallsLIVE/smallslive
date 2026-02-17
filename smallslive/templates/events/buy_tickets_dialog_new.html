@@ -18,7 +18,7 @@
           {% elif event.get_venue_name == 'Jazzcultural' %}
             Location: Jazzcultural (349 w. 46th Street)<br>
           {% endif %}
-          Ticket prices for this show is: $<span id="ticket-price" tabindex="0"></span><br>
+          Ticket prices for this show is: $<span id="ticket-price" tabindex="0"></span><br><br>
           {% comment %} <span class="text-danger" style="font-weight: bold">There are currently <span id="ticket-available" tabindex="0"></span> tickets
               available.</span> {% endcomment %}
         </p>
@@ -45,16 +45,14 @@
           <p class="text4">There is a <span class="text-danger">NO REFUND POLICY</span> for all ticket sales. You must use the tickets you’ve purchased they cannot be refunded. You may, however, exchange your tickets for another show on the calendar. For all ticket exchanges please email: <a class="text-danger mail-link" href="mailto:reservations@smallslive.com">reservations@smallslive.com</a>
           </p>
           {% endcomment %}
+          
+          {% comment %}
 
           <p class="text4">Your name will be at the door when you arrive, but please also have your confirmation email with you.</p>
 
           <p class="text4">We have a <span class="text-danger">NO REFUND POLICY</span>. You must use the tickets you’ve purchased they cannot be refunded. Exchanges or modifications of
 existing reservations will be at the discretion of the management. <br> Email: <a class="text-danger mail-link" href="mailto:reservations@smallslive.com">reservations@smallslive.com</a>
           </p>
-
-          {% comment %} <p class="text4">
-            After confirming purchase, please look for your confirmation email. This email will have your confirmation number and party name. Your name will be at the door as well, when you arrive. However, please also have your confirmation email with you.
-          </p> {% endcomment %}
 
           <p class="text4">
             <span class="text-danger">PLEASE NOTE:</span> your ticket guarantees you entrance. Seating for each
@@ -75,6 +73,7 @@ seating.</p>
           <p class="text4">
             <span class="text-danger">PLEASE NOTE:</span> there is a required one-drink minimum per person, per set. It is also customary to leave a gratuity for the bar staff.
           </p>
+        {% endcomment %}
 
         {% endif %}
         <div>
