@@ -928,13 +928,17 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                     order_number)
 
         try:
+            stripe_api_key = self.get_stripe_payment_credentials()[2]
             order_kwargs.update({'order_type': basket.get_order_type()})
             response = self.handle_order_placement(
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
           
             # capture the payment here after successfull order place.
-            stripe.PaymentIntent.capture(reference)
+            stripe.PaymentIntent.capture(
+                reference,
+                api_key=stripe_api_key
+            )
 
             return response
         except UnableToPlaceOrder as e:
@@ -946,7 +950,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             logger.error("Order #%s: unable to place order - %s",
                          order_number, msg, exc_info=True)
             error_type = 'UnableToPlaceOrder Exception'
-            first_name, last_name = self.checkout_session.get_reservation_name()
             amount = order_total.excl_tax
             if amount:
                 amount = int(amount * 100)
@@ -974,7 +977,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         except Exception as e:
             print(e)
             error_type = 'Global Exception'
-            first_name, last_name = self.checkout_session.get_reservation_name()
             manage_order_error_email(
                 order_number= order_number,
                 first_name=first_name,
