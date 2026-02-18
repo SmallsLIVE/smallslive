@@ -34,22 +34,24 @@
                   {% endcomment %}
 
                   <p class="title2" tabindex="0">You have successfully purchased {{ line.quantity }} seat(s)<br>
-                    for <span class="text-capitalize">{{ line.product.event_set.event.title }}</span>,
-                    on {{ line.product.event_set.event.date }} at {{ line.product.event_set.start }}<br>
+                    for <span class="text-capitalize">{{ line.product.event_set.event.title }}</span>
                   </p>
+                  <p class="title2" tabindex="0">{{ line.product.event_set.event.get_venue_name }}</p>
+
+                  <p class="title2" tabindex="0">At {{ line.product.event_set.start }}</p>
 
                   <p class="title2" tabindex="0">Your confirmation number is: {{ order_number }}</p>
 
-                  <p class="title2" tabindex="0">Party name: {{ order.first_name }} {{ order.last_name }}</p>
+                  <p class="title2" tabindex="0">RESERVATION NAME: {{ order.first_name }} {{ order.last_name }}</p>
 
-                  <p class="title2" tabindex="0">Ticket total price: {{ line.line_price_incl_tax }}</p>
+                  <p class="title2" tabindex="0">TOTAL PRICE: {{ line.line_price_incl_tax }}</p>
 
                   {% if line.product.event_set.event.get_venue_name == 'Mezzrow' %}
-                    <p class="title2" tabindex="0">Location: Mezzrow (163 w. 10th Street)</p>
+                    <p class="title2" tabindex="0">Mezzrow (163 w. 10th Street)</p>
                   {% elif line.product.event_set.event.get_venue_name == 'Smalls' %}
-                    <p class="title2" tabindex="0">Location: Smalls Jazz Club (183 w. 10th Street)</p>
+                    <p class="title2" tabindex="0">Smalls Jazz Club (183 w. 10th Street)</p>
                   {% elif line.product.event_set.event.get_venue_name == 'Jazzcultural' %}
-                    <p class="title2" tabindex="0">Location: Jazzcultural (349 West 46th Street, NYC, 10036. This is on “Restaurant Row” between 8th &amp; 9th Ave.)</p>
+                    <p class="title2" tabindex="0">Jazzcultural (349 West 46th Street, NYC, 10036. This is on “Restaurant Row” between 8th &amp; 9th Ave.)</p>
                   {% endif %}
 
 
@@ -64,13 +66,13 @@
                   </p>
                   {% endcomment %}
 
-                  <p class="normal-text">THANK YOU FOR YOUR PURCHASE.</p>
+                  {% comment %} <p class="normal-text">THANK YOU FOR YOUR PURCHASE.</p> {% endcomment %}
 
-                  <p class="normal-text">Your name will be at the door when you arrive, but please also have your confirmation email with you.</p>
+                  <p class="normal-text">Your name will be at the door when you arrive. Please have your reservation email with you. Please check in at the door and join the ticket holder line.</p>
 
-                  <p class="normal-text">We have a <strong style="color: #d21535">NO REFUND POLICY</strong>. You must use the tickets you’ve purchased they cannot be refunded. Exchanges or modifications of existing reservations will be at the discretion of the management.<br>Email: <a href="mailto:reservations@smallslive.com" style="color: #d21535">reservations@smallslive.com</a></p>
-        
-                  <p class="normal-text">
+                  <p class="normal-text">We have a <strong style="color: #d21535">NO REFUND POLICY</strong>. You must use the tickets you’ve purchased they cannot be refunded. Exchanges or modifications of existing reservations will be at the discretion of the management.</p>
+                  <p class="normal-text">Email: <a href="mailto:reservations@smallslive.com" style="color: #d21535">reservations@smallslive.com</a></p>
+                  {% comment %} <p class="normal-text">
                     <span class="text-danger">PLEASE NOTE:</span> your ticket guarantees you entrance.
                     Seating for each show begins approximately 30 minutes before the set
                     begins.
@@ -84,11 +86,13 @@
                     seats of ticket holders who have not arrived. If you arrive late, you will
                     have the option to be seated on the following set, or to be seated at the
                     other club if possible.
-                  </p>
+                  </p> {% endcomment %}
         
-                  <p class="normal-text">
+                  {% comment %} <p class="normal-text">
                     <span class="text-danger">PLEASE NOTE:</span> there is a required one-drink minimum per person, per set. It is also customary to leave a gratuity for the bar staff.
-                  </p>
+                  </p> {% endcomment %}
+                  <p class="text-danger normal-text">PLEASE ARRIVE ON TIME. YOUR ENTRY IS GUARANTEED BUT CHOICE OF SEATS IS FIRST COME/FIRST SERED.</p>
+                  <p class="text-danger normal-text">THERE IS A REQUIRED ONE DRINK PER PERSON MINIMUM.</p>
                 {% endfor %}
               {% endwith %}
             </div>
