@@ -28,6 +28,18 @@ from django.views.generic import DetailView, FormView
 from django.shortcuts import redirect
 
 
+from datetime import timedelta
+from collections import OrderedDict
+from datetime import datetime
+from django.utils import timezone
+from django.db.models.functions import TruncDate
+from rest_framework.generics import ListAPIView
+from django_filters.rest_framework import DjangoFilterBackend
+from .paginations import EventPagination
+from .serializers import EventSerializer
+from .filters import EventFilter
+
+
 # from django_ajax.mixin import AJAXMixin
 from braces.views import StaffuserRequiredMixin
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
@@ -696,6 +708,78 @@ class GenericScheduleView(TemplateView, UpcomingSearchView, CurrentSiteIdMixin):
 
 schedule = GenericScheduleView.as_view()
 
+
+class GenericScheduleListAPIView(ListAPIView):
+    serializer_class = EventSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = EventFilter
+    pagination_class = EventPagination
+
+    def get_queryset(self):
+        starting_date_str = self.request.GET.get(
+            "starting_date",
+            datetime.today().strftime("%Y-%m-%d"),
+        )
+        self.starting_date = datetime.strptime(starting_date_str, "%Y-%m-%d")
+
+        qs = (
+            Event.objects
+            .select_related("venue")
+            .annotate(day=TruncDate("start"))
+            .filter(start__gte=self.starting_date)
+        )
+
+        if not self.request.user.is_superuser:
+            qs = qs.exclude(state=Event.STATUS.Draft)
+
+        # 🔥 All sorting done in DB
+        qs = qs.order_by("day", "venue__name", "start")
+
+        return qs
+
+    def list(self, request, *args, **kwargs):
+        events = self.filter_queryset(self.get_queryset())
+
+        day_map = OrderedDict()
+
+        for event in events:
+            day_key = event.day.strftime("%Y-%m-%d")
+            venue_name = event.venue.name if event.venue else "No Venue"
+
+            day_map.setdefault(day_key, OrderedDict())
+            day_map[day_key].setdefault(venue_name, [])
+            day_map[day_key][venue_name].append(event)
+
+        day_keys = list(day_map.keys())
+
+        page = self.paginate_queryset(day_keys)
+        if page is None:
+            page = day_keys
+
+        # final response
+        day_list = []
+        for day_key, venues in day_map.items():
+            venue_dict = {
+                venue_name: EventSerializer(events, many=True).data
+                for venue_name, events in venues.items()
+            }
+
+            day_list.append({
+                "day_start": day_key,
+                "day_events": venue_dict,
+            })
+
+        response_data = {
+            "day_list": day_list,
+            "default_from_date": timezone.now().strftime("%Y-%m-%d"),
+        }
+
+        if hasattr(self, "paginator") and self.paginator is not None:
+            return self.get_paginated_response(response_data)
+
+        return Response(response_data)
+
+api_schedule = GenericScheduleListAPIView.as_view()
 
 class LivestreamView(TemplateView, UpcomingSearchView):
     template_name = 'basic_pages/livestream.html'
