@@ -21333,7 +21333,6 @@ label[for="photo-clear_id"] {
 .store__form__input, .store__form__select {
   font-size: 16px;
   padding: 10px;
-  border: 1px solid #ddd;
   outline: none;
   width: 100%;
   margin-bottom: 10px;
