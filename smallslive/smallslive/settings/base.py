@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     'wkhtmltopdf',
     #'oscar_stripe',
     'paypal',
+    'corsheaders',
     # 'pipeline',
     'rest_framework',
     'rest_framework.authtoken',
@@ -172,6 +173,7 @@ MIDDLEWARE = (
     "whitenoise.middleware.WhiteNoiseMiddleware",
     # 'pipeline.middleware.MinifyHTMLMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -1012,3 +1014,5 @@ ERROR_UPDATE_RECEIVER = os.environ.get('ERROR_UPDATE_RECEIVER', '').split(',')
 # celery settings
 CELERY_TIMEZONE = 'UTC'
 CELERY_ENABLE_UTC = True
+
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
