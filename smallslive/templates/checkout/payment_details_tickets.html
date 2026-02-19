@@ -129,10 +129,21 @@
            }
 
            stripe.createToken(cardNumber).then(function(result) {
-               if (result.error) {
-                   alert(result.error.message);
-                   return;
-               }
+               let stripeErrorTimeout = null;
+
+                if (result.error) {
+                    const errorEl = $('#stripe-error');
+
+                    errorEl
+                        .html('<strong>' + '**' + result.error.message + '**' + '</strong>')
+                        .fadeIn();
+
+                    stripeErrorTimeout = setTimeout(function () {
+                        errorEl.fadeOut();
+                    }, 3000);
+
+                    return;
+                }
 
                 const token = result.token.id;
                 const hiddenInput = document.createElement('input');
