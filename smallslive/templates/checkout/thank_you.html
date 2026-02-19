@@ -36,16 +36,7 @@
                   <p class="title2" tabindex="0">You have successfully purchased {{ line.quantity }} seat(s)<br>
                     for <span class="text-capitalize">{{ line.product.event_set.event.title }}</span>
                   </p>
-                  <p class="title2" tabindex="0">{{ line.product.event_set.event.get_venue_name }}</p>
-
-                  <p class="title2" tabindex="0">At {{ line.product.event_set.start }}</p>
-
-                  <p class="title2" tabindex="0">Your confirmation number is: {{ order_number }}</p>
-
-                  <p class="title2" tabindex="0">RESERVATION NAME: {{ order.first_name }} {{ order.last_name }}</p>
-
-                  <p class="title2" tabindex="0">TOTAL PRICE: {{ line.line_price_incl_tax }}</p>
-
+                  {% comment %} <p class="title2" tabindex="0">{{ line.product.event_set.event.get_venue_name }}</p> {% endcomment %}
                   {% if line.product.event_set.event.get_venue_name == 'Mezzrow' %}
                     <p class="title2" tabindex="0">Mezzrow (163 w. 10th Street)</p>
                   {% elif line.product.event_set.event.get_venue_name == 'Smalls' %}
@@ -53,6 +44,17 @@
                   {% elif line.product.event_set.event.get_venue_name == 'Jazzcultural' %}
                     <p class="title2" tabindex="0">Jazzcultural (349 West 46th Street, NYC, 10036. This is on “Restaurant Row” between 8th &amp; 9th Ave.)</p>
                   {% endif %}
+
+                  <p class="title2" tabindex="0">{{ line.product.event_set.event.date }}</p>
+                  <p class="title2" tabindex="0">At {{ line.product.event_set.start }}</p>
+
+                  <p class="title2" tabindex="0">Your confirmation number is: {{ order_number }}</p>
+
+                  <p class="title2" tabindex="0">PARTY NAME: {{ order.first_name }} {{ order.last_name }}</p>
+
+                  <p class="title2" tabindex="0">TOTAL PRICE: {{ line.line_price_incl_tax }}</p>
+
+                  
 
 
                   {% comment %}
