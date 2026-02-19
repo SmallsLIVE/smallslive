@@ -15,22 +15,30 @@
                   {% if event.is_foundation %}
                     Sponsorship seats
                   {% else %}
-                    Tickets for
+                    Tickets for <span>{{ event.title }}</span>
                   {% endif %}
-                  <div>"{{ event.title }}"</div>
+                  {% comment %} <div>"{{ event.title }}"</div> {% endcomment %}
                   {% comment %} <div>On</div>
                   <div>{{ event.date }}</div> {% endcomment %}
                   {% comment %} <div>At</div>
                   <div>{{ product.event_set.start|time:'g:i A' }}</div> {% endcomment %}
-                  <div>At</div>
-                  <div>{{ event.venue }}, 
-                    <span>{{ product.event_set.start|time:'g:i A' }},</span>
+                  <div>At {{ product.event_set.start|time:'g:i A' }}</div>
+                  <div>
                     {% if event.get_venue_name == 'Mezzrow' %}
-                      Mezzrow (163 w. 10th Street)<br>
+                      Mezzrow
                     {% elif event.get_venue_name == 'Smalls' %}
-                      Smalls Jazz Club (183 w. 10th Street)<br>
+                      Smalls Jazz Club
                     {% elif event.get_venue_name == 'Jazzcultural' %}
-                      Jazzcultural (349 w. 46th Street)<br>
+                      Jazzcultural
+                    {% endif %}
+                  </div>
+                  <div>
+                    {% if event.get_venue_name == 'Mezzrow' %}
+                      (163 w. 10th Street)<br>
+                    {% elif event.get_venue_name == 'Smalls' %}
+                     (183 w. 10th Street)<br>
+                    {% elif event.get_venue_name == 'Jazzcultural' %}
+                      (349 w. 46th Street)<br>
                     {% endif %}
                   </div>
                   

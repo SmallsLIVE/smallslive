@@ -27252,7 +27252,9 @@ form .back-to-payment-btn {
   .store-cart__table__container__new .ticket-info {
     font-family: 'Oswald', sans-serif;
     font-weight: 400;
-    font-size: 24px; }
+    font-size: 24px;
+    direction: rtl;
+    text-align: justify; }
 
 .ticket-confirmation-page .title2 {
   font-size: 22px;
