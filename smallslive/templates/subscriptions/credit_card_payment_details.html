@@ -28,7 +28,10 @@
       {% endcomment %}
     {% endif %}
   </div>
-  <p id="stripe-error" class="text-center" style="display:none; color: #d9534f; font-weight: 300;"></p>
+  <p id="stripe-error"
+    class="text-center text-danger fw-semibold"
+    style="display:none; font-size:15px;">
+  </p>
 </div>
 <input type="hidden" name="payment_method" id="payment-method" value="{% if can_use_existing_cc %}existing-credit-card{%  else %}credit-card{% endif %}">
 <div class="store__form__group clearfix row payment-method-form {% if not can_use_existing_cc %}hidden{% endif %}" id="existing-credit-card-form">
