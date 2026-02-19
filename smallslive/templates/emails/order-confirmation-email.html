@@ -1,17 +1,6 @@
 <h2 style="font-size: 24px;">You have successfully purchased {{ quantity }} seats for "{{ event_title }}"</h2>
 
-<h2 style="font-size: 24px;">{{ venue }}</h2>
-
-<h2 style="font-size: 24px;">At {{ time }}</h2>
-
-<h2 style="font-size: 24px;">Your confirmation number is: {{ order_number }}</h2>
-
-{% if party_name %}
-<h2 style="font-size: 24px;">RESERVATION NAME: {{ party_name }}</h2>
-{% endif %}
-
-<h2 style="font-size: 24px;">TOTAL PRICE: {{ total_amount }}</h2>
-
+{% comment %} <h2 style="font-size: 24px;">{{ venue }}</h2> {% endcomment %}
 {% if venue == 'Mezzrow' %}
   <h2 style="font-size: 24px;">Mezzrow (163 w. 10th Street)</h2>
 {% elif venue == 'Smalls' %}
@@ -19,6 +8,18 @@
 {% elif venue == 'Jazzcultural' %}
   <h2 style="font-size: 24px;">Jazzcultural (349 West 46th Street, NYC, 10036. This is on “Restaurant Row” between 8th &amp; 9th Ave.)</h2>
 {% endif %}
+
+<h2 style="font-size: 24px;">{{ event_date }}</h2>
+
+<h2 style="font-size: 24px;">At {{ time }}</h2>
+
+<h2 style="font-size: 24px;">Your confirmation number is: {{ order_number }}</h2>
+
+{% if party_name %}
+<h2 style="font-size: 24px;">PARTY NAME: {{ party_name }}</h2>
+{% endif %}
+
+<h2 style="font-size: 24px;">TOTAL PRICE: {{ total_amount }}</h2>
 
 {% comment %}
 <p style="font-size: 18px;">THANK YOU FOR YOUR PURCHASE. Your name will be at the door when you arrive, but please also have your confirmation email with you. There is a <strong style="color: #d21535">NO REFUND POLICY</strong> for all ticket sales. You must use the tickets you’ve purchased they cannot be refunded. You may, however, exchange your tickets for another show on the calendar. For all ticket exchanges please email: <a href="mailto:reservations@smallslive.com" style="color: #d21535">reservations@smallslive.com</a> </p>
