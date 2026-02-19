@@ -732,7 +732,6 @@ class GenericScheduleListAPIView(ListAPIView):
         if not self.request.user.is_superuser:
             qs = qs.exclude(state=Event.STATUS.Draft)
 
-        # 🔥 All sorting done in DB
         qs = qs.order_by("day", "venue__name", "start")
 
         return qs
