@@ -908,6 +908,8 @@ class Event(TimeStampedModel):
             url = 'https://www.ustream.tv/embed/23240580?html5ui'
         elif self.get_venue_name() == 'Smalls':
             url = 'https://www.ustream.tv/embed/23240575?html5ui'
+        elif self.get_venue_name() == 'Jazzcultural':
+            url = 'https://www.ustream.tv/embed/5863709?html5ui'
 
         return url
 
