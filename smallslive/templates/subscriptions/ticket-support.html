@@ -51,7 +51,7 @@
       {% endif %}
       <section class="container">
         <div class="section-title section-title__first section-title-no-padded">
-          <div tabindex="0" class="title1 center">Party Name</div>
+          <div tabindex="0" class="title1 center">Party Nameee</div>
         </div>
         <div class="flex-row col-xs-12 col-md-4 col-md-offset-4">
           <input style="margin-right: 15px;" type="text" class="store__form__input"
@@ -90,6 +90,7 @@
 {% block extra_js %}
   {{ block.super }}
   <script src="{% static 'oscar/js/oscar/ui.js' %}" type="text/javascript" charset="utf-8"></script>
+  <script src="https://js.stripe.com/v3/"></script>
   <script>
 
     var flow = "ticket_support";
@@ -110,6 +111,82 @@
           window.location.href = '/checkout/';
         });
       {% endif %}
+
+      const stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
+      const elements = stripe.elements();
+
+      const cardNumber = elements.create('cardNumber');
+      const cardExpiry = elements.create('cardExpiry');
+      const cardCvc = elements.create('cardCvc');
+      let cardMounted = false;
+
+
+       function mountCardElements() {
+           if (!cardMounted) {
+               cardNumber.mount('#card-number');
+               cardExpiry.mount('#card-expiry');
+               cardCvc.mount('#card-cvc');
+               cardMounted = true;
+               console.log("Stripe elements mounted");
+           }
+       }
+
+
+       function unmountCardElements() {
+           if (cardMounted) {
+               cardNumber.unmount();
+               cardExpiry.unmount();
+               cardCvc.unmount();
+               cardMounted = false;
+               console.log("Stripe elements unmounted");
+           }
+       }
+
+       mountCardElements();
+
+
+       $(document).on("click", ".payment-method-toggle", function(e){
+           e.preventDefault();
+           const method = $(this).data("id");
+
+           $('#payment-method').val(method);
+
+           if (method === 'credit-card') {
+               mountCardElements();
+           } else {
+               unmountCardElements();
+           }
+           console.log("Payment method changed to:", method);
+       });
+
+      $(document).on('submit', '#payment-form', function(e){
+          e.preventDefault();
+          const form = this;
+          const paymentMethod = $('#payment-method').val();
+          console.log("Submitting with method:", paymentMethod);
+
+          if (paymentMethod !== 'credit-card') {
+               form.submit();
+               return;
+           }
+
+          stripe.createToken(cardNumber).then(function(result) {
+              if (result.error) {
+                  alert(result.error.message);
+                  return;
+              }
+
+              const token = result.token.id;
+              const hiddenInput = document.createElement('input');
+              hiddenInput.setAttribute('type', 'hidden');
+              hiddenInput.setAttribute('name', 'stripe_token');
+              hiddenInput.setAttribute('value', token);
+
+              form.appendChild(hiddenInput);
+              form.submit();
+          });
+
+      })
 
     });
     var options = {

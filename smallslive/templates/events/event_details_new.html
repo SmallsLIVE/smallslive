@@ -324,7 +324,7 @@
                 $('#ticket-price').text($(this).data('ticket-price'));
                 $('#walk-in-price').text($(this).data('walk-in-price'));
                 $('#ticket-available').text($(this).data('ticket-availability'));
-                $('#ticket-first-dialog').modal('show');
+                $('#buy-tickets-dialog').modal('show');
 
                 {% if user.is_authenticated %}
 
@@ -334,7 +334,7 @@
                     $('#ticket-time').text( $(this).data('ticket-time'));
                     $('#ticket-price').text($(this).data('ticket-price'));
                     $('#walk-in-price').text($(this).data('walk-in-price'));
-                    $('#ticket-first-dialog').modal('show');
+                    $('#buy-tickets-dialog').modal('show');
                     */
 
                 {% else %}
@@ -367,9 +367,9 @@
             //    $('#ticket-first-dialog').modal('show');
             // });
 
-            $('#confirm-first-dialog').click(function (event) {
+            $('#ticket-confirmation').click(function (event) {
                 event.preventDefault();
-                $('#ticket-first-dialog').modal('toggle');
+                $('#buy-tickets-dialog').modal('toggle');
                 $('#ticket-confirmation-dialog').modal('show');
             });
 

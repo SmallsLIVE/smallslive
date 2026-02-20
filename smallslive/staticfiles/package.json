@@ -56,8 +56,7 @@
     "gulp-stylelint": "^11.0.0",
     "prettier-eslint": "^9.0.1",
     "stylelint": "^12.0.1",
-    "stylelint-scss": "^3.13.0",
-    "yo": "^3.1.1"
+    "stylelint-scss": "^3.13.0"
   },
   "author": "Idlewild Digital",
   "license": "ISC"

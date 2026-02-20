@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     'wkhtmltopdf',
     #'oscar_stripe',
     'paypal',
+    'corsheaders',
     # 'pipeline',
     'rest_framework',
     'rest_framework.authtoken',
@@ -159,10 +160,20 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
 ]
 
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": (
+        "rest_framework.renderers.JSONRenderer",  # only JSON
+    ),
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ),
+}
+
 MIDDLEWARE = (
     "whitenoise.middleware.WhiteNoiseMiddleware",
     # 'pipeline.middleware.MinifyHTMLMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -569,6 +580,11 @@ AWS_S3_FILE_OVERWRITE = False
 AWS_ACCESS_KEY_ID_MEZZROW = os.environ.get('AWS_ACCESS_KEY_ID_MEZZROW')
 AWS_SECRET_ACCESS_KEY_MEZZROW = os.environ.get('AWS_SECRET_ACCESS_KEY_MEZZROW')
 AWS_STORAGE_BUCKET_NAME_MEZZROW = os.environ.get('AWS_STORAGE_BUCKET_NAME_MEZZROW')
+                                                 
+# Django storages / S3 / Jazzcultural
+AWS_ACCESS_KEY_ID_JAZZCULTURAL=os.environ.get('AWS_ACCESS_KEY_ID_JAZZCULTURAL')
+AWS_SECRET_ACCESS_KEY_JAZZCULTURAL=os.environ.get('AWS_SECRET_ACCESS_KEY_JAZZCULTURAL')
+AWS_STORAGE_BUCKET_NAME_JAZZCULTURAL=os.environ.get('AWS_STORAGE_BUCKET_NAME_JAZZCULTURAL')                            
 
 # Django storages / S3 / Smalls
 AWS_ACCESS_KEY_ID_SMALLS = os.environ.get('AWS_ACCESS_KEY_ID_SMALLS')
@@ -660,6 +676,14 @@ STRIPE_PROFIT_CLIENT_SECRET_SMALLS = os.environ.get('STRIPE_PROFIT_CLIENT_SECRET
 
 STRIPE_PROFIT_CLIENT_ID_MEZZROW = os.environ.get('STRIPE_PROFIT_CLIENT_ID_MEZZROW')
 STRIPE_PROFIT_CLIENT_SECRET_MEZZROW = os.environ.get('STRIPE_PROFIT_CLIENT_SECRET_MEZZROW')
+
+#  stripe jazzcultural
+STRIPE_PUBLISHABLE_KEY_JAZZ  = os.environ.get('STRIPE_PUBLISHABLE_KEY_JAZZ')
+STRIPE_SECRET_KEY_JAZZ = os.environ.get('STRIPE_SECRET_KEY_JAZZ')
+
+# paypal jazzcultural
+PAYPAL_FOR_PROFIT_CLIENT_ID_JAZZ = os.environ.get('PAYPAL_FOR_PROFIT_CLIENT_ID_JAZZ')
+PAYPAL_FOR_PROFIT_CLIENT_SECRET_JAZZ = os.environ.get('PAYPAL_FOR_PROFIT_CLIENT_SECRET_JAZZ')
 
 
 # Stripe account for for profit
@@ -990,3 +1014,5 @@ ERROR_UPDATE_RECEIVER = os.environ.get('ERROR_UPDATE_RECEIVER', '').split(',')
 # celery settings
 CELERY_TIMEZONE = 'UTC'
 CELERY_ENABLE_UTC = True
+
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')

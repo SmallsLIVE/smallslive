@@ -104,7 +104,11 @@
     .new-header-img-wrapper {
         gap: 10px;
         max-width: calc(100% - 100px);
-        width: 220px;
+        width: 100%;
+
+        @media(min-width: 400px ) and (max-width: 960px) {
+          width: 350px;
+        }
     }
 
     .smalls-logo {

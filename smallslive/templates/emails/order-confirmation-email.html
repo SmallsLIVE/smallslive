@@ -1,18 +1,25 @@
-<h2 style="font-size: 24px;">You have successfully purchased {{ quantity }} seats for "{{ event_title }}", on {{ event_date }} at {{ time }}.</h2>
+<h2 style="font-size: 24px;">You have successfully purchased {{ quantity }} seats for "{{ event_title }}"</h2>
+
+{% comment %} <h2 style="font-size: 24px;">{{ venue }}</h2> {% endcomment %}
+{% if venue == 'Mezzrow' %}
+  <h2 style="font-size: 24px;">Mezzrow (163 w. 10th Street)</h2>
+{% elif venue == 'Smalls' %}
+  <h2 style="font-size: 24px;">Smalls Jazz Club (183 w. 10th Street)</h2>
+{% elif venue == 'Jazzcultural' %}
+  <h2 style="font-size: 24px;">Jazzcultural (349 West 46th Street, NYC, 10036. This is on “Restaurant Row” between 8th &amp; 9th Ave.)</h2>
+{% endif %}
+
+<h2 style="font-size: 24px;">{{ event_date }}</h2>
+
+<h2 style="font-size: 24px;">At {{ time }}</h2>
 
 <h2 style="font-size: 24px;">Your confirmation number is: {{ order_number }}</h2>
 
 {% if party_name %}
-<h2 style="font-size: 24px;">Party name: {{ party_name }}</h2>
+<h2 style="font-size: 24px;">PARTY NAME: {{ party_name }}</h2>
 {% endif %}
 
-<h2 style="font-size: 24px;">Ticket total price: {{ total_amount }}</h2>
-
-{% if venue == 'Mezzrow' %}
-  <h2 style="font-size: 24px;">Location: Mezzrow (163 w. 10th Street)</h2>
-{% elif venue == 'Smalls' %}
-  <h2 style="font-size: 24px;">Location: Smalls Jazz Club (183 w. 10th Street)</h2>
-{% endif %}
+<h2 style="font-size: 24px;">TOTAL PRICE: {{ total_amount }}</h2>
 
 {% comment %}
 <p style="font-size: 18px;">THANK YOU FOR YOUR PURCHASE. Your name will be at the door when you arrive, but please also have your confirmation email with you. There is a <strong style="color: #d21535">NO REFUND POLICY</strong> for all ticket sales. You must use the tickets you’ve purchased they cannot be refunded. You may, however, exchange your tickets for another show on the calendar. For all ticket exchanges please email: <a href="mailto:reservations@smallslive.com" style="color: #d21535">reservations@smallslive.com</a> </p>
@@ -21,12 +28,20 @@
 {% comment %}
 <p style="font-size: 18px;">THANK YOU FOR YOUR PURCHASE. Your name will be at the door when you arrive, but please also have your confirmation email with you. We have a <strong style="color: #d21535">NO REFUND POLICY</strong>. You must use the tickets you’ve purchased they cannot be refunded. We have a no refund policy. We may allow exchanges for a different show on our calendar (1 change per reservation). All requests of reservation modifications are to be made up to 24 hours prior to the event date. Requests for reservation changes made less than 24 hours prior to the event date cannot be accommodated. For all ticket exchanges please email: <a href="mailto:reservations@smallslive.com" style="color: #d21535">reservations@smallslive.com</a> </p>
 {% endcomment %}
-<p style="font-size: 18px;">THANK YOU FOR YOUR PURCHASE. Your name will be at the door when you arrive, but please also have your confirmation email with you. We have a <strong style="color: #d21535">NO REFUND POLICY</strong>. You must use the tickets you’ve purchased they cannot be refunded. Exchanges or modifications of existing reservations will be at the discretion of the management. We may allow exchanges for a different show on our calendar (1 change per reservation). All requests of reservation modifications are to be made up to 24 hours prior to the event date. Requests for reservation modifications are to be made up to 24 hours prior to the event date. Requests for reservation changes made less than 24 hours prior to the event date cannot be accommodated. For all ticket exchanges please email: <a href="mailto:reservations@smallslive.com" style="color: #d21535">reservations@smallslive.com</a></p>
+{% comment %} <p style="font-size: 18px;">THANK YOU FOR YOUR PURCHASE.</p> {% endcomment %}
+<p style="font-size: 18px;">Your name will be at the door when you arrive. Please have your reservation email with you. Please check in at the door and join the ticket holder line.</p>
+<p style="font-size: 18px;">We have a <strong style="color: #d21535">NO REFUND POLICY</strong>. You must use the tickets you’ve purchased they cannot be refunded. Exchanges or modifications of existing reservations will be at the discretion of the management.</p>
+<p style="font-size: 18px;">Email: <a href="mailto:reservations@smallslive.com" style="color: #d21535">reservations@smallslive.com</a></p>
 
-<p style="font-size: 18px;">Your name will be at the door as well, when you arrive. However, please also have your confirmation email with you.</p>
+{% comment %} 
+<p style="font-size: 18px;">Your name will be at the door as well, when you arrive. However, please also have your confirmation email with you.</p> {% endcomment %}
 
-<p style="font-size: 18px;"><strong style="color: #d21535">PLEASE NOTE:</strong> your ticket guarantees you entrance, but choice of seats is first come/first served, so please be on-time for seating. Seating for each show begins approximately 30 minutes before the set begins. Please arrive at least 30 minutes before the set and join the advanced ticket line.</p>
+{% comment %} <p style="font-size: 18px;"><strong style="color: #d21535">PLEASE NOTE:</strong> your ticket guarantees you entrance. Seating for each show begins approximately 30 minutes before the set begins.</p>
 
+<p style="font-size: 18px;">Please arrive at least 30 minutes before the set and join the advanced ticket line.</p>
+<p style="font-size: 18px;">Choice of seats is first come/first served, so please be on-time for seating.</p>
 <p style="font-size: 18px;"><strong style="color: #d21535">PLEASE NOTE:</strong> once the set has begun, we reserve the right to fill the seats of ticket holders who have not arrived. If you arrive late, you will have the option to be seated on the following set, or to be seated at the other club if possible.</p>
 
-<p style="font-size: 18px;"><strong style="color: #d21535">PLEASE NOTE:</strong> there is a required one-drink minimum per person, per set. It is also customary to leave a gratuity for the bar staff.</p>
+<p style="font-size: 18px;"><strong style="color: #d21535">PLEASE NOTE:</strong> there is a required one-drink minimum per person, per set. It is also customary to leave a gratuity for the bar staff.</p> {% endcomment %}
+<p style="font-size: 18px; color: #d21535">PLEASE ARRIVE ON TIME. YOUR ENTRY IS GUARANTEED BUT CHOICE OF SEATS IS FIRST COME/FIRST SERED.</p>
+<p style="font-size: 18px; color: #d21535">THERE IS A REQUIRED ONE DRINK PER PERSON MINIMUM.</p>

@@ -6057,6 +6057,11 @@ a.badge:hover, a.badge:focus {
   .mezzrow-color--thankyou {
     display: inline-block; }
 
+.jazzcultural-color {
+  color: #1055C9; }
+  .jazzcultural-color--thankyou {
+    display: inline-block; }
+
 .text-grey {
   color: #808080; }
 
@@ -7416,7 +7421,10 @@ header.container {
     .mobile-header .mobile-logo-container .new-header-img-wrapper {
       gap: 10px;
       max-width: calc(100% - 100px);
-      width: 220px; }
+      width: 100%; }
+      @media (min-width: 400px) and (max-width: 960px) {
+        .mobile-header .mobile-logo-container .new-header-img-wrapper {
+          width: 350px; } }
     .mobile-header .mobile-logo-container .smalls-logo {
       pointer-events: all;
       margin: 12px 0; }
@@ -9552,27 +9560,32 @@ a.artist-link:hover {
     margin-bottom: 20px; }
 
 #buy-tickets-dialog .custom-modal,
-#ticket-first-dialog .custom-modal {
+#ticket-first-dialog .custom-modal,
+#ticket-confirmation-dialog .custom-modal {
   padding: 30px; }
 
 #buy-tickets-dialog .title2,
-#ticket-first-dialog .title2 {
+#ticket-first-dialog .title2,
+#ticket-confirmation-dialog .title2 {
   font-size: 20px;
   text-transform: none;
   margin-bottom: 20px;
   width: 100%; }
 
 #buy-tickets-dialog .text4,
-#ticket-first-dialog .text4 {
+#ticket-first-dialog .text4,
+#ticket-confirmation-dialog .text4 {
   margin-bottom: 20px;
   line-height: 22px; }
 
 #buy-tickets-dialog .text-danger,
-#ticket-first-dialog .text-danger {
+#ticket-first-dialog .text-danger,
+#ticket-confirmation-dialog .text-danger {
   color: #d21535;
   font-weight: 600; }
   #buy-tickets-dialog .text-danger.mail-link,
-  #ticket-first-dialog .text-danger.mail-link {
+  #ticket-first-dialog .text-danger.mail-link,
+  #ticket-confirmation-dialog .text-danger.mail-link {
     font-weight: 400;
     text-decoration: underline; }
 
@@ -13900,7 +13913,7 @@ label[for="photo-clear_id"] {
 
 .new-header .new-header-img-wrapper {
   gap: 15px;
-  max-width: 475px; }
+  max-width: 650px; }
   .new-header .new-header-img-wrapper .new-header-img {
     flex: 1; }
 
@@ -13924,13 +13937,13 @@ label[for="photo-clear_id"] {
 
 @media (max-width: 1599px) {
   .new-header .new-header-img-wrapper {
-    max-width: 350px; }
+    max-width: 450px; }
   .new-header .button-row p {
     padding: 0 12px; } }
 
 @media (max-width: 1399px) {
   .new-header .new-header-img-wrapper {
-    max-width: 300px; }
+    max-width: 450px; }
   .new-header .button-row p {
     padding: 0 8px; }
   .new-header .user-menu .select-selected {
@@ -13938,7 +13951,7 @@ label[for="photo-clear_id"] {
 
 @media (max-width: 1199px) {
   .new-header .new-header-img-wrapper {
-    max-width: 240px; }
+    max-width: 400px; }
   .new-header .button-row p {
     font-size: 9px;
     padding: 0 5px; } }
@@ -21320,10 +21333,10 @@ label[for="photo-clear_id"] {
 .store__form__input, .store__form__select {
   font-size: 16px;
   padding: 10px;
-  border: 1px solid #ddd;
   outline: none;
   width: 100%;
   margin-bottom: 10px;
+  background: white;
   transition: all 0.3s ease-in-out; }
   .store__form__input:hover, .store__form__input:focus, .store__form__select:hover, .store__form__select:focus {
     outline: none;
@@ -27239,7 +27252,9 @@ form .back-to-payment-btn {
   .store-cart__table__container__new .ticket-info {
     font-family: 'Oswald', sans-serif;
     font-weight: 400;
-    font-size: 24px; }
+    font-size: 24px;
+    direction: rtl;
+    text-align: justify; }
 
 .ticket-confirmation-page .title2 {
   font-size: 22px;
@@ -27255,6 +27270,12 @@ form .back-to-payment-btn {
 
 .ticket-confirmation-page .normal-text {
   margin-bottom: 25px; }
+
+.link-underline {
+  text-decoration: underline; }
+
+.color-blue {
+  color: #2929fc; }
 
 #tickets-sold-out-dialog .title2 {
   margin-bottom: 30px; }

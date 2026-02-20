@@ -24,6 +24,7 @@ from subscriptions.mixins import PayPalMixin, StripeMixin, PaymentCredentialsMix
 from subscriptions.models import Donation
 from users.utils import send_admin_notification as util_send_admin_notification
 from utils import utils as sl_utils
+from utils.stripe_utils import get_stripe_public_key_by_venue_name
 from .forms import PaymentForm, BillingAddressForm
 from django.views import generic
 from django.utils.translation import gettext as _
@@ -447,10 +448,20 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         if basket.has_tickets():
             kwargs.update(self.get_tickets_context(**kwargs))
+            kwargs.update(self.get_stripe_key_context(basket))
         else:
             kwargs.update(self.get_basket_context(basket))
 
         return super(PaymentDetailsView, self).get_context_data(**kwargs)
+
+    def get_stripe_key_context(self, basket):
+        venue_name = basket.get_tickets_type()
+        stripe_public_key = get_stripe_public_key_by_venue_name(venue_name)
+
+        kwargs = {
+            'STRIPE_PUBLIC_KEY': stripe_public_key
+        }
+        return kwargs
 
     def get_tickets_context(self, **kwargs):
         reservation_name = self.checkout_session.get_reservation_name()
@@ -917,13 +928,17 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                     order_number)
 
         try:
+            stripe_api_key = self.get_stripe_payment_credentials()[2]
             order_kwargs.update({'order_type': basket.get_order_type()})
             response = self.handle_order_placement(
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
           
             # capture the payment here after successfull order place.
-            stripe.PaymentIntent.capture(reference)
+            stripe.PaymentIntent.capture(
+                reference,
+                api_key=stripe_api_key
+            )
 
             return response
         except UnableToPlaceOrder as e:
@@ -935,7 +950,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             logger.error("Order #%s: unable to place order - %s",
                          order_number, msg, exc_info=True)
             error_type = 'UnableToPlaceOrder Exception'
-            first_name, last_name = self.checkout_session.get_reservation_name()
             amount = order_total.excl_tax
             if amount:
                 amount = int(amount * 100)
@@ -963,7 +977,6 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         except Exception as e:
             print(e)
             error_type = 'Global Exception'
-            first_name, last_name = self.checkout_session.get_reservation_name()
             manage_order_error_email(
                 order_number= order_number,
                 first_name=first_name,

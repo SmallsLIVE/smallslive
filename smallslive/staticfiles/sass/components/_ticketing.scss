@@ -4,6 +4,8 @@
   .ticket-info {
     @include oswald-regular();
     font-size: 24px;
+    direction: rtl;
+    text-align: justify;
   }
 }
 
@@ -28,6 +30,14 @@
   .normal-text {
     margin-bottom: 25px;
   }
+}
+
+.link-underline {
+  text-decoration: underline;
+}
+
+.color-blue {
+  color: #2929fc;
 }
 
 #tickets-sold-out-dialog {

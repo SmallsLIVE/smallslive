@@ -197,6 +197,11 @@ class EventAddForm(forms.ModelForm):
                 params['access_key'] = settings.AWS_ACCESS_KEY_ID_MEZZROW
                 params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
                 params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
+            
+            if instance.get_venue_name() == 'Jazzcultural':
+                params['access_key'] = settings.AWS_ACCESS_KEY_ID_JAZZCULTURAL
+                params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_JAZZCULTURAL
+                params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_JAZZCULTURAL
 
             # if venue object has credentials, use them
             if instance.venue.get_aws_access_key_id and \
@@ -388,11 +393,16 @@ class ShowDefaultTimeInlineFormset(InlineFormSet):
     model = ShowDefaultTime
     fields = ('first_set', 'second_set', 'set_duration')
     # extra = 1
+    factory_kwargs = {
+        'extra': 1,
+        'can_delete': True,
+    }
 
     def construct_formset(self):
-        # @TODO Fix later
-        # if self.object and self.object.default_times.count() > 0:
-        #     # self.extra = 0
+        if self.object and self.object.default_times.count() > 0:
+            self.factory_kwargs['extra'] = 0
+        else:
+            self.factory_kwargs['extra'] = 1
 
         formset = super(ShowDefaultTimeInlineFormset, self).construct_formset()
         for num, form in enumerate(formset):
@@ -442,6 +452,8 @@ class VenueAddForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(VenueAddForm, self).__init__(*args, **kwargs)
+
+        self.fields['sort_order'].required = False
 
         if self.instance:
             self.initial['aws_access_key_id'] = self.instance.get_aws_access_key_id
