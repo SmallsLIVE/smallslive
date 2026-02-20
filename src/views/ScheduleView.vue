@@ -4,17 +4,53 @@ import eventService from '@/services/eventService';
 import { computed, onMounted, ref } from 'vue'
 
 const loading = ref(false)
+const venueId = 3
 const dayList = ref([]);
+const limit = ref(5)
+const offset = ref(0)
+const count = ref(0)
+
+
+const currentPage = computed(() =>
+  Math.floor(offset.value / limit.value) + 1
+)
+
+const totalPages = computed(() =>
+  Math.ceil(count.value / limit.value)
+)
+
+function goNext() {
+  if (offset.value + limit.value < count.value) {
+    offset.value += limit.value
+    getAllEvents()
+  }
+}
+
+function goPrev() {
+  if (offset.value - limit.value >= 0) {
+    offset.value -= limit.value
+    getAllEvents()
+  }
+}
+
 async function getAllEvents() {
 
   try {
     loading.value = true
-    const response = await eventService.getAllEvents()
+    const response = await eventService.getAllEvents({
+      venue: venueId,
+      limit: limit.value,
+      offset: offset.value,
+    })
     // console.log(response.data);
-    dayList.value = response.data?.results?.day_list ?? [];
+    const data = response.data
+    dayList.value = data?.results?.day_list ?? []
+    count.value = data?.count ?? 0
     loading.value = false
   } catch (error) {
     console.log(error);
+  } finally {
+    loading.value = false
   }
 }
 
@@ -60,7 +96,6 @@ function formatTime(iso) {
   });
 }
 
-// Link logic: tickets_url > link > slug route > fallback
 function eventHref(ev) {
   if (ev?.tickets_url) return ev.tickets_url;
   if (ev?.link) return ev.link;
@@ -78,7 +113,8 @@ function eventHref(ev) {
 <template>
   <Header />
   <section class="relative overflow-hidden bg-white">
-    <div class="relative main-section mx-auto max-w-3xl mt-5 rounded-[10px] px-4 py-5 border-[#F6ECC1] border-[1px]">
+    <div
+      class="relative main-section mx-auto max-w-3xl mt-5 mb-10 rounded-[10px] px-4 py-5 border-[#F6ECC1] border-[1px]">
       <div class="text-center">
         <hr class="frame-head-border-sm">
         <hr class="frame-head-border">
@@ -116,8 +152,31 @@ function eventHref(ev) {
       </div>
 
       <!-- Empty state -->
-      <div v-if="!loading && uiDays.length === 0" class="mx-auto mt-10 max-w-md text-center text-sm text-black">
-        No events found.
+      <div v-if="loading" class="absolute inset-0 z-20 flex items-center justify-center bg-white/70 backdrop-blur-sm">
+        <div class="text-sm font-semibold text-[#5e2f80]">
+          Loading...
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div v-if="!loading && count > limit"
+        class="mt-6 flex items-center justify-between gap-3 border-t border-[#DCB505] pt-4">
+
+        <button @click="goPrev" :disabled="offset === 0 || loading" class="rounded-md border px-4 cursor-pointer py-2 text-sm font-semibold
+           disabled:cursor-not-allowed disabled:opacity-50
+           hover:bg-gray-50">
+          Prev
+        </button>
+
+        <div class="text-sm font-medium text-black">
+          Page {{ currentPage }} of {{ totalPages }}
+        </div>
+
+        <button @click="goNext" :disabled="offset + limit >= count || loading" class="rounded-md border cursor-pointer px-4 py-2 text-sm font-semibold
+           disabled:cursor-not-allowed disabled:opacity-50
+           hover:bg-gray-50">
+          Next
+        </button>
       </div>
     </div>
   </section>
@@ -156,6 +215,4 @@ function eventHref(ev) {
   margin: 0 0 10px 0;
   border-top: 0;
 }
-
-
 </style>
