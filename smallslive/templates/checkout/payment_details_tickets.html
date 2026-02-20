@@ -84,7 +84,6 @@
                cardExpiry.mount('#card-expiry');
                cardCvc.mount('#card-cvc');
                cardMounted = true;
-               console.log("Stripe elements mounted");
            }
        }
 
@@ -95,7 +94,6 @@
                cardExpiry.unmount();
                cardCvc.unmount();
                cardMounted = false;
-               console.log("Stripe elements unmounted");
            }
        }
 
@@ -114,7 +112,6 @@
            } else {
                unmountCardElements();
            }
-           console.log("Payment method changed to:", method);
        });
 
 
