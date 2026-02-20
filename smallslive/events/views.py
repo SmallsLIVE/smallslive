@@ -35,7 +35,6 @@ from django.utils import timezone
 from django.db.models.functions import TruncDate
 from rest_framework.generics import ListAPIView
 from django_filters.rest_framework import DjangoFilterBackend
-from .paginations import EventPagination
 from .serializers import EventSerializer
 from .filters import EventFilter
 
@@ -713,7 +712,6 @@ class GenericScheduleListAPIView(ListAPIView):
     serializer_class = EventSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = EventFilter
-    pagination_class = EventPagination
 
     def get_queryset(self):
         starting_date_str = self.request.GET.get(
@@ -758,7 +756,9 @@ class GenericScheduleListAPIView(ListAPIView):
 
         # final response
         day_list = []
-        for day_key, venues in day_map.items():
+        for day_key in page:
+            venues = day_map[day_key]
+
             venue_dict = {
                 venue_name: EventSerializer(events, many=True).data
                 for venue_name, events in venues.items()
