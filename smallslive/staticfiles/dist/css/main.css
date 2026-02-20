@@ -21333,7 +21333,6 @@ label[for="photo-clear_id"] {
 .store__form__input, .store__form__select {
   font-size: 16px;
   padding: 10px;
-  border: 1px solid #ddd;
   outline: none;
   width: 100%;
   margin-bottom: 10px;
@@ -27253,7 +27252,9 @@ form .back-to-payment-btn {
   .store-cart__table__container__new .ticket-info {
     font-family: 'Oswald', sans-serif;
     font-weight: 400;
-    font-size: 24px; }
+    font-size: 24px;
+    direction: rtl;
+    text-align: justify; }
 
 .ticket-confirmation-page .title2 {
   font-size: 22px;
