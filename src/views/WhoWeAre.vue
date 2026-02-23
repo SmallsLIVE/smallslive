@@ -3,16 +3,16 @@
     <div class="relative flex items-center justify-center font-raleway overflow-hidden my-2">
 
         <div class="relative z-10 w-full max-w-[75rem] text-center text-white">
-            <h1 class="text-[2rem] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
-                WHO WE ARE
-            </h1>
 
             <div class="grid grid-cols-12 gap-14">
-                <div class="col-span-4 flex justify-end mt-10 h-auto items-start">
+                <div class="col-span-4 flex justify-end mt-10 h-auto items-center">
                     <img class="aspect-square" src="/Jazz Cultural Theatre.jpg" alt="Who we are">
                 </div>
                 <div
                     class="col-span-8 space-y-6 text-[14px] md:text-[16px] font-light tracking-[0.12em] md:tracking-[0.18em] text-gray-200 uppercase my-8 text-left">
+                    <h1 class="text-[2rem] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
+                        WHO WE ARE
+                    </h1>
                     <p>
                         Jazzcultural is a music room and café located at 349 W. 46 th street on “restaurant row”
                         in the heart of Times Square.
