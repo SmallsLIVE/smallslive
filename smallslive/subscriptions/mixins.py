@@ -318,7 +318,7 @@ class StripeMixin(PaymentCredentialsMixin):
             self.event = order.get_tickets_event()
         api_key = self.get_stripe_payment_credentials()[2]
         print('============================REFUND INFO-===========================')
-        # print(payment_id)
+        print(api_key)
         if payment_id.startswith("pi_"):
             print('=== I am in payment intent refund ===')
             refund = stripe.Refund.create(api_key=api_key, payment_intent=payment_id, amount=amount)
