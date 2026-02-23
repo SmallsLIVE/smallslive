@@ -112,7 +112,7 @@ function eventHref(ev) {
 
 <template>
   <Header />
-  <section class="relative overflow-hidden bg-white">
+  <section class="relative overflow-hidden">
     <div
       class="relative main-section mx-auto max-w-3xl mt-5 mb-10 rounded-[10px] px-4 py-5 border-[#F6ECC1] border-[1px]">
       <div class="text-center">

@@ -3,6 +3,7 @@ import PhotoView from "@/views/PhotoView.vue";
 import ReserveView from "@/views/ReserveView.vue";
 import ScheduleView from "@/views/ScheduleView.vue";
 import WhoWeAre from "@/views/WhoWeAre.vue";
+import SmallsliveView from "@/views/SmallsliveView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -13,6 +14,11 @@ const router = createRouter({
       path: "/who-we-are",
       name: "who-we",
       component: WhoWeAre,
+    },
+    {
+      path: "/smallslive",
+      name: "smallslive",
+      component: SmallsliveView,
     },
     {
       path: "/info",

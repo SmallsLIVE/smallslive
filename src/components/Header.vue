@@ -1,24 +1,24 @@
 <template>
-    <header class="navbar navbar-static-top max-w-3xl mx-auto" role="navigation">
+    <header class="navbar navbar-static-top max-w-7xl mx-auto" role="navigation">
         <div class="navbar-inner text-center">
-            <img src="/Jazzcultural.jpeg" class="img-responsive w-[300px] mx-auto mb-4 mezzrow-logo">
+            <img src="/Jazzcultural.png" class="img-responsive w-[850px] h-[150px] mx-auto mb-4 mezzrow-logo p-4">
             <ul class="nav nav-mezz navbar-nav flex gap-2 mx-auto mt-3 justify-between">
                 <li class="active back">
-                    <RouterLink to="/">Schedule</RouterLink>
+                    <RouterLink to="/"><img src="/navbar_images/schedule.png" class="img-responsive w-[150px] mx-auto mb-4 mezzrow-logo"></RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/who-we-are">Who We Are</RouterLink>
+                    <RouterLink to="/reserve"><img src="/navbar_images/reserve.png" class="img-responsive w-[150px] mx-auto mb-4 mezzrow-logo"></RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/info">Info/Contact</RouterLink>
+                    <RouterLink to="/who-we-are"><img src="/navbar_images/who-we-are.png" class="img-responsive w-[150px] mx-auto mb-4 mezzrow-logo"></RouterLink>
+                </li>
+                <li><RouterLink to="/smallslive"><img src="/navbar_images/smallslive.png" class="img-responsive w-[150px] mx-auto mb-4 mezzrow-logo"></RouterLink></li>
+                <li>
+                    <RouterLink to="/photos"><img src="/navbar_images/photos.png" class="img-responsive w-[150px] mx-auto mb-4 mezzrow-logo"></RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/reserve">Reserve</RouterLink>
+                    <RouterLink to="/info"><img src="/navbar_images/info.png" class="img-responsive w-[150px] mx-auto mb-4 mezzrow-logo"></RouterLink>
                 </li>
-                <li>
-                    <RouterLink to="/photos">Photos</RouterLink>
-                </li>
-                <li><a target="_blank" href="https://smallslive.com/" rel="external">SmallsLIVE</a></li>
             </ul>
         </div>
     </header>
@@ -29,9 +29,9 @@
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&display=swap');
 
 .nav-mezz>li>a {
-  border: 1px solid #F16722;
   display: inline-block;
   font-size: 14px;
   font-weight: 700;
@@ -68,5 +68,11 @@
   .main-section {
     border: 0;
   }
+}
+
+.font-raleway {
+  font-family: 'Raleway', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 </style>
