@@ -312,15 +312,19 @@ class StripeMixin(PaymentCredentialsMixin):
 
         return stripe_ref
 
-    def refund_stripe_payment(self, payment_intent_id, order=None, amount=None):
+    def refund_stripe_payment(self, payment_id, order=None, amount=None):
         if order:
             self.order = order
             self.event = order.get_tickets_event()
         api_key = self.get_stripe_payment_credentials()[2]
         print('============================REFUND INFO-===========================')
         print(api_key)
-        print('---------------------')
-        print(payment_intent_id)
-        refund = stripe.Refund.create(api_key=api_key, payment_intent=payment_intent_id, amount=amount)
+        if payment_id.startswith("pi_"):
+            print('=== I am in payment intent refund ===')
+            refund = stripe.Refund.create(api_key=api_key, payment_intent=payment_id, amount=amount)
+        # solution for old orders that works with charge id instead of payment intent, here in payment_id will get charge id.
+        elif payment_id.startswith("ch_"):
+            print('=== I am in charge refund ===')
+            refund = stripe.Refund.create(api_key=api_key, charge=payment_id, amount=amount)
         print("order has been refunded successfully!")
         return refund.id
