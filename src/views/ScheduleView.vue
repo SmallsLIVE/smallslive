@@ -113,50 +113,61 @@ function eventHref(ev) {
 <template>
   <Header />
   <section class="relative overflow-hidden">
-    <div
-      class="relative main-section mx-auto max-w-3xl mt-5 mb-10 rounded-[10px] px-4 py-5 border-[#F6ECC1] border-[1px]">
+    <div class="relative main-section mx-auto max-w-5xl mt-5 mb-10 rounded-[10px] px-4 py-5 font-raleway">
       <div class="text-center">
-        <hr class="frame-head-border-sm">
-        <hr class="frame-head-border">
-        <h2 class="text-sm font-extrabold tracking-[0.35em] text-black">SCHEDULE</h2>
-        <hr class="frame-head-border bottom">
-        <hr class="frame-head-border-sm bottom">
-        <p class="mt-4 text-sm text-black">
-          Please click on the link for additional information and advanced ticketing
-        </p>
-      </div>
+        <h1 class="text-[2rem] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
+          SCHEDULE
+        </h1>
+        <div
+          class="space-y-6 text-[14px] md:text-[17px] font-light tracking-[0.12em] md:tracking-[0.18em] text-gray-200 uppercase my-8">
+          <p class="mt-4 text-sm">
+            Please click on the link for additional information and advanced ticketing
+          </p>
 
-      <!-- Loading -->
-      <div v-if="loading" class="mx-auto mt-10 max-w-md text-center text-sm text-black">
-        Loading...
-      </div>
-
-      <!-- Days -->
-      <div v-else class="mx-auto mt-10 max-w-md">
-        <div v-for="day in uiDays" :key="day.day_start" class="mb-10 text-center">
-          <h3 class="text-base font-extrabold text-[#5e2f80]">
-            {{ formatDay(day.day_start) }}
-          </h3>
-
-          <div v-for="ev in day.events" :key="ev.id" class="mt-4">
-            <div class="text-sm font-medium text-black">
-              {{ formatTime(ev.start) }} to {{ formatTime(ev.end) }}
+          <dev>
+            <!-- Loading -->
+            <div v-if="loading" class="mx-auto max-w-md text-center text-sm">
+              Loading...
             </div>
 
-            <a target="_blank" :href="eventHref(ev)"
-              class="mt-1 inline-block text-sm text-orange-500 underline underline-offset-2 hover:text-orange-600">
-              {{ ev.title }}
-            </a>
-          </div>
+            <!-- Days -->
+            <div v-else class="mx-auto max-w-md">
+              <div v-for="day in uiDays" :key="day.day_start" class="mb-10 text-center">
+                <h3 class="font-extrabold">
+                  {{ formatDay(day.day_start) }}
+                </h3>
+
+                <div v-for="ev in day.events" :key="ev.id">
+                  <div class="font-medium">
+                    {{ formatTime(ev.start) }} to {{ formatTime(ev.end) }}
+                  </div>
+
+                  <a target="_blank" :href="eventHref(ev)"
+                    class="mt-1 inline-block underline hover:text-orange-300">
+                    {{ ev.title }}
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Empty state -->
+            <div v-if="loading"
+              class="absolute inset-0 z-20 flex items-center justify-center bg-white/70 backdrop-blur-sm">
+              <div class="text-sm font-semibold text-[#5e2f80]">
+                Loading...
+              </div>
+            </div>
+          </dev>
+
+
+
+
+
         </div>
+
       </div>
 
-      <!-- Empty state -->
-      <div v-if="loading" class="absolute inset-0 z-20 flex items-center justify-center bg-white/70 backdrop-blur-sm">
-        <div class="text-sm font-semibold text-[#5e2f80]">
-          Loading...
-        </div>
-      </div>
+
 
       <!-- Pagination -->
       <div v-if="!loading && count > limit"
@@ -168,7 +179,7 @@ function eventHref(ev) {
           Prev
         </button>
 
-        <div class="text-sm font-medium text-black">
+        <div class="text-sm font-medium">
           Page {{ currentPage }} of {{ totalPages }}
         </div>
 
