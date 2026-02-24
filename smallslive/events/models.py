@@ -1526,6 +1526,26 @@ class Venue(models.Model):
     #     super(Venue, self).save(*args, **kwargs)
 
 
+jazzcultural_photos_storage = ImageS3Storage(
+    access_key=settings.AWS_ACCESS_KEY_ID_JAZZCULTURAL,
+    secret_key=settings.AWS_SECRET_ACCESS_KEY_JAZZCULTURAL,
+    bucket=settings.AWS_STORAGE_BUCKET_NAME_PHOTOS
+)
+
+class JazzCulturalPhotos(models.Model):
+    title = models.CharField(max_length=100)
+    photo = models.ImageField(upload_to='jazzcultural_photos', storage=jazzcultural_photos_storage, max_length=150)
+    is_published = models.BooleanField(default=False)
+
+    def get_photo_name_with_bucket(self):
+        return f'{self.photo.storage.bucket_name}/{self.photo.name}'
+
+    class Meta:
+        db_table = 'jazzcultural_photos'
+        verbose_name_plural = 'JazzCulturalPhotos'
+        verbose_name = 'JazzCulturalPhotos'
+
+
 class ShowDefaultTime(models.Model):
     venue = models.ForeignKey('Venue', on_delete=models.CASCADE, blank=False, related_name='default_times')
     first_set = models.TimeField(blank=False)

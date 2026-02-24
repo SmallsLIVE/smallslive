@@ -30,6 +30,12 @@ urlpatterns = [
     url(r'^add_venue/$', venue_add, name='venue_add'),
     url(r'^edit_venue/(?P<pk>\d+)/$', venue_edit, name='venue_edit'),
 
+    # jazzcultural photos
+    url(r'^add_jazzcultural_photo/$', jazz_photo_add, name='jazz_photo_add'),
+    url(r'^list_jazzcultural_photos/$', jazz_photo_list, name='jazz_photo_list'),
+    url(r'^edit_jazzcultural_photo/(?P<pk>\d+)/$', jazz_photo_edit, name='jazz_photo_edit'),
+    url(r'^delete_jazzcultural_photo/(?P<pk>\d+)/$', jazz_photo_delete, name='jazz_photo_delete'),
+
     # maintenance
     url(r'^maintenance/$', maintenance_view, name='maintenance_view'),
     url(r'^copy_s3_image_to_another_bucket', copy_s3_image_to_another_bucket, name='copy_s3_image_to_another_bucket'),

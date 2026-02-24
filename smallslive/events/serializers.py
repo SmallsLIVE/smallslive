@@ -1,5 +1,5 @@
 from rest_framework import serializers, fields
-from .models import Event, Venue
+from .models import Event, Venue, JazzCulturalPhotos
 
 
 # TODO Copied from django app
@@ -27,4 +27,10 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
+        fields = '__all__'
+
+
+class JazzPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JazzCulturalPhotos
         fields = '__all__'

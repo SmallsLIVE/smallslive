@@ -1,0 +1,103 @@
+{% extends "home_new.html" %}
+{% load add_get_parameter %}
+{% load static from staticfiles %}
+
+{% load custom_cloudinary_tags %}
+
+{% block title %}Photo list{% endblock %}
+
+{% block schedule_nav_active %}active{% endblock %}
+
+{% block content %}
+
+    <div class="content-wrapper" style="border:none">
+        <section class="page-heading container" style="width: 100%;">
+            <h1>Photo list:</h1>
+        </section>
+        
+        <section class="artists-list__list container" style="width: 100%;">
+            <div class="artists-list__list__header row">
+                <div class="hidden-xs col-sm-2 col-md-4">
+                    Image
+                </div>
+                <div class="col-xs-5 col-sm-4 col-md-3 sort-column" data-sort="name">
+                    Name
+                </div>
+                <div class="col-xs-4 col-sm-3 col-md-2 sort-column" data-sort="is_published">
+                    Is Published
+                </div>
+                
+                <div class="col-xs-3 col-sm-3 col-md-2 artists-list__list__actions">
+                    Action(s)
+                </div>
+            </div>
+            <ul>
+                {% for photo in photos %}
+                    <li class="artists-list__list__row row">
+                        <div class="hidden-xs col-sm-4 col-md-4 artists-list__list__image">
+                            {% if photo.photo %}
+                                <img src="{% cloudinary_image_url photo_name=photo.get_photo_name_with_bucket photo_url=photo.photo.url smart=True %}" alt="{{ artist.full_name }} photo"/>
+                            {% else %}
+                                <img src="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" alt="{{ artist.full_name }} photo"/>
+                            {% endif %}
+                        </div>
+                        <div class="col-xs-5 col-sm-4 col-md-3 artists-list__list__name">
+                            <span title="{{photo.title}}">{{ photo.title }}</span>
+                        </div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 artists-list__list__instrument">
+                            {{ photo.is_published }}
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-2 artists-list__list__actions">
+                            <div class="btn-group">
+                                <a href="{% url "jazz_photo_edit" pk=photo.id %}"><button type="button" class="btn">Edit</button></a>
+                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{% url "jazz_photo_edit" pk=photo.id %}">Edit</a></li>
+                                    
+                                    <li class="divider"></li>
+                                    <li class="warning"><a href="{% url "jazz_photo_delete" pk=photo.id %}">Delete Photo</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="artists-list__list__row--empty row">No Photos found. Do you want to  <a href="{% url "jazz_photo_add" %}"> add a new photo</a>?</li>
+                {% endfor %}
+            </ul>
+        </section>
+        <section class="page-pagination artists-list__pagination container">
+          <p class="search-pagination-info">Showing results {{ page_obj.start_index }}-{{ page_obj.end_index }}
+            of {{ paginator.count }}</p>
+          {% if page_obj.has_previous or page_obj.has_next %}
+            <div class="search-pagination">
+              {% if page_obj.has_previous %}<a href="{% add_get page=page_obj.previous_page_number %}"><span
+                      class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
+              {% if show_first %}
+                <a href="{% add_get page=1 %}"><span class="search-pagination__page">1</span></a>
+                ...
+              {% endif %}
+              {% for page in page_numbers %}
+                <a href="{% add_get page=page %}"><span
+                        class="search-pagination__page {% if page == page_obj.number %}active{% endif %}">{{ page }}</span></a>
+              {% endfor %}
+              {% if show_last %}
+                ...
+                <a href="{% add_get page=paginator.num_pages %}"><span
+                        class="search-pagination__page">{{ paginator.num_pages }}</span></a>
+              {% endif %}
+              {% if page_obj.has_next %}<a href="{% add_get page=page_obj.next_page_number %}"><span
+                      class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
+
+            </div>
+          {% endif %}
+        </section>
+    </div>
+
+{% endblock content %}
+
+{% block extra_js %}
+
+{% endblock extra_js %}

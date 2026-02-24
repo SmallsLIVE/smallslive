@@ -97,6 +97,7 @@ urlpatterns = [
     # url(r'^$', schedule if settings.SITE_ID == 1 else homepage, name="home"),
     url(r'^$', schedule, name="home"),
     url(r'^api/events/$', api_schedule, name='api_schedule'),
+    url(r'^api/jazz-photos/$', api_jazz_photos, name='api_jazz_photos'),
     url(r'^livestream/$', livestream, name="livestream"),
     # url(r'^tickets/$', ticketing if settings.SITE_ID == 1 else redirect_to_home, name="tickets"),
     url(r'^tickets/$', ticketing, name="tickets"),

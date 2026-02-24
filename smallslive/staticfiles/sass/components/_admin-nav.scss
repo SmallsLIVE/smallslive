@@ -4,6 +4,11 @@
   padding: 15px;
   @include lato;
 
+  .container {
+    min-width: 1200px;
+    padding: 0 15px;
+  }
+
   & .heading {
     font-size: 26px;
     @include lato-black;

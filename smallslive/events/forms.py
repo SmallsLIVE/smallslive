@@ -16,7 +16,7 @@ from multimedia.models import ImageMediaFile
 from multimedia.s3_storages import ImageS3Storage
 from .models import (
     EventSet, Event, GigPlayed, Comment, CustomImageField, Venue,
-    ShowDefaultTime
+    ShowDefaultTime, JazzCulturalPhotos
 )
 
 from utils.widgets import ImageCropWidget
@@ -488,3 +488,8 @@ class VenueAddForm(forms.ModelForm):
             'foundation',
             Formset('default_times', template='form_widgets/set_formset_layout.html')
         )
+
+class JazzCulturalPhotosAddForm(forms.ModelForm):
+    class Meta:
+        model = JazzCulturalPhotos
+        fields = '__all__'
