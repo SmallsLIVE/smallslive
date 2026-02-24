@@ -185,7 +185,7 @@ function eventHref(ev) {
 
         <button @click="goNext" :disabled="offset + limit >= count || loading" class="rounded-md border cursor-pointer px-4 py-2 text-sm font-semibold
            disabled:cursor-not-allowed disabled:opacity-50
-           hover:bg-gray-50">
+           hover:bg-gray-50 hover:text-black">
           Next
         </button>
       </div>

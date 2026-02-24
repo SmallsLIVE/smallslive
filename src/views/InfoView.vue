@@ -41,6 +41,7 @@
                 <p>
                     We do not have a phone. We do not accept solicitations for booking.
                 </p>
+                <p>Original artwork painted by Alexa Huang (<a href="mailto:alexa.huang618@gmail.com" class="underline hover:text-white transition">alexa.huang618@gmail.com</a>)</p>
             </div>
         </div>
     </div>

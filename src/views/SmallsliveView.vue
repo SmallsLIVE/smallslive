@@ -21,7 +21,7 @@
                         cut their teeth at Smalls at the legendary jam sessions. Mezzrow is a gentle piano room
                         just across the street and has a sterling acoustic quality. Mezzrow presents the very
                         best jazz pianists, guitarist and vocalists in New York. Tickets for all shows at Smalls,
-                        Mezzrow and Jazzcultural are available at <a href="www.smallslive.com" class="underline hover:text-white transition">www.smallslive.com</a>. Please also visit our
+                        Mezzrow and Jazzcultural are available at <a target="_blank" href="https://www.smallslive.com" class="underline hover:text-white transition">www.smallslive.com</a>. Please also visit our
                         extensive audio/video archive of past shows dating back to 2007.
                     </p>
                 </div>
