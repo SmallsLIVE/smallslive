@@ -14,13 +14,6 @@
         <section class="page-heading container" style="width: 100%;">
             <h1>Photo list:</h1>
         </section>
-        <section class="artists-list__search">
-            <form method="get" action="{% url "artist_list" %}">
-                <span class="artists-list__search__heading">Search:</span>
-                {{ filter.form.name }}
-                <input type="submit" value="Search">
-            </form>
-        </section>
         
         <section class="artists-list__list container" style="width: 100%;">
             <div class="artists-list__list__header row">
