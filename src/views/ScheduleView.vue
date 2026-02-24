@@ -120,17 +120,34 @@ function eventHref(ev) {
         </h1>
         <div
           class="space-y-6 text-[14px] md:text-[17px] font-light tracking-[0.12em] md:tracking-[0.18em] text-gray-200 uppercase my-8">
-          <p class="mt-4 text-sm">
+          <p v-if="!loading && count" class="mt-4 text-sm">
             Please click on the link for additional information and advanced ticketing
           </p>
 
-          <dev>
-            <!-- Loading -->
-            <div v-if="loading" class="mx-auto max-w-md text-center text-sm">
-              Loading...
+          <div>
+            <!-- Empty state -->
+            <div v-if="loading"
+              class="absolute inset-0 z-20 flex items-center justify-center bg-white/70 backdrop-blur-sm">
+              <div class="text-sm font-semibold text-[#5e2f80]">
+                Loading...
+              </div>
             </div>
 
-            <!-- Days -->
+            <!-- No Results State -->
+            <div v-else-if="!dayList.length"
+              class="flex flex-col items-center justify-center py-20 text-center uppercase tracking-[0.2em] text-white">
+
+              <h3 class="text-2xl font-bold tracking-[0.3em]">
+                NO EVENTS FOUND
+              </h3>
+
+              <p class="text-[14px] md:text-[16px] font-light md:tracking-[0.18em] text-gray-200 uppercase my-8 tracking-[0.18em] max-w-lg leading-7">
+                There are currently no scheduled performances.
+                Please check back soon.
+              </p>
+            </div>
+
+            <!-- Event Days -->
             <div v-else class="mx-auto max-w-md">
               <div v-for="day in uiDays" :key="day.day_start" class="mb-10 text-center">
                 <h3 class="font-extrabold">
@@ -149,22 +166,8 @@ function eventHref(ev) {
                 </div>
               </div>
             </div>
-
-            <!-- Empty state -->
-            <div v-if="loading"
-              class="absolute inset-0 z-20 flex items-center justify-center bg-white/70 backdrop-blur-sm">
-              <div class="text-sm font-semibold text-[#5e2f80]">
-                Loading...
-              </div>
-            </div>
-          </dev>
-
-
-
-
-
+          </div>
         </div>
-
       </div>
 
 
@@ -175,7 +178,7 @@ function eventHref(ev) {
 
         <button @click="goPrev" :disabled="offset === 0 || loading" class="rounded-md border px-4 cursor-pointer py-2 text-sm font-semibold
            disabled:cursor-not-allowed disabled:opacity-50
-           hover:bg-gray-50">
+           hover:bg-gray-50 hover:text-black">
           Prev
         </button>
 

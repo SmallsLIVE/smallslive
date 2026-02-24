@@ -1,11 +1,13 @@
 <template>
     <Header />
-    <section class="relative overflow-hidden">
-        <div
-            class="relative main-section mx-auto max-w-3xl mt-5 text-center rounded-[10px] px-4 py-5 border-[#F6ECC1] border-[1px]">
-            <h1>The content of Photos page is coming soon. Please check back soon.</h1>
+    <div class="relative flex items-center justify-center font-raleway overflow-hidden my-2">
+
+        <div class="relative z-10 w-full max-w-[75rem] text-center text-white">
+            <h3 class="text-lg md:text-xl font-bold tracking-[0.2em] uppercase mt-5">
+                The content of this page is coming soon. Please check back later.
+            </h3>
         </div>
-    </section>
+    </div>
 </template>
 
 <script setup>
