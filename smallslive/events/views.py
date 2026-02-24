@@ -1227,6 +1227,16 @@ venue_edit = VenueEditView.as_view()
 
 from django.views.generic import CreateView
 
+class JazzPhotoList(ListView):
+    template_name = 'events/jazz_photo_list.html'
+    model = JazzCulturalPhotos
+    context_object_name = 'photos'
+
+    def get_queryset(self):
+        return JazzCulturalPhotos.objects.all()
+
+jazz_photo_list = JazzPhotoList.as_view()
+
 class JazzPhotoAddView(StaffuserRequiredMixin, CreateView):
     template_name = 'events/jazz_photo_add.html'
     model = JazzCulturalPhotos
