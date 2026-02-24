@@ -3,21 +3,21 @@
         <div class="navbar-inner text-center">
             <img src="/Jazzcultural.png" class="img-responsive w-full h-auto md:w-[850px] md:h-[150px] mx-auto mb-4 mezzrow-logo p-4">
             <ul class="nav nav-mezz navbar-nav flex gap-2 mx-auto mt-3 justify-between">
-                <li class="active back">
-                    <RouterLink to="/"><img src="/navbar_images/schedule.png" class="img-responsive w-[150px] mx-auto mb-4 mezzrow-logo"></RouterLink>
+                <li class="back">
+                    <RouterLink to="/"><img src="/navbar_images/schedule.png" class="img-responsive w-[150px] mx-auto mb-2 md:mb-4 mezzrow-logo"></RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/reserve"><img src="/navbar_images/reserve.png" class="img-responsive w-[150px] mx-auto mb-4 mezzrow-logo"></RouterLink>
+                    <RouterLink to="/reserve"><img src="/navbar_images/reserve.png" class="img-responsive w-[150px] mx-auto mb-2 md:mb-4 mezzrow-logo"></RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/who-we-are"><img src="/navbar_images/who-we-are.png" class="img-responsive w-[150px] mx-auto mb-4 mezzrow-logo"></RouterLink>
+                    <RouterLink to="/who-we-are"><img src="/navbar_images/who-we-are.png" class="img-responsive w-[150px] mx-auto mb-2 md:mb-4 mezzrow-logo"></RouterLink>
                 </li>
-                <li><RouterLink to="/smallslive"><img src="/navbar_images/smallslive.png" class="img-responsive w-[150px] mx-auto mb-4 mezzrow-logo"></RouterLink></li>
+                <li><RouterLink to="/smallslive"><img src="/navbar_images/smallslive.png" class="img-responsive w-[150px] mx-auto mb-2 md:mb-4 mezzrow-logo"></RouterLink></li>
                 <li>
-                    <RouterLink to="/photos"><img src="/navbar_images/photos.png" class="img-responsive w-[150px] mx-auto mb-4 mezzrow-logo"></RouterLink>
+                    <RouterLink to="/photos"><img src="/navbar_images/photos.png" class="img-responsive w-[150px] mx-auto mb-2 md:mb-4 mezzrow-logo"></RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/info"><img src="/navbar_images/info.png" class="img-responsive w-[150px] mx-auto mb-4 mezzrow-logo"></RouterLink>
+                    <RouterLink to="/info"><img src="/navbar_images/info.png" class="img-responsive w-[150px] mx-auto mb-2 md:mb-4 mezzrow-logo"></RouterLink>
                 </li>
             </ul>
         </div>
@@ -46,7 +46,7 @@
   }
 }
 
-.nav-mezz>li.active>a {
+.nav-mezz>li>a.router-link-active {
   opacity: 1;
 }
 

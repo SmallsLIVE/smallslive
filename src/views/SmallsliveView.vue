@@ -40,11 +40,5 @@ import Header from '@/components/Header.vue';
 </script>
 
 <style scoped>
-@media screen and (max-width: 767px) {
-    .smallslive-img {
-        width: 100%;
-        height: auto;
-    }
 
-}
 </style>
