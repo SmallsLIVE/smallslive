@@ -56,13 +56,13 @@
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-2 artists-list__list__actions">
                             <div class="btn-group">
-                                {% comment %} <a href="{% url "_edit" pk=artist.id slug=artist.slug %}"><button type="button" class="btn">Edit</button></a> {% endcomment %}
+                                <a href="{% url "jazz_photo_edit" pk=photo.id %}"><button type="button" class="btn">Edit</button></a>
                                 <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
-                                    {% comment %} <li><a href="{% url "artist_edit" pk=artist.id slug=artist.slug %}">Edit</a></li> {% endcomment %}
+                                    <li><a href="{% url "jazz_photo_edit" pk=photo.id %}">Edit</a></li>
                                     
                                     {% comment %}<li class="divider"></li>
                                     <li class="warning"><a href="#">Delete artist</a></li>{% endcomment %}
