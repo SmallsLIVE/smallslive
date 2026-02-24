@@ -63,7 +63,7 @@ from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     EventSearchForm, EventEditForm, EventSetInlineFormset, \
     EventSetInlineFormsetHelper, CommentForm, TicketAddForm, \
     ShowDefaultTimeInlineFormset, ShowDefaultTimeInlineFormsetHelper, \
-    VenueAddForm
+    VenueAddForm, JazzCulturalPhotosAddForm
 from .models import Event, Venue, ShowDefaultTime, RANGE_MONTH, JazzCulturalPhotos
 from events.mixins import CurrentSiteIdMixin
 
@@ -311,64 +311,6 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
 
 
 event_add = EventAddView.as_view()
-
-
-# class JazzPhotoAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlinesView):
-#     template_name = 'events/event_add.html'
-#     model = JazzCulturalPhotos
-#     form_class = JazzCulturalPhotosAddForm
-#     # inlines = [GigPlayedAddInlineFormSet, EventSetInlineFormset]
-#     # inlines_names = ['artists', 'sets']
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(EventAddView, self).get_context_data(**kwargs)
-#         context['artists'].helper = GigPlayedInlineFormSetHelper()
-#         context['sets'].helper = EventSetInlineFormsetHelper()
-#         default_sets = []
-#         for default_set in ShowDefaultTime.objects.all():
-#             default_sets.append({
-#                 'set-venue':
-#                     str(default_set.get_venue_name()),
-#                 'set-starts': default_set.sets_start(),
-#                 'set-redeable-starts': default_set.sets_readable_start(),
-#                 'set-duration': default_set.set_duration,
-#                 'set-title': str(default_set.title),
-#             })
-#         context['show_times'] = default_sets
-#         context['ticket_forms'] = self.construct_ticket_forms()
-#
-#         return context
-#
-#     def forms_valid(self, form, inlines):
-#         response = super(EventAddView, self).forms_valid(form, inlines)
-#
-#         check_staff_picked(self.object, self.request.POST.get('staff_pick', 'off') == 'on')
-#         ticket_forms = self.construct_ticket_forms(data=self.request.POST)
-#         event_sets = self.object.sets.all()
-#         event_sets = sorted(event_sets, key=functools.cmp_to_key(Event.sets_order))
-#         count = 0
-#         for event_set in event_sets:
-#             ticket_form = ticket_forms[count]
-#             count += 1
-#             if ticket_form.is_valid():
-#                 if ticket_form.cleaned_data.get('form_enabled'):
-#                     ticket_form.save(event_set=event_set)
-#
-#         return response
-#
-#     def forms_invalid(self, form, inlines):
-#         response = super(EventAddView, self).forms_invalid(form, inlines)
-#         return response
-#
-#     def construct_ticket_forms(self, data=None):
-#         ticket_forms = []
-#         for i in range(1, TICKETS_NUMBER_OF_SETS + 1):
-#             ticket_form = TicketAddForm(data, prefix="set{0}".format(i), number=i)
-#             ticket_forms.append(ticket_form)
-#         return ticket_forms
-#
-# jazz_photo_add = JazzPhotoAddView.as_view()
-
 
 
 class JazzPhotoAPIView(ListAPIView):
@@ -1282,6 +1224,16 @@ class VenueEditView(StaffuserRequiredMixin, NamedFormsetsMixin, UpdateWithInline
         return reverse('venue_edit', kwargs={'pk': self.object.id})
 
 venue_edit = VenueEditView.as_view()
+
+from django.views.generic import CreateView
+
+class JazzPhotoAddView(StaffuserRequiredMixin, CreateView):
+    template_name = 'events/jazz_photo_add.html'
+    model = JazzCulturalPhotos
+    form_class = JazzCulturalPhotosAddForm
+    success_url = '/admin/events/jazzculturalphotos/'
+
+jazz_photo_add = JazzPhotoAddView.as_view()
 
 
 @login_required

@@ -31,7 +31,7 @@ urlpatterns = [
     url(r'^edit_venue/(?P<pk>\d+)/$', venue_edit, name='venue_edit'),
 
     # jazzcultural photos
-    # url(r'^add_juzzcultural_photos/$', venue_add, name='venue_add'),
+    url(r'^add_juzzcultural_photos/$', jazz_photo_add, name='jazz_photo_add'),
 
     # maintenance
     url(r'^maintenance/$', maintenance_view, name='maintenance_view'),
