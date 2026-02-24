@@ -57,8 +57,8 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="{% url "jazz_photo_edit" pk=photo.id %}">Edit</a></li>
                                     
-                                    {% comment %}<li class="divider"></li>
-                                    <li class="warning"><a href="#">Delete artist</a></li>{% endcomment %}
+                                    <li class="divider"></li>
+                                    <li class="warning"><a href="{% url "jazz_photo_delete" pk=photo.id %}">Delete Photo</a></li>
                                 </ul>
                             </div>
                         </div>
