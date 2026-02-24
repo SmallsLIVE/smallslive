@@ -488,3 +488,30 @@ class VenueAddForm(forms.ModelForm):
             'foundation',
             Formset('default_times', template='form_widgets/set_formset_layout.html')
         )
+
+# class JazzCulturalPhotosAddForm(forms.ModelForm):
+#     # date = forms.DateField(label="Event Date", required=True)
+#     # start = forms.DateTimeField(widget=forms.HiddenInput(), required=False)
+#     # end = forms.DateTimeField(widget=forms.HiddenInput(), required=False)
+#     # staff_pick = forms.BooleanField(label="Staff Pick", required=False)
+#     # # File object as a helper to upload files. They are uploaded
+#     # # to a temporary model so the user can view and crop on the fly,
+#     # # and then copied into the model.
+#     # # It's not required because we need to support the previous
+#     # # mechanism to upload images (regular ImageField)
+#     # image_id = forms.IntegerField(required=False, widget=forms.HiddenInput())
+#     # start_streaming_before_minutes = forms.IntegerField(initial=15, required=False)
+#
+#     class Meta:
+#         model = Event
+#         fields = (
+#             'venue', 'date', 'start', 'end', 'id', 'title', 'subtitle', 'photo',
+#             'image_id', 'cropping', 'description', 'state', 'staff_pick', 'streamable',
+#             'tickets_url', 'minimum_sponsorship_amount', 'sponsorship_enabled',
+#             'is_foundation',
+#         )
+#         widgets = {
+#             'state': EventStatusWidget,
+#             'link': floppyforms.URLInput,
+#             'photo': ImageCropWidget
+#         }

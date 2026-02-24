@@ -30,6 +30,9 @@ urlpatterns = [
     url(r'^add_venue/$', venue_add, name='venue_add'),
     url(r'^edit_venue/(?P<pk>\d+)/$', venue_edit, name='venue_edit'),
 
+    # jazzcultural photos
+    # url(r'^add_juzzcultural_photos/$', venue_add, name='venue_add'),
+
     # maintenance
     url(r'^maintenance/$', maintenance_view, name='maintenance_view'),
     url(r'^copy_s3_image_to_another_bucket', copy_s3_image_to_another_bucket, name='copy_s3_image_to_another_bucket'),
