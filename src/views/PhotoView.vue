@@ -1,6 +1,6 @@
 <template>
     <Header />
-    <div class="relative flex items-center justify-center font-raleway overflow-hidden my-2">
+    <div class="relative flex items-center justify-center font-raleway overflow-hidden my-2 px-5 md:px-0">
 
         <div class="relative z-10 w-full max-w-[75rem] text-center text-white">
             <h3 class="text-lg md:text-xl font-bold tracking-[0.2em] uppercase mt-5">

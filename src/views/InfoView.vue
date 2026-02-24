@@ -1,14 +1,14 @@
 <template>
     <Header />
-    <div class="relative flex items-center justify-center font-raleway overflow-hidden my-2">
+    <div class="relative flex items-center justify-center font-raleway overflow-hidden my-2 px-5 md:px-0">
 
         <div class="relative z-10 w-full max-w-[75rem] text-center text-white">
-            <h1 class="text-[2rem] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
+            <h1 class="text-[28px] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
                 INFO/CONTACT
             </h1>
 
             <div
-                class="space-y-6 text-[14px] md:text-[16px] font-light tracking-[0.12em] md:tracking-[0.18em] text-gray-200 uppercase my-8">
+                class="space-y-6 text-[14px] md:text-[16px] text-left md:text-center font-light tracking-[0.12em] md:tracking-[0.18em] text-gray-200 uppercase my-8">
                 <p>
                     Jazzcultural is located at 349 W.46 th Street (between 9 th and 8 th ave) on “Restaurant
                     Row”. We are easily reached by any subway to Times Square (1,2,3 A,C,E).

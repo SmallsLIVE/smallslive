@@ -1,16 +1,16 @@
 <template>
     <Header />
-    <div class="relative flex items-center justify-center font-raleway overflow-hidden my-2">
+    <div class="relative flex items-center justify-center font-raleway overflow-hidden mb-8 md:my-2 px-5 md:px-0">
 
         <div class="relative z-10 w-full max-w-[75rem] text-center text-white">
 
-            <div class="grid grid-cols-12 gap-14">
-                <div class="col-span-4 flex justify-end mt-10 h-auto items-center">
+            <div class="grid md:grid-cols-12 gap-8 md:gap-14">
+                <div class="md:col-span-4 flex justify-end mt-10 h-auto items-center">
                     <img class="aspect-square" src="/Jazz-Cultural-Theatre.jpg" alt="Who we are">
                 </div>
                 <div
-                    class="col-span-8 space-y-6 text-[14px] md:text-[16px] font-light tracking-[0.12em] md:tracking-[0.18em] text-gray-200 uppercase my-8 text-left">
-                    <h1 class="text-[2rem] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
+                    class="md:col-span-8 space-y-6 text-[14px] md:text-[16px] font-light tracking-[0.12em] md:tracking-[0.18em] text-gray-200 uppercase md:my-8 text-left">
+                    <h1 class="text-[28px] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
                         WHO WE ARE
                     </h1>
                     <p>

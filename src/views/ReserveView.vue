@@ -1,14 +1,14 @@
 <template>
     <Header />
 
-    <div class="relative flex items-center justify-center font-raleway overflow-hidden my-2">
+    <div class="relative flex items-center justify-center font-raleway overflow-hidden my-2 px-5 md:px-0">
 
     <div class="relative z-10 w-full max-w-[68rem] text-center text-white">
-      <h1 class="text-[2rem] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
+      <h1 class="text-[28px] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
         Reserve
       </h1>
 
-      <div class="space-y-6 text-[14px] md:text-[17px] font-light tracking-[0.12em] md:tracking-[0.18em] text-gray-200 uppercase my-8">
+      <div class="space-y-6 text-[14px] md:text-[17px] text-left md:text-center font-light tracking-[0.12em] md:tracking-[0.18em] text-gray-200 uppercase my-8">
         <p>
           90 seats are available in the jazzcultural studio. These seats are available for 
           advanced purchase for any of our concert sets. Sets in the jazzcultural studio are at 

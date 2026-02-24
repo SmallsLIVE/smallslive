@@ -1,7 +1,7 @@
 <template>
     <header class="navbar navbar-static-top max-w-7xl mx-auto" role="navigation">
         <div class="navbar-inner text-center">
-            <img src="/Jazzcultural.png" class="img-responsive w-[850px] h-[150px] mx-auto mb-4 mezzrow-logo p-4">
+            <img src="/Jazzcultural.png" class="img-responsive w-full h-auto md:w-[850px] md:h-[150px] mx-auto mb-4 mezzrow-logo p-4">
             <ul class="nav nav-mezz navbar-nav flex gap-2 mx-auto mt-3 justify-between">
                 <li class="active back">
                     <RouterLink to="/"><img src="/navbar_images/schedule.png" class="img-responsive w-[150px] mx-auto mb-4 mezzrow-logo"></RouterLink>
@@ -51,10 +51,6 @@
 }
 
 @media  (max-width: 767px) {
-
-  .navbar img {
-    width: 100%;
-  }
 
   .navbar-nav {
     flex-direction: column;
