@@ -39,31 +39,31 @@
                 </div>
             </div>
             <ul>
-                {% for artist in artists %}
+                {% for photo in photos %}
                     <li class="artists-list__list__row row">
                         <div class="hidden-xs col-sm-4 col-md-4 artists-list__list__image">
-                            {% if artist.photo %}
-                                <img src="{% cloudinary_image_url photo_name=artist.get_photo_name_with_bucket height=40 width=40 photo_url=artist.photo.url smart=True %}" alt="{{ artist.full_name }} photo"/>
+                            {% if photo.photo %}
+                                <img src="{% cloudinary_image_url photo_name=photo.get_photo_name_with_bucket photo_url=photo.photo.url smart=True %}" alt="{{ artist.full_name }} photo"/>
                             {% else %}
                                 <img src="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" alt="{{ artist.full_name }} photo"/>
                             {% endif %}
                         </div>
                         <div class="col-xs-5 col-sm-4 col-md-3 artists-list__list__name">
-                            <span title="{{artist.public_email}}">{{ artist.full_name }}</span>
+                            <span title="{{photo.title}}">{{ photo.title }}</span>
                         </div>
                         <div class="col-xs-4 col-sm-3 col-md-2 artists-list__list__instrument">
-                            {{ artist.instruments.all|join:" , " }}
+                            {{ photo.is_published }}
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-2 artists-list__list__actions">
                             <div class="btn-group">
-                                <a href="{% url "artist_edit" pk=artist.id slug=artist.slug %}"><button type="button" class="btn">Edit</button></a>
+                                {% comment %} <a href="{% url "_edit" pk=artist.id slug=artist.slug %}"><button type="button" class="btn">Edit</button></a> {% endcomment %}
                                 <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{% url "artist_edit" pk=artist.id slug=artist.slug %}">Edit</a></li>
-                                    {% if not artist.is_invited %}<li><a href="#" data-toggle="modal" data-target="#inviteArtist" data-url="{% url "invite_artist" artist=artist.id %}" class="invite-artist-button">Invite</a></li>{% endif %}
+                                    {% comment %} <li><a href="{% url "artist_edit" pk=artist.id slug=artist.slug %}">Edit</a></li> {% endcomment %}
+                                    
                                     {% comment %}<li class="divider"></li>
                                     <li class="warning"><a href="#">Delete artist</a></li>{% endcomment %}
                                 </ul>

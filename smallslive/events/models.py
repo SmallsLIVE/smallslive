@@ -1537,6 +1537,9 @@ class JazzCulturalPhotos(models.Model):
     photo = models.ImageField(upload_to='jazzcultural_photos', storage=jazzcultural_photos_storage, max_length=150)
     is_published = models.BooleanField(default=False)
 
+    def get_photo_name_with_bucket(self):
+        return f'{self.photo.storage.bucket_name}/{self.photo.name}'
+
     class Meta:
         db_table = 'jazzcultural_photos'
         verbose_name_plural = 'JazzCulturalPhotos'
