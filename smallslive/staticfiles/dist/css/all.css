@@ -26600,6 +26600,9 @@ label[for="photo-clear_id"] {
   padding: 15px;
   font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-weight: 400; }
+  .admin-nav .container {
+    min-width: 1200px;
+    padding: 0 15px; }
   .admin-nav .heading {
     font-size: 26px;
     font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
