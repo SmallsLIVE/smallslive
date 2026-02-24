@@ -113,7 +113,7 @@ function eventHref(ev) {
 <template>
   <Header />
   <section class="relative overflow-hidden">
-    <div class="relative main-section mx-auto max-w-5xl md:mt-5 mb-10 rounded-[10px] px-4 py-5 font-raleway">
+    <div class="relative main-section mx-auto max-w-5xl md:mt-5 mb-10 h-auto rounded-[10px] px-4 py-5 font-raleway">
       <div class="text-center">
         <h1 class="text-[28px] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
           SCHEDULE
@@ -135,7 +135,7 @@ function eventHref(ev) {
               </div>
 
               <!-- Loading Text -->
-              <div class="mt-4 text-sm font-semibold tracking-[0.25em] uppercase text-white">
+              <div class="mt-4 mb-5 text-sm font-semibold tracking-[0.25em] uppercase text-white">
                 Loading...
               </div>
             </div>
