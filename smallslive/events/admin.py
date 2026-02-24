@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.urls import reverse
-from .models import Event, Recording, Venue, Comment, ShowDefaultTime
+from .models import Event, Recording, Venue, Comment, ShowDefaultTime, JazzCulturalPhotos
+
+admin.site.register(JazzCulturalPhotos)
+
 
 
 class EventAdmin(admin.ModelAdmin):

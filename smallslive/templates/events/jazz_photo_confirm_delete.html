@@ -1,0 +1,25 @@
+{% extends "home_new.html" %}
+
+{% block title %}Delete Jazz Cultural Photo{% endblock %}
+
+{% block content %}
+<div class="content-wrapper" style="border: none">
+  <section class="admin-interface container">
+
+    <h1>
+      Are you sure you want to delete:
+      <strong>{{ object.title }}</strong>?
+    </h1>
+
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">
+        Yes, Delete
+      </button>
+      <a href="{% url 'jazz_photo_edit' object.pk %}" class="btn btn-secondary">
+        Cancel
+      </a>
+    </form>
+  </section>
+</div>
+{% endblock %}

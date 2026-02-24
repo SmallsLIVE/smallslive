@@ -20,13 +20,12 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.timezone import timedelta
 from django.contrib.admin.views.decorators import staff_member_required
-from django.views.generic import DeleteView, TemplateView, View
+from django.views.generic import DeleteView, TemplateView, View, CreateView, UpdateView
 
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, FormView
 from django.shortcuts import redirect
-
 
 from datetime import timedelta
 from collections import OrderedDict
@@ -35,7 +34,7 @@ from django.utils import timezone
 from django.db.models.functions import TruncDate
 from rest_framework.generics import ListAPIView
 from django_filters.rest_framework import DjangoFilterBackend
-from .serializers import EventSerializer
+from .serializers import EventSerializer, JazzPhotoSerializer
 from .filters import EventFilter
 
 
@@ -63,8 +62,8 @@ from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     EventSearchForm, EventEditForm, EventSetInlineFormset, \
     EventSetInlineFormsetHelper, CommentForm, TicketAddForm, \
     ShowDefaultTimeInlineFormset, ShowDefaultTimeInlineFormsetHelper, \
-    VenueAddForm
-from .models import Event, Venue, ShowDefaultTime, RANGE_MONTH
+    VenueAddForm, JazzCulturalPhotosAddForm
+from .models import Event, Venue, ShowDefaultTime, RANGE_MONTH, JazzCulturalPhotos
 from events.mixins import CurrentSiteIdMixin
 
 # Importing following libraries for uploading files to s3 bucket from url
@@ -312,6 +311,12 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
 
 event_add = EventAddView.as_view()
 
+
+class JazzPhotoAPIView(ListAPIView):
+    queryset = JazzCulturalPhotos.objects.filter(is_published=True)
+    serializer_class = JazzPhotoSerializer
+
+api_jazz_photos = JazzPhotoAPIView.as_view()
 
 class EventDetailView(DetailView):
     queryset = Event.objects.all()
@@ -1219,6 +1224,38 @@ class VenueEditView(StaffuserRequiredMixin, NamedFormsetsMixin, UpdateWithInline
 
 venue_edit = VenueEditView.as_view()
 
+class JazzPhotoList(ListView):
+    template_name = 'events/jazz_photo_list.html'
+    model = JazzCulturalPhotos
+    context_object_name = 'photos'
+
+    def get_queryset(self):
+        return JazzCulturalPhotos.objects.all()
+
+jazz_photo_list = JazzPhotoList.as_view()
+
+class JazzPhotoAddView(StaffuserRequiredMixin, CreateView):
+    template_name = 'events/jazz_photo_add.html'
+    model = JazzCulturalPhotos
+    form_class = JazzCulturalPhotosAddForm
+    success_url = reverse_lazy('jazz_photo_list')
+
+jazz_photo_add = JazzPhotoAddView.as_view()
+
+class JazzPhotoEditView(StaffuserRequiredMixin, UpdateView):
+    template_name = 'events/jazz_photo_add.html'  # reuse same template
+    model = JazzCulturalPhotos
+    form_class = JazzCulturalPhotosAddForm
+    success_url = reverse_lazy('jazz_photo_list')
+
+jazz_photo_edit = JazzPhotoEditView.as_view()
+
+class JazzPhotoDeleteView(StaffuserRequiredMixin, DeleteView):
+    template_name = 'events/jazz_photo_confirm_delete.html'
+    model = JazzCulturalPhotos
+    success_url = reverse_lazy('jazz_photo_list')
+
+jazz_photo_delete = JazzPhotoDeleteView.as_view()
 
 @login_required
 def remove_comment(request):
