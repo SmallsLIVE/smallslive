@@ -6,7 +6,7 @@
 
             <div class="grid grid-cols-12 gap-14">
                 <div class="col-span-4 flex justify-end mt-10 h-auto items-center">
-                    <img class="aspect-square" src="/Jazz Cultural Theatre.jpg" alt="Who we are">
+                    <img class="aspect-square" src="/Jazz-Cultural-Theatre.jpg" alt="Who we are">
                 </div>
                 <div
                     class="col-span-8 space-y-6 text-[14px] md:text-[16px] font-light tracking-[0.12em] md:tracking-[0.18em] text-gray-200 uppercase my-8 text-left">
