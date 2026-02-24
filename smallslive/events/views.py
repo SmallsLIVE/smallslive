@@ -20,13 +20,12 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.timezone import timedelta
 from django.contrib.admin.views.decorators import staff_member_required
-from django.views.generic import DeleteView, TemplateView, View
+from django.views.generic import DeleteView, TemplateView, View, CreateView, UpdateView
 
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView, FormView
 from django.shortcuts import redirect
-
 
 from datetime import timedelta
 from collections import OrderedDict
@@ -1225,8 +1224,6 @@ class VenueEditView(StaffuserRequiredMixin, NamedFormsetsMixin, UpdateWithInline
 
 venue_edit = VenueEditView.as_view()
 
-from django.views.generic import CreateView
-
 class JazzPhotoList(ListView):
     template_name = 'events/jazz_photo_list.html'
     model = JazzCulturalPhotos
@@ -1241,10 +1238,17 @@ class JazzPhotoAddView(StaffuserRequiredMixin, CreateView):
     template_name = 'events/jazz_photo_add.html'
     model = JazzCulturalPhotos
     form_class = JazzCulturalPhotosAddForm
-    success_url = '/admin/events/jazzculturalphotos/'
+    success_url = reverse_lazy('jazz_photo_list')
 
 jazz_photo_add = JazzPhotoAddView.as_view()
 
+class JazzPhotoEditView(StaffuserRequiredMixin, UpdateView):
+    template_name = 'events/jazz_photo_add.html'  # reuse same template
+    model = JazzCulturalPhotos
+    form_class = JazzCulturalPhotosAddForm
+    success_url = reverse_lazy('jazz_photo_list')
+
+jazz_photo_edit = JazzPhotoEditView.as_view()
 
 @login_required
 def remove_comment(request):
