@@ -1250,6 +1250,13 @@ class JazzPhotoEditView(StaffuserRequiredMixin, UpdateView):
 
 jazz_photo_edit = JazzPhotoEditView.as_view()
 
+class JazzPhotoDeleteView(StaffuserRequiredMixin, DeleteView):
+    template_name = 'events/jazz_photo_confirm_delete.html'
+    model = JazzCulturalPhotos
+    success_url = reverse_lazy('jazz_photo_list')
+
+jazz_photo_delete = JazzPhotoDeleteView.as_view()
+
 @login_required
 def remove_comment(request):
     comment = Comment.objects.get(pk=request.POST.get('id'))
