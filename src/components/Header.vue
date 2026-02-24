@@ -29,7 +29,6 @@
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&display=swap');
 
 .nav-mezz>li>a {
   display: inline-block;
@@ -66,9 +65,4 @@
   }
 }
 
-.font-raleway {
-  font-family: 'Raleway', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 </style>

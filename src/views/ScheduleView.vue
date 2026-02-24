@@ -143,7 +143,7 @@ function eventHref(ev) {
 
             <!-- No Results State -->
             <div v-else-if="!dayList.length"
-              class="flex flex-col items-center justify-center py-20 text-center uppercase tracking-[0.2em] text-white">
+              class="flex flex-col items-center justify-center md:py-20 text-center uppercase tracking-[0.2em] text-white">
 
               <h3 class="text-2xl font-bold tracking-[0.3em]">
                 NO EVENTS FOUND
