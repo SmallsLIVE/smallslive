@@ -113,9 +113,9 @@ function eventHref(ev) {
 <template>
   <Header />
   <section class="relative overflow-hidden">
-    <div class="relative main-section mx-auto max-w-5xl mt-5 mb-10 rounded-[10px] px-4 py-5 font-raleway">
+    <div class="relative main-section mx-auto max-w-5xl md:mt-5 mb-10 rounded-[10px] px-4 py-5 font-raleway">
       <div class="text-center">
-        <h1 class="text-[2rem] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
+        <h1 class="text-[28px] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
           SCHEDULE
         </h1>
         <div
@@ -126,12 +126,20 @@ function eventHref(ev) {
 
           <div>
             <!-- Empty state -->
-            <div v-if="loading"
-              class="absolute inset-0 z-20 flex items-center justify-center bg-white/70 backdrop-blur-sm">
-              <div class="text-sm font-semibold text-[#5e2f80]">
+            <div v-if="loading" class="absolute inset-0 z-20 flex flex-col mt-32 items-center justify-center">
+              <!-- Spinner -->
+              <div class="flex items-center justify-center">
+                <div
+                  class="w-10 h-10 min-w-[40px] min-h-[40px] border-4 border-white border-t-transparent rounded-full animate-spin">
+                </div>
+              </div>
+
+              <!-- Loading Text -->
+              <div class="mt-4 text-sm font-semibold tracking-[0.25em] uppercase text-white">
                 Loading...
               </div>
             </div>
+
 
             <!-- No Results State -->
             <div v-else-if="!dayList.length"
@@ -141,7 +149,8 @@ function eventHref(ev) {
                 NO EVENTS FOUND
               </h3>
 
-              <p class="text-[14px] md:text-[16px] font-light md:tracking-[0.18em] text-gray-200 uppercase my-8 tracking-[0.18em] max-w-lg leading-7">
+              <p
+                class="text-[14px] md:text-[16px] font-light md:tracking-[0.18em] text-gray-200 uppercase my-8 tracking-[0.18em] max-w-lg leading-7">
                 There are currently no scheduled performances.
                 Please check back soon.
               </p>
@@ -159,8 +168,7 @@ function eventHref(ev) {
                     {{ formatTime(ev.start) }} to {{ formatTime(ev.end) }}
                   </div>
 
-                  <a target="_blank" :href="eventHref(ev)"
-                    class="mt-1 inline-block underline hover:text-orange-300">
+                  <a target="_blank" :href="eventHref(ev)" class="mt-1 inline-block underline hover:text-orange-300">
                     {{ ev.title }}
                   </a>
                 </div>
@@ -174,7 +182,7 @@ function eventHref(ev) {
 
       <!-- Pagination -->
       <div v-if="!loading && count > limit"
-        class="mt-6 flex items-center justify-between gap-3 border-t border-[#DCB505] pt-4">
+        class="mt-6 flex items-center justify-between gap-3 border-t border-gray-300 pt-4">
 
         <button @click="goPrev" :disabled="offset === 0 || loading" class="rounded-md border px-4 cursor-pointer py-2 text-sm font-semibold
            disabled:cursor-not-allowed disabled:opacity-50
@@ -197,36 +205,4 @@ function eventHref(ev) {
 
 </template>
 
-<style scoped>
-.frame-head-border-sm.bottom {
-  background-color: transparent;
-  border-bottom: none;
-  border-top: 1px solid #DCB505;
-  margin: 4px 70px 0px 70px;
-  padding-top: 0;
-  padding-bottom: 8px;
-}
-
-.frame-head-border.bottom {
-  background-color: transparent;
-  border-bottom: none;
-  border-top: 1px solid #DCB505;
-  margin: 10px 0 0 0;
-  padding-top: 0;
-}
-
-.frame-head-border-sm {
-  background-color: transparent;
-  border-top: none;
-  border-bottom: 1px solid #DCB505;
-  margin: 0px 70px 4px 70px;
-  padding-top: 20px;
-}
-
-.frame-head-border {
-  background-color: transparent;
-  border-bottom: 1px solid #DCB505;
-  margin: 0 0 10px 0;
-  border-top: 0;
-}
-</style>
+<style scoped></style>

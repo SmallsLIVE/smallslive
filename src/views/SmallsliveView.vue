@@ -6,7 +6,7 @@
 
 
             <div class="grid md:grid-cols-12 gap-8 md:gap-14">
-                <div class="md:col-span-4 flex md:justify-end mt-10">
+                <div class="md:col-span-4 flex justify-center md:justify-end mt-10">
                     <img src="/SMALLS DOOR.jpeg" class="smallslive-img" alt="Who we are">
                 </div>
                 <div

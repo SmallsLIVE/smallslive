@@ -1,7 +1,7 @@
 <template>
     <Header />
 
-    <div class="relative flex items-center justify-center font-raleway overflow-hidden my-2 px-5 md:px-0">
+    <div class="relative flex items-center justify-center font-raleway overflow-hidden mt-5 mb-2 px-5 md:px-0">
 
     <div class="relative z-10 w-full max-w-[68rem] text-center text-white">
       <h1 class="text-[28px] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
