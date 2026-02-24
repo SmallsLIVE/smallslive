@@ -10,15 +10,21 @@
 {% block content %}
 <div class="content-wrapper" style="border:none">
   <section class="admin-interface container">
-    <h1 class="admin-interface__main-title">Add Jazz Cultural Photo:</h1>
-    <form action="/" method="post">
-      {% csrf_token %}
-      {% crispy form %}
+    <h1>Add Jazz Cultural Photo</h1>
 
-      <button type="submit" style="padding:10px 20px; font-size:16px; cursor:pointer;">
-        Save Photo
-      </button>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {{ form.non_field_errors }}
+
+      {{ form|crispy }}
+
+        <div class="buttonHolder">
+        <input type="submit" name="submit" value="Save event" class="admin-interface__form__button" id="submit-id-submit">
+      </div>
+
+
     </form>
   </section>
 </div>
-{% endblock content %}
+{% endblock %}
