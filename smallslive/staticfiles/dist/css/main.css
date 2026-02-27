@@ -21803,7 +21803,8 @@ img.defineImageRatio {
       font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
       font-weight: 900;
       color: #fff;
-      text-decoration: underline; }
+      text-decoration: underline;
+      padding: 0 5px; }
       .store-error__message a:hover, .store-error__message a:focus {
         opacity: 0.8; }
 
