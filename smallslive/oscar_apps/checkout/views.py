@@ -821,8 +821,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         # We define a general error message for when an unanticipated payment
         # error occurs.
-        error_msg = "{0} No payment has been taken. Please " \
-                    "<a href='mailto:smallslive@gmail.com' tabindex='-1'>contact customer service</a> if this problem persists"
+        error_msg = "No payment has been taken. Please " \
+                    "<a href='mailto:info@smallslive.com' tabindex='-1'>contact customer service </a> if this problem persists"
 
         signals.pre_payment.send_robust(sender=self, view=self)
         basket_lines = basket.lines.all()
@@ -978,7 +978,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                         self.request,
                         "Something went wrong while processing your payment. Please contact support."
                     )
-                    return redirect("home")
+                    return self.render_payment_details(
+                    self.request, error=error_msg, **payment_kwargs)
                 if refund_id:
                     send_incompleted_order_refunded_email(
                         order_number= order_number,
@@ -1019,7 +1020,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                         self.request,
                         "Something went wrong while processing your payment. Please contact support."
                     )
-                    return redirect("home")
+                    return self.render_payment_details(
+                    self.request, error=error_msg, **payment_kwargs)
                 if refund_id:
                     send_incompleted_order_refunded_email(
                         order_number= order_number,
@@ -1144,8 +1146,8 @@ class ExecutePayPalPaymentView(AssignProductMixin,
             # their bankcard has expired, wrong card number - that kind of
             # thing. This type of exception is supposed to set a friendly error
             # message that makes sense to the customer.
-            error_msg = "{0} No payment has been taken. Please " \
-                        "<a href='mailto:smallslive@gmail.com' tabindex='-1'>contact customer service</a> if this problem persists"
+            error_msg = "No payment has been taken. Please " \
+                        "<a href='mailto:info@smallslive.com' tabindex='-1'>contact customer service </a> if this problem persists"
             msg = six.text_type(e) + "."
             error_msg = error_msg.format(msg)
             self.restore_frozen_basket()
