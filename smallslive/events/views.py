@@ -1285,6 +1285,10 @@ def copy_s3_image_to_another_bucket(request):
             destination_bucket_name = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
             destination_aws_access_key = settings.AWS_ACCESS_KEY_ID_MEZZROW
             destination_aws_secret_key = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
+        elif request.POST['venue'] == 'Jazzcultural':
+            destination_bucket_name = settings.AWS_STORAGE_BUCKET_NAME_JAZZCULTURAL
+            destination_aws_access_key = settings.AWS_ACCESS_KEY_ID_JAZZCULTURAL
+            destination_aws_secret_key = settings.AWS_SECRET_ACCESS_KEY_JAZZCULTURAL
         else:
             destination_bucket_name = settings.AWS_STORAGE_BUCKET_NAME_SMALLS
             destination_aws_access_key = settings.AWS_ACCESS_KEY_ID_SMALLS
