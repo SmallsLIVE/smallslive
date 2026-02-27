@@ -750,7 +750,10 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         submission = self.build_submission()
         submission['payment_kwargs']['payment_method'] = payment_method
 
-        return self.submit(**submission)
+        with transaction.atomic():
+            return self.submit(**submission)
+
+        # return self.submit(**submission)
 
     def submit(self, user, basket,
                shipping_address, shipping_method,
@@ -818,8 +821,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
 
         # We define a general error message for when an unanticipated payment
         # error occurs.
-        error_msg = "{0} No payment has been taken. Please " \
-                    "<a href='mailto:smallslive@gmail.com' tabindex='-1'>contact customer service</a> if this problem persists"
+        error_msg = "No payment has been taken. Please " \
+                    "<a href='mailto:info@smallslive.com' tabindex='-1'>contact customer service </a> if this problem persists"
 
         signals.pre_payment.send_robust(sender=self, view=self)
         basket_lines = basket.lines.all()
@@ -930,15 +933,16 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         try:
             stripe_api_key = self.get_stripe_payment_credentials()[2]
             order_kwargs.update({'order_type': basket.get_order_type()})
-            response = self.handle_order_placement(
-                order_number, user, basket, shipping_address, shipping_method,
-                shipping_charge, billing_address, order_total, **order_kwargs)
-          
-            # capture the payment here after successfull order place.
+
             stripe.PaymentIntent.capture(
                 reference,
                 api_key=stripe_api_key
             )
+
+            response = self.handle_order_placement(
+                order_number, user, basket, shipping_address, shipping_method,
+                shipping_charge, billing_address, order_total, **order_kwargs)
+
 
             return response
         except UnableToPlaceOrder as e:
@@ -953,6 +957,8 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             amount = order_total.excl_tax
             if amount:
                 amount = int(amount * 100)
+            if user.is_authenticated:
+                order_kwargs['guest_email'] = user.email
             manage_order_error_email(
                 order_number= order_number,
                 first_name=first_name,
@@ -964,7 +970,16 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
             self.restore_frozen_basket()
             # refund the order if pyament is already done and order is not completed
             if amount and reference:
-                refund_id = self.refund_stripe_payment(reference, amount=amount)
+                try:
+                    refund_id = self.refund_stripe_payment(reference, amount=amount)
+                except Exception as exc:
+                    logger.error("Stripe refund error: %s", exc)
+                    messages.error(
+                        self.request,
+                        "Something went wrong while processing your payment. Please contact support."
+                    )
+                    return self.render_payment_details(
+                    self.request, error=error_msg, **payment_kwargs)
                 if refund_id:
                     send_incompleted_order_refunded_email(
                         order_number= order_number,
@@ -972,11 +987,18 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                         amount=order_total.excl_tax,
                         refund_id = refund_id
                     )
+                    messages.error(
+                        self.request,
+                        "We were unable to complete your order. Your payment has been refunded. Please try again later."
+                    )
             return self.render_preview(
                 self.request, error=msg, **payment_kwargs)
         except Exception as e:
             print(e)
+            msg = six.text_type(e)
             error_type = 'Global Exception'
+            if user.is_authenticated:
+                order_kwargs['guest_email'] = user.email
             manage_order_error_email(
                 order_number= order_number,
                 first_name=first_name,
@@ -990,7 +1012,16 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 amount = int(amount * 100)
             # refund the order if pyament is already done and order is not completed
             if amount and reference:
-                refund_id = self.refund_stripe_payment(reference, amount=amount)
+                try:
+                    refund_id = self.refund_stripe_payment(reference, amount=amount)
+                except Exception as exc:
+                    logger.error("Stripe refund error: %s", exc)
+                    messages.error(
+                        self.request,
+                        "Something went wrong while processing your payment. Please contact support."
+                    )
+                    return self.render_payment_details(
+                    self.request, error=error_msg, **payment_kwargs)
                 if refund_id:
                     send_incompleted_order_refunded_email(
                         order_number= order_number,
@@ -998,6 +1029,12 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                         amount=order_total.excl_tax,
                         refund_id = refund_id
                     )
+                    messages.error(
+                        self.request,
+                        "We were unable to complete your order. Your payment has been refunded. Please try again later."
+                    )
+            return self.render_preview(
+                self.request, error=msg, **payment_kwargs)
 
     def get_item_list(self, basket_lines):
 
@@ -1109,8 +1146,8 @@ class ExecutePayPalPaymentView(AssignProductMixin,
             # their bankcard has expired, wrong card number - that kind of
             # thing. This type of exception is supposed to set a friendly error
             # message that makes sense to the customer.
-            error_msg = "{0} No payment has been taken. Please " \
-                        "<a href='mailto:smallslive@gmail.com' tabindex='-1'>contact customer service</a> if this problem persists"
+            error_msg = "No payment has been taken. Please " \
+                        "<a href='mailto:info@smallslive.com' tabindex='-1'>contact customer service </a> if this problem persists"
             msg = six.text_type(e) + "."
             error_msg = error_msg.format(msg)
             self.restore_frozen_basket()

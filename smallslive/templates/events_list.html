@@ -25,17 +25,23 @@
           <div class="hidden-xs hidden-sm col-md-1">
               Image
           </div>
-          <div class="col-xs-4 col-sm-4 col-md-4">
+          <div class="col-xs-4 col-sm-4 col-md-3">
               Name
           </div>
           <div class="col-xs-2 col-sm-2 col-md-1">
             Venue
           </div>
-          <div class="hidden-xs hidden-sm col-md-2">
+          <div class="hidden-xs hidden-sm col-md-1">
             Date
           </div>
-          <div class="col-xs-2 col-sm-2 col-md-2">
+          <div class="col-xs-2 col-sm-2 col-md-1">
             Sets
+          </div>
+          <div class="col-xs-2 col-sm-2 col-md-1">
+            Total Tickets
+          </div>
+          <div class="col-xs-2 col-sm-2 col-md-2">
+            Total tickets sold
           </div>
           <div class="col-xs-2 col-sm-2 col-md-1">
             Status
@@ -52,21 +58,40 @@
                         <img src="{% cloudinary_image_url photo_url=event.get_photo_url|urlencode photo_name=event.get_photo_name_with_bucket height=50 width=50 %}" alt="{{ event.title }}" style="height: 50px; width: 50px"/>
                     {% endif %}
                 </div>
-                <div class="col-xs-4 col-sm-4 col-md-4 artists-list__list__name">
+                <div class="col-xs-4 col-sm-3 col-md-3 artists-list__list__name">
                     <span title="{{event.title}}">{{ event.title }}</span>
                 </div>
                 <div class="col-xs-2 col-sm-2 col-md-1 {{ event.get_venue_name|lower}}-color artists-list__list__name">
                     {{ event.venue }}
                 </div>
-                <div class="hidden-xs hidden-sm col-md-2">
+                <div class="hidden-xs hidden-sm col-md-1">
                   {{ event.date|date:"D, M d, Y" }}
                 </div>
-                <div class="col-xs-2 col-sm-2 col-md-2">
+                <div class="col-xs-2 col-sm-2 col-md-1">
                   {% if event.sets.count > 1 %}
                     <span class="event-overlay-venue-set">
                       {{event.get_set_hours_display}}
                     </span>
                   {% endif %}
+                </div>
+                 <div class="col-xs-2 col-sm-2 col-md-1">
+                  {% for product in event.get_tickets %}
+                      <span style="font-weight: bold;">{{ product.stockrecords.all.0.num_in_stock }}</span>{% if not forloop.last %}<br> {% endif %}
+                  {% endfor %}
+                </div>
+                 <div class="col-xs-2 col-sm-2 col-md-2">
+                  {% for product in event.get_tickets %}
+                      <span style="font-weight: bold;">
+                        {% with allocated=product.stockrecords.all.0.num_allocated %}
+                          {% if allocated and allocated > 0 %}
+                            {{ allocated }}
+                          {% else %}
+                            No Units Sold
+                          {% endif %}
+                        {% endwith %}
+                      </span>
+                  {% if not forloop.last %}<br>{% endif %}
+                  {% endfor %}
                 </div>
                 <div class="col-xs-2 col-sm-2 col-md-1">
                   {{ event.state }}

@@ -17870,7 +17870,8 @@ label[for="photo-clear_id"] {
     padding: 0 20px;
     background-color: #121212; }
     .admin-nav .container {
-      padding: 0; }
+      padding: 0;
+      min-width: 100%; }
     .admin-nav .heading {
       display: block;
       margin-top: 6px; }
@@ -21802,7 +21803,8 @@ img.defineImageRatio {
       font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
       font-weight: 900;
       color: #fff;
-      text-decoration: underline; }
+      text-decoration: underline;
+      padding: 0 5px; }
       .store-error__message a:hover, .store-error__message a:focus {
         opacity: 0.8; }
 
