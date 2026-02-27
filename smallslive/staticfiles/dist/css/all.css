@@ -26656,7 +26656,8 @@ label[for="photo-clear_id"] {
     padding: 0 20px;
     background-color: #121212; }
     .admin-nav .container {
-      padding: 0; }
+      padding: 0;
+      min-width: 100%; }
     .admin-nav .heading {
       display: block;
       margin-top: 6px; }
