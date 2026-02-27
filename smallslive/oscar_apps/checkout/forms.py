@@ -39,7 +39,8 @@ class PaymentForm(forms.Form):
     exp_year = forms.CharField(required=False, min_length=2, max_length=4)
     cvc = forms.CharField(required=False, min_length=3, max_length=4)
     name = forms.CharField(required=False)
-    stripe_token = forms.CharField(required=False)
+    # stripe_token = forms.CharField(required=False)
+    payment_intent_id = forms.CharField(required=False)
 
     def __init__(self, user, stripe_api_key, *args, **kwargs):
         self.stripe_api_key = stripe_api_key
@@ -72,9 +73,10 @@ class PaymentForm(forms.Form):
                     print('============================')
                     pass
             else:
-                stripe_token = data.get('stripe_token')
-                if stripe_token:
-                    self.token = stripe_token
+                payment_intent_id = data.get('payment_intent_id')
+                # stripe_token = data.get('stripe_token')
+                if payment_intent_id:
+                    self.token = payment_intent_id
                 else:
                     try:
                         token = stripe.Token.create(

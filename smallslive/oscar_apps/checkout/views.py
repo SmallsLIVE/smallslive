@@ -36,6 +36,10 @@ import stripe
 import threading
 from oscar_apps.basket.models import Basket
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.conf import settings
+
 # Create a global lock
 processing_lock = threading.Lock()
 
@@ -393,7 +397,7 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         """
         super(PaymentDetailsView, self).__init__(*args, **kwargs)
         self.amount = None
-        self.card_token = None
+        self.card_token = None    # payment intent id created from frontend
         self.artist_id = None
         self.event = None
         self.event_id = None
@@ -1403,3 +1407,25 @@ class ThankYouView(generic.DetailView):
             ctx['send_analytics_event'] = False
 
         return ctx
+
+class CreatePaymentIntentView(APIView):
+    def post(self, request):
+        basket = request.basket
+        basket_lines = basket.all_lines()
+        basket_total = basket.total_incl_tax
+        venue = basket_lines[0].product.event_set.event.venue
+        amount = int(basket_total * 100)
+        stripe.api_key = venue.get_stripe_secret_key
+        try:
+            intent = stripe.PaymentIntent.create(
+                amount=amount,
+                currency='usd',
+                payment_method_types=['card'],
+                capture_method='manual',
+                payment_method_options={'card': {'request_three_d_secure': 'any'}},  # for testing 3DS
+            )
+            return Response({"client_secret": intent.client_secret})
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
+
+api_create_intent = CreatePaymentIntentView.as_view()
