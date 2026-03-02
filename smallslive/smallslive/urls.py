@@ -19,6 +19,7 @@ from .sitemaps import sitemaps
 from newsletters.views import *
 from artists.views import *
 from events.views import *
+from oscar_apps.checkout.views import api_create_intent
 from django.contrib.flatpages.views import flatpage
 from static_pages.views import *
 from metrics.views import metric_view, event_counts, artist_counts
@@ -96,8 +97,6 @@ urlpatterns = [
     # url(r'^$', homepage, name="home"), # Old home Route/URL.
     # url(r'^$', schedule if settings.SITE_ID == 1 else homepage, name="home"),
     url(r'^$', schedule, name="home"),
-    url(r'^api/events/$', api_schedule, name='api_schedule'),
-    url(r'^api/jazz-photos/$', api_jazz_photos, name='api_jazz_photos'),
     url(r'^livestream/$', livestream, name="livestream"),
     # url(r'^tickets/$', ticketing if settings.SITE_ID == 1 else redirect_to_home, name="tickets"),
     url(r'^tickets/$', ticketing, name="tickets"),
@@ -114,6 +113,12 @@ urlpatterns = [
     url(r'^metric/', metric_view, name='metric_view'),
     url(r'^event_counts/', event_counts, name='event_counts'),
     url(r'^artist_counts/', artist_counts, name='artist_counts'),
+
+
+    # APIs
+    url(r'^api/events/$', api_schedule, name='api_schedule'),
+    url(r'^api/jazz-photos/$', api_jazz_photos, name='api_jazz_photos'),
+    url(r'^api/create-payment-intent/$', api_create_intent, name='api_create_intent'),
 ]
 
 #if settings.ADMIN_ENABLED:
