@@ -161,6 +161,9 @@
           const form = this;
           const paymentMethod = $('#payment-method').val();
 
+          const submitBtn = $('#confirmButton');
+          submitBtn.prop('disabled', true);
+
           if (paymentMethod !== 'credit-card') {
                form.submit();
                return;
@@ -179,6 +182,8 @@
                   stripeErrorTimeout = setTimeout(function () {
                       errorEl.fadeOut();
                   }, 3000);
+
+                  submitBtn.prop('disabled', false);
 
                   return;
               }
@@ -200,6 +205,7 @@
                   const errorEl = $('#stripe-error');
                   errorEl.html('<strong>'+ 'fetch error: ' + data.error + '</strong>').fadeIn();
                   setTimeout(() => errorEl.fadeOut(), 3000);
+                  submitBtn.prop('disabled', false);
                   return;
               }
 
@@ -218,6 +224,7 @@
                   const errorEl = $('#stripe-error');
                   errorEl.html('<strong>' + error.message + '</strong>').fadeIn();
                   setTimeout(() => errorEl.fadeOut(), 3000);
+                  submitBtn.prop('disabled', false);
                   return;
               }
 
@@ -235,6 +242,7 @@
                   const errorEl = $('#stripe-error');
                   errorEl.html('<strong>Payment failed. Please try again.</strong>').fadeIn();
                   setTimeout(() => errorEl.fadeOut(), 3000);
+                  submitBtn.prop('disabled', false);
               }
 
           } catch (err) {
@@ -243,6 +251,7 @@
               const errorEl = $('#stripe-error');
               errorEl.html('<strong>Unexpected error occurred.</strong>').fadeIn();
               setTimeout(() => errorEl.fadeOut(), 3000);
+              submitBtn.prop('disabled', false);
           }
 
       })
