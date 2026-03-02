@@ -1,4 +1,5 @@
 <script setup>
+import { useInfiniteScroll } from '@vueuse/core'
 import Header from '@/components/Header.vue';
 import eventService from '@/services/eventService';
 import { computed, onMounted, ref } from 'vue'
@@ -9,31 +10,19 @@ const dayList = ref([]);
 const limit = ref(5)
 const offset = ref(0)
 const count = ref(0)
+const loadMoreTrigger = ref(null)
 
-
-const currentPage = computed(() =>
-  Math.floor(offset.value / limit.value) + 1
+const hasMore = computed(() =>
+  dayList.value.length < count.value
 )
 
-const totalPages = computed(() =>
-  Math.ceil(count.value / limit.value)
+const isInitialLoading = computed(() =>
+  loading.value && dayList.value.length === 0
 )
 
-function goNext() {
-  if (offset.value + limit.value < count.value) {
-    offset.value += limit.value
-    getAllEvents()
-  }
-}
-
-function goPrev() {
-  if (offset.value - limit.value >= 0) {
-    offset.value -= limit.value
-    getAllEvents()
-  }
-}
 
 async function getAllEvents() {
+  if (loading.value) return
 
   try {
     loading.value = true
@@ -42,17 +31,29 @@ async function getAllEvents() {
       limit: limit.value,
       offset: offset.value,
     })
-    // console.log(response.data);
     const data = response.data
-    dayList.value = data?.results?.day_list ?? []
+    const newItems = data?.results?.day_list ?? []
+    dayList.value.push(...newItems)
     count.value = data?.count ?? 0
-    loading.value = false
+    offset.value += newItems.length
   } catch (error) {
     console.log(error);
   } finally {
     loading.value = false
   }
 }
+
+useInfiniteScroll(
+  loadMoreTrigger,
+  () => {
+    if (hasMore.value && !loading.value) {
+      getAllEvents()
+    }
+  },
+  {
+    distance: 100,
+  }
+)
 
 onMounted(() => {
   getAllEvents();
@@ -124,17 +125,16 @@ function eventHref(ev) {
             Please click on the link for additional information and advanced ticketing
           </p>
 
+
           <div>
-            <!-- Empty state -->
-            <div v-if="loading" class="absolute inset-0 z-20 flex flex-col mt-32 items-center justify-center">
+            <!-- Initial Empty state -->
+            <div v-if="isInitialLoading" class="absolute inset-0 z-20 flex flex-col mt-32 items-center justify-center">
               <!-- Spinner -->
               <div class="flex items-center justify-center">
                 <div
                   class="w-10 h-10 min-w-[40px] min-h-[40px] border-4 border-white border-t-transparent rounded-full animate-spin">
                 </div>
               </div>
-
-              <!-- Loading Text -->
               <div class="mt-4 mb-5 text-sm font-semibold tracking-[0.25em] uppercase text-white">
                 Loading...
               </div>
@@ -174,31 +174,12 @@ function eventHref(ev) {
                 </div>
               </div>
             </div>
+            <div ref="loadMoreTrigger" class="h-10"></div>
+            <div v-if="loading && dayList.length" class="py-6 text-center">
+              <div class="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
+            </div>
           </div>
         </div>
-      </div>
-
-
-
-      <!-- Pagination -->
-      <div v-if="!loading && count > limit"
-        class="mt-6 flex items-center justify-between gap-3 border-t border-gray-300 pt-4">
-
-        <button @click="goPrev" :disabled="offset === 0 || loading" class="rounded-md border px-4 cursor-pointer py-2 text-sm font-semibold
-           disabled:cursor-not-allowed disabled:opacity-50
-           hover:bg-gray-50 hover:text-black">
-          Prev
-        </button>
-
-        <div class="text-sm font-medium">
-          Page {{ currentPage }} of {{ totalPages }}
-        </div>
-
-        <button @click="goNext" :disabled="offset + limit >= count || loading" class="rounded-md border cursor-pointer px-4 py-2 text-sm font-semibold
-           disabled:cursor-not-allowed disabled:opacity-50
-           hover:bg-gray-50 hover:text-black">
-          Next
-        </button>
       </div>
     </div>
   </section>
