@@ -47,6 +47,9 @@ const props = defineProps({
                         class="w-full h-auto object-cover transition duration-500 group-hover:scale-105" />
 
                 </div>
+                <p class="mt-2 text-sm text-gray-300 font-raleway uppercase text-[14px] md:text-[16px] bg-white/20 rounded">
+                    {{ item.title }}
+                </p>
 
             </template>
         </MasonryWall>
