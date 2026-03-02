@@ -162,7 +162,9 @@
           const paymentMethod = $('#payment-method').val();
 
           const submitBtn = $('#confirmButton');
+          const originalText = submitBtn.text();
           submitBtn.prop('disabled', true);
+          submitBtn.text('Continuing...');
 
           if (paymentMethod !== 'credit-card') {
                form.submit();
@@ -184,6 +186,7 @@
                   }, 3000);
 
                   submitBtn.prop('disabled', false);
+                  submitBtn.text(originalText);
 
                   return;
               }
@@ -206,6 +209,7 @@
                   errorEl.html('<strong>'+ 'fetch error: ' + data.error + '</strong>').fadeIn();
                   setTimeout(() => errorEl.fadeOut(), 3000);
                   submitBtn.prop('disabled', false);
+                  submitBtn.text(originalText);
                   return;
               }
 
@@ -225,6 +229,7 @@
                   errorEl.html('<strong>' + error.message + '</strong>').fadeIn();
                   setTimeout(() => errorEl.fadeOut(), 3000);
                   submitBtn.prop('disabled', false);
+                  submitBtn.text(originalText);
                   return;
               }
 
@@ -243,6 +248,7 @@
                   errorEl.html('<strong>Payment failed. Please try again.</strong>').fadeIn();
                   setTimeout(() => errorEl.fadeOut(), 3000);
                   submitBtn.prop('disabled', false);
+                  submitBtn.text(originalText);
               }
 
           } catch (err) {
@@ -252,6 +258,7 @@
               errorEl.html('<strong>Unexpected error occurred.</strong>').fadeIn();
               setTimeout(() => errorEl.fadeOut(), 3000);
               submitBtn.prop('disabled', false);
+              submitBtn.text(originalText);
           }
 
       })

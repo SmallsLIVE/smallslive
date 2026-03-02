@@ -121,7 +121,9 @@
            const paymentMethod = $('#payment-method').val();
 
            const submitBtn = $('#cardConfirmButton');
+           const originalText = submitBtn.text();
            submitBtn.prop('disabled', true);
+           submitBtn.text('Continuing...');
 
            if (paymentMethod !== 'credit-card') {
                form.submit();
@@ -143,6 +145,7 @@
                   }, 3000);
 
                   submitBtn.prop('disabled', false);
+                  submitBtn.text(originalText);
 
                   return;
               }
@@ -166,6 +169,7 @@
                   setTimeout(() => errorEl.fadeOut(), 3000);
 
                   submitBtn.prop('disabled', false);
+                  submitBtn.text(originalText);
                   return;
               }
 
@@ -186,6 +190,7 @@
                   setTimeout(() => errorEl.fadeOut(), 3000);
 
                   submitBtn.prop('disabled', false);
+                  submitBtn.text(originalText);
                   return;
               }
 
@@ -204,6 +209,7 @@
                   errorEl.html('<strong>Payment failed. Please try again.</strong>').fadeIn();
                   setTimeout(() => errorEl.fadeOut(), 3000);
                   submitBtn.prop('disabled', false);
+                  submitBtn.text(originalText);
               }
 
           } catch (err) {
@@ -213,6 +219,7 @@
               errorEl.html('<strong>Unexpected error occurred.</strong>').fadeIn();
               setTimeout(() => errorEl.fadeOut(), 3000);
               submitBtn.prop('disabled', false);
+              submitBtn.text(originalText);
           }
 
           //  stripe.createToken(cardNumber).then(function(result) {
