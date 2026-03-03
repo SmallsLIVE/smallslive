@@ -1415,7 +1415,6 @@ class CreatePaymentIntentView(APIView):
         basket_total = basket.total_incl_tax
         venue = basket_lines[0].product.event_set.event.venue
         amount = int(basket_total * 100)
-        stripe.api_key = venue.get_stripe_secret_key
         try:
             intent = stripe.PaymentIntent.create(
                 amount=amount,
@@ -1423,6 +1422,7 @@ class CreatePaymentIntentView(APIView):
                 payment_method_types=['card'],
                 capture_method='manual',
                 payment_method_options={'card': {'request_three_d_secure': 'any'}},  # for testing 3DS
+                api_key=venue.get_stripe_secret_key
             )
             return Response({"client_secret": intent.client_secret})
         except Exception as e:
