@@ -305,6 +305,7 @@ class StripeMixin(PaymentCredentialsMixin):
             # )
             intent = stripe.PaymentIntent.modify(
                 self.card_token,
+                api_key=stripe_secret_key,
                 description=self.payment_description(order_number, self.total.incl_tax, **kwargs),
                 metadata=metadata,
             )
