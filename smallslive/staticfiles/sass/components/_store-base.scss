@@ -4,7 +4,7 @@ $tablet-break: 650px;
   pointer-events: auto;
 
   img {
-    min-width: 250px;
+    min-width: 300px;
 
     @media (max-width: $screen-sm-max) {
       min-width: 120px;
