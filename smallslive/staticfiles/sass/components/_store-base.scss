@@ -1,5 +1,17 @@
 $tablet-break: 650px;
 
+.jazz_new_logo {
+  pointer-events: auto;
+
+  img {
+    min-width: 300px;
+
+    @media (max-width: $screen-sm-max) {
+      min-width: 120px;
+    }
+  }
+}
+
 .store-header {
   padding: 0 30px;
   text-align: left;

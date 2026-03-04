@@ -28409,6 +28409,14 @@ label[for="photo-clear_id"] {
   margin-bottom: 80px;
   padding: 0 20px; }
 
+.jazz_new_logo {
+  pointer-events: auto; }
+  .jazz_new_logo img {
+    min-width: 300px; }
+    @media (max-width: 960px) {
+      .jazz_new_logo img {
+        min-width: 120px; } }
+
 .store-header {
   padding: 0 30px;
   text-align: left;
