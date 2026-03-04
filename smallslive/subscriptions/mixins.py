@@ -286,21 +286,28 @@ class StripeMixin(PaymentCredentialsMixin):
             #     description=self.payment_description(order_number, self.total.incl_tax, **kwargs),
             #     metadata=metadata
             # )
-            intent = stripe.PaymentIntent.create(
+
+            # intent = stripe.PaymentIntent.create(
+            #     api_key=stripe_secret_key,
+            #     amount=int(self.total.incl_tax * 100),
+            #     currency=settings.STRIPE_CURRENCY,
+            #     description=self.payment_description(order_number, self.total.incl_tax, **kwargs),
+            #     metadata=metadata,
+            #     payment_method_data={
+            #         'type': 'card',
+            #         'card': {
+            #             'token': self.card_token
+            #         }
+            #     },
+            #     confirmation_method="manual",
+            #     confirm=True,
+            #     capture_method="manual"
+            # )
+            intent = stripe.PaymentIntent.modify(
+                self.card_token,
                 api_key=stripe_secret_key,
-                amount=int(self.total.incl_tax * 100),
-                currency=settings.STRIPE_CURRENCY,
                 description=self.payment_description(order_number, self.total.incl_tax, **kwargs),
                 metadata=metadata,
-                payment_method_data={
-                    'type': 'card',
-                    'card': {
-                        'token': self.card_token
-                    }
-                },
-                confirmation_method="manual",
-                confirm=True,
-                capture_method="manual"
             )
 
             stripe_ref = intent.id

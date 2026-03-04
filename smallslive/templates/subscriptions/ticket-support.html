@@ -156,43 +156,110 @@
            }
        });
 
-      $(document).on('submit', '#payment-form', function(e){
+      $(document).on('submit', '#payment-form', async function(e){
           e.preventDefault();
           const form = this;
           const paymentMethod = $('#payment-method').val();
-          console.log("Submitting with method:", paymentMethod);
+
+          const submitBtn = $('#confirmButton');
+          const originalText = submitBtn.text();
+          submitBtn.prop('disabled', true);
+          submitBtn.text('Continuing...');
 
           if (paymentMethod !== 'credit-card') {
                form.submit();
                return;
            }
 
-          stripe.createToken(cardNumber).then(function(result) {
-               let stripeErrorTimeout = null;
+          try {
+              const result = await stripe.createToken(cardNumber);
 
-                if (result.error) {
-                    const errorEl = $('#stripe-error');
+              if (result.error) {
+                  const errorEl = $('#stripe-error');
 
-                    errorEl
-                        .html('<strong>' + '**' + result.error.message + '**' + '</strong>')
-                        .fadeIn();
+                  errorEl
+                      .html('<strong>' + result.error.message + '</strong>')
+                      .fadeIn();
 
-                    stripeErrorTimeout = setTimeout(function () {
-                        errorEl.fadeOut();
-                    }, 3000);
+                  stripeErrorTimeout = setTimeout(function () {
+                      errorEl.fadeOut();
+                  }, 3000);
 
-                    return;
-                }
+                  submitBtn.prop('disabled', false);
+                  submitBtn.text(originalText);
 
-                const token = result.token.id;
-                const hiddenInput = document.createElement('input');
-                hiddenInput.setAttribute('type', 'hidden');
-                hiddenInput.setAttribute('name', 'stripe_token');
-                hiddenInput.setAttribute('value', token);
+                  return;
+              }
 
-                form.appendChild(hiddenInput);
-                form.submit();
-            });
+              const response = await fetch("/api/create-payment-intent/", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      "X-CSRFToken": "{{ csrf_token }}"
+                  },
+                  body: JSON.stringify({
+                      amount: parseInt($('#hiddenAmountInput').val())
+                  })
+              });
+
+              const data = await response.json();
+
+              if (data.error) {
+                  const errorEl = $('#stripe-error');
+                  errorEl.html('<strong>'+ 'fetch error: ' + data.error + '</strong>').fadeIn();
+                  setTimeout(() => errorEl.fadeOut(), 3000);
+                  submitBtn.prop('disabled', false);
+                  submitBtn.text(originalText);
+                  return;
+              }
+
+              const clientSecret = data.client_secret;
+
+              const { error, paymentIntent } = await stripe.confirmCardPayment(
+                  clientSecret,
+                  {
+                      payment_method: {
+                          card: cardNumber
+                      }
+                  }
+              );
+
+              if (error) {
+                  const errorEl = $('#stripe-error');
+                  errorEl.html('<strong>' + error.message + '</strong>').fadeIn();
+                  setTimeout(() => errorEl.fadeOut(), 3000);
+                  submitBtn.prop('disabled', false);
+                  submitBtn.text(originalText);
+                  return;
+              }
+
+              if (paymentIntent.status === "requires_capture") {
+
+                  const hiddenInput = document.createElement('input');
+                  hiddenInput.type = 'hidden';
+                  hiddenInput.name = 'payment_intent_id';
+                  hiddenInput.value = paymentIntent.id;
+
+                  form.appendChild(hiddenInput);
+                  form.submit();
+              }
+              else {
+                  const errorEl = $('#stripe-error');
+                  errorEl.html('<strong>Payment failed. Please try again.</strong>').fadeIn();
+                  setTimeout(() => errorEl.fadeOut(), 3000);
+                  submitBtn.prop('disabled', false);
+                  submitBtn.text(originalText);
+              }
+
+          } catch (err) {
+              console.error("Unexpected Stripe error:", err);
+
+              const errorEl = $('#stripe-error');
+              errorEl.html('<strong>Unexpected error occurred.</strong>').fadeIn();
+              setTimeout(() => errorEl.fadeOut(), 3000);
+              submitBtn.prop('disabled', false);
+              submitBtn.text(originalText);
+          }
 
       })
 
