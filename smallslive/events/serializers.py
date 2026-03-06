@@ -24,10 +24,14 @@ class VenueSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     venue = VenueSerializer(read_only=True)
+    set_hours_display = serializers.SerializerMethodField()
 
     class Meta:
         model = Event
         fields = '__all__'
+
+    def get_set_hours_display(self, obj):
+        return obj.get_set_hours_display()
 
 
 class JazzPhotoSerializer(serializers.ModelSerializer):
