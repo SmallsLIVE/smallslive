@@ -165,7 +165,7 @@ function eventHref(ev) {
 
                 <div v-for="ev in day.events" :key="ev.id">
                   <div class="font-medium">
-                    {{ ev.set_hours_display }}
+                    {{ ev.set_hours_display?.split('-')[0].trim() }}
                   </div>
 
                   <a target="_blank" :href="eventHref(ev)" class="mt-1 inline-block underline hover:text-orange-300">
