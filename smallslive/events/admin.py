@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from django.urls import reverse
 from .models import Event, Recording, Venue, Comment, ShowDefaultTime, JazzCulturalPhotos
 
@@ -9,10 +10,27 @@ admin.site.register(JazzCulturalPhotos)
 class EventAdmin(admin.ModelAdmin):
     date_hierarchy = 'start'
     list_display = ('start', 'state', 'venue', 'title', 'subtitle', 'link',
-                    'date_freeform', 'description')
+                    'date_freeform', 'description', 'clonned_from_link', 'root_event')
     list_display_links = ('title', 'subtitle')
     search_fields = ('title', 'subtitle')
     save_on_top = True
+    readonly_fields = ('clonned_from_link',)
+    exclude = ('clonned_from',)
+
+    def root_event(self, obj):
+        root = obj.get_root()
+        if root:
+            url = reverse("admin:events_event_change", args=[root.pk])
+            return format_html('<a href="{}">{}</a>', url, root.title)
+
+    root_event.short_description = "Root Event"
+
+    def clonned_from_link(self, obj):
+        if obj.clonned_from:
+            url = reverse("admin:events_event_change", args=[obj.clonned_from.pk])
+            return format_html('<a href="{}">{}</a>', url, obj.clonned_from.title)
+        return "-"
+    clonned_from_link.short_description = "Cloned From"
 
     def save_model(self, request, obj, form, change):
         obj.last_modified_by = request.user

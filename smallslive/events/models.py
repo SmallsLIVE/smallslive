@@ -470,6 +470,9 @@ class Event(TimeStampedModel):
 
     objects = EventQuerySet.as_manager()
 
+    def __str__(self):
+        return f'{self.title} - {self.venue}'
+
     class Meta:
         ordering = ['-start']
 
@@ -509,31 +512,11 @@ class Event(TimeStampedModel):
 
     def get_root(self):
         event = self
-        visited = set()
 
         while event.clonned_from:
-            if id(event) in visited:
-                raise ValueError("Cycle detected in cloned_from chain.")
-            visited.add(id(event))
             event = event.clonned_from
 
         return event
-
-    def clean(self):
-        super().clean()
-
-        # Prevent self-reference
-        if self.pk and self.clonned_from_id == self.pk:
-            raise ValidationError({
-                "clonned_from": "An event cannot be cloned from itself."
-            })
-
-        try:
-            self.get_root()
-        except ValueError:
-            raise ValidationError({
-                "clonned_from": "Circular cloning relationship detected."
-            })
 
     def save(self, *args, **kwargs):
         start, end = self.get_actual_start_end()
