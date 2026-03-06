@@ -1,15 +1,15 @@
 import os
 from django.conf import settings
-from django.core.management.base import NoArgsCommand
+from django.core.management.base import BaseCommand
 from django.utils import timezone
 from mailchimp import Mailchimp
 from newsletters.models import Newsletter
 
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help = 'Fetch the newsletters from MailChimp'
 
-    def handle_noargs(self, *args, **options):
+    def handle(self, *args, **options):
         env = os.environ.get('CRON_ENV')
         now = timezone.now()
         # heroku scheduler launches the task every day, we make sure it only really does the import
