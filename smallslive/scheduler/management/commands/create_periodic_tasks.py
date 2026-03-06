@@ -9,11 +9,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         tasks = [
-            {"name": "Fetch Newsletters", "task": "smallslive.tasks.fetch_newsletters_task", "hour": 19, "minute": 0},
-            {"name": "Import S3 Audio", "task": "smallslive.tasks.import_s3_audio_task", "hour": 9, "minute": 0},
-            {"name": "Import S3 Video", "task": "smallslive.tasks.import_s3_video_task", "hour": 9, "minute": 30},
-            {"name": "Import S3 Video Mezzrow", "task": "smallslive.tasks.import_s3_video_mezzrow_task", "hour": 10, "minute": 0},
-            {"name": "Import S3 Audio Mezzrow", "task": "smallslive.tasks.import_s3_audio_mezzrow_task", "hour": 10, "minute": 30},
+            {"name": "Fetch Newsletters", "task": "scheduler.tasks.fetch_newsletters_task", "hour": 19, "minute": 0},
+            {"name": "Import S3 Audio", "task": "scheduler.tasks.import_s3_audio_task", "hour": 9, "minute": 0},
+            {"name": "Import S3 Video", "task": "scheduler.tasks.import_s3_video_task", "hour": 9, "minute": 30},
+            {"name": "Import S3 Video Mezzrow", "task": "scheduler.tasks.import_s3_video_mezzrow_task", "hour": 10, "minute": 0},
+            {"name": "Import S3 Audio Mezzrow", "task": "scheduler.tasks.import_s3_audio_mezzrow_task", "hour": 10, "minute": 30},
         ]
 
         for t in tasks:

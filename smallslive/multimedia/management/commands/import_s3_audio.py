@@ -18,29 +18,6 @@ class Command(BaseCommand):
     args = "<start_month> <start_year>"
     help = 'Imports the audio recordings from S3 and assigns them to correct events'
 
-    # option_list = BaseCommand.option_list + (
-    #     make_option('--bucket-name',
-    #                 action='store',
-    #                 dest='bucket_name',
-    #                 default='smallslivemp3',
-    #                 help='Bucket name'),
-    #     make_option('--venue-name',
-    #                 action='store',
-    #                 dest='venue_name',
-    #                 default='Smalls',
-    #                 help='Venue name'),
-    #     make_option('--full',
-    #                 action='store_true',
-    #                 dest='full',
-    #                 default=False,
-    #                 help='Import full recordings'),
-    #     make_option('--different-source',
-    #                 action='store_true',
-    #                 dest='different_source',
-    #                 default=False,
-    #                 help='Import recording from different event ids'),
-    # )
-
 
     def add_arguments(self, parser):
 
