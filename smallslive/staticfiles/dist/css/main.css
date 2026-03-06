@@ -19626,10 +19626,10 @@ label[for="photo-clear_id"] {
 .jazz_new_logo {
   pointer-events: auto; }
   .jazz_new_logo img {
-    min-width: 300px; }
+    max-width: 350px; }
     @media (max-width: 960px) {
       .jazz_new_logo img {
-        min-width: 120px; } }
+        max-width: 100%; } }
 
 .store-header {
   padding: 0 30px;
