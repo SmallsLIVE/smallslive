@@ -16207,7 +16207,8 @@ header.container {
     .mobile-header .mobile-logo-container .new-header-img-wrapper {
       gap: 10px;
       max-width: calc(100% - 100px);
-      width: 100%; }
+      width: 100%;
+      justify-content: center; }
       @media (min-width: 400px) and (max-width: 960px) {
         .mobile-header .mobile-logo-container .new-header-img-wrapper {
           width: 350px; } }
@@ -28412,10 +28413,10 @@ label[for="photo-clear_id"] {
 .jazz_new_logo {
   pointer-events: auto; }
   .jazz_new_logo img {
-    min-width: 300px; }
+    max-width: 350px; }
     @media (max-width: 960px) {
       .jazz_new_logo img {
-        min-width: 120px; } }
+        max-width: 250px; } }
 
 .store-header {
   padding: 0 30px;
