@@ -23,6 +23,7 @@ from tinymce import models as tinymce_models
 from multimedia.s3_storages import ImageS3Storage
 from metrics.models import UserVideoMetric
 from utils.hkdf import derive_fernet_key
+from django.core.exceptions import ValidationError
 
 
 RANGE_YEAR = 'year'
@@ -421,6 +422,9 @@ class Event(TimeStampedModel):
     SETS = Choices(('22:00-23:00', '10-11pm'), ('23:00-0:00', '11-12pm'), ('0:00-1:00', '12-1am'))
     STATUS = Choices('Published', 'Draft', 'Cancelled')
 
+    # TODO: add a reference of main event for clonned events.
+    clonned_from = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, related_name="clones")
+
     title = models.CharField(db_index=True, max_length=500)
     venue = models.ForeignKey('Venue', on_delete=models.CASCADE, blank=True,
                               null=True)
@@ -503,8 +507,35 @@ class Event(TimeStampedModel):
 
         return self.date
 
-    def save(self, *args, **kwargs):
+    def get_root(self):
+        event = self
+        visited = set()
 
+        while event.clonned_from:
+            if id(event) in visited:
+                raise ValueError("Cycle detected in cloned_from chain.")
+            visited.add(id(event))
+            event = event.clonned_from
+
+        return event
+
+    def clean(self):
+        super().clean()
+
+        # Prevent self-reference
+        if self.pk and self.clonned_from_id == self.pk:
+            raise ValidationError({
+                "clonned_from": "An event cannot be cloned from itself."
+            })
+
+        try:
+            self.get_root()
+        except ValueError:
+            raise ValidationError({
+                "clonned_from": "Circular cloning relationship detected."
+            })
+
+    def save(self, *args, **kwargs):
         start, end = self.get_actual_start_end()
 
         self.start = start or self.start

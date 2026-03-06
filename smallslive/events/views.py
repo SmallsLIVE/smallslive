@@ -564,12 +564,17 @@ class EventCloneView(StaffuserRequiredMixin, DetailView):
 
     def post(self, request, *args, **kwargs):
 
-        self.object = self.get_object()
-        old_event_id = self.object.id
-        gig_info = self.object.get_performers()
-        event_sets = self.object.sets.all()
-        new_object = self.object
+        original = self.get_object()
+        self.object = original
+        old_event_id = original.id
+        gig_info = original.get_performers()
+        event_sets = original.sets.all()
+        new_object = Event()
+        for field in Event._meta.fields:
+            if field.name not in ("id", "pk"):
+                setattr(new_object, field.name, getattr(original, field.name))
         new_object.pk = None
+        new_object.clonned_from = self.object
         new_object.state = Event.STATUS.Draft
         new_object.seconds_played = 0
         new_object.play_count = 0
