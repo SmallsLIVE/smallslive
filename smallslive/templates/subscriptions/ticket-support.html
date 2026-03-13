@@ -191,54 +191,18 @@
                   return;
               }
 
-              const response = await fetch("/api/create-payment-intent/", {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json",
-                      "X-CSRFToken": "{{ csrf_token }}"
-                  },
-                  body: JSON.stringify({
-                      amount: parseInt($('#hiddenAmountInput').val())
-                  })
-              });
 
-              const data = await response.json();
+              const { paymentMethod } = await stripe.createPaymentMethod({
+                  type: "card",
+                  card: cardNumber
+                });
 
-              if (data.error) {
-                  const errorEl = $('#stripe-error');
-                  errorEl.html('<strong>'+ 'fetch error: ' + data.error + '</strong>').fadeIn();
-                  setTimeout(() => errorEl.fadeOut(), 3000);
-                  submitBtn.prop('disabled', false);
-                  submitBtn.text(originalText);
-                  return;
-              }
-
-              const clientSecret = data.client_secret;
-
-              const { error, paymentIntent } = await stripe.confirmCardPayment(
-                  clientSecret,
-                  {
-                      payment_method: {
-                          card: cardNumber
-                      }
-                  }
-              );
-
-              if (error) {
-                  const errorEl = $('#stripe-error');
-                  errorEl.html('<strong>' + error.message + '</strong>').fadeIn();
-                  setTimeout(() => errorEl.fadeOut(), 3000);
-                  submitBtn.prop('disabled', false);
-                  submitBtn.text(originalText);
-                  return;
-              }
-
-              if (paymentIntent.status === "requires_capture") {
-
+              if(paymentMethod.id) {
                   const hiddenInput = document.createElement('input');
                   hiddenInput.type = 'hidden';
                   hiddenInput.name = 'payment_intent_id';
-                  hiddenInput.value = paymentIntent.id;
+                  {#hiddenInput.value = paymentIntent.id;#}
+                  hiddenInput.value = paymentMethod.id;
 
                   form.appendChild(hiddenInput);
                   form.submit();
@@ -250,7 +214,6 @@
                   submitBtn.prop('disabled', false);
                   submitBtn.text(originalText);
               }
-
           } catch (err) {
               console.error("Unexpected Stripe error:", err);
 
