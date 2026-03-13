@@ -410,6 +410,14 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
         self.total = None
         self.total_deductable = None
 
+    def dispatch(self, request, *args, **kwargs):
+        stripe_error = request.GET.get("stripe_error")
+
+        if stripe_error:
+            messages.error(request, stripe_error)
+
+        return super().dispatch(request, *args, **kwargs)
+
     def get_template_names(self):
         """
         Different templates are rendered according to conditions.
