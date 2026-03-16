@@ -130,6 +130,8 @@ def send_email_confirmation(request, user, signup=False, **kwargs):
                         request,
                         signup=signup,
                         activate_view=kwargs.get('activate_view'))
+            else:
+                return False
 
         except SmallsEmailAddress.DoesNotExist:
             email_address = SmallsEmailAddress.objects.add_email(
