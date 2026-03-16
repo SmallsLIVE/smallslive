@@ -138,12 +138,67 @@
 
 {% block extra_js %}
   <script src="{% static 'js/store-base.js' %}"></script>
+    <script src="https://js.stripe.com/v3/"></script>
   <script>
     $(document).ready(function () {
-      $(document).on("click", ".confirmBtn", function () {
+      $(document).on("click", ".confirmBtn", async function (e) {
+          e.preventDefault();
         $('#loaderOverlay').fadeIn();
         $('.confirmBtn').prop('disabled', true);
-        this.closest("form").submit();
+        const stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
+        const response = await fetch("/api/create-payment-intent/", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      "X-CSRFToken": "{{ csrf_token }}"
+                  },
+                  body: JSON.stringify({
+                      amount: parseInt($('#hiddenAmountInput').val())
+                  })
+              });
+
+              const data = await response.json();
+
+              if (data.error) {
+                  window.location.href =
+                        "{% url 'checkout:payment-details' %}?stripe_error=" +
+                        encodeURIComponent(error.message);
+                    return;
+              }
+
+              const clientSecret = data.client_secret;
+
+              const cardTokenInput = document.querySelector('input[name="card_token"]');
+              let cardToken = cardTokenInput ? cardTokenInput.value : null;
+
+              const { error, paymentIntent } = await stripe.confirmCardPayment(
+                  clientSecret,
+                  {
+                      payment_method: cardToken
+                  }
+              );
+
+              if (error) {
+                    window.location.href =
+                        "{% url 'checkout:payment-details' %}?stripe_error=" +
+                        encodeURIComponent(error.message);
+                    return;
+                }
+
+              if (paymentIntent.status === "requires_capture") {
+                  cardToken = paymentIntent.id;
+                  if (cardTokenInput) {
+                      cardTokenInput.value = paymentIntent.id;
+                  }
+                  this.closest("form").submit();
+              }
+              else {
+                  window.location.href =
+                        "{% url 'checkout:payment-details' %}?stripe_error=" +
+                        encodeURIComponent(error.message);
+                    return;
+              }
+        {#this.closest("form").submit();#}
         setTimeout(function () {
           $('#loaderOverlay').fadeOut();
         }, 2500);
