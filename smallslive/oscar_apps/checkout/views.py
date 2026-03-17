@@ -9,6 +9,7 @@ from django.forms.models import model_to_dict
 from django.shortcuts import redirect
 from django.utils import six
 from django.views.generic import View
+from funcy import none
 from oscar.apps.address.models import Country
 from oscar.apps.checkout import views as checkout_views, signals
 from oscar.apps.checkout.exceptions import FailedPreCondition, PassedSkipCondition
@@ -567,12 +568,49 @@ class PaymentDetailsView(PayPalMixin, StripeMixin, AssignProductMixin,
                 else:
                     msg = _(
                         "'%(title)s' is no longer available to buy (%(reason)s). "
-                        "Please adjust your basket to continue"
+                        "Please adjust your basket to continue..."
                     ) % {
                               'title': product_title,
                               'reason': quantity}
-                    custom_message.append(msg)
 
+                    stripe_secret_key = request.basket.get_tickets_event().venue.get_stripe_secret_key
+                    card_token = request.POST.get('card_token')
+
+                    if request.POST.get('payment_method') == 'credit-card' and card_token:
+                        try:
+                            stripe.PaymentIntent.cancel(
+                                card_token,
+                                api_key=stripe_secret_key
+                            )
+                            msg += _(
+                                "Your payment was canceled and no funds were charged. "
+                                "Any temporary hold shown by your bank will disappear automatically. "
+                                "Please contact your corresponding bank."
+                            )
+                        except stripe.error.StripeError as e:
+                            # Log the Stripe error for internal tracking
+                            logger.error(
+                                "Stripe error while canceling PaymentIntent %s: %s",
+                                card_token, getattr(e, "user_message", str(e))
+                            )
+                            # Add a friendly hint for the user
+                            msg += _(
+                                "Your payment is being canceled. No money was charged "
+                                "Any temporary hold by your bank will be released soon. "
+                                "Please contact your corresponding bank."
+                            )
+                        except Exception as e:
+                            logger.exception(
+                                "Unexpected error while canceling PaymentIntent %s: %s",
+                                card_token, str(e)
+                            )
+                            # Same friendly hint
+                            msg += _(
+                                "Your payment is being canceled. No money was charged "
+                                "Any temporary hold by your bank will be released soon. "
+                                "Please contact your corresponding bank."
+                            )
+                    custom_message.append(msg)
                     try:
                         self.check_pre_conditions(request)
                     except FailedPreCondition as e:
@@ -1420,20 +1458,42 @@ class CreatePaymentIntentView(APIView):
     def post(self, request):
         basket = request.basket
         basket_lines = basket.all_lines()
-        basket_total = basket.total_incl_tax
-        venue = basket_lines[0].product.event_set.event.venue
-        amount = int(basket_total * 100)
-        try:
-            intent = stripe.PaymentIntent.create(
-                amount=amount,
-                currency='usd',
-                payment_method_types=['card'],
-                capture_method='manual',
-                payment_method_options={'card': {'request_three_d_secure': 'any'}},  # for testing 3DS
-                api_key=venue.get_stripe_secret_key
-            )
-            return Response({"client_secret": intent.client_secret})
-        except Exception as e:
-            return Response({"error": str(e)}, status=400)
+        quantity = None
+        with transaction.atomic():
+            for line in basket_lines:
+                quantity = line.quantity
+                if line.product.stockrecords.exists():
+                    in_stock_item = line.product.stockrecords.select_for_update().first()
+                    in_stock = in_stock_item.net_stock_level
+
+            if quantity <= in_stock:
+                basket_total = basket.total_incl_tax
+                venue = basket_lines[0].product.event_set.event.venue
+                amount = int(basket_total * 100)
+                try:
+                    intent = stripe.PaymentIntent.create(
+                        amount=amount,
+                        currency='usd',
+                        payment_method_types=['card'],
+                        capture_method='manual',
+                        payment_method_options={'card': {'request_three_d_secure': 'any'}},  # for testing 3DS
+                        api_key=venue.get_stripe_secret_key
+                    )
+                    return Response({"client_secret": intent.client_secret})
+                except Exception as e:
+                    return Response({"error": str(e)}, status=400)
+            else:
+                product_title = basket_lines[0].product.title
+                msg = _(
+                    "'%(title)s' is no longer available to buy (%(reason)s). "
+                    "Please adjust your basket to continue"
+                ) % {
+                    'title': product_title,
+                    'reason': quantity
+                }
+                return Response({
+                    "error": msg
+                }, status=400)
+
 
 api_create_intent = CreatePaymentIntentView.as_view()
