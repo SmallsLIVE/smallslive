@@ -146,8 +146,16 @@
           e.preventDefault();
         $('#loaderOverlay').fadeIn();
         $('.confirmBtn').prop('disabled', true);
-        const stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
-        const response = await fetch("/api/create-payment-intent/", {
+
+        const paymentMethodInput = document.querySelector('input[name="payment_method"]');
+        const paymentMethod = paymentMethodInput ? paymentMethodInput.value : null;
+
+        if(paymentMethod !== 'credit-card'){
+            this.closest("form").submit();
+        }
+        else{
+            const stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
+            const response = await fetch("/api/create-payment-intent/", {
                   method: "POST",
                   headers: {
                       "Content-Type": "application/json",
@@ -206,7 +214,9 @@
                         encodeURIComponent(error.message);
                     return;
               }
-        {#this.closest("form").submit();#}
+        }
+
+
         setTimeout(function () {
           $('#loaderOverlay').fadeOut();
         }, 2500);
