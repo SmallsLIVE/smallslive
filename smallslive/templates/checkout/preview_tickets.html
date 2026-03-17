@@ -126,7 +126,7 @@
                   <div class="my-loader"></div>
                 </div>
                  <div class="button-row button-row-margin-all confirm-button">
-                     <button class="button-bordered confirmBtn" type="submit">Confirm</button>
+                     <button class="button-bordered confirmBtn" type="submit" disabled>Confirm</button>
                 </div>
             </form>
           {% endblock %}
@@ -140,7 +140,8 @@
   <script src="{% static 'js/store-base.js' %}"></script>
     <script src="https://js.stripe.com/v3/"></script>
   <script>
-    $(document).ready(function () {
+    $(window).on("load",function () {
+        $('.confirmBtn').prop('disabled', false);
       $(document).on("click", ".confirmBtn", async function (e) {
           e.preventDefault();
         $('#loaderOverlay').fadeIn();
@@ -162,7 +163,7 @@
               if (data.error) {
                   window.location.href =
                         "{% url 'checkout:payment-details' %}?stripe_error=" +
-                        encodeURIComponent(error.message);
+                        encodeURIComponent(data.error);
                     return;
               }
 
@@ -170,6 +171,13 @@
 
               const cardTokenInput = document.querySelector('input[name="card_token"]');
               let cardToken = cardTokenInput ? cardTokenInput.value : null;
+
+              if (!cardToken) {
+                  window.location.href =
+                        "{% url 'checkout:payment-details' %}?stripe_error=" +
+                        encodeURIComponent("Something went wrong with your card. Please try again.");
+                    return;
+                }
 
               const { error, paymentIntent } = await stripe.confirmCardPayment(
                   clientSecret,

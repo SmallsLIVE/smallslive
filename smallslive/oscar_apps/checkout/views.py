@@ -1483,7 +1483,17 @@ class CreatePaymentIntentView(APIView):
                 except Exception as e:
                     return Response({"error": str(e)}, status=400)
             else:
-                print("Stock out")
+                product_title = basket_lines[0].product.title
+                msg = _(
+                    "'%(title)s' is no longer available to buy (%(reason)s). "
+                    "Please adjust your basket to continue"
+                ) % {
+                    'title': product_title,
+                    'reason': quantity
+                }
+                return Response({
+                    "error": msg
+                }, status=400)
 
 
 api_create_intent = CreatePaymentIntentView.as_view()
