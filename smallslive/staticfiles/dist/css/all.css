@@ -28413,10 +28413,10 @@ label[for="photo-clear_id"] {
 .jazz_new_logo {
   pointer-events: auto; }
   .jazz_new_logo img {
-    max-width: 350px; }
+    max-width: 250px; }
     @media (max-width: 960px) {
       .jazz_new_logo img {
-        max-width: 250px; } }
+        max-width: 120px; } }
 
 .store-header {
   padding: 0 30px;
