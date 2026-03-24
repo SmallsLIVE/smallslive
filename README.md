@@ -1,43 +1,81 @@
-# SmallsLIVE instructions
+# Branch Mapping
 
-[ ![Codeship Status for SmallsLIVE/smallslive](https://www.codeship.io/projects/fa4ca030-7922-0130-982f-123138094421/status?branch=master)](https://www.codeship.io/projects/2192)
-[![Coverage Status](https://coveralls.io/repos/github/SmallsLIVE/smallslive/badge.svg?branch=HEAD)](https://coveralls.io/github/SmallsLIVE/smallslive?branch=HEAD)
+- `develop_2026` -> [dev branch](https://github.com/SmallsLIVE/smallslive/tree/develop_2026)
+- `production_2026` -> [prod branch](https://github.com/SmallsLIVE/smallslive/tree/production_2026)
 
-1. Install pip: `easy_install pip`
-2. Install virtualenv: `pip install virtualenv`
-3. Create a new virtualenv: `virtualenv /home/<user_name>/.virtualenvs/smallslive`
-4. Activate virtualenv: `source /home/<user_name>/.virtualenvs/smallslive/bin/activate`
-5. Clone the repo: `git clone git@github.com:SmallsLIVE/smallslive.git /home/<user_name>/projects/smallslive`
-6. Go to the project folder: `cd /home/<user_name>/projects/smallslive`
-7. Install the project requirements: `pip install -r requirements.txt`
-8. Edit the `smallslive/smallslive/settings.py` with the correct DB settings for local development
-9. Run the django server: `python smallslive/manage.py runserver` and access it at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+# Development Guide using Docker Compose
 
-# Troubleshooting
+This project uses Docker Compose for local development, staging, and production environments.
 
-If you get a notice from Heroku that says:
+## Local Development
 
-```
-Your database postgresql-pointy-2352 standard-0 (GOLD on smallslive-metrics) must undergo maintenance.
+To start the local development environment:
+
+```bash
+docker compose -f docker-compose.dev.yaml up --build
 ```
 
-Take heed! This means that within some time period the DB is going to be automatically updated and it will get a new IP address. You can adjust the maintenance period by running `heroku pg:maintenance:window GOLD "Tuesday 14:30"`
+### Common Commands (Local)
 
-Once the migration is done, you'll get another email like this:
+- **Run Migrations**:
+  ```bash
+  docker compose -f docker-compose.dev.yaml exec web python manage.py migrate
+  ```
+- **Create Superuser**:
+  ```bash
+  docker compose -f docker-compose.dev.yaml exec web python manage.py createsuperuser
+  ```
+- **Access Logs**:
+  ```bash
+  docker compose -f docker-compose.dev.yaml logs -f
+  ```
 
+## Staging Environment
+
+To run the application in a staging environment:
+
+```bash
+docker compose -f docker-compose.stage.yaml up -d
 ```
-Maintenance on your database postgresql-pointy-2352 standard-0 (GOLD on smallslive-metrics) has been completed and your database is now back online.
+
+## Production Environment
+
+To run the application in production:
+
+```bash
+docker compose up -d
 ```
 
-Now you need to go into the `METRICS_DB_URL` in the smallslive app config vars, and change it to the new one:
-First, go here and find the `DATABASE_URL` string (you have to click on the "Reveal config vars" button:
-https://dashboard.heroku.com/apps/smallslive-metrics/settings
+---
 
-Copy the `DATABASE_URL` string.
+# Deployment Process
 
-Then, go here and find the `METRICS_DB_URL` config var (again, you have to click the "Reveal config vars" button):
-https://dashboard.heroku.com/apps/smallslive/settings
+To deploy the application to EC2, follow these steps based on the environment:
 
-Paste the previously copied `DATABASE_URL` string into the `METRICS_DB_URL` field and save the form.
+1. **SSH into the EC2 instance**:
+   ```bash
+   ssh <user>@<ec2-ip-address>
+   ```
 
-Now the SmallsLIVE app should be pointing to the updated DB, and the site should be operating as normal.
+2. **Navigate to the project directory**:
+   ```bash
+   cd smallslive
+   ```
+
+3. **Pull the latest changes**:
+   ```bash
+   git pull origin <branch-name>
+   ```
+   *(Use `develop_2026` for staging and `production_2026` for production)*
+
+4. **Deploy using Docker Compose**:
+
+   - **For Staging**:
+     ```bash
+     docker compose -f docker-compose.stage.yaml up -d --build
+     ```
+
+   - **For Production**:
+     ```bash
+     docker compose up -d --build
+     ```
