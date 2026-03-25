@@ -25,6 +25,7 @@ class VenueSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     venue = VenueSerializer(read_only=True)
     set_hours_display = serializers.SerializerMethodField()
+    absolute_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Event
@@ -32,6 +33,9 @@ class EventSerializer(serializers.ModelSerializer):
 
     def get_set_hours_display(self, obj):
         return obj.get_set_hours_display()
+
+    def get_absolute_url(self, obj):
+        return obj.get_absolute_url()
 
 
 class JazzPhotoSerializer(serializers.ModelSerializer):
