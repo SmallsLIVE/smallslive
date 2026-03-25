@@ -104,7 +104,7 @@ function eventHref(ev) {
   const siteUrl = import.meta.env.VITE_SITE_URL ?? "";
 
   if (ev?.id && ev?.slug) {
-    return `${siteUrl}/events/${ev.id}-${ev.slug}/`;
+    return new URL(ev.absolute_url, siteUrl).href;
   }
 
   return "#";
