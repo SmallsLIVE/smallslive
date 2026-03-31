@@ -2,14 +2,11 @@
   <div class="modal-dialog">
     <div class="modal-content custom-modal">
       <div class="modal-body text-left">
-        <p class="text4" tabindex="0">You are purchasing tickets for:
-          {% if event.get_venue_name == 'Mezzrow' %}
-            Mezzrow located at 163 West 10th Street<br>
-          {% elif event.get_venue_name == 'Smalls' %}
-            Smalls Jazz Club located at 183 West 10th Street<br>
-          {% elif event.get_venue_name == 'Jazzcultural' %}
-            Jazzcultural located at 349 West 46th Street<br>
-          {% endif %}
+        <p class="title2" tabindex="0">
+          This is a ticket for Jazzcultural<br>
+          Jazzcultural is located at 349 w. 46th street
+          between 8th and 9th ave on “Restaurant Row”.<br>
+          Please confirm this is not for Smalls or Mezzrow.
         </p>
         <br>
         {% comment %}

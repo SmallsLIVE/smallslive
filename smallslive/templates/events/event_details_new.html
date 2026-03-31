@@ -70,6 +70,7 @@
                                                                         data-ticket-price="{{ session.price.excl_tax }}"
                                                                         data-ticket-availability="{{ session.availability.num_available }}"
                                                                         data-walk-in-price="{{ product.event_set.walk_in_price }}"
+                                                                        data-venue="{{ event.get_venue_name }}"
                                                                         class="buy-tickets white-border-button"
                                                                         style="display: inline;">{{ product.set }}</button>
                                                                 {% include 'events/buy_tickets_dialog_new.html' %}
@@ -324,7 +325,13 @@
                 $('#ticket-price').text($(this).data('ticket-price'));
                 $('#walk-in-price').text($(this).data('walk-in-price'));
                 $('#ticket-available').text($(this).data('ticket-availability'));
-                $('#buy-tickets-dialog').modal('show');
+
+                var venue = $(this).data('venue');
+                if (venue === 'Jazzcultural') {
+                    $('#ticket-first-dialog').modal('show');
+                } else {
+                    $('#buy-tickets-dialog').modal('show');
+                }
 
                 {% if user.is_authenticated %}
 
@@ -371,6 +378,12 @@
                 event.preventDefault();
                 $('#buy-tickets-dialog').modal('toggle');
                 $('#ticket-confirmation-dialog').modal('show');
+            });
+
+             $('#confirm-first-dialog').click(function (event) {
+                event.preventDefault();
+                $('#ticket-first-dialog').modal('toggle');
+                $('#buy-tickets-dialog').modal('show');
             });
 
             $('#cancel-buy-tickets').click(function (event) {

@@ -27267,8 +27267,7 @@ form .back-to-payment-btn {
     font-family: 'Oswald', sans-serif;
     font-weight: 400;
     font-size: 24px;
-    direction: rtl;
-    text-align: justify; }
+    text-align: center; }
 
 .ticket-confirmation-page .title2 {
   font-size: 22px;

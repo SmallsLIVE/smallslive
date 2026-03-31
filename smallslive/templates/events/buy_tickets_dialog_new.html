@@ -7,18 +7,19 @@
         {% else %}
 
         {% endif %}
-        <p class="title2" tabindex="0">You are purchasing tickets for:<br>
+        <p class="title2" tabindex="0">This ticket is for:
           <span class="text-capitalize">{{ event.title }}</span><br>
-          On: {{ event.date }}<br>
-          Time: <span id="ticket-time"></span><br>
+          {% comment %} On: {{ event.date }}<br> {% endcomment %}
           {% if event.get_venue_name == 'Mezzrow' %}
-            Location: Mezzrow (163 w. 10th Street)<br>
+            Located at: Mezzrow (163 w. 10th Street)<br>
           {% elif event.get_venue_name == 'Smalls' %}
-            Location: Smalls Jazz Club (183 w. 10th Street)<br>
+            Located at: Smalls Jazz Club (183 w. 10th Street)<br>
           {% elif event.get_venue_name == 'Jazzcultural' %}
-            Location: Jazzcultural (349 w. 46th Street)<br>
+            Located at: Jazzcultural (349 W. 46th street between 8th and 9th Ave on “Restaurant Row”)<br>
           {% endif %}
+          Set at: <span id="ticket-time"></span><br>
           Ticket prices for this show is: $<span id="ticket-price" tabindex="0"></span><br><br>
+          Please arrive 30 min before the start time for ticket holder line.<br>
           {% comment %} <span class="text-danger" style="font-weight: bold">There are currently <span id="ticket-available" tabindex="0"></span> tickets
               available.</span> {% endcomment %}
         </p>
