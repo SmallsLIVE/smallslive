@@ -3,6 +3,7 @@ import { useInfiniteScroll } from '@vueuse/core'
 import Header from '@/components/Header.vue';
 import eventService from '@/services/eventService';
 import { computed, onMounted, ref } from 'vue'
+import Newsletter from '@/components/Newsletter.vue';
 
 const loading = ref(false)
 const venueId = 3
@@ -116,6 +117,7 @@ function eventHref(ev) {
   <section class="relative overflow-hidden">
     <div class="relative main-section mx-auto max-w-5xl md:mt-5 mb-10 h-auto rounded-[10px] px-4 py-5 font-raleway">
       <div class="text-center">
+        <Newsletter />
         <h1 class="text-[28px] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
           SCHEDULE
         </h1>
