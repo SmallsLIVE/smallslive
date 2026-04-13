@@ -20,7 +20,7 @@
           </label>
 
           <!-- Input + Button inline -->
-          <div class="flex items-stretch gap-0">
+          <div class="flex flex-col sm:flex-row items-stretch gap-2 sm:gap-0">
             <input
               v-model="email"
               type="email"
@@ -33,7 +33,7 @@
             <button
               @click.prevent="subscribe"
               :disabled="isLoading"
-              class="px-6 py-3 bg-transparent border border-l-0 cursor-pointer border-white text-white text-sm font-semibold tracking-widest uppercase hover:bg-white hover:text-black transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-r-sm whitespace-nowrap"
+              class="px-6 py-3 bg-transparent border md:border-l-0 cursor-pointer border-white text-white text-sm font-semibold tracking-widest uppercase hover:bg-white hover:text-black transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-r-sm whitespace-nowrap"
             >
               {{ isLoading ? 'Subscribing...' : 'Subscribe' }}
             </button>
