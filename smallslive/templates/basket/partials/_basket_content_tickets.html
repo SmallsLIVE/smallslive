@@ -18,8 +18,7 @@
                     Tickets for <span>{{ event.title }}</span>
                   {% endif %}
                   {% comment %} <div>"{{ event.title }}"</div> {% endcomment %}
-                  {% comment %} <div>On</div>
-                  <div>{{ event.date }}</div> {% endcomment %}
+                  <div>On {{ event.date|date:"l, F jS Y" }}</div>
                   {% comment %} <div>At</div>
                   <div>{{ product.event_set.start|time:'g:i A' }}</div> {% endcomment %}
                   <div>At {{ product.event_set.start|time:'g:i A' }}</div>
