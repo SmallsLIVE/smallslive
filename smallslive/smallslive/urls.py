@@ -105,6 +105,7 @@ urlpatterns = [
     url(r'^about/$', about, name="about"),
     url(r'^catalog/$', CatalogueView.as_view(), name="catalog"),
     url(r'^contact/$', contact, name="contact"),
+    url(r'^newsletter/$', newsletter, name="newsletter"),
     url(r'^old/$', old_home, name="old_home"),
     url(r'^styles/$', styleguide, name="styles"),
     url(r'^donate/$', RedirectView.as_view(url=reverse_lazy('donate'), permanent=True)),
