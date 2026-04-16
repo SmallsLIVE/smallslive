@@ -19,6 +19,9 @@
                 <li>
                     <RouterLink to="/info"><img src="/navbar_images/info.png" class="img-responsive w-[150px] mx-auto mb-0 md:mb-4 mezzrow-logo"></RouterLink>
                 </li>
+                <li>
+                    <RouterLink to="/newsletter">Newsletter</RouterLink>
+                </li>
             </ul>
         </div>
     </header>
@@ -34,7 +37,8 @@
   display: inline-block;
   font-size: 14px;
   font-weight: 700;
-  color: #F16722;
+  /* color: #F16722; */
+  color: white;
   line-height: 22px;
   padding: 4px 15px;
   text-transform: uppercase;

@@ -4,6 +4,7 @@ import ReserveView from "@/views/ReserveView.vue";
 import ScheduleView from "@/views/ScheduleView.vue";
 import WhoWeAre from "@/views/WhoWeAre.vue";
 import SmallsliveView from "@/views/SmallsliveView.vue";
+import NewsletterView from "@/views/NewsletterView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -34,6 +35,11 @@ const router = createRouter({
       path: "/photos",
       name: "photos",
       component: PhotoView,
+    },
+    {
+      path: "/newsletter",
+      name: "newsletter",
+      component: NewsletterView,
     },
     {
       path: "/:pathMatch(.*)*",

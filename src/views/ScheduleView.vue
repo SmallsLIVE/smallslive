@@ -117,7 +117,7 @@ function eventHref(ev) {
   <section class="relative overflow-hidden">
     <div class="relative main-section mx-auto max-w-5xl md:mt-5 mb-10 h-auto rounded-[10px] px-4 py-5 font-raleway">
       <div class="text-center">
-        <Newsletter />
+        <!-- <Newsletter /> -->
         <h1 class="text-[28px] md:text-[2.5rem] font-bold tracking-[0.2em] uppercase">
           SCHEDULE
         </h1>
