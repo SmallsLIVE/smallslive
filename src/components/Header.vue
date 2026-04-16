@@ -19,7 +19,7 @@
                 <li>
                     <RouterLink to="/info"><img src="/navbar_images/info.png" class="img-responsive w-[150px] mx-auto mb-0 md:mb-4 mezzrow-logo"></RouterLink>
                 </li>
-                <li>
+                <li class="pt-1">
                     <RouterLink to="/newsletter">Newsletter</RouterLink>
                 </li>
             </ul>
