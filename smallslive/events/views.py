@@ -863,6 +863,17 @@ class ContactView(TemplateView, UpcomingSearchView):
 contact = ContactView.as_view()
 
 
+class NewsletterView(TemplateView, UpcomingSearchView):
+    template_name = 'basic_pages/newsletter.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(NewsletterView, self).get_context_data(**kwargs)
+        return context
+
+
+newsletter = NewsletterView.as_view()
+
+
 
 
 class ScheduleCarouselAjaxView(DetailView):

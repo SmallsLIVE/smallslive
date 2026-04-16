@@ -1,0 +1,10 @@
+{% extends "home_new.html" %}
+{% load static from staticfiles %}
+
+{% block title %}Newsletter{% endblock %}
+
+{% block home_content %}
+    <main class="static-content basic-page newsletter-page">
+        {% include 'partials/newsletter.html' %}
+    </main>
+{% endblock home_content %}
