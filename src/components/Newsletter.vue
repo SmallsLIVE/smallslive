@@ -1,9 +1,9 @@
 <template>
-  <section id="mc_embed_shell" class="py-5">
+  <section id="mc_embed_shell" class="py-5 md:py-3">
     <div class="container mx-auto px-4">
       <div class="flex flex-col items-center">
 
-        <div id="mc_embed_signup" class="w-full max-w-xl">
+        <div id="mc_embed_signup" class="w-full max-w-xl md:max-w-xs">
 
           <!-- Response messages -->
           <div v-if="errorMessage"
@@ -15,7 +15,7 @@
             v-html="successMessage"
           />
 
-          <label for="mce-EMAIL" class="block text-white text-sm font-medium mb-3 tracking-wide uppercase">
+          <label for="mce-EMAIL" class="block text-white text-sm font-medium mb-3 md:mb-2 tracking-wide uppercase">
             Subscribe to our newsletter
           </label>
 
@@ -28,12 +28,12 @@
               name="EMAIL"
               required
               placeholder="Email address"
-              class="flex-1 px-4 py-3 bg-transparent border border-white text-white placeholder-gray-400 text-sm focus:outline-none focus:border-gray-300 rounded-l-sm"
+              class="flex-1 px-4 py-3 md:py-2 md:px-3 bg-transparent border border-white text-white placeholder-gray-400 text-sm md:text-xs focus:outline-none focus:border-gray-300 rounded-l-sm"
             />
             <button
               @click.prevent="subscribe"
               :disabled="isLoading"
-              class="px-6 py-3 bg-transparent border md:border-l-0 cursor-pointer border-white text-white text-sm font-semibold tracking-widest uppercase hover:bg-white hover:text-black transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-r-sm whitespace-nowrap"
+              class="px-6 md:px-4 py-3 md:py-2 bg-transparent border md:border-l-0 cursor-pointer border-white text-white text-sm md:text-xs font-semibold tracking-widest uppercase hover:bg-white hover:text-black transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-r-sm whitespace-nowrap"
             >
               {{ isLoading ? 'Subscribing...' : 'Subscribe' }}
             </button>
