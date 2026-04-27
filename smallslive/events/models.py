@@ -1290,8 +1290,12 @@ class EventSet(models.Model):
             start_time = start_time + timedelta(days=1)
 
         time_difference = start_time - current_time
-        if time_difference <= timedelta(minutes=15):
-            return False
+        if self.event.get_venue_name() == 'Jazzcultural':
+            if time_difference < timedelta(0):
+                return False
+        else:
+            if time_difference <= timedelta(minutes=15):
+                return False
 
         return True
 
@@ -1301,6 +1305,9 @@ class EventSet(models.Model):
         start_time = make_aware(start_time, get_current_timezone())
         if start_time.hour == 0 and start_time.minute == 0:
             start_time = start_time + timedelta(days=1)
+
+        if self.event.get_venue_name() == 'Jazzcultural':
+            return start_time
 
         return start_time - timedelta(minutes=15)
 
