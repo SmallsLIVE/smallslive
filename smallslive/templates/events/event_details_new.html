@@ -301,10 +301,7 @@
                 var cutoffTime = $(this).data('ticket-purchase-cutoff');
                 var cutoffDate = moment(cutoffTime);
                 var currentTime = moment();
-                console.log("Current time",currentTime);
-                console.log("Cutoff time",cutoffTime);
                 if (currentTime.isAfter(cutoffDate)) {
-                    console.log("Hiding button");
                     $(this).hide();
                 }
             });
