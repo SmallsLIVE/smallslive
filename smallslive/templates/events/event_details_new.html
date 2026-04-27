@@ -66,7 +66,7 @@
                                                                 <button type='submit'
                                                                         data-ticket-name="{{ product.set }}"
                                                                         data-ticket-time="{{ product.event_set.start|time:'g:i A' }}"
-                                                                        data-ticket-purchase-cutoff="{{ product.event_set.ticket_purchase_cutoff_time|date:'Y-m-d H:i' }}"
+                                                                        data-ticket-purchase-cutoff="{{ product.event_set.ticket_purchase_cutoff_time|date:'c' }}"
                                                                         data-ticket-price="{{ session.price.excl_tax }}"
                                                                         data-ticket-availability="{{ session.availability.num_available }}"
                                                                         data-walk-in-price="{{ product.event_set.walk_in_price }}"
@@ -299,9 +299,12 @@
             var availableEventTickets = $(".buy-tickets");
             availableEventTickets.each(function() {
                 var cutoffTime = $(this).data('ticket-purchase-cutoff');
-                var cutoffDate = moment(cutoffTime, 'YYYY-MM-DD HH:mm');
+                var cutoffDate = moment(cutoffTime);
                 var currentTime = moment();
+                console.log("Current time",currentTime);
+                console.log("Cutoff time",cutoffTime);
                 if (currentTime.isAfter(cutoffDate)) {
+                    console.log("Hiding button");
                     $(this).hide();
                 }
             });
