@@ -56,6 +56,12 @@
   <script src="{% static 'js/event_form.js' %}"></script>
   <script>
 
+    // Prevent number inputs from changing on scroll
+
+    document.querySelectorAll('input[type=number]').forEach(input => {
+      input.addEventListener('wheel', e => e.preventDefault(), { passive: false });
+    });
+
     function checkTicketFormVisibility(element) {
       $full_form = $(element).parents(".form-group").next();
         if($(element).is(':checked')) {
