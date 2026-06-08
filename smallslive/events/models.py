@@ -3,8 +3,8 @@ import time
 import functools
 from cryptography.fernet import Fernet
 from django.core.cache import cache
-from django.db.models import Count, Max, Q, Sum, Case, When, F, DateTimeField, ExpressionWrapper, Value
-from django.db.models.functions import ExtractHour, ExtractMinute
+from django.db.models import Count, Max, Q, Sum, Case, When, F, DateTimeField, ExpressionWrapper, Value, IntegerField
+from django.db.models.functions import ExtractHour, ExtractMinute, Cast, Coalesce, NullIf
 from django.utils.timezone import make_aware, get_current_timezone
 from django.conf import settings
 from django.core.files.base import File
@@ -1086,7 +1086,10 @@ class Event(TimeStampedModel):
     def get_artists_info_dict(self):
         # DOCUMENT: Why is this necessary.
         event_artists_info = []
-        for gig in self.artists_gig_info.select_related('artist', 'role'):
+        gigs = self.artists_gig_info.select_related('artist', 'role').order_by(
+            Cast(Coalesce(NullIf('sort_order', Value('')), Value('0')), IntegerField())
+        )
+        for gig in gigs:
             event_artists_info.append({
                 'name': gig.artist.full_name(),
                 'role': gig.role.name,

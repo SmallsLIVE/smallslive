@@ -4,6 +4,8 @@ from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Layout, Field, LayoutObject, TEMPLATE_PACK
 from django import forms
+from django.db.models import IntegerField, Value
+from django.db.models.functions import Cast, Coalesce, NullIf
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.template import Context
@@ -79,6 +81,15 @@ class GigPlayedAddInlineFormSet(InlineFormSet):
 
 class GigPlayedEditInlineFormset(GigPlayedAddInlineFormSet):
     factory_kwargs = {'can_delete': True, 'extra': 1 }
+
+    def get_formset_kwargs(self):
+        kwargs = super(GigPlayedEditInlineFormset, self).get_formset_kwargs()
+        kwargs['queryset'] = GigPlayed.objects.order_by(
+            'event',
+            Cast(Coalesce(NullIf('sort_order', Value('')), Value('0')), IntegerField()),
+            'is_leader'
+        )
+        return kwargs
 
     def construct_formset(self):
         # don't automatically show extra rows if there are artists already playing
