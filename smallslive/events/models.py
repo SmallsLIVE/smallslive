@@ -1246,7 +1246,16 @@ class EventSet(models.Model):
         return '{} - {}'.format(self.start, self.end)
 
     def save(self, *args, **kwargs):
+        old_start = None
+        if self.pk:
+            old_start = EventSet.objects.filter(pk=self.pk).values_list('start', flat=True).first()
+
         obj = super(EventSet, self).save(*args, **kwargs)
+
+        # Rebuild ticket set names from the new start time, matching how they
+        # are named on creation (see dashboard catalogue ProductForm).
+        if old_start and old_start != self.start:
+            self.tickets.update(set=self.start.strftime('%-I:%M %p'))
 
         # Keep actual start, end dates of the event.
         (self.event.start, self.event.end) = self.event.get_actual_start_end()

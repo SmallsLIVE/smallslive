@@ -493,6 +493,12 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
 
         return form
 
+    def forms_invalid(self, form, inlines):
+        for formset in inlines:
+            for error in formset.non_form_errors():
+                messages.error(self.request, error)
+        return super(EventEditView, self).forms_invalid(form, inlines)
+
     def post(self, *args, **kwargs):
         response = super(EventEditView, self).post(*args, **kwargs)
         check_staff_picked(self.object, self.request.POST.get('staff_pick', 'off') == 'on')
