@@ -1,13 +1,34 @@
 from operator import attrgetter
 from collections import OrderedDict
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django.views.generic.detail import DetailView
 from natsort import natsorted
-from oscar.core.loading import get_class
+from oscar.core.loading import get_class, get_model
 from oscar.apps.dashboard.reports import views as oscar_views
 from events.models import Event, EventSet
+from events.reports import DELETED_EVENT_ID_OFFSET
 
 
 Line = get_class('order.models', 'Line')
+Order = get_model('order', 'Order')
+
+
+class _DeletedEventInfo(object):
+    def __init__(self, title, venue_name, date):
+        self.title = title
+        self.date = date
+        self._venue_name = venue_name
+
+    def get_venue_name(self):
+        return self._venue_name
+
+
+class _DeletedEventSetInfo(object):
+    start = None
+
+    def __init__(self, event):
+        self.event = event
 
 
 from django.http import HttpResponseForbidden, Http404
@@ -75,6 +96,46 @@ class TicketDetailsView(DetailView):
     template_name = 'dashboard/ticket_details.html'
     context_object_name = 'event_set'
     model = EventSet
+
+    def get(self, request, *args, **kwargs):
+        pk = int(self.kwargs['pk'])
+        if pk >= DELETED_EVENT_ID_OFFSET:
+            context = self.get_deleted_event_context(pk - DELETED_EVENT_ID_OFFSET)
+            return self.render_to_response(context)
+        return super(TicketDetailsView, self).get(request, *args, **kwargs)
+
+    def get_deleted_event_context(self, line_pk):
+        line = get_object_or_404(Line, pk=line_pk, product__isnull=True)
+        lines = Line.objects.filter(
+            order__order_type=Order.TICKET,
+            product__isnull=True,
+            title=line.title,
+            partner_name=line.partner_name,
+        ).exclude(
+            status='Cancelled',
+        ).exclude(
+            status='Exchanged',
+        ).select_related('order').order_by('order__last_name')
+
+        tickets = [ticket for ticket in lines if ticket.order.status != 'Cancelled']
+        total_tickets_sold = sum(ticket.quantity for ticket in tickets)
+
+        date_placed = line.order.date_placed
+        event = _DeletedEventInfo(
+            line.title,
+            line.partner_name,
+            timezone.localtime(date_placed).date() if date_placed else None)
+        event_set = _DeletedEventSetInfo(event)
+
+        return {
+            'event': event,
+            'event_set': event_set,
+            'show_data': [{
+                'event_set': event_set,
+                'tickets': tickets,
+                'total_tickets_sold': total_tickets_sold,
+            }],
+        }
 
     def get_context_data(self, **kwargs):
         """
