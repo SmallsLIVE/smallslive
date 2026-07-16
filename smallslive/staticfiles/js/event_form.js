@@ -211,7 +211,8 @@ EventForm = {
       EventForm.propagateSets(start, end, setDuration);
     });
 
-    this.addSlotButtons(moment().isoWeekday());
+    // Hide predefined set-time buttons on the add/edit gig form (disabled per request)
+    // this.addSlotButtons(moment().isoWeekday());
   },
   configureTimePicker: function(firstRow) {
     firstRow.find("input.timeinput").each(function() {
