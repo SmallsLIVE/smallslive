@@ -211,7 +211,8 @@ EventForm = {
       EventForm.propagateSets(start, end, setDuration);
     });
 
-    this.addSlotButtons(moment().isoWeekday());
+    // Hide predefined set-time buttons on the add/edit gig form (disabled per request)
+    // this.addSlotButtons(moment().isoWeekday());
   },
   configureTimePicker: function(firstRow) {
     firstRow.find("input.timeinput").each(function() {
@@ -234,60 +235,76 @@ EventForm = {
       });
     });
   },
+  setRowStartEnd: function(row, start, duration) {
+    var startMoment = start.clone();
+    var endMoment = startMoment.clone().add(duration, "h");
+    var startPicker = row.find('input[id$="-start"]').data("DateTimePicker");
+    var endPicker = row.find('input[id$="-end"]').data("DateTimePicker");
+    if (startPicker) {
+      startPicker.setDate(startMoment);
+    }
+    if (endPicker) {
+      endPicker.setDate(endMoment);
+    }
+  },
+  markSetRowDeleted: function(row, deleted) {
+    row.find('input[id$="-DELETE"]').val(deleted ? true : "");
+  },
+  markSetsReplaced: function(table, replaced) {
+    var $form = table.closest("form");
+    var $flag = $form.find("#id_sets_replaced");
+    if (!$flag.length) {
+      $flag = $('<input type="hidden" name="sets_replaced" id="id_sets_replaced">').appendTo($form);
+    }
+    $flag.val(replaced ? "1" : "");
+  },
   propagateSets: function(first, second = undefined, duration = 1) {
     var $setsTable = $(".event-set-list-form .formset_table");
-    var $setsTableBody = $(".event-set-list-form .formset_table tbody");
-    // Keep first row
-    var $firstClone = $setsTable.find("tbody tr:first").clone();
+    var $setsTableBody = $setsTable.find("tbody");
+    var $total = $("#id_sets-TOTAL_FORMS");
+    duration = parseInt(duration, 10) || 1;
 
-    //Remove original id and ensure is shown
-    $firstClone.find('input[id$="id"]').val("");
-    $firstClone.attr('style','display: table-row');
+    var desired = [first.clone()];
+    if (second) {
+      desired.push(second.clone());
+    }
+    var target = desired.length;
 
-    var total = 0;
-    $setsTable.find("tbody tr").each(function() {
+    var $template = $setsTableBody.find("tr").first().clone();
+    $template.find('input[id$="-id"]').val("");
+    $template.attr("style", "display: table-row");
+
+    var existing = [];
+    $setsTableBody.find("tr").each(function() {
       var row = $(this);
-      var value = row.find('input[id$="id"]').val();
-      if (value && value !== "") {
-        // Mark sets without id as deleted
-        total++;
-        row.hide();
-        var del = row.find('input[id$="DELETE"]')[0];
-        $(del).val(true);
+      if (row.find('input[id$="-id"]').val()) {
+        existing.push(row);
       } else {
-        // Remove new entered sets
         row.remove();
       }
     });
 
-    //
-    var $total = $("#id_sets-TOTAL_FORMS");
-    $total.val(total);
+    EventForm.markSetsReplaced($setsTable, target < existing.length);
 
-    var firstRow = EventForm.cloneMore($firstClone, undefined, "sets");
-    firstRow.appendTo($setsTableBody);
-    this.configureTimePicker(firstRow);
-    firstRow
-        .find("#id_sets-" + total + "-start")
-        .data("DateTimePicker")
-        .setDate(first);
-    firstRow
-        .find("#id_sets-" + total + "-end")
-        .data("DateTimePicker")
-        .setDate(first.add(duration, "h"));
+    var reuseCount = Math.min(target, existing.length);
+    $total.val(existing.length);
 
-    if (second) {
-      var secondRow = EventForm.cloneMore($firstClone, undefined, "sets");
-      secondRow.appendTo($setsTableBody);
-      this.configureTimePicker(secondRow);
-      secondRow
-          .find("#id_sets-" + (total + 1) + "-start")
-          .data("DateTimePicker")
-          .setDate(second);
-      secondRow
-          .find("#id_sets-" + (total + 1) + "-end")
-          .data("DateTimePicker")
-          .setDate(second.add(duration, "h"));
+    existing.forEach(function(row, i) {
+      if (i < reuseCount) {
+        EventForm.markSetRowDeleted(row, false);
+        row.attr("style", "display: table-row");
+        EventForm.setRowStartEnd(row, desired[i], duration);
+      } else {
+        EventForm.markSetRowDeleted(row, true);
+        row.hide();
+      }
+    });
+
+    for (var i = reuseCount; i < target; i++) {
+      var newRow = EventForm.cloneMore($template, undefined, "sets");
+      newRow.appendTo($setsTableBody);
+      EventForm.configureTimePicker(newRow);
+      EventForm.setRowStartEnd(newRow, desired[i], duration);
     }
 
     this.fixTableWidths($setsTable);
@@ -311,14 +328,9 @@ EventForm = {
     });
 
     $(document).on("click", ".artist_remove", function(e) {
-      // hide the entry and set the DELETE value to true so Django knows to delete it
-      $(this)
-          .parents("tr")
-          .hide();
-      var del = $(this)
-          .parents("tr")
-          .find('input[id$="DELETE"]')[0];
-      $(del).val(true);
+      var row = $(this).parents("tr");
+      row.hide();
+      EventForm.markSetRowDeleted(row, true);
       EventForm.fixTableWidths($setsTable);
       return false;
     });

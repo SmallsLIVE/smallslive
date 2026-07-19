@@ -1,9 +1,10 @@
 from datetime import datetime
-from oscar.core.loading import get_class
+from oscar.core.loading import get_class, get_model
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Layout, Field, LayoutObject, TEMPLATE_PACK
 from django import forms
+from django.forms.models import BaseInlineFormSet
 from django.db.models import IntegerField, Value
 from django.db.models.functions import Cast, Coalesce, NullIf
 from django.conf import settings
@@ -111,9 +112,87 @@ class GigPlayedInlineFormSetHelper(FormHelper):
         self.form_show_labels = False
 
 
+def event_set_has_sold_tickets(event_set):
+    Line = get_model('order', 'Line')
+    return Line.objects.filter(product__event_set=event_set).exists()
+
+
+class ProtectTicketedSetsFormSet(BaseInlineFormSet):
+    """Owns adding/updating/deleting an event's sets.
+
+    In bulk-replace mode (flagged by the front-end slot buttons) the submitted
+    rows are the desired set list and are reconciled against the existing sets,
+    keeping the ones with sold tickets so their orders survive Oscar's
+    cascading ``Product.event_set`` delete. Any other edit, including removing a
+    single set with the row button, uses the default save and is rejected if it
+    would delete a set that has sold tickets.
+    """
+
+    def _desired_specs(self):
+        specs = []
+        for form in self.forms:
+            data = getattr(form, 'cleaned_data', None)
+            if not data or data.get('DELETE') or not data.get('start'):
+                continue
+            specs.append(data)
+        return specs
+
+    def _is_bulk_replace(self):
+        return self.data.get('sets_replaced') == '1'
+
+    def clean(self):
+        super(ProtectTicketedSetsFormSet, self).clean()
+        if not self.instance.pk:
+            return
+        if self._is_bulk_replace():
+            sold = [s for s in self.instance.sets.all() if event_set_has_sold_tickets(s)]
+            if len(sold) > len(self._desired_specs()):
+                raise forms.ValidationError(
+                    "The event set you are trying to update or delete already "
+                    "has reservations. You can not delete a ticket which "
+                    "already has a reservation."
+                )
+            return
+        for form in self.forms:
+            data = getattr(form, 'cleaned_data', None)
+            if data and data.get('DELETE') and form.instance.pk and event_set_has_sold_tickets(form.instance):
+                raise forms.ValidationError(
+                    "The event set you are trying to update or delete already "
+                    "has reservations. You can not delete a ticket which "
+                    "already has a reservation."
+                )
+
+    def save(self, commit=True):
+        if not self._is_bulk_replace() or not self.instance.pk:
+            return super(ProtectTicketedSetsFormSet, self).save(commit=commit)
+
+        specs = self._desired_specs()
+        sold, unsold = [], []
+        for event_set in self.instance.sets.all():
+            (sold if event_set_has_sold_tickets(event_set) else unsold).append(event_set)
+        existing = sold + unsold
+        keep = existing[:len(specs)]
+
+        saved = []
+        for index, data in enumerate(specs):
+            event_set = keep[index] if index < len(keep) else EventSet(event=self.instance)
+            event_set.start = data['start']
+            event_set.end = data.get('end')
+            if data.get('walk_in_price') is not None:
+                event_set.walk_in_price = data['walk_in_price']
+            event_set.save()
+            saved.append(event_set)
+
+        for event_set in existing[len(specs):]:
+            event_set.delete()
+
+        return saved
+
+
 class EventSetInlineFormset(InlineFormSet):
     model = EventSet
     fields = ('start', 'end', 'walk_in_price')
+    formset_class = ProtectTicketedSetsFormSet
     factory_kwargs = {'can_delete': True, 'extra': 1 }
 
     def construct_formset(self):
