@@ -360,12 +360,14 @@ class OrderDetailView(DetailView):
                 message['refund_quantity'] = refund_quantity
                 for line in order.lines.all():
                     if line.status == 'Completed':
-                        if line.product.event_set.event_id:
-                            product_event = Event.objects.get(id=line.product.event_set.event_id)
+                        event_set = line.product.event_set if line.product else None
                         message['event_title'] = line.title
-                        message['event_date'] = product_event.date
                         message['quantity'] = line.quantity
-                        message['time'] = line.product.event_set.start
+                        if event_set:
+                            if event_set.event_id:
+                                product_event = Event.objects.get(id=event_set.event_id)
+                                message['event_date'] = product_event.date
+                            message['time'] = event_set.start
                 if order.email:
                     email = order.email
                 else:

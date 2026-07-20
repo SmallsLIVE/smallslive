@@ -31,6 +31,20 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
                 if line.stockrecord:
                     line.stockrecord.cancel_allocation(qty)
 
+    def refundable_lines(self, order):
+        """
+        Lines to act on when refunding. Normally the stock-tracked lines, but
+        those are filtered by product class and disappear once a ticket's event
+        (and therefore its product) is deleted. Fall back to the completed lines
+        by id so the queryset stays stable even after their status is changed.
+        """
+        lines = order.stock_lines()
+        if lines:
+            return lines
+        completed_ids = list(
+            order.lines.filter(status='Completed').values_list('id', flat=True))
+        return order.lines.filter(id__in=completed_ids)
+
     def refund_payment(self, order, reference, amount, currency, payment_type_name):
         refund_reference = None
 
@@ -59,7 +73,8 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
         return line_items
 
     def update_order_after_refund(self, order):
-        all_lines = order.stock_lines().aggregate(
+        lines = self.refundable_lines(order)
+        all_lines = lines.aggregate(
             sum_total_incl_tax=Sum('line_price_incl_tax'),
             sum_total_excl_tax=Sum('line_price_excl_tax'),
         )
@@ -81,7 +96,7 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
             payment_type_name = payment_source.source_type.name.lower()
             refund_reference = self.refund_payment(order, reference, amount, currency, payment_type_name)
 
-            lines = order.stock_lines()
+            lines = self.refundable_lines(order)
             # Change line status (which are  completed) to Cancelled too
             for line in lines:
                 if line.status == 'Completed':
@@ -113,7 +128,7 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
                             order, reference, refund_amount, currency, payment_type_name
                         )
 
-                        lines = order.stock_lines()
+                        lines = self.refundable_lines(order)
                         updated_order_line = self.get_updated_order_line_data(active_order_line, refund_quantity)
 
                         lines.filter(status='Completed').update(**updated_order_line)
