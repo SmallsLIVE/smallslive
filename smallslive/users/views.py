@@ -638,14 +638,16 @@ class ResendConfirmationEmail(View):
         message['order_number'] = order.number
         message['party_name'] = order.first_name + ' ' + order.last_name
 
-        if completed_lines and completed_lines.product.event_set.event_id:
-            product_event = Event.objects.get(id=completed_lines.product.event_set.event_id)
+        message['event_title'] = completed_lines.title
+        message['quantity'] = completed_lines.quantity
+        message['total_amount'] = completed_lines.line_price_incl_tax
+        event_set = completed_lines.product.event_set if completed_lines.product else None
+        if event_set and event_set.event_id:
+            product_event = Event.objects.get(id=event_set.event_id)
             message['event_title'] = product_event.title
             message['event_date'] = product_event.date
             message['venue'] = product_event.get_venue_name()
-            message['quantity'] = completed_lines.quantity
-            message['total_amount'] = completed_lines.line_price_incl_tax
-            message['time'] = completed_lines.product.event_set.start
+            message['time'] = event_set.start
 
         send_order_confirmation_email(email, message)
 
@@ -668,13 +670,14 @@ class ResendConfirmationEmail(View):
         message['order_number'] = order.number
         message['refund_amount'] = payment_event.amount
         message['refund_quantity'] = payment_event_quantity.quantity if payment_event_quantity else ''
-        if line and line.product.event_set.event_id:
-            product_event = Event.objects.get(id=line.product.event_set.event_id)
-            message['event_date'] = product_event.date
-
+        if line:
             message['event_title'] = line.title
             message['quantity'] = line.quantity
-            message['time'] = line.product.event_set.start
+            event_set = line.product.event_set if line.product else None
+            if event_set and event_set.event_id:
+                product_event = Event.objects.get(id=event_set.event_id)
+                message['event_date'] = product_event.date
+                message['time'] = event_set.start
 
         send_order_refunded_email(email, message)
 
