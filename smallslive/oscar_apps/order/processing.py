@@ -146,6 +146,7 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
                         return_refund_quantity = refund_quantity
             except Exception as E:
                 print(E)
+                raise
         else:
             order.set_status(new_status)
 
