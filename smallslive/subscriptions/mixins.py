@@ -32,18 +32,26 @@ class PaymentCredentialsMixin(object):
                 paypal_client_secret = venue.get_paypal_client_secret
 
         else:
-            if self.order:
-                item = self.order
+            venue = self._deleted_event_venue(self.order) if self.order else None
+            if venue:
+                is_foundation = venue.foundation
+                stripe_client_id = venue.get_stripe_publishable_key
+                stripe_client_secret = venue.get_stripe_secret_key
+                paypal_client_id = venue.get_paypal_client_id
+                paypal_client_secret = venue.get_paypal_client_secret
             else:
-                item = self.request.basket
-            if item.has_catalog():
-                is_foundation = False
-                stripe_client_id = settings.STRIPE_FOR_PROFIT_PUBLISHABLE_KEY
-                stripe_client_secret = settings.STRIPE_FOR_PROFIT_SECRET_KEY
-                paypal_client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID
-                paypal_client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET
-            else:
-                is_foundation = True
+                if self.order:
+                    item = self.order
+                else:
+                    item = self.request.basket
+                if item.has_catalog():
+                    is_foundation = False
+                    stripe_client_id = settings.STRIPE_FOR_PROFIT_PUBLISHABLE_KEY
+                    stripe_client_secret = settings.STRIPE_FOR_PROFIT_SECRET_KEY
+                    paypal_client_id = settings.PAYPAL_FOR_PROFIT_CLIENT_ID
+                    paypal_client_secret = settings.PAYPAL_FOR_PROFIT_CLIENT_SECRET
+                else:
+                    is_foundation = True
 
         if is_foundation:
             stripe_client_id = settings.STRIPE_PUBLISHABLE_KEY
@@ -53,6 +61,20 @@ class PaymentCredentialsMixin(object):
 
         return is_foundation, stripe_client_id, stripe_client_secret, \
                paypal_client_id, paypal_client_secret
+
+    def _deleted_event_venue(self, order):
+        """
+        Venue that took payment for a ticket order whose event was deleted. Such
+        lines survive with product NULL but keep the venue's partner name, so the
+        original Stripe/PayPal account is still recoverable. Returns None for any
+        other order, so the normal (non-deleted) account flow is left untouched.
+        """
+        from events.models import Venue
+        line = order.lines.filter(
+            product__isnull=True).exclude(partner_name='').first()
+        if not line:
+            return None
+        return Venue.objects.filter(name=line.partner_name).first()
 
     def get_stripe_payment_credentials(self):
         data = self.get_payment_accounts()
@@ -324,14 +346,14 @@ class StripeMixin(PaymentCredentialsMixin):
             self.order = order
             self.event = order.get_tickets_event()
         api_key = self.get_stripe_payment_credentials()[2]
-        print('============================REFUND INFO-===========================')
-        print(api_key)
-        if payment_id.startswith("pi_"):
-            print('=== I am in payment intent refund ===')
-            refund = stripe.Refund.create(api_key=api_key, payment_intent=payment_id, amount=amount)
-        # solution for old orders that works with charge id instead of payment intent, here in payment_id will get charge id.
-        elif payment_id.startswith("ch_"):
-            print('=== I am in charge refund ===')
-            refund = stripe.Refund.create(api_key=api_key, charge=payment_id, amount=amount)
-        print("order has been refunded successfully!")
+        try:
+            if payment_id.startswith("pi_"):
+                refund = stripe.Refund.create(api_key=api_key, payment_intent=payment_id, amount=amount)
+            # solution for old orders that works with charge id instead of payment intent, here in payment_id will get charge id.
+            elif payment_id.startswith("ch_"):
+                refund = stripe.Refund.create(api_key=api_key, charge=payment_id, amount=amount)
+            else:
+                raise PaymentError("Unrecognized Stripe payment reference '%s'" % payment_id)
+        except stripe.error.StripeError as e:
+            raise PaymentError(str(e))
         return refund.id
