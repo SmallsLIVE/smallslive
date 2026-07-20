@@ -38,11 +38,13 @@ class TicketExchangeSelectForm(forms.Form):
 
         old_ticket_id = kwargs.pop('old_ticket_id', None) or kwargs.get('data', {}).get('old_ticket_id')
         line = Line.objects.get(pk=old_ticket_id)
-        old_set_id = line.product.event_set_id
+        old_set_id = line.product.event_set_id if line.product else None
         super(TicketExchangeSelectForm, self).__init__(*args, **kwargs)
         qs = Product.objects.select_related('event_set').filter(
-            event_set__event__start__gte=timezone.localtime(timezone.now()))\
-            .exclude(event_set__id=old_set_id).order_by('event_set__event__start')
+            event_set__event__start__gte=timezone.localtime(timezone.now()))
+        if old_set_id:
+            qs = qs.exclude(event_set__id=old_set_id)
+        qs = qs.order_by('event_set__event__start')
         self.fields['ticket'].queryset = qs
         if old_ticket_id:
             self.fields['old_ticket_id'].initial = old_ticket_id
