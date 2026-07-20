@@ -91,6 +91,7 @@ class TicketExchangeView(SingleObjectMixin, BaseFormView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
+        old_ticket = None
         try:
             with transaction.atomic():
                 response = super(TicketExchangeView, self).post(request, *args, **kwargs)
@@ -111,17 +112,20 @@ class TicketExchangeView(SingleObjectMixin, BaseFormView):
                 return response
         
         except Exception as e:
-            if self.object.number:
-                order_number = self.object.number
-            if self.new_ticket:
+            order_number = self.object.number
+            new_event_title = new_event_id = new_event_set_id = None
+            if getattr(self, 'new_ticket', None):
                 new_event_title = self.new_ticket.title
                 new_event_id = self.new_ticket.event_id
                 new_event_set_id = self.new_ticket.id
+            old_event_title = old_event_set_id = None
             if old_ticket:
                 old_event_title = old_ticket.title
                 old_event_set_id = old_ticket.product_id
             send_exchange_error_mail(order_number, e, new_event_title, new_event_id, new_event_set_id, old_event_title, old_event_set_id)
             print("Exchange failed error:", e)
+            messages.error(request, "Ticket exchange failed. Please try again or issue a refund.")
+            return HttpResponseRedirect(self.get_success_url())
 
     def form_valid(self, form):
         self.old_ticket_id = form.cleaned_data['old_ticket_id']
@@ -132,7 +136,7 @@ class TicketExchangeView(SingleObjectMixin, BaseFormView):
         return reverse('dashboard:order-detail', kwargs={'number': self.object.number})
 
     def _get_new_ticket(self, old_line, new_ticket):
-        old_sku = old_line.product.stockrecords.first()
+        old_sku = old_line.product.stockrecords.first() if old_line.product else None
         sku = new_ticket.stockrecords.first()
         new_line = old_line
         new_line.id = None
@@ -146,7 +150,8 @@ class TicketExchangeView(SingleObjectMixin, BaseFormView):
         new_line.title = new_ticket.title
         new_line.save()
         sku.allocate(new_line.quantity)
-        old_sku.cancel_allocation(new_line.quantity)
+        if old_sku:
+            old_sku.cancel_allocation(new_line.quantity)
         return new_line
 
 
