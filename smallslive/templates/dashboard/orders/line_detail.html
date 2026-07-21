@@ -24,7 +24,9 @@
                       {% endif %}
                   {% endif %}</a>
             {% else %}
-              {{ line.title }}
+              {{ line.partner_name }} - {{ line.title }}
+              {% if line.event_date %}{{ line.event_date|date:"(M/d/Y)" }}{% endif %}
+              {% if line.event_set_time %}{{ line.event_set_time }}{% endif %}
             {% endif %}
           </td>
         </tr>

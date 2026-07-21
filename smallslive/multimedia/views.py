@@ -7,7 +7,7 @@ from django.db.models import F, Q, Max
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, CreateView, TemplateView, View
-from oscar.apps.order.models import Line
+from oscar_apps.order.models import Line
 from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
 from oscar_apps.catalogue.mixins import ProductMixin

@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from oscar.core.loading import get_class, get_model
 from events.models import Event, EventSet
@@ -30,19 +31,38 @@ class _DeletedEventSetRef(object):
         return self
 
 
+def parse_set_time(set_time):
+    if not set_time:
+        return None
+    try:
+        return datetime.strptime(set_time, '%I:%M %p').time()
+    except ValueError:
+        return None
+
+
 class DeletedEventTicketRow(object):
     id = 0
     subtitle = ''
 
-    def __init__(self, title, venue_name, date, tickets_sold, detail_pk):
+    def __init__(self, title, venue_name, date, detail_pk):
         self.title = title
         self.venue_name = venue_name
         self.date = date
-        self.tickets_sold = tickets_sold
+        self.tickets_sold = 0
         self.sets = _DeletedEventSetRef(DELETED_EVENT_ID_OFFSET + detail_pk)
+        self._set_times = []
+
+    def add(self, quantity, set_time):
+        self.tickets_sold += quantity
+        if set_time and set_time not in self._set_times:
+            self._set_times.append(set_time)
 
     def get_venue_name(self):
         return self.venue_name
+
+    def get_range(self):
+        times = [t for t in (parse_set_time(s) for s in self._set_times) if t]
+        return (min(times), '') if times else ('', '')
 
 
 class TicketReportGenerator(ReportGenerator):
@@ -89,23 +109,28 @@ class TicketReportGenerator(ReportGenerator):
 
         return list(queryset) + self._deleted_event_rows()
 
-    def _filter_lines_by_purchase_date(self, queryset):
+    def _filter_lines_by_date(self, queryset):
+        if not self.start_date and not self.end_date:
+            return queryset
+
+        event_date_range = Q()
+        purchase_range = Q(event_date__isnull=True)
+
         if self.start_date:
+            event_date_range &= Q(event_date__gte=self.start_date)
             start_datetime = timezone.make_aware(
                 datetime.combine(self.start_date, time(0, 0)),
-                timezone.get_default_timezone())
-            start_datetime = start_datetime.astimezone(timezone.utc)
-            queryset = queryset.filter(order__date_placed__gte=start_datetime)
+                timezone.get_default_timezone()).astimezone(timezone.utc)
+            purchase_range &= Q(order__date_placed__gte=start_datetime)
 
         if self.end_date:
-            end_of_end_date = datetime.combine(
-                self.end_date, time(hour=23, minute=59, second=59))
+            event_date_range &= Q(event_date__lte=self.end_date)
             end_datetime = timezone.make_aware(
-                end_of_end_date, timezone.get_default_timezone())
-            end_datetime = end_datetime.astimezone(timezone.utc)
-            queryset = queryset.filter(order__date_placed__lte=end_datetime)
+                datetime.combine(self.end_date, time(23, 59, 59)),
+                timezone.get_default_timezone()).astimezone(timezone.utc)
+            purchase_range &= Q(order__date_placed__lte=end_datetime)
 
-        return queryset
+        return queryset.filter(event_date_range | purchase_range)
 
     def _deleted_event_rows(self):
         lines = Line.objects.filter(
@@ -119,23 +144,26 @@ class TicketReportGenerator(ReportGenerator):
             order__status='Cancelled',
         ).select_related('order')
 
-        lines = self._filter_lines_by_purchase_date(lines).order_by('-order__date_placed')
+        lines = self._filter_lines_by_date(lines).order_by('-order__date_placed')
 
         rows = OrderedDict()
         for line in lines:
-            key = (line.title, line.partner_name)
+            key = (line.title, line.partner_name, line.event_date)
             row = rows.get(key)
             if row is None:
-                date_placed = line.order.date_placed
-                rows[key] = DeletedEventTicketRow(
+                if line.event_date:
+                    date = line.event_date
+                else:
+                    date_placed = line.order.date_placed
+                    date = timezone.localtime(date_placed).date() if date_placed else None
+                row = DeletedEventTicketRow(
                     title=line.title,
                     venue_name=line.partner_name,
-                    date=timezone.localtime(date_placed).date() if date_placed else None,
-                    tickets_sold=line.quantity,
+                    date=date,
                     detail_pk=line.id,
                 )
-            else:
-                row.tickets_sold += line.quantity
+                rows[key] = row
+            row.add(line.quantity, line.event_set_time)
 
         return list(rows.values())
 

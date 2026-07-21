@@ -1,5 +1,6 @@
 from operator import attrgetter
 from collections import OrderedDict
+from datetime import time
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.views.generic.detail import DetailView
@@ -7,7 +8,7 @@ from natsort import natsorted
 from oscar.core.loading import get_class, get_model
 from oscar.apps.dashboard.reports import views as oscar_views
 from events.models import Event, EventSet
-from events.reports import DELETED_EVENT_ID_OFFSET
+from events.reports import DELETED_EVENT_ID_OFFSET, parse_set_time
 
 
 Line = get_class('order.models', 'Line')
@@ -25,10 +26,11 @@ class _DeletedEventInfo(object):
 
 
 class _DeletedEventSetInfo(object):
-    start = None
+    end = None
 
-    def __init__(self, event):
+    def __init__(self, event, start=None):
         self.event = event
+        self.start = start
 
 
 from django.http import HttpResponseForbidden, Http404
@@ -111,30 +113,39 @@ class TicketDetailsView(DetailView):
             product__isnull=True,
             title=line.title,
             partner_name=line.partner_name,
+            event_date=line.event_date,
         ).exclude(
             status='Cancelled',
         ).exclude(
             status='Exchanged',
         ).select_related('order').order_by('order__last_name')
 
-        tickets = [ticket for ticket in lines if ticket.order.status != 'Cancelled']
-        total_tickets_sold = sum(ticket.quantity for ticket in tickets)
+        if line.event_date:
+            event_date = line.event_date
+        else:
+            date_placed = line.order.date_placed
+            event_date = timezone.localtime(date_placed).date() if date_placed else None
+        event = _DeletedEventInfo(line.title, line.partner_name, event_date)
 
-        date_placed = line.order.date_placed
-        event = _DeletedEventInfo(
-            line.title,
-            line.partner_name,
-            timezone.localtime(date_placed).date() if date_placed else None)
-        event_set = _DeletedEventSetInfo(event)
+        sets = OrderedDict()
+        for ticket in lines:
+            if ticket.order.status != 'Cancelled':
+                sets.setdefault(ticket.event_set_time, []).append(ticket)
 
+        show_data = []
+        for set_time in sorted(sets, key=lambda s: parse_set_time(s) or time.min):
+            tickets = sets[set_time]
+            show_data.append({
+                'event_set': _DeletedEventSetInfo(event, parse_set_time(set_time)),
+                'tickets': tickets,
+                'total_tickets_sold': sum(t.quantity for t in tickets),
+            })
+
+        event_set = show_data[0]['event_set'] if show_data else _DeletedEventSetInfo(event)
         return {
             'event': event,
             'event_set': event_set,
-            'show_data': [{
-                'event_set': event_set,
-                'tickets': tickets,
-                'total_tickets_sold': total_tickets_sold,
-            }],
+            'show_data': show_data,
         }
 
     def get_context_data(self, **kwargs):
