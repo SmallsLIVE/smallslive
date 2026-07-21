@@ -1,6 +1,6 @@
 from decimal import Decimal as D
 from oscar.apps.order.signals import order_placed
-from oscar.apps.order.abstract_models import AbstractOrder
+from oscar.apps.order.abstract_models import AbstractOrder, AbstractLine
 from oscar.core.loading import get_model, get_class
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -154,6 +154,12 @@ class Order(AbstractOrder):
             email.send()
 
     order_placed.connect(send_fulfillment_request)
+
+
+class Line(AbstractLine):
+    event_set_time = models.CharField(max_length=50, blank=True, default='')
+    event_date = models.DateField(blank=True, null=True)
+
 
 # add import statement at the end, so that django imports overridden model names first
 from oscar.apps.order.models import *
