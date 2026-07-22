@@ -34,7 +34,8 @@ class PaymentCredentialsMixin(object):
         else:
             venue = self._deleted_event_venue(self.order) if self.order else None
             if venue:
-                is_foundation = venue.foundation
+                # is_foundation = venue.foundation
+                is_foundation = False
                 stripe_client_id = venue.get_stripe_publishable_key
                 stripe_client_secret = venue.get_stripe_secret_key
                 paypal_client_id = venue.get_paypal_client_id
