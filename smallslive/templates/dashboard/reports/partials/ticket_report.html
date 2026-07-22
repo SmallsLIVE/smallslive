@@ -18,7 +18,7 @@
                 <tr>
                     <td><a href="{% url 'event_detail' pk=event.id slug=event.title|slugify %}">{{ event.id }}</a></td>
                     <td>
-                        <a href="{% url 'event_detail' pk=event.id slug=event.title|slugify %}">{{ event.title }}</a>
+                        <a href="{% url 'event_detail' pk=event.id slug=event.title|slugify %}">{{ event.title }}</a>{% if event.is_deleted %} <span style="background-color:#f8d7da;color:#721c24;padding:1px 6px;border-radius:3px;font-size:12px;white-space:nowrap;">{% trans "(deleted event)" %}</span>{% endif %}
                     </td>
                     <td>{{ event.subtitle }}</td>
                     <td>{{ event.date }}</pre></td>

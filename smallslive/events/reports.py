@@ -43,6 +43,7 @@ def parse_set_time(set_time):
 class DeletedEventTicketRow(object):
     id = 0
     subtitle = ''
+    is_deleted = True
 
     def __init__(self, title, venue_name, date, detail_pk):
         self.title = title

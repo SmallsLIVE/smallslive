@@ -17,7 +17,7 @@
 <body class="no-background">
 <div class="container">
   <div class="row">
-    <h1>{{ event_set.event.title }}
+    <h1>{{ event_set.event.title }}{% if event_set.event.is_deleted %} <span style="background-color:#f8d7da;color:#721c24;padding:2px 10px;border-radius:4px;font-size:18px;white-space:nowrap;vertical-align:middle;">(deleted event)</span>{% endif %}
     at {{ event_set.event.get_venue_name }}
       <small>{{ event_set.event.date }} </small>
     </h1>
