@@ -16,6 +16,8 @@ Order = get_model('order', 'Order')
 
 
 class _DeletedEventInfo(object):
+    is_deleted = True
+
     def __init__(self, title, venue_name, date):
         self.title = title
         self.date = date
