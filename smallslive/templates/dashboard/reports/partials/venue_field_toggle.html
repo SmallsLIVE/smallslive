@@ -1,0 +1,4 @@
+var $venueField = $('#id_venue').closest('.form-group');
+$('#id_report_type').on('change', function () {
+    $venueField.toggle($(this).val() === 'ticket_report');
+}).trigger('change');

@@ -1,8 +1,16 @@
 {% extends 'dashboard/reports/index.html' %}
 {% load currency_filters %}
+{% load humanize %}
 {% load i18n %}
 
+{% block report_total %}
+    {% if total_tickets_sold is not None %}
+        <span class="pull-right label label-info">{{ total_tickets_sold|intcomma }} {% trans "sold" %}</span>
+    {% endif %}
+{% endblock %}
+
 {% block report %}
+    <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover">
         {% if objects %}
             <tr>
@@ -12,6 +20,7 @@
                 <th>{% trans "Date" %}</th>
                 <th>{% trans "Start" %}</th>
                 <th>{% trans "Venue" %}</th>
+                <th class="text-right">{% trans "Tickets sold" %}</th>
                 <th></th>
             </tr>
             {% for event in objects %}
@@ -21,9 +30,10 @@
                         <a href="{% url 'event_detail' pk=event.id slug=event.title|slugify %}">{{ event.title }}</a>{% if event.is_deleted %} <span style="background-color:#f8d7da;color:#721c24;padding:1px 6px;border-radius:3px;font-size:12px;white-space:nowrap;">{% trans "(deleted event)" %}</span>{% endif %}
                     </td>
                     <td>{{ event.subtitle }}</td>
-                    <td>{{ event.date }}</pre></td>
+                    <td>{{ event.date }}</td>
                     <td>{{ event.get_range.0 }}</td>
                     <td>{{ event.get_venue_name }}</td>
+                    <td class="text-right">{{ event.tickets_sold|intcomma }}</td>
                     <td>
                         {% comment %}@TODO : Fix later <a class="btn btn-info" href="{% url 'dashboard:ticket_details' pk=event.sets.first.id %}">Report</a>{% endcomment %}
                         <a class="btn btn-info" href="{% url 'dashboard:ticket_details' pk=event.sets.first.id %}">Report</a>
@@ -31,8 +41,9 @@
                 </tr>
             {% endfor %}
         {% else %}
-            <tr><td>{% trans "No results found." %}</td></tr>
+            <tr><td colspan="8">{% trans "No ticket sales match these filters. Try widening the date range or selecting all venues." %}</td></tr>
         {% endif %}
     </table>
+    </div>
     {% include "dashboard/partials/pagination.html" %}
 {% endblock %}
