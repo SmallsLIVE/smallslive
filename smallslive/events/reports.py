@@ -1,5 +1,6 @@
 from collections import OrderedDict
-from django.db.models import Q
+from django.db.models import Q, Sum
+from django.db.models.functions import Coalesce
 from django.utils.translation import ugettext_lazy as _
 from oscar.core.loading import get_class, get_model
 from events.models import Event, EventSet
@@ -20,6 +21,12 @@ class TicketReportHTMLFormatter(ReportHTMLFormatter):
 
 
 DELETED_EVENT_ID_OFFSET = 10 ** 9
+
+SOLD_TICKET_LINES = (
+    Q(sets__tickets__line__order__order_type=Order.TICKET)
+    & ~Q(sets__tickets__line__status__in=('Cancelled', 'Exchanged'))
+    & ~Q(sets__tickets__line__order__status='Cancelled')
+)
 
 
 class _DeletedEventSetRef(object):
@@ -74,6 +81,24 @@ class TicketReportGenerator(ReportGenerator):
     formatters = {
         'HTML_formatter': TicketReportHTMLFormatter,
     }
+
+    def __init__(self, **kwargs):
+        super(TicketReportGenerator, self).__init__(**kwargs)
+        self.venue = kwargs.get('venue')
+        if self.venue:
+            self.description = _('%(report_filter)s at %(venue)s') % {
+                'report_filter': self.description,
+                'venue': self.venue.name,
+            }
+
+    def total_tickets_sold(self, rows):
+        return sum(row.tickets_sold for row in rows)
+
+    def filter_with_venue(self, queryset):
+        if not self.venue:
+            return queryset
+
+        return queryset.filter(venue=self.venue)
 
     def filter_with_date_range(self, queryset):
         """
@@ -133,6 +158,12 @@ class TicketReportGenerator(ReportGenerator):
 
         return queryset.filter(event_date_range | purchase_range)
 
+    def _filter_lines_by_venue(self, queryset):
+        if not self.venue:
+            return queryset
+
+        return queryset.filter(partner_name=self.venue.name)
+
     def _deleted_event_rows(self):
         lines = Line.objects.filter(
             order__order_type=Order.TICKET,
@@ -145,6 +176,7 @@ class TicketReportGenerator(ReportGenerator):
             order__status='Cancelled',
         ).select_related('order')
 
+        lines = self._filter_lines_by_venue(lines)
         lines = self._filter_lines_by_date(lines).order_by('-order__date_placed')
 
         rows = OrderedDict()
@@ -169,7 +201,14 @@ class TicketReportGenerator(ReportGenerator):
         return list(rows.values())
 
     def generate(self):
-        events = Event._default_manager.filter(sets__tickets__isnull=False).distinct().order_by('-date')
+        events = Event._default_manager.filter(
+            sets__tickets__isnull=False,
+        ).annotate(
+            tickets_sold=Coalesce(
+                Sum('sets__tickets__line__quantity', filter=SOLD_TICKET_LINES), 0),
+        ).distinct().order_by('-date')
+
+        events = self.filter_with_venue(events)
 
         additional_data = {
             'start_date': self.start_date,

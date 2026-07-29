@@ -34,7 +34,7 @@
 
     {% if description %}
         <div class="table-header">
-            <h3><i class="icon-bar-chart icon-large"></i>{{ description }}</h3>
+            <h3><i class="icon-bar-chart icon-large"></i>{{ description }}{% block report_total %}{% endblock %}</h3>
         </div>
     {% endif %}
 
@@ -42,3 +42,8 @@
     {% endblock %}
 
 {% endblock dashboard_content %}
+
+{% block onbodyload %}
+    {{ block.super }}
+    {% include "dashboard/reports/partials/venue_field_toggle.html" %}
+{% endblock %}
