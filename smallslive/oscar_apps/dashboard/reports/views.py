@@ -39,7 +39,7 @@ from django.http import HttpResponseForbidden, Http404
 from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
 from oscar.core.loading import get_class
-from oscar_apps.dashboard.reports.forms import ReportForm
+from oscar_apps.dashboard.reports.forms import TicketReportForm
 GeneratorRepository = get_class('dashboard.reports.utils',
                                 'GeneratorRepository')
 
@@ -48,7 +48,7 @@ class TicketsIndexView(oscar_views.IndexView):
     template_name = 'dashboard/reports/tickets_index.html'
     paginate_by = 25
     context_object_name = 'objects'
-    report_form_class = ReportForm
+    report_form_class = TicketReportForm
     generator_repository = GeneratorRepository
 
     def _get_generator(self, form):
@@ -64,6 +64,7 @@ class TicketsIndexView(oscar_views.IndexView):
 
         return generator_cls(start_date=form.cleaned_data['date_from'],
                              end_date=form.cleaned_data['date_to'],
+                             venue=form.cleaned_data.get('venue'),
                              formatter=formatter)
 
     def get(self, request, *args, **kwargs):
@@ -85,6 +86,8 @@ class TicketsIndexView(oscar_views.IndexView):
                     context = self.get_context_data(object_list=self.queryset)
                     context['form'] = form
                     context['description'] = generator.report_description()
+                    if hasattr(generator, 'total_tickets_sold'):
+                        context['total_tickets_sold'] = generator.total_tickets_sold(self.queryset)
                     return self.render_to_response(context)
         else:
             form = self.report_form_class()
