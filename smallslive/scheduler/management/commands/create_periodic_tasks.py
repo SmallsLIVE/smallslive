@@ -14,6 +14,8 @@ class Command(BaseCommand):
             {"name": "Import S3 Video", "task": "scheduler.tasks.import_s3_video_task", "hour": 9, "minute": 30},
             {"name": "Import S3 Video Mezzrow", "task": "scheduler.tasks.import_s3_video_mezzrow_task", "hour": 10, "minute": 0},
             {"name": "Import S3 Audio Mezzrow", "task": "scheduler.tasks.import_s3_audio_mezzrow_task", "hour": 10, "minute": 30},
+            {"name": "Import S3 Video Jazzcultural", "task": "scheduler.tasks.import_s3_video_jazzcultural_task", "hour": 11, "minute": 0},
+            {"name": "Import S3 Audio Jazzcultural", "task": "scheduler.tasks.import_s3_audio_jazzcultural_task", "hour": 11, "minute": 30},
         ]
 
         for t in tasks:
