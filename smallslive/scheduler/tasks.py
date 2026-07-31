@@ -28,6 +28,14 @@ def import_s3_audio_mezzrow_task():
     run_command("import_s3_audio", bucket_name="Mezzrowmp3", venue_name="Mezzrow")
 
 @shared_task
+def import_s3_video_jazzcultural_task():
+    run_command("import_s3_video", bucket_name="jazzculturalvid", venue_name="Jazzcultural")
+
+@shared_task
+def import_s3_audio_jazzcultural_task():
+    run_command("import_s3_audio", bucket_name="jazzculturalmp3", venue_name="Jazzcultural")
+
+@shared_task
 def test_celery_task():
     print("Hello World from Celery!")
     return "Hello World"
