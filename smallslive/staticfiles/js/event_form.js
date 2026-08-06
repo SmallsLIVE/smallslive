@@ -1,6 +1,8 @@
 EventForm = {
   SITE_URL: "",
   selectedDate: "",
+  SET_START_INPUTS:
+      "#id_sets-0-start, #id_sets-1-start, #id_sets-2-start, #id_sets-3-start",
   fixTableWidths: function(table) {
     table.find("td").each(function() {
       $(this).css("width", $(this).width() + "px");
@@ -258,6 +260,16 @@ EventForm = {
     }
     $flag.val(replaced ? "1" : "");
   },
+  ticketSetNameField: function(startInput) {
+    var set = parseInt(startInput.id[8]) + 1;
+    return $(`#id_set${set}-set_name`);
+  },
+  syncTicketSetName: function(startInput) {
+    var setName = $(startInput)
+        .val()
+        .replace(/^0/, "");
+    EventForm.ticketSetNameField(startInput).val(setName);
+  },
   propagateSets: function(first, second = undefined, duration = 1) {
     var $setsTable = $(".event-set-list-form .formset_table");
     var $setsTableBody = $setsTable.find("tbody");
@@ -445,14 +457,15 @@ EventForm = {
     this.initVenueSelectFunctionality();
     this.initInlineArtistsFunctionality(callback);
 
-    $(document).on(
-        "change",
-        "#id_sets-0-start, #id_sets-1-start, #id_sets-2-start, #id_sets-3-start",
-        function(e) {
-          let set = parseInt(this.id[8]) + 1;
-          $(`#id_set${set}-set_name`).val($(this).val());
-        }
-    );
+    $(document).on("change", this.SET_START_INPUTS, function(e) {
+      EventForm.syncTicketSetName(this);
+    });
+
+    $(this.SET_START_INPUTS).each(function() {
+      if (!EventForm.ticketSetNameField(this).val()) {
+        EventForm.syncTicketSetName(this);
+      }
+    });
 
     var currentdate = new Date();
     var time = currentdate.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
