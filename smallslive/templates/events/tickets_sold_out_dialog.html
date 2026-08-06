@@ -74,4 +74,28 @@
       </div>
     </div>
   </div>
+{% elif event.get_venue_name == 'Jazzcultural' %}
+  <div
+    class="modal fade"
+    id="tickets-sold-out-dialog"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content custom-modal no-cancel">
+        <a href="#" class="close-button"></a>
+        <div>
+          <p class="title2" tabindex="0">
+            ALL ADVANCED TICKETS ARE SOLD FOR THIS SET
+          </p>
+          <p class="text9">
+            Seating for our listening room is sold out. Walk-in tickets will still
+            be available for seating in our bar. Inquire at the door for more
+            information.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endif %}
