@@ -462,6 +462,8 @@ class SearchObject(object):
                 self.sqs = self.sqs.filter(
                     recordings__media_file__isnull=False,
                     recordings__state=Recording.STATUS.Published)
+            else:
+                self.sqs = self.sqs.filter(start__lte=timezone.now())
 
         if start_date:
             # Force hours to start of day
