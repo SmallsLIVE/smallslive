@@ -169,6 +169,16 @@
               </div>
           {% endif %}
       {% endif %}
+      {% if request.user.is_staff %}
+        <div class="white-border-select venue-filter-select spaced search-tab-content{% if is_artist_bio %} active{% endif %}" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
+          <select id="archive-venue-filter" class="white-border-button hidden">
+            <option value="all">All Venues</option>
+            {% for venue in venues %}
+              <option value="{{ venue.pk }}"{% if selected_venue == venue.pk|stringformat:"s" %} selected{% endif %}>{{ venue.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      {% endif %}
       {% include 'events/archived_filters.html' with default_to_date=default_to_date is_artist_bio=is_artist_bio %}
     </div>
 

@@ -105,6 +105,7 @@ class MainSearchView(View, SearchMixin):
                 page=page, order=order, date_from=date_from,
                 date_to=date_to, artist_pk=artist_pk, venue=venue,
                 instrument=instrument, artist_search=artist_search, leader=leader,
+                all_media_status=self.request.user.is_staff,
                 only_published=only_published)
 
             context = {
@@ -305,10 +306,15 @@ class TemplateSearchView(SearchMixin, UpcomingEventMixin, TemplateView):
 
         artist_id = context['artist'].pk if context['artist'] else None
         all_media_status = False or self.request.user.is_staff
+        only_published = bool(not self.request.user.is_authenticated or not self.request.user.is_staff)
+        venue = self.request.GET.get('venue') if self.request.user.is_staff else None
         event_blocks, showing_event_results, num_pages, first, last, search_input = self.search(
             Event, query_term, results_per_page=60, artist_pk=artist_id,
             date_from=date_from, date_to=date_to, search_input=search_input,
-            all_media_status=all_media_status)
+            venue=venue, all_media_status=all_media_status,
+            only_published=only_published)
+
+        context['selected_venue'] = venue
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []
