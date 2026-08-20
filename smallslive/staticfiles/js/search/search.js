@@ -279,6 +279,11 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
     searchFilters["venue"] = venueFilter;
   }
 
+  var archiveVenueFilter = $("#archive-venue-filter").val();
+  if (archiveVenueFilter) {
+    searchFilters["venue"] = archiveVenueFilter;
+  }
+
   var artistSearchTerm = $("#artist-search").val();
   if (artistSearchTerm) {
     searchFilters["artist_search"] = artistSearchTerm;
@@ -338,6 +343,18 @@ $(document).ready(function () {
     venueFilter = "all";
     archivedEventPageNum = 1;
     localStorage.setItem("search_order", $(this).val());
+
+    sendEventRequest(
+      "Archived",
+      datePickerFromDate,
+      datePickerToDate,
+      updateArchiveShows
+    );
+  });
+
+  $("#archive-venue-filter").change(function() {
+    eventFilter = true;
+    archivedEventPageNum = 1;
 
     sendEventRequest(
       "Archived",
