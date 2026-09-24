@@ -105,7 +105,7 @@ class SmallsUserAdmin(HijackUserAdminMixin, UserAdmin):
     add_form = UserCreationForm
     list_display = ('email', 'artist', 'access_level', 'login_count', 'subscription_price',
                     'date_joined', 'renewal_date',  'is_active')
-    list_filter = ('access_level', 'is_active')
+    list_filter = ('access_level', 'is_active', 'is_staff', 'is_superuser')
     search_fields = ('email',)
     save_on_top = True
     ordering = ['email', 'last_login']
