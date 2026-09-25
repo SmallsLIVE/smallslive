@@ -74,3 +74,12 @@ class ImageS3Storage(ProtectedS3Storage):
     #    self._bucket = self._get_or_create_bucket(bucket)
 
     #    return super(ImageS3Storage, self).url(name)
+
+
+@deconstructible
+class JazzCulturalPhotosS3Storage(ImageS3Storage):
+    def __init__(self, *args, **kwargs):
+        kwargs['access_key'] = settings.AWS_ACCESS_KEY_ID_JAZZCULTURAL
+        kwargs['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_JAZZCULTURAL
+        kwargs['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_PHOTOS
+        super(JazzCulturalPhotosS3Storage, self).__init__(*args, **kwargs)

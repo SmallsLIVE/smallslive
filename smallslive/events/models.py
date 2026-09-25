@@ -20,7 +20,7 @@ from model_utils import Choices
 from model_utils.fields import StatusField
 from model_utils.models import QueryManager, TimeStampedModel
 from tinymce import models as tinymce_models
-from multimedia.s3_storages import ImageS3Storage
+from multimedia.s3_storages import ImageS3Storage, JazzCulturalPhotosS3Storage
 from metrics.models import UserVideoMetric
 from utils.hkdf import derive_fernet_key
 from django.core.exceptions import ValidationError
@@ -1100,7 +1100,7 @@ class Event(TimeStampedModel):
 
     def get_tickets(self):
         tickets = []
-        sets = list(self.sets.all())
+        sets = list(self.sets.prefetch_related('tickets'))
         # sets = sorted(sets, Event.sets_order)
         sets = sorted(sets, key=functools.cmp_to_key(Event.sets_order))
         for event_set in sets:
@@ -1239,11 +1239,20 @@ class EventSet(models.Model):
     audio_recording = models.OneToOneField('events.Recording', related_name='set_is_audio', blank=True, null=True,
                                            on_delete=models.CASCADE,)
     walk_in_price = models.IntegerField(default=25)
+    external_ticket_url = models.URLField("Third-party ticket URL", max_length=500, blank=True)
+    external_ticket_label = models.CharField("Third-party button text", max_length=40, blank=True)
 
     objects = EventSetManager()
 
     def __unicode__(self):
         return '{} - {}'.format(self.start, self.end)
+
+    def clean(self):
+        super(EventSet, self).clean()
+        if self.external_ticket_url and not self.external_ticket_label:
+            raise ValidationError({'external_ticket_label': "Button text is required with a third-party URL."})
+        if self.external_ticket_label and not self.external_ticket_url:
+            raise ValidationError({'external_ticket_url': "URL is required with button text."})
 
     def save(self, *args, **kwargs):
         old_start = None
@@ -1559,15 +1568,9 @@ class Venue(models.Model):
     #     super(Venue, self).save(*args, **kwargs)
 
 
-jazzcultural_photos_storage = ImageS3Storage(
-    access_key=settings.AWS_ACCESS_KEY_ID_JAZZCULTURAL,
-    secret_key=settings.AWS_SECRET_ACCESS_KEY_JAZZCULTURAL,
-    bucket=settings.AWS_STORAGE_BUCKET_NAME_PHOTOS
-)
-
 class JazzCulturalPhotos(models.Model):
     title = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to='jazzcultural_photos', storage=jazzcultural_photos_storage, max_length=150)
+    photo = models.ImageField(upload_to='jazzcultural_photos', storage=JazzCulturalPhotosS3Storage(), max_length=150)
     is_published = models.BooleanField(default=False)
 
     def get_photo_name_with_bucket(self):

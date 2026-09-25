@@ -8982,6 +8982,33 @@ div.event-strip {
       color: #d21535;
       height: auto;
       padding: 20px 40px; }
+    .event-video-info .event-player-buttons .ticket-set {
+      display: flex;
+      flex: 1 1 0;
+      flex-direction: column;
+      gap: 8px; }
+      .event-video-info .event-player-buttons .ticket-set .reservation_form,
+      .event-video-info .event-player-buttons .ticket-set .reservation_form button {
+        width: 100%; }
+    .event-video-info .event-player-buttons .ticket-set__time {
+      color: #d21535;
+      font-size: 14px;
+      font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+      font-weight: 700;
+      text-align: center; }
+    .event-video-info .event-player-buttons .ticket-set__external {
+      border-color: #d21535;
+      color: #d21535;
+      font-size: 12px;
+      gap: 6px;
+      height: auto;
+      min-height: 44px;
+      padding: 8px 16px;
+      text-decoration: none;
+      white-space: nowrap; }
+      .event-video-info .event-player-buttons .ticket-set__external:focus-visible {
+        outline: 2px solid #d21535;
+        outline-offset: 2px; }
   @media (max-width: 425px) {
     .event-video-info .flex-column {
       flex-direction: column;
@@ -17820,6 +17847,12 @@ label[for="photo-clear_id"] {
         font-weight: 700; }
       .admin-interface #div_id_state label.txt-hidden {
         color: #888; }
+  .admin-interface .event-set-list-form table th:nth-child(-n+3) {
+    width: 14%; }
+  .admin-interface .event-set-list-form table th:nth-child(4) {
+    width: 30%; }
+  .admin-interface .event-set-list-form table th:nth-child(5) {
+    width: 20%; }
   .admin-interface .event-set-list-form table tbody tr {
     display: table-row; }
 

@@ -308,6 +308,42 @@ $player-height: 25.3vw;
         height: auto;
         padding: 20px 40px;
     }
+
+    .ticket-set {
+      display: flex;
+      flex: 1 1 0;
+      flex-direction: column;
+      gap: 8px;
+
+      .reservation_form,
+      .reservation_form button {
+        width: 100%;
+      }
+    }
+
+    .ticket-set__time {
+      color: $smallslive;
+      font-size: 14px;
+      @include lato-bold;
+      text-align: center;
+    }
+
+    .ticket-set__external {
+      border-color: $smallslive;
+      color: $smallslive;
+      font-size: 12px;
+      gap: 6px;
+      height: auto;
+      min-height: 44px;
+      padding: 8px 16px;
+      text-decoration: none;
+      white-space: nowrap;
+
+      &:focus-visible {
+        outline: 2px solid $smallslive;
+        outline-offset: 2px;
+      }
+    }
   }
 
   .flex-column {
