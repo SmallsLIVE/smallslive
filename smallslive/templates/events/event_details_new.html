@@ -54,36 +54,49 @@
                                             
                                             {% if event.is_live or event.is_future %}
                                             {% if products %}
-                                                {% for product in products %}
-                                                    {% if not product.event_set.is_past %}
-                                                        {% purchase_info_for_product request product as session %}
-                                                        {% basket_form request product 'single' as basket_form %}
-                                                        <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
-                                                            {% csrf_token %}
-                                                            {{ basket_form.as_p }}
-                                                            <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
-                                                            {% if session.availability.num_available > 0 and product.event_set.can_purchase_ticket %}
-                                                                <button type='submit'
-                                                                        data-ticket-name="{{ product.set }}"
-                                                                        data-ticket-time="{{ product.event_set.start|time:'g:i A' }}"
-                                                                        data-ticket-purchase-cutoff="{{ product.event_set.ticket_purchase_cutoff_time|date:'c' }}"
-                                                                        data-ticket-price="{{ session.price.excl_tax }}"
-                                                                        data-ticket-availability="{{ session.availability.num_available }}"
-                                                                        data-walk-in-price="{{ product.event_set.walk_in_price }}"
-                                                                        data-venue="{{ event.get_venue_name }}"
-                                                                        class="buy-tickets white-border-button"
-                                                                        style="display: inline;">{{ product.set }}</button>
-                                                                {% include 'events/buy_tickets_dialog_new.html' %}
-                                                                {% include 'events/buy_tickets_first_confirmation_dialog.html' %}
-                                                                {% include 'events/buy_tickets_confirmation_dialog.html' %}
+                                                {% for ticket_set in products %}
+                                                    {% if not ticket_set.event_set.is_past %}
+                                                        <div class="ticket-set">
+                                                            {% for product in ticket_set.tickets %}
+                                                                {% purchase_info_for_product request product as session %}
+                                                                {% basket_form request product 'single' as basket_form %}
+                                                                <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
+                                                                    {% csrf_token %}
+                                                                    {{ basket_form.as_p }}
+                                                                    <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
+                                                                    {% if session.availability.num_available > 0 and product.event_set.can_purchase_ticket %}
+                                                                        <button type='submit'
+                                                                                data-ticket-name="{{ product.set }}"
+                                                                                data-ticket-time="{{ product.event_set.start|time:'g:i A' }}"
+                                                                                data-ticket-purchase-cutoff="{{ product.event_set.ticket_purchase_cutoff_time|date:'c' }}"
+                                                                                data-ticket-price="{{ session.price.excl_tax }}"
+                                                                                data-ticket-availability="{{ session.availability.num_available }}"
+                                                                                data-walk-in-price="{{ product.event_set.walk_in_price }}"
+                                                                                data-venue="{{ event.get_venue_name }}"
+                                                                                class="buy-tickets white-border-button"
+                                                                                style="display: inline;">{{ product.set }}</button>
+                                                                        {% include 'events/buy_tickets_dialog_new.html' %}
+                                                                        {% include 'events/buy_tickets_first_confirmation_dialog.html' %}
+                                                                        {% include 'events/buy_tickets_confirmation_dialog.html' %}
+                                                                    {% endif %}
+                                                                    {% if session.availability.num_available == 0 %}
+                                                                        <button type='submit'
+                                                                                class="tickets-sold-out white-border-button"
+                                                                                style="display: inline;">{{ product.set }}</button>
+                                                                        {% include 'events/tickets_sold_out_dialog.html' with event=event %}
+                                                                    {% endif %}
+                                                                </form>
+                                                            
+                                                            {% endfor %}
+                                                            {% if ticket_set.event_set.external_ticket_url %}
+                                                                <a href="{{ ticket_set.event_set.external_ticket_url }}" target="_blank" rel="noopener noreferrer"
+                                                                   class="white-border-button ticket-set__external"
+                                                                   aria-label="{{ ticket_set.event_set.external_ticket_label }}, {{ ticket_set.event_set.start|time:'g:i A' }} set (opens in a new tab)">
+                                                                    {{ ticket_set.event_set.external_ticket_label }}
+                                                                    <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+                                                                </a>
                                                             {% endif %}
-                                                            {% if session.availability.num_available == 0 %}
-                                                                <button type='submit'
-                                                                        class="tickets-sold-out white-border-button"
-                                                                        style="display: inline;">{{ product.set }}</button>
-                                                                {% include 'events/tickets_sold_out_dialog.html' with event=event %}
-                                                            {% endif %}
-                                                        </form>
+                                                        </div>
                                                     {% endif %}
                                                 {% endfor %}
                                             {% endif %}

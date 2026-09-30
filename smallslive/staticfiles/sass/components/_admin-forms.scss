@@ -280,6 +280,21 @@
 
     table {
 
+      th {
+
+        &:nth-child(-n+3) {
+          width: 14%;
+        }
+
+        &:nth-child(4) {
+          width: 30%;
+        }
+
+        &:nth-child(5) {
+          width: 20%;
+        }
+      }
+
       tbody {
 
         tr {

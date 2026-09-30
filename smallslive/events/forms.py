@@ -180,6 +180,8 @@ class ProtectTicketedSetsFormSet(BaseInlineFormSet):
             event_set.end = data.get('end')
             if data.get('walk_in_price') is not None:
                 event_set.walk_in_price = data['walk_in_price']
+            event_set.external_ticket_url = data.get('external_ticket_url', '')
+            event_set.external_ticket_label = data.get('external_ticket_label', '')
             event_set.save()
             saved.append(event_set)
 
@@ -191,7 +193,9 @@ class ProtectTicketedSetsFormSet(BaseInlineFormSet):
 
 class EventSetInlineFormset(InlineFormSet):
     model = EventSet
-    fields = ('start', 'end', 'walk_in_price')
+    fields = ('start', 'end',
+              # 'walk_in_price',  # Hidden on the set times form (model default still applies)
+              'external_ticket_url', 'external_ticket_label')
     formset_class = ProtectTicketedSetsFormSet
     factory_kwargs = {'can_delete': True, 'extra': 1 }
 
@@ -212,7 +216,9 @@ class EventSetInlineFormset(InlineFormSet):
             form.fields['end'].widget = forms.TimeInput(format='%I:%M %p')
             form.fields['end'].initial = now
             form.fields['end'].input_formats = ['%I:%M %p']
-            form.fields['walk_in_price'].widget.attrs['data-clone-value'] = 'True'
+            # Only if 'walk_in_price' is back in `fields` above.
+            # if 'walk_in_price' in form.fields:
+            #     form.fields['walk_in_price'].widget.attrs['data-clone-value'] = 'True'
 
         return formset
 

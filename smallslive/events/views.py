@@ -398,7 +398,13 @@ class EventDetailView(DetailView):
                 'event_url': event_url,
                 'start': start
             }
-            context['products'] = self.object.get_tickets()
+            products = []
+            event_sets = sorted(event.sets.prefetch_related('tickets'), key=functools.cmp_to_key(Event.sets_order))
+            for event_set in event_sets:
+                tickets = list(event_set.tickets.all())
+                if tickets or event_set.external_ticket_url:
+                    products.append({'event_set': event_set, 'tickets': tickets})
+            context['products'] = products
 
         # for modal in past events
         # need to find if there is currently a live event
