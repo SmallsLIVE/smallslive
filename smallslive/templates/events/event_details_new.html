@@ -86,8 +86,7 @@
                                                                         {% include 'events/tickets_sold_out_dialog.html' with event=event %}
                                                                     {% endif %}
                                                                 </form>
-                                                            {% empty %}
-                                                                <span class="ticket-set__time">{{ ticket_set.event_set.start|time:'g:i A' }}</span>
+                                                            
                                                             {% endfor %}
                                                             {% if ticket_set.event_set.external_ticket_url %}
                                                                 <a href="{{ ticket_set.event_set.external_ticket_url }}" target="_blank" rel="noopener noreferrer"
