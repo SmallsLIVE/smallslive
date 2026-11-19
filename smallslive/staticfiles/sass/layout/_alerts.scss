@@ -32,6 +32,12 @@
     margin: 0;
   }
 
+  & .alert-text--wide {
+    width: 500px;
+    max-width: 80vw;
+    text-align: center;
+  }
+
   & button.close {
     opacity: 0.5;
     @include transition(all 0.3s ease-in-out);
