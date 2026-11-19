@@ -73,9 +73,9 @@ class ManageArchiveBulkDeleteView(StaffuserRequiredMixin, View):
         count = events.count()
         if count:
             events.delete()
-            messages.success(request, '{} event(s) deleted.'.format(count))
+            messages.success(request, '{} event(s) deleted.'.format(count), extra_tags='alert-text--wide')
         else:
-            messages.warning(request, 'No events selected.')
+            messages.warning(request, 'No events selected.', extra_tags='alert-text--wide')
         return redirect('manage_archive')
 
 manage_archive_bulk_delete = ManageArchiveBulkDeleteView.as_view()

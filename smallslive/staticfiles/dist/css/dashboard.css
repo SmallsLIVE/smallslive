@@ -8554,6 +8554,10 @@ tr.introjs-showElement > th {
     margin-bottom: 20px; }
   .alert p {
     margin: 0; }
+  .alert .alert-text--wide {
+    width: 500px;
+    max-width: 80vw;
+    text-align: center; }
   .alert button.close {
     opacity: 0.5;
     transition: all 0.3s ease-in-out; }

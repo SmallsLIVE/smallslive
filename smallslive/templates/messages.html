@@ -2,7 +2,7 @@
     <div class="messages" id="messages">
             <div class="alert alert-dismissible" role="alert">
                 {% for message in messages %}
-                    <p class="text4 alert-text">{{ message }}</p>
+                    <p class="text4 alert-text{% if message.extra_tags %} {{ message.extra_tags }}{% endif %}">{{ message }}</p>
                 {% endfor %}
             </div>
     </div>
