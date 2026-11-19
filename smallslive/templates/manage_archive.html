@@ -20,7 +20,7 @@
           <input type="submit" value="Search">
       </form>
       <div class="btn">
-          <button type="button" class="btn" id="bulk-delete-button" data-toggle="modal" data-target="#bulkDeleteModal" disabled>Delete selected (<span class="selected-count">0</span>)</button>
+          <button type="button" class="btn btn-danger" id="bulk-delete-button" data-toggle="modal" data-target="#bulkDeleteModal" disabled>Delete selected (<span class="selected-count">0</span>)</button>
       </div>
     </section>
     <section class="artists-list__list container" style="width: 100%;">
@@ -85,7 +85,7 @@
                 <div class="col-xs-2 col-sm-2 col-md-2 artists-list__list__actions">
                     <div class="btn">
                         <a href="{% url 'event_edit' pk=event.id slug=event.slug %}?nav=manage-archive"><button type="button" class="btn">Edit</button></a>
-                        <button type="button" class="btn" data-toggle="modal" data-target="#deleteModal"
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
                                 data-title="{{ event.title }}"
                                 data-url="{% url 'event_delete' pk=event.id slug=event.slug %}?nav=manage-archive">Delete</button>
                     </div>
