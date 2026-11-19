@@ -107,11 +107,10 @@
   & .btn {
     @include lato;
     font-size: 14px;
-    color: #000;
   }
 
-  & button.btn {
-    background-color: #fff;
+  & button.btn:disabled {
+    opacity: 1;
   }
 
   > a {

@@ -18114,10 +18114,9 @@ label[for="photo-clear_id"] {
   .artists-list__search .btn, .artists-list__search .cto__button, .artists-list__search .homepage-news__button, .artists-list__search #header__date-picker input, #header__date-picker .artists-list__search input, .artists-list__search .newsletters__subscribe__button, .artists-list__search .social-connect .fb-login-button, .social-connect .artists-list__search .fb-login-button {
     font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
     font-weight: 400;
-    font-size: 14px;
-    color: #000; }
-  .artists-list__search button.btn, .artists-list__search button.cto__button, .artists-list__search button.homepage-news__button, .artists-list__search button.newsletters__subscribe__button, .artists-list__search .social-connect button.fb-login-button, .social-connect .artists-list__search button.fb-login-button {
-    background-color: #fff; }
+    font-size: 14px; }
+  .artists-list__search button.btn:disabled, .artists-list__search button.cto__button:disabled, .artists-list__search button.homepage-news__button:disabled, .artists-list__search button.newsletters__subscribe__button:disabled, .artists-list__search .social-connect button.fb-login-button:disabled, .social-connect .artists-list__search button.fb-login-button:disabled {
+    opacity: 1; }
   .artists-list__search > a:active, .artists-list__search > a:focus {
     color: inherit;
     text-decoration: none;
