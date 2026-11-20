@@ -104,6 +104,15 @@
     flex-basis: calc(100% - 220px);
   }
 
+  & .btn {
+    @include lato;
+    font-size: 14px;
+  }
+
+  & button.btn:disabled {
+    opacity: 1;
+  }
+
   > a {
 
     &:active,
@@ -181,6 +190,30 @@
       background-color: #fff;
       padding: 10px;
       border-bottom: 1px solid #eee;
+    }
+  }
+
+  &__header--selectable {
+    @include display(flex);
+    @include align-items(center);
+  }
+
+  &__select {
+    flex: 0 0 44px;
+
+    & label {
+      @include display(flex);
+      @include align-items(center);
+      @include justify-content(center);
+      width: 44px;
+      height: 44px;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    & input[type="checkbox"] {
+      margin: 0;
+      cursor: pointer;
     }
   }
 

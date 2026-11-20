@@ -1,5 +1,7 @@
+from django.contrib import messages
 from django.contrib.flatpages.models import FlatPage
-from django.views.generic import TemplateView, ListView, DetailView
+from django.shortcuts import redirect
+from django.views.generic import TemplateView, ListView, DetailView, View
 from filer.models import File, Folder
 from events.models import Event, Recording
 from .filters import ArchiveFilter, EventsListFilter
@@ -61,6 +63,22 @@ class ManageArchiveView(StaffuserRequiredMixin, ListView):
         return context
     
 manage_archive = ManageArchiveView.as_view()
+
+
+class ManageArchiveBulkDeleteView(StaffuserRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        event_ids = [pk for pk in request.POST.getlist('event_ids') if pk.isdigit()]
+        events = Event.objects.filter(pk__in=event_ids)
+        count = events.count()
+        if count:
+            events.delete()
+            messages.success(request, '{} event(s) deleted.'.format(count), extra_tags='alert-text--wide')
+        else:
+            messages.warning(request, 'No events selected.', extra_tags='alert-text--wide')
+        return redirect('manage_archive')
+
+manage_archive_bulk_delete = ManageArchiveBulkDeleteView.as_view()
 
 class ManageEventsListView(StaffuserRequiredMixin, ListView):
     template_name = 'events_list.html'

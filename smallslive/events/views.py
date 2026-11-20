@@ -562,6 +562,17 @@ class EventDeleteView(StaffuserRequiredMixin, DeleteView):
     model = Event
     success_url = reverse_lazy('home')
 
+    def get_success_url(self):
+        if self.request.GET.get('nav') == 'manage-archive':
+            return reverse('manage_archive')
+        return super(EventDeleteView, self).get_success_url()
+
+    def delete(self, request, *args, **kwargs):
+        response = super(EventDeleteView, self).delete(request, *args, **kwargs)
+        if request.GET.get('nav') == 'manage-archive':
+            messages.success(request, '"{}" deleted.'.format(self.object.title), extra_tags='alert-text--wide')
+        return response
+
 
 event_delete = EventDeleteView.as_view()
 
