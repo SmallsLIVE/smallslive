@@ -20,7 +20,12 @@
                 {{ filter.form.name }}
                 <input type="submit" value="Search">
             </form>
-            <a href="{% url 'download_artist_list_csv' %}" class="button white-border-button" download>Download as CSV</a>
+            <div class="artists-list__search__actions">
+                <div class="btn">
+                    <button type="button" class="btn btn-danger" id="bulk-delete-button" data-toggle="modal" data-target="#bulkDeleteModal" disabled>Delete selected (<span class="selected-count">0</span>)</button>
+                </div>
+                <a href="{% url 'download_artist_list_csv' %}" class="button white-border-button" download>Download as CSV</a>
+            </div>
         </section>
         <section class="artists-list__filters">
             <form method="get" action="{% url "artist_list" %}" id="artist-form">
@@ -54,7 +59,10 @@
             </form>
         </section>
         <section class="artists-list__list container" style="width: 100%;">
-            <div class="artists-list__list__header row">
+            <div class="artists-list__list__header artists-list__list__header--selectable row">
+                <div class="artists-list__list__select">
+                    <label><input type="checkbox" id="select-all-artists" aria-label="Select all artists on this page"></label>
+                </div>
                 <div class="hidden-xs col-sm-2 col-md-1">
                     Image
                 </div>
@@ -75,9 +83,14 @@
                     Action(s)
                 </div>
             </div>
+            <form id="bulk-delete-form" method="post" action="{% url 'artist_bulk_delete' %}">
+            {% csrf_token %}
             <ul>
                 {% for artist in artists %}
                     <li class="artists-list__list__row row">
+                        <div class="artists-list__list__select">
+                            <label><input type="checkbox" name="artist_ids" value="{{ artist.id }}" aria-label="Select {{ artist.full_name }}"></label>
+                        </div>
                         <div class="hidden-xs col-sm-2 col-md-1 artists-list__list__image">
                             {% if artist.photo %}
                                 <img src="{% cloudinary_image_url photo_name=artist.get_photo_name_with_bucket height=40 width=40 photo_url=artist.photo.url smart=True %}" alt="{{ artist.full_name }} photo"/>
@@ -105,6 +118,14 @@
                             </div>
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-2 artists-list__list__actions">
+                            <button type="button" class="btn btn-danger delete-artist-button" data-toggle="modal" data-target="#deleteModal"
+                                    data-name="{{ artist.full_name }}"
+                                    data-url="{% url 'artist_delete' pk=artist.id slug=artist.slug %}"
+                                    data-user="{{ artist.user_count }}"
+                                    data-earnings="{{ artist.earnings_count }}"
+                                    data-donations="{{ artist.donations_count }}"
+                                    data-gigs="{{ artist.events_count }}"
+                                    data-albums="{{ artist.album_credits_count }}">Delete</button>
                             <div class="btn-group">
                                 <a href="{% url "artist_edit" pk=artist.id slug=artist.slug %}"><button type="button" class="btn">Edit</button></a>
                                 <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -124,6 +145,7 @@
                     <li class="artists-list__list__row--empty row">No artists found. Do you want to  <a href="{% url "artist_add" %}"> add a new artist</a>?</li>
                 {% endfor %}
             </ul>
+            </form>
         </section>
         <section class="page-pagination artists-list__pagination container">
           <p class="search-pagination-info">Showing results {{ page_obj.start_index }}-{{ page_obj.end_index }}
@@ -181,6 +203,54 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                  class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="deleteModalLabel">Delete <span class="artist-name"></span></h4>
+        </div>
+        <div class="modal-body">
+          <p>Are you <strong>sure</strong> you want to delete the artist <span class="artist-name"></span>?</p>
+          <p class="delete-summary-heading"></p>
+          <ul class="delete-summary"></ul>
+          <p><strong>This cannot be undone.</strong></p>
+        </div>
+        <div class="modal-footer">
+          <form action="" method="post" class="left-aligned-form">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Delete"/>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="bulkDeleteModal" tabindex="-1" role="dialog" aria-labelledby="bulkDeleteModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                  class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="bulkDeleteModalLabel">Delete selected artists</h4>
+        </div>
+        <div class="modal-body">
+          <p>Are you <strong>sure</strong> you want to delete <span class="selected-count"></span> selected artist(s): <span class="artist-names"></span>?</p>
+          <p class="delete-summary-heading"></p>
+          <ul class="delete-summary"></ul>
+          <p><strong>This cannot be undone.</strong></p>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" form="bulk-delete-form" class="btn btn-danger">Delete</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock content %}
 
 {% block extra_js %}
@@ -209,6 +279,64 @@
         }
         $("#artist-form").submit();
       })
+
+      var deleteLabels = [
+        ['user', 'user account', 'user accounts'],
+        ['earnings', 'earnings record', 'earnings records'],
+        ['donations', 'donation', 'donations'],
+        ['gigs', 'show lineup entry', 'show lineup entries'],
+        ['albums', 'album credit', 'album credits']
+      ];
+
+      function fillDeleteSummary($modal, $deleteButtons) {
+        var $summary = $modal.find('.delete-summary').empty();
+        deleteLabels.forEach(function (label) {
+          var total = 0;
+          $deleteButtons.each(function () {
+            total += parseInt($(this).data(label[0]), 10) || 0;
+          });
+          if (total) {
+            $summary.append($('<li>').text(total + ' ' + (total === 1 ? label[1] : label[2])));
+          }
+        });
+        $modal.find('.delete-summary-heading').text(
+          $summary.children().length ? 'This will also delete:' : 'Nothing else is linked.'
+        );
+      }
+
+      var $artistCheckboxes = $('input[name="artist_ids"]');
+
+      function checkedDeleteButtons() {
+        return $artistCheckboxes.filter(':checked').closest('li').find('.delete-artist-button');
+      }
+
+      function updateBulkDelete() {
+        var count = $artistCheckboxes.filter(':checked').length;
+        $('#bulk-delete-button').prop('disabled', !count);
+        $('.selected-count').text(count);
+        $('#select-all-artists').prop('checked', count > 0 && count === $artistCheckboxes.length);
+      }
+
+      $('#select-all-artists').on('change', function () {
+        $artistCheckboxes.prop('checked', this.checked);
+        updateBulkDelete();
+      });
+
+      $artistCheckboxes.on('change', updateBulkDelete);
+
+      $('#deleteModal').on('show.bs.modal', function (event) {
+        var $button = $(event.relatedTarget);
+        $(this).find('.artist-name').text($button.data('name'));
+        $(this).find('form').attr('action', $button.data('url'));
+        fillDeleteSummary($(this), $button);
+      });
+
+      $('#bulkDeleteModal').on('show.bs.modal', function () {
+        var $deleteButtons = checkedDeleteButtons();
+        var names = $deleteButtons.map(function () { return $(this).data('name'); }).get();
+        $(this).find('.artist-names').text(names.join(', '));
+        fillDeleteSummary($(this), $deleteButtons);
+      });
     })
   </script>
 {% endblock extra_js %}
