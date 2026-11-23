@@ -73,3 +73,28 @@
     margin-top: 15px;
   }
 }
+
+.delete-modal {
+  color: #121212;
+
+  & .modal-title {
+    @include lato-bold;
+    font-size: 20px;
+  }
+
+  & .modal-body {
+    @include lato;
+    font-size: 14px;
+    line-height: 1.5;
+
+    & ul {
+      padding-left: 20px;
+      margin-bottom: 10px;
+    }
+  }
+
+  & .modal-footer .btn {
+    @include lato;
+    font-size: 14px;
+  }
+}
