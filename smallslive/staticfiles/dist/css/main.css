@@ -6058,9 +6058,17 @@ a.badge:hover, a.badge:focus {
     display: inline-block; }
 
 .jazzcultural-color {
-  color: #1055C9; }
+  color: #90EE90; }
   .jazzcultural-color--thankyou {
     display: inline-block; }
+
+main.calendar .smalls-color,
+main.calendar .mezzrow-color,
+main.calendar .jazzcultural-color,
+.event-page-container .smalls-color,
+.event-page-container .mezzrow-color,
+.event-page-container .jazzcultural-color {
+  font-weight: bold !important; }
 
 .text-grey {
   color: #808080; }
