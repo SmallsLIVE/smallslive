@@ -113,6 +113,12 @@
     opacity: 1;
   }
 
+  &__actions {
+    @include display(flex);
+    @include align-items(center);
+    white-space: nowrap;
+  }
+
   > a {
 
     &:active,
@@ -233,6 +239,11 @@
 
   &__actions {
     text-align: right;
+
+    & > .delete-artist-button {
+      float: right;
+      margin-left: 5px;
+    }
   }
 
   & .btn-group {
