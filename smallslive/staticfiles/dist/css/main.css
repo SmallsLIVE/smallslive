@@ -6062,6 +6062,14 @@ a.badge:hover, a.badge:focus {
   .jazzcultural-color--thankyou {
     display: inline-block; }
 
+main.calendar .smalls-color,
+main.calendar .mezzrow-color,
+main.calendar .jazzcultural-color,
+.event-page-container .smalls-color,
+.event-page-container .mezzrow-color,
+.event-page-container .jazzcultural-color {
+  font-weight: bold !important; }
+
 .text-grey {
   color: #808080; }
 
@@ -11431,11 +11439,6 @@ a.artist-link:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center; }
-
-main.calendar .smalls-color,
-main.calendar .mezzrow-color,
-main.calendar .jazzcultural-color {
-  font-weight: bold; }
 
 @media (min-width: 960px) {
   .artist-header {
