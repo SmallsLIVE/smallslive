@@ -11432,6 +11432,11 @@ a.artist-link:hover {
   align-items: center;
   justify-content: center; }
 
+main.calendar .smalls-color,
+main.calendar .mezzrow-color,
+main.calendar .jazzcultural-color {
+  font-weight: bold; }
+
 @media (min-width: 960px) {
   .artist-header {
     margin-left: 80px;
