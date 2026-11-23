@@ -18641,6 +18641,25 @@ label[for="photo-clear_id"] {
     top: 1px;
     margin-top: 15px; }
 
+.delete-modal {
+  color: #121212; }
+  .delete-modal .modal-title {
+    font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+    font-weight: 700;
+    font-size: 20px; }
+  .delete-modal .modal-body {
+    font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.5; }
+    .delete-modal .modal-body ul {
+      padding-left: 20px;
+      margin-bottom: 10px; }
+  .delete-modal .modal-footer .btn, .delete-modal .modal-footer .cto__button, .delete-modal .modal-footer .homepage-news__button, .delete-modal .modal-footer #header__date-picker input, #header__date-picker .delete-modal .modal-footer input, .delete-modal .modal-footer .newsletters__subscribe__button, .delete-modal .modal-footer .social-connect .fb-login-button, .social-connect .delete-modal .modal-footer .fb-login-button {
+    font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 14px; }
+
 .home-membership {
   padding: 0;
   background-color: #fff;
