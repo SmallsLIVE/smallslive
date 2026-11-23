@@ -6058,9 +6058,17 @@ a.badge:hover, a.badge:focus {
     display: inline-block; }
 
 .jazzcultural-color {
-  color: #1055C9; }
+  color: #90EE90; }
   .jazzcultural-color--thankyou {
     display: inline-block; }
+
+main.calendar .smalls-color,
+main.calendar .mezzrow-color,
+main.calendar .jazzcultural-color,
+.event-page-container .smalls-color,
+.event-page-container .mezzrow-color,
+.event-page-container .jazzcultural-color {
+  font-weight: bold !important; }
 
 .text-grey {
   color: #808080; }
@@ -18121,6 +18129,16 @@ label[for="photo-clear_id"] {
     font-size: 14px; }
   .artists-list__search button.btn:disabled, .artists-list__search button.cto__button:disabled, .artists-list__search button.homepage-news__button:disabled, .artists-list__search button.newsletters__subscribe__button:disabled, .artists-list__search .social-connect button.fb-login-button:disabled, .social-connect .artists-list__search button.fb-login-button:disabled {
     opacity: 1; }
+  .artists-list__search__actions {
+    display: -moz-flex;
+    display: flex;
+    box-align: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    -o-align-items: center;
+    align-items: center;
+    -ms-flex-align: center;
+    white-space: nowrap; }
   .artists-list__search > a:active, .artists-list__search > a:focus {
     color: inherit;
     text-decoration: none;
@@ -18224,6 +18242,9 @@ label[for="photo-clear_id"] {
     font-weight: 700; }
   .artists-list__list__actions {
     text-align: right; }
+    .artists-list__list__actions > .delete-artist-button {
+      float: right;
+      margin-left: 5px; }
   .artists-list__list .btn-group {
     float: right; }
     .artists-list__list .btn-group .btn, .artists-list__list .btn-group .cto__button, .artists-list__list .btn-group .homepage-news__button, .artists-list__list .btn-group #header__date-picker input, #header__date-picker .artists-list__list .btn-group input, .artists-list__list .btn-group .newsletters__subscribe__button, .artists-list__list .btn-group .social-connect .fb-login-button, .social-connect .artists-list__list .btn-group .fb-login-button {
@@ -18619,6 +18640,25 @@ label[for="photo-clear_id"] {
     position: relative;
     top: 1px;
     margin-top: 15px; }
+
+.delete-modal {
+  color: #121212; }
+  .delete-modal .modal-title {
+    font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+    font-weight: 700;
+    font-size: 20px; }
+  .delete-modal .modal-body {
+    font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.5; }
+    .delete-modal .modal-body ul {
+      padding-left: 20px;
+      margin-bottom: 10px; }
+  .delete-modal .modal-footer .btn, .delete-modal .modal-footer .cto__button, .delete-modal .modal-footer .homepage-news__button, .delete-modal .modal-footer #header__date-picker input, #header__date-picker .delete-modal .modal-footer input, .delete-modal .modal-footer .newsletters__subscribe__button, .delete-modal .modal-footer .social-connect .fb-login-button, .social-connect .delete-modal .modal-footer .fb-login-button {
+    font-family: "Lato", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 14px; }
 
 .home-membership {
   padding: 0;

@@ -1,7 +1,9 @@
 from django.conf import settings
-from django.urls import reverse
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse, JsonResponse
-from django.views.generic.edit import UpdateView, CreateView
+from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from braces.views import StaffuserRequiredMixin
 from django_filters.views import FilterView
@@ -48,6 +50,34 @@ class ArtistEditView(StaffuserRequiredMixin, UpdateView):
 artist_edit = ArtistEditView.as_view()
 
 
+class ArtistDeleteView(StaffuserRequiredMixin, DeleteView):
+    model = Artist
+    success_url = reverse_lazy('artist_list')
+
+    def delete(self, request, *args, **kwargs):
+        response = super(ArtistDeleteView, self).delete(request, *args, **kwargs)
+        messages.success(request, '"{}" deleted.'.format(self.object.full_name()), extra_tags='alert-text--wide')
+        return response
+
+artist_delete = ArtistDeleteView.as_view()
+
+
+class ArtistBulkDeleteView(StaffuserRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        artist_ids = [pk for pk in request.POST.getlist('artist_ids') if pk.isdigit()]
+        artists = Artist.objects.filter(pk__in=artist_ids)
+        count = artists.count()
+        if count:
+            artists.delete()
+            messages.success(request, '{} artist(s) deleted.'.format(count), extra_tags='alert-text--wide')
+        else:
+            messages.warning(request, 'No artists selected.', extra_tags='alert-text--wide')
+        return redirect('artist_list')
+
+artist_bulk_delete = ArtistBulkDeleteView.as_view()
+
+
 class ArtistDetailView(DetailView):
     model = Artist
     context_object_name = 'artist'
@@ -68,9 +98,13 @@ class ArtistFilterView(StaffuserRequiredMixin, FilterView):
 
     def get_queryset(self):
         # faster event count compared to annotate()
-        return Artist.objects.extra(
-            {'events_count': 'SELECT COUNT(*) FROM events_gigplayed WHERE events_gigplayed.artist_id = artists_artist.id'}
-        ).select_related('user').prefetch_related('instruments', 'events')
+        return Artist.objects.extra({
+            'events_count': 'SELECT COUNT(*) FROM events_gigplayed WHERE events_gigplayed.artist_id = artists_artist.id',
+            'user_count': 'SELECT COUNT(*) FROM users_smallsuser WHERE users_smallsuser.artist_id = artists_artist.id',
+            'earnings_count': 'SELECT COUNT(*) FROM artists_artistearnings WHERE artists_artistearnings.artist_id = artists_artist.id',
+            'donations_count': 'SELECT COUNT(*) FROM subscriptions_donation WHERE subscriptions_donation.artist_id = artists_artist.id',
+            'album_credits_count': 'SELECT COUNT(*) FROM catalogue_artistproduct WHERE catalogue_artistproduct.artist_id = artists_artist.id',
+        }).select_related('user').prefetch_related('instruments', 'events')
 
     def get_context_data(self, **kwargs):
         context = super(ArtistFilterView, self).get_context_data(**kwargs)

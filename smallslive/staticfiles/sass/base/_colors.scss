@@ -9,7 +9,7 @@ $text-grey: #808080;
 $background-grey: #e0e0dc;
 $mezzrow: #f1bb53;
 $smallslive: #d21535;
-$jazzcultural: #1055C9;
+$jazzcultural: #90EE90;
 
 .black-color {
   color: $black;
@@ -35,6 +35,15 @@ $jazzcultural: #1055C9;
   color: $jazzcultural;
   &--thankyou {
     display: inline-block;
+  }
+}
+
+main.calendar,
+.event-page-container {
+  .smalls-color,
+  .mezzrow-color,
+  .jazzcultural-color {
+    font-weight: bold !important;
   }
 }
 
