@@ -9582,14 +9582,14 @@ a.artist-link:hover {
 
 .upcoming-logo {
   margin-left: auto;
-  height: calc(6.94vw + 8.96px);
-  width: calc(6.94vw + 8.96px);
-  -o-object-fit: contain;
-  object-fit: contain; }
+  width: calc(6.94vw + 8.96px); }
   @media (max-width: 767px) {
     .upcoming-logo {
-      height: calc(13.94vw + 8.96px);
       width: calc(13.94vw + 8.96px); } }
+  .upcoming-logo--mezzrow, .upcoming-logo--jazzcultural {
+    margin-top: 15px; }
+  .upcoming-logo--jazzcultural {
+    width: calc(9.94vw + 8.96px); }
 
 .event-product-info {
   margin: 30px 0;
