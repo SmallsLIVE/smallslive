@@ -1079,10 +1079,14 @@ a {
   &--mezzrow,
   &--jazzcultural {
     margin-top: 15px;
+    align-self: flex-start;
+    flex-shrink: 0;
   }
 
   &--jazzcultural {
-    width: calc(9.94vw + 8.96px);
+    @media (min-width: 768px) {
+      width: calc(9.94vw + 8.96px);
+    }
   }
 }
 
