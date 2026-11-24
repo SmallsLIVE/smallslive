@@ -9587,9 +9587,12 @@ a.artist-link:hover {
     .upcoming-logo {
       width: calc(13.94vw + 8.96px); } }
   .upcoming-logo--mezzrow, .upcoming-logo--jazzcultural {
-    margin-top: 15px; }
-  .upcoming-logo--jazzcultural {
-    width: calc(9.94vw + 8.96px); }
+    margin-top: 15px;
+    align-self: flex-start;
+    flex-shrink: 0; }
+  @media (min-width: 768px) {
+    .upcoming-logo--jazzcultural {
+      width: calc(9.94vw + 8.96px); } }
 
 .event-product-info {
   margin: 30px 0;
