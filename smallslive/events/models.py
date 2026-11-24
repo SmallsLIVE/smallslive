@@ -1454,6 +1454,14 @@ class Venue(models.Model):
         return '#D21535'
 
     @property
+    def logo(self):
+        if 'mezzrow' in self.name.lower():
+            return 'Mezzrow-logo-transparent.png'
+        if 'jazzcultural' in self.name.lower():
+            return 'Jazzcultural.jpeg'
+        return 'logo.svg'
+
+    @property
     def get_aws_access_key_id(self):
         if self.aws_access_key_id:
             return self.fernet.decrypt(force_bytes(self.aws_access_key_id)).decode('utf-8')
