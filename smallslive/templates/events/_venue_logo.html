@@ -1,0 +1,2 @@
+{% load static from staticfiles %}
+<img class="upcoming-logo" src="{% static event.venue.logo|default:'logo.svg' %}" alt="{{ event.get_venue_name|default:'Smalls' }}"/>

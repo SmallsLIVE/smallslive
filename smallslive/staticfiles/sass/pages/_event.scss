@@ -1072,6 +1072,7 @@ a {
 
   height: calc(6.94vw + 8.96px);
   width: calc(6.94vw + 8.96px);
+  object-fit: contain;
 
   @media (max-width: 767px) {
     height: calc(13.94vw + 8.96px);
