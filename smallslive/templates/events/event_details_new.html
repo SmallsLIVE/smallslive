@@ -138,6 +138,9 @@
                             {% if event.is_future %}
                                 <div class="{{ event.get_venue_name|lower}}-color title2 venue-subtitle">Live at {{ event.get_venue_name }}</div>
                             {% endif %}
+                            {% if event.get_venue_name == 'Jazzcultural' %}
+                                <div class="title2 venue-address">349 W. 46th street between 8th and 9th Ave on “Restaurant Row”</div>
+                            {% endif %}
 
                             {% if next_event %}
                                 <div class="next-event event-title title1 hidden">
