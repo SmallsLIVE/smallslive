@@ -18391,9 +18391,8 @@ a.artist-link:hover {
     margin-top: 15px;
     align-self: flex-start;
     flex-shrink: 0; }
-  @media (min-width: 768px) {
-    .upcoming-logo--jazzcultural {
-      width: calc(9.94vw + 8.96px); } }
+  .upcoming-logo--jazzcultural {
+    width: 30%; }
 
 .event-product-info {
   margin: 30px 0;
