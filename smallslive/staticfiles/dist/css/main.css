@@ -8918,6 +8918,17 @@ div.event-strip {
   @media (max-width: 960px) {
     .venue-subtitle {
       font-size: 16px; } }
+  .venue-subtitle.jazzcultural-color {
+    margin-top: 10px; }
+    @media (max-width: 960px) {
+      .venue-subtitle.jazzcultural-color {
+        margin-top: 6px; } }
+
+.venue-address {
+  margin-bottom: 10px; }
+  @media (max-width: 960px) {
+    .venue-address {
+      margin-bottom: 6px; } }
 
 .event-video-info {
   display: flex;

@@ -188,6 +188,22 @@ $player-height: 25.3vw;
   @media (max-width: $screen-sm-max) {
     font-size: 16px;
   }
+
+  &.jazzcultural-color {
+    margin-top: 10px;
+
+    @media (max-width: $screen-sm-max) {
+      margin-top: 6px;
+    }
+  }
+}
+
+.venue-address {
+  margin-bottom: 10px;
+
+  @media (max-width: $screen-sm-max) {
+    margin-bottom: 6px;
+  }
 }
 
 .event-video-info {
